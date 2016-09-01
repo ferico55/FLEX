@@ -906,7 +906,7 @@ typedef enum {
         [marks addObject:[self problemAndSolutionConversation:conversation]];
     }
     
-    [marks addObject:[NSString stringWithFormat:@"%@",conversation.remark_string?:@""]];
+    [marks addObject:[NSString stringWithFormat:@"%@",conversation.remark_str?:@""]];
      
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:product.pt_product_name];

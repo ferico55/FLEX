@@ -30,11 +30,4 @@
     return mapping;
 }
 
-+(RKObjectMapping*)mappingNewWS{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromArray:@[@"post_key", @"is_success"]];
-    return mapping;
-}
-
-
 @end

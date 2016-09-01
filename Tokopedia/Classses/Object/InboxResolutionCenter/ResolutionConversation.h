@@ -26,7 +26,7 @@
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_img;
 @property (nonatomic, strong) NSNumber *solution;
-@property (nonatomic, strong) NSString *remark_string;
+@property (nonatomic, strong) NSString *remark_str;
 @property (nonatomic, strong) NSString *input_resi;
 
 @property (nonatomic, strong) NSString *kurir_name;

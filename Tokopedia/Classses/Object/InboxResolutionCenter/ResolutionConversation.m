@@ -11,11 +11,11 @@
 
 @implementation ResolutionConversation
 
-- (NSString *)remark_string {
-    if ([_remark_string isEqualToString:@"0"]){
+- (NSString *)remark_str {
+    if ([_remark_str isEqualToString:@"0"]){
         return @"";
     }
-    return [_remark_string kv_decodeHTMLCharacterEntities];
+    return [_remark_str kv_decodeHTMLCharacterEntities];
 }
 
 // MARK: TKPRootObjectMapping methods

@@ -2621,6 +2621,7 @@
 		4574F54B1D704B4400CFC71B /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574EB191D704B4200CFC71B /* XYPieChart.m */; };
 		4574F54D1D704EC900CFC71B /* EditResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574F54C1D704EC900CFC71B /* EditResolution.swift */; };
 		45D5B4D21D77D9680026297A /* RequestResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5B4D11D77D9680026297A /* RequestResolution.swift */; };
+		45D5B4D41D77DB760026297A /* ReplayConversationPostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5B4D31D77DB760026297A /* ReplayConversationPostData.swift */; };
 		45DA5B881D742FE100641B44 /* EditSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DA5B871D742FE100641B44 /* EditSolution.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -6491,6 +6492,7 @@
 		4574EB191D704B4200CFC71B /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4574F54C1D704EC900CFC71B /* EditResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditResolution.swift; sourceTree = "<group>"; };
 		45D5B4D11D77D9680026297A /* RequestResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestResolution.swift; sourceTree = "<group>"; };
+		45D5B4D31D77DB760026297A /* ReplayConversationPostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplayConversationPostData.swift; sourceTree = "<group>"; };
 		45DA5B871D742FE100641B44 /* EditSolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSolution.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -10062,6 +10064,7 @@
 				4574E2DF1D704B3E00CFC71B /* ProductResolutionViewModel.swift */,
 				45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */,
 				45D5B4D11D77D9680026297A /* RequestResolution.swift */,
+				45D5B4D31D77DB760026297A /* ReplayConversationPostData.swift */,
 			);
 			path = EditSolutionSeller;
 			sourceTree = "<group>";
@@ -14834,6 +14837,7 @@
 				4574EC581D704B4200CFC71B /* ProfileEditForm.m in Sources */,
 				4574EE671D704B4300CFC71B /* RequestUploadImageSubmit.m in Sources */,
 				4574EB281D704B4200CFC71B /* NSStringCategory.m in Sources */,
+				45D5B4D41D77DB760026297A /* ReplayConversationPostData.swift in Sources */,
 				4574EC621D704B4200CFC71B /* ProfileSettings.m in Sources */,
 				4574F0CD1D704B4300CFC71B /* SettingAddressViewController.m in Sources */,
 				4574EB791D704B4200CFC71B /* CategoryData.swift in Sources */,

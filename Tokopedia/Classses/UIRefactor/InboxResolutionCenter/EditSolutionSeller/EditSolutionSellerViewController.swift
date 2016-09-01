@@ -38,12 +38,12 @@ class EditSolutionSellerViewController: UIViewController {
     @IBOutlet var uploadImageCell: UITableViewCell!
     
     private var resolutionData : EditResolutionFormData = EditResolutionFormData()
-    private var selectedSolution : EditSolution = EditSolution()
-    private var selectedAssets : [DKAsset] = []
-    var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
-
+    private var postObject : ReplayConversationPostData = ReplayConversationPostData()
     private var firstResponderIndexPath : NSIndexPath?
+    private var alertProgress : UIAlertView = UIAlertView()
+
     
+    var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
     var type         : Type   = Type.Edit
@@ -90,6 +90,20 @@ class EditSolutionSellerViewController: UIViewController {
         tableView.addSubview(refreshControl)
         
         self.requestDataForm()
+        self.adjsutAlertProgressAppearance()
+    }
+    
+    private func adjsutAlertProgressAppearance(){
+        alertProgress = UIAlertView.init(title: nil, message: "Please wait...", delegate: nil, cancelButtonTitle: nil);
+        
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(50, 10, 37, 37)) as UIActivityIndicatorView
+        loadingIndicator.center = self.view.center;
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        loadingIndicator.startAnimating();
+        
+        alertProgress.setValue(loadingIndicator, forKey: "accessoryView")
+        loadingIndicator.startAnimating()
     }
     
     override func viewDidLayoutSubviews() {
@@ -155,10 +169,10 @@ class EditSolutionSellerViewController: UIViewController {
     private func setSelectedSolutionWithData(data:EditResolutionFormData){
 
         for solution in data.form.resolution_solution_list where Int(solution.solution_id) == Int(data.form.resolution_last.last_solution) {
-            selectedSolution = solution
-            selectedSolution.refund_amt = data.form.resolution_last.last_refund_amt.stringValue
-            selectedSolution.refund_amt_idr = data.form.resolution_last.last_refund_amt_idr
-            self.adjustUISolution(selectedSolution)
+            postObject.selectedSolution = solution
+            postObject.selectedSolution.refund_amt = data.form.resolution_last.last_refund_amt.stringValue
+            postObject.selectedSolution.refund_amt_idr = data.form.resolution_last.last_refund_amt_idr
+            self.adjustUISolution(postObject.selectedSolution)
         }
     }
     
@@ -194,9 +208,9 @@ class EditSolutionSellerViewController: UIViewController {
                                               showCancel: true,
                                               showCamera: true,
                                               maxSelected: 5,
-                                              selectedAssets: self.selectedAssets
+                                              selectedAssets: self.postObject.selectedAssets
         ) { [unowned self] (assets) in
-            self.selectedAssets = assets
+            self.postObject.selectedAssets = assets
             self.adjustUISelectedImage()
         }
     }
@@ -209,14 +223,14 @@ class EditSolutionSellerViewController: UIViewController {
         
         deleteImageButtons.forEach{ $0.hidden = true }
         
-        for (index,asset) in selectedAssets.enumerate() {
+        for (index,asset) in postObject.selectedAssets.enumerate() {
             uploadImageButtons[index].hidden = false
             deleteImageButtons[index].hidden = false
             uploadImageButtons[index].setBackgroundImage(asset.thumbnailImage, forState: .Normal)
         }
         
-        if (selectedAssets.count<uploadImageButtons.count) {
-            let uploadedButton = uploadImageButtons[selectedAssets.count]
+        if (postObject.selectedAssets.count<uploadImageButtons.count) {
+            let uploadedButton = uploadImageButtons[postObject.selectedAssets.count]
             uploadedButton.hidden = false
             
             uploadScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
@@ -225,11 +239,35 @@ class EditSolutionSellerViewController: UIViewController {
     }
     
     @objc private func onTapSubmit(){
+        
+        self.adjustPostData()
+        
         if type == Type.Edit {
+            postObject.editSolution = "1"
             self.requestSubmitEdit()
         } else {
+            postObject.editSolution = "0"
             self.requestSubmitAppeal()
         }
+    }
+    
+    private func adjustPostData(){
+        if isGetProduct {
+            postObject.flagReceived = "1"
+        } else {
+            postObject.flagReceived = "0"
+        }
+        
+        postObject.resolutionID = resolutionID
+        postObject.refundAmount = refundTextField.text!
+        postObject.replyMessage = reasonTextView.text
+        if Int(resolutionData.form.resolution_by.by_customer) == 1 {
+            postObject.actionBy     = "1"
+        } else {
+            postObject.actionBy     = "2"
+        }
+        postObject.category_trouble_id = resolutionData.form.resolution_last.last_category_trouble_type
+        postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
     }
     
     func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
@@ -237,44 +275,33 @@ class EditSolutionSellerViewController: UIViewController {
     }
     
     private func requestSubmitEdit() {
-        let progressHUDView : ProgressHUDView = ProgressHUDView.init(text: "Processing... ")
-        self.view.addSubview(progressHUDView)
-                
-        RequestResolutionAction .fetchAppealResolutionID(resolutionID,
-                                                         solution: selectedSolution.solution_id,
-                                                         refundAmount: refundTextField.text,
-                                                         message: reasonTextView.text,
-                                                         imageObjects: selectedAssets,
-                                                         success: { (data) in
-                                                            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] as! ResolutionConversation, replyEnable: true)
-                                                            progressHUDView.removeFromSuperview()
-                                                            self.navigationController?.popViewControllerAnimated(true)
-                                                            
-        }) { (error) in
+        
+        alertProgress.show()
+        
+        RequestResolution.fetchReplayConversation(postObject, onSuccess: { (data) in
+                self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
             
-            progressHUDView.removeFromSuperview()
-            
+            }) {
+                self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
         }
     }
     
     private func requestSubmitAppeal() {
-        let progressHUDView : ProgressHUDView = ProgressHUDView.init(text: "Processing... ")
-        self.view.addSubview(progressHUDView)
-
+        
+        alertProgress.show()
+        
         RequestResolutionAction .fetchAppealResolutionID(resolutionID,
-                                                         solution: selectedSolution.solution_id,
+                                                         solution: postObject.selectedSolution.solution_id,
                                                          refundAmount: refundTextField.text,
                                                          message: reasonTextView.text,
-                                                         imageObjects: selectedAssets,
+                                                         imageObjects: postObject.selectedAssets,
                                                          success: { (data) in
-            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] as! ResolutionConversation, replyEnable: true)
-            progressHUDView.removeFromSuperview()
-            self.navigationController?.popViewControllerAnimated(true)
+            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
                                                             
         }) { (error) in
-                
-            progressHUDView.removeFromSuperview()
-                
+            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
         }
     }
     
@@ -283,7 +310,7 @@ class EditSolutionSellerViewController: UIViewController {
         controller.objects = self.resolutionData.form.resolution_solution_list.map{$0.solution_text}
         controller.delegate = self
         controller.title = "Ubah Solusi"
-        controller.selectedObject = selectedSolution.solution_text
+        controller.selectedObject = postObject.selectedSolution.solution_text
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -292,7 +319,7 @@ class EditSolutionSellerViewController: UIViewController {
     }
     
     @IBAction func onTapCancelButton(sender: UIButton) {
-        selectedAssets.removeAtIndex(sender.tag)
+        postObject.selectedAssets.removeAtIndex(sender.tag)
         self.adjustUISelectedImage()
     }
     
@@ -321,8 +348,8 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
     //MARK: GeneralTableViewDelegate
     func didSelectObject(object: AnyObject!) {
         for solution in resolutionData.form.resolution_solution_list where solution.solution_text == object as! String {
-            selectedSolution = solution
-            self.adjustUISolution(selectedSolution)
+            postObject.selectedSolution = solution
+            self.adjustUISolution(postObject.selectedSolution)
             tableView.reloadData()
         }
 

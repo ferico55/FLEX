@@ -176,7 +176,7 @@
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_product_list.pl"
                                 method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
+                             parameter:@{@"order_id":orderId?:@"",
                                          @"user_id":[userAuth getUserId]
                                          }
                                mapping:[ResolutionProductResponse mapping]

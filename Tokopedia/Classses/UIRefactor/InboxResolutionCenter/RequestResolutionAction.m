@@ -288,7 +288,7 @@ static failedCompletionBlock failedRequest;
                                   path:@"/v4/action/resolution-center/create_resolution_validation_new.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[ResolutionAction mappingNewWS]
+                               mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];

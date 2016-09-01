@@ -23,6 +23,4 @@
 @property (nonatomic, strong) NSArray<ResolutionConversation*> *conversation_last;
 @property (nonatomic, strong) ResolutionButton *button;
 
-+(RKObjectMapping*)mappingNewWS;
-
 @end

@@ -319,6 +319,7 @@
             if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
                 [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
+            [self.navigationController popToViewController:_delegate animated:YES];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
@@ -463,7 +464,7 @@
     [RequestResolutionAction fetchReplyResolutionID:_resolutionID?:@""
                                        flagReceived:[_resolution.resolution_last.last_flag_received stringValue]
                                         troubleType:[_resolution.resolution_last.last_solution stringValue]?:@""
-                                           solution:[_resolution.resolution_last.last_trouble_type stringValue]?:@""
+                                           solution:_resolution.resolution_last.last_trouble_type?:@""
                                        refundAmount:[_resolution.resolution_last.last_refund_amt stringValue]?:@""
                                             message:_messageTextView.text?:@""
                                      isEditSolution:@"0"
