@@ -151,7 +151,6 @@
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
     
-    
     _page = 1;
     [self disableButtonWithdraw];
     
