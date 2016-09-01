@@ -252,7 +252,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
-                if ([searchSuggestionData.name isEqual: RECENT_SEARCH]){
+                if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     NSMutableArray *searchSuggestionItems = [NSMutableArray  arrayWithArray:searchSuggestionData.items];
                     [searchSuggestionItems removeObjectAtIndex:buttonIndexPath.item];
                     searchSuggestionData.items = searchSuggestionItems ;
@@ -272,7 +272,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         dispatch_async(dispatch_get_main_queue(), ^{
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
-                if ([searchSuggestionData.name isEqual: RECENT_SEARCH]){
+                if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     [_searchSuggestionDataArray removeObject:searchSuggestionData];
                     [_collectionView reloadData];
                     break;
@@ -363,7 +363,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
         
-        header.titleLabel.text = [searchSuggestionData.name];
+        header.titleLabel.text = searchSuggestionData.name;
         
         if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
@@ -490,11 +490,14 @@ NSString *const RECENT_SEARCH = @"recent_search";
                          
                          SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
                          
-                         if ([searchSuggestionData.name  isEqual: @"hotlist"]){
+                         if ([searchSuggestionData.id  isEqual: @"hotlist"]){
                              NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
                              
                              HotlistResultViewController *controller = [HotlistResultViewController new];
-                             controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : [keys objectAtIndex:[keys count] - 2]};
+                             NSString *hotListUrl = [keys lastObject]; // hotListValue example: iphone-5s?source=jahe . But we only need 'iphone-5s' value, so we need to cut ?source=jahe
+                             
+                             NSString *hotListName = [[hotListUrl componentsSeparatedByString:@"?"] objectAtIndex: 0];
+                             controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
                              controller.isFromAutoComplete = YES;
                              controller.hidesBottomBarWhenPushed = YES;
                              [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:searchSuggestionItem.keyword];
