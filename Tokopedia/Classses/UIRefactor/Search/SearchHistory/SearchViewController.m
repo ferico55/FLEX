@@ -469,7 +469,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 //        size = CGSizeMake(collectionView.bounds.size.width, 25);
 //    }
     SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
-    if (![searchSuggestionData.name  isEqual: @"autocomplete"]) {
+    if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
         size = CGSizeMake(collectionView.bounds.size.width, 45);
     }
     return size;
