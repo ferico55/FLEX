@@ -412,7 +412,7 @@
             }
             else
             {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi.";
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
             }
         }
         else
