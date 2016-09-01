@@ -103,3 +103,4 @@
 #import "QueueImageDownloader.h"
 #import "ProductBadge.h"
 #import "MMNumberKeyboard.h"
+#import "NSStringCategory.h"

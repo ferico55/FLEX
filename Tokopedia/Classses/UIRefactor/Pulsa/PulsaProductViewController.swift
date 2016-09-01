@@ -57,7 +57,7 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
             cell.descriptionHeightConstraint.constant = 50
         }
         
-        cell.productDesc.text = product.attributes.detail
+        cell.productDesc.text = NSString.convertHTML(product.attributes.detail)
         cell.productStatus.layer.masksToBounds = true
         
         if let promo = product.attributes.promo {
