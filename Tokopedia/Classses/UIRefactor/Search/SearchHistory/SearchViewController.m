@@ -363,7 +363,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
         
-        header.titleLabel.text = [[searchSuggestionData.name uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+        header.titleLabel.text = [searchSuggestionData.name];
         
         if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
@@ -409,10 +409,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
     searchCell.closeButton.hidden = YES;
     searchCell.searchLoopImageView.hidden = YES;
     [searchCell addConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
-    if([searchSuggestionData.name isEqual: RECENT_SEARCH]) {
+    if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
         searchCell.closeButton.hidden = NO;
         [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-    } else if ([searchSuggestionData.name isEqual: SEARCH_AUTOCOMPLETE]){
+    } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
         searchCell.searchLoopImageView.hidden = NO;
         [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
     }

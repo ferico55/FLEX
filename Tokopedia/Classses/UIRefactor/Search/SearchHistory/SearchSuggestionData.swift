@@ -10,11 +10,12 @@ import Foundation
 
 class SearchSuggestionData: NSObject {
     var name: String!
+    var id: String!
     var items: [SearchSuggestionItem]!
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(forClass: SearchSuggestionData.self)
-        mapping.addAttributeMappingsFromArray(["name"])
+        mapping.addAttributeMappingsFromArray(["name", "id"])
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "items", toKeyPath: "items", withMapping: SearchSuggestionItem.mapping()))
         return mapping
     }
