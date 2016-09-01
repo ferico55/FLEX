@@ -58,6 +58,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         super.init(frame: CGRectZero)
         
         NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomePage", object: nil)
+        NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomeTab", object: nil)
+        
         
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
