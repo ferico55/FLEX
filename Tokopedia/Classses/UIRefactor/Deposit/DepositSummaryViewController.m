@@ -143,13 +143,15 @@
     
     _table.delegate = self;
     _table.dataSource = self;
+    _table.estimatedRowHeight = 138.0;
+    _table.rowHeight = UITableViewAutomaticDimension;
     
     _filterDateButton.layer.cornerRadius = 3.0;
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
     
-    
+    
     _page = 1;
     [self disableButtonWithdraw];
     
@@ -234,10 +236,6 @@
     }
     
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)table0View heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 250;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
