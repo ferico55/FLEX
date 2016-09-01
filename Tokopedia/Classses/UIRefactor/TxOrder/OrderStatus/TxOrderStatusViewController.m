@@ -783,7 +783,10 @@
             vc.product_is_received = YES;
         }
         
-        [self.navigationController pushViewController:vc animated:YES];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTranslucent:NO];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
 

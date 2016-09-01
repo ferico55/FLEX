@@ -203,7 +203,7 @@ ResolutionCenterChooseProblemDelegate
                                                                 _productData = data.data;
                                                                 [_tableView reloadData];
                                                             } failure:^(NSError *error) {
-                                                                StickyAlertView *alert = [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
+                                                                [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                             }];
 }
 @end

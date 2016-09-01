@@ -276,7 +276,10 @@
         }
         
         vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
-        [self.navigationController pushViewController:vc animated:YES];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTranslucent:NO];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
     else if (alertView.tag == TAG_ALERT_CONFIRMATION)
     {
