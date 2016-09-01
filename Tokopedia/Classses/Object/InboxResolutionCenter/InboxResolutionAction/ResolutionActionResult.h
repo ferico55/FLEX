@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *resolution_id;
 
 @property (nonatomic, strong) ResolutionLast *solution_last;
-@property (nonatomic, strong) NSArray *conversation_last;
+@property (nonatomic, strong) NSArray<ResolutionConversation*> *conversation_last;
 @property (nonatomic, strong) ResolutionButton *button;
 
 +(RKObjectMapping*)mappingNewWS;

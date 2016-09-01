@@ -31,7 +31,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/inbox-resolution-center/get_resolution_center.pl"
+                                  path:@"/v4/inbox-resolution-center/get_resolution_center_new.pl"
                                 method:RKRequestMethodGET
                              parameter:param
                                mapping:[InboxResolutionCenter mapping]
@@ -155,7 +155,7 @@
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
                                 method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
+                             parameter:@{@"order_id":orderId?:@"",
                                          @"user_id":[userAuth getUserId]
                                          }
                                mapping:[ResolutionCenterCreateResponse mapping]
