@@ -99,7 +99,6 @@
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    [self initNoResultView];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -119,6 +118,11 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [self fetchInboxTalkList];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self initNoResultView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
