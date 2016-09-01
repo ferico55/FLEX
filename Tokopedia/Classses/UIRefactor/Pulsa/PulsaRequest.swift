@@ -20,13 +20,18 @@ class PulsaRequest: NSObject {
     }
     
     func requestCategory() {
-        self.cache.loadCategories { (cachedCategory) in
-            if(cachedCategory == nil) {
-                self.requestCategoryFromNetwork()
-            } else {
-                self.didReceiveCategory(cachedCategory!.data)
+        self.checkMaintenanceStatus { (status) in
+            if(!status.attributes.is_maintenance) {
+                self.cache.loadCategories { (cachedCategory) in
+                    if(cachedCategory == nil) {
+                        self.requestCategoryFromNetwork()
+                    } else {
+                        self.didReceiveCategory(cachedCategory!.data)
+                    }
+                }
             }
         }
+        
     }
     
     private func requestCategoryFromNetwork() {
@@ -100,5 +105,25 @@ class PulsaRequest: NSObject {
                                 
             });
 
+    }
+    
+    private func checkMaintenanceStatus(didReceiveMaintenanceStatus: (PulsaStatus -> Void)!) {
+        let networkManager = TokopediaNetworkManager()
+        networkManager.isParameterNotEncrypted = true
+        networkManager .
+            requestWithBaseUrl(NSString.pulsaUrl(),
+                               path: "/v1/status",
+                               method: .GET,
+                               parameter: nil,
+                               mapping: PulsaStatusRoot.mapping(),
+                               onSuccess: { (mappingResult, operation) -> Void in
+                                let statusRoot = mappingResult.dictionary()[""] as! PulsaStatusRoot
+                                didReceiveMaintenanceStatus(statusRoot.data)
+                                
+                                
+                },
+                               onFailure: { (errors) -> Void in
+                                
+            });
     }
 }
