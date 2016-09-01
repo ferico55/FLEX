@@ -461,4 +461,43 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackClickRegisterOnPage:(NSString *)page {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickRegister",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : page
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSuccessRegisterWithChannel:(NSString *)channel {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerSuccess",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Register Success",
+                           @"eventLabel" : channel
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackErrorRegisterWithFieldName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerError",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Register Error",
+                           @"eventLabel" : name
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
 @end

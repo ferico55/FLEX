@@ -304,6 +304,8 @@ TTTAttributedLabelDelegate
             }
             case 13 : {
                 
+                [TPAnalytics trackClickRegisterOnPage:@"Step 1"];
+                
                 NSMutableArray *messages = [NSMutableArray new];
                 
                 NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
@@ -333,44 +335,55 @@ TTTAttributedLabelDelegate
                     
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
                     } else if (![test evaluateWithObject:fullname]) {
                         [messages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
                     }
                     
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
                     } else if (phone.length < 6) {
                         [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
                     }
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
                     }
                     else
                     {
                         if (![email isEmail]) {
                             [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
                         }
                     }
                     if (!pass || [pass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
                     }
                     else
                     {
                         if (pass.length < 6) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_COUNT];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
                         }
                     }
                     if (!confirmpass || [confirmpass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_CONFIRM_PASSWORD];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
                     }
                     else
                     {
                         if (![pass isEqualToString:confirmpass]) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
                         }
                     }
                     if (!isagree) {
                         [messages addObject:ERRORMESSAGE_NULL_AGREMENT];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Syarat dan Ketentuan"];
                     }
                 }
                 
@@ -479,6 +492,7 @@ TTTAttributedLabelDelegate
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             [TPLocalytics trackRegistrationWithProvider:@"0" success:YES];
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            [TPAnalytics trackSuccessRegisterWithChannel:@"Email"];
             
             TKPDAlert *alert = [TKPDAlert newview];
             NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
