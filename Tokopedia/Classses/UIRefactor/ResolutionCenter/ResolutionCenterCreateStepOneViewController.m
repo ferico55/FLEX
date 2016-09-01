@@ -161,6 +161,24 @@ ResolutionCenterChooseProblemDelegate
 
 #pragma mark - Methods
 -(void)fetchForm{
+    if (_type == TypeResoCreate) {
+        [self fetchFormCreate];
+    } else {
+        [self fetchFormEdit];
+    }
+}
+
+-(void)fetchFormEdit{
+    [RequestResolutionData fetchformEditResolutionID:_resolutionID
+                                        isGetProduct:_isGotOrder
+                                           onSuccess:^(EditResolutionFormData *data) {
+        
+    } onFailure:^(NSError *error) {
+        
+    }];
+}
+
+-(void)fetchFormCreate{
     [RequestResolutionData fetchCreateResolutionDataWithOrderId:_order.order_detail.detail_order_id
                                                         success:^(ResolutionCenterCreateResponse *data) {
                                                             _result.formData = data.data;

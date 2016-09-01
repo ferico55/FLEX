@@ -40,7 +40,7 @@ class EditSolutionSellerViewController: UIViewController {
     private var resolutionData : EditResolutionFormData = EditResolutionFormData()
     private var selectedSolution : EditSolution = EditSolution()
     private var selectedAssets : [DKAsset] = []
-    var successAppeal : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
+    var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
 
     private var firstResponderIndexPath : NSIndexPath?
     
@@ -226,14 +226,35 @@ class EditSolutionSellerViewController: UIViewController {
     
     @objc private func onTapSubmit(){
         if type == Type.Edit {
-            
+            self.requestSubmitEdit()
         } else {
             self.requestSubmitAppeal()
         }
     }
     
-    func didSuccessAppeal(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
-        self.successAppeal = success
+    func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
+        self.successEdit = success
+    }
+    
+    private func requestSubmitEdit() {
+        let progressHUDView : ProgressHUDView = ProgressHUDView.init(text: "Processing... ")
+        self.view.addSubview(progressHUDView)
+                
+        RequestResolutionAction .fetchAppealResolutionID(resolutionID,
+                                                         solution: selectedSolution.solution_id,
+                                                         refundAmount: refundTextField.text,
+                                                         message: reasonTextView.text,
+                                                         imageObjects: selectedAssets,
+                                                         success: { (data) in
+                                                            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] as! ResolutionConversation, replyEnable: true)
+                                                            progressHUDView.removeFromSuperview()
+                                                            self.navigationController?.popViewControllerAnimated(true)
+                                                            
+        }) { (error) in
+            
+            progressHUDView.removeFromSuperview()
+            
+        }
     }
     
     private func requestSubmitAppeal() {
@@ -246,7 +267,7 @@ class EditSolutionSellerViewController: UIViewController {
                                                          message: reasonTextView.text,
                                                          imageObjects: selectedAssets,
                                                          success: { (data) in
-            self.successAppeal!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] as! ResolutionConversation, replyEnable: true)
+            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] as! ResolutionConversation, replyEnable: true)
             progressHUDView.removeFromSuperview()
             self.navigationController?.popViewControllerAnimated(true)
                                                             

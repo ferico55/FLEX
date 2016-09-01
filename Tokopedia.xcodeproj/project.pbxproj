@@ -2620,6 +2620,7 @@
 		4574F54A1D704B4400CFC71B /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4574EB161D704B4200CFC71B /* vt-iOSlib-1.0.1.zip */; };
 		4574F54B1D704B4400CFC71B /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574EB191D704B4200CFC71B /* XYPieChart.m */; };
 		4574F54D1D704EC900CFC71B /* EditResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574F54C1D704EC900CFC71B /* EditResolution.swift */; };
+		45D5B4D21D77D9680026297A /* RequestResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5B4D11D77D9680026297A /* RequestResolution.swift */; };
 		45DA5B881D742FE100641B44 /* EditSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DA5B871D742FE100641B44 /* EditSolution.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -6489,6 +6490,7 @@
 		4574EB181D704B4200CFC71B /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4574EB191D704B4200CFC71B /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4574F54C1D704EC900CFC71B /* EditResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditResolution.swift; sourceTree = "<group>"; };
+		45D5B4D11D77D9680026297A /* RequestResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestResolution.swift; sourceTree = "<group>"; };
 		45DA5B871D742FE100641B44 /* EditSolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSolution.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -10059,6 +10061,7 @@
 				4574E2DE1D704B3E00CFC71B /* EditSolutionSellerViewController.xib */,
 				4574E2DF1D704B3E00CFC71B /* ProductResolutionViewModel.swift */,
 				45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */,
+				45D5B4D11D77D9680026297A /* RequestResolution.swift */,
 			);
 			path = EditSolutionSeller;
 			sourceTree = "<group>";
@@ -15158,6 +15161,7 @@
 				4574ECD71D704B4200CFC71B /* ShopInfoResponse.m in Sources */,
 				4574EF6B1D704B4300CFC71B /* LoginSecurity.m in Sources */,
 				4574EB911D704B4200CFC71B /* CatalogImages.m in Sources */,
+				45D5B4D21D77D9680026297A /* RequestResolution.swift in Sources */,
 				4574EDF91D704B4300CFC71B /* InvocableType.swift in Sources */,
 				4574ECEF1D704B4200CFC71B /* Province.m in Sources */,
 				4574EC6B1D704B4200CFC71B /* BankAccountGetDefaultFormDefaultBank.m in Sources */,

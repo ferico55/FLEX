@@ -22,6 +22,7 @@
 #import "RequestUploadImage.h"
 #import "RequestResolutionData.h"
 #import "Tokopedia-Swift.h"
+#import "ResolutionCenterCreateViewController.h"
 
 #import "GeneralTableViewController.h"
 
@@ -292,12 +293,12 @@
     BOOL isGotTheOrder = [_resolution.resolution_last.last_flag_received boolValue];
 
     if (isSeller) {
-        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+        [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
     }
     else
     {
         if (isGotTheOrder) {
-            [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+            [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
         }
         else
         {
@@ -308,56 +309,23 @@
     }
 }
 
--(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
+-(void)doChangeSolutionIsGotTheOrder:(BOOL)isGotTheOrder isSeller:(BOOL)isSeller
 {
-    EditSolutionSellerViewController *sellerVC = [EditSolutionSellerViewController new];
-    sellerVC.resolutionID = _resolutionID;
-    sellerVC.isGetProduct = isGotTheOrder;
-    [self.navigationController pushViewController:sellerVC animated:YES];
-    
-//    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-//    vc.isGotTheOrder = isGotTheOrder;
-//    vc.isChangeSolution = YES;
-//    vc.detailOpenAmount = _resolution.resolution_order.order_open_amount;
-//    vc.detailOpenAmountIDR = _resolution.resolution_order.order_open_amount_idr;
-//    vc.shippingPriceIDR = _resolution.resolution_order.order_shipping_price_idr;
-//    vc.selectedProblem = _resolution.resolution_last.last_trouble_string;
-//    vc.selectedSolution = _resolution.resolution_last.last_solution_string;
-//    vc.invoice = _resolution.resolution_order.order_invoice_ref_num;
-//    vc.note = _messageTextView.text;
-//    vc.images = _selectedImages;
-//    vc.resolutionID = _resolutionID;
-//    NSArray *viewControllers = self.navigationController.viewControllers;
-//    UIViewController *destinationVC = viewControllers[viewControllers.count-2];
-//    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
-//        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
-//    }
-//    vc.syncroDelegate = self;
-//    vc.controllerTitle = @"Ubah Solusi";
-//    NSString *totalRefund = [_resolution.resolution_last.last_refund_amt stringValue];
-//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//    [formatter setGroupingSeparator:@"."];
-//    [formatter setGroupingSize:3];
-//    NSString *num = totalRefund;
-//    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-//    totalRefund = str;
-//    vc.totalRefund = totalRefund;
-//    
-//    if (_resolution.resolution_by.by_customer == 1) {
-//        vc.shopName = _resolution.resolution_shop.shop_name;
-//        vc.shopPic = _resolution.resolution_shop.shop_image;
-//        vc.buyerSellerLabel.text = @"Pembelian dari";
-//        vc.isCanEditProblem = YES;
-//    }
-//    if (_resolution.resolution_by.by_seller == 1) {
-//        vc.shopName = _resolution.resolution_customer.customer_name;
-//        vc.shopPic = _resolution.resolution_customer.customer_image;
-//        vc.buyerSellerLabel.text = @"Pembelian oleh";
-//        vc.isActionBySeller = YES;
-//        vc.isCanEditProblem = NO;
-//    }
-//    
-//    [self.navigationController pushViewController:vc animated:YES];
+    if (isSeller) {
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            }
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else {
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        vc.product_is_received = isGotTheOrder;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount
@@ -433,13 +401,8 @@
     }
     if (alertView.tag == TAG_CHANGE_SOLUTION)
     {
-        if (buttonIndex == 1) {
-            [self resolutionOpenIsGotTheOrder:YES];
-        }
-        else if (buttonIndex == 2)
-        {
-            [self resolutionOpenIsGotTheOrder:NO];
-        }
+        BOOL isSeller = (_resolution.resolution_by.by_seller == 1);
+        [self doChangeSolutionIsGotTheOrder:(buttonIndex == 1) isSeller:isSeller];
     }
 }
 
