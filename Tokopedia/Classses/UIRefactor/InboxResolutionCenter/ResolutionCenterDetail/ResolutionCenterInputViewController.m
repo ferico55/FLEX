@@ -27,6 +27,7 @@
 #import "GeneralTableViewController.h"
 
 #import "StickyAlertView.h"
+#import "Tokopedia-Swift.h"
 
 #define TAG_ALERT_HELPER 10
 #define TAG_CHANGE_SOLUTION 11
@@ -325,6 +326,8 @@
     }else {
         ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
         vc.product_is_received = isGotTheOrder;
+        vc.resolutionID = _resolutionID?:@"";
+        vc.type = TypeResoEdit;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -461,24 +464,29 @@
 #pragma mark - Request Reply
 -(void)doRequestReplyResolutionButton:(UIBarButtonItem*)sendButton{
     sendButton.enabled = NO;
-    [RequestResolutionAction fetchReplyResolutionID:_resolutionID?:@""
-                                       flagReceived:[_resolution.resolution_last.last_flag_received stringValue]
-                                        troubleType:[_resolution.resolution_last.last_solution stringValue]?:@""
-                                           solution:_resolution.resolution_last.last_trouble_type?:@""
-                                       refundAmount:[_resolution.resolution_last.last_refund_amt stringValue]?:@""
-                                            message:_messageTextView.text?:@""
-                                     isEditSolution:@"0"
-                                       imageObjects:_selectedImages
-                                            success:^(ResolutionActionResult *data) {
-                                                sendButton.enabled = YES;
-                                                if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
-                                                }
-                                                [self.navigationController popViewControllerAnimated:YES];
-                                                
-                                            } failure:^(NSError *error) {
-                                                sendButton.enabled = YES;
-                                            }];
+    
+    ReplayConversationPostData *postData = [ReplayConversationPostData new];
+    postData.resolutionID = _resolutionID;
+    postData.flagReceived = [_resolution.resolution_last.last_flag_received stringValue];
+    postData.solution = _resolution.resolution_last.last_trouble_type?:@"";
+    postData.refundAmount = [_resolution.resolution_last.last_refund_amt stringValue]?:@"";
+    postData.editSolution = @"0";
+    postData.selectedAssets = _selectedImages;
+    postData.replyMessage = _messageTextView.text;
+    
+    [RequestResolution fetchReplayConversation:postData onSuccess:^(ResolutionActionResult * data) {
+        
+        sendButton.enabled = YES;
+        if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+
+    } onFailure:^{
+        
+        sendButton.enabled = YES;
+        
+    }];
 }
 
 #pragma mark - Request Report

@@ -86,13 +86,13 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
-    RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"conversation_attachment" toKeyPath:@"attachment" withMapping:[ResolutionAttachment mapping]];
+    RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"attachment" toKeyPath:@"attachment" withMapping:[ResolutionAttachment mapping]];
     [mapping addPropertyMapping:conversationMapping];
     
-    RKRelationshipMapping *productMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"conversation_product_trouble" toKeyPath:@"product_trouble" withMapping:[ProductTrouble mapping]];
+    RKRelationshipMapping *productMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"product_trouble" toKeyPath:@"product_trouble" withMapping:[ProductTrouble mapping]];
     [mapping addPropertyMapping:productMapping];
     
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"conversation_address" toKeyPath:@"address" withMapping:[AddressFormList mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"address" toKeyPath:@"address" withMapping:[AddressFormList mapping]]];
     
     return mapping;
 }
