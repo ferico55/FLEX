@@ -23,7 +23,7 @@ ResolutionCenterChooseProblemDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemCell;
-@property (strong, nonatomic) IBOutlet UIButton *problemButton;
+@property (weak, nonatomic) IBOutlet UILabel *problemLabel;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) ResolutionProductData* productData;
@@ -31,6 +31,7 @@ ResolutionCenterChooseProblemDelegate
 
 @implementation ResolutionCenterCreateStepOneViewController{
     BOOL _shouldShowProblematicProduct;
+    
 }
 
 - (void)viewDidLoad {
@@ -39,11 +40,10 @@ ResolutionCenterChooseProblemDelegate
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.allowsMultipleSelection = YES;
-    [_problemButton setHidden:YES];
+    [_problemLabel setHidden:YES];
     [_activityIndicator startAnimating];
     
     [self fetchForm];
-    [self fetchProduct];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,6 +52,29 @@ ResolutionCenterChooseProblemDelegate
 }
 
 #pragma mark - Table View Delegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section == 1){
+        ResolutionProductList* currentProduct = [_productData.list objectAtIndex:indexPath.row];
+
+        for (ProductTrouble *trouble in _result.formEdit.resolution_last.last_product_trouble) {
+            if ([currentProduct.product_id integerValue] == [trouble.pt_product_id integerValue] && ![_result.selectedProduct containsObject:currentProduct]) {
+                currentProduct.productTrouble = trouble;
+                [self adjustSelectedProduct:currentProduct formProductTrouble:trouble];
+                [_result.selectedProduct addObject:currentProduct];
+                [cell setSelected:YES animated:NO];
+            }
+        }
+    }
+}
+
+-(void)adjustSelectedProduct:(ResolutionProductList*)selectedProduct formProductTrouble:(ProductTrouble*)productTrouble{
+    selectedProduct.show_input_quantity = productTrouble.pt_show_input_quantity;
+    selectedProduct.trouble_id = productTrouble.pt_trouble_id;
+    selectedProduct.solution_remark = productTrouble.pt_solution_remark;
+    selectedProduct.trouble_name = productTrouble.pt_trouble_name;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0){
         return _problemCell;
@@ -65,6 +88,7 @@ ResolutionCenterChooseProblemDelegate
         if(cell == nil){
             cell = [ResolutionCenterCreateStepOneCell newcell];
         }
+
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.productName.text = currentProduct.product_name;
         cell.productImage.contentMode = UIViewContentModeScaleToFill;
@@ -149,12 +173,12 @@ ResolutionCenterChooseProblemDelegate
     if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
         _result.troubleId = nil;
-        [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
+        _problemLabel.text = selectedProblem.category_trouble_text?:@"";
         [_tableView reloadData];
     }else{
         _shouldShowProblematicProduct = NO;
         [_result.selectedProduct removeAllObjects];
-        [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
+        _problemLabel.text = selectedProblem.category_trouble_text?:@"";
         [_tableView reloadData];
     }
 }
@@ -172,9 +196,24 @@ ResolutionCenterChooseProblemDelegate
     [RequestResolutionData fetchformEditResolutionID:_resolutionID
                                         isGetProduct:_isGotOrder
                                            onSuccess:^(EditResolutionFormData *data) {
+                                               ResolutionCenterCreateData *form = [ResolutionCenterCreateData new];
+                                               _result.formData = form;
+                                               _result.formData.list_ts = data.list_ts;
+                                               _result.formEdit = data.form;
+                                               _result.formData.form = data.form.resolution_order;
+                                               for (ResolutionCenterCreateList *categoryProblemType in _result.formData.list_ts) {
+                                                   if ([categoryProblemType.category_trouble_id integerValue] == [_result.formEdit.resolution_last.last_category_trouble_type integerValue]) {
+                                                       [self didSelectProblem:categoryProblemType];
+                                                   }
+                                               }
+                                               [self fetchProduct];
+
+                                               [_problemLabel setHidden:NO];
+                                               [_activityIndicator setHidden:YES];
         
     } onFailure:^(NSError *error) {
-        
+        [_problemLabel setHidden:NO];
+        [_activityIndicator setHidden:YES];
     }];
 }
 
@@ -190,17 +229,20 @@ ResolutionCenterChooseProblemDelegate
                                                             }];
                                                             
                                                             _result.formData.list_ts = appropriateCategoryTrouble;
-                                                            
-                                                            [_problemButton setHidden:NO];
+                                                            [self fetchProduct];
+
+                                                            [_problemLabel setHidden:NO];
                                                             [_activityIndicator setHidden:YES];
                                                         } failure:^(NSError *error) {
-                                                            
+                                                            [_problemLabel setHidden:NO];
+                                                            [_activityIndicator setHidden:YES];
                                                         }];
 }
 -(void)fetchProduct{
-    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:_order.order_detail.detail_order_id
+    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:_result.formData.form.order_id?:@""
                                                             success:^(ResolutionProductResponse *data) {
                                                                 _productData = data.data;
+                                                                
                                                                 [_tableView reloadData];
                                                             } failure:^(NSError *error) {
                                                                 [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];

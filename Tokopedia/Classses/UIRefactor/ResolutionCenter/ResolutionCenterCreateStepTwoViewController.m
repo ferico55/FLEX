@@ -51,15 +51,15 @@ ResolutionCenterCreateStepTwoCellDelegate
 }
 
 -(void)copyProductToJSONObject{
-    _result.postObject.order_id = _order.order_detail.detail_order_id;
+    _result.postObject.order_id = _result.formData.form.order_id?:@"";
     [_result.postObject.product_list removeAllObjects];
     [_result.selectedProduct enumerateObjectsUsingBlock:^(ResolutionProductList * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         ResolutionCenterCreatePOSTProduct* postProduct = [ResolutionCenterCreatePOSTProduct new];
         postProduct.order_dtl_id = obj.order_dtl_id;
         postProduct.product_id = obj.product_id;
         postProduct.quantity = obj.quantity;
-        postProduct.trouble_id = nil;
-        postProduct.remark = @"lorem ipsum";
+        postProduct.trouble_id = obj.trouble_id;
+        postProduct.remark = obj.solution_remark;
         [_result.postObject.product_list addObject:postProduct];
     }];
     [_tableView reloadData];
@@ -89,15 +89,19 @@ ResolutionCenterCreateStepTwoCellDelegate
         cell.quantityLabel.text = postProduct.quantity;
         cell.quantityStepper.value = [postProduct.quantity integerValue];
         cell.quantityStepper.stepValue = 1.0f;
-        cell.quantityStepper.minimumValue = 0;
+        cell.quantityStepper.minimumValue = 1;
         cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
         cell.quantityStepper.tag = indexPath.row;
+        
         cell.delegate = self;
         
         if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
             cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker];
         }
+        
         [cell.troublePicker setData:[self generateDownPickerChoices]];
+        cell.troublePicker.text = currentProduct.trouble_name;
+        cell.problemTextView.text = currentProduct.solution_remark;
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;

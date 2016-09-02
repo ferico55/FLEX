@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "ResolutionCenterCreateList.h"
-#import "ResolutionCenterCreateForm.h"
+#import "ResolutionOrder.h"
 
 @interface ResolutionCenterCreateData : NSObject
 
 @property (strong, nonatomic) NSArray<ResolutionCenterCreateList*>* list_ts;
-@property (strong, nonatomic) ResolutionCenterCreateForm* form;
+@property (strong, nonatomic) ResolutionOrder* form;
 
 +(RKObjectMapping*)mapping;
 @end

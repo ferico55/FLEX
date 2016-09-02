@@ -111,6 +111,12 @@ ResolutionCenterCreateStepThreeDelegate
     _stepThreeViewController.result = self.result;
     _stepThreeViewController.product_is_received = _product_is_received;
     _stepThreeViewController.delegate = self;
+    
+    _stepOneViewController.type  = _type;
+    _stepTwoViewController.type  = _type;
+    
+    _stepOneViewController.resolutionID = _resolutionID;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -184,7 +190,11 @@ ResolutionCenterCreateStepThreeDelegate
 }
 - (IBAction)didTapNextButton{
     if(_currentIndex == 2){
-        [_stepThreeViewController submitCreateResolution];
+        if (_type == TypeResoCreate) {
+            [_stepThreeViewController submitCreateResolution];
+        } else {
+            [_stepThreeViewController submitEditResolution];
+        }
     }else if(_currentIndex == 1){
         if([_stepTwoViewController verifyForm]){
             _currentIndex++;

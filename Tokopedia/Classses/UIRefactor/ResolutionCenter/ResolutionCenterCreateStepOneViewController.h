@@ -11,15 +11,11 @@
 #import "ResolutionProductList.h"
 #import "ResolutionCenterCreateResult.h"
 #import "TxOrderStatusList.h"
+#import "ResolutionCenterCreateViewController.h"
 
-typedef enum {
-    TypeResoCreate,
-    TypeResoEdit
-} TypeReso;
 
 @interface ResolutionCenterCreateStepOneViewController : UIViewController
 
-@property (strong, nonatomic) ResolutionCenterCreateData* formData;
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @property (strong, nonatomic) TxOrderStatusList* order;
 @property BOOL product_is_received;

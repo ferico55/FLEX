@@ -27,6 +27,6 @@ class ReplayConversationPostData: NSObject {
     var fileUploaded : String = ""
     var actionBy       : String = "1"
     var category_trouble_id : String = ""
-    var listProducts    : [ResolutionCenterCreatePOSTProduct] = []
+    var selectedProducts    : [ResolutionCenterCreatePOSTProduct] = []
 
 }

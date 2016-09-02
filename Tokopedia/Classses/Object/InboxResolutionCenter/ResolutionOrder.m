@@ -17,7 +17,8 @@
                       @"order_open_amount_idr",
                       @"order_shipping_price",
                       @"order_open_amount",
-                      @"order_invoice_ref_num"];
+                      @"order_invoice_ref_num",
+                      @"order_id"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

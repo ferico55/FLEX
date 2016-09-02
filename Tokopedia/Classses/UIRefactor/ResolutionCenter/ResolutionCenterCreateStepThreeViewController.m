@@ -52,6 +52,11 @@
                                                                 troubleId:_result.troubleId
                                                                     success:^(ResolutionCenterCreatePOSTResponse* data) {
                                                                         _formSolutions = data.data.form_solution;
+                                                                        for (ResolutionCenterCreatePOSTFormSolution *solution in _formSolutions) {
+                                                                            if ([solution.solution_id integerValue] == [_result.formEdit.resolution_last.last_solution integerValue]) {
+                                                                                [self didSelectSolution:solution];
+                                                                            }
+                                                                        }
                                                                     } failure:^(NSError *error) {
                                                                         
                                                                     }];
@@ -214,4 +219,21 @@
                                                          [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                      }];
 }
+
+-(void)submitEditResolution{
+    ReplayConversationPostData *postData = [ReplayConversationPostData new];
+    postData.resolutionID = [_result.formEdit.resolution_last.last_resolution_id stringValue];
+    postData.flagReceived = (_product_is_received)?@"1":@"0";
+    postData.troubleType = _result.troubleId;
+    postData.solution = _selectedSolution.solution_id;
+    postData.replyMessage = _result.remark;
+    postData.category_trouble_id = _result.postObject.category_trouble_id;
+    
+    [RequestResolution fetchReplayConversation:postData onSuccess:^(ResolutionActionResult * data) {
+        [_delegate didFinishCreateComplainInStepThree];
+    } onFailure:^{
+        [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
+    }];
+}
+
 @end
