@@ -32,6 +32,10 @@
 #import "RequestResoInputAddress.h"
 #import "RequestResolutionData.h"
 
+#import "Tokopedia-Swift.h"
+
+#import "ResolutionCenterCreateViewController.h"
+
 typedef enum {
     ACTION_BY_BUYER         = 1,
     ACTION_BY_SELLER        = 2,
@@ -58,11 +62,6 @@ typedef enum {
 #define BUTTON_TITLE_FINISH_COMPLAIN @"Komplain Selesai"
 #define BUTTON_TITLE_TRACK @"Lacak"
 #define BUTTON_TITLE_CANCEL_COMPLAIN @"Batalkan Komplain"
-
-#define CELL_SYSTEM_HEIGHT 158
-#define CELL_DETAIL_HEIGHT 140
-#define VIEW_ATTACHMENT_HEIGHT 104
-#define VIEW_MARK_HEIGHT 78
 
 @interface ResolutionCenterDetailViewController ()
 <
@@ -239,65 +238,8 @@ typedef enum {
         [_dataInput setObject:selectedShipment forKey:DATA_SELECTED_SHIPMENT_KEY];
     }
     
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-    {
-        ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-        NSInteger rowHeight;
-        NSInteger deltaHeightCell = 10;
-        
-        if (conversation.view_more == 1)
-        {
-            rowHeight = _loadMoreCell.frame.size.height;
-        }
-        else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
-        {
-            NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
-            
-            ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
-            
-            cellRowHeight = [self calculateHeightForConfiguredSizingCell:cell];
-
-            rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
-            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
-                rowHeight = cellRowHeight + deltaHeightCell;
-            }
-        }
-        else
-        {
-            ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
-            NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
-            
-            cellRowHeight = [self calculateHeightForConfiguredSizingCell:cell];
-            
-            rowHeight = cellRowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
-            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
-                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-            }
-            if ([self isShowAttachment:conversation]) {
-                rowHeight = cellRowHeight + deltaHeightCell;
-            }
-            if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-            }
-        }
-        
-        return rowHeight;
-    }
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
-    [sizingCell layoutIfNeeded];
-    
-    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    return size.height;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -334,18 +276,30 @@ typedef enum {
             break;
         case TAG_CHANGE_SOLUTION:
         {
-            if (buttonIndex == 1) {
-                [self resolutionOpenIsGotTheOrder:YES];
-            }
-            else
-            {
-                [self resolutionOpenIsGotTheOrder:NO];
-            }
+            [self doChangeSolutionWithIsGetProduct:(buttonIndex == 1)];
             break;
         }
             
         default:
             break;
+    }
+}
+
+-(void)doChangeSolutionWithIsGetProduct:(BOOL)isGetProduct {
+    if (_resolutionDetail.resolution_by.by_seller == 1) {
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGetProduct;
+        controller.type = 1;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+            
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else if (_resolutionDetail.resolution_by.by_customer == 1) {
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        vc.product_is_received = isGetProduct;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -447,45 +401,17 @@ typedef enum {
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
         BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
-        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
-    }
-}
+        
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.type = 1;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
 
--(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
-{
-    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.resolutionID = _resolutionID;
-    vc.isGotTheOrder = isGotTheOrder;
-    vc.isChangeSolution = YES;
-    vc.detailOpenAmount = _resolutionDetail.resolution_order.order_open_amount;
-    vc.detailOpenAmountIDR = _resolutionDetail.resolution_order.order_open_amount_idr;
-    vc.shippingPriceIDR = _resolutionDetail.resolution_order.order_shipping_price_idr;
-    vc.selectedProblem = [self trouble];
-    vc.invoice = _resolutionDetail.resolution_order.order_invoice_ref_num;
-    vc.delegate = self;
-    vc.isCanEditProblem = NO;
-    vc.controllerTitle = BUTTON_TITLE_APPEAL;
-    NSString *totalRefund = [_resolutionDetail.resolution_last.last_refund_amt stringValue];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setGroupingSeparator:@"."];
-    [formatter setGroupingSize:3];
-    NSString *num = totalRefund;
-    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-    totalRefund = str;
-    vc.totalRefund = totalRefund;
-    
-    if (_resolutionDetail.resolution_by.by_customer == 1) {
-        vc.shopName = _resolutionDetail.resolution_shop.shop_name;
-        vc.shopPic = _resolutionDetail.resolution_shop.shop_image;
-        vc.buyerSellerLabel.text = @"Pembelian dari";
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
     }
-    if (_resolutionDetail.resolution_by.by_seller == 1) {
-        vc.shopName = _resolutionDetail.resolution_customer.customer_name;
-        vc.shopPic = _resolutionDetail.resolution_customer.customer_image;
-        vc.buyerSellerLabel.text = @"Pembelian oleh";
-        vc.isActionBySeller = YES;
-    }
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath
@@ -980,9 +906,19 @@ typedef enum {
         [marks addObject:[self problemAndSolutionConversation:conversation]];
     }
     
-    [marks addObject:conversation.remark_str?:@""];
+    [marks addObject:[NSString stringWithFormat:@"%@",conversation.remark_str?:@""]];
+     
+    for (ProductTrouble *product in conversation.product_trouble) {
+        [marks addObject:product.pt_product_name];
+        if ([product.pt_free_return integerValue] == 1){
+            [marks addObject:@"(Free Return)"];
+        }
+        [marks addObject:[NSString stringWithFormat:@"%@ %@",product.pt_quantity, product.pt_trouble_name]];
+        [marks addObject:product.pt_solution_remark];
+        [marks addObject:@"\n"];
+    }
     
-    if (conversation.input_resi) {
+    if ([conversation.input_resi integerValue] != 0) {
         [marks addObject:[NSString stringWithFormat:@"Nomor Resi : %@ (%@)",conversation.input_resi,conversation.kurir_name]];
     }
     
@@ -1010,7 +946,7 @@ typedef enum {
     NSString *troubleString = conversation.trouble_string?:@"";
 
     NSString *returnString;
-    if ([troubleString isEqualToString:@""])
+    if ([conversation.trouble_type integerValue] == 0)
         returnString = [NSString stringWithFormat:@"Solusi terakhir yang ditawarkan :\n%@",solutionString];
     else
         returnString = [NSString stringWithFormat:@"%@\nSolusi : %@",troubleString,solutionString];
@@ -1187,27 +1123,6 @@ typedef enum {
     return nil;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
-            [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
-            return [self findHeightForText:_infoLabel.text havingWidth:_infoLabel.frame.size.width andFont:FONT_GOTHAM_BOOK_18].height;
-        }
-        return 0;
-    }
-    return 0;
-}
-
-- (CGSize)findHeightForText:(NSString *)text havingWidth:(CGFloat)widthValue andFont:(UIFont *)font {
-    CGSize size = CGSizeZero;
-    if (text) {
-        //iOS 7
-        CGRect frame = [text boundingRectWithSize:CGSizeMake(widthValue, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:font } context:nil];
-        size = CGSizeMake(frame.size.width, frame.size.height + 1);
-    }
-    return size;
-}
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {

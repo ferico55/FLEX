@@ -11,6 +11,7 @@
 #import "ResolutionProductList.h"
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionCenterCreatePOSTRequest.h"
+@class EditResolutionForm;
 
 @interface ResolutionCenterCreateResult : NSObject
 
@@ -18,6 +19,7 @@
 
 @property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
 @property (strong, nonatomic) ResolutionCenterCreateData* formData;
+@property (strong, nonatomic) EditResolutionForm *formEdit;
 @property (strong, nonatomic) NSString* remark;
 @property (strong, nonatomic) NSString* troubleId;
 

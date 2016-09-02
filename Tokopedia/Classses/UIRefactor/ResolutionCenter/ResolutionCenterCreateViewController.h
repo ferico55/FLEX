@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
 
+
+typedef enum {
+    TypeResoCreate,
+    TypeResoEdit
+} TypeReso;
+
+
 @protocol ResolutionCenterCreateDelegate <NSObject>
 - (void) didFinishCreateComplain;
 @end
@@ -18,4 +25,7 @@
 @property BOOL product_is_received;
 
 @property (weak, nonatomic) id<ResolutionCenterCreateDelegate> delegate;
+@property TypeReso *type;
+@property NSString *resolutionID;
+
 @end

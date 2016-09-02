@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *pic_obj;
 @property (nonatomic, strong) NSString *file_uploaded;
 @property (nonatomic, strong) NSString *file_path;
+@property (nonatomic, strong) NSString *file_th;
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *src;
 @property (nonatomic, strong) NSString *pic_id;

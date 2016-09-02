@@ -8,6 +8,7 @@
 
 #import "RequestResolutionData.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestResolutionData
 
@@ -30,7 +31,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/inbox-resolution-center/get_resolution_center.pl"
+                                  path:@"/v4/inbox-resolution-center/get_resolution_center_new.pl"
                                 method:RKRequestMethodGET
                              parameter:param
                                mapping:[InboxResolutionCenter mapping]
@@ -61,7 +62,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/inbox-resolution-center/get_resolution_center_detail.pl"
+                                  path:@"/v4/inbox-resolution-center/get_resolution_center_detail_new.pl"
                                 method:RKRequestMethodGET
                              parameter:param
                                mapping:[ResolutionCenterDetail mapping]
@@ -154,7 +155,7 @@
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
                                 method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
+                             parameter:@{@"order_id":orderId?:@"",
                                          @"user_id":[userAuth getUserId]
                                          }
                                mapping:[ResolutionCenterCreateResponse mapping]
@@ -175,7 +176,7 @@
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_product_list.pl"
                                 method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
+                             parameter:@{@"order_id":orderId?:@"",
                                          @"user_id":[userAuth getUserId]
                                          }
                                mapping:[ResolutionProductResponse mapping]
@@ -226,6 +227,74 @@
                                      failure(errorResult);
                                  }];
     }
+}
+
++(void)fetchformEditResolutionID:(NSString *)resolutionID
+                    isGetProduct:(BOOL)isGetProduct
+                       onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
+                       onFailure:(void(^)(NSError* error))onFailure {
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSDictionary* param = @{ @"user_id"       : [auth getUserId]?:@"",
+                             @"resolution_id" : resolutionID?:@"",
+                             @"n"             : isGetProduct?@"0":@"1"
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-resolution-center/get_edit_resolution_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[EditResolution mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 EditResolution *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.message_error.count > 0) {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
+                                     onFailure(nil);
+                                 } else {
+                                     onSuccess(response.data);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure(errorResult);
+                             }];
+}
+
++(void)fetchformAppealResolutionID:(NSString *)resolutionID
+                       onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
+                       onFailure:(void(^)(NSError* error))onFailure {
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSDictionary* param = @{ @"user_id"       : [auth getUserId]?:@"",
+                             @"resolution_id" : resolutionID?:@"",
+                             };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-resolution-center/get_appeal_resolution_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[EditResolution mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 EditResolution *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.message_error.count > 0) {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
+                                     onFailure(nil);
+                                 } else {
+                                     onSuccess(response.data);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure(errorResult);
+                             }];
 }
 
 @end

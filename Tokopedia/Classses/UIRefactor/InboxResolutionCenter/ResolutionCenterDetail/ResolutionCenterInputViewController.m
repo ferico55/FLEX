@@ -22,10 +22,12 @@
 #import "RequestUploadImage.h"
 #import "RequestResolutionData.h"
 #import "Tokopedia-Swift.h"
+#import "ResolutionCenterCreateViewController.h"
 
 #import "GeneralTableViewController.h"
 
 #import "StickyAlertView.h"
+#import "Tokopedia-Swift.h"
 
 #define TAG_ALERT_HELPER 10
 #define TAG_CHANGE_SOLUTION 11
@@ -292,12 +294,12 @@
     BOOL isGotTheOrder = [_resolution.resolution_last.last_flag_received boolValue];
 
     if (isSeller) {
-        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+        [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
     }
     else
     {
         if (isGotTheOrder) {
-            [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+            [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
         }
         else
         {
@@ -308,51 +310,26 @@
     }
 }
 
--(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
+-(void)doChangeSolutionIsGotTheOrder:(BOOL)isGotTheOrder isSeller:(BOOL)isSeller
 {
-    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.isGotTheOrder = isGotTheOrder;
-    vc.isChangeSolution = YES;
-    vc.detailOpenAmount = _resolution.resolution_order.order_open_amount;
-    vc.detailOpenAmountIDR = _resolution.resolution_order.order_open_amount_idr;
-    vc.shippingPriceIDR = _resolution.resolution_order.order_shipping_price_idr;
-    vc.selectedProblem = _resolution.resolution_last.last_trouble_string;
-    vc.selectedSolution = _resolution.resolution_last.last_solution_string;
-    vc.invoice = _resolution.resolution_order.order_invoice_ref_num;
-    vc.note = _messageTextView.text;
-    vc.images = _selectedImages;
-    vc.resolutionID = _resolutionID;
-    NSArray *viewControllers = self.navigationController.viewControllers;
-    UIViewController *destinationVC = viewControllers[viewControllers.count-2];
-    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
-        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
+    if (isSeller) {
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            }
+            [self.navigationController popToViewController:_delegate animated:YES];
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else {
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        vc.product_is_received = isGotTheOrder;
+        vc.resolutionID = _resolutionID?:@"";
+        vc.type = TypeResoEdit;
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    vc.syncroDelegate = self;
-    vc.controllerTitle = @"Ubah Solusi";
-    NSString *totalRefund = [_resolution.resolution_last.last_refund_amt stringValue];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setGroupingSeparator:@"."];
-    [formatter setGroupingSize:3];
-    NSString *num = totalRefund;
-    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-    totalRefund = str;
-    vc.totalRefund = totalRefund;
-    
-    if (_resolution.resolution_by.by_customer == 1) {
-        vc.shopName = _resolution.resolution_shop.shop_name;
-        vc.shopPic = _resolution.resolution_shop.shop_image;
-        vc.buyerSellerLabel.text = @"Pembelian dari";
-        vc.isCanEditProblem = YES;
-    }
-    if (_resolution.resolution_by.by_seller == 1) {
-        vc.shopName = _resolution.resolution_customer.customer_name;
-        vc.shopPic = _resolution.resolution_customer.customer_image;
-        vc.buyerSellerLabel.text = @"Pembelian oleh";
-        vc.isActionBySeller = YES;
-        vc.isCanEditProblem = NO;
-    }
-    
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount
@@ -428,13 +405,8 @@
     }
     if (alertView.tag == TAG_CHANGE_SOLUTION)
     {
-        if (buttonIndex == 1) {
-            [self resolutionOpenIsGotTheOrder:YES];
-        }
-        else if (buttonIndex == 2)
-        {
-            [self resolutionOpenIsGotTheOrder:NO];
-        }
+        BOOL isSeller = (_resolution.resolution_by.by_seller == 1);
+        [self doChangeSolutionIsGotTheOrder:(buttonIndex == 1) isSeller:isSeller];
     }
 }
 
@@ -492,24 +464,29 @@
 #pragma mark - Request Reply
 -(void)doRequestReplyResolutionButton:(UIBarButtonItem*)sendButton{
     sendButton.enabled = NO;
-    [RequestResolutionAction fetchReplyResolutionID:_resolutionID?:@""
-                                       flagReceived:[_resolution.resolution_last.last_flag_received stringValue]
-                                        troubleType:[_resolution.resolution_last.last_solution stringValue]?:@""
-                                           solution:[_resolution.resolution_last.last_trouble_type stringValue]?:@""
-                                       refundAmount:[_resolution.resolution_last.last_refund_amt stringValue]?:@""
-                                            message:_messageTextView.text?:@""
-                                     isEditSolution:@"0"
-                                       imageObjects:_selectedImages
-                                            success:^(ResolutionActionResult *data) {
-                                                sendButton.enabled = YES;
-                                                if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
-                                                }
-                                                [self.navigationController popViewControllerAnimated:YES];
-                                                
-                                            } failure:^(NSError *error) {
-                                                sendButton.enabled = YES;
-                                            }];
+    
+    ReplayConversationPostData *postData = [ReplayConversationPostData new];
+    postData.resolutionID = _resolutionID;
+    postData.flagReceived = [_resolution.resolution_last.last_flag_received stringValue];
+    postData.solution = _resolution.resolution_last.last_trouble_type?:@"";
+    postData.refundAmount = [_resolution.resolution_last.last_refund_amt stringValue]?:@"";
+    postData.editSolution = @"0";
+    postData.selectedAssets = _selectedImages;
+    postData.replyMessage = _messageTextView.text;
+    
+    [RequestResolution fetchReplayConversation:postData onSuccess:^(ResolutionActionResult * data) {
+        
+        sendButton.enabled = YES;
+        if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+
+    } onFailure:^{
+        
+        sendButton.enabled = YES;
+        
+    }];
 }
 
 #pragma mark - Request Report

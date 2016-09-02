@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ProductTrouble;
 
 @interface ResolutionLast : NSObject <TKPObjectMapping>
 
@@ -24,13 +25,15 @@
 @property (nonatomic, strong) NSString *last_user_url;
 @property (nonatomic, strong) NSString *last_create_time_str;
 @property (nonatomic, strong) NSString *last_create_time_wib;
-@property (nonatomic, strong) NSNumber *last_trouble_type;
+@property (nonatomic, strong) NSString *last_trouble_type;
 @property (nonatomic, strong) NSNumber *last_show_accept_admin_button;
 @property (nonatomic, strong) NSNumber *last_show_accept_button;
 @property (nonatomic, strong) NSString *last_create_time;
 @property (nonatomic, strong) NSNumber *last_flag_received;
 @property (nonatomic, strong) NSString *last_trouble_string;
 @property (nonatomic, strong) NSString *last_solution_string;
+@property (nonatomic, strong) NSArray<ProductTrouble*> *last_product_trouble;
+@property (nonatomic, strong) NSString *last_category_trouble_type;
 
 
 @end

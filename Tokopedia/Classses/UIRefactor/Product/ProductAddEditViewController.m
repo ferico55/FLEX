@@ -623,7 +623,7 @@ FilterCategoryViewDelegate
 
     _productPriceTextField.text = price;
     _productWeightTextField.text = product.product_weight?:@"";
-    _form.product.product_returnable = _form.info.product_returnable;
+    _form.product.product_returnable = ([_form.info.product_returnable integerValue]==3)?@"0":_form.info.product_returnable;
 }
 
 -(void)setProductForm:(ProductEditResult*)form{

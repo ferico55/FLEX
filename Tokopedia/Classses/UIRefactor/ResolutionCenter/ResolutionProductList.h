@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ProductTrouble;
 
 @interface ResolutionProductList : NSObject
 @property (strong, nonatomic) NSString* primary_photo;
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) NSString* solution_remark;
 @property (strong, nonatomic) NSString* is_free_return;
 
+@property (strong, nonatomic) ProductTrouble *productTrouble;
 
 
 +(RKObjectMapping*)mapping;

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionCenterCreateResult.h"
+#import "ResolutionCenterCreateViewController.h"
+
 @protocol ResolutionCenterCreateStepThreeDelegate <NSObject>
 - (void) didFinishCreateComplainInStepThree;
 @end
@@ -16,5 +18,7 @@
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @property BOOL product_is_received;
 -(void)submitCreateResolution;
+-(void)submitEditResolution;
 @property (weak, nonatomic) id<ResolutionCenterCreateStepThreeDelegate> delegate;
+
 @end

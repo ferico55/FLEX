@@ -10,9 +10,11 @@
 #import "ResolutionAttachment.h"
 #import "AddressFormList.h"
 
+@class ProductTrouble;
+
 @interface ResolutionConversation : NSObject <TKPObjectMapping>
 
-@property (nonatomic) NSArray *attachment;
+@property (nonatomic) NSArray<ResolutionAttachment*> *attachment;
 @property (nonatomic, strong) NSString *remark;
 @property (nonatomic, strong) NSString *conversation_id;
 @property (nonatomic, strong) NSString *time_ago;
@@ -43,6 +45,7 @@
 @property (nonatomic) NSInteger view_more;
 
 @property (nonatomic, strong) AddressFormList *address;
+@property (nonatomic, strong) NSArray <ProductTrouble *> *product_trouble;
 
 @property (nonatomic) BOOL isAddedConversation;
 

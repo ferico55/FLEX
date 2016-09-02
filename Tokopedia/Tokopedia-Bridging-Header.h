@@ -89,4 +89,12 @@
 
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
+#import "ResolutionCenterCreateTroubleList.h"
+#import "ResolutionLast.h"
+#import "ResolutionOrder.h"
+#import "ResolutionBy.h"
+#import "RequestResolutionData.h"
+#import "RequestResolutionAction.h"
+#import "ResolutionCenterCreateSolutionList.h"
+#import "NSArrayCategory.h"
 

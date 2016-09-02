@@ -16,7 +16,7 @@
                                                                               withMapping:[ResolutionCenterCreateList mapping]]];
     [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"form"
                                                                                 toKeyPath:@"form"
-                                                                              withMapping:[ResolutionCenterCreateForm mapping]]];
+                                                                              withMapping:[ResolutionOrder mapping]]];
     return dataMapping;
 }
 @end
