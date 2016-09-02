@@ -21,11 +21,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nxA-1c-vxF">
-                        <rect key="frame" x="291" y="10" width="14" height="14"/>
+                        <rect key="frame" x="285" y="4.5" width="25" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="14" id="UUQ-9f-XJD"/>
-                            <constraint firstAttribute="height" constant="14" id="pg0-RR-c3P"/>
+                            <constraint firstAttribute="width" constant="25" id="UUQ-9f-XJD"/>
+                            <constraint firstAttribute="height" constant="25" id="pg0-RR-c3P"/>
                         </constraints>
+                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                        <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                         <state key="normal" title="Button" image="icon_delete_search_history"/>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search_keyword" translatesAutoresizingMaskIntoConstraints="NO" id="Zx4-2G-i0W">
@@ -51,7 +53,7 @@
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="top" secondItem="CIZ-I1-FCl" secondAttribute="top" constant="6" id="F69-NL-GfH"/>
                 <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="Lq2-he-aFB"/>
                 <constraint firstAttribute="bottom" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="7" id="NC7-tT-iBu"/>
-                <constraint firstAttribute="trailing" secondItem="nxA-1c-vxF" secondAttribute="trailing" constant="15" id="Pzs-AD-fQI"/>
+                <constraint firstAttribute="trailing" secondItem="nxA-1c-vxF" secondAttribute="trailing" constant="10" id="Pzs-AD-fQI"/>
                 <constraint firstItem="nxA-1c-vxF" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="QbN-ve-JNE"/>
                 <constraint firstItem="Zx4-2G-i0W" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="TQ0-WE-lZA"/>
                 <constraint firstItem="Zx4-2G-i0W" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="ZxC-tR-T5U"/>

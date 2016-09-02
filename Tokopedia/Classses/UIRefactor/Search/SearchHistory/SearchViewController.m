@@ -115,7 +115,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    _uniqueId = [self getUniqueId];
     _authManager = [UserAuthentificationManager new];
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
@@ -150,6 +149,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    _uniqueId = [self getUniqueId];
     _recentAndPopularSearchArrayCache = [NSMutableArray new];
     _searchSuggestionDataArray = [NSMutableArray new];
     _isFirstTimeHitAPI = YES;
@@ -209,13 +209,14 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     SearchAutoCompleteCell *searchAutoCompleteCell = (SearchAutoCompleteCell *)[_collectionView cellForItemAtIndexPath:buttonIndexPath];
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": _uniqueId, @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     NSMutableArray *searchSuggestionItems = [NSMutableArray  arrayWithArray:searchSuggestionData.items];
                     [searchSuggestionItems removeObjectAtIndex:buttonIndexPath.item];
                     searchSuggestionData.items = searchSuggestionItems ;
+                    [self cacheRecentAndPopularSearchArray];
                     break; 
                 }
             }
@@ -229,11 +230,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 -(void)clearAllHistory {
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": _uniqueId} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         dispatch_async(dispatch_get_main_queue(), ^{
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     [_searchSuggestionDataArray removeObject:searchSuggestionData];
+                    [self cacheRecentAndPopularSearchArray];
                     [_collectionView reloadData];
                     break;
                 }
@@ -260,8 +262,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - API
 
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
-        NSString *uniqeId = [self getUniqueId];
-        [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": uniqeId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": _uniqueId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             if (![_searchBar.text  isEqual: @""] || _isFirstTimeHitAPI) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *result = [successResult dictionary];
@@ -286,7 +287,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
             StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
             [alertView show];
         }];
-    
 }
 
 #pragma mark - Collection Delegate
@@ -479,62 +479,62 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - UISearchBar Delegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
-    if([searchText isEqualToString:@""]) {
-        _searchSuggestionDataArray = _recentAndPopularSearchArrayCache;
-        [_collectionView reloadData];
-    } else {
-        
-        [self getUserSearchSuggestionDataWithQuery:searchText];
-//        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-//        NSArray *historiesresult;
-//        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
-//        NSInteger limit = 5;
-//        
-//        if(historiesresult.count > limit) {
-//            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
-//            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
-//            [_typedHistoryResult addObjectsFromArray:lastThree];
-//        } else {
-//            [_typedHistoryResult addObjectsFromArray:historiesresult];
-//        }
-//        
-//        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
-//                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
-//                                     method:RKRequestMethodGET
-//                                  parameter:nil
-//                                    mapping:[self mapping]
-//                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-//                                      NSDictionary *result = successResult.dictionary;
-//                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
-//                                      
-//                                      [_domains removeAllObjects];
-//                                      [_general removeAllObjects];
-//                                      [_hotlist removeAllObjects];
-//                                      
-//                                      [_general addObjectsFromArray:search.domains.general];
-//                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
-//                                      
-//                                      if(_general.count > 0) {
-//                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
-//                                      }
-//                                      
-//                                      if(_hotlist.count > 0) {
-//                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
-//                                      }
-//                                      
-//                                      if(_typedHistoryResult.count > 0) {
-//                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
-//                                      }
-//                                      
-//                                      [_collectionView reloadData];
-//                                      [_collectionView setHidden:NO];
-//                                  } onFailure:^(NSError *errorResult) {
-//                                      
-//                                  }];
-//        
-        
-    }
-    
+        if([searchText isEqualToString:@""]) {
+            _searchSuggestionDataArray = _recentAndPopularSearchArrayCache;
+            [_collectionView reloadData];
+        } else {
+            Debouncer *debouncer = [[Debouncer alloc] initWithDelay:0.6 callback:^{
+            [self getUserSearchSuggestionDataWithQuery:searchText];
+            //        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+            //        NSArray *historiesresult;
+            //        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
+            //        NSInteger limit = 5;
+            //
+            //        if(historiesresult.count > limit) {
+            //            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
+            //            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
+            //            [_typedHistoryResult addObjectsFromArray:lastThree];
+            //        } else {
+            //            [_typedHistoryResult addObjectsFromArray:historiesresult];
+            //        }
+            //
+            //        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
+            //                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
+            //                                     method:RKRequestMethodGET
+            //                                  parameter:nil
+            //                                    mapping:[self mapping]
+            //                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            //                                      NSDictionary *result = successResult.dictionary;
+            //                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
+            //
+            //                                      [_domains removeAllObjects];
+            //                                      [_general removeAllObjects];
+            //                                      [_hotlist removeAllObjects];
+            //
+            //                                      [_general addObjectsFromArray:search.domains.general];
+            //                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
+            //
+            //                                      if(_general.count > 0) {
+            //                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
+            //                                      }
+            //
+            //                                      if(_hotlist.count > 0) {
+            //                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
+            //                                      }
+            //
+            //                                      if(_typedHistoryResult.count > 0) {
+            //                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
+            //                                      }
+            //                                      
+            //                                      [_collectionView reloadData];
+            //                                      [_collectionView setHidden:NO];
+            //                                  } onFailure:^(NSError *errorResult) {
+            //                                      
+            //                                  }];
+                //
+            }];
+            [debouncer call];
+        }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
