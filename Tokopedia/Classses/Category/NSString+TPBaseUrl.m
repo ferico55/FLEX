@@ -10,108 +10,160 @@
 
 @implementation NSString (TPBaseUrl)
 
+typedef NS_ENUM(NSUInteger, TPUrl) {
+    TPUrlProduction,
+    TPUrlStaging,
+    TPUrlAlpha,
+    TPUrlDevelopment
+};
+
+
++ (NSNumber*)urlIndex {
+    NSNumber *TPUrlIndex = FBTweakValue(@"Network", @"Environment", @"Base Url", @(TPUrlProduction),
+                                        (@{
+                                           @(TPUrlProduction) : @"Production",
+                                           @(TPUrlStaging) : @"Staging",
+                                           @(TPUrlAlpha) : @"Alpha",
+                                           @(TPUrlDevelopment) : @"Development",
+                                           }));
+    
+    return TPUrlIndex;
+}
+
+
 + (NSString*)basicUrl {
-    return FBTweakValue(@"Network", @"Environment", @"Tokopedia Base Url", @"http://www.tokopedia.com/ws",
-                        (@{
-                           @"http://staging.tokopedia.com/ws" : @"Staging",
-                           @"http://alpha.tokopedia.com/ws" : @"Alpha",
-                           @"http://www.tokopedia.com/ws" : @"Production",
-                           FBTweakValue(@"Network", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
-                           }
-                         ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"http://www.tokopedia.com/ws",
+                           @(TPUrlStaging) : @"http://staging.tokopedia.com/ws",
+                           @(TPUrlAlpha) : @"http://alpha.tokopedia.com/ws",
+                           @(TPUrlDevelopment) : @"http://www.ar-arief.ndvl/ws"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 
 + (NSString*)aceUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Ace Url", @"https://ace.tokopedia.com",
-                         (@{
-                            @"https://ace-staging.tokopedia.com" : @"Staging",
-                            @"https://ace-alpha.tokopedia.com" : @"Alpha",
-                            @"https://ace.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://ace.tokopedia.com",
+                           @(TPUrlStaging) : @"https://ace-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://ace-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://ace.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+    
     
 }
 
 + (NSString*)v4Url {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia v4 Url", @"https://ws.tokopedia.com",
-                         (@{
-                            @"https://ws-staging.tokopedia.com" : @"Staging",
-                            @"https://ws-alpha.tokopedia.com" : @"Alpha",
-                            @"https://ws.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://ws.tokopedia.com",
+                           @(TPUrlStaging) : @"https://ws-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://ws-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://ws.ar-arief.ndvl"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 + (NSString*)topAdsUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia TopAds Url", @"https://ta.tokopedia.com",
-                         (@{
-                            @"https://ta-staging.tokopedia.com" : @"Staging",
-                            @"https://ta-alpha.tokopedia.com" : @"Alpha",
-                            @"https://ta.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://ta.tokopedia.com",
+                           @(TPUrlStaging) : @"https://ta-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://ta-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://ta.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 
 + (NSString*)keroUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
-                         (@{
-                            @"https://kero-staging.tokopedia.com" : @"Staging",
-                            @"https://kero-alpha.tokopedia.com" : @"Alpha",
-                            @"https://kero.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://kero.tokopedia.com",
+                           @(TPUrlStaging) : @"https://kero-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://kero-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://kero.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 + (NSString*)accountsUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Accounts Url", @"https://accounts.tokopedia.com",
-                         (@{
-                            @"https://accounts-staging.tokopedia.com" : @"Staging",
-                            @"https://accounts-alpha.tokopedia.com" : @"Alpha",
-                            @"https://accounts.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://accounts.tokopedia.com",
+                           @(TPUrlStaging) : @"https://accounts-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://accounts-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://192.168.100.160:8009"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 + (NSString*)hadesUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Hades Url", @"https://hades.tokopedia.com",
-                         (@{
-                            @"https://hades-staging.tokopedia.com" : @"Staging",
-                            @"https://hades-alpha.tokopedia.com" : @"Alpha",
-                            @"https://hades.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://hades.tokopedia.com",
+                           @(TPUrlStaging) : @"https://hades-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://hades-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://hades.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 + (NSString*)mojitoUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Mojito Url", @"https://mojito.tokopedia.com",
-                         (@{
-                            @"https://mojito-staging.tokopedia.com" : @"Staging",
-                            @"https://mojito.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://mojito.tokopedia.com",
+                           @(TPUrlStaging) : @"https://mojito-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://mojito-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://mojito.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 
 + (NSString*)pulsaUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Pulsa Url", @"https://pulsa-api.tokopedia.com",
-                         (@{
-                            @"https://pulsa-api-staging.tokopedia.com" : @"Staging",
-                            @"https://pulsa-api-alpha.tokopedia.com" : @"Alpha",
-                            @"https://pulsa-api.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://pulsa-api.tokopedia.com",
+                           @(TPUrlStaging) : @"https://pulsa-api-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://pulsa-api-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://pulsa-api.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 + (NSString*)kunyitUrl {
-    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kunyit Url", @"https://inbox.tokopedia.com",
-                         (@{
-                            @"https://inbox-staging.tokopedia.com" : @"Staging",
-                            @"https://inbox-alpha.tokopedia.com" : @"Alpha",
-                            @"https://inbox.tokopedia.com" : @"Production",
-                            }
-                          ));
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://inbox.tokopedia.com",
+                           @(TPUrlStaging) : @"https://inbox-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://inbox-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://inbox.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
 }
 
 @end
