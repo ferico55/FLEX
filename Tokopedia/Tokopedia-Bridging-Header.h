@@ -25,6 +25,7 @@
 #import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"
 #import <JLPermissions/JLNotificationPermission.h>
+#import <JLPermissions/JLContactsPermission.h>
 
 #import "OpenShopDomainViewCell.h"
 #import "OpenShopImageViewCell.h"

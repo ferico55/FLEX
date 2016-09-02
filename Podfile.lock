@@ -70,6 +70,9 @@ PODS:
     - GoogleAnalytics (~> 3.13.0)
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
+  - JLPermissions/Contacts (2.2.8):
+    - DBPrivacyHelper (= 0.6.3)
+    - JLPermissions/Core
   - JLPermissions/Core (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
   - JLPermissions/Notification (2.2.8):
@@ -122,6 +125,7 @@ DEPENDENCIES:
   - GoogleAppIndexing
   - GoogleMaps
   - GoogleTagManager
+  - JLPermissions/Contacts
   - JLPermissions/Notification
   - LayoutKit
   - Localytics (~> 3.5.0)

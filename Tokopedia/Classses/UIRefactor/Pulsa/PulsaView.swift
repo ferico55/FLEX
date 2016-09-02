@@ -228,14 +228,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             }
             
             phoneBook.bk_whenTapped { [unowned self] in
-                self.addressBook.filterBlock = { contacts in
-                    return contacts.phones?.count > 0
-                }
-                self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
-                    if((error == nil)) {
-                        self.didTapAddressbook!(contacts!)
-                    }
-                })
+                self.activateContactPermission()
             }
         }
         
@@ -253,6 +246,48 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             make.right.equalTo()(self.mas_right)
         }
        
+    }
+    
+    func activateContactPermission() {
+        let permission = JLContactsPermission.sharedInstance()
+        let permissionStatus = permission.authorizationStatus()
+        
+        if(permissionStatus == JLAuthorizationStatus.PermissionNotDetermined) {
+            permission.extraAlertEnabled = false
+            permission.authorize({ (granted, error) in
+                if(granted) {
+                    self.showAddressBook()
+                } else {
+                    self.showContactAlertPermission()
+                }
+            })
+        } else if(permissionStatus == JLAuthorizationStatus.PermissionDenied) {
+            self.showContactAlertPermission()
+        } else {
+            self.showAddressBook()
+        }
+    }
+    
+    func showAddressBook() {
+        self.addressBook.filterBlock = { contacts in
+            return contacts.phones?.count > 0
+        }
+        self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
+            if((error == nil)) {
+                self.didTapAddressbook!(contacts!)
+            }
+        })
+    }
+    
+    func showContactAlertPermission() {
+        UIAlertView.bk_showAlertViewWithTitle("",
+                                              message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts",
+                                              cancelButtonTitle: "Batal",
+                                              otherButtonTitles: ["Aktifkan"], handler: { (alert, index) in
+                                                if(index == 1) {
+                                                    JLContactsPermission.sharedInstance().displayAppSystemSettings()
+                                                }
+        })
     }
     
     func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {
