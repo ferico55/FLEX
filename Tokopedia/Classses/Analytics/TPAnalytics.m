@@ -299,10 +299,10 @@
     NSDictionary *data = @{
         @"event" : @"transaction",
         @"transactionId" : purchaseID?:@"",
-        @"transactionTotal" : revenueString,
-        @"transactionShipping" : shippingString,
+        @"transactionTotal" : revenueString?:@"",
+        @"transactionShipping" : shippingString?:@"",
         @"transactionCurrency" : @"IDR",
-        @"transactionProducts" : purchasedItems
+        @"transactionProducts" : purchasedItems?:@""
     };
     [analytics.dataLayer push:data];
     NSDictionary *purchaseData = @{
@@ -311,12 +311,12 @@
         @"ecommerce": @{
             @"purchase": @{
                 @"actionField": @{
-                    @"id": purchaseID,
-                    @"revenue": revenueString,
-                    @"shipping": shippingString,
+                    @"id": purchaseID?:@"",
+                    @"revenue": revenueString?:@"",
+                    @"shipping": shippingString?:@"",
                     @"coupon": coupon?:@"",
                 },
-                @"products" : purchasedItems
+                @"products" : purchasedItems?:@""
             }
         }
     };
@@ -350,7 +350,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
             @"event" : @"onBoardingClick",
-            @"buttonName" : buttonName,
+            @"buttonName" : buttonName?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -359,7 +359,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event" : @"snapSearchCategory",
-        @"categoryName" : categoryName,
+        @"categoryName" : categoryName?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -368,7 +368,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event": @"snapSearchAddToCart",
-        @"productId": product.product_id,
+        @"productId": product.product_id?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -441,9 +441,9 @@
 + (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label {
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
-        @"event": event,
-        @"eventCategory": category,
-        @"eventLabel": label
+        @"event": event?:@"",
+        @"eventCategory": category?:@"",
+        @"eventLabel": label?:@""
     };
     [analytics.dataLayer push:data];
 }
@@ -454,8 +454,8 @@
     NSDictionary *data = @{
                            @"event" : @"clickSearch",
                            @"eventCategory" : @"Search",
-                           @"eventAction" : action,
-                           @"eventLabel" : keyword
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : keyword?:@""
                            };
     
     [analytics.dataLayer push:data];
@@ -468,7 +468,7 @@
                            @"event" : @"clickRegister",
                            @"eventCategory" : @"Register",
                            @"eventAction" : @"Click",
-                           @"eventLabel" : page
+                           @"eventLabel" : page?:@""
                            };
     
     [analytics.dataLayer push:data];
@@ -481,7 +481,7 @@
                            @"event" : @"registerSuccess",
                            @"eventCategory" : @"Register",
                            @"eventAction" : @"Register Success",
-                           @"eventLabel" : channel
+                           @"eventLabel" : channel?:@""
                            };
     
     [analytics.dataLayer push:data];
@@ -494,7 +494,7 @@
                            @"event" : @"registerError",
                            @"eventCategory" : @"Register",
                            @"eventAction" : @"Register Error",
-                           @"eventLabel" : name
+                           @"eventLabel" : name?:@""
                            };
     
     [analytics.dataLayer push:data];
