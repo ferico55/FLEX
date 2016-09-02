@@ -32,6 +32,7 @@
 #import "AuthenticationService.h"
 #import "Tokopedia-Swift.h"
 #import "TTTAttributedLabel.h"
+#import "MMNumberKeyboard.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -44,7 +45,8 @@ UIAlertViewDelegate,
 TKPDAlertViewDelegate,
 FBSDKLoginButtonDelegate,
 GIDSignInUIDelegate,
-TTTAttributedLabelDelegate
+TTTAttributedLabelDelegate,
+MMNumberKeyboardDelegate
 >
 {
     UITextField *_activetextfield;
@@ -115,6 +117,11 @@ TTTAttributedLabelDelegate
     [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
     
 //    _agreementLabel.userInteractionEnabled = YES;
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = false;
+    keyboard.delegate = self;
+    _textfieldphonenumber.inputView = keyboard;
     
     [_container addSubview:_contentView];
     
@@ -555,10 +562,6 @@ TTTAttributedLabelDelegate
         [_textfieldphonenumber becomeFirstResponder];
         _activetextfield = _textfieldphonenumber;
     }
-    else if (textField == _textfieldphonenumber){
-        [_textfieldemail becomeFirstResponder];
-        _activetextfield = _textfieldemail;
-    }
     else if (textField ==_textfieldemail){
         [_textfieldemail resignFirstResponder];
     }
@@ -580,15 +583,27 @@ TTTAttributedLabelDelegate
     if (textField == _textfieldemail) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIEMAILKEY];
     }
-    if (textField == _textfieldphonenumber) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIPHONEKEY];
-    }
     if (textField == _textfieldpassword) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIPASSKEY];
     }
     if (textField == _textfieldconfirmpass) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APICONFIRMPASSKEY];
     }
+    return YES;
+}
+
+#pragma mark - MMNumberKeyboard Delegate
+- (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard {
+    [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
+    [_textfieldemail becomeFirstResponder];
+    _activetextfield = _textfieldemail;
+    return YES;
+}
+
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSString *string = _textfieldphonenumber.text;
+    string = [string stringByAppendingString:text];
+    [_datainput setObject:string forKey:kTKPDREGISTER_APIPHONEKEY];
     return YES;
 }
 

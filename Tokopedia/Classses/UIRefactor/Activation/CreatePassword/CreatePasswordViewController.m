@@ -21,13 +21,15 @@
 #import "ActivationRequest.h"
 #import "Tokopedia-Swift.h"
 #import "TTTAttributedLabel.h"
+#import "MMNumberKeyboard.h"
 
 @interface CreatePasswordViewController ()
 <
     UIScrollViewDelegate,
     FBSDKLoginButtonDelegate,
     UITextFieldDelegate,
-    TKPDAlertViewDelegate
+    TKPDAlertViewDelegate,
+    MMNumberKeyboardDelegate
 >
 {
     ActivationRequest *_activationRequest;
@@ -72,6 +74,11 @@
                                                                   target:nil
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = false;
+    keyboard.delegate = self;
+    _phoneNumberTextField.inputView = keyboard;
     
     _fullNameTextField.isTopRoundCorner = YES;
     _phoneNumberTextField.isBottomRoundCorner = YES;

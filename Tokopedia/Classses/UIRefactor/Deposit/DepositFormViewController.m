@@ -169,12 +169,10 @@
     _otpKeyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
     _otpKeyboard.allowsDecimalPoint = false;
     _otpKeyboard.delegate = self;
-    _otpKeyboard.returnKeyTitle = @"Simpan";
     
     _amountKeyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
     _amountKeyboard.allowsDecimalPoint = false;
     _amountKeyboard.delegate = self;
-    _amountKeyboard.returnKeyTitle = @"Simpan";
     
     _totalAmount.inputView = _amountKeyboard;
     _kodeOTP.inputView = _otpKeyboard;
