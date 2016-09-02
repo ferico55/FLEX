@@ -79,6 +79,11 @@
     [self fetchShopAddress];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Address Setting Page"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

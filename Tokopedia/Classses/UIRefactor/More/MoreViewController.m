@@ -626,6 +626,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;
         webViewController.strTitle = @"TopPoints";
+        [TPAnalytics trackScreenName:@"Top Points Page"];
         [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
     

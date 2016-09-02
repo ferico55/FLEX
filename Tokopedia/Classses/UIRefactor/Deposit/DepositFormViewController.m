@@ -178,6 +178,11 @@
     _kodeOTP.inputView = _otpKeyboard;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Deposit Form Page"];
+}
+
 #pragma mark - Request Deposit Info
 - (void)getWithdrawForm {
     [_depositRequest requestGetWithdrawFormOnSuccess:^(DepositFormResult *result) {

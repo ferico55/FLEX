@@ -229,6 +229,7 @@
     [super viewWillAppear:animated];
     self.title = @"Pusat Resolusi";
     _networkManager.delegate = self;
+    [TPAnalytics trackScreenName:@"Inbox Resolution Detail Page"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
