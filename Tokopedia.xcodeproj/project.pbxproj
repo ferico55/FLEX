@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		3414927A1D77E65000591AA4 /* FreeReturnsConfirmationAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 341492791D77E65000591AA4 /* FreeReturnsConfirmationAlertView.xib */; };
+		3414927C1D7804A800591AA4 /* FreeReturnsConfirmationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3414927B1D7804A800591AA4 /* FreeReturnsConfirmationAlertView.swift */; };
 		45A3B6111D630C050048871E /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A65C1D630BFF0048871E /* TPAnalytics.m */; };
 		45A3B6121D630C050048871E /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A65E1D630BFF0048871E /* TPLocalytics.m */; };
 		45A3B6131D630C050048871E /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A6611D630BFF0048871E /* URLCacheAlert.m */; };
@@ -2640,6 +2642,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		341492791D77E65000591AA4 /* FreeReturnsConfirmationAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FreeReturnsConfirmationAlertView.xib; sourceTree = "<group>"; };
+		3414927B1D7804A800591AA4 /* FreeReturnsConfirmationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeReturnsConfirmationAlertView.swift; sourceTree = "<group>"; };
 		45A3A65B1D630BFF0048871E /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45A3A65C1D630BFF0048871E /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45A3A65D1D630BFF0048871E /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -9193,6 +9197,8 @@
 				45A3AC781D630C000048871E /* StickyAlertView.h */,
 				45A3AC791D630C000048871E /* StickyAlertView.m */,
 				45A3AC7A1D630C000048871E /* StickyAlertView.xib */,
+				341492791D77E65000591AA4 /* FreeReturnsConfirmationAlertView.xib */,
+				3414927B1D7804A800591AA4 /* FreeReturnsConfirmationAlertView.swift */,
 				45A3AC7B1D630C000048871E /* string_alert.h */,
 				45A3AC7C1D630C000048871E /* TKPDAlert.h */,
 				45A3AC7D1D630C000048871E /* TKPDAlert.m */,
@@ -14094,6 +14100,7 @@
 				45A3BD601D630C050048871E /* icon_15@3x.png in Resources */,
 				45A3BBAE1D630C050048871E /* BerhasilBukaTokoViewController.xib in Resources */,
 				45A3BB571D630C050048871E /* FilterSalesTransactionListViewController.xib in Resources */,
+				3414927A1D77E65000591AA4 /* FreeReturnsConfirmationAlertView.xib in Resources */,
 				45A3BF201D630C050048871E /* icon_view.png in Resources */,
 				45A3BA0D1D630C050048871E /* HotlistViewController.xib in Resources */,
 				45A3BD981D630C050048871E /* icon_closed@1x.png in Resources */,
@@ -14612,6 +14619,7 @@
 				45A3BAB01D630C050048871E /* ProductReviewViewController.m in Sources */,
 				45A3B9901D630C050048871E /* ContactUsFormPresenter.m in Sources */,
 				45A3B73E1D630C050048871E /* ProductEditResult.swift in Sources */,
+				3414927C1D7804A800591AA4 /* FreeReturnsConfirmationAlertView.swift in Sources */,
 				45A3B8C21D630C050048871E /* TakeUntil.swift in Sources */,
 				45A3B8EF1D630C050048871E /* RecursiveScheduler.swift in Sources */,
 				45A3BBBE1D630C050048871E /* ClosedScheduleDetail.m in Sources */,
