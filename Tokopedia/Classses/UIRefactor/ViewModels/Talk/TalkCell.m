@@ -200,6 +200,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (IBAction)tapToMoreMenu:(id)sender {
     NSMutableArray *titles = [[NSMutableArray alloc] init];
+    
+    UserAuthentificationManager *manager = [UserAuthentificationManager new];
+    _myShopID = manager.getShopId;
+    _myUserID = manager.getUserId;
+    
     if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
         [titles addObject:@"Hapus"];
     } else {
