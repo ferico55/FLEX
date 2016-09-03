@@ -45,29 +45,22 @@ NotificationDelegate,
 NotificationManagerDelegate
 >
 {
-    
     NotificationManager *_notifManager;
-    
-    NSMutableArray *_searchSuggestionDataArray;
-    NSMutableArray *_recentAndPopularSearchArrayCache;
-    BOOL _isFirstTimeHitAPI;
-    NSString *_uniqueId;
-    
     UITapGestureRecognizer *imageSearchGestureRecognizer;
-    
-    TokopediaNetworkManager* _requestManager;
+    Debouncer *debouncer;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) NotificationViewController *notificationController;
 @property (strong, nonatomic) IBOutlet UIView *iconCamera;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchBarTrailingConstraint;
 @property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
 @property (strong, nonatomic) UserAuthentificationManager *authManager;
-
+@property (strong, nonatomic) TokopediaNetworkManager* requestManager;
+@property (weak, nonatomic) NSString *uniqueId;
+@property (strong, nonatomic) NSMutableArray *searchSuggestionDataArray;
 
 @end
 
@@ -118,6 +111,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
     _authManager = [UserAuthentificationManager new];
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
+    
+
 }
 
 -(BOOL)isEnableImageSearch{
@@ -150,10 +145,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _uniqueId = [self getUniqueId];
-    _recentAndPopularSearchArrayCache = [NSMutableArray new];
+    debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
+    }];
     _searchSuggestionDataArray = [NSMutableArray new];
-    _isFirstTimeHitAPI = YES;
-    
+
     [self getUserSearchSuggestionDataWithQuery:@""];
     
     [self initNotificationManager];
@@ -215,8 +210,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     NSMutableArray *searchSuggestionItems = [NSMutableArray  arrayWithArray:searchSuggestionData.items];
                     [searchSuggestionItems removeObjectAtIndex:buttonIndexPath.item];
-                    searchSuggestionData.items = searchSuggestionItems ;
-                    [self cacheRecentAndPopularSearchArray];
+                    searchSuggestionData.items = searchSuggestionItems;
+                    if ([searchSuggestionItems count] == 0) {
+                        [_searchSuggestionDataArray removeObject:searchSuggestionData];
+                    }
                     break; 
                 }
             }
@@ -235,7 +232,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
                     [_searchSuggestionDataArray removeObject:searchSuggestionData];
-                    [self cacheRecentAndPopularSearchArray];
                     [_collectionView reloadData];
                     break;
                 }
@@ -262,31 +258,31 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - API
 
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
-        [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": _uniqueId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-            if (![_searchBar.text  isEqual: @""] || _isFirstTimeHitAPI) {
+     __weak typeof(self) weakSelf = self;
+    [debouncer setCallback:^{
+        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": weakSelf.uniqueId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *result = [successResult dictionary];
+                    [weakSelf.searchSuggestionDataArray removeAllObjects];
                     _searchSuggestionDataArray = [[NSMutableArray alloc] init];
                     GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
                     
                     NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
                     for (SearchSuggestionData* data in searchSuggestionDatas) {
                         if (data.items.count > 0) {
-                            [_searchSuggestionDataArray addObject:data];
+                            [weakSelf.searchSuggestionDataArray addObject:data];
                         }
                     }
-                    
-                    if ([query  isEqual: @""] && _isFirstTimeHitAPI) {
-                        [self cacheRecentAndPopularSearchArray];
-                    }
-                    
-                    [_collectionView reloadData];
+                    [weakSelf.collectionView reloadData];
                 });
-            }
         } onFailure:^(NSError *errorResult) {
-            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:weakSelf];
             [alertView show];
         }];
+    }];
+    
+    [debouncer call];
+    
 }
 
 #pragma mark - Collection Delegate
@@ -312,8 +308,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
         if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
             [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
+            header.separatorView.hidden = YES;
         } else {
             [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+            header.separatorView.hidden = NO;
         }
         
         
@@ -478,13 +476,15 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 #pragma mark - UISearchBar Delegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    
-        if([searchText isEqualToString:@""]) {
-            _searchSuggestionDataArray = _recentAndPopularSearchArrayCache;
-            [_collectionView reloadData];
-        } else {
-            Debouncer *debouncer = [[Debouncer alloc] initWithDelay:0.6 callback:^{
+        _requestManager = [TokopediaNetworkManager new];
+        _requestManager.isUsingHmac = YES;
+//        if([searchText isEqualToString:@""]) {
+//            _searchSuggestionDataArray = _recentAndPopularSearchArrayCache;
+//            [_collectionView reloadData];
+//        } else {
             [self getUserSearchSuggestionDataWithQuery:searchText];
+            
+            
             //        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
             //        NSArray *historiesresult;
             //        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
@@ -532,9 +532,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
             //                                      
             //                                  }];
                 //
-            }];
-            [debouncer call];
-        }
+
+//        }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -728,11 +727,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     viewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void) cacheRecentAndPopularSearchArray {
-    _recentAndPopularSearchArrayCache = _searchSuggestionDataArray;
-    _isFirstTimeHitAPI = NO;
 }
 
 - (void)orientationChanged:(NSNotification*)note {
