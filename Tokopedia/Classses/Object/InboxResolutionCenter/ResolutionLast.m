@@ -20,7 +20,11 @@
 }
 
 -(NSString *)last_solution_string{
-    return _last_solution_string?:@"Pilih";
+    return _last_solution_string?:@"";
+}
+
+-(NSString *)last_trouble_string{
+    return _last_trouble_string?:@"";
 }
 
 + (NSDictionary *)attributeMappingDictionary {

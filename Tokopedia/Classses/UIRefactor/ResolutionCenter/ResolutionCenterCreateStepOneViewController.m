@@ -26,7 +26,7 @@ ResolutionCenterChooseProblemDelegate
 @property (weak, nonatomic) IBOutlet UILabel *problemLabel;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (strong, nonatomic) ResolutionProductData* productData;
+@property (strong, nonatomic) NSArray<ProductTrouble*>* listProducts;
 @end
 
 @implementation ResolutionCenterCreateStepOneViewController{
@@ -55,12 +55,10 @@ ResolutionCenterChooseProblemDelegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 1){
-        ResolutionProductList* currentProduct = [_productData.list objectAtIndex:indexPath.row];
+        ProductTrouble* currentProduct = [_listProducts objectAtIndex:indexPath.row];
 
         for (ProductTrouble *trouble in _result.formEdit.resolution_last.last_product_trouble) {
-            if ([currentProduct.product_id integerValue] == [trouble.pt_product_id integerValue] && ![_result.selectedProduct containsObject:currentProduct]) {
-                currentProduct.productTrouble = trouble;
-                [self adjustSelectedProduct:currentProduct formProductTrouble:trouble];
+            if ([currentProduct.pt_product_id integerValue] == [trouble.pt_product_id integerValue] && ![_result.selectedProduct containsObject:currentProduct]) {
                 [_result.selectedProduct addObject:currentProduct];
                 [cell setSelected:YES animated:NO];
             }
@@ -68,19 +66,13 @@ ResolutionCenterChooseProblemDelegate
     }
 }
 
--(void)adjustSelectedProduct:(ResolutionProductList*)selectedProduct formProductTrouble:(ProductTrouble*)productTrouble{
-    selectedProduct.show_input_quantity = productTrouble.pt_show_input_quantity;
-    selectedProduct.trouble_id = productTrouble.pt_trouble_id;
-    selectedProduct.solution_remark = productTrouble.pt_solution_remark;
-    selectedProduct.trouble_name = productTrouble.pt_trouble_name;
-}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0){
         return _problemCell;
     }else{
         //cell untuk product
-        ResolutionProductList* currentProduct = [_productData.list objectAtIndex:indexPath.row];
+        ProductTrouble* currentProduct = [_listProducts objectAtIndex:indexPath.row];
         
         ResolutionCenterCreateStepOneCell *cell = nil;
         NSString *cellid = @"ResolutionCenterCreateStepOneCell";
@@ -90,9 +82,9 @@ ResolutionCenterChooseProblemDelegate
         }
 
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.productName.text = currentProduct.product_name;
+        cell.productName.text = currentProduct.pt_product_name;
         cell.productImage.contentMode = UIViewContentModeScaleToFill;
-        [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.primary_photo]];
+        [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
         return cell;
     }
 }
@@ -105,7 +97,7 @@ ResolutionCenterChooseProblemDelegate
     if(section == 0){
         return 1;
     }else{
-        return _shouldShowProblematicProduct?_productData.list.count:0;
+        return _shouldShowProblematicProduct?_listProducts.count:0;
     }
 }
 
@@ -124,14 +116,14 @@ ResolutionCenterChooseProblemDelegate
         vc.list_ts = _result.formData.list_ts;
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.section == 1){
-        ResolutionProductList *selectedProduct = [_productData.list objectAtIndex:indexPath.row];
+        ProductTrouble *selectedProduct = [_listProducts objectAtIndex:indexPath.row];
         [_result.selectedProduct addObject:selectedProduct];
     }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 1){
-        [_result.selectedProduct removeObject:[_productData.list objectAtIndex:indexPath.row]];
+        [_result.selectedProduct removeObject:[_listProducts objectAtIndex:indexPath.row]];
     }
 }
 
@@ -201,6 +193,7 @@ ResolutionCenterChooseProblemDelegate
                                                _result.formData.list_ts = data.list_ts;
                                                _result.formEdit = data.form;
                                                _result.formData.form = data.form.resolution_order;
+                                               _result.trouble_name = data.form.resolution_last.last_trouble_string;
                                                for (ResolutionCenterCreateList *categoryProblemType in _result.formData.list_ts) {
                                                    if ([categoryProblemType.category_trouble_id integerValue] == [_result.formEdit.resolution_last.last_category_trouble_type integerValue]) {
                                                        [self didSelectProblem:categoryProblemType];
@@ -240,8 +233,8 @@ ResolutionCenterChooseProblemDelegate
 }
 -(void)fetchProduct{
     [RequestResolutionData fetchAllProductsInTransactionWithOrderId:_result.formData.form.order_id?:@""
-                                                            success:^(ResolutionProductResponse *data) {
-                                                                _productData = data.data;
+                                                            success:^(NSArray <ProductTrouble*> *list) {
+                                                                _listProducts = list;
                                                                 
                                                                 [_tableView reloadData];
                                                             } failure:^(NSError *error) {

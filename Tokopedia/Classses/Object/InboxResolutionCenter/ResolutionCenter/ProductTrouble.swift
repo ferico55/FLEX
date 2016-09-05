@@ -21,13 +21,14 @@ class ProductTrouble: NSObject {
     var pt_quantity : String = ""
     var pt_free_return : String = ""
     var pt_primary_photo : String = ""
+    var pt_primary_dtl_photo : String = ""
     var pt_selected : Bool = false
     var pt_trouble_list : [ResolutionCenterCreateTroubleList] = []
     
     var sellerEditViewModel : ProductResolutionViewModel {
         get {
             let viewModel : ProductResolutionViewModel = ProductResolutionViewModel()
-            viewModel.productImageURLString = self.pt_snapshot_uri
+            viewModel.productImageURLString = self.pt_primary_dtl_photo
             viewModel.productName = self.pt_product_name
             viewModel.productTrouble = "\(self.pt_quantity) \(self.pt_trouble_name)"
             viewModel.productTroubleDescription = pt_solution_remark
@@ -38,7 +39,7 @@ class ProductTrouble: NSObject {
     var buyerEditViewModel : ProductResolutionViewModel {
         get {
             let viewModel : ProductResolutionViewModel = ProductResolutionViewModel()
-            viewModel.productImageURLString = self.pt_snapshot_uri
+            viewModel.productImageURLString = self.pt_primary_dtl_photo
             viewModel.productName = self.pt_product_name
             viewModel.productTrouble = self.pt_trouble_name
             viewModel.productQuantity = self.pt_show_input_quantity
@@ -64,7 +65,8 @@ class ProductTrouble: NSObject {
             "pt_order_dtl_id",
             "pt_quantity",
             "pt_free_return",
-            "pt_primary_photo"
+            "pt_primary_photo",
+            "pt_primary_dtl_photo"
             ])
         
         return mapping

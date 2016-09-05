@@ -35,6 +35,7 @@ import UIKit
     
     var postObject : ReplayConversationPostData = ReplayConversationPostData()
     var resolutionData : EditResolutionFormData = EditResolutionFormData()
+    private var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,6 +110,10 @@ import UIKit
         }
     }
     
+    func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
+        self.successEdit = success
+    }
+    
     @objc private func submit(){
         
         let validation : ResolutionValidation = ResolutionValidation()
@@ -119,6 +124,8 @@ import UIKit
         alertProgress.show()
         RequestResolution.fetchReplayConversation(self.postObjectEditSolution(), onSuccess: { (data) in
         
+            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.navigationController?.popViewControllerAnimated(false)
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
             
         }) {
@@ -270,6 +277,9 @@ import UIKit
 
 extension EditResolutionBuyerDetailViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
+    func textViewDidChange(textView: UITextView) {
+        reasonTextView.placeholderLabel.hidden = !textView.text.isEmpty
+    }
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 2)

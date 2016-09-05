@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ResolutionCenterCreateData.h"
-#import "ResolutionProductList.h"
 #import "ResolutionCenterCreateResult.h"
 #import "TxOrderStatusList.h"
 #import "ResolutionCenterCreateViewController.h"

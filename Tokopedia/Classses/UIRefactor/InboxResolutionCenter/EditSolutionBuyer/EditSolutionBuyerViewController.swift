@@ -27,6 +27,8 @@ import UIKit
     private var firstResponderIndexPath : NSIndexPath?
     private var alertProgress : UIAlertView = UIAlertView()
     @IBOutlet var problemCell: UITableViewCell!
+    
+    private var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
 
     
     var resolutionID : String = ""
@@ -64,6 +66,8 @@ import UIKit
     
     @objc private func nextPage(){
         
+        view.endEditing(true)
+        
         postObject.selectedProducts.removeAll()
         allProducts.forEach{
             if $0.pt_selected == true {
@@ -78,8 +82,16 @@ import UIKit
         let controller : EditResolutionBuyerDetailViewController = EditResolutionBuyerDetailViewController()
         controller.postObject = postObject
         controller.resolutionData = resolutionData
+        controller.didSuccessEdit { (solutionLast, conversationLast, replyEnable) in
+            self.successEdit!(solutionLast: solutionLast, conversationLast: conversationLast , replyEnable: replyEnable)
+            self.navigationController?.popViewControllerAnimated(true)
+        }
         
         self.navigationController!.pushViewController(controller, animated: true)
+    }
+    
+    func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
+        self.successEdit = success
     }
 
     @objc private func refresh(){
@@ -188,6 +200,7 @@ import UIKit
     
     @objc private func troublePickerValueChanged(sender: DownPicker){
         postObject.troubleType = resolutionData.form.resolution_trouble_list[sender.selectedIndex].trouble_id
+        postObject.troubleName = resolutionData.form.resolution_trouble_list[sender.selectedIndex].trouble_text
     }
 }
 
@@ -257,6 +270,7 @@ extension EditSolutionBuyerViewController : UITableViewDelegate {
             controller.objects = resolutionData.list_ts.map{$0.category_trouble_text}
             controller.delegate = self
             controller.selectedObject = postObject.category_trouble_text
+            controller.title = "Pilih Masalah"
             self.navigationController?.pushViewController(controller, animated: true)
         } else if indexPath.section == 1 {
             allProducts[indexPath.row].pt_selected = !allProducts[indexPath.row].pt_selected

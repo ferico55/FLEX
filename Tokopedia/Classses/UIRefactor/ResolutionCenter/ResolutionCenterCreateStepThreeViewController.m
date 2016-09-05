@@ -21,8 +21,8 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
-@property (strong, nonatomic) NSArray<ResolutionCenterCreatePOSTFormSolution*>* formSolutions;
-@property (strong, nonatomic) ResolutionCenterCreatePOSTFormSolution *selectedSolution;
+@property (strong, nonatomic) NSArray<EditSolution*>* formSolutions;
+@property (strong, nonatomic) EditSolution *selectedSolution;
 @property (strong, nonatomic) IBOutlet UITextField *refundTextField;
 @property (strong, nonatomic) IBOutlet UIButton *solutionButton;
 @property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
@@ -50,13 +50,9 @@
     [super viewWillAppear:animated];
     [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
                                                                 troubleId:_result.troubleId
-                                                                    success:^(ResolutionCenterCreatePOSTResponse* data) {
-                                                                        _formSolutions = data.data.form_solution;
-                                                                        for (ResolutionCenterCreatePOSTFormSolution *solution in _formSolutions) {
-                                                                            if ([solution.solution_id integerValue] == [_result.formEdit.resolution_last.last_solution integerValue]) {
-                                                                                [self didSelectSolution:solution];
-                                                                            }
-                                                                        }
+                                                                    success:^(NSArray<EditSolution*>* list) {
+                                                                        _formSolutions = list;
+                                                                        
                                                                     } failure:^(NSError *error) {
                                                                         
                                                                     }];
@@ -194,7 +190,7 @@
 }
 
 #pragma mark - Choose Solution Delegate
--(void)didSelectSolution:(ResolutionCenterCreatePOSTFormSolution *)selectedSolution{
+-(void)didSelectSolution:(EditSolution *)selectedSolution{
     _selectedSolution = selectedSolution;
     _maxRefundLabel.text = _selectedSolution.max_refund_idr;
     [_solutionButton setTitle:_selectedSolution.solution_text forState:UIControlStateNormal];

@@ -64,10 +64,11 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     
     func troubleDownPickerSelected(sender : DownPicker){
         productTrouble.pt_trouble_id = productTrouble.pt_trouble_list[sender.selectedIndex].trouble_id
+        productTrouble.pt_trouble_name = productTrouble.pt_trouble_list[sender.selectedIndex].trouble_text
     }
     
     @IBAction func onChangeQuantityStepper(sender: UIStepper) {
-        let quantity : String = String(format:"%f", sender.value)
+        let quantity : String = String(format:"%d", sender.value)
         productTrouble.pt_show_input_quantity = quantity
         quantityLabel.text = quantity
     }
