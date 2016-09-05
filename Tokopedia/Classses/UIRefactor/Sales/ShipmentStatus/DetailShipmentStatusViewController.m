@@ -62,6 +62,8 @@
     _buttonTransactionDetail.layer.cornerRadius = 2;
     
     _tableView.tableHeaderView = _topView;
+    _tableView.estimatedRowHeight = 125.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
     
     _invoiceNumberLabel.text = _order.order_detail.detail_invoice;
     _paymentMethodLabel.text = _order.order_payment.payment_gateway_name;
@@ -165,23 +167,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _history.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    OrderHistory *history = [_history objectAtIndex:indexPath.row];
-    NSString *status;
-    if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = history.history_buyer_status;
-    } else {
-        status = history.history_seller_status;
-    }
-    if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
-        status = [status stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    }
-    CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
-    return messageSize.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
