@@ -137,7 +137,7 @@
                                  ShipmentOrder *response = [successResult.dictionary objectForKey:@""];
                                  
                                  if (response.data && !response.message_error) {
-                                     success(response.data.shipment);
+                                     success(response.data.list);
                                  } else {
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
                                      failure(nil);
