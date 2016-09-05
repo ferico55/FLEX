@@ -474,7 +474,7 @@ typedef enum {
     }
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation]; 
     
-    if([conversation.show_edit_addr_button integerValue] != 1 && conversation.address)
+    if([conversation.edit_address integerValue] != 1 && conversation.address)
     {
         cell.markLabel.textColor = COLOR_STATUS_DONE;
     }
@@ -496,7 +496,6 @@ typedef enum {
     UIColor *lastCellColour = [UIColor colorWithRed:255.f/255.f green:243.f/255.f blue:224.f/255.f alpha:1];
     UIColor *buttonCellColour = [UIColor colorWithRed:249.f/255.f green:249.f/255.f blue:249.f/255.f alpha:1];
     
-    [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     cell.indexPath = indexPath;
     
 
@@ -564,7 +563,6 @@ typedef enum {
     [cell.btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
-    [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     
     //if (conversation.system_flag == 1) {
     //    //yellow background
@@ -708,7 +706,7 @@ typedef enum {
 {
     NSString *buttonTitle = @"";
     
-    if ([conversation.show_edit_addr_button integerValue]==1) {
+    if ([conversation.edit_address integerValue]==1) {
         buttonTitle = BUTTON_TITLE_EDIT_ADDRESS;
     } else {
         buttonTitle = @"Lacak";
@@ -822,8 +820,8 @@ typedef enum {
 
 -(BOOL)isShowTrackAndEditButton:(ResolutionConversation*)conversation
 {
-    if (conversation.show_track_button == 1 &&
-        conversation.show_edit_resi_button == 1) {
+    if (conversation.track_resi == 1 &&
+        conversation.edit_resi == 1) {
         return YES;
     }
     return NO;
@@ -863,15 +861,15 @@ typedef enum {
     if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)) {
        return 1;
     }
-    if ([conversation.show_edit_addr_button integerValue]==1) {
+    if ([conversation.edit_address integerValue]==1) {
         buttonCount +=1;
     }
     
-    if (conversation.show_track_button == 1){
+    if (conversation.track_resi == 1){
         buttonCount +=1;
     }
     
-    if (conversation.show_edit_resi_button == 1) {
+    if (conversation.edit_resi == 1) {
         buttonCount +=1;
     }
 
@@ -914,12 +912,12 @@ typedef enum {
     [marks addObject:[NSString stringWithFormat:@"%@",conversation.remark_str?:@""]];
      
     for (ProductTrouble *product in conversation.product_trouble) {
-        [marks addObject:product.pt_product_name];
+        [marks addObject:[NSString stringWithFormat:@"Produk : %@",product.pt_product_name]];
         if ([product.pt_free_return integerValue] == 1){
             [marks addObject:@"(Free Return)"];
         }
-        [marks addObject:[NSString stringWithFormat:@"%@ %@",product.pt_quantity, product.pt_trouble_name]];
-        [marks addObject:product.pt_solution_remark];
+        [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
+        [marks addObject:[NSString stringWithFormat:@"Deskripsi : %@",product.pt_solution_remark]];
         [marks addObject:@"\n"];
     }
     
@@ -1230,8 +1228,9 @@ typedef enum {
 }
 
 
--(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
+-(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
+    NSString *oldAddressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+
     BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
 
     AddressFormList *address = [userInfo objectForKey:@"address"];
@@ -1244,39 +1243,35 @@ typedef enum {
     if (conversation.address.address_id == 0) {
         conversation.address.address_id = conversation.address.addr_id;
     }
-    
-    NSString *oldDataID = @"";
-    if (isEditAddress) {
-        oldDataID = [NSString stringWithFormat:@"%ld-%@",conversation.address.address_id, conversation.conversation_id];
-    }
     _selectedAddress = address;
-    NSString *action = @"";
+    
     if (isEditAddress) {
-        action = @"edit_address_resolution";
+        [self requestEditOldAddressID:oldAddressID conversationID:conversation.conversation_id];
+    } else {
+        [self requestAddAddress];
     }
-    else
-        action = @"input_address_resolution";
-    
-    [_requestInputAddress setParamInputAddress:_selectedAddress
-                                  resolutionID:[_resolutionDetail.resolution_last.last_resolution_id stringValue]
-                                     oldDataID:oldDataID
-                                 isEditAddress:isEditAddress
-                                        action:action];
-    
-    [_requestInputAddress doRequest];
 }
 
--(void)successAddress:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil mengubah alamat"] delegate:self];
-    [alert show];
-    [self refreshRequest];
+-(void)requestAddAddress{
+    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    [RequestResolution fetchInputAddressID:addressID resolutionID:_resolutionID onSuccess:^(ResolutionActionResult * data) {
+        
+        [self refreshRequest];
+        
+    } onFailure:^{
+        
+    }];
 }
 
--(void)failedAddress:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
+-(void)requestEditOldAddressID:(NSString*)oldAddressID conversationID:(NSString*)conversationID{
+    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    [RequestResolution fetchEditAddressID:addressID resolutionID:_resolutionID oldAddressID:oldAddressID oldConversationID:conversationID onSuccess:^(ResolutionActionResult * data) {
+        
+        [self refreshRequest];
+        
+    } onFailure:^{
+        
+    }];
 }
 
 @end

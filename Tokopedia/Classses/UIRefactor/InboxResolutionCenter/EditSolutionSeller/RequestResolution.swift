@@ -10,7 +10,7 @@ import UIKit
 
 class RequestResolution: NSObject {
     
-    class func fetchInputAddressID(addressID:String, resolutionID: String, oldAddressID: String, oldConversationID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+    class func fetchEditAddressID(addressID:String, resolutionID: String, oldAddressID: String, oldConversationID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -56,7 +56,7 @@ class RequestResolution: NSObject {
         }
     }
     
-    class func fetchEditAddressID(addressID:String, resolutionID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+    class func fetchInputAddressID(addressID:String, resolutionID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
 
@@ -70,7 +70,7 @@ class RequestResolution: NSObject {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         networkManager.requestWithBaseUrl(NSString .v4Url(),
-                                          path: "/v4/action/resolution-center/edit_address_resolution.pl",
+                                          path: "/v4/action/resolution-center/input_address_resolution.pl",
                                           method: .POST,
                                           parameter: param,
                                           mapping: ResolutionAction.mapping(),

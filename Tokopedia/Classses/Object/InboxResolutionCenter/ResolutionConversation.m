@@ -35,8 +35,8 @@
                       @"input_resi",
                       @"kurir_name",
                       @"input_kurir",
-                      @"show_edit_resi_button",
-                      @"show_track_button",
+                      @"edit_resi",
+                      @"track_resi",
                       @"trouble_type",
                       @"refund_amt_idr",
                       @"action_by",
@@ -46,7 +46,7 @@
                       @"view_more",
                       @"isAddedConversation",
                       @"address_edited",
-                      @"show_edit_addr_button",
+                      @"edit_address",
                       @"trouble_string",
                       @"solution_string"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
