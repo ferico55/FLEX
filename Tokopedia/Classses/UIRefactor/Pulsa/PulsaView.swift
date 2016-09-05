@@ -275,7 +275,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             return contacts.phones?.count > 0
         }
         self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
-            if((error == nil)) {
+            if((error == nil) && contacts?.count > 0) {
                 self.didTapAddressbook!(contacts!)
             }
         })
