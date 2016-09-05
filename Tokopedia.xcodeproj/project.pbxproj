@@ -16865,7 +16865,6 @@
 					"-l\"GTM_core\"",
 					"-l\"GTM_iPhone\"",
 					"-l\"GoogleAnalytics\"",
-					"-l\"Localytics\"",
 					"-l\"NJKWebViewProgress\"",
 					"-l\"ProtocolBuffers\"",
 					"-l\"RestKit\"",
