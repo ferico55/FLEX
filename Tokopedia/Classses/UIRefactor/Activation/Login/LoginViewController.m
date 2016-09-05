@@ -286,6 +286,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                      }
                      failureCallback:^(NSError *error) {
                          [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+                         [self showLoginUi];
                      }];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -619,6 +620,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];
 }
