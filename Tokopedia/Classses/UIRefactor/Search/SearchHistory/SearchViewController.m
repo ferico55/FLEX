@@ -108,7 +108,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    _authManager = [UserAuthentificationManager new];
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
     
@@ -144,6 +143,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    _authManager = [UserAuthentificationManager new];
     _uniqueId = [self getUniqueId];
     debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
     }];
@@ -248,7 +248,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(NSString*) getUniqueId {
     NSString *userId = [_authManager getUserId];
     
-    if (userId == nil) {
+    if (userId == @"0") {
         userId = [_authManager getMyDeviceIdToken];
     }
     
