@@ -250,8 +250,8 @@ double const FOOTER_HEIGHT = 20;
 -(NSString*) getUniqueId {
     NSString *userId = [_authManager getUserId];
     
-    if (userId == @"0") {
-        userId = [_authManager getMyDeviceIdToken];
+    if ([userId  isEqual: @"0"]) {
+        userId = [_authManager getMyDeviceToken];
     }
     
     return userId;
@@ -367,8 +367,12 @@ double const FOOTER_HEIGHT = 20;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    CGSize size = CGSizeMake(collectionView.bounds.size.width, 50);
-    
+    CGSize size = CGSizeZero;
+    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
+    if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
+        size = CGSizeMake(collectionView.bounds.size.width, 50);
+    }
+
     return size;
 }
 

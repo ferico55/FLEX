@@ -1026,8 +1026,8 @@ ImageSearchRequestDelegate
 -(NSString*) getUniqueId {
     NSString *userId = [_userManager getUserId];
     
-    if (userId == @"0") {
-        userId = [_userManager getMyDeviceIdToken];
+    if ([userId  isEqual: @"0"]) {
+        userId = [_userManager getMyDeviceToken];
     }
     
     return userId;

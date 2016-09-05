@@ -28,7 +28,7 @@
                         </constraints>
                         <inset key="imageEdgeInsets" minX="13" minY="13" maxX="13" maxY="13"/>
                         <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                        <state key="normal" title="Button" image="icon_delete_search_history"/>
+                        <state key="normal" image="icon_delete_search_history"/>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search_keyword" translatesAutoresizingMaskIntoConstraints="NO" id="Zx4-2G-i0W">
                         <rect key="frame" x="21" y="10" width="12" height="12"/>
