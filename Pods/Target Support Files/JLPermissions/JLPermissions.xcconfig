@@ -1,0 +1,1 @@
+JLPERMISSIONS_OTHER_LDFLAGS = -framework "AddressBook"

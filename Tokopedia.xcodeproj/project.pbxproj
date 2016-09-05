@@ -2787,6 +2787,9 @@
 		7AA6AB9E1D742FF300693017 /* klikbca_guide_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6AAB11D742FF300693017 /* klikbca_guide_2.png */; };
 		7AA6AB9F1D742FF300693017 /* klikbca_guide_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6AAB21D742FF300693017 /* klikbca_guide_3.png */; };
 		7AA6ABA01D742FF300693017 /* klikbca_guide_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AA6AAB31D742FF300693017 /* klikbca_guide_4.png */; };
+		7AB8D33B1D78014A00C08322 /* PulsaStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB8D33A1D78014900C08322 /* PulsaStatus.swift */; };
+		7AB8D33D1D78016000C08322 /* PulsaStatusAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB8D33C1D78016000C08322 /* PulsaStatusAttribute.swift */; };
+		7AB8D33F1D78027F00C08322 /* PulsaStatusRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB8D33E1D78027F00C08322 /* PulsaStatusRoot.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -6751,6 +6754,9 @@
 		7AA6AAB11D742FF300693017 /* klikbca_guide_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_2.png; sourceTree = "<group>"; };
 		7AA6AAB21D742FF300693017 /* klikbca_guide_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_3.png; sourceTree = "<group>"; };
 		7AA6AAB31D742FF300693017 /* klikbca_guide_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_4.png; sourceTree = "<group>"; };
+		7AB8D33A1D78014900C08322 /* PulsaStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaStatus.swift; sourceTree = "<group>"; };
+		7AB8D33C1D78016000C08322 /* PulsaStatusAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaStatusAttribute.swift; sourceTree = "<group>"; };
+		7AB8D33E1D78027F00C08322 /* PulsaStatusRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaStatusRoot.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -11984,6 +11990,9 @@
 				6285117F1D7004FB00FF0A96 /* PulsaView.swift */,
 				628511801D7004FB00FF0A96 /* PulsaViewController.swift */,
 				628511811D7004FB00FF0A96 /* PulsaViewController.xib */,
+				7AB8D33A1D78014900C08322 /* PulsaStatus.swift */,
+				7AB8D33C1D78016000C08322 /* PulsaStatusAttribute.swift */,
+				7AB8D33E1D78027F00C08322 /* PulsaStatusRoot.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -15689,6 +15698,7 @@
 				628514B61D7004FD00FF0A96 /* RatingList.m in Sources */,
 				628518B31D7004FE00FF0A96 /* PriceAlertViewController.m in Sources */,
 				628518851D7004FE00FF0A96 /* MyShopAddressViewController.m in Sources */,
+				7AB8D33F1D78027F00C08322 /* PulsaStatusRoot.swift in Sources */,
 				628514441D7004FD00FF0A96 /* ImageDownloader.m in Sources */,
 				628515E31D7004FE00FF0A96 /* ShopInfoResult.m in Sources */,
 				628514421D7004FD00FF0A96 /* DBManager.m in Sources */,
@@ -15925,6 +15935,7 @@
 				628518761D7004FE00FF0A96 /* MiniSlideData.m in Sources */,
 				628517771D7004FE00FF0A96 /* AddImageCaptionViewController.swift in Sources */,
 				6285159D1D7004FE00FF0A96 /* OrderPayment.m in Sources */,
+				7AB8D33D1D78016000C08322 /* PulsaStatusAttribute.swift in Sources */,
 				62851A081D7004FE00FF0A96 /* ShopTalkPageViewController.m in Sources */,
 				6285157E1D7004FD00FF0A96 /* PromoCategory.m in Sources */,
 				628516851D7004FE00FF0A96 /* LayoutAxis.swift in Sources */,
@@ -16317,6 +16328,7 @@
 				628515B31D7004FE00FF0A96 /* SearchAutoCompleteObject.m in Sources */,
 				628516431D7004FE00FF0A96 /* TxOrderCancelPaymentFormForm.m in Sources */,
 				628514331D7004FD00FF0A96 /* NSURL+Dictionary.m in Sources */,
+				7AB8D33B1D78014A00C08322 /* PulsaStatus.swift in Sources */,
 				628517561D7004FE00FF0A96 /* AlertInfoView.m in Sources */,
 				62851A471D7004FE00FF0A96 /* TransactionCartHeaderView.m in Sources */,
 				628517271D7004FE00FF0A96 /* BehaviorSubject.swift in Sources */,
@@ -16764,7 +16776,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16812,7 +16824,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16853,7 +16865,6 @@
 					"-l\"GTM_core\"",
 					"-l\"GTM_iPhone\"",
 					"-l\"GoogleAnalytics\"",
-					"-l\"Localytics\"",
 					"-l\"NJKWebViewProgress\"",
 					"-l\"ProtocolBuffers\"",
 					"-l\"RestKit\"",
