@@ -68,6 +68,7 @@ NotificationManagerDelegate
 
 NSString *const SEARCH_AUTOCOMPLETE = @"autocomplete";
 NSString *const RECENT_SEARCH = @"recent_search";
+double const FOOTER_HEIGHT = 20;
 
 #pragma mark - Lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -108,6 +109,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"SearchAutoCompleteCellFooterViewIdentifier"];
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
     
@@ -308,14 +310,19 @@ NSString *const RECENT_SEARCH = @"recent_search";
         if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
             [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
-            header.separatorView.hidden = YES;
         } else {
             [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
-            header.separatorView.hidden = NO;
         }
         
         
         view = header;
+    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        UICollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellFooterViewIdentifier" forIndexPath:indexPath];
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, FOOTER_HEIGHT)];
+        [backgroundView setBackgroundColor:[UIColor colorWithRed:247.0/255 green:247.0/255 blue:247.0/255 alpha:1.0]];
+        [footerView addSubview:backgroundView];
+
+        view = footerView;
     }
     
     return view;
@@ -343,34 +350,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     }
     
     [searchCell setGreenSearchText:_searchBar.text];
-//    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-//    NSString *domainName = [domain objectForKey:@"title"];
-//    if([domainName isEqualToString:SearchDomainHistory]) {
-//        NSString *searchResult;
-//        if(_typedHistoryResult.count > 0) {
-//            searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
-//        } else {
-//            searchResult = [_historyResult objectAtIndex:indexPath.row];
-//        }
-//        NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
-//        
-//        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
-//        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
-//        searchCell.searchTitle.attributedText = attributedText;
-//        [searchCell.searchImage setHidden:YES];
-//        [searchCell setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-//    } else if([domainName isEqualToString:SearchDomainGeneral]) {
-//        SearchAutoCompleteGeneral *general = _general[indexPath.row];
-//        [searchCell setViewModel:general.viewModel];
-//        [searchCell setBoldSearchText:_searchBar.text];
-//    } else if([domainName isEqualToString:SearchDomainHotlist]) {
-//        SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
-//        [searchCell setViewModel:hotlist.viewModel];
-//        [searchCell setBoldSearchText:_searchBar.text];
-//    }
-    
 
-    
     cell = searchCell;
     cell.hidden = NO;
     
@@ -387,18 +367,20 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
+    CGSize size = CGSizeMake(collectionView.bounds.size.width, 50);
     
-//    NSDictionary *domain = [_domains objectAtIndex:section];
-//    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
-//        size = CGSizeMake(collectionView.bounds.size.width, 25);
-//    }
-    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
-    if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
-        size = CGSizeMake(collectionView.bounds.size.width, 45);
-    }
     return size;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    if (section != _searchSuggestionDataArray.count - 1) {
+        size = CGSizeMake(collectionView.bounds.size.width, FOOTER_HEIGHT);
+    }
+
+    return size;
+}
+
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     return 1.0;

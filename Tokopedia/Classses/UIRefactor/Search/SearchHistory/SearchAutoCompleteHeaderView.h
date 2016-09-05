@@ -12,7 +12,6 @@
 
 @interface SearchAutoCompleteHeaderView : UICollectionReusableView
 
-@property (weak, nonatomic) UIView *separatorView;
 @property (weak, nonatomic, readonly) UILabel *titleLabel;
 @property (weak, nonatomic, readonly) UIButton *deleteButton;
 
