@@ -93,6 +93,7 @@
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    vc.tkpdTabNavigationController = viewController;
     NSDictionary *data = @{searchTypeKey : @(1),categoryIdKey : categoryId};
     [viewController setData:data];
     [viewController setNavigationTitle:categoryName];
