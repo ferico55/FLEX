@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ResolutionCenterCreatePOSTFormSolution.h"
+@class EditSolution;
 
 @interface ResolutionCenterCreatePOSTData : NSObject
-@property (strong, nonatomic) NSArray<ResolutionCenterCreatePOSTFormSolution*>* form_solution;
+@property (strong, nonatomic) NSArray<EditSolution*>* form_solution;
 
 +(RKObjectMapping*)mapping;
 @end

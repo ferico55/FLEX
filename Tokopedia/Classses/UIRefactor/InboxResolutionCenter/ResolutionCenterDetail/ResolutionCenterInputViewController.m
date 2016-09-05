@@ -324,11 +324,16 @@
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
-        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-        vc.product_is_received = isGotTheOrder;
-        vc.resolutionID = _resolutionID?:@"";
-        vc.type = TypeResoEdit;
-        [self.navigationController pushViewController:vc animated:YES];
+        EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.resolutionID = _resolutionID?:@"";
+        [controller didSuccessEdit:^(ResolutionLast * solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            }
+            [self.navigationController popToViewController:_delegate animated:YES];
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

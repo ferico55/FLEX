@@ -7,6 +7,7 @@
 //
 
 #import "ResolutionProductData.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ResolutionProductData
 
@@ -14,7 +15,7 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ResolutionProductData class]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
                                                                             toKeyPath:@"list"
-                                                                          withMapping:[ResolutionProductList mapping]]];
+                                                                          withMapping:[ProductTrouble mapping]]];
     return mapping;
 }
 @end

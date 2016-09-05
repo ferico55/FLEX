@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ResolutionCenterCreatePOSTFormSolution.h"
+@class EditSolution;
+
 @protocol ResolutionCenterChooseSolutionDelegate <NSObject>
 @optional
--(void)didSelectSolution:(ResolutionCenterCreatePOSTFormSolution*)selectedSolution;
+-(void)didSelectSolution:(EditSolution*)selectedSolution;
 @end
 
 @interface ResolutionCenterChooseSolutionViewController : UIViewController
-@property (strong, nonatomic) NSArray<ResolutionCenterCreatePOSTFormSolution*>* formSolutions;
+@property (strong, nonatomic) NSArray<EditSolution*>* formSolutions;
 @property (nonatomic, weak) id<ResolutionCenterChooseSolutionDelegate> delegate;
 @end

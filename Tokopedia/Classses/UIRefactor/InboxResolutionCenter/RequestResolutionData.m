@@ -9,6 +9,7 @@
 #import "RequestResolutionData.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "Tokopedia-Swift.h"
+#import "ResolutionCenterCreatePOSTResponse.h"
 
 @implementation RequestResolutionData
 
@@ -167,7 +168,7 @@
                              }];
 }
 
-+(void)fetchAllProductsInTransactionWithOrderId:(NSString *)orderId success:(void (^)(ResolutionProductResponse *))success failure:(void (^)(NSError *))failure{
++(void)fetchAllProductsInTransactionWithOrderId:(NSString *)orderId success:(void (^)(NSArray<ProductTrouble*> *list))success failure:(void (^)(NSError *))failure{
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     
@@ -182,14 +183,14 @@
                                mapping:[ResolutionProductResponse mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  ResolutionProductResponse *result = [successResult.dictionary objectForKey:@""];
-                                 success(result);
+                                 success(result.data.list);
                              } onFailure:^(NSError *errorResult) {
                                  failure(errorResult);
                              }];
 }
 
 //again, we only need trouble id for non product related problem
-+(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble troubleId:(NSString*)troubleId success:(void (^)(ResolutionCenterCreatePOSTResponse*))success failure:(void (^)(NSError *))failure{
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble troubleId:(NSString*)troubleId success:(void (^)(NSArray <EditSolution*>*))success failure:(void (^)(NSError *))failure{
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
                                                                                    objectClass:[ResolutionCenterCreatePOSTRequest class]
                                                                                    rootKeyPath:nil
@@ -205,7 +206,7 @@
     
     if(jsonData){
         NSString *jsonStr = @"";
-        if(troubleId){
+        if(possibleTrouble.product_list.count == 0){
             jsonStr = [NSString stringWithFormat:@"{\"category_trouble_id\":%@, \"order_id\":%@, \"trouble_id\":%@ }", possibleTrouble.category_trouble_id, possibleTrouble.order_id, troubleId];
         }else{
             jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -222,7 +223,14 @@
                                    mapping:[ResolutionCenterCreatePOSTResponse mapping]
                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                      ResolutionCenterCreatePOSTResponse* result = [successResult.dictionary objectForKey:@""];
-                                     success(result);
+                                     
+                                     if (result.message_error.count > 0) {
+                                         [StickyAlertView showErrorMessage:result.message_error];
+                                         failure(nil);
+                                     } else {
+                                         success(result.data.form_solution);
+                                     }
+                                     
                                  } onFailure:^(NSError *errorResult) {
                                      failure(errorResult);
                                  }];
@@ -238,7 +246,7 @@
     
     NSDictionary* param = @{ @"user_id"       : [auth getUserId]?:@"",
                              @"resolution_id" : resolutionID?:@"",
-                             @"n"             : isGetProduct?@"0":@"1"
+                             @"n"             : isGetProduct?@"1":@"0"
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];

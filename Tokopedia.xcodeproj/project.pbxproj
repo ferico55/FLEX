@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		450652D61D7922EC00ABD65D /* EditSolutionBuyerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450652D41D7922EC00ABD65D /* EditSolutionBuyerViewController.swift */; };
+		450652D71D7922EC00ABD65D /* EditSolutionBuyerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450652D51D7922EC00ABD65D /* EditSolutionBuyerViewController.xib */; };
 		45078D5B1D7593C8008A4557 /* ProgressHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */; };
+		455483291D7971A600672DDC /* ResolutionProductData.m in Sources */ = {isa = PBXBuildFile; fileRef = 455483271D7971A600672DDC /* ResolutionProductData.m */; };
 		4574EB1A1D704B4200CFC71B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB031D704B3B00CFC71B /* TPAnalytics.m */; };
 		4574EB1B1D704B4200CFC71B /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB051D704B3B00CFC71B /* TPLocalytics.m */; };
 		4574EB1C1D704B4200CFC71B /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB081D704B3B00CFC71B /* URLCacheAlert.m */; };
@@ -1329,7 +1332,6 @@
 		4574F03F1D704B4300CFC71B /* ResolutionCenterCreateForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4A21D704B3E00CFC71B /* ResolutionCenterCreateForm.m */; };
 		4574F0401D704B4300CFC71B /* ResolutionCenterCreateList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4A41D704B3E00CFC71B /* ResolutionCenterCreateList.m */; };
 		4574F0411D704B4300CFC71B /* ResolutionCenterCreatePOSTData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4A61D704B3E00CFC71B /* ResolutionCenterCreatePOSTData.m */; };
-		4574F0421D704B4300CFC71B /* ResolutionCenterCreatePOSTFormSolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4A81D704B3F00CFC71B /* ResolutionCenterCreatePOSTFormSolution.m */; };
 		4574F0431D704B4300CFC71B /* ResolutionCenterCreatePOSTProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4AA1D704B3F00CFC71B /* ResolutionCenterCreatePOSTProduct.m */; };
 		4574F0441D704B4300CFC71B /* ResolutionCenterCreatePOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4AC1D704B3F00CFC71B /* ResolutionCenterCreatePOSTRequest.m */; };
 		4574F0451D704B4300CFC71B /* ResolutionCenterCreatePOSTResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4AE1D704B3F00CFC71B /* ResolutionCenterCreatePOSTResponse.m */; };
@@ -1353,8 +1355,6 @@
 		4574F0571D704B4300CFC71B /* ResolutionCenterSellerEditProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4574E4CB1D704B3F00CFC71B /* ResolutionCenterSellerEditProductCell.xib */; };
 		4574F0581D704B4300CFC71B /* ResolutionCenterSellerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4CD1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.m */; };
 		4574F0591D704B4300CFC71B /* ResolutionCenterSellerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4574E4CE1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.xib */; };
-		4574F05A1D704B4300CFC71B /* ResolutionProductData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4D01D704B3F00CFC71B /* ResolutionProductData.m */; };
-		4574F05B1D704B4300CFC71B /* ResolutionProductList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4D21D704B3F00CFC71B /* ResolutionProductList.m */; };
 		4574F05C1D704B4300CFC71B /* ResolutionProductResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4D41D704B3F00CFC71B /* ResolutionProductResponse.m */; };
 		4574F05D1D704B4300CFC71B /* FooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574E4D71D704B3F00CFC71B /* FooterCollectionReusableView.m */; };
 		4574F05E1D704B4300CFC71B /* FooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4574E4D81D704B3F00CFC71B /* FooterCollectionReusableView.xib */; };
@@ -2620,6 +2620,11 @@
 		4574F54A1D704B4400CFC71B /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4574EB161D704B4200CFC71B /* vt-iOSlib-1.0.1.zip */; };
 		4574F54B1D704B4400CFC71B /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574EB191D704B4200CFC71B /* XYPieChart.m */; };
 		4574F54D1D704EC900CFC71B /* EditResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574F54C1D704EC900CFC71B /* EditResolution.swift */; };
+		458834D41D7AEC1400BEA4D9 /* ResolutionValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458834D31D7AEC1400BEA4D9 /* ResolutionValidation.swift */; };
+		458F696C1D79285B007A003E /* EditProductTroubleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458F696A1D79285B007A003E /* EditProductTroubleCell.swift */; };
+		458F696D1D79285B007A003E /* EditProductTroubleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458F696B1D79285B007A003E /* EditProductTroubleCell.xib */; };
+		458F69721D794B5F007A003E /* EditResolutionBuyerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458F69701D794B5F007A003E /* EditResolutionBuyerDetailViewController.swift */; };
+		458F69731D794B5F007A003E /* EditResolutionBuyerDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458F69711D794B5F007A003E /* EditResolutionBuyerDetailViewController.xib */; };
 		45D5B4D21D77D9680026297A /* RequestResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5B4D11D77D9680026297A /* RequestResolution.swift */; };
 		45D5B4D41D77DB760026297A /* ReplayConversationPostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D5B4D31D77DB760026297A /* ReplayConversationPostData.swift */; };
 		45DA5B881D742FE100641B44 /* EditSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DA5B871D742FE100641B44 /* EditSolution.swift */; };
@@ -2692,7 +2697,11 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		450652D41D7922EC00ABD65D /* EditSolutionBuyerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSolutionBuyerViewController.swift; sourceTree = "<group>"; };
+		450652D51D7922EC00ABD65D /* EditSolutionBuyerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditSolutionBuyerViewController.xib; sourceTree = "<group>"; };
 		45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUDView.swift; sourceTree = "<group>"; };
+		455483271D7971A600672DDC /* ResolutionProductData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductData.m; sourceTree = "<group>"; };
+		455483281D7971A600672DDC /* ResolutionProductData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductData.h; sourceTree = "<group>"; };
 		4574DB021D704B3B00CFC71B /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		4574DB031D704B3B00CFC71B /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		4574DB041D704B3B00CFC71B /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -4934,8 +4943,6 @@
 		4574E4A41D704B3E00CFC71B /* ResolutionCenterCreateList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateList.m; sourceTree = "<group>"; };
 		4574E4A51D704B3E00CFC71B /* ResolutionCenterCreatePOSTData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTData.h; sourceTree = "<group>"; };
 		4574E4A61D704B3E00CFC71B /* ResolutionCenterCreatePOSTData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTData.m; sourceTree = "<group>"; };
-		4574E4A71D704B3F00CFC71B /* ResolutionCenterCreatePOSTFormSolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTFormSolution.h; sourceTree = "<group>"; };
-		4574E4A81D704B3F00CFC71B /* ResolutionCenterCreatePOSTFormSolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTFormSolution.m; sourceTree = "<group>"; };
 		4574E4A91D704B3F00CFC71B /* ResolutionCenterCreatePOSTProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTProduct.h; sourceTree = "<group>"; };
 		4574E4AA1D704B3F00CFC71B /* ResolutionCenterCreatePOSTProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTProduct.m; sourceTree = "<group>"; };
 		4574E4AB1D704B3F00CFC71B /* ResolutionCenterCreatePOSTRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTRequest.h; sourceTree = "<group>"; };
@@ -4974,10 +4981,6 @@
 		4574E4CC1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditViewController.h; sourceTree = "<group>"; };
 		4574E4CD1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditViewController.m; sourceTree = "<group>"; };
 		4574E4CE1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditViewController.xib; sourceTree = "<group>"; };
-		4574E4CF1D704B3F00CFC71B /* ResolutionProductData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductData.h; sourceTree = "<group>"; };
-		4574E4D01D704B3F00CFC71B /* ResolutionProductData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductData.m; sourceTree = "<group>"; };
-		4574E4D11D704B3F00CFC71B /* ResolutionProductList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductList.h; sourceTree = "<group>"; };
-		4574E4D21D704B3F00CFC71B /* ResolutionProductList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductList.m; sourceTree = "<group>"; };
 		4574E4D31D704B3F00CFC71B /* ResolutionProductResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductResponse.h; sourceTree = "<group>"; };
 		4574E4D41D704B3F00CFC71B /* ResolutionProductResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductResponse.m; sourceTree = "<group>"; };
 		4574E4D61D704B3F00CFC71B /* FooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterCollectionReusableView.h; sourceTree = "<group>"; };
@@ -6491,6 +6494,11 @@
 		4574EB181D704B4200CFC71B /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4574EB191D704B4200CFC71B /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4574F54C1D704EC900CFC71B /* EditResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditResolution.swift; sourceTree = "<group>"; };
+		458834D31D7AEC1400BEA4D9 /* ResolutionValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionValidation.swift; sourceTree = "<group>"; };
+		458F696A1D79285B007A003E /* EditProductTroubleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProductTroubleCell.swift; sourceTree = "<group>"; };
+		458F696B1D79285B007A003E /* EditProductTroubleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProductTroubleCell.xib; sourceTree = "<group>"; };
+		458F69701D794B5F007A003E /* EditResolutionBuyerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditResolutionBuyerDetailViewController.swift; sourceTree = "<group>"; };
+		458F69711D794B5F007A003E /* EditResolutionBuyerDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditResolutionBuyerDetailViewController.xib; sourceTree = "<group>"; };
 		45D5B4D11D77D9680026297A /* RequestResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestResolution.swift; sourceTree = "<group>"; };
 		45D5B4D31D77DB760026297A /* ReplayConversationPostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplayConversationPostData.swift; sourceTree = "<group>"; };
 		45DA5B871D742FE100641B44 /* EditSolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSolution.swift; sourceTree = "<group>"; };
@@ -6622,6 +6630,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450652D31D7922C800ABD65D /* EditSolutionBuyer */ = {
+			isa = PBXGroup;
+			children = (
+				450652D41D7922EC00ABD65D /* EditSolutionBuyerViewController.swift */,
+				450652D51D7922EC00ABD65D /* EditSolutionBuyerViewController.xib */,
+				458F696A1D79285B007A003E /* EditProductTroubleCell.swift */,
+				458F696B1D79285B007A003E /* EditProductTroubleCell.xib */,
+				458F69701D794B5F007A003E /* EditResolutionBuyerDetailViewController.swift */,
+				458F69711D794B5F007A003E /* EditResolutionBuyerDetailViewController.xib */,
+				458834D31D7AEC1400BEA4D9 /* ResolutionValidation.swift */,
+			);
+			path = EditSolutionBuyer;
+			sourceTree = "<group>";
+		};
 		4574DB001D704B3B00CFC71B /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -10018,6 +10040,7 @@
 			isa = PBXGroup;
 			children = (
 				4574E2D01D704B3E00CFC71B /* Complain */,
+				450652D31D7922C800ABD65D /* EditSolutionBuyer */,
 				4574E2DA1D704B3E00CFC71B /* EditSolutionSeller */,
 				4574E2E01D704B3E00CFC71B /* InboxResolSplitViewController.h */,
 				4574E2E11D704B3E00CFC71B /* InboxResolSplitViewController.m */,
@@ -10701,6 +10724,8 @@
 		4574E4981D704B3E00CFC71B /* ResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				455483271D7971A600672DDC /* ResolutionProductData.m */,
+				455483281D7971A600672DDC /* ResolutionProductData.h */,
 				4574E4991D704B3E00CFC71B /* ResolutionCenterChooseProblemViewController.h */,
 				4574E49A1D704B3E00CFC71B /* ResolutionCenterChooseProblemViewController.m */,
 				4574E49B1D704B3E00CFC71B /* ResolutionCenterChooseProblemViewController.xib */,
@@ -10715,8 +10740,6 @@
 				4574E4A41D704B3E00CFC71B /* ResolutionCenterCreateList.m */,
 				4574E4A51D704B3E00CFC71B /* ResolutionCenterCreatePOSTData.h */,
 				4574E4A61D704B3E00CFC71B /* ResolutionCenterCreatePOSTData.m */,
-				4574E4A71D704B3F00CFC71B /* ResolutionCenterCreatePOSTFormSolution.h */,
-				4574E4A81D704B3F00CFC71B /* ResolutionCenterCreatePOSTFormSolution.m */,
 				4574E4A91D704B3F00CFC71B /* ResolutionCenterCreatePOSTProduct.h */,
 				4574E4AA1D704B3F00CFC71B /* ResolutionCenterCreatePOSTProduct.m */,
 				4574E4AB1D704B3F00CFC71B /* ResolutionCenterCreatePOSTRequest.h */,
@@ -10755,10 +10778,6 @@
 				4574E4CC1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.h */,
 				4574E4CD1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.m */,
 				4574E4CE1D704B3F00CFC71B /* ResolutionCenterSellerEditViewController.xib */,
-				4574E4CF1D704B3F00CFC71B /* ResolutionProductData.h */,
-				4574E4D01D704B3F00CFC71B /* ResolutionProductData.m */,
-				4574E4D11D704B3F00CFC71B /* ResolutionProductList.h */,
-				4574E4D21D704B3F00CFC71B /* ResolutionProductList.m */,
 				4574E4D31D704B3F00CFC71B /* ResolutionProductResponse.h */,
 				4574E4D41D704B3F00CFC71B /* ResolutionProductResponse.m */,
 			);
@@ -13483,6 +13502,7 @@
 				4574F2AC1D704B4300CFC71B /* icon_21@3x.png in Resources */,
 				4574EEB41D704B4300CFC71B /* TKPDTabViewController.xib in Resources */,
 				4574F52E1D704B4300CFC71B /* icon_lihat_komplain.png in Resources */,
+				458F696D1D79285B007A003E /* EditProductTroubleCell.xib in Resources */,
 				4574F30D1D704B4300CFC71B /* icon_google@2x.png in Resources */,
 				4574F2251D704B4300CFC71B /* icon_19.png in Resources */,
 				4574F0C11D704B4300CFC71B /* SearchResultViewController.xib in Resources */,
@@ -13750,6 +13770,7 @@
 				4574F00F1D704B4300CFC71B /* ProductDetailReputationCell.xib in Resources */,
 				4574F2EB1D704B4300CFC71B /* icon_countdown@2x.png in Resources */,
 				4574F1F21D704B4300CFC71B /* GothamMedium.ttf in Resources */,
+				450652D71D7922EC00ABD65D /* EditSolutionBuyerViewController.xib in Resources */,
 				4574F27F1D704B4300CFC71B /* icon_button_favorite_nonactive@3x.png in Resources */,
 				4574F0AB1D704B4300CFC71B /* ShipmentStatusCell.xib in Resources */,
 				4574F4D31D704B4300CFC71B /* product-feed@3x.png in Resources */,
@@ -14512,6 +14533,7 @@
 				4574F3821D704B4300CFC71B /* icon_neutral50@3x.png in Resources */,
 				4574F1531D704B4300CFC71B /* TKPPlacePickerViewController.xib in Resources */,
 				4574EE091D704B4300CFC71B /* Info.plist in Resources */,
+				458F69731D794B5F007A003E /* EditResolutionBuyerDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14633,6 +14655,7 @@
 				4574ED601D704B4200CFC71B /* UploadImageSubmitResult.m in Sources */,
 				4574EEE61D704B4300CFC71B /* GeneralAlertCell.m in Sources */,
 				4574F1B31D704B4300CFC71B /* TxOrderConfirmedCell.m in Sources */,
+				458834D41D7AEC1400BEA4D9 /* ResolutionValidation.swift in Sources */,
 				4574EC571D704B4200CFC71B /* DataUser.m in Sources */,
 				4574EBAB1D704B4200CFC71B /* ReviewResponse.m in Sources */,
 				4574EF681D704B4300CFC71B /* InboxTicketSplitViewController.m in Sources */,
@@ -14817,7 +14840,6 @@
 				4574EB531D704B4200CFC71B /* TkpdHMAC.m in Sources */,
 				4574EB351D704B4200CFC71B /* AFNetworkingImageDownloader.mm in Sources */,
 				4574F1301D704B4300CFC71B /* ShopPageRequest.m in Sources */,
-				4574F05A1D704B4300CFC71B /* ResolutionProductData.m in Sources */,
 				4574EE7F1D704B4300CFC71B /* CategoryViewCell.m in Sources */,
 				4574EC5F1D704B4200CFC71B /* ProfileInfo.m in Sources */,
 				4574ED621D704B4200CFC71B /* UploadImageValidationResult.m in Sources */,
@@ -14899,6 +14921,7 @@
 				4574F0061D704B4300CFC71B /* MyReviewDetailTableViewCell.m in Sources */,
 				4574ED291D704B4200CFC71B /* IndomaretData.m in Sources */,
 				4574EE101D704B4300CFC71B /* TKPHomeProductsStore.m in Sources */,
+				455483291D7971A600672DDC /* ResolutionProductData.m in Sources */,
 				4574F0931D704B4300CFC71B /* FilterSalesTransactionListViewController.m in Sources */,
 				4574ECF41D704B4200CFC71B /* ShippingInfoShipmentPackage.m in Sources */,
 				4574EDAB1D704B4200CFC71B /* Debug.swift in Sources */,
@@ -14993,7 +15016,6 @@
 				4574ED691D704B4200CFC71B /* DKAssetGroupDetailVC.swift in Sources */,
 				4574EB921D704B4200CFC71B /* CatalogInfo.m in Sources */,
 				4574EEA31D704B4300CFC71B /* ContactUsFormPresenter.m in Sources */,
-				4574F05B1D704B4300CFC71B /* ResolutionProductList.m in Sources */,
 				4574F15F1D704B4300CFC71B /* RequestEditAddress.m in Sources */,
 				4574EE3D1D704B4300CFC71B /* AlertListViewCell.m in Sources */,
 				4574EE351D704B4300CFC71B /* AlertListBankCell.m in Sources */,
@@ -15260,6 +15282,7 @@
 				4574EE691D704B4300CFC71B /* RequestGenerateHost.m in Sources */,
 				4574ED0A1D704B4200CFC71B /* TransactionAddressShipping.m in Sources */,
 				4574EE851D704B4300CFC71B /* FilterCategoryViewController.m in Sources */,
+				458F696C1D79285B007A003E /* EditProductTroubleCell.swift in Sources */,
 				4574EC111D704B4200CFC71B /* InboxTicketDetailAttachment.m in Sources */,
 				4574EB781D704B4200CFC71B /* CatalogShopAWSResult.m in Sources */,
 				4574EFD11D704B4300CFC71B /* ProductAddEditDetailViewController.m in Sources */,
@@ -15339,6 +15362,7 @@
 				4574F0FE1D704B4300CFC71B /* CloseShopResult.m in Sources */,
 				4574EBD31D704B4200CFC71B /* HistoryProduct.m in Sources */,
 				4574F0611D704B4300CFC71B /* NoResultReusableView.m in Sources */,
+				458F69721D794B5F007A003E /* EditResolutionBuyerDetailViewController.swift in Sources */,
 				4574EFAA1D704B4300CFC71B /* DetailPriceAlertTableViewCell.m in Sources */,
 				4574EDBB1D704B4200CFC71B /* ObserveOnSerialDispatchQueue.swift in Sources */,
 				4574EDFA1D704B4300CFC71B /* ScheduledItem.swift in Sources */,
@@ -15604,7 +15628,6 @@
 				4574F0C31D704B4300CFC71B /* SpellCheckResponse.m in Sources */,
 				4574ECC11D704B4200CFC71B /* EtalaseList.m in Sources */,
 				4574F0B61D704B4300CFC71B /* SearchViewController.m in Sources */,
-				4574F0421D704B4300CFC71B /* ResolutionCenterCreatePOSTFormSolution.m in Sources */,
 				4574EB701D704B4200CFC71B /* AddressObj.m in Sources */,
 				4574F0F41D704B4300CFC71B /* OpenShopRequest.m in Sources */,
 				4574EC061D704B4200CFC71B /* InboxReviewList.m in Sources */,
@@ -15967,6 +15990,7 @@
 				4574EBB31D704B4200CFC71B /* TalkCommentResult.m in Sources */,
 				4574EE2B1D704B4300CFC71B /* AlertBaseUrl.m in Sources */,
 				4574EEA81D704B4300CFC71B /* TKPDTabBarNavigationController.m in Sources */,
+				450652D61D7922EC00ABD65D /* EditSolutionBuyerViewController.swift in Sources */,
 				4574EFE51D704B4300CFC71B /* ReportProductGetTypeResponse.swift in Sources */,
 				4574EE451D704B4300CFC71B /* AlertRateView.m in Sources */,
 				4574F1581D704B4300CFC71B /* RequestTrack.m in Sources */,

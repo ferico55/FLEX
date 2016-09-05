@@ -10,6 +10,7 @@
 #import "ResolutionCenterCreateStepTwoCell.h"
 #import "DownPicker.h"
 #import "RequestResolutionAction.h"
+#import "Tokopedia-Swift.h"
 
 #import <BlocksKit/BlocksKit.h>
 
@@ -53,13 +54,13 @@ ResolutionCenterCreateStepTwoCellDelegate
 -(void)copyProductToJSONObject{
     _result.postObject.order_id = _result.formData.form.order_id?:@"";
     [_result.postObject.product_list removeAllObjects];
-    [_result.selectedProduct enumerateObjectsUsingBlock:^(ResolutionProductList * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_result.selectedProduct enumerateObjectsUsingBlock:^(ProductTrouble * obj, NSUInteger idx, BOOL * _Nonnull stop) {
         ResolutionCenterCreatePOSTProduct* postProduct = [ResolutionCenterCreatePOSTProduct new];
-        postProduct.order_dtl_id = obj.order_dtl_id;
-        postProduct.product_id = obj.product_id;
-        postProduct.quantity = obj.quantity;
-        postProduct.trouble_id = obj.trouble_id;
-        postProduct.remark = obj.solution_remark;
+        postProduct.order_dtl_id = obj.pt_order_dtl_id;
+        postProduct.product_id = obj.pt_product_id;
+        postProduct.quantity = obj.pt_quantity;
+        postProduct.trouble_id = obj.pt_trouble_id;
+        postProduct.remark = obj.pt_solution_remark;
         [_result.postObject.product_list addObject:postProduct];
     }];
     [_tableView reloadData];
@@ -71,9 +72,9 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 #pragma mark - UITableView Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ProductTrouble* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
     if([_result.postObject.category_trouble_id isEqualToString:@"1"]){
         //cell untuk product
-        ResolutionProductList* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
         ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
         
         ResolutionCenterCreateStepTwoCell *cell = nil;
@@ -84,8 +85,8 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [cell.productName setTitle:currentProduct.product_name forState:UIControlStateNormal];
-        [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.primary_photo]];
+        [cell.productName setTitle:currentProduct.pt_product_name forState:UIControlStateNormal];
+        [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
         cell.quantityLabel.text = postProduct.quantity;
         cell.quantityStepper.value = [postProduct.quantity integerValue];
         cell.quantityStepper.stepValue = 1.0f;
@@ -100,8 +101,8 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         
         [cell.troublePicker setData:[self generateDownPickerChoices]];
-        cell.troublePicker.text = currentProduct.trouble_name;
-        cell.problemTextView.text = currentProduct.solution_remark;
+        cell.troublePicker.text = currentProduct.pt_trouble_name;
+        cell.problemTextView.text = currentProduct.pt_solution_remark;
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;
@@ -111,6 +112,8 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        _priceProblemTextField.text = _result.trouble_name?:@"";
+        _priceProblemTextView.text = _result.remark?:@"";
         return _priceProblemCell;
     }
     

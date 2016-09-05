@@ -123,6 +123,7 @@ typedef enum {
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
     _requestInputAddress = [RequestResoInputAddress new];
+    _addedLastConversation = [ResolutionConversation new];
     _requestInputAddress.delegate = self;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -297,9 +298,13 @@ typedef enum {
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else if (_resolutionDetail.resolution_by.by_customer == 1) {
-        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-        vc.product_is_received = isGetProduct;
-        [self.navigationController pushViewController:vc animated:YES];
+        EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
+        controller.isGetProduct = isGetProduct;
+        controller.resolutionID = _resolutionID?:@"";
+        [controller didSuccessEdit:^(ResolutionLast * solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -1028,7 +1033,6 @@ typedef enum {
         }
         
         if (data.detail.resolution_can_conversation == 1) {
-            _addedLastConversation = [ResolutionConversation new];
             _addedLastConversation.flag_received = [data.detail.resolution_last.last_flag_received integerValue];
             _addedLastConversation.system_flag = 1;
             _addedLastConversation.action_by = [data.detail.resolution_last.last_action_by integerValue];
@@ -1163,9 +1167,8 @@ typedef enum {
         if (isReplyEnable == NO) {
             [_listResolutionConversation removeLastObject];
         }else if(conversationLast) {
-            if(conversationLast.refund_amt_idr)_addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
-            if(conversationLast.solution_string)_addedLastConversation.solution_string = conversationLast.solution_string;
-            if(conversationLast.trouble_string)_addedLastConversation.trouble_string = conversationLast.trouble_string;
+            _addedLastConversation = conversationLast;
+            [self refreshRequest];
         }
         [self hideReplyButton:!isReplyEnable];
     } else {

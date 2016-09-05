@@ -10,16 +10,109 @@ import UIKit
 
 class RequestResolution: NSObject {
     
+    class func fetchInputAddressID(addressID:String, resolutionID: String, oldAddressID: String, oldConversationID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+        
+        let auth : UserAuthentificationManager = UserAuthentificationManager()
+        
+        let param :[String:String] = [
+            "resolution_id" : resolutionID,
+            "address_id"    : addressID,
+            "old_data"      : "\(oldAddressID)-\(oldConversationID)",//(old_address_id-old_conversation_id)
+            "user_id"       : auth.getUserId()
+        ]
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString .v4Url(),
+                                          path: "/v4/action/resolution-center/edit_address_resolution.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: ResolutionAction.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : ResolutionAction = result[""] as! ResolutionAction
+                                            
+                                            if response.message_error.count > 0{
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure()
+                                            } else if (response.data?.is_success == 1) {
+                                                if response.message_status.count > 0 {
+                                                    StickyAlertView.showSuccessMessage(response.message_status)
+                                                }
+                                                onSuccess(data: response.data)
+                                            } else {
+                                                StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
+                                                onFailure()
+                                            }
+                                            
+                                            if (response.data?.is_success == 1) {
+                                            } else {
+                                            }
+                                            
+        }) { (error) in
+            StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
+            onFailure()
+        }
+    }
+    
+    class func fetchEditAddressID(addressID:String, resolutionID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+        
+        let auth : UserAuthentificationManager = UserAuthentificationManager()
+
+        let param :[String:String] = [
+            "resolution_id" : resolutionID,
+            "address_id"    : addressID,
+            "new_address"   : "1",
+            "user_id"       : auth.getUserId()
+            ]
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString .v4Url(),
+                                          path: "/v4/action/resolution-center/edit_address_resolution.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: ResolutionAction.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : ResolutionAction = result[""] as! ResolutionAction
+                                            
+                                            if response.message_error.count > 0{
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure()
+                                            } else if (response.data?.is_success == 1) {
+                                                if response.message_status.count > 0 {
+                                                    StickyAlertView.showSuccessMessage(response.message_status)
+                                                }
+                                                onSuccess(data: response.data)
+                                            } else {
+                                                StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
+                                                onFailure()
+                                            }
+                                            
+                                            if (response.data?.is_success == 1) {
+                                            } else {
+                                            }
+                                            
+        }) { (error) in
+            StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
+            onFailure()
+        }
+    }
+    
     class func fetchReplayConversation(postData:ReplayConversationPostData, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
         
         if postData.selectedAssets.count == 0 {
-            self.fetchReplayConversationValidation(postData).doOnNext({ (data) in
-                onSuccess(data: data)
+            self.getPostKey(postData).doOnNext({ (postData) in
+                onSuccess(data: postData)
             }).doOnError({ (error) in
                 onFailure()
             }).subscribe()
             
         } else {
+            
             
             self.getGeneratedHost().doOnError({ (error) in
                 onFailure()
@@ -32,7 +125,7 @@ class RequestResolution: NSObject {
                 })
                 
             })
-            .flatMap({ (uploadedImages) -> Observable<String> in
+            .flatMap({ (uploadedImages) -> Observable<ResolutionActionResult> in
                 postData.uploadedImages = uploadedImages
                 
                 return self.getPostKey(postData).doOnError({ (error) in
@@ -40,8 +133,8 @@ class RequestResolution: NSObject {
                 })
 
             })
-            .flatMap({ (postKey) -> Observable<String> in
-                postData.postKey = postKey
+            .flatMap({ (data) -> Observable<String> in
+                postData.postKey = data.post_key
                 
                 return self.getFileUploaded(postData).doOnError({ (error) in
                     onFailure()
@@ -59,52 +152,38 @@ class RequestResolution: NSObject {
         
     }
     
-    private class func fetchReplayConversationValidation(postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
-    
-        let auth : UserAuthentificationManager = UserAuthentificationManager()
+    private class func jsonStringProductList(postData: ReplayConversationPostData)-> String {
+        var jsonString : String = "{\"data\" : ["
+        if postData.postObjectProducts.count > 0 {
+            for (index,product) in postData.postObjectProducts.enumerate() {
+                let requestDescriptor : RKRequestDescriptor = RKRequestDescriptor.init(mapping: ResolutionCenterCreatePOSTProduct.mapping().inverseMapping(), objectClass: ResolutionCenterCreatePOSTProduct.self, rootKeyPath: nil, method: .POST)
+                var paramForObject : NSDictionary = NSDictionary()
+                do {
+                    paramForObject = try RKObjectParameterization.parametersWithObject(product, requestDescriptor: requestDescriptor)
+                    // use anyObj here
+                } catch {
+                }
+                var jsonData: NSData = NSData()
+                
+                do {
+                    jsonData = try NSJSONSerialization.dataWithJSONObject(paramForObject, options: NSJSONWritingOptions())
+                    // use anyObj here
+                } catch {
+                    print("json error: \(error)")
+                }
+                
+                let jsonStr = String.init(data: jsonData, encoding: NSUTF8StringEncoding)
+                jsonString = jsonString.stringByAppendingString(jsonStr!)
 
-        let param :[String:String] = [
-            "edit_sol_flag" : postData.editSolution,
-            "flag_received" : postData.flagReceived,
-            "refund_amount" : postData.refundAmount,
-            "reply_msg"     : postData.replyMessage,
-            "resolution_id" : postData.resolutionID,
-            "solution"      : postData.selectedSolution.solution_id,
-            "trouble_type"  : postData.troubleType,
-            "user_id"       : auth.getUserId(),
-            "action_by"     : postData.actionBy,
-            "problem_type"  : postData.category_trouble_id
-            ]
-        
-        return Observable.create({ (observer) -> Disposable in
-            let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
-            networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
-                path: "/v4/action/resolution-center/reply_conversation_validation_new.pl",
-                method: .POST,
-                parameter: param,
-                mapping: ResolutionAction.mapping(),
-                onSuccess: { (mappingResult, operation) in
-                    
-                    let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : ResolutionAction = result[""] as! ResolutionAction
-                    
-                    if (response.data.is_success == 1) {
-                        observer.onNext(response.data)
-                        observer.onCompleted()
-                    } else {
-                        StickyAlertView.showErrorMessage(response.message_error)
-                        observer.onError(RequestError.networkError)
-                    }
-                    
-            }) { (error) in
-                observer.onError(RequestError.networkError)
-                StickyAlertView.showErrorMessage(["Gagal membalas resolution"])
+                if index <  postData.postObjectProducts.count-1 {
+                    jsonString = jsonString.stringByAppendingString(",")
+                }
             }
-            
-            return NopDisposable.instance
-        })
-
+            jsonString = jsonString.substringToIndex(jsonString.endIndex)
+            jsonString = jsonString.stringByAppendingString("]}")
+        }
+        
+        return jsonString
     }
     
     //MARK: - Replay Conversation
@@ -156,27 +235,37 @@ class RequestResolution: NSObject {
         
     }
     
-    private class func getPostKey(postData:ReplayConversationPostData)-> Observable<String>{
+    private class func getPostKey(postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
         
-        let filePaths : [String] = postData.uploadedImages.map{$0.file_path}
-        let photos : String = filePaths.joinWithSeparator("~")
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
-        let param :[String:String] = [
+        var param :[String:String] = [
             "edit_sol_flag" : postData.editSolution,
             "flag_received" : postData.flagReceived,
-            "photos"        : photos,
             "refund_amount" : postData.refundAmount,
             "reply_msg"     : postData.replyMessage,
             "resolution_id" : postData.resolutionID,
-            "server_id"     : postData.generatedHost.server_id,
             "solution"      : postData.selectedSolution.solution_id,
-            "trouble_type"  : postData.troubleType,
             "user_id"       : auth.getUserId(),
             "action_by"     : postData.actionBy,
-            "problem_type"  : postData.category_trouble_id
+            "category_trouble_id"  : postData.category_trouble_id,
         ]
+        
+        if postData.uploadedImages.count > 0 {
+            let filePaths : [String] = postData.uploadedImages.map{$0.file_path}
+            let photos : String = filePaths.joinWithSeparator("~")
+            param["photos"] = photos
+            param["server_id"] = postData.generatedHost.server_id
+        }
+        
+        if postData.troubleType != ""{
+            param["trouble_id"] = postData.troubleType
+        }
+        
+        if postData.postObjectProducts.count > 0 {
+            param["product_list"] = self.jsonStringProductList(postData)
+        }
         
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
@@ -196,7 +285,7 @@ class RequestResolution: NSObject {
                     }
                     
                     if (response.data.is_success == 1) {
-                        observer.onNext(response.data.post_key)
+                        observer.onNext(response.data)
                         observer.onCompleted()
                     } else {
                         observer.onError(RequestError.networkError)

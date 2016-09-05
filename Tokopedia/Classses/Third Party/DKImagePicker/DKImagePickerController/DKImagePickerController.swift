@@ -368,29 +368,9 @@ public class DKImagePickerController: UINavigationController {
 		self.dismissViewControllerAnimated(true, completion: nil)
 		self.didCancel?()
 	}
-    
-    internal func callSelectorAsync(selector: Selector, object: AnyObject?, delay: NSTimeInterval) -> NSTimer {
-        
-        let timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: selector, userInfo: object, repeats: false)
-        return timer
-    }
-    
-    internal func callSelector(selector: Selector, object: AnyObject?, delay: NSTimeInterval) {
-        
-        let delay = delay * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue(), {
-            NSThread.detachNewThreadSelector(selector, toTarget:self, withObject: object)
-        })
-    }
-	
     internal func done() {
-        self.callSelector("dismissController", object: nil, delay: 0.5)
-        self.didSelectAssets?(assets: self.selectedAssets)
-    }
-    
-    internal func dismissController() {
         self.dismissViewControllerAnimated(true, completion: nil)
+        self.didSelectAssets?(assets: self.selectedAssets)
     }
     
     // MARK: - Notifications

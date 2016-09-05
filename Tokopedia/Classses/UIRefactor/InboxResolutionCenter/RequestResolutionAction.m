@@ -708,7 +708,7 @@ static failedCompletionBlock failedRequest;
     NSDictionary *param = @{
                             @"photos"               :photo?:@"",
                             @"refund_amount"        :refundAmount?:@"",
-                            @"remark"               :message?:@"",
+                            @"reply_msg"            :message?:@"",
                             @"resolution_id"        :resolutionID?:@"",
                             @"server_id"            :serverID?:@"",
                             @"solution"             :solution?:@"",

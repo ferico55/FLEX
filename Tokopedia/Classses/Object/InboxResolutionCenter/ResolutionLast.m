@@ -20,7 +20,11 @@
 }
 
 -(NSString *)last_solution_string{
-    return _last_solution_string?:@"Pilih";
+    return _last_solution_string?:@"";
+}
+
+-(NSString *)last_trouble_string{
+    return _last_trouble_string?:@"";
 }
 
 + (NSDictionary *)attributeMappingDictionary {
@@ -45,7 +49,9 @@
                       @"last_trouble_string",
                       @"last_solution_string",
                       @"last_create_time_wib",
-                      @"last_category_trouble_type"];
+                      @"last_category_trouble_type",
+                      @"last_category_trouble_string",
+                      @"last_solution_remark"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

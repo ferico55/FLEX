@@ -10,6 +10,7 @@
 #import "ResolutionCenterCreatePOSTData.h"
 
 @interface ResolutionCenterCreatePOSTResponse : NSObject
+@property (strong, nonatomic) NSArray* message_error;
 @property (strong, nonatomic) NSString* status;
 @property (strong, nonatomic) NSString* server_process_time;
 @property (strong, nonatomic) ResolutionCenterCreatePOSTData* data;

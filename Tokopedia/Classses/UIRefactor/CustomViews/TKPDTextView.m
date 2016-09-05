@@ -12,14 +12,17 @@
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.width, 40)];
-    _placeholderLabel.text = _placeholder;
-    _placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
-    _placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
-    _placeholderLabel.tag = 1;
-    [self addSubview:_placeholderLabel];
+    if (_placeholderLabel == nil) {
+        _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.width, 40)];
+        _placeholderLabel.text = _placeholder;
+        _placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
+        _placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+        _placeholderLabel.tag = 1;
+        [self addSubview:_placeholderLabel];
+        
+        _placeholderLabel.hidden = NO;
+    }
 
-    _placeholderLabel.hidden = NO;
     if (self.text.length > 0) {
         _placeholderLabel.hidden = YES;
     }
