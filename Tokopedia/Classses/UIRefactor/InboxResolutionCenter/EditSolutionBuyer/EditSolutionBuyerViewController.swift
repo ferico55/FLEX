@@ -42,6 +42,15 @@ import UIKit
         let button : UIBarButtonItem = UIBarButtonItem(title: "Lanjut", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionBuyerViewController.nextPage))
         self.navigationItem.rightBarButtonItem = button
         
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillShow(_:)),
+                                                         name: UIKeyboardWillShowNotification,
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillHide),
+                                                         name: UIKeyboardWillHideNotification,
+                                                         object: nil)
+        
         self.tableView.registerNib(UINib.init(nibName: "EditProductTroubleCell", bundle: nil), forCellReuseIdentifier: "EditProductTroubleCellIdentifier")
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ProblemCellIdentifier")
 
@@ -204,6 +213,26 @@ import UIKit
         postObject.troubleType = resolutionData.form.resolution_trouble_list[sender.selectedIndex].trouble_id
         postObject.troubleName = resolutionData.form.resolution_trouble_list[sender.selectedIndex].trouble_text
     }
+    
+    @objc private func keyboardWillShow(notification: NSNotification){
+        
+        if let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            let contentInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+            tableView.contentInset = contentInset
+        }
+        
+        if firstResponderIndexPath != nil {
+            tableView.scrollToRowAtIndexPath(firstResponderIndexPath!, atScrollPosition: .Bottom, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification){
+        UIView.animateWithDuration(0.3) {
+            if self.firstResponderIndexPath != nil {
+                self.tableView.contentInset = UIEdgeInsetsZero
+            }
+        }
+    }
 }
 
 extension EditSolutionBuyerViewController : GeneralTableViewControllerDelegate {
@@ -313,6 +342,9 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
                 let cell:EditProductTroubleCell = tableView.dequeueReusableCellWithIdentifier("EditProductTroubleCellIdentifier")! as! EditProductTroubleCell
                 cell.setViewModel(allProducts[indexPath.row].buyerEditViewModel, product: allProducts[indexPath.row])
                 cell.contentView.backgroundColor = UIColor.clearColor()
+                cell.startEditTextView({ [weak self] _ in
+                    self!.firstResponderIndexPath = indexPath
+                })
                 return cell
                 
             } else {

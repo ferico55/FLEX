@@ -20,6 +20,8 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     @IBOutlet weak var quantityLabel: UILabel!
     @IBOutlet weak var quantityStepper: UIStepper!
     
+    private var startEditTextView : (() -> Void)?
+    
     var troubleDownPicker : DownPicker!
     
     var productTrouble : ProductTrouble = ProductTrouble()
@@ -71,6 +73,15 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
         let quantity : String = String(format:"%.0f", sender.value)
         productTrouble.pt_show_input_quantity = quantity
         quantityLabel.text = quantity
+    }
+    
+    func startEditTextView(completion: ()->Void){
+        self.startEditTextView = completion
+    }
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        self.startEditTextView!()
+        return true
     }
     
     func textViewDidChange(textView: UITextView) {
