@@ -47,7 +47,7 @@
     style.alignment = NSTextAlignmentCenter;
     _labelAttributes = @{
         NSForegroundColorAttributeName : [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0],
-        NSFontAttributeName : FONT_GOTHAM_BOOK_13,
+        NSFontAttributeName : [UIFont largeTheme],
         NSParagraphStyleAttributeName : style
     };
     

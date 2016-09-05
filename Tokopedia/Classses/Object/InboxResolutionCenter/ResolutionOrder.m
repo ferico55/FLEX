@@ -18,7 +18,9 @@
                       @"order_shipping_price",
                       @"order_open_amount",
                       @"order_invoice_ref_num",
-                      @"order_id",
+                      @"order_free_return",
+                      @"order_free_return_msg",
+					  @"order_id",
                       @"order_shop_name"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -5,14 +5,11 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
@@ -28,7 +25,6 @@
 #import "InboxTicketViewController.h"
 #import "InboxRootViewController.h"
 #import "InboxTalkSplitViewController.h"
-#import "InboxReviewSplitViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "InboxTicketSplitViewController.h"
 
@@ -192,7 +188,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 6;
+            numberOfRows = 5;
             break;
             
         case 1:
@@ -275,7 +271,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 4, self.view.frame.size.width, 30)];
-    titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:15];
+    titleLabel.font = [UIFont title2ThemeMedium];
     titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1];
     if (section == 0) titleLabel.text = @"Kotak Masuk";
     else if (section == 1) titleLabel.text = @"Penjualan";
@@ -408,13 +404,6 @@
             }
             case 3:
             {
-                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:alertPriceNotificationViewController];
-                break;
-            }
-            case 4:
-            {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                     
@@ -444,7 +433,7 @@
                 break;
             }
                 
-            case 5 : {
+            case 4 : {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                     controller.hidesBottomBarWhenPushed = YES;

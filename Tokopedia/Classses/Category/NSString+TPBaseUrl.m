@@ -16,7 +16,7 @@
                            @"http://staging.tokopedia.com/ws" : @"Staging",
                            @"http://alpha.tokopedia.com/ws" : @"Alpha",
                            @"http://www.tokopedia.com/ws" : @"Production",
-                           FBTweakValue(@"Network", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
+                           @"http://www.ar-arief.ndvl/ws" : @"Development",
                            }
                          ));
 }
@@ -39,6 +39,7 @@
                             @"https://ws-staging.tokopedia.com" : @"Staging",
                             @"https://ws-alpha.tokopedia.com" : @"Alpha",
                             @"https://ws.tokopedia.com" : @"Production",
+                            @"http://ws.ar-arief.ndvl" : @"Development"
                             }
                           ));
 }
@@ -70,6 +71,7 @@
                             @"https://accounts-staging.tokopedia.com" : @"Staging",
                             @"https://accounts-alpha.tokopedia.com" : @"Alpha",
                             @"https://accounts.tokopedia.com" : @"Production",
+                            @"http://192.168.100.160:8009" : @"Development",
                             }
                           ));
 }
@@ -80,6 +82,26 @@
                             @"https://hades-staging.tokopedia.com" : @"Staging",
                             @"https://hades-alpha.tokopedia.com" : @"Alpha",
                             @"https://hades.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
++ (NSString*)mojitoUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Mojito Url", @"https://mojito.tokopedia.com",
+                         (@{
+                            @"https://mojito-staging.tokopedia.com" : @"Staging",
+                            @"https://mojito.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
+
++ (NSString*)pulsaUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Pulsa Url", @"https://pulsa-api.tokopedia.com",
+                         (@{
+                            @"https://pulsa-api-staging.tokopedia.com" : @"Staging",
+                            @"https://pulsa-api-alpha.tokopedia.com" : @"Alpha",
+                            @"https://pulsa-api.tokopedia.com" : @"Production",
                             }
                           ));
 }

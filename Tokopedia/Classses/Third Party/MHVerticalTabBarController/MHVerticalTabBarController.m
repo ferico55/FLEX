@@ -114,7 +114,7 @@
         [resetButton setTitle:@"Reset" forState:UIControlStateNormal];
         UIColor *color = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
         [resetButton setBackgroundColor:color];
-        resetButton.titleLabel.font = FONT_GOTHAM_BOOK_12;
+        resetButton.titleLabel.font = [UIFont smallTheme];
         [resetButton addTarget:self action:@selector(tapResetButton:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:resetButton];

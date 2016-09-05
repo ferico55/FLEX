@@ -110,20 +110,20 @@
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
-        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Medium" size:_reputationMessageLabel.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont smallThemeMedium] range:NSMakeRange(0, strDescription.length)];
         _reputationMessageLabel.attributedText = str;
         [_reputationMessageLabel addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
-        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Medium" size:_reputationMessageLabel.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont smallThemeMedium] range:NSMakeRange(0, strDescription.length)];
         _reputationMessageLabel.attributedText = str;
         _reputationMessageLabel.delegate = nil;
         [_reputationMessageLabel addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
     }
     
-    CGFloat heightOfMessage = 45;
+    CGFloat heightOfMessage = 60;
     
     if (imageAttachments.count > 0) {
         CGRect imageAttachmentFrame = self.reviewImageAttachmentView.frame;

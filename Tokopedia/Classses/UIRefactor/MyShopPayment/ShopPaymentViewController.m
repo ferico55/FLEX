@@ -7,7 +7,6 @@
 //
 
 #import "ShopPaymentViewController.h"
-#import "BerhasilBukaTokoViewController.h"
 #import "MyShopPaymentCell.h"
 #import "LoadingView.h"
 
@@ -113,12 +112,12 @@
     style.lineSpacing = 6.0;
     
     NSDictionary *titleAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+        NSFontAttributeName            : [UIFont title2ThemeMedium],
         NSParagraphStyleAttributeName  : style,
     };
     
     NSDictionary *textAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+        NSFontAttributeName            : [UIFont title2Theme],
         NSParagraphStyleAttributeName  : style,
     };
     

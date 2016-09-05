@@ -178,7 +178,7 @@
     
     
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont smallTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 3.0;

@@ -97,24 +97,8 @@
                                                      action:@selector(tap:)];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
-                                                                                  green:117.0/255.0
-                                                                                   blue:117.0/255.0
-                                                                                  alpha:1],
-                                 };
-    
-    _bankInformationLabel.attributedText = [[NSAttributedString alloc] initWithString:_bankInformationLabel.text
-                                                                 attributes:attributes];
-    _otpInformationLabel.attributedText = [[NSAttributedString alloc] initWithString:_otpInformationLabel.text
-                                                                           attributes:attributes];
-    
+    _bankInformationLabel.text = _bankInformationLabel.text?:@"";
+    _otpInformationLabel.text = _otpInformationLabel.text?:@"";
     [self setDefaultData:_data];
     
     _bankAccountRequest = [BankAccountRequest new];

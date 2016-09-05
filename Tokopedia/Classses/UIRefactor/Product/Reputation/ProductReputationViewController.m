@@ -654,10 +654,10 @@ static NSInteger userViewHeight = 70;
 - (IBAction)showMoreTapped:(id)sender {
     if(isShowingMore){
         isShowingMore = NO;
-        [_buttonShowMore setTitle:@"tampilkan semua" forState:UIControlStateNormal];
+        [_buttonShowMore setTitle:@"Tampilkan Semua" forState:UIControlStateNormal];
     }else{
         isShowingMore = YES;
-        [_buttonShowMore setTitle:@"sembunyikan" forState:UIControlStateNormal];
+        [_buttonShowMore setTitle:@"Sembunyikan" forState:UIControlStateNormal];
     }
     [tableContent reloadData];
 }
@@ -835,7 +835,7 @@ static NSInteger userViewHeight = 70;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
-    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.font = [UIFont smallTheme];
     lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CatalogMarketPlace : NSObject
+@interface CatalogMarketPlace : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *min_price;
 @property (nonatomic, strong) NSString *time;

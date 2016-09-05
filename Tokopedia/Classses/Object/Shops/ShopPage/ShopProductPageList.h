@@ -40,6 +40,7 @@
 @property(nonatomic, strong) NSString* shop_is_owner;
 @property(nonatomic, strong) NSString* product_url;
 @property(nonatomic, strong) NSString* product_name;
+@property(nonatomic, strong) NSArray* badges;
 
 @property NSInteger product_wholesale;
 @property NSInteger product_preorder;

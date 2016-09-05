@@ -9,7 +9,6 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopProductPageViewController.h"
 #import "MyShopNoteDetailViewController.h"
-#import "GeneralProductCell.h"
 
 #import "GeneralAction.h"
 #import "EtalaseList.h"
@@ -30,8 +29,6 @@
 #import "URLCacheController.h"
 #import "SortViewController.h"
 
-#import "GeneralSingleProductCell.h"
-#import "GeneralPhotoProductCell.h"
 #import "DetailProductViewController.h"
 
 #import "ProductCell.h"
@@ -73,9 +70,6 @@ LoadingViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 ShopPageHeaderDelegate,
 SortViewControllerDelegate,
-GeneralProductCellDelegate,
-GeneralSingleProductDelegate,
-GeneralPhotoProductDelegate,
 NoResultDelegate,
 RetryViewDelegate,
 EtalaseViewControllerDelegate
@@ -412,6 +406,7 @@ EtalaseViewControllerDelegate
         
         [(ProductCell*)cell setViewModel:list.viewModel];
         ((ProductCell*)cell).locationImage.hidden = YES;
+        ((ProductCell*)cell).badgesConstraint.constant = 15;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];

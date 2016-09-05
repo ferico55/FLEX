@@ -77,15 +77,20 @@
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
-
 #import "Product.h"
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
 #import "GeneralAction.h"
 #import "AddProductValidation.h"
-#import "UIView+BlocksKit.h"
+#import "CustomNotificationView.h"
+#import "NSString+HTML.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import <APAddressBook/APAddressBook-Bridging.h>
+#import "SPTPersistentCache.h"
+#import "iCarousel.h"
+#import "CarouselDataSource.h"
+#import "CategoryDataSource.h"
 
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
@@ -100,3 +105,8 @@
 #import "UIDownPicker.h"
 #import "ResolutionCenterChooseProblemViewController.h"
 
+#import "StickyAlertView+NetworkErrorHandler.h"
+#import "UIFont+Theme.h"
+#import "QueueImageDownloader.h"
+#import "ProductBadge.h"
+#import "MMNumberKeyboard.h"

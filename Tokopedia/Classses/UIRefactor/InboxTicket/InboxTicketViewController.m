@@ -141,7 +141,7 @@ NoResultDelegate
     
     cell.titleLabel.text = ticket.ticket_title;
     if ([ticket.ticket_read_status isEqualToString:@"1"]) {
-        cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+        cell.titleLabel.font = [UIFont largeThemeMedium];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;

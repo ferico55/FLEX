@@ -1,37 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TrackOrderViewController">
             <connections>
@@ -70,7 +42,7 @@
                                 <constraint firstAttribute="height" constant="45" id="QU0-EM-DYb"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="h4K-UZ-YtF"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -80,7 +52,7 @@
                                 <constraint firstAttribute="height" constant="45" id="1Vo-N6-k9f"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="234" id="tJR-7N-2xC"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -125,7 +97,7 @@
                         <constraint firstAttribute="width" constant="100" id="ELl-un-MEL"/>
                         <constraint firstAttribute="height" constant="21" id="fHU-Kj-Dbu"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -135,7 +107,7 @@
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="190" id="Wgz-Wm-frQ"/>
                         <constraint firstAttribute="height" constant="21" id="qCu-4P-1Um"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -145,7 +117,7 @@
                         <constraint firstAttribute="width" constant="118" id="65y-TN-xLy"/>
                         <constraint firstAttribute="height" constant="21" id="xwP-Q5-yHR"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -155,7 +127,7 @@
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="172" id="JK4-yz-2kH"/>
                         <constraint firstAttribute="height" constant="21" id="sLm-Ay-gpm"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -165,7 +137,7 @@
                         <constraint firstAttribute="width" constant="118" id="GkR-LD-XjQ"/>
                         <constraint firstAttribute="height" constant="21" id="bMV-Vo-mQ8"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -175,7 +147,7 @@
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="172" id="BJz-Kt-Pcz"/>
                         <constraint firstAttribute="height" constant="21" id="ead-FW-y9c"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -237,7 +209,7 @@
                                 <constraint firstAttribute="height" constant="45" id="MOV-CK-UlF"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="RuO-sX-VXX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -247,7 +219,7 @@
                                 <constraint firstAttribute="height" constant="45" id="P9Y-B6-twi"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="234" id="pYN-u2-AaY"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -292,7 +264,7 @@
                         <constraint firstAttribute="height" constant="21" id="Jc8-TG-wHx"/>
                         <constraint firstAttribute="width" constant="100" id="e8d-If-lqc"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -302,7 +274,7 @@
                         <constraint firstAttribute="height" constant="21" id="WfZ-ER-lIl"/>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="190" id="cgt-l9-BMq"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -375,7 +347,7 @@
                         <constraint firstAttribute="height" constant="21" id="LMU-jW-lJB"/>
                         <constraint firstAttribute="width" constant="146" id="fhz-nt-LHF"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -387,7 +359,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIf-oj-9yy">
                                     <rect key="frame" x="15" y="0.0" width="170" height="44"/>
-                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -406,7 +378,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kota" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U8l-ef-znF">
                                     <rect key="frame" x="10" y="0.0" width="100" height="44"/>
-                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -519,13 +491,13 @@
                     <rect key="frame" x="15" y="69" width="290" height="281"/>
                     <string key="text">Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:
 
-      Penjual keliru menginput nomor resi atau tanggal pengiriman.
-      Penjual menggunakan kurir yang berbeda dari pilihan pembeli.
+   Penjual keliru menginput nomor resi atau tanggal pengiriman.
+    Penjual menggunakan kurir yang berbeda dari pilihan pembeli.
 
 Pembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.
 
 Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -566,7 +538,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                                 <constraint firstAttribute="height" constant="21" id="GNd-jz-arS"/>
                                 <constraint firstAttribute="width" constant="100" id="cKs-Lq-jqh"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -575,7 +547,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="xih-qg-Xaq"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -585,7 +557,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                                 <constraint firstAttribute="height" constant="21" id="eYu-g8-ADs"/>
                                 <constraint firstAttribute="width" constant="118" id="hgn-IO-sCl"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -594,7 +566,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Reh-hJ-HOX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -630,7 +602,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                                 <constraint firstAttribute="width" constant="56" id="6CL-2S-1ju"/>
                                 <constraint firstAttribute="height" constant="45" id="fRp-7i-lr8"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -639,7 +611,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="B6c-Ox-JDy"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>

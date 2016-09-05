@@ -227,7 +227,7 @@
     if (cell == nil) {
         cell = [InboxResolutionCenterComplainCell newCell];
         cell.delegate = self;
-        [cell.viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+        [cell.viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallThemeMedium]];
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
@@ -235,6 +235,12 @@
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
+    
+    if ([resolution.resolution_order.order_free_return  isEqual: @"0"]) {
+        [self setFreeReturnImageViewAndLabelToHide:YES withCell:cell];
+    } else if ([resolution.resolution_order.order_free_return  isEqual: @"1"]){
+        [self setFreeReturnImageViewAndLabelToHide:NO withCell:cell];
+    }
     
     if(resolution.resolution_by.by_customer == 1){
         [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge.set withImage:cell.btnReputation isLarge:NO];
@@ -445,6 +451,11 @@
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
 }
 
+- (void) setFreeReturnImageViewAndLabelToHide: (BOOL) hideBool withCell: (InboxResolutionCenterComplainCell*) cell {
+    cell.freeReturnLabel.hidden = hideBool;
+    cell.freeReturnImageView.hidden = hideBool;
+}
+
 #pragma mark - Cell Delegate
 - (void)actionReputation:(id)sender {
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
@@ -586,12 +597,12 @@
     NSString *filterDaysString = [NSString stringWithFormat:@"Ada %@ komplain yang belum selesai lebih dari %@ hari", reso.counter_days, reso.pending_days];
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:filterDaysString];
-    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:FONT_GOTHAM_MEDIUM_11];
+    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:[UIFont microThemeMedium]];
     _labelFilterDaysCount.attributedText = string;
     
     _labelPendingAmount.text = [NSString stringWithFormat:@"Total dana berkendala Anda %@", reso.pending_amt.total_amt_idr];
     string = [[NSMutableAttributedString alloc] initWithString:_labelPendingAmount.text];
-    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:FONT_GOTHAM_MEDIUM_11];
+    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:[UIFont microThemeMedium]];
     
     _labelPendingAmount.attributedText = string;
     

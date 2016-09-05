@@ -11,8 +11,6 @@
 
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusDetailViewController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
@@ -39,7 +37,6 @@
 #import "RequestResolutionData.h"
 #import "ResolutionCenterCreateViewController.h"
 
-#define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
 #define TAG_ALERT_COMPLAIN 13
@@ -366,7 +363,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
+                                 NSFontAttributeName: [UIFont smallThemeMedium],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
@@ -734,26 +731,7 @@
 #pragma mark - Alert View Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(alertView.tag == TAG_ALERT_DELIVERY_CONFIRMATION)
-    {
-        switch (buttonIndex) {
-            case 1://Selesai
-            {
-                TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
-                NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-                [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
-            }
-                break;
-            case 2://Complain
-            {
-                [self showAlertViewOpenComplain];
-            }
-                break;
-            default:
-                break;
-        }
-    }
-    else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
+    if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
         [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
         if(_isNeedPopUpLD)[_navigate popUpLuckyDeal:_worlds];
@@ -970,13 +948,38 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-    UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name]
-                                                               message:ALERT_DELIVERY_CONFIRM_DESCRIPTION
-                                                              delegate:self
-                                                     cancelButtonTitle:@"Batal"
-                                                     otherButtonTitles:@"Selesai",@"Komplain", nil];
-    alertConfirmation.tag = TAG_ALERT_DELIVERY_CONFIRMATION;
-    [alertConfirmation show];
+    NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+    NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+    NSString *selesaiString = @"Selesai";
+    void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
+        NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+        [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+    };
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+
+    if ([self isOrderFreeReturn:order]) {
+        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
+        alertTitle = ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN;
+        [alertController setTitle: alertTitle];
+        [alertController setMessage:alertMessage];
+        selesaiString = @"OK";
+        OKActionHandler = ^void(UIAlertAction * _Nonnull action) {
+            // do nothing if user tap OK when order is Free Return
+        };
+    } else {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+    }
+    
+    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
+    UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self showAlertViewOpenComplain];
+    }];
+    
+    [alertController addAction:OKAction];
+    [alertController addAction:complainAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void)showAlertReorder
@@ -1014,6 +1017,16 @@
     BOOL isUsingDateFilter = (filterStartDate != nil && ![filterStartDate isEqualToString:@""]) || (filterEndDate != nil && ![filterEndDate isEqualToString:@""]);
     
     return (isUsingInvoiceFilter || isUsingTransactionStatusFilter || isUsingDateFilter);
+}
+
+- (BOOL) isOrderFreeReturn: (TxOrderStatusList*) order {
+    if (order.order_detail.detail_free_return == 0) {
+        return NO;
+    } else if (order.order_detail.detail_free_return == 1) {
+        return YES;
+    }
+    
+    return YES;
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class ProductModelView;
+@class ProductBadge;
 
 @interface WishListObjectList : NSObject
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *shop_lucky;
 @property (nonatomic, strong) NSString *product_available;
+@property (nonatomic, strong) NSArray<NSString*>* badges;
 
 @property NSInteger product_wholesale;
 @property NSInteger product_preorder;

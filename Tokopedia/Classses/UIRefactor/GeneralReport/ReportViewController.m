@@ -5,7 +5,6 @@
 //  Created by Tonito Acen on 3/31/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "DetailMyReviewReputationViewController.h"
 #import "InboxTalkViewController.h"
 #import "ReportViewController.h"
 #import "ProductReputationViewController.h"

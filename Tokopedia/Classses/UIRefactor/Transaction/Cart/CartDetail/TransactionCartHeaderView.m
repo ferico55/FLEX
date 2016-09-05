@@ -56,7 +56,7 @@
             NSStringDrawingContext *context = [NSStringDrawingContext new];
             CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
                                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                                         attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                         attributes:@{NSFontAttributeName:[UIFont title1Theme]}
                                                             context:context].size;
             _errorViewHeightConstraint.constant = expectedLabelSize.height;
             _errorLabel.text = string;
