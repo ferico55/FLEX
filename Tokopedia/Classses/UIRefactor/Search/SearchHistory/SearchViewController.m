@@ -406,71 +406,35 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    [UIView animateWithDuration:0.10 delay:0 options:(UIViewAnimationOptionCurveEaseInOut)
-                     animations:^{
-                         [cell setBackgroundColor: collectionView.backgroundColor];
-                     }
-                     completion:^(BOOL finished){
-                         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-                         
-                         SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-                         
-                         if ([searchSuggestionData.id  isEqual: @"hotlist"]){
-                             NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
-                             
-                             HotlistResultViewController *controller = [HotlistResultViewController new];
-                             NSString *hotListUrl = [keys lastObject]; // hotListValue example: iphone-5s?source=jahe . But we only need 'iphone-5s' value, so we need to cut ?source=jahe
-                             
-                             NSString *hotListName = [[hotListUrl componentsSeparatedByString:@"?"] objectAtIndex: 0];
-                             controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
-                             controller.isFromAutoComplete = YES;
-                             controller.hidesBottomBarWhenPushed = YES;
-                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:searchSuggestionItem.keyword];
-                             
-                             [self.navigationController pushViewController:controller animated:YES];
-                         } else {
-                             [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
-                         }
-                         
-//                         [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
-                         
-//                         NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-//                         NSString *domainName = [domain objectForKey:@"title"];
-//                         if([domainName isEqualToString:SearchDomainHistory]) {
-//                             if (_searchBar.text.length > 0) {
-//                                 NSString *searchText = [_typedHistoryResult objectAtIndex:indexPath.row];
-//                                 [self goToResultPage:searchText withAutoComplete:YES];
-//                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
-//                             } else {
-//                                 NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
-//                                 [self goToResultPage:searchText withAutoComplete:YES];
-//                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
-//                             }
-//                         }
-//                         
-//                         else if ([domainName isEqualToString:SearchDomainGeneral]) {
-//                             NSArray *generals = [domain objectForKey:@"data"];
-//                             SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
-//                             [self saveHistory:general.title];
-//                             [TPAnalytics trackSearchWithAction:@"Search Autocomplete" keyword:general.title];
-//                             [self goToResultPage:general.title withAutoComplete:YES];
-//                         }
-//                         else if ([domainName isEqualToString:SearchDomainHotlist]) {
-//                             NSArray *hotlists = [domain objectForKey:@"data"];
-//                             SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
-//                             NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
-//                             
-//                             HotlistResultViewController *controller = [HotlistResultViewController new];
-//                             controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
-//                             controller.isFromAutoComplete = YES;
-//                             controller.hidesBottomBarWhenPushed = YES;
-//                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:hotlist.title];
-//                             
-//                             [self.navigationController pushViewController:controller animated:YES];
-//                         }
-//                         
-                     }
-     ];
+    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
+    
+    SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
+    
+    if ([searchSuggestionData.id  isEqual: @"hotlist"]){
+        NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
+        
+        HotlistResultViewController *controller = [HotlistResultViewController new];
+        NSString *hotListUrl = [keys lastObject]; // hotListValue example: iphone-5s?source=jahe . But we only need 'iphone-5s' value, so we need to cut ?source=jahe
+        
+        NSString *hotListName = [[hotListUrl componentsSeparatedByString:@"?"] objectAtIndex: 0];
+        controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
+        controller.isFromAutoComplete = YES;
+        controller.hidesBottomBarWhenPushed = YES;
+        [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:searchSuggestionItem.keyword];
+        
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        NSString *actionForTracker = @"";
+        if ([searchSuggestionData.id  isEqual: @"autocomplete"]) {
+            actionForTracker = @"Search Autocomplete";
+        } else if ([searchSuggestionData.id  isEqual: @"recent_search"]) {
+            actionForTracker = @"Search History";
+        } else if ([searchSuggestionData.id  isEqual: @"popular_search"]) {
+            actionForTracker = @"Popular Search";
+        }
+        [TPAnalytics trackSearchWithAction:actionForTracker keyword:searchSuggestionItem.keyword];
+        [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
+    }
 }
 
 
@@ -478,62 +442,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
         _requestManager = [TokopediaNetworkManager new];
         _requestManager.isUsingHmac = YES;
-//        if([searchText isEqualToString:@""]) {
-//            _searchSuggestionDataArray = _recentAndPopularSearchArrayCache;
-//            [_collectionView reloadData];
-//        } else {
-            [self getUserSearchSuggestionDataWithQuery:searchText];
-            
-            
-            //        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-            //        NSArray *historiesresult;
-            //        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
-            //        NSInteger limit = 5;
-            //
-            //        if(historiesresult.count > limit) {
-            //            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
-            //            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
-            //            [_typedHistoryResult addObjectsFromArray:lastThree];
-            //        } else {
-            //            [_typedHistoryResult addObjectsFromArray:historiesresult];
-            //        }
-            //
-            //        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
-            //                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
-            //                                     method:RKRequestMethodGET
-            //                                  parameter:nil
-            //                                    mapping:[self mapping]
-            //                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-            //                                      NSDictionary *result = successResult.dictionary;
-            //                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
-            //
-            //                                      [_domains removeAllObjects];
-            //                                      [_general removeAllObjects];
-            //                                      [_hotlist removeAllObjects];
-            //
-            //                                      [_general addObjectsFromArray:search.domains.general];
-            //                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
-            //
-            //                                      if(_general.count > 0) {
-            //                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
-            //                                      }
-            //
-            //                                      if(_hotlist.count > 0) {
-            //                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
-            //                                      }
-            //
-            //                                      if(_typedHistoryResult.count > 0) {
-            //                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
-            //                                      }
-            //                                      
-            //                                      [_collectionView reloadData];
-            //                                      [_collectionView setHidden:NO];
-            //                                  } onFailure:^(NSError *errorResult) {
-            //                                      
-            //                                  }];
-                //
-
-//        }
+        [self getUserSearchSuggestionDataWithQuery:searchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
