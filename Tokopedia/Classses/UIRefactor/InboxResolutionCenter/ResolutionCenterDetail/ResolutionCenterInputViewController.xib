@@ -405,7 +405,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="MsW-NL-xOR"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="9Rq-Kn-sTg"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecq-4O-TwH">
@@ -419,7 +419,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="NvD-f6-qrP"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="Dac-zE-FwP"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r10-l1-E6i">
@@ -433,7 +433,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="tDC-Je-ZLW"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="7rI-oV-dzw"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4IY-mi-A2S">
@@ -447,7 +447,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="htg-tm-sNp"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="yEJ-Nr-MMJ"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMe-9L-cVN">
@@ -461,7 +461,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="Uju-EO-T9r"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="Imn-qU-0XI"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3x-SN-sNV">

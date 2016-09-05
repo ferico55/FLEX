@@ -363,6 +363,7 @@ typedef enum {
         ResolutionInputReceiptViewController *vc = [ResolutionInputReceiptViewController new];
         vc.delegate = self;
         vc.selectedShipment = selectedShipment;
+        vc.conversation = conversation;
         vc.conversationID = conversation.conversation_id;
         vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
@@ -921,7 +922,7 @@ typedef enum {
         [marks addObject:@"\n"];
     }
     
-    if ([conversation.input_resi integerValue] != 0) {
+    if (![conversation.input_resi isEqualToString:@"0"] && conversation.input_resi != nil) {
         [marks addObject:[NSString stringWithFormat:@"Nomor Resi : %@ (%@)",conversation.input_resi,conversation.kurir_name]];
     }
     

@@ -41,6 +41,7 @@
     self.navigationItem.rightBarButtonItem = doneBarButtonItem;
     
     _nomorReceiptTextField.text = _conversation.input_resi?:@"";
+    _selectedShipment.shipment_id = _conversation.input_kurir?:@"";
     _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Agen Kurir";
     
     [self doRequestListCourier];
@@ -126,6 +127,11 @@
 -(void)doRequestListCourier{
     [RequestResolutionData fetchListCourierSuccess:^(NSArray<ShipmentCourier *> *shipments) {
         [_list addObjectsFromArray:shipments];
+        for (ShipmentCourier *shipment in _list) {
+            if ([shipment.shipment_id integerValue] == [_selectedShipment.shipment_id integerValue]) {
+                _selectedShipment = shipment;
+            }
+        }
         _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Agen Kurir";
     } failure:^(NSError *error) {
         
