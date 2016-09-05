@@ -117,3 +117,4 @@
 #import "TKPStoreManager.h"
 #import "TKPHomeBannerStore.h"
 #import "TKPHomeProductsStore.h"
+#import "NavigateViewController.h"

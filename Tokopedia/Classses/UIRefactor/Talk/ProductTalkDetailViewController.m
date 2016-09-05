@@ -28,6 +28,7 @@
 #import "WebViewController.h"
 
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
+#import "Tokopedia-Swift.h"
 
 @interface ProductTalkDetailViewController ()
 <
