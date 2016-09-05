@@ -29,10 +29,7 @@
 #import "StickyAlertView.h"
 #import "Tokopedia-Swift.h"
 
-#define TAG_ALERT_HELPER 10
-#define TAG_CHANGE_SOLUTION 11
-
-@interface ResolutionCenterInputViewController () <UIAlertViewDelegate, UITextViewDelegate, SyncroDelegate>
+@interface ResolutionCenterInputViewController () <UITextViewDelegate, SyncroDelegate>
 {
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -283,9 +280,17 @@
 
 -(void)didTapReportButton
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Konfirmasi Bantuan" message:@"Apakah Anda yakin ingin meminta bantuan Tokopedia untuk memutuskan resolusinya?" delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
-    alert.tag = TAG_ALERT_HELPER;
-    [alert show];
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Konfirmasi Bantuan" message:@"Apakah Anda yakin ingin meminta bantuan Tokopedia untuk memutuskan resolusinya?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [weakSelf doRequestReport];
+    }];
+    [alert addAction: changeSolution];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }];
+    [alert addAction: cancel];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)didTapEditSolutionButton
@@ -295,19 +300,37 @@
 
     if (isSeller) {
         [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
-    }
-    else
-    {
+    } else {
         if (isGotTheOrder) {
             [self doChangeSolutionIsGotTheOrder:isGotTheOrder isSeller:isSeller];
-        }
-        else
-        {
-            UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Apakah barang telah diterima?" message:@"Anda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
-            alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
-            [alertChangeSolution show];
+        } else {
+            [self showAlertChangeSolution];
         }
     }
+}
+
+-(void)showAlertChangeSolution{
+    BOOL isSeller = (_resolution.resolution_by.by_seller == 1);
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Apakah barang telah diterima?" message:@"Anda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *received = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [weakSelf doChangeSolutionIsGotTheOrder:YES isSeller:isSeller];
+    }];
+    [alert addAction: received];
+    
+    UIAlertAction *notReceived = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [weakSelf doChangeSolutionIsGotTheOrder:NO isSeller:isSeller];
+    }];
+    [alert addAction: notReceived];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }];
+    [alert addAction: cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 -(void)doChangeSolutionIsGotTheOrder:(BOOL)isGotTheOrder isSeller:(BOOL)isSeller
@@ -397,21 +420,6 @@
         frame.origin.y = _messageTextView.contentSize.height;
         _imageScrollView.frame = frame;
         frame = _imageScrollView.frame;
-    }
-}
-
-#pragma mark - alert view Delegate
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == TAG_ALERT_HELPER) {
-        if (buttonIndex == 1) {
-            [self doRequestReport];
-        }
-    }
-    if (alertView.tag == TAG_CHANGE_SOLUTION)
-    {
-        BOOL isSeller = (_resolution.resolution_by.by_seller == 1);
-        [self doChangeSolutionIsGotTheOrder:(buttonIndex == 1) isSeller:isSeller];
     }
 }
 
