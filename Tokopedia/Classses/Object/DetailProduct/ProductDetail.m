@@ -135,5 +135,9 @@
     return mapping;
 }
 
++ (NSInteger)maximumPurchaseQuantity {
+    return 9999;
+}
+
 
 @end
