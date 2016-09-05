@@ -35,8 +35,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
+    var didShowAlertPermission: (Void -> Void)?
     var refreshContainerSize: (Void -> Void)?
     var didSuccessPressBuy: (NSURL -> Void)?
+    
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -280,14 +282,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     }
     
     func showContactAlertPermission() {
-        UIAlertView.bk_showAlertViewWithTitle("",
-                                              message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts",
-                                              cancelButtonTitle: "Batal",
-                                              otherButtonTitles: ["Aktifkan"], handler: { (alert, index) in
-                                                if(index == 1) {
-                                                    JLContactsPermission.sharedInstance().displayAppSystemSettings()
-                                                }
-        })
+        self.didShowAlertPermission!()
     }
     
     func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {

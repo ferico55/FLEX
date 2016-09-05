@@ -65,11 +65,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
         self.initViewLayout()
+        
+        let debounced = Debouncer(delay: 0.1) {
+            self.requestPulsaWidget()
+        }
+        debounced.call()
 
-        self.requestBanner()
-        self.requestTicker()
-        self.requestPulsaWidget()
-        self.requestMiniSlider()
         
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.collectionView = self.collectionView
@@ -77,6 +78,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.requestBanner()
+        self.requestTicker()
+        self.requestMiniSlider()
 
         TPAnalytics.trackScreenName("Top Category")
     }
@@ -192,11 +197,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         self.pulsaView.addActionNumberField();
         self.pulsaView.refreshContainerSize = {
-            let debounced = Debouncer(delay: 0.1) {
                 self.refreshCollectionViewHeaderSize()
-            }
-            
-            debounced.call()
         }
         
         self.pulsaView.didPrefixEntered = { operatorId, categoryId in
@@ -212,6 +213,23 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
             self.navigator.navigateToAddressBook(contacts)
+        }
+        
+        self.pulsaView.didShowAlertPermission = {
+            let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Aktifkan", style: .Default, handler: { (action) in
+                switch action.style{
+                case .Default:
+                    JLContactsPermission.sharedInstance().displayAppSystemSettings()
+                    
+                case .Cancel:
+                    print("cancel")
+                    
+                case .Destructive:
+                    print("destructive")
+                }
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
