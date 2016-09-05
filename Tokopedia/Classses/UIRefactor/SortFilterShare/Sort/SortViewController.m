@@ -179,7 +179,7 @@
     if (_sortValues.count > indexPath.row) {
         NSDictionary *sort =  _sortValues[indexPath.row];
         cell.textLabel.text = [[sort allKeys] objectAtIndex:0];
-        cell.textLabel.font = [UIFont fontWithName:@"GothamLight" size:15];
+        cell.textLabel.font = [UIFont title2Theme];
         if (indexPath.row != _selectedIndexPath.row) {
             cell.accessoryType = UITableViewCellAccessoryNone;
         } else {

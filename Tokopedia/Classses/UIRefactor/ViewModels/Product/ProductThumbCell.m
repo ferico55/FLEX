@@ -21,16 +21,8 @@
         imageDownloader = [QueueImageDownloader new];
     }
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                 };
-    
-    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName attributes:attributes];
+    self.productName.font = [UIFont smallThemeMedium];
+    self.productName.text = viewModel.productName?:@"";
     self.productPrice.text = viewModel.productPrice;
     self.shopName.text = viewModel.productShop;
     self.shopLocation.text = viewModel.shopLocation;
@@ -82,20 +74,11 @@
     self.catalogPriceLabel.hidden = NO;
     self.catalogPriceLabel.text = viewModel.catalogPrice;
     self.productPrice.text = @"Mulai dari :";
-    self.productPrice.font = [UIFont fontWithName:@"GothamBook" size:11.0];
+    self.productPrice.font = [UIFont microTheme];
     
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.lineBreakMode = NSLineBreakByTruncatingTail;
-    
-    NSDictionary* catalogNameAtt = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                     };
     self.productName.numberOfLines = 2;
-    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.catalogName attributes:catalogNameAtt];
+    self.productName.font = [UIFont smallThemeMedium];
+    self.productName.text = viewModel.catalogName;
     
     self.productPriceWidthConstraint.constant = -50;
     [self.shopName setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];

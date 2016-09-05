@@ -84,7 +84,7 @@
     float labelHeight = 50;
     
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont microTheme];
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
                                  NSFontAttributeName: font};
     

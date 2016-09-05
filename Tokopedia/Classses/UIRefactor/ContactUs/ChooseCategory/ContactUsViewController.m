@@ -389,7 +389,7 @@
 }
 
 - (void)loadWebViewContent {
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    UIFont *font = [UIFont largeTheme];
     TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
     NSString *string = lastCategory.ticket_category_description;
     NSString *description = [self htmlFromBodyString:string

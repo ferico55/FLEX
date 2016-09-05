@@ -123,7 +123,7 @@
     
     [attributedString addAttribute:NSFontAttributeName
      
-                             value:[UIFont fontWithName:@"GothamMedium" size:10.0f]
+                             value:[UIFont microTheme]
      
                              range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
@@ -145,7 +145,7 @@
     
     [attributedString addAttribute:NSFontAttributeName
      
-                             value:FONT_GOTHAM_BOOK_12
+                             value:[UIFont microTheme]
      
                              range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",viewModel.productTotalWeight]]];
     
@@ -188,7 +188,7 @@
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         CGSize expectedLabelSize = [errorText boundingRectWithSize:maximumLabelSize
                                                         options:NSStringDrawingUsesLineFragmentOrigin
-                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0f]}
+                                                     attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                         context:context].size;
         _errorLabel.text = errorText;
         _errorViewHeightConstraint.constant = expectedLabelSize.height + 16;

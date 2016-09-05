@@ -158,22 +158,22 @@
         } else if (indexPath.row == 1) {
             cell.textLabel.text = @"Agen kurir";
             cell.detailTextLabel.text = _selectedCourier.shipment_name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 2) {
             cell.textLabel.text = @"Paket pengiriman";
             cell.detailTextLabel.text = _selectedCourierPackage.name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        cell.textLabel.font = [UIFont title2Theme];
     } else if (indexPath.section == 1) {
         UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
         textField.placeholder = @"Nomor resi";
         textField.tag = 1;
-        textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+        textField.font = [UIFont title2Theme];
         textField.text = _receiptNumber;
         [cell addSubview:textField];
         
@@ -202,19 +202,6 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        
-        NSDictionary *attributes = @{
-            NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-            NSParagraphStyleAttributeName  : style,
-            NSForegroundColorAttributeName : [UIColor grayColor],
-        };
-        
-        _footerTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerTextLabel.text
-                                                                          attributes:attributes];
-        
         return _footerView;
     } else {
         return nil;

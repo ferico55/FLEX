@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,13 +14,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-PL-2SS">
-                        <rect key="frame" x="15" y="11" width="218" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-PL-2SS">
+                        <rect key="frame" x="15" y="0.0" width="218" height="43.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="218" id="iPV-D6-MmN"/>
-                            <constraint firstAttribute="height" constant="21" id="ldI-PP-e1M"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                         <variation key="default">
                             <mask key="constraints">
@@ -45,9 +39,10 @@
                     </switch>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Ddb-PL-2SS" secondAttribute="bottom" id="1kN-38-zqI"/>
                     <constraint firstItem="qUE-pO-Gc4" firstAttribute="top" secondItem="0hz-yv-mXQ" secondAttribute="top" constant="6" id="4eR-i1-wGF"/>
                     <constraint firstAttribute="trailing" secondItem="qUE-pO-Gc4" secondAttribute="trailing" constant="16" id="9sy-ie-aZI"/>
-                    <constraint firstItem="Ddb-PL-2SS" firstAttribute="top" secondItem="0hz-yv-mXQ" secondAttribute="top" constant="11" id="LAX-Jn-Omq"/>
+                    <constraint firstItem="Ddb-PL-2SS" firstAttribute="top" secondItem="0hz-yv-mXQ" secondAttribute="top" id="LAX-Jn-Omq"/>
                     <constraint firstItem="qUE-pO-Gc4" firstAttribute="leading" secondItem="Ddb-PL-2SS" secondAttribute="trailing" constant="22" id="T3d-eN-jxH"/>
                     <constraint firstItem="Ddb-PL-2SS" firstAttribute="leading" secondItem="0hz-yv-mXQ" secondAttribute="leading" constant="15" id="lQw-4k-dDx"/>
                 </constraints>

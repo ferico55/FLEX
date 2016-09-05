@@ -24,7 +24,7 @@
 #pragma mark -
 #pragma mark TKPDTabNavigationItem
 
-@interface TKPDTabNavigationItem : UITabBarItem
+@interface TKPDTabNavigationItemInNavVC : UITabBarItem
 @end
 
 #pragma mark -
@@ -49,6 +49,7 @@
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
+- (void)changeNavigationTitle:(NSNotification*)notification;
 
 @end
 
@@ -58,7 +59,7 @@
 @interface UIViewController (TKPDTabNavigationController)
 
 @property (nonatomic, readonly, strong) TKPDTabNavigationController *TKPDTabNavigationController;
-@property (nonatomic, readwrite, strong) TKPDTabNavigationItem *TKPDTabNavigationItem;
+@property (nonatomic, readwrite, strong) TKPDTabNavigationItemInNavVC *TKPDTabNavigationItem;
 
 @end
 

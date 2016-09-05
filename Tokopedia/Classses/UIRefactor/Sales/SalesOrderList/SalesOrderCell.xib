@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -27,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="237"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="236"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="236.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbs-k1-CjR">
@@ -41,28 +25,28 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="PdL-Os-eBf"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                         <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Batal Otomatis" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlz-Gd-6D1">
-                                        <rect key="frame" x="210" y="9" width="80" height="12"/>
+                                        <rect key="frame" x="200" y="9" width="90" height="12"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="fga-ZM-KFn"/>
+                                            <constraint firstAttribute="width" constant="90" id="fga-ZM-KFn"/>
                                             <constraint firstAttribute="height" constant="12" id="foW-tI-fZg"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 hari lagi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7n-Xq-FLP">
-                                        <rect key="frame" x="210" y="24" width="80" height="18"/>
+                                        <rect key="frame" x="200" y="24" width="90" height="18"/>
                                         <color key="backgroundColor" red="0.0" green="0.47450980392156861" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="U0x-IF-cOg"/>
+                                            <constraint firstAttribute="width" constant="90" id="U0x-IF-cOg"/>
                                             <constraint firstAttribute="height" constant="18" id="zYe-6b-g49"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -85,7 +69,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="Fnk-u3-nDw"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -96,7 +80,7 @@
                                     <constraint firstItem="hVC-C2-pGX" firstAttribute="top" secondItem="pNe-LS-TvB" secondAttribute="top" id="3xg-zo-9hx"/>
                                     <constraint firstAttribute="bottom" secondItem="KDg-04-LxQ" secondAttribute="bottom" id="8yo-gQ-oPg"/>
                                     <constraint firstItem="hVC-C2-pGX" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" id="BaC-oU-SWv"/>
-                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="dLS-pK-Cm4" secondAttribute="trailing" constant="10" id="H5c-sB-0tW"/>
+                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="dLS-pK-Cm4" secondAttribute="trailing" id="H5c-sB-0tW"/>
                                     <constraint firstAttribute="trailing" secondItem="KDg-04-LxQ" secondAttribute="trailing" id="HsR-OX-zXd"/>
                                     <constraint firstItem="PrC-Kp-7oA" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="7" id="KfI-Gf-5NN"/>
                                     <constraint firstItem="KDg-04-LxQ" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" id="Ky2-6Z-Skg"/>
@@ -106,7 +90,7 @@
                                     <constraint firstAttribute="trailing" secondItem="hVC-C2-pGX" secondAttribute="trailing" id="Q8t-Ht-7lX"/>
                                     <constraint firstAttribute="height" constant="51" id="caa-Jw-RuP"/>
                                     <constraint firstItem="PrC-Kp-7oA" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" constant="10" id="dac-rI-bli"/>
-                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="PrC-Kp-7oA" secondAttribute="trailing" constant="10" id="h2k-FZ-3z6"/>
+                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="PrC-Kp-7oA" secondAttribute="trailing" id="h2k-FZ-3z6"/>
                                     <constraint firstAttribute="trailing" secondItem="M7n-Xq-FLP" secondAttribute="trailing" constant="10" id="kGb-6Z-1OV"/>
                                     <constraint firstItem="xlz-Gd-6D1" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="8" id="lGA-Ot-zEd"/>
                                 </constraints>
@@ -127,7 +111,7 @@
                                             <constraint firstAttribute="width" constant="140" id="EgW-Lk-fvz"/>
                                             <constraint firstAttribute="height" constant="17" id="tvD-hY-7IZ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -136,7 +120,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="AYU-fd-Bc6"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                         <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -166,12 +150,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-3B-j63" userLabel="Price View">
                                 <rect key="frame" x="0.0" y="113" width="300" height="69"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp, 514.043,-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvF-Pa-AWF">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 514.043,-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvF-Pa-AWF">
                                         <rect key="frame" x="10" y="14" width="250" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="BPe-uG-dyM"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -180,7 +164,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="ftS-eB-9xM"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -220,7 +204,7 @@
                                 <subviews>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkI-l2-Vuj">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="43"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Tolak Pesanan" image="icon_order_cancel-01.png">
@@ -232,8 +216,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyH-rR-Xdy">
-                                        <rect key="frame" x="150" y="0.0" width="150" height="43"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <rect key="frame" x="151" y="0.0" width="149" height="43"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Terima Pesanan" image="icon_order_check-01.png">
@@ -245,7 +229,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="raa-Ex-dFw" userLabel="Vertical Border">
-                                        <rect key="frame" x="149" y="9" width="1" height="23"/>
+                                        <rect key="frame" x="150" y="9" width="1" height="23"/>
                                         <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="23" id="dbo-JB-JcR"/>

@@ -412,7 +412,7 @@
             }
             else
             {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi.";
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
             }
         }
         else
@@ -1178,11 +1178,12 @@
 }
 
 - (CGFloat)getLabelHeightWithText:(NSString*)text {
-    CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
+    NSInteger labelWidth = 253;
+    CGSize maximumLabelSize = CGSizeMake(labelWidth,9999);
     NSStringDrawingContext *context = [NSStringDrawingContext new];
     CGSize expectedLabelSize = [text boundingRectWithSize:maximumLabelSize
                                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                 attributes:@{NSFontAttributeName:[UIFont title1Theme]}
                                                     context:context].size;
     
     return expectedLabelSize.height;
@@ -2075,11 +2076,6 @@
         }
         else if(indexPath.row <= list.cart_products.count) {
             ProductDetail *product = list.cart_products[indexPath.row-1];
-//            return [_tableView fd_heightForCellWithIdentifier:@"TransactionCartCellIdentifier"
-//                                             cacheByIndexPath:indexPath
-//                                                configuration:^(TransactionCartCell *cell) {
-//                                                    [cell setViewModel:product.viewModel];
-//                                                }];
             return [self productRowHeight:product];
         }
         else if ( indexPath.row == list.cart_products.count + 2) {
@@ -2305,7 +2301,7 @@
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
                                                         options:NSStringDrawingUsesLineFragmentOrigin
-                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:21.0f]}
+                                                     attributes:@{NSFontAttributeName:[UIFont title1Theme]}
                                                         context:context].size;
         
         return expectedLabelSize.height;
@@ -2319,7 +2315,7 @@
     
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+    CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByWordWrapping];
     
@@ -2339,7 +2335,7 @@
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         expectedErrorLabelSize = [errorText boundingRectWithSize:maximumLabelSize
                                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0f]}
+                                                        attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                            context:context].size;
         expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
     } else {
@@ -2490,7 +2486,7 @@
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
         _voucherAmountLabel.text = voucherString;
-        _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+        _voucherAmountLabel.font = [UIFont microTheme];
         
         _buttonVoucherInfo.hidden = YES;
         _buttonCancelVoucher.hidden = NO;

@@ -36,10 +36,10 @@
     [_successMessage setCustomAttributedText:[NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan %@.",_confirmationPayment]];
     [_infoLabel setCustomAttributedText:_infoLabel.text];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 5.0;
     style.alignment = NSTextAlignmentCenter;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_info2Label.text];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[_info2Label.text rangeOfString:@"Klik disini"]];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont smallTheme] range:[_info2Label.text rangeOfString:@"Klik disini"]];
     [attributedString addAttribute:NSForegroundColorAttributeName
                              value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
                              range:[_info2Label.text rangeOfString:@"Klik disini"]];

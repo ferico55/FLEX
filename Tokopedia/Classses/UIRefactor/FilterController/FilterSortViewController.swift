@@ -105,8 +105,7 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let item : ListOption = items[indexPath.row]
         
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        cell.textLabel?.font = font
+        cell.textLabel?.font = UIFont.title2Theme()
         cell.textLabel?.text = item.name
         cell.tintColor = UIColor.init(red: 66/255.0, green: 189/255.0, blue: 65/255.0, alpha: 1)
 

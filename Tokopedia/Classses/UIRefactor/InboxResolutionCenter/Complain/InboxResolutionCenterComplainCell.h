@@ -45,6 +45,8 @@
 @property (weak, nonatomic) IBOutlet UIView *unreadBorderView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadIconImageView;
 @property (strong, nonatomic) IBOutlet UIView *unrespondView;
+@property (strong, nonatomic) IBOutlet UIImageView *freeReturnImageView;
+@property (strong, nonatomic) IBOutlet UILabel *freeReturnLabel;
 
 +(id)newCell;
 - (IBAction)actionReputation:(id)sender;

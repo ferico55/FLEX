@@ -60,7 +60,7 @@
         CGRect frame = CGRectMake(15, 0, self.view.frame.size.width-30, 45);
         UITextField *textField = [[UITextField alloc] initWithFrame:frame];
         textField.placeholder = @"Invoice / Nama Pembeli / Nomor Resi";
-        textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+        textField.font = [UIFont largeTheme];
         [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
         [textField becomeFirstResponder];
         [cell addSubview:textField];
