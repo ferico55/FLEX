@@ -20,9 +20,9 @@ import UIKit
     @IBOutlet var uploadImageCell: UITableViewCell!
     @IBOutlet var solutionCell: UITableViewCell!
     @IBOutlet var refundViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var invoiceLabel: UILabel!
+    @IBOutlet weak var invoiceButton: UIButton!
     
-    @IBOutlet var sellerLabel: UILabel!
+    @IBOutlet var sellerButton: UIButton!
     @IBOutlet var headerView: UIView!
     @IBOutlet var deleteButtons: [UIButton]!
     @IBOutlet var imageButtons: [UIButton]!
@@ -91,9 +91,18 @@ import UIKit
         self.navigateToPhotoPicker()
     }
     
+    @IBAction func onTapInvoiceButton(sender: UIButton) {
+        NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+
+    }
+    
+    @IBAction func onTapSellerButton(sender: UIButton) {
+//        NavigateViewController.navigateToShopFromViewController(self, withShopID: resolutionData.form.resolution_order.sh)
+    }
+    
     private func adjustUIForm(form: EditResolutionForm) {
-        invoiceLabel.text = form.resolution_order.order_invoice_ref_num
-        sellerLabel.text = "Pembelian dari \(form.resolution_order.order_shop_name)"
+        invoiceButton .setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
+        sellerButton.setTitle("Pembelian dari \(form.resolution_order.order_shop_name)", forState: .Normal)
         solutionLabel.text = form.resolution_last.last_solution_string
     }
     
