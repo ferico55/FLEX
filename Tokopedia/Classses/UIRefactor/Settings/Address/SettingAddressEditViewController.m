@@ -297,7 +297,7 @@
             case 11: {
                 //submit
                 if ([self isValidInput]) {
-                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO|| _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO) {
+                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
 
                         NSString *receivernName = _textfieldreceivername.text?:@"";
                         NSString *addressName = _textfieldaddressname.text?:@"";
@@ -337,7 +337,6 @@
                         }];
                     } else {
                         [self requestActionAddAddress:_datainput];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
                 break;
@@ -466,7 +465,7 @@
             if ([setting.data.is_success boolValue]) {
                 //TODO:: add alert
                 NSDictionary *userinfo;
-                if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
+                if (_type == TYPE_ADD_EDIT_PROFILE_EDIT || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO){
                     //TODO: Behavior after edit
                     
                     // If presented

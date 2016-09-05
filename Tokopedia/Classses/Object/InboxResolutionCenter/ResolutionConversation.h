@@ -31,8 +31,8 @@
 
 @property (nonatomic, strong) NSString *kurir_name;
 @property (nonatomic, strong) NSString *input_kurir;
-@property (nonatomic) NSInteger show_edit_resi_button;
-@property (nonatomic) NSInteger show_track_button;
+@property (nonatomic) NSInteger edit_resi;
+@property (nonatomic) NSInteger track_resi;
 
 @property (nonatomic, strong) NSNumber *trouble_type;
 @property (nonatomic, strong) NSString *refund_amt_idr;
@@ -40,7 +40,7 @@
 @property (nonatomic) NSInteger solution_flag;
 @property (nonatomic) NSInteger system_flag;
 @property (nonatomic, strong) NSString *address_edited;
-@property (nonatomic, strong) NSString *show_edit_addr_button;
+@property (nonatomic, strong) NSString *edit_address;
 @property (nonatomic, strong) NSString *left_count;
 @property (nonatomic) NSInteger view_more;
 
