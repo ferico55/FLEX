@@ -15,4 +15,12 @@ class ProductResolutionViewModel: NSObject {
     var productTrouble: String = ""
     var productTroubleDescription: String = ""
     var isFreeReturn : Bool = true
+    var productQuantity : String = ""
+    
+    var maxQuantity : String = "1"
+    var minQuantity : String = "0"
+    
+    var isSelected : Bool = false
+    
+    var troubleTypeList : [ResolutionCenterCreateTroubleList] = []
 }

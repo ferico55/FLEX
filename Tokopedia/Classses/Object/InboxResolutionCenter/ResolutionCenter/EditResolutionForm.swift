@@ -15,6 +15,7 @@ class EditResolutionForm : NSObject {
     var resolution_by       : ResolutionBy      = ResolutionBy()
     var resolution_customer : ResolutionCustomer = ResolutionCustomer()
     var resolution_solution_list : [EditSolution] = []
+    var resolution_trouble_list : [ResolutionCenterCreateTroubleList] = []
     
     class func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)

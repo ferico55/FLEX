@@ -14,10 +14,12 @@ class ReplayConversationPostData: NSObject {
     var flagReceived : String = ""
     var photos       : String = ""
     var refundAmount : String = ""
+    var maxRefundAmount : String = ""
     var replyMessage : String = ""
     var resolutionID : String = ""
     var solution     : String = ""
     var troubleType  : String = ""
+    var troubleName  : String = ""
     var userID       : String = ""
     var generatedHost : GeneratedHost = GeneratedHost()
     var selectedAssets : [DKAsset] = []
@@ -27,6 +29,7 @@ class ReplayConversationPostData: NSObject {
     var fileUploaded : String = ""
     var actionBy       : String = "1"
     var category_trouble_id : String = ""
-    var selectedProducts    : [ResolutionCenterCreatePOSTProduct] = []
-
+    var category_trouble_text : String = ""
+    var selectedProducts    : [ProductTrouble] = []
+    var postObjectProducts : [ResolutionCenterCreatePOSTProduct] = []
 }

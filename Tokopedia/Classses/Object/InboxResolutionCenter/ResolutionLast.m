@@ -45,7 +45,9 @@
                       @"last_trouble_string",
                       @"last_solution_string",
                       @"last_create_time_wib",
-                      @"last_category_trouble_type"];
+                      @"last_category_trouble_type",
+                      @"last_category_trouble_string",
+                      @"last_solution_remark"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

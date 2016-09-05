@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ResolutionProductList.h"
+@class ProductTrouble;
 
 @interface ResolutionProductData : NSObject
-@property (strong, nonatomic) NSArray<ResolutionProductList*>* list;
+@property (strong, nonatomic) NSArray<ProductTrouble*>* list;
 
 +(RKObjectMapping*)mapping;
 @end

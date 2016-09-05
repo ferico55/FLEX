@@ -97,4 +97,6 @@
 #import "RequestResolutionAction.h"
 #import "ResolutionCenterCreateSolutionList.h"
 #import "NSArrayCategory.h"
+#import "UIDownPicker.h"
+#import "ResolutionCenterChooseProblemViewController.h"
 

@@ -12,6 +12,7 @@
 @interface ResolutionCenterCreatePOSTRequest : NSObject
 @property (strong, nonatomic) NSString* category_trouble_id;
 @property (strong, nonatomic) NSString* order_id;
+@property (strong, nonatomic) NSString* trouble_id;
 @property (strong, nonatomic) NSMutableArray<ResolutionCenterCreatePOSTProduct*>* product_list;
 
 +(RKObjectMapping*)mapping;

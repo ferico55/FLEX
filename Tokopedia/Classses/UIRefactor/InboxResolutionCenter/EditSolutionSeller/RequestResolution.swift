@@ -59,22 +59,63 @@ class RequestResolution: NSObject {
         
     }
     
+    private class func jsonStringProductList(postData: ReplayConversationPostData)-> String {
+        var jsonString : String = "{\"data\" : ["
+        if postData.postObjectProducts.count > 0 {
+            for (index,product) in postData.postObjectProducts.enumerate() {
+                let requestDescriptor : RKRequestDescriptor = RKRequestDescriptor.init(mapping: ResolutionCenterCreatePOSTProduct.mapping().inverseMapping(), objectClass: ResolutionCenterCreatePOSTProduct.self, rootKeyPath: nil, method: .POST)
+                var paramForObject : NSDictionary = NSDictionary()
+                do {
+                    paramForObject = try RKObjectParameterization.parametersWithObject(product, requestDescriptor: requestDescriptor)
+                    // use anyObj here
+                } catch {
+                }
+                var jsonData: NSData = NSData()
+                
+                do {
+                    jsonData = try NSJSONSerialization.dataWithJSONObject(paramForObject, options: NSJSONWritingOptions())
+                    // use anyObj here
+                } catch {
+                    print("json error: \(error)")
+                }
+                
+                let jsonStr = String.init(data: jsonData, encoding: NSUTF8StringEncoding)
+                jsonString = jsonString.stringByAppendingString(jsonStr!)
+
+                if index <  postData.postObjectProducts.count-1 {
+                    jsonString = jsonString.stringByAppendingString(",")
+                }
+            }
+            jsonString = jsonString.substringToIndex(jsonString.endIndex)
+            jsonString = jsonString.stringByAppendingString("]}")
+        }
+        
+        return jsonString
+    }
+    
     private class func fetchReplayConversationValidation(postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
     
         let auth : UserAuthentificationManager = UserAuthentificationManager()
 
-        let param :[String:String] = [
+        var param :[String:String] = [
             "edit_sol_flag" : postData.editSolution,
             "flag_received" : postData.flagReceived,
             "refund_amount" : postData.refundAmount,
             "reply_msg"     : postData.replyMessage,
             "resolution_id" : postData.resolutionID,
             "solution"      : postData.selectedSolution.solution_id,
-            "trouble_type"  : postData.troubleType,
             "user_id"       : auth.getUserId(),
             "action_by"     : postData.actionBy,
-            "problem_type"  : postData.category_trouble_id
+            "problem_type"  : postData.category_trouble_id,
             ]
+        
+        if postData.troubleType != ""{
+            param["trouble_type"] = postData.troubleType
+        }
+        
+        if postData.postObjectProducts.count > 0 {
+            param["product_list"] = self.jsonStringProductList(postData)
+        }
         
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
@@ -163,7 +204,7 @@ class RequestResolution: NSObject {
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
-        let param :[String:String] = [
+        var param :[String:String] = [
             "edit_sol_flag" : postData.editSolution,
             "flag_received" : postData.flagReceived,
             "photos"        : photos,
@@ -172,11 +213,18 @@ class RequestResolution: NSObject {
             "resolution_id" : postData.resolutionID,
             "server_id"     : postData.generatedHost.server_id,
             "solution"      : postData.selectedSolution.solution_id,
-            "trouble_type"  : postData.troubleType,
             "user_id"       : auth.getUserId(),
             "action_by"     : postData.actionBy,
-            "problem_type"  : postData.category_trouble_id
+            "problem_type"  : postData.category_trouble_id,
         ]
+        
+        if postData.troubleType != ""{
+            param["trouble_type"] = postData.troubleType
+        }
+        
+        if postData.postObjectProducts.count > 0 {
+            param["product_list"] = self.jsonStringProductList(postData)
+        }
         
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()

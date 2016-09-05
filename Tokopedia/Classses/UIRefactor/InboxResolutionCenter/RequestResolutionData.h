@@ -14,7 +14,9 @@
 #import "ShipmentOrder.h"
 #import "ResolutionCenterCreateResponse.h"
 #import "ResolutionProductResponse.h"
-#import "ResolutionCenterCreatePOSTResponse.h"
+
+@class EditSolution;
+
 @class EditResolutionFormData;
 
 typedef enum{
@@ -50,12 +52,12 @@ typedef enum{
 +(void)fetchCreateResolutionDataWithOrderId:(NSString*)orderId
                                     success:(void(^) (ResolutionCenterCreateResponse* data))success
                                     failure:(void(^)(NSError* error))failure;
-+(void)fetchAllProductsInTransactionWithOrderId:(NSString*)orderId
-                                      success:(void(^) (ResolutionProductResponse* data))success
-                                      failure:(void(^)(NSError* error))failure;
+
++(void)fetchAllProductsInTransactionWithOrderId:(NSString *)orderId success:(void (^)(NSArray<ProductTrouble*> *list))success failure:(void (^)(NSError *))failure;
+
 +(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
                                             troubleId:(NSString*)troubleId
-                                              success:(void(^) (ResolutionCenterCreatePOSTResponse* result))success
+                                              success:(void(^) (NSArray <EditSolution*>* list))success
                                               failure:(void(^) (NSError* error))failure;
 
 +(void)fetchformEditResolutionID:(NSString *)resolutionID

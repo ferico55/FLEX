@@ -297,9 +297,10 @@ typedef enum {
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else if (_resolutionDetail.resolution_by.by_customer == 1) {
-        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-        vc.product_is_received = isGetProduct;
-        [self.navigationController pushViewController:vc animated:YES];
+        EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
+        controller.isGetProduct = isGetProduct;
+        controller.resolutionID = _resolutionID?:@"";
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

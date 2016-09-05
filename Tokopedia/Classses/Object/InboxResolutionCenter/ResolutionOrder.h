@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *order_open_amount;
 @property (nonatomic, strong) NSString *order_invoice_ref_num;
 @property (nonatomic, strong) NSString *order_id;
+@property (nonatomic, strong) NSString *order_shop_name;
 
 @end

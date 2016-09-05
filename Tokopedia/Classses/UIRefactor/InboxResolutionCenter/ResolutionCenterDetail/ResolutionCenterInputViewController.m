@@ -324,11 +324,10 @@
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
-        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-        vc.product_is_received = isGotTheOrder;
-        vc.resolutionID = _resolutionID?:@"";
-        vc.type = TypeResoEdit;
-        [self.navigationController pushViewController:vc animated:YES];
+        EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.resolutionID = _resolutionID?:@"";
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

@@ -10,7 +10,6 @@
 #import "ResolutionCenterCreateStepOneViewController.h"
 #import "ResolutionCenterCreateStepTwoViewController.h"
 #import "ResolutionCenterCreateStepThreeViewController.h"
-#import "ResolutionProductList.h"
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionCenterCreateResult.h"
 

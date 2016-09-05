@@ -13,7 +13,7 @@ import UIKit
 }
 
 @IBDesignable
-class EditSolutionSellerViewController: UIViewController {
+@objc(EditSolutionSellerViewController) class EditSolutionSellerViewController: UIViewController {
     
     @IBOutlet var reasonCell: UITableViewCell!
     @IBOutlet var solutionCell: UITableViewCell!
@@ -47,6 +47,7 @@ class EditSolutionSellerViewController: UIViewController {
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
     var type         : Type   = Type.Edit
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

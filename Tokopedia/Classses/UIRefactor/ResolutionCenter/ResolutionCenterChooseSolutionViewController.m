@@ -7,10 +7,11 @@
 //
 
 #import "ResolutionCenterChooseSolutionViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface ResolutionCenterChooseSolutionViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) ResolutionCenterCreatePOSTFormSolution *selectedList;
+@property (strong, nonatomic) EditSolution *selectedList;
 @end
 
 @implementation ResolutionCenterChooseSolutionViewController
@@ -42,7 +43,7 @@
 
 #pragma mark - UITableView Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ResolutionCenterCreatePOSTFormSolution* currentList = [_formSolutions objectAtIndex:indexPath.row];
+    EditSolution* currentList = [_formSolutions objectAtIndex:indexPath.row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.textLabel.text = currentList.solution_text;

@@ -7,13 +7,14 @@
 //
 
 #import "ResolutionCenterCreatePOSTData.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ResolutionCenterCreatePOSTData
 +(RKObjectMapping *)mapping{
     RKObjectMapping* dataMapping = [RKObjectMapping mappingForClass:[ResolutionCenterCreatePOSTData class]];
     [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"form_solution"
                                                                                toKeyPath:@"form_solution"
-                                                                             withMapping:[ResolutionCenterCreatePOSTFormSolution mapping]]];
+                                                                             withMapping:[EditSolution mapping]]];
     return dataMapping;
 }
 @end

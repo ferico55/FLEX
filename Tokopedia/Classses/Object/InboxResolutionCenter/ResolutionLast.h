@@ -34,6 +34,7 @@
 @property (nonatomic, strong) NSString *last_solution_string;
 @property (nonatomic, strong) NSArray<ProductTrouble*> *last_product_trouble;
 @property (nonatomic, strong) NSString *last_category_trouble_type;
-
+@property (nonatomic, strong) NSString *last_category_trouble_string;
+@property (nonatomic, strong) NSString *last_solution_remark;
 
 @end
