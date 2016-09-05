@@ -13,9 +13,9 @@ import UIKit
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var detailProblemPicker: UIDownPicker!
     var detailProblemDownPicker : DownPicker!
-    @IBOutlet weak var invoiceLabel: UILabel!
+    @IBOutlet weak var invoiceButton: UIButton!
 
-    @IBOutlet weak var sellerLabel: UILabel!
+    @IBOutlet weak var sellerButton: UIButton!
     @IBOutlet var detailProblemCell: UITableViewCell!
     @IBOutlet weak var tableView: UITableView!
     private var refreshControl: UIRefreshControl!
@@ -71,6 +71,15 @@ import UIKit
         detailProblemDownPicker.shouldDisplayCancelButton = false
         
         self.requestFormEdit()
+    }
+    
+    @IBAction func onTapInvoiceButton(sender: UIButton) {
+        NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+        
+    }
+    
+    @IBAction func onTapSellerButton(sender: UIButton) {
+        //        NavigateViewController.navigateToShopFromViewController(self, withShopID: resolutionData.form.resolution_order.sh)
     }
     
     @objc private func nextPage(){
@@ -155,8 +164,8 @@ import UIKit
     }
     
     private func setHeaderAppearanceData(data: EditResolutionFormData){
-        invoiceLabel.text = data.form.resolution_order.order_invoice_ref_num
-        sellerLabel.text = "Pembelian dari \(data.form.resolution_order.order_shop_name)"
+        invoiceButton.setTitle(data.form.resolution_order.order_invoice_ref_num, forState: .Normal)
+        sellerButton.setTitle("Pembelian dari \(data.form.resolution_order.order_shop_name)", forState: .Normal)
     }
     
     private func isFinishRequest(isFinishRequest: Bool){

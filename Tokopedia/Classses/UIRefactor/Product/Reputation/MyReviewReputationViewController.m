@@ -36,6 +36,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
 #import "InboxReputationResult.h"
+#import "Tokopedia-Swift.h"
 
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"

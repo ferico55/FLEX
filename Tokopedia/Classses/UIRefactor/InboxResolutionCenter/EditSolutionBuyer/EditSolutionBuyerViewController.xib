@@ -5,21 +5,16 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditSolutionBuyerViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
                 <outlet property="detailProblemCell" destination="8ax-XC-CJg" id="FJB-Pj-Guo"/>
                 <outlet property="detailProblemPicker" destination="i5D-ex-aWD" id="RmP-te-jIp"/>
-                <outlet property="headerView" destination="Emg-M6-IDS" id="X6u-eU-Voh"/>
-                <outlet property="invoiceLabel" destination="f0Q-bL-jkB" id="2BJ-Z6-kEs"/>
+                <outlet property="headerView" destination="ykX-Zj-oOz" id="UzE-9Y-vVj"/>
+                <outlet property="invoiceButton" destination="41M-pB-Z5f" id="Ce4-Bi-ik8"/>
                 <outlet property="problemCell" destination="zox-Iw-fol" id="jJc-HP-NXw"/>
                 <outlet property="problemLabel" destination="Ynj-I8-uG8" id="qKO-9G-ZRK"/>
-                <outlet property="sellerLabel" destination="z1U-dP-ClP" id="NiO-AY-i6k"/>
+                <outlet property="sellerButton" destination="dxf-cC-iMq" id="eOu-S4-RQ9"/>
                 <outlet property="tableView" destination="ho1-u7-g2Q" id="TtQ-V7-nyJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -84,63 +79,6 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="545" y="34"/>
         </tableViewCell>
-        <view contentMode="scaleToFill" id="Emg-M6-IDS" userLabel="Header View">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t9k-vP-XbP" userLabel="Invoice View">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INV/20150113/XV/I/8327373" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f0Q-bL-jkB">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="41" id="9TQ-vg-xaQ"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
-                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nWB-yd-QWx" userLabel="Horizontal Border">
-                            <rect key="frame" x="0.0" y="59" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="1nc-x4-x9W"/>
-                            </constraints>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembelian Oleh Bilala" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1U-dP-ClP">
-                            <rect key="frame" x="0.0" y="33" width="320" height="17"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="17" id="dpb-1T-4Sp"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="nWB-yd-QWx" secondAttribute="trailing" id="DTq-kC-Tyc"/>
-                        <constraint firstItem="nWB-yd-QWx" firstAttribute="top" secondItem="z1U-dP-ClP" secondAttribute="bottom" constant="9" id="EUM-Ez-xQu"/>
-                        <constraint firstAttribute="bottom" secondItem="nWB-yd-QWx" secondAttribute="bottom" id="Ft2-cZ-fds"/>
-                        <constraint firstAttribute="trailing" secondItem="z1U-dP-ClP" secondAttribute="trailing" id="aF7-nI-1IZ"/>
-                        <constraint firstItem="f0Q-bL-jkB" firstAttribute="leading" secondItem="t9k-vP-XbP" secondAttribute="leading" id="ahN-5f-osx"/>
-                        <constraint firstAttribute="trailing" secondItem="f0Q-bL-jkB" secondAttribute="trailing" id="g8i-oV-mC0"/>
-                        <constraint firstItem="f0Q-bL-jkB" firstAttribute="top" secondItem="t9k-vP-XbP" secondAttribute="top" id="gM2-kd-CQB"/>
-                        <constraint firstItem="z1U-dP-ClP" firstAttribute="leading" secondItem="t9k-vP-XbP" secondAttribute="leading" id="tUx-q8-sZV"/>
-                        <constraint firstItem="nWB-yd-QWx" firstAttribute="leading" secondItem="t9k-vP-XbP" secondAttribute="leading" id="ulM-Wc-TgL"/>
-                    </constraints>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="t9k-vP-XbP" firstAttribute="top" secondItem="Emg-M6-IDS" secondAttribute="top" id="AzZ-3m-xyE"/>
-                <constraint firstAttribute="trailing" secondItem="t9k-vP-XbP" secondAttribute="trailing" id="aRm-Ve-vlB"/>
-                <constraint firstItem="t9k-vP-XbP" firstAttribute="leading" secondItem="Emg-M6-IDS" secondAttribute="leading" id="duQ-s6-vkq"/>
-                <constraint firstAttribute="bottom" secondItem="t9k-vP-XbP" secondAttribute="bottom" id="sEj-of-BLT"/>
-            </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="285" y="-31"/>
-        </view>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="8ax-XC-CJg">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
@@ -173,5 +111,68 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="646" y="171.5"/>
         </tableViewCell>
+        <view contentMode="scaleToFill" id="ykX-Zj-oOz" userLabel="Header View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sf0-D2-eYS" userLabel="Invoice View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LsS-fC-pEf" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="59" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="utI-o1-cIY"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="41M-pB-Z5f">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="TJH-zm-xbg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                            <state key="normal" title="INV/20150113/XV/I/8327373">
+                                <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onTapInvoiceButton:" destination="-1" eventType="touchUpInside" id="9tA-fN-3nT"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxf-cC-iMq">
+                            <rect key="frame" x="0.0" y="19" width="320" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="Pembelian Oleh Bilala">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onTapSellerButton:" destination="-1" eventType="touchUpInside" id="2Q1-II-333"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="dxf-cC-iMq" secondAttribute="trailing" id="9t2-Sm-gJp"/>
+                        <constraint firstAttribute="bottom" secondItem="LsS-fC-pEf" secondAttribute="bottom" id="E5q-Jj-x11"/>
+                        <constraint firstItem="dxf-cC-iMq" firstAttribute="leading" secondItem="Sf0-D2-eYS" secondAttribute="leading" id="JKu-yx-o8C"/>
+                        <constraint firstAttribute="trailing" secondItem="LsS-fC-pEf" secondAttribute="trailing" id="JrQ-IH-lAl"/>
+                        <constraint firstItem="LsS-fC-pEf" firstAttribute="leading" secondItem="Sf0-D2-eYS" secondAttribute="leading" id="NdP-80-Jyq"/>
+                        <constraint firstAttribute="bottom" secondItem="dxf-cC-iMq" secondAttribute="bottom" id="iLe-X9-8Qa"/>
+                        <constraint firstItem="41M-pB-Z5f" firstAttribute="leading" secondItem="Sf0-D2-eYS" secondAttribute="leading" id="ouG-8o-OPm"/>
+                        <constraint firstItem="dxf-cC-iMq" firstAttribute="top" secondItem="Sf0-D2-eYS" secondAttribute="top" constant="19" id="pAc-Ip-uIB"/>
+                        <constraint firstAttribute="trailing" secondItem="41M-pB-Z5f" secondAttribute="trailing" id="uUY-ZN-QeR"/>
+                        <constraint firstItem="41M-pB-Z5f" firstAttribute="top" secondItem="Sf0-D2-eYS" secondAttribute="top" id="yzk-SR-ySy"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Sf0-D2-eYS" firstAttribute="top" secondItem="ykX-Zj-oOz" secondAttribute="top" id="0aJ-Wg-aBi"/>
+                <constraint firstItem="Sf0-D2-eYS" firstAttribute="leading" secondItem="ykX-Zj-oOz" secondAttribute="leading" id="7TL-bm-0xs"/>
+                <constraint firstAttribute="bottom" secondItem="Sf0-D2-eYS" secondAttribute="bottom" id="H2l-2m-nRS"/>
+                <constraint firstAttribute="trailing" secondItem="Sf0-D2-eYS" secondAttribute="trailing" id="esB-LV-4S5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="278" y="202"/>
+        </view>
     </objects>
 </document>

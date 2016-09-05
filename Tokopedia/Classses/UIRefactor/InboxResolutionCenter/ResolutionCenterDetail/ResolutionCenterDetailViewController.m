@@ -913,7 +913,7 @@ typedef enum {
     [marks addObject:[NSString stringWithFormat:@"%@",conversation.remark_str?:@""]];
      
     for (ProductTrouble *product in conversation.product_trouble) {
-        [marks addObject:[NSString stringWithFormat:@"Produk : %@",product.pt_product_name]];
+        [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
         if ([product.pt_free_return integerValue] == 1){
             [marks addObject:@"(Free Return)"];
         }

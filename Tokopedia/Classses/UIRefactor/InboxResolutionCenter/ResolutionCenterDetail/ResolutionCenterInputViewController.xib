@@ -149,7 +149,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="gPI-eE-lOz"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="dRs-55-CKk"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VG5-wj-olu" userLabel="Horizontal Border">
@@ -188,7 +188,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="jko-nm-1FW"/>
+                                <action selector="tapEditSolution:" destination="-1" eventType="touchUpInside" id="ZxJ-8G-SvZ"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZN-se-Ek3">
@@ -204,7 +204,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="MES-R4-oWt"/>
+                                <action selector="tapHelp:" destination="-1" eventType="touchUpInside" id="klF-Ul-8aB"/>
                             </connections>
                         </button>
                     </subviews>
@@ -242,7 +242,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="4zN-nQ-KlL"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="Tgb-he-U6s"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="taI-na-2Cd" userLabel="Horizontal Border">
@@ -270,7 +270,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="O2y-9g-K1U"/>
+                                <action selector="tapEditorReportButton:" destination="-1" eventType="touchUpInside" id="AoN-Z7-8id"/>
                             </connections>
                         </button>
                     </subviews>
@@ -304,7 +304,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="9Jw-GV-Oin"/>
+                                <action selector="tapImageButton:" destination="-1" eventType="touchUpInside" id="FQC-N6-Gfk"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AIK-j9-0wS" userLabel="Horizontal Border">
