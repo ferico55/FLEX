@@ -58,7 +58,8 @@
                                        otherButtonTitles:nil];
         }
     } else if (_viewModelCart.errors.count > 0) {
-        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"]) {
+        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"] ||
+            [_viewModelCart.errors[0].name isEqualToString:@"courier-max-limit"]) {
             popup = [[UIActionSheet alloc] initWithTitle:nil
                                                 delegate:self
                                        cancelButtonTitle:@"Batal"
