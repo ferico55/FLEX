@@ -68,7 +68,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     }
     
     @IBAction func onChangeQuantityStepper(sender: UIStepper) {
-        let quantity : String = String(format:"%d", sender.value)
+        let quantity : String = String(format:"%.0f", sender.value)
         productTrouble.pt_show_input_quantity = quantity
         quantityLabel.text = quantity
     }

@@ -189,6 +189,7 @@ import UIKit
                 }
             })
         }
+        self.adjustTroubleList()
     }
     
     private func updateProduct(product: ProductTrouble, productTrouble: ProductTrouble){
@@ -196,6 +197,7 @@ import UIKit
         product.pt_show_input_quantity = productTrouble.pt_show_input_quantity
         product.pt_trouble_id = productTrouble.pt_trouble_id
         product.pt_trouble_name = productTrouble.pt_trouble_name
+        product.pt_last_selected_quantity = productTrouble.pt_quantity
     }
     
     @objc private func troublePickerValueChanged(sender: DownPicker){
