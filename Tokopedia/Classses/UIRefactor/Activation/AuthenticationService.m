@@ -174,7 +174,7 @@
             @"grant_type" : @"extension",
             @"social_id" : userProfile.userId,
             @"social_type" : userProfile.provider,
-            @"email" : userProfile.email,
+            @"email" : userProfile.email?: @"",
             @"full_name": userProfile.name,
     };
 
@@ -189,7 +189,19 @@
                      parameter:parameter
                        mapping:[OAuthToken mapping]
                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                         onRequestTokenSuccess(successResult.dictionary[@""]);
+                         OAuthToken *oAuthToken = successResult.dictionary[@""];
+                         
+                         if (!oAuthToken.error) {
+                             onRequestTokenSuccess(oAuthToken);
+                         } else {
+                             NSError *error = [NSError errorWithDomain:@"Accounts"
+                                                                  code:-112233
+                                                              userInfo:@{
+                                                                         NSLocalizedDescriptionKey: oAuthToken.errorDescription
+                                                                         }];
+                             
+                             failureCallback(error);
+                         }
                      }
                      onFailure:failureCallback];
 }
