@@ -189,11 +189,7 @@ ResolutionCenterCreateStepThreeDelegate
 }
 - (IBAction)didTapNextButton{
     if(_currentIndex == 2){
-        if (_type == TypeResoCreate) {
-            [_stepThreeViewController submitCreateResolution];
-        } else {
-            [_stepThreeViewController submitEditResolution];
-        }
+        [_stepThreeViewController submitCreateResolution];
     }else if(_currentIndex == 1){
         if([_stepTwoViewController verifyForm]){
             _currentIndex++;

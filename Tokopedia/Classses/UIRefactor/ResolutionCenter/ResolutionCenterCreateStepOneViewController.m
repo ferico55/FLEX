@@ -52,21 +52,6 @@ ResolutionCenterChooseProblemDelegate
 }
 
 #pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.section == 1){
-        ProductTrouble* currentProduct = [_listProducts objectAtIndex:indexPath.row];
-
-        for (ProductTrouble *trouble in _result.formEdit.resolution_last.last_product_trouble) {
-            if ([currentProduct.pt_product_id integerValue] == [trouble.pt_product_id integerValue] && ![_result.selectedProduct containsObject:currentProduct]) {
-                [_result.selectedProduct addObject:currentProduct];
-                [cell setSelected:YES animated:NO];
-            }
-        }
-    }
-}
-
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0){
         return _problemCell;
@@ -177,40 +162,6 @@ ResolutionCenterChooseProblemDelegate
 
 #pragma mark - Methods
 -(void)fetchForm{
-    if (_type == TypeResoCreate) {
-        [self fetchFormCreate];
-    } else {
-        [self fetchFormEdit];
-    }
-}
-
--(void)fetchFormEdit{
-    [RequestResolutionData fetchformEditResolutionID:_resolutionID
-                                        isGetProduct:_isGotOrder
-                                           onSuccess:^(EditResolutionFormData *data) {
-                                               ResolutionCenterCreateData *form = [ResolutionCenterCreateData new];
-                                               _result.formData = form;
-                                               _result.formData.list_ts = data.list_ts;
-                                               _result.formEdit = data.form;
-                                               _result.formData.form = data.form.resolution_order;
-                                               _result.trouble_name = data.form.resolution_last.last_trouble_string;
-                                               for (ResolutionCenterCreateList *categoryProblemType in _result.formData.list_ts) {
-                                                   if ([categoryProblemType.category_trouble_id integerValue] == [_result.formEdit.resolution_last.last_category_trouble_type integerValue]) {
-                                                       [self didSelectProblem:categoryProblemType];
-                                                   }
-                                               }
-                                               [self fetchProduct];
-
-                                               [_problemLabel setHidden:NO];
-                                               [_activityIndicator setHidden:YES];
-        
-    } onFailure:^(NSError *error) {
-        [_problemLabel setHidden:NO];
-        [_activityIndicator setHidden:YES];
-    }];
-}
-
--(void)fetchFormCreate{
     [RequestResolutionData fetchCreateResolutionDataWithOrderId:_order.order_detail.detail_order_id
                                                         success:^(ResolutionCenterCreateResponse *data) {
                                                             _result.formData = data.data;

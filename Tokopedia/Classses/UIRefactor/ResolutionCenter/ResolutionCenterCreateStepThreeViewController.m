@@ -215,21 +215,4 @@
                                                          [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                      }];
 }
-
--(void)submitEditResolution{
-    ReplayConversationPostData *postData = [ReplayConversationPostData new];
-    postData.resolutionID = [_result.formEdit.resolution_last.last_resolution_id stringValue];
-    postData.flagReceived = (_product_is_received)?@"1":@"0";
-    postData.troubleType = _result.troubleId;
-    postData.solution = _selectedSolution.solution_id;
-    postData.replyMessage = _result.remark;
-    postData.category_trouble_id = _result.postObject.category_trouble_id;
-    
-    [RequestResolution fetchReplayConversation:postData onSuccess:^(ResolutionActionResult * data) {
-        [_delegate didFinishCreateComplainInStepThree];
-    } onFailure:^{
-        [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
-    }];
-}
-
 @end

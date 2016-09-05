@@ -52,7 +52,7 @@ ResolutionCenterCreateStepTwoCellDelegate
 }
 
 -(void)copyProductToJSONObject{
-    _result.postObject.order_id = _result.formData.form.order_id?:@"";
+    _result.postObject.order_id = _order.order_detail.detail_order_id;
     [_result.postObject.product_list removeAllObjects];
     [_result.selectedProduct enumerateObjectsUsingBlock:^(ProductTrouble * obj, NSUInteger idx, BOOL * _Nonnull stop) {
         ResolutionCenterCreatePOSTProduct* postProduct = [ResolutionCenterCreatePOSTProduct new];
@@ -72,9 +72,9 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 #pragma mark - UITableView Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductTrouble* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
     if([_result.postObject.category_trouble_id isEqualToString:@"1"]){
         //cell untuk product
+        ProductTrouble* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
         ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
         
         ResolutionCenterCreateStepTwoCell *cell = nil;
@@ -99,10 +99,7 @@ ResolutionCenterCreateStepTwoCellDelegate
         if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
             cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker];
         }
-        
         [cell.troublePicker setData:[self generateDownPickerChoices]];
-        cell.troublePicker.text = currentProduct.pt_trouble_name;
-        cell.problemTextView.text = currentProduct.pt_solution_remark;
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;
@@ -112,8 +109,6 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
-        _priceProblemTextField.text = _result.trouble_name?:@"";
-        _priceProblemTextView.text = _result.remark?:@"";
         return _priceProblemCell;
     }
     
