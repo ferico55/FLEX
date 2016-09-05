@@ -115,7 +115,19 @@
                              parameter:@{}
                                mapping:[AccountInfo mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 successCallback(successResult.dictionary[@""]);
+                                 AccountInfo *accountInfo = successResult.dictionary[@""];
+                                 
+                                 if (!accountInfo.error) {
+                                     successCallback(accountInfo);
+                                 } else {
+                                     NSError *error = [NSError errorWithDomain:@"Accounts"
+                                                                          code:-112233
+                                                                      userInfo:@{
+                                                                                 NSLocalizedDescriptionKey: accountInfo.errorDescription
+                                                                                 }];
+                                     
+                                     failureCallback(error);
+                                 }
                              }
                              onFailure:failureCallback];
 }
