@@ -65,12 +65,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
         self.initViewLayout()
-        
-        let debounced = Debouncer(delay: 0.1) {
-            self.requestPulsaWidget()
-        }
-        debounced.call()
-
+        self.requestPulsaWidget()
         
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.collectionView = self.collectionView
