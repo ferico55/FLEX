@@ -20,7 +20,7 @@
                             <constraint firstAttribute="width" constant="148" id="aP0-0G-ur2"/>
                             <constraint firstAttribute="height" constant="21" id="wnb-NQ-LQa"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -47,16 +47,16 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="120" id="1SU-8n-RoO"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ZZ-Di-pfF">
-                        <rect key="frame" x="135" y="85" width="90" height="21"/>
+                        <rect key="frame" x="135" y="85" width="110" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="0Ff-ef-fzd"/>
-                            <constraint firstAttribute="width" constant="90" id="wk4-Ax-sYE"/>
+                            <constraint firstAttribute="width" constant="110" id="wk4-Ax-sYE"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>

@@ -35,8 +35,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
+    var didShowAlertPermission: (Void -> Void)?
     var refreshContainerSize: (Void -> Void)?
     var didSuccessPressBuy: (NSURL -> Void)?
+    
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -58,6 +60,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         super.init(frame: CGRectZero)
         
         NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomePage", object: nil)
+        NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomeTab", object: nil)
+        
         
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
@@ -226,14 +230,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             }
             
             phoneBook.bk_whenTapped { [unowned self] in
-                self.addressBook.filterBlock = { contacts in
-                    return contacts.phones?.count > 0
-                }
-                self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
-                    if((error == nil)) {
-                        self.didTapAddressbook!(contacts!)
-                    }
-                })
+                self.activateContactPermission()
             }
         }
         
@@ -251,6 +248,41 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             make.right.equalTo()(self.mas_right)
         }
        
+    }
+    
+    func activateContactPermission() {
+        let permission = JLContactsPermission.sharedInstance()
+        let permissionStatus = permission.authorizationStatus()
+        
+        if(permissionStatus == JLAuthorizationStatus.PermissionNotDetermined) {
+            permission.extraAlertEnabled = false
+            permission.authorize({ (granted, error) in
+                if(granted) {
+                    self.showAddressBook()
+                } else {
+                    self.showContactAlertPermission()
+                }
+            })
+        } else if(permissionStatus == JLAuthorizationStatus.PermissionDenied) {
+            self.showContactAlertPermission()
+        } else {
+            self.showAddressBook()
+        }
+    }
+    
+    func showAddressBook() {
+        self.addressBook.filterBlock = { contacts in
+            return contacts.phones?.count > 0
+        }
+        self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
+            if((error == nil) && contacts?.count > 0) {
+                self.didTapAddressbook!(contacts!)
+            }
+        })
+    }
+    
+    func showContactAlertPermission() {
+        self.didShowAlertPermission!()
     }
     
     func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {

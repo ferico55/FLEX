@@ -26,6 +26,7 @@
 #import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"
 #import <JLPermissions/JLNotificationPermission.h>
+#import <JLPermissions/JLContactsPermission.h>
 
 #import "OpenShopDomainViewCell.h"
 #import "OpenShopImageViewCell.h"
@@ -110,3 +111,9 @@
 #import "QueueImageDownloader.h"
 #import "ProductBadge.h"
 #import "MMNumberKeyboard.h"
+#import "NSStringCategory.h"
+#import "UIViewController+TKPAdditions.h"
+#import "TKPAppFlow.h"
+#import "TKPStoreManager.h"
+#import "TKPHomeBannerStore.h"
+#import "TKPHomeProductsStore.h"

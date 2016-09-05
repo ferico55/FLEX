@@ -444,7 +444,7 @@ EtalaseViewControllerDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if(_cellType == UITableViewCellTypeTwoColumn) {
         CGSize normalSize = [ProductCellSize sizeWithType:self.cellType];
-        return CGSizeMake(normalSize.width, normalSize.height - 30);
+        return CGSizeMake(normalSize.width, normalSize.height - 20);
     } else {
         return [ProductCellSize sizeWithType:self.cellType];
     }

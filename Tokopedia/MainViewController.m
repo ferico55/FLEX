@@ -365,7 +365,7 @@ typedef enum TagRequest {
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
     
-    id proxy = [UINavigationBar appearance];
+    UINavigationBar *proxy = [UINavigationBar appearance];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) { // iOS 7
         [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     } else {
@@ -380,14 +380,13 @@ typedef enum TagRequest {
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     
-//    NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                                         kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
-//                                         kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
-//                                         kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
-    [proxy setTitleTextAttributes:@{
-                                    NSForegroundColorAttributeName : UIColor.whiteColor,
-                                    NSFontAttributeName : [UIFont title1ThemeMedium]
-                                    }];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = kTKPDNAVIGATION_TITLESHADOWCOLOR;
+    
+    proxy.titleTextAttributes = @{
+                                  NSForegroundColorAttributeName: kTKPDNAVIGATION_TITLECOLOR,
+                                  NSShadowAttributeName: shadow
+                                  };
 }
 
 -(void)initTabBar {

@@ -20,6 +20,7 @@ target "Tokopedia" do
     pod 'ComponentKit', '~> 0.14'
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
+    pod "JLPermissions/Contacts"
     pod 'Google/SignIn'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
