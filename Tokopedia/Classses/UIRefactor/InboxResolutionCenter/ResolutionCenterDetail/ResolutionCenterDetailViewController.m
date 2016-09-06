@@ -163,8 +163,10 @@ typedef enum {
 {
     NSString *creatorDispute = _resolutionDetail.resolution_customer.customer_name;//(_resolutionDetail.resolution_by.by_customer == 1)?_resolutionDetail.resolution_shop.shop_name:_resolutionDetail.resolution_customer.customer_name;
     
+    NSString *disputeCreateTimeWellFormatted = [NSDate convertDateString:_resolutionDetail.resolution_dispute.dispute_create_time fromFormat:@"yyyyMMddHHmmss" toFormat:@"dd MMMM yyyy"];
+    
     _usernameLabel.text = creatorDispute;
-    _dateTimeLabel.text = _resolutionDetail.resolution_dispute.dispute_create_time;
+    _dateTimeLabel.text = disputeCreateTimeWellFormatted;
     _invoiceLabel.text = _resolutionDetail.resolution_order.order_invoice_ref_num;
     [btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     

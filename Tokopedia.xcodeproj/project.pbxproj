@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		3498A96F1D7EC83A0043663E /* NSDateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498A96E1D7EC83A0043663E /* NSDateHelper.swift */; };
 		34FB3A841D7E69170024385F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB2A841D7E690D0024385F /* AppDelegate.m */; };
 		34FB3A851D7E69170024385F /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB2A881D7E690D0024385F /* TPAnalytics.m */; };
 		34FB3A861D7E69170024385F /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB2A8A1D7E690D0024385F /* TPLocalytics.m */; };
@@ -2685,6 +2686,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		3498A96E1D7EC83A0043663E /* NSDateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateHelper.swift; sourceTree = "<group>"; };
 		34FB2A831D7E690D0024385F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34FB2A841D7E690D0024385F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		34FB2A871D7E690D0024385F /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -6697,6 +6699,7 @@
 				34FB2AC31D7E690D0024385F /* DBManager.h */,
 				34FB2AC41D7E690D0024385F /* DBManager.m */,
 				34FB2AC51D7E690D0024385F /* ExpiringCache.h */,
+				3498A96E1D7EC83A0043663E /* NSDateHelper.swift */,
 				34FB2AC61D7E690D0024385F /* ExpiringCache.m */,
 				34FB2AC71D7E690D0024385F /* ImageDownloader.h */,
 				34FB2AC81D7E690D0024385F /* ImageDownloader.m */,
@@ -14579,6 +14582,7 @@
 				34FB3ABD1D7E69170024385F /* RSA.m in Sources */,
 				34FB3B781D7E69170024385F /* InboxReviewProductOwner.m in Sources */,
 				34FB3D2D1D7E69170024385F /* Catch.swift in Sources */,
+				3498A96F1D7EC83A0043663E /* NSDateHelper.swift in Sources */,
 				34FB3B9E1D7E69170024385F /* DetailReputationReview.m in Sources */,
 				34FB3C4B1D7E69170024385F /* ShopProductPageList.m in Sources */,
 				34FB40901D7E69180024385F /* EtalaseCell.m in Sources */,
