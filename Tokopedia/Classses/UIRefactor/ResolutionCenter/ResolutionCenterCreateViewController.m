@@ -12,6 +12,7 @@
 #import "ResolutionCenterCreateStepThreeViewController.h"
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionCenterCreateResult.h"
+#import "NavigateViewController.h"
 
 @interface ResolutionCenterCreateViewController ()
 <
@@ -187,6 +188,10 @@ ResolutionCenterCreateStepThreeDelegate
                                  completion:nil];
     }
 }
+- (IBAction)onTapInvoice:(id)sender {
+    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_result.formData.form.order_pdf_url];
+}
+
 - (IBAction)didTapNextButton{
     if(_currentIndex == 2){
         [_stepThreeViewController submitCreateResolution];
