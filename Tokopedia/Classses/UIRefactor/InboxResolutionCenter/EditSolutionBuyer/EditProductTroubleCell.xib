@@ -28,15 +28,15 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXt-gM-hyx">
                                 <rect key="frame" x="97" y="32" width="208" height="24"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pae-BV-Nlq">
-                                        <rect key="frame" x="0.0" y="3" width="18" height="18"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-free-return" translatesAutoresizingMaskIntoConstraints="NO" id="pae-BV-Nlq">
+                                        <rect key="frame" x="0.0" y="5" width="16" height="16"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="18" id="3Bh-ab-Dyb"/>
-                                            <constraint firstAttribute="height" constant="18" id="FJg-0O-Biz"/>
+                                            <constraint firstAttribute="width" constant="16" id="3Bh-ab-Dyb"/>
+                                            <constraint firstAttribute="height" constant="16" id="FJg-0O-Biz"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Free Return" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LIE-jz-KzG">
-                                        <rect key="frame" x="26" y="0.0" width="182" height="24"/>
+                                        <rect key="frame" x="20" y="0.0" width="188" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -44,12 +44,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="pae-BV-Nlq" firstAttribute="top" secondItem="yXt-gM-hyx" secondAttribute="top" constant="3" id="62W-d7-VLd"/>
+                                    <constraint firstItem="pae-BV-Nlq" firstAttribute="top" secondItem="yXt-gM-hyx" secondAttribute="top" constant="5" id="62W-d7-VLd"/>
                                     <constraint firstAttribute="trailing" secondItem="LIE-jz-KzG" secondAttribute="trailing" id="JuB-v2-25h"/>
                                     <constraint firstAttribute="height" constant="24" id="KYI-La-Vfl"/>
                                     <constraint firstItem="LIE-jz-KzG" firstAttribute="top" secondItem="yXt-gM-hyx" secondAttribute="top" id="VXQ-Wm-1LP"/>
                                     <constraint firstAttribute="bottom" secondItem="LIE-jz-KzG" secondAttribute="bottom" id="hyl-0F-ufD"/>
-                                    <constraint firstItem="LIE-jz-KzG" firstAttribute="leading" secondItem="pae-BV-Nlq" secondAttribute="trailing" constant="8" id="mA9-kt-HYf"/>
+                                    <constraint firstItem="LIE-jz-KzG" firstAttribute="leading" secondItem="pae-BV-Nlq" secondAttribute="trailing" constant="4" id="mA9-kt-HYf"/>
                                     <constraint firstItem="pae-BV-Nlq" firstAttribute="leading" secondItem="yXt-gM-hyx" secondAttribute="leading" id="nRo-Xs-0j4"/>
                                 </constraints>
                             </view>
@@ -209,6 +209,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="icon-free-return" width="16" height="16"/>
         <image name="icon_circle.png" width="20" height="20"/>
     </resources>
 </document>
