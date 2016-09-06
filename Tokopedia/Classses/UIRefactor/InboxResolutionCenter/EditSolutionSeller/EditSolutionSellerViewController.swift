@@ -375,7 +375,7 @@ extension EditSolutionSellerViewController : UITextViewDelegate {
     }
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 2)
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
         return true
     }
 }
