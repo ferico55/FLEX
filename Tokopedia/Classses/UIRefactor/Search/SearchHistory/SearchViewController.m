@@ -59,7 +59,6 @@ NotificationManagerDelegate
 @property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
 @property (strong, nonatomic) UserAuthentificationManager *authManager;
 @property (strong, nonatomic) TokopediaNetworkManager* requestManager;
-@property (weak, nonatomic) NSString *uniqueId;
 @property (strong, nonatomic) NSMutableArray *searchSuggestionDataArray;
 
 @end
@@ -147,7 +146,6 @@ double const FOOTER_HEIGHT = 20;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _authManager = [UserAuthentificationManager new];
-    _uniqueId = [self getUniqueId];
     debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
     }];
 
@@ -205,7 +203,7 @@ double const FOOTER_HEIGHT = 20;
     
     SearchAutoCompleteCell *searchAutoCompleteCell = (SearchAutoCompleteCell *)[_collectionView cellForItemAtIndexPath:buttonIndexPath];
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": _uniqueId, @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
@@ -228,7 +226,7 @@ double const FOOTER_HEIGHT = 20;
 
 -(void)clearAllHistory {
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": _uniqueId} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         dispatch_async(dispatch_get_main_queue(), ^{
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
@@ -261,7 +259,7 @@ double const FOOTER_HEIGHT = 20;
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
      __weak typeof(self) weakSelf = self;
     [debouncer setCallback:^{
-        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": weakSelf.uniqueId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *result = [successResult dictionary];
                     [weakSelf.searchSuggestionDataArray removeAllObjects];
