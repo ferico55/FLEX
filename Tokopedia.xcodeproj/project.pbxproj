@@ -867,6 +867,10 @@
 		458D93151D6ECFED00417C75 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 458D88D91D6ECFEC00417C75 /* vt-iOSlib-1.0.1.tar.gz */; };
 		458D93161D6ECFED00417C75 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 458D88DA1D6ECFEC00417C75 /* vt-iOSlib-1.0.1.zip */; };
 		458D93171D6ECFED00417C75 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D88DD1D6ECFEC00417C75 /* XYPieChart.m */; };
+		627065931D7EAF5700BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065921D7EAF5700BDE9F8 /* Localytics.framework */; };
+		627065941D7EAFB300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065921D7EAF5700BDE9F8 /* Localytics.framework */; };
+		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
+		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		628514241D7004FD00FF0A96 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 6285081F1D7004F600FF0A96 /* TPAnalytics.m */; };
 		628514251D7004FD00FF0A96 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508211D7004F600FF0A96 /* TPLocalytics.m */; };
 		628514261D7004FD00FF0A96 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508241D7004F600FF0A96 /* URLCacheAlert.m */; };
@@ -1468,30 +1472,6 @@
 		6285167B1D7004FE00FF0A96 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 62850D231D7004FA00FF0A96 /* LICENSE */; };
 		6285167C1D7004FE00FF0A96 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 62850D241D7004FA00FF0A96 /* README.md */; };
 		6285167D1D7004FE00FF0A96 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850D261D7004FA00FF0A96 /* iCarousel.m */; };
-		6285167E1D7004FE00FF0A96 /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D281D7004FA00FF0A96 /* Alignment.swift */; };
-		6285167F1D7004FE00FF0A96 /* Flexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D291D7004FA00FF0A96 /* Flexibility.swift */; };
-		628516801D7004FE00FF0A96 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62850D2A1D7004FA00FF0A96 /* Info.plist */; };
-		628516811D7004FE00FF0A96 /* CFAbsoluteTimeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D2C1D7004FA00FF0A96 /* CFAbsoluteTimeExtension.swift */; };
-		628516821D7004FE00FF0A96 /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D2D1D7004FA00FF0A96 /* CGSizeExtension.swift */; };
-		628516831D7004FE00FF0A96 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D2E1D7004FA00FF0A96 /* Layout.swift */; };
-		628516841D7004FE00FF0A96 /* LayoutArrangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D2F1D7004FA00FF0A96 /* LayoutArrangement.swift */; };
-		628516851D7004FE00FF0A96 /* LayoutAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D301D7004FA00FF0A96 /* LayoutAxis.swift */; };
-		628516861D7004FE00FF0A96 /* LayoutMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D311D7004FA00FF0A96 /* LayoutMeasurement.swift */; };
-		628516871D7004FE00FF0A96 /* InsetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D331D7004FA00FF0A96 /* InsetLayout.swift */; };
-		628516881D7004FE00FF0A96 /* LabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D341D7004FA00FF0A96 /* LabelLayout.swift */; };
-		628516891D7004FE00FF0A96 /* PositioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D351D7004FA00FF0A96 /* PositioningLayout.swift */; };
-		6285168A1D7004FE00FF0A96 /* SizeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D361D7004FA00FF0A96 /* SizeLayout.swift */; };
-		6285168B1D7004FE00FF0A96 /* StackLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D371D7004FA00FF0A96 /* StackLayout.swift */; };
-		6285168C1D7004FE00FF0A96 /* AxisFlexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D391D7004FA00FF0A96 /* AxisFlexibility.swift */; };
-		6285168D1D7004FE00FF0A96 /* AxisPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D3A1D7004FA00FF0A96 /* AxisPoint.swift */; };
-		6285168E1D7004FE00FF0A96 /* AxisSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D3B1D7004FA00FF0A96 /* AxisSize.swift */; };
-		6285168F1D7004FE00FF0A96 /* LayoutAdapterCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D3D1D7004FA00FF0A96 /* LayoutAdapterCollectionView.swift */; };
-		628516901D7004FE00FF0A96 /* LayoutAdapterTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D3E1D7004FA00FF0A96 /* LayoutAdapterTableView.swift */; };
-		628516911D7004FE00FF0A96 /* ReloadableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D3F1D7004FA00FF0A96 /* ReloadableView.swift */; };
-		628516921D7004FE00FF0A96 /* ReloadableViewLayoutAdapter+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D401D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UICollectionView.swift */; };
-		628516931D7004FE00FF0A96 /* ReloadableViewLayoutAdapter+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D411D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UITableView.swift */; };
-		628516941D7004FE00FF0A96 /* ReloadableViewLayoutAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D421D7004FA00FF0A96 /* ReloadableViewLayoutAdapter.swift */; };
-		628516951D7004FE00FF0A96 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62850D431D7004FA00FF0A96 /* StackView.swift */; };
 		628516961D7004FE00FF0A96 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 62850D451D7004FA00FF0A96 /* LICENSE */; };
 		628516971D7004FE00FF0A96 /* MHVerticalTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850D471D7004FA00FF0A96 /* MHVerticalTabBar.m */; };
 		628516981D7004FE00FF0A96 /* MHVerticalTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850D491D7004FA00FF0A96 /* MHVerticalTabBarButton.m */; };
@@ -3729,6 +3709,9 @@
 		458D88DC1D6ECFEC00417C75 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		458D88DD1D6ECFEC00417C75 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		627065921D7EAF5700BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Localytics.framework; path = "../../Downloads/Localytics-iOS-4.0.1/Localytics.framework"; sourceTree = "<group>"; };
+		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6285081E1D7004F600FF0A96 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		6285081F1D7004F600FF0A96 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		628508201D7004F600FF0A96 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -4887,30 +4870,6 @@
 		62850D241D7004FA00FF0A96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		62850D251D7004FA00FF0A96 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		62850D261D7004FA00FF0A96 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		62850D281D7004FA00FF0A96 /* Alignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
-		62850D291D7004FA00FF0A96 /* Flexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flexibility.swift; sourceTree = "<group>"; };
-		62850D2A1D7004FA00FF0A96 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		62850D2C1D7004FA00FF0A96 /* CFAbsoluteTimeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAbsoluteTimeExtension.swift; sourceTree = "<group>"; };
-		62850D2D1D7004FA00FF0A96 /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
-		62850D2E1D7004FA00FF0A96 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
-		62850D2F1D7004FA00FF0A96 /* LayoutArrangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutArrangement.swift; sourceTree = "<group>"; };
-		62850D301D7004FA00FF0A96 /* LayoutAxis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAxis.swift; sourceTree = "<group>"; };
-		62850D311D7004FA00FF0A96 /* LayoutMeasurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutMeasurement.swift; sourceTree = "<group>"; };
-		62850D331D7004FA00FF0A96 /* InsetLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetLayout.swift; sourceTree = "<group>"; };
-		62850D341D7004FA00FF0A96 /* LabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelLayout.swift; sourceTree = "<group>"; };
-		62850D351D7004FA00FF0A96 /* PositioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositioningLayout.swift; sourceTree = "<group>"; };
-		62850D361D7004FA00FF0A96 /* SizeLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeLayout.swift; sourceTree = "<group>"; };
-		62850D371D7004FA00FF0A96 /* StackLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackLayout.swift; sourceTree = "<group>"; };
-		62850D391D7004FA00FF0A96 /* AxisFlexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisFlexibility.swift; sourceTree = "<group>"; };
-		62850D3A1D7004FA00FF0A96 /* AxisPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisPoint.swift; sourceTree = "<group>"; };
-		62850D3B1D7004FA00FF0A96 /* AxisSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisSize.swift; sourceTree = "<group>"; };
-		62850D3D1D7004FA00FF0A96 /* LayoutAdapterCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAdapterCollectionView.swift; sourceTree = "<group>"; };
-		62850D3E1D7004FA00FF0A96 /* LayoutAdapterTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAdapterTableView.swift; sourceTree = "<group>"; };
-		62850D3F1D7004FA00FF0A96 /* ReloadableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableView.swift; sourceTree = "<group>"; };
-		62850D401D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReloadableViewLayoutAdapter+UICollectionView.swift"; sourceTree = "<group>"; };
-		62850D411D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReloadableViewLayoutAdapter+UITableView.swift"; sourceTree = "<group>"; };
-		62850D421D7004FA00FF0A96 /* ReloadableViewLayoutAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableViewLayoutAdapter.swift; sourceTree = "<group>"; };
-		62850D431D7004FA00FF0A96 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		62850D451D7004FA00FF0A96 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		62850D461D7004FA00FF0A96 /* MHVerticalTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBar.h; sourceTree = "<group>"; };
 		62850D471D7004FA00FF0A96 /* MHVerticalTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBar.m; sourceTree = "<group>"; };
@@ -6829,6 +6788,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				627065931D7EAF5700BDE9F8 /* Localytics.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -6870,6 +6830,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */,
+				627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */,
+				627065941D7EAFB300BDE9F8 /* Localytics.framework in Frameworks */,
 				FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC36DFA019B0656400AF74C1 /* XCTest.framework in Frameworks */,
 				FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -10171,7 +10134,6 @@
 				62850D171D7004FA00FF0A96 /* DKImagePicker */,
 				62850D251D7004FA00FF0A96 /* iCarousel.h */,
 				62850D261D7004FA00FF0A96 /* iCarousel.m */,
-				62850D271D7004FA00FF0A96 /* LayoutKit */,
 				62850D441D7004FA00FF0A96 /* MHVerticalTabBarController */,
 				62850D4D1D7004FA00FF0A96 /* RSKGrowingTextView.swift */,
 				62850D4E1D7004FA00FF0A96 /* RSKPlaceholderTextView.swift */,
@@ -10216,69 +10178,6 @@
 				62850D221D7004FA00FF0A96 /* ImagePickerController.swift */,
 			);
 			path = DKImagePickerController;
-			sourceTree = "<group>";
-		};
-		62850D271D7004FA00FF0A96 /* LayoutKit */ = {
-			isa = PBXGroup;
-			children = (
-				62850D281D7004FA00FF0A96 /* Alignment.swift */,
-				62850D291D7004FA00FF0A96 /* Flexibility.swift */,
-				62850D2A1D7004FA00FF0A96 /* Info.plist */,
-				62850D2B1D7004FA00FF0A96 /* Internal */,
-				62850D2E1D7004FA00FF0A96 /* Layout.swift */,
-				62850D2F1D7004FA00FF0A96 /* LayoutArrangement.swift */,
-				62850D301D7004FA00FF0A96 /* LayoutAxis.swift */,
-				62850D311D7004FA00FF0A96 /* LayoutMeasurement.swift */,
-				62850D321D7004FA00FF0A96 /* Layouts */,
-				62850D381D7004FA00FF0A96 /* Math */,
-				62850D3C1D7004FA00FF0A96 /* Views */,
-			);
-			path = LayoutKit;
-			sourceTree = "<group>";
-		};
-		62850D2B1D7004FA00FF0A96 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				62850D2C1D7004FA00FF0A96 /* CFAbsoluteTimeExtension.swift */,
-				62850D2D1D7004FA00FF0A96 /* CGSizeExtension.swift */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		62850D321D7004FA00FF0A96 /* Layouts */ = {
-			isa = PBXGroup;
-			children = (
-				62850D331D7004FA00FF0A96 /* InsetLayout.swift */,
-				62850D341D7004FA00FF0A96 /* LabelLayout.swift */,
-				62850D351D7004FA00FF0A96 /* PositioningLayout.swift */,
-				62850D361D7004FA00FF0A96 /* SizeLayout.swift */,
-				62850D371D7004FA00FF0A96 /* StackLayout.swift */,
-			);
-			path = Layouts;
-			sourceTree = "<group>";
-		};
-		62850D381D7004FA00FF0A96 /* Math */ = {
-			isa = PBXGroup;
-			children = (
-				62850D391D7004FA00FF0A96 /* AxisFlexibility.swift */,
-				62850D3A1D7004FA00FF0A96 /* AxisPoint.swift */,
-				62850D3B1D7004FA00FF0A96 /* AxisSize.swift */,
-			);
-			path = Math;
-			sourceTree = "<group>";
-		};
-		62850D3C1D7004FA00FF0A96 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				62850D3D1D7004FA00FF0A96 /* LayoutAdapterCollectionView.swift */,
-				62850D3E1D7004FA00FF0A96 /* LayoutAdapterTableView.swift */,
-				62850D3F1D7004FA00FF0A96 /* ReloadableView.swift */,
-				62850D401D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UICollectionView.swift */,
-				62850D411D7004FA00FF0A96 /* ReloadableViewLayoutAdapter+UITableView.swift */,
-				62850D421D7004FA00FF0A96 /* ReloadableViewLayoutAdapter.swift */,
-				62850D431D7004FA00FF0A96 /* StackView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		62850D441D7004FA00FF0A96 /* MHVerticalTabBarController */ = {
@@ -13555,6 +13454,9 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				627065971D7EAFC900BDE9F8 /* libz.tbd */,
+				627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */,
+				627065921D7EAF5700BDE9F8 /* Localytics.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */,
@@ -13900,7 +13802,6 @@
 				458D918B1D6ECFED00417C75 /* icon_question_mark_green30@2x.png in Resources */,
 				7AA6AB4E1D742FF300693017 /* logo.png in Resources */,
 				62851A161D7004FE00FF0A96 /* FilterViewController.xib in Resources */,
-				628516801D7004FE00FF0A96 /* Info.plist in Resources */,
 				628517E41D7004FE00FF0A96 /* DepositFormAccountBankViewController.xib in Resources */,
 				7AA6AB881D742FF300693017 /* Icon_check_green_bg@2x.png in Resources */,
 				458D92A71D6ECFED00417C75 /* icon_cart@3x.png in Resources */,
@@ -15356,7 +15257,6 @@
 				6285146C1D7004FD00FF0A96 /* SendOTP.m in Sources */,
 				6285194C1D7004FE00FF0A96 /* RejectReasonData.m in Sources */,
 				628516171D7004FE00FF0A96 /* TransactionAddressShippingResult.m in Sources */,
-				628516811D7004FE00FF0A96 /* CFAbsoluteTimeExtension.swift in Sources */,
 				628519A21D7004FE00FF0A96 /* SettingAddressExpandedCell.m in Sources */,
 				628515271D7004FD00FF0A96 /* ReplyInboxTicketResult.m in Sources */,
 				628519A91D7004FE00FF0A96 /* SettingBankNameViewController.m in Sources */,
@@ -15392,7 +15292,6 @@
 				628515941D7004FE00FF0A96 /* OrderBookingData.m in Sources */,
 				628516DD1D7004FE00FF0A96 /* ObserveOn.swift in Sources */,
 				628518641D7004FE00FF0A96 /* ResolutionInputReceiptViewController.m in Sources */,
-				628516921D7004FE00FF0A96 /* ReloadableViewLayoutAdapter+UICollectionView.swift in Sources */,
 				628514B31D7004FD00FF0A96 /* ProductReturnInfo.swift in Sources */,
 				6285183D1D7004FE00FF0A96 /* HotlistResultAWSViewController.m in Sources */,
 				6285161D1D7004FE00FF0A96 /* TransactionBuy.m in Sources */,
@@ -15409,13 +15308,10 @@
 				628517091D7004FE00FF0A96 /* Observable+Time.swift in Sources */,
 				628519F21D7004FE00FF0A96 /* ShopInfoViewController.m in Sources */,
 				628514F51D7004FD00FF0A96 /* InboxMessageDetail.m in Sources */,
-				6285167E1D7004FE00FF0A96 /* Alignment.swift in Sources */,
 				628514301D7004FD00FF0A96 /* NSString+TPBaseUrl.m in Sources */,
 				6285151C1D7004FD00FF0A96 /* InboxTicketDetailAttachment.m in Sources */,
 				628515A71D7004FE00FF0A96 /* SearchAWSResult.m in Sources */,
-				628516901D7004FE00FF0A96 /* LayoutAdapterTableView.swift in Sources */,
 				628514821D7004FD00FF0A96 /* CatalogAddProduct.m in Sources */,
-				628516861D7004FE00FF0A96 /* LayoutMeasurement.swift in Sources */,
 				628517CA1D7004FE00FF0A96 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				628514E41D7004FD00FF0A96 /* HistoryProductResult.m in Sources */,
 				62851A801D7004FE00FF0A96 /* TxOrderConfirmedCell.m in Sources */,
@@ -15562,7 +15458,6 @@
 				6285170B1D7004FE00FF0A96 /* AnonymousObserver.swift in Sources */,
 				628517191D7004FE00FF0A96 /* ImmediateScheduler.swift in Sources */,
 				628517341D7004FE00FF0A96 /* TKPMappingManager.m in Sources */,
-				6285168F1D7004FE00FF0A96 /* LayoutAdapterCollectionView.swift in Sources */,
 				628517241D7004FE00FF0A96 /* VirtualTimeConverterType.swift in Sources */,
 				628517001D7004FE00FF0A96 /* Zip.swift in Sources */,
 				628515EE1D7004FE00FF0A96 /* SettingLocation.m in Sources */,
@@ -15649,13 +15544,10 @@
 				6285143D1D7004FD00FF0A96 /* UITextView+UITextView_Placeholder.m in Sources */,
 				628514A01D7004FD00FF0A96 /* CatalogImages.m in Sources */,
 				628515E61D7004FE00FF0A96 /* ShopProductPageResponse.m in Sources */,
-				628516841D7004FE00FF0A96 /* LayoutArrangement.swift in Sources */,
-				628516821D7004FE00FF0A96 /* CGSizeExtension.swift in Sources */,
 				628519C41D7004FE00FF0A96 /* OpenShopImageViewCell.m in Sources */,
 				628519771D7004FE00FF0A96 /* SubmitShipmentConfirmationViewController.m in Sources */,
 				628514691D7004FD00FF0A96 /* OAuthToken.swift in Sources */,
 				628515711D7004FD00FF0A96 /* AddressFormResult.m in Sources */,
-				6285168B1D7004FE00FF0A96 /* StackLayout.swift in Sources */,
 				628514A11D7004FD00FF0A96 /* CatalogInfo.m in Sources */,
 				628518971D7004FE00FF0A96 /* CourierInfoViewController.m in Sources */,
 				62851A601D7004FE00FF0A96 /* TxOrderStatusCell.m in Sources */,
@@ -15672,9 +15564,7 @@
 				628515DE1D7004FE00FF0A96 /* Shop.m in Sources */,
 				628519461D7004FE00FF0A96 /* ProductQuantityViewController.m in Sources */,
 				628517521D7004FE00FF0A96 /* AlertDatePickerView.m in Sources */,
-				628516881D7004FE00FF0A96 /* LabelLayout.swift in Sources */,
 				628514FC1D7004FD00FF0A96 /* ResolutionActionResult.m in Sources */,
-				6285168C1D7004FE00FF0A96 /* AxisFlexibility.swift in Sources */,
 				62851A881D7004FE00FF0A96 /* WebViewInvoiceViewController.m in Sources */,
 				6285171A1D7004FE00FF0A96 /* AnonymousInvocable.swift in Sources */,
 				6285198C1D7004FE00FF0A96 /* SearchAutoCompleteViewModel.m in Sources */,
@@ -15708,7 +15598,6 @@
 				6285163D1D7004FE00FF0A96 /* TransactionVoucherData.m in Sources */,
 				6285199A1D7004FE00FF0A96 /* SpellCheckResponse.m in Sources */,
 				62851A251D7004FE00FF0A96 /* MaintenanceViewController.m in Sources */,
-				628516831D7004FE00FF0A96 /* Layout.swift in Sources */,
 				628519361D7004FE00FF0A96 /* PulsaViewController.swift in Sources */,
 				6285154A1D7004FD00FF0A96 /* NotificationPurchase.m in Sources */,
 				6285148A1D7004FD00FF0A96 /* CategoryList.m in Sources */,
@@ -15879,7 +15768,6 @@
 				6285143B1D7004FD00FF0A96 /* UITableView+LoadingView.m in Sources */,
 				628514D31D7004FD00FF0A96 /* FavoriteShopActionResult.m in Sources */,
 				62851A8C1D7004FE00FF0A96 /* RequestOrderData.m in Sources */,
-				6285168A1D7004FE00FF0A96 /* SizeLayout.swift in Sources */,
 				6285148E1D7004FD00FF0A96 /* ContactUsActionResponse.m in Sources */,
 				6285183F1D7004FE00FF0A96 /* HotlistResultViewController.m in Sources */,
 				628515DF1D7004FE00FF0A96 /* ShopCloseDetail.m in Sources */,
@@ -15938,7 +15826,6 @@
 				7AB8D33D1D78016000C08322 /* PulsaStatusAttribute.swift in Sources */,
 				62851A081D7004FE00FF0A96 /* ShopTalkPageViewController.m in Sources */,
 				6285157E1D7004FD00FF0A96 /* PromoCategory.m in Sources */,
-				628516851D7004FE00FF0A96 /* LayoutAxis.swift in Sources */,
 				628518E71D7004FE00FF0A96 /* DetailReputationReviewComponent.mm in Sources */,
 				628517291D7004FE00FF0A96 /* ReplaySubject.swift in Sources */,
 				6285162F1D7004FE00FF0A96 /* TxOrderConfirmationListOrder.m in Sources */,
@@ -15986,7 +15873,6 @@
 				628516031D7004FE00FF0A96 /* TKPString.m in Sources */,
 				6285172A1D7004FE00FF0A96 /* SubjectType.swift in Sources */,
 				628515151D7004FD00FF0A96 /* InboxTalk.m in Sources */,
-				628516891D7004FE00FF0A96 /* PositioningLayout.swift in Sources */,
 				628517101D7004FE00FF0A96 /* Platform.Linux.swift in Sources */,
 				6285193A1D7004FE00FF0A96 /* HeaderCollectionReusableView.m in Sources */,
 				628518BD1D7004FE00FF0A96 /* DetailProductWholesaleCell.m in Sources */,
@@ -16134,10 +16020,8 @@
 				628514391D7004FD00FF0A96 /* UIKitCategory.m in Sources */,
 				628516641D7004FE00FF0A96 /* UploadImage.m in Sources */,
 				628519231D7004FE00FF0A96 /* PulsaCategoryAttribute.swift in Sources */,
-				628516911D7004FE00FF0A96 /* ReloadableView.swift in Sources */,
 				6285166F1D7004FE00FF0A96 /* WishListObjectList.m in Sources */,
 				628515001D7004FD00FF0A96 /* InboxResolutionPendingAmount.m in Sources */,
-				6285168E1D7004FE00FF0A96 /* AxisSize.swift in Sources */,
 				628519731D7004FE00FF0A96 /* FilterShipmentConfirmationViewController.m in Sources */,
 				628517CE1D7004FE00FF0A96 /* TKPDTabViewController.m in Sources */,
 				628514531D7004FD00FF0A96 /* UIColorCategory.swift in Sources */,
@@ -16150,7 +16034,6 @@
 				628516231D7004FE00FF0A96 /* TransactionCartGateway.m in Sources */,
 				628515F41D7004FE00FF0A96 /* City.m in Sources */,
 				628517371D7004FE00FF0A96 /* ActivationRequest.m in Sources */,
-				628516871D7004FE00FF0A96 /* InsetLayout.swift in Sources */,
 				628517601D7004FE00FF0A96 /* AlertListViewCell.m in Sources */,
 				6285147E1D7004FD00FF0A96 /* AnnouncementTicker.swift in Sources */,
 				628514ED1D7004FD00FF0A96 /* Hotlist.m in Sources */,
@@ -16162,7 +16045,6 @@
 				628517D71D7004FE00FF0A96 /* NoResultView.m in Sources */,
 				62851AA61D7004FE00FF0A96 /* ProductSingleViewCell.m in Sources */,
 				628517F61D7004FE00FF0A96 /* FiltersListDataSource.swift in Sources */,
-				6285167F1D7004FE00FF0A96 /* Flexibility.swift in Sources */,
 				628518141D7004FE00FF0A96 /* RequestNotifyLBLM.m in Sources */,
 				628518221D7004FE00FF0A96 /* AnnouncementTickerRequest.swift in Sources */,
 				628514891D7004FD00FF0A96 /* CategoryDetail.swift in Sources */,
@@ -16196,7 +16078,6 @@
 				628518671D7004FE00FF0A96 /* InboxTalkSplitViewController.m in Sources */,
 				628515081D7004FD00FF0A96 /* ResolutionCustomer.m in Sources */,
 				628514281D7004FD00FF0A96 /* URLCacheController.m in Sources */,
-				6285168D1D7004FE00FF0A96 /* AxisPoint.swift in Sources */,
 				628516341D7004FE00FF0A96 /* IndomaretData.m in Sources */,
 				628517461D7004FE00FF0A96 /* SignInProviderListView.swift in Sources */,
 				628515A11D7004FE00FF0A96 /* OrderShipment.m in Sources */,
@@ -16398,9 +16279,7 @@
 				628515CE1D7004FE00FF0A96 /* EtalaseResult.m in Sources */,
 				6285161C1D7004FE00FF0A96 /* TransactionATCFormResult.m in Sources */,
 				628515261D7004FD00FF0A96 /* ReplyInboxTicket.m in Sources */,
-				628516941D7004FE00FF0A96 /* ReloadableViewLayoutAdapter.swift in Sources */,
 				628516021D7004FE00FF0A96 /* Tiki.m in Sources */,
-				628516951D7004FE00FF0A96 /* StackView.swift in Sources */,
 				628518981D7004FE00FF0A96 /* CourierNoteViewCell.m in Sources */,
 				6285160D1D7004FE00FF0A96 /* RateResponse.m in Sources */,
 				628514A21D7004FD00FF0A96 /* CatalogLocation.m in Sources */,
@@ -16443,7 +16322,6 @@
 				628519291D7004FE00FF0A96 /* PulsaOperator.swift in Sources */,
 				628517B81D7004FE00FF0A96 /* TPContactUsDependencies.m in Sources */,
 				628516981D7004FE00FF0A96 /* MHVerticalTabBarButton.m in Sources */,
-				628516931D7004FE00FF0A96 /* ReloadableViewLayoutAdapter+UITableView.swift in Sources */,
 				6285173B1D7004FE00FF0A96 /* LoginViewController.m in Sources */,
 				62851A571D7004FE00FF0A96 /* TransactionCartResultViewController.m in Sources */,
 				62851AA31D7004FE00FF0A96 /* ProductCell.m in Sources */,
