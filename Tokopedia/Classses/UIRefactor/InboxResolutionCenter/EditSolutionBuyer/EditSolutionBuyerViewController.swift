@@ -26,6 +26,8 @@ import UIKit
     private var allProducts : [ProductTrouble] = []
     private var firstResponderIndexPath : NSIndexPath?
     private var alertProgress : UIAlertView = UIAlertView()
+    private var loadingView : LoadingView = LoadingView()
+    private var nextButton : UIBarButtonItem = UIBarButtonItem()
     @IBOutlet var problemCell: UITableViewCell!
     
     private var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
@@ -39,8 +41,8 @@ import UIKit
         
         self.title = "Ubah Komplain"
         
-        let button : UIBarButtonItem = UIBarButtonItem(title: "Lanjut", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionBuyerViewController.nextPage))
-        self.navigationItem.rightBarButtonItem = button
+        nextButton = UIBarButtonItem(title: "Lanjut", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionBuyerViewController.nextPage))
+        self.navigationItem.rightBarButtonItem = nextButton
         
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(EditSolutionBuyerViewController.keyboardWillShow(_:)),
@@ -59,8 +61,6 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionBuyerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
-        tableView.tableHeaderView = headerView
-        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
         
@@ -71,6 +71,13 @@ import UIKit
         detailProblemDownPicker.shouldDisplayCancelButton = false
         
         self.requestFormEdit()
+        
+        self .setAppearanceLoadingView()
+    }
+    
+    private func setAppearanceLoadingView(){
+        loadingView.delegate = self
+        self.view .addSubview(loadingView)
     }
     
     @IBAction func onTapInvoiceButton(sender: UIButton) {
@@ -122,17 +129,21 @@ import UIKit
             
             self.adjustResolutionData(data)
             self.fetchAllProducts()
-            
+            self.tableView.tableFooterView = nil
+            self.nextButton.enabled = true
             self.isFinishRequest(true)
             
             }) { (error) in
-            
+                
+            self.nextButton.enabled = false
+            self.tableView.tableFooterView = self.loadingView.view
             self.isFinishRequest(true)
         }
     }
     
     private func adjustResolutionData(data: EditResolutionFormData){
         self.resolutionData = data
+        self.tableView.tableHeaderView = headerView
         self.adjustPostObject()
         self.adjustTroubleList()
         self.tableView.reloadData()
@@ -189,7 +200,6 @@ import UIKit
             self.tableView.reloadData()
             
             }) { (error) in
-                
             self.isFinishRequest(true)
         }
     }
@@ -288,6 +298,14 @@ extension EditSolutionBuyerViewController : UITextFieldDelegate{
     }
 }
 
+extension EditSolutionBuyerViewController : LoadingViewDelegate{
+    //MARK: LoadingViewDelegate
+    
+    func pressRetryButton() {
+        self.refresh()
+    }
+}
+
 extension EditSolutionBuyerViewController : UITableViewDelegate {
     //MARK: UITableViewDelegate
     
@@ -330,6 +348,9 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
     //MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if self.resolutionData.form.resolution_last.last_resolution_id == nil {
+            return 0
+        }
         return 2
     }
     

@@ -138,10 +138,6 @@ ResolutionCenterCreateStepTwoCellDelegate
     }
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self.view endEditing:YES];
-}
-
 #pragma mark - Method
 -(void)troublePickerValueChanged:(id)picker{
     DownPicker* downPicker = (DownPicker*)picker;

@@ -118,3 +118,4 @@
 #import "TKPHomeProductsStore.h"
 #import "NavigateViewController.h"
 #import "TKPDAlertView.h"
+#import "LoadingView.h"

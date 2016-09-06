@@ -105,6 +105,7 @@ PODS:
   - Rollout.io (1.0.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
+  - TPKeyboardAvoiding (1.3)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
   - Tweaks (2.0.0)
@@ -136,6 +137,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.0.0)
   - SPTPersistentCache (~> 1.0)
+  - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
   - Tweaks (~> 2.0.0)
   - UITableView+FDTemplateLayoutCell (~> 1.4)
@@ -177,6 +179,7 @@ SPEC CHECKSUMS:
   Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
+  TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81

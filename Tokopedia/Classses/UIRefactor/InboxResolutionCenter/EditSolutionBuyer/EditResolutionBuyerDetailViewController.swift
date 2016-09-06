@@ -33,6 +33,8 @@ import UIKit
     @IBOutlet var reasonCell: UITableViewCell!
     private var refreshControl: UIRefreshControl!
     private var alertProgress : UIAlertView = UIAlertView()
+    private var doneButton : UIBarButtonItem = UIBarButtonItem()
+    private var loadingView : LoadingView = LoadingView()
     
     var postObject : ReplayConversationPostData = ReplayConversationPostData()
     var resolutionData : EditResolutionFormData = EditResolutionFormData()
@@ -43,8 +45,8 @@ import UIKit
         
         self.title = "Ubah Komplain"
         
-        let button : UIBarButtonItem = UIBarButtonItem(title: "Selesai", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditResolutionBuyerDetailViewController.submit))
-        self.navigationItem.rightBarButtonItem = button
+        doneButton = UIBarButtonItem(title: "Selesai", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditResolutionBuyerDetailViewController.submit))
+        self.navigationItem.rightBarButtonItem = doneButton
         
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(EditResolutionBuyerDetailViewController.keyboardWillShow(_:)),
@@ -75,8 +77,14 @@ import UIKit
         self.fetchPossibleSolutions()
         
         self.adjustAlertProgressAppearance()
+        self.setAppearanceLoadingView()
 
         reasonTextView.placeholder = "Alasan mengubah komplain"
+    }
+    
+    private func setAppearanceLoadingView(){
+        loadingView.delegate = self
+        self.view .addSubview(loadingView)
     }
     
     override func viewDidLayoutSubviews() {
@@ -86,7 +94,7 @@ import UIKit
     }
     
     @objc private func refresh() {
-    
+        self.fetchPossibleSolutions()
     }
     
     @IBAction func onTapDeleteImageButton(sender: UIButton) {
@@ -249,12 +257,16 @@ import UIKit
             if listSolutions.count > 0 {
                 self.adjustSelectedSolution()
             }
+            self.tableView.tableFooterView = nil
+            self.doneButton.enabled = true
 
             self.tableView.reloadData()
             
             }) { (error) in
                 
-            self.isFinishRequest(true)
+                self.doneButton.enabled = false
+                self.tableView.tableFooterView = self.loadingView.view
+                self.isFinishRequest(true)
         }
     }
     
@@ -304,6 +316,14 @@ import UIKit
 
 }
 
+extension EditResolutionBuyerDetailViewController : LoadingViewDelegate{
+    //MARK: LoadingViewDelegate
+    
+    func pressRetryButton() {
+        self.refresh()
+    }
+}
+
 extension EditResolutionBuyerDetailViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
     func textViewDidChange(textView: UITextView) {
@@ -347,6 +367,11 @@ extension EditResolutionBuyerDetailViewController : UITableViewDataSource {
     //MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
+        if self.resolutionData.form.resolution_solution_list.count == 0 {
+            return 0
+        }
+        
         return 3
     }
     
