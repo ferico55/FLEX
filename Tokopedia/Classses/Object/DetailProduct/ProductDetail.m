@@ -136,7 +136,7 @@
 }
 
 + (NSInteger)maximumPurchaseQuantity {
-    return 9999;
+    return 10000;
 }
 
 
