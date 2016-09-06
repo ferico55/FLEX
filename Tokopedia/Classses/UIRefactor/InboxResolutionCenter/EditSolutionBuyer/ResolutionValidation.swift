@@ -97,7 +97,7 @@ class ResolutionValidation: NSObject {
     }
     
     private func validateNonProductRelatedProblem(postObject: ReplayConversationPostData) throws {
-        guard postObject.troubleType != "" else {
+        guard postObject.troubleType != "" && Int(postObject.troubleType) != 0 else {
             throw Errors.errorMessage("Pilih detail masalah")
         }
     }

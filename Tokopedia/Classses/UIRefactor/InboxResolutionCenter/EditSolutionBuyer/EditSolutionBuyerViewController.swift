@@ -254,9 +254,15 @@ extension EditSolutionBuyerViewController : GeneralTableViewControllerDelegate {
                 // remove trouble type (product related category trouble)
                 self.postObject.troubleType = ""
                 self.postObject.troubleName = ""
+                self.postObject.solution = ""
+                self.postObject.selectedSolution = EditSolution()
             }else {
                 // remove selected products (non product related category trouble)
                 self.postObject.selectedProducts = []
+                self.postObject.postObjectProducts = []
+                allProducts.forEach{$0.pt_selected = false}
+                self.postObject.solution = ""
+                self.postObject.selectedSolution = EditSolution()
             }
             self.adjustTroubleList()
             tableView.reloadData()
