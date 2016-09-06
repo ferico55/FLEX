@@ -37,6 +37,8 @@
 #import "RequestResolutionData.h"
 #import "ResolutionCenterCreateViewController.h"
 
+#import "Tokopedia-Swift.h"
+
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
 #define TAG_ALERT_COMPLAIN 13
@@ -948,38 +950,44 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-    NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
-    NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-    NSString *selesaiString = @"Selesai";
-    void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
-        NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-        [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
-    };
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
 
     if ([self isOrderFreeReturn:order]) {
-        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
-        alertTitle = ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN;
-        [alertController setTitle: alertTitle];
-        [alertController setMessage:alertMessage];
-        selesaiString = @"OK";
-        OKActionHandler = ^void(UIAlertAction * _Nonnull action) {
-            // do nothing if user tap OK when order is Free Return
+        FreeReturnsConfirmationAlertView *confirmationAlert = [FreeReturnsConfirmationAlertView newview];
+        
+        confirmationAlert.didComplain = ^{
+            [confirmationAlert dismiss];
+            [self showAlertViewOpenComplain];
         };
+        
+        confirmationAlert.didOK = ^{
+            [confirmationAlert dismiss];
+          // do nothing if user tap OK when order is Free Return
+        };
+        
+        [confirmationAlert show];
     } else {
+        NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        NSString *selesaiString = @"Selesai";
+        void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
+            NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+            [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+        };
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:cancelAction];
+        UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
+        UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self showAlertViewOpenComplain];
+        }];
+        
+        [alertController addAction:OKAction];
+        [alertController addAction:complainAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
     
-    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
-    UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self showAlertViewOpenComplain];
-    }];
-    
-    [alertController addAction:OKAction];
-    [alertController addAction:complainAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+
 }
 
 -(void)showAlertReorder
