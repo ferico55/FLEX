@@ -9,6 +9,10 @@
 #import "Track.h"
 
 @implementation Track
+-(TrackOrderResult *)result{
+    return _result?:_data;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"message_error",

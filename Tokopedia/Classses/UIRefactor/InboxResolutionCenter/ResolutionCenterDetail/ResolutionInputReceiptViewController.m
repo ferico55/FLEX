@@ -106,7 +106,8 @@
         }
         
         if (_nomorReceiptTextField.text.length < 7 || _nomorReceiptTextField.text.length > 17) {
-            [errorMessages addObject:@"Nomor resi antara 7 - 17 karakter"];
+            isValid = NO;
+            [errorMessages addObject:@"Nomor resi harus di antara 7 - 17 karakter"];
         }
     }
     
