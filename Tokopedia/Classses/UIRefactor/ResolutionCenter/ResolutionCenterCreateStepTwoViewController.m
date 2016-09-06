@@ -169,9 +169,8 @@ ResolutionCenterCreateStepTwoCellDelegate
 #pragma mark - Request
 -(BOOL)verifyForm{
     for(ResolutionCenterCreatePOSTProduct *prod in _result.postObject.product_list){
-        if([prod.trouble_id isEqualToString:@""]){
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Mohon pilih masalah untuk produk yang ingin di komplain."] delegate:self];
-            [alert show];
+        if([prod.trouble_id isEqualToString:@""]){            
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah untuk produk yang ingin di komplain."]];
             return NO;
         }
     }
