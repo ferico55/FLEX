@@ -227,7 +227,7 @@ import UIKit
             let product :ResolutionCenterCreatePOSTProduct = ResolutionCenterCreatePOSTProduct()
             product.product_id = $0.pt_product_id
             product.trouble_id = $0.pt_trouble_id
-            product.quantity = $0.pt_show_input_quantity
+            product.quantity = $0.pt_last_selected_quantity
             product.order_dtl_id = $0.pt_order_dtl_id
             product.remark = $0.pt_solution_remark
             object.product_list.addObject(product)
