@@ -20,6 +20,7 @@
                 <outlet property="solutionLabel" destination="81w-Au-x2t" id="Jy0-2f-dK4"/>
                 <outlet property="tableView" destination="3oe-WD-y8d" id="IaG-30-0dE"/>
                 <outlet property="uploadImageCell" destination="5Ff-Ye-GPE" id="sbV-df-uLy"/>
+                <outlet property="uploadImageContentView" destination="fo7-Tg-cPs" id="cLu-VR-ibs"/>
                 <outlet property="uploadScrollView" destination="9I5-oN-iyb" id="7s9-pH-ye1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="imageButtons" destination="tvt-av-MzO" collectionClass="NSMutableArray" id="ffc-ZI-iss"/>

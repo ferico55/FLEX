@@ -29,6 +29,7 @@ import UIKit
     @IBOutlet weak var reasonTextView: TKPDTextView!
     private var firstResponderIndexPath : NSIndexPath?
     
+    @IBOutlet weak var uploadImageContentView: UIView!
     @IBOutlet var reasonCell: UITableViewCell!
     private var refreshControl: UIRefreshControl!
     private var alertProgress : UIAlertView = UIAlertView()
@@ -76,6 +77,12 @@ import UIKit
         self.adjustAlertProgressAppearance()
 
         reasonTextView.placeholder = "Alasan mengubah komplain"
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        uploadScrollView.contentSize = uploadImageContentView.frame.size
     }
     
     @objc private func refresh() {
