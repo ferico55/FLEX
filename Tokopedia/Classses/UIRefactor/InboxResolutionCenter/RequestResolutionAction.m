@@ -930,7 +930,6 @@ static failedCompletionBlock failedRequest;
                              } onFailure:^(NSError *errorResult) {
                                  failure(errorResult);
                              }];
-    
 }
 
 #pragma mark - Edit Resi Resolution
