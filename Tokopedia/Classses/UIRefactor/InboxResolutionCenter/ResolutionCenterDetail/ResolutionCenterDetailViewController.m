@@ -700,7 +700,7 @@ typedef enum {
     
     [cell.twoButtons[1] setTitle:title2 forState:UIControlStateNormal];
     btnImage = [UIImage imageNamed:[self imageNameAtTitleButton:title2]];
-    [cell.oneButton setImage:btnImage forState:UIControlStateNormal];
+    [cell.twoButtons[1] setImage:btnImage forState:UIControlStateNormal];
 }
 
 -(void)adjustOneButtonTitleConversation:(ResolutionConversation*)conversation cell:(ResolutionCenterSystemCell*)cell
