@@ -84,6 +84,7 @@ double const FOOTER_HEIGHT = 20;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _searchSuggestionDataArray = [NSMutableArray new];
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
@@ -149,7 +150,6 @@ double const FOOTER_HEIGHT = 20;
     _uniqueId = [self getUniqueId];
     debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
     }];
-    _searchSuggestionDataArray = [NSMutableArray new];
 
     [self getUserSearchSuggestionDataWithQuery:@""];
     
@@ -184,7 +184,6 @@ double const FOOTER_HEIGHT = 20;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_searchBar resignFirstResponder];
 }
 
 #pragma mark - Memory Management
@@ -302,19 +301,18 @@ double const FOOTER_HEIGHT = 20;
     
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
-        
-        SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-        
-        header.titleLabel.text = searchSuggestionData.name;
-        
-        if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
-            [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
-            [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+        if (_searchSuggestionDataArray.count > 0) {
+            SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
+            
+            header.titleLabel.text = searchSuggestionData.name;
+            
+            if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
+                [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
+                [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+            }
         }
-        
-        
         view = header;
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
         UICollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellFooterViewIdentifier" forIndexPath:indexPath];
@@ -329,28 +327,29 @@ double const FOOTER_HEIGHT = 20;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     UICollectionViewCell *cell = nil;
-    
     SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
-    
-    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-    
-    SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-    searchCell.searchTitle.text = searchSuggestionItem.keyword;
-    
-    searchCell.closeButton.hidden = YES;
-    searchCell.searchLoopImageView.hidden = YES;
-    [searchCell addConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
-    if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
-        searchCell.closeButton.hidden = NO;
-        [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-    } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
-        searchCell.searchLoopImageView.hidden = NO;
-        [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+    if (_searchSuggestionDataArray.count > 0){
+        SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
+        
+        SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
+        searchCell.searchTitle.text = searchSuggestionItem.keyword;
+        
+        searchCell.closeButton.hidden = YES;
+        searchCell.searchLoopImageView.hidden = YES;
+        [searchCell addConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+        if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
+            searchCell.closeButton.hidden = NO;
+            [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
+        } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
+            searchCell.searchLoopImageView.hidden = NO;
+            [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+        }
+        
+        [searchCell setGreenSearchText:_searchBar.text];
     }
     
-    [searchCell setGreenSearchText:_searchBar.text];
-
     cell = searchCell;
     cell.hidden = NO;
     
@@ -368,11 +367,12 @@ double const FOOTER_HEIGHT = 20;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
-    if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
-        size = CGSizeMake(collectionView.bounds.size.width, 50);
+    if (_searchSuggestionDataArray.count > 0){
+        SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
+        if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
+            size = CGSizeMake(collectionView.bounds.size.width, 50);
+        }
     }
-
     return size;
 }
 
@@ -419,6 +419,8 @@ double const FOOTER_HEIGHT = 20;
             actionForTracker = @"Popular Search";
         }
         [TPAnalytics trackSearchWithAction:actionForTracker keyword:searchSuggestionItem.keyword];
+        _searchSuggestionDataArray = [NSMutableArray new];
+        [_collectionView reloadData];
         [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
     }
 }
