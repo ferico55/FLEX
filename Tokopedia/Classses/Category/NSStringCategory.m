@@ -102,7 +102,7 @@
         if (days<0) {
             days = days;
         }
-        timeLeft = [NSString stringWithFormat:@"%ld hari yang lalu", (long)days];
+        timeLeft = [NSString stringWithFormat:@"%ld hari yang lalu", (long)labs(days)];
     }
     else if(hours) {
         if (hours<0) {
