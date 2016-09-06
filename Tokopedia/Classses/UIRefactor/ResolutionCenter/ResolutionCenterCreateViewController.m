@@ -204,11 +204,16 @@ ResolutionCenterCreateStepThreeDelegate
                                      completion:nil];
         }
     }else{
-        _currentIndex++;
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
-                                  direction:UIPageViewControllerNavigationDirectionForward
-                                   animated:YES
-                                 completion:nil];
+        if(_stepOneViewController.result.selectedProduct.count > 0) {
+            _currentIndex++;
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
+                                      direction:UIPageViewControllerNavigationDirectionForward
+                                       animated:YES
+                                     completion:nil];
+        } else {
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih produk yang bermasalah terlebih dahulu"]];
+        }
+        
     }
 }
 
