@@ -24,7 +24,7 @@ import UIKit
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var reasonTextView: UITextView!
+    @IBOutlet weak var reasonTextView: TKPDTextView!
     @IBOutlet weak var refundTextField: UITextField!
     @IBOutlet weak var maxRefundLabel: UILabel!
     @IBOutlet weak var uploadImageContentView: UIView!
@@ -89,6 +89,8 @@ import UIKit
         refreshControl.attributedTitle = NSAttributedString(string: "")
         refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
+        
+        reasonTextView.placeholder = "Jelaskan alasan anda mengubah detail permasalahan"
         
         self.requestDataForm()
         self.adjsutAlertProgressAppearance()
@@ -368,8 +370,12 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
 extension EditSolutionSellerViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
     
+    func textViewDidChange(textView: UITextView) {
+        reasonTextView.placeholderLabel.hidden = !textView.text.isEmpty
+    }
+    
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 2)
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
         return true
     }
 }
@@ -417,10 +423,10 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
             solutionCell.contentView.backgroundColor = UIColor.clearColor()
             return self.solutionCell
         case 2:
+            return self.uploadImageCell
+        case 3:
             reasonCell.contentView.backgroundColor = UIColor.clearColor()
             return self.reasonCell
-        case 3:
-            return self.uploadImageCell
         default:
             let cell:EditSolutionSellerCell = tableView.dequeueReusableCellWithIdentifier("EditSolutionSellerCellIdentifier")! as! EditSolutionSellerCell
             cell.setViewModel(resolutionData.form.resolution_last.last_product_trouble[indexPath.row].sellerEditViewModel)
@@ -436,9 +442,9 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
         case 1:
             return "Solusi yang diinginkan"
         case 2:
-            return "Alasan ubah solusi"
-        case 3:
             return "Lampirkan Foto Bukti"
+        case 3:
+            return "Alasan ubah solusi"
         default:
             return ""
         }

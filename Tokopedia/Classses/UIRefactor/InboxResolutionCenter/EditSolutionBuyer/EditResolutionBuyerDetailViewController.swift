@@ -29,6 +29,7 @@ import UIKit
     @IBOutlet weak var reasonTextView: TKPDTextView!
     private var firstResponderIndexPath : NSIndexPath?
     
+    @IBOutlet weak var uploadImageContentView: UIView!
     @IBOutlet var reasonCell: UITableViewCell!
     private var refreshControl: UIRefreshControl!
     private var alertProgress : UIAlertView = UIAlertView()
@@ -54,6 +55,9 @@ import UIKit
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
+        deleteButtons = NSArray.sortViewsWithTagInArray(deleteButtons) as! [UIButton]
+        imageButtons = NSArray.sortViewsWithTagInArray(imageButtons) as! [UIButton]
+        
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "UploadImageCell")
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "SolutionCellIdentifier")
         
@@ -70,12 +74,15 @@ import UIKit
         self .adjustUIForm(resolutionData.form)
         self.fetchPossibleSolutions()
         
-        deleteButtons = NSArray.sortViewsWithTagInArray(deleteButtons) as! [UIButton]
-        imageButtons = NSArray.sortViewsWithTagInArray(imageButtons) as! [UIButton]
-
         self.adjustAlertProgressAppearance()
 
         reasonTextView.placeholder = "Alasan mengubah komplain"
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        uploadScrollView.contentSize = uploadImageContentView.frame.size
     }
     
     @objc private func refresh() {
@@ -103,7 +110,7 @@ import UIKit
     private func adjustUIForm(form: EditResolutionForm) {
         invoiceButton .setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
         sellerButton.setTitle("Pembelian dari \(form.resolution_order.order_shop_name)", forState: .Normal)
-        solutionLabel.text = form.resolution_last.last_solution_string
+        adjustUISelectedImage()
     }
     
     private func adjustUISolution(solution: EditSolution){
@@ -220,7 +227,7 @@ import UIKit
             let product :ResolutionCenterCreatePOSTProduct = ResolutionCenterCreatePOSTProduct()
             product.product_id = $0.pt_product_id
             product.trouble_id = $0.pt_trouble_id
-            product.quantity = $0.pt_show_input_quantity
+            product.quantity = $0.pt_last_selected_quantity
             product.order_dtl_id = $0.pt_order_dtl_id
             product.remark = $0.pt_solution_remark
             object.product_list.addObject(product)
@@ -233,22 +240,35 @@ import UIKit
         
         self.isFinishRequest(false)
         
-        RequestResolutionData .fetchPossibleSolutionWithPossibleTroubleObject(self.postObjectPossibleSolution(), troubleId: postObject.troubleType, success: { (data) in
+        RequestResolutionData .fetchPossibleSolutionWithPossibleTroubleObject(self.postObjectPossibleSolution(), troubleId: postObject.troubleType, success: { (listSolutions) in
             
-                self.isFinishRequest(true)
+            self.isFinishRequest(true)
                 
-                self.resolutionData.form.resolution_solution_list = data
-                data.forEach{
-                    if Int($0.solution_id) == Int(self.resolutionData.form.resolution_last.last_solution) {
-                        self.postObject.selectedSolution = $0
-                        self .adjustUISolution($0)
-                    }
-                }
-                self.tableView.reloadData()
+            self.resolutionData.form.resolution_solution_list = listSolutions
+            
+            if listSolutions.count > 0 {
+                self.adjustSelectedSolution()
+            }
+
+            self.tableView.reloadData()
             
             }) { (error) in
                 
-                self.isFinishRequest(true)
+            self.isFinishRequest(true)
+        }
+    }
+    
+    private func adjustSelectedSolution(){
+        if Int(self.postObject.selectedSolution.solution_id) == 0 || self.postObject.selectedSolution.solution_id == "" {
+            self.postObject.selectedSolution = self.resolutionData.form.resolution_solution_list.first!
+            self .adjustUISolution(self.postObject.selectedSolution)
+        } else {
+            self.resolutionData.form.resolution_solution_list.forEach{
+                if  Int($0.solution_id) == Int(self.resolutionData.form.resolution_last.last_solution) {
+                    self.postObject.selectedSolution = $0
+                    self .adjustUISolution($0)
+                }
+            }
         }
     }
     
