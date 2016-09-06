@@ -151,15 +151,22 @@ import UIKit
     }
     
     private func adjustPostObject(){
-        self.postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
-        self.postObject.replyMessage = resolutionData.form.resolution_last.last_category_trouble_string
-        self.postObject.troubleName = resolutionData.form.resolution_last.last_category_trouble_string
-        self.postObject.selectedProducts = resolutionData.form.resolution_last.last_product_trouble
-        self.postObject.category_trouble_id = resolutionData.form.resolution_last.last_category_trouble_type
-        self.postObject.category_trouble_text = resolutionData.form.resolution_last.last_category_trouble_string
+        if resolutionData.form.resolution_last.last_flag_received.boolValue == isGetProduct {
+            self.postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
+            self.postObject.replyMessage = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.troubleName = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.selectedProducts = resolutionData.form.resolution_last.last_product_trouble
+            self.postObject.category_trouble_id = resolutionData.form.resolution_last.last_category_trouble_type
+            self.postObject.category_trouble_text = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.troubleName = resolutionData.form.resolution_last.last_trouble_string
+        }
+        
         self.postObject.resolutionID = resolutionData.form.resolution_last.last_resolution_id.stringValue
-        self.postObject.flagReceived = resolutionData.form.resolution_last.last_flag_received.stringValue
-        self.postObject.troubleName = resolutionData.form.resolution_last.last_trouble_string
+        if isGetProduct {
+            self.postObject.flagReceived = "1"
+        } else {
+            self.postObject.flagReceived = "0"
+        }
     }
     
     private func adjustTroubleList(){
@@ -361,8 +368,10 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
         default:
             if Int(postObject.category_trouble_id) == 1 {
                 return allProducts.count
-            } else {
+            } else if Int(postObject.category_trouble_id) == 2 {
                 return 1
+            } else {
+                return 0
             }
         }
     }
@@ -370,7 +379,11 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            problemLabel.text = postObject.category_trouble_text
+            if postObject.category_trouble_text == "" {
+                problemLabel.text = "Pilih"
+            } else {
+                problemLabel.text = postObject.category_trouble_text
+            }
             return self.problemCell
         default:
             if Int(postObject.category_trouble_id) == 1 {
@@ -398,8 +411,10 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
         case 1:
             if Int(postObject.category_trouble_id) == 1 {
                 return "Pilih produk yang bermasalah"
-            } else {
+            } else if Int(postObject.category_trouble_id) == 2 {
                 return "Pilih Detail Masalah"
+            } else {
+                return ""
             }
         default:
             return ""
