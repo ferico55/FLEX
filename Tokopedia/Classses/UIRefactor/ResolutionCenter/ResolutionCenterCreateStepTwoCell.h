@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "DownPicker.h"
+#import "Tokopedia-Swift.h"
 
 @protocol ResolutionCenterCreateStepTwoCellDelegate <NSObject>
 - (void) didChangeStepperValue:(UIStepper*)stepper;
+- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView*)textView withSelectedCell:(UITableViewCell*)cell;
 @end
 
-@interface ResolutionCenterCreateStepTwoCell : UITableViewCell
+@interface ResolutionCenterCreateStepTwoCell : UITableViewCell <UITextViewDelegate>
 @property (strong, nonatomic) IBOutlet DownPicker *troublePicker;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) IBOutlet UIView *problemView;
@@ -24,7 +26,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UIStepper *quantityStepper;
 @property (strong, nonatomic) IBOutlet UILabel *quantityLabel;
-@property (strong, nonatomic) IBOutlet UITextView *problemTextView;
+@property (strong, nonatomic) IBOutlet RSKPlaceholderTextView *problemTextView;
 
 @property (weak, nonatomic) id<ResolutionCenterCreateStepTwoCellDelegate> delegate;
 

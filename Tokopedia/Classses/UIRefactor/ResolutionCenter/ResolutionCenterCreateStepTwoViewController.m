@@ -48,7 +48,6 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    _result.remark = _priceProblemTextView.text;
 }
 
 -(void)copyProductToJSONObject{
@@ -76,6 +75,7 @@ ResolutionCenterCreateStepTwoCellDelegate
         //cell untuk product
         ProductTrouble* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
         ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
+        
         
         ResolutionCenterCreateStepTwoCell *cell = nil;
         NSString *cellid = @"ResolutionCenterCreateStepTwoCell";
@@ -161,12 +161,16 @@ ResolutionCenterCreateStepTwoCellDelegate
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
 }
 
+- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
+    ResolutionCenterCreatePOSTProduct* postProduct = [_result.postObject.product_list objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    postProduct.remark = textView.text;
+}
+
 #pragma mark - Request
 -(BOOL)verifyForm{
     for(ResolutionCenterCreatePOSTProduct *prod in _result.postObject.product_list){
-        if(!prod.trouble_id){
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada barang yang belum Anda pilih masalahnya."] delegate:self];
-            [alert show];
+        if([prod.trouble_id isEqualToString:@""]){            
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah untuk produk yang ingin di komplain."]];
             return NO;
         }
     }

@@ -207,20 +207,27 @@
 
 #pragma mark - Submit Create Resolution
 -(void)submitCreateResolution{
-    
-    [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
-                                                flagReceived:(_product_is_received)?@"1":@"0"
-                                                   troubleId:_result.troubleId?:@""
-                                                    solution:_selectedSolution.solution_id
-                                                refundAmount:_refundTextField.text
-                                                      remark:_result.remark?:@""
-                                           categoryTroubleId:_result.postObject.category_trouble_id
-                                       possibleTroubleObject:_result.postObject
-                                                imageObjects:_selectedImages
-                                                     success:^(ResolutionActionResult *data) {
-                                                         [_delegate didFinishCreateComplainInStepThree];
-                                                     } failure:^(NSError *error) {
-                                                         [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
-                                                     }];
+    if(!_selectedSolution) {
+        [StickyAlertView showErrorMessage:@[@"Mohon pilih solusi yang Anda inginkan terlebih dahulu"]];
+    } else if(_selectedImages.count == 0) {
+        [StickyAlertView showErrorMessage:@[@"Mohon lampirkan foto sebagai barang bukti"]];
+    } else {
+        [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
+                                                    flagReceived:(_product_is_received)?@"1":@"0"
+                                                       troubleId:_result.troubleId?:@""
+                                                        solution:_selectedSolution.solution_id
+                                                    refundAmount:_refundTextField.text
+                                                          remark:_result.remark?:@""
+                                               categoryTroubleId:_result.postObject.category_trouble_id
+                                           possibleTroubleObject:_result.postObject
+                                                    imageObjects:_selectedImages
+                                                         success:^(ResolutionActionResult *data) {
+                                                             [_delegate didFinishCreateComplainInStepThree];
+                                                         } failure:^(NSError *error) {
+
+                                                         }];
+        
+        
+    }
 }
 @end
