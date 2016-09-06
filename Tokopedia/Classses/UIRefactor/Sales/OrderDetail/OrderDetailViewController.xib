@@ -752,9 +752,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8 Oktober 2014" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VbM-p4-974">
-                            <rect key="frame" x="15" y="27" width="102" height="17"/>
+                            <rect key="frame" x="15" y="27" width="192" height="17"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="102" id="SJS-78-ute"/>
+                                <constraint firstAttribute="width" constant="192" id="SJS-78-ute"/>
                                 <constraint firstAttribute="height" constant="17" id="nfh-yE-iqz"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>

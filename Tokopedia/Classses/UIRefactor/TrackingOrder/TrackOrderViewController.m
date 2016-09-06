@@ -69,7 +69,7 @@
                                                                          attributes:attributes];
     
     //TODO:: Invalid Detail Text
-    NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n\n\u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n\u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
+    NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n\n\u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n\u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
     _invalidStatusDescLabel.text = invalidDetail;
     [_invalidStatusDescLabel setCustomAttributedText:invalidDetail];
     [_invalidStatusTitle setCustomAttributedText:invalidTitle];
