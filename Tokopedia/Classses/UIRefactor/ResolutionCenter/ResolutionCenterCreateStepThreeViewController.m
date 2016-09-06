@@ -12,6 +12,8 @@
 #import "RequestResolutionData.h"
 #import "ResolutionCenterCreatePOSTResponse.h"
 #import "RequestResolutionAction.h"
+#import <BlocksKit/BlocksKit.h>
+#import <BlocksKit/BlocksKit+UIKit.h>
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ResolutionCenterChooseSolutionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -139,7 +141,8 @@
 }
 
 #pragma mark - Methods
-- (IBAction)uploadButtonTapped:(id)sender {
+- (IBAction)uploadButtonTapped:(UIButton*)button {
+    
     [self navigateToPhotoPicker];
 }
 -(void)navigateToPhotoPicker{
@@ -166,16 +169,21 @@
     for (UIButton *button in _uploadButtons) {
         button.hidden = YES;
         [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
     for (UIButton *button in _cancelButtons) { button.hidden = YES; }
     for (int i = 0; i<_selectedImages.count; i++) {
         ((UIButton*)_uploadButtons[i]).hidden = NO;
         ((UIButton*)_cancelButtons[i]).hidden = NO;
         [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
+        [_uploadButtons[i] removeTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     if (_selectedImages.count<_uploadButtons.count) {
         UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
         uploadedButton.hidden = NO;
+        
+        
         _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
     }
 }
