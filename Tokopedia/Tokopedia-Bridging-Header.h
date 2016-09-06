@@ -105,7 +105,6 @@
 #import "NSArrayCategory.h"
 #import "UIDownPicker.h"
 #import "ResolutionCenterChooseProblemViewController.h"
-
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UIFont+Theme.h"
 #import "QueueImageDownloader.h"
@@ -118,3 +117,4 @@
 #import "TKPHomeBannerStore.h"
 #import "TKPHomeProductsStore.h"
 #import "NavigateViewController.h"
+#import "TKPDAlertView.h"
