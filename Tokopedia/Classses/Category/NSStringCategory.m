@@ -87,9 +87,7 @@
 {
     NSString *timeLeft;
     
-    NSDate *today10am =[NSDate date];
-    
-    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
+    NSInteger seconds = [dateT timeIntervalSinceNow];
     
     NSInteger days = (int) (floor(seconds / (3600 * 24)));
     if(days) seconds -= days * 3600 * 24;
