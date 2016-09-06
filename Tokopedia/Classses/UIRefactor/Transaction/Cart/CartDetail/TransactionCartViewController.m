@@ -2337,7 +2337,7 @@
                                                            options:NSStringDrawingUsesLineFragmentOrigin
                                                         attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                            context:context].size;
-        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
+        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 32;
     } else {
         expectedErrorLabelSize.height = 0;
     }

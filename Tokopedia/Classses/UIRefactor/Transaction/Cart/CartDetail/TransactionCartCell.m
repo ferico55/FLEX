@@ -192,7 +192,7 @@
                                                      attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                         context:context].size;
         _errorLabel.text = errorText;
-        _errorViewHeightConstraint.constant = expectedLabelSize.height + 16;
+        _errorViewHeightConstraint.constant = expectedLabelSize.height + 32;
     } else {
         _errorViewHeightConstraint.constant = 0;
     }
