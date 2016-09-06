@@ -345,6 +345,8 @@ extension EditSolutionBuyerViewController : UITableViewDelegate {
             self.navigationController?.pushViewController(controller, animated: true)
         } else if indexPath.section == 1 {
             allProducts[indexPath.row].pt_selected = !allProducts[indexPath.row].pt_selected
+            //set last selected quantity to max product count
+            allProducts[indexPath.row].pt_last_selected_quantity = allProducts[indexPath.row].pt_quantity
             tableView.reloadData()
         }
     }

@@ -61,6 +61,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
         
         troubleDownPicker.addTarget(self, action: #selector(EditProductTroubleCell.troubleDownPickerSelected(_:)), forControlEvents: .ValueChanged)
         
+        quantityStepper.value = Double(viewModel.productQuantity)!
         quantityStepper.maximumValue = Double(viewModel.maxQuantity)!
     }
     
@@ -71,7 +72,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     
     @IBAction func onChangeQuantityStepper(sender: UIStepper) {
         let quantity : String = String(format:"%.0f", sender.value)
-        productTrouble.pt_show_input_quantity = quantity
+        productTrouble.pt_last_selected_quantity = quantity
         quantityLabel.text = quantity
     }
     
