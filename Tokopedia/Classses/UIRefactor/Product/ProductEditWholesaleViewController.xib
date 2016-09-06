@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductEditWholesaleViewController">
             <connections>
@@ -44,7 +36,7 @@
                                 <constraint firstAttribute="height" constant="29" id="08y-lu-upo"/>
                                 <constraint firstAttribute="width" constant="297" id="Xc6-SP-MHH"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="Tambah Harga Grosir">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -121,12 +113,12 @@
                             </constraints>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US$" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DhL-DA-B9f">
-                            <rect key="frame" x="15" y="16" width="29" height="13"/>
+                            <rect key="frame" x="0.0" y="0.0" width="56" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="12.5" id="Aub-ja-0uo"/>
-                                <constraint firstAttribute="width" constant="28.5" id="mxL-9X-4qc"/>
+                                <constraint firstAttribute="height" constant="44" id="Aub-ja-0uo"/>
+                                <constraint firstAttribute="width" constant="56" id="mxL-9X-4qc"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -135,7 +127,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="pap-Zs-Zxe"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -158,7 +150,7 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="56j-C3-CsY" secondAttribute="bottom" id="2FC-5d-fG1"/>
                         <constraint firstItem="8S0-zJ-7uN" firstAttribute="leading" secondItem="mdr-fW-PEQ" secondAttribute="trailing" constant="14" id="2TD-74-Let"/>
-                        <constraint firstItem="DhL-DA-B9f" firstAttribute="top" secondItem="vX6-2t-oV0" secondAttribute="bottom" constant="15" id="4rl-Za-wQS"/>
+                        <constraint firstItem="DhL-DA-B9f" firstAttribute="top" secondItem="vX6-2t-oV0" secondAttribute="bottom" constant="-1" id="4rl-Za-wQS"/>
                         <constraint firstItem="7NQ-DM-7uv" firstAttribute="leading" secondItem="Z7w-7i-bDi" secondAttribute="leading" id="AeZ-uO-b2Q"/>
                         <constraint firstAttribute="trailing" secondItem="8S0-zJ-7uN" secondAttribute="trailing" constant="15" id="Cle-1b-WbD"/>
                         <constraint firstItem="mdr-fW-PEQ" firstAttribute="leading" secondItem="56j-C3-CsY" secondAttribute="trailing" id="Ho4-Fh-8qs"/>
@@ -173,7 +165,7 @@
                         <constraint firstItem="vX6-2t-oV0" firstAttribute="leading" secondItem="Z7w-7i-bDi" secondAttribute="leading" id="t6k-8K-j1h"/>
                         <constraint firstItem="56j-C3-CsY" firstAttribute="top" secondItem="Z7w-7i-bDi" secondAttribute="top" id="uDj-03-UaH"/>
                         <constraint firstItem="8S0-zJ-7uN" firstAttribute="top" secondItem="vX6-2t-oV0" secondAttribute="bottom" constant="11" id="yQv-71-usz"/>
-                        <constraint firstItem="DhL-DA-B9f" firstAttribute="leading" secondItem="Z7w-7i-bDi" secondAttribute="leading" constant="15" id="yel-yW-7ev"/>
+                        <constraint firstItem="DhL-DA-B9f" firstAttribute="leading" secondItem="Z7w-7i-bDi" secondAttribute="leading" id="yel-yW-7ev"/>
                     </constraints>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HARGA PAS / BUAH" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cL9-8N-kYv">
@@ -182,7 +174,7 @@
                         <constraint firstAttribute="height" constant="21" id="Ec8-gV-xOc"/>
                         <constraint firstAttribute="width" constant="146" id="YL3-VZ-nuO"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -193,7 +185,7 @@ Contoh:
 Kelompok Jumlah: 1 - 10, Harga: 15000
 Kelompok Jumlah: 11 - 20, Harga: 10000
 dst...</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>

@@ -74,19 +74,6 @@
 
 #define TKPD_SUCCESS_VALUE @"1"
 
-#define FONT_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:13.0f]
-#define FONT_DETAIL_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:12.0f]
-#define FONT_GOTHAM_MEDIUM_11 [UIFont fontWithName:@"GothamMedium" size:11.0f]
-#define FONT_GOTHAM_MEDIUM_12 [UIFont fontWithName:@"GothamMedium" size:12.0f]
-#define FONT_GOTHAM_MEDIUM_13 [UIFont fontWithName:@"GothamMedium" size:13.0f]
-#define FONT_GOTHAM_BOOK_10 [UIFont fontWithName:@"GothamBook" size:10.0f]
-#define FONT_GOTHAM_BOOK_11 [UIFont fontWithName:@"GothamBook" size:11.0f]
-#define FONT_GOTHAM_BOOK_12 [UIFont fontWithName:@"GothamBook" size:12.0f]
-#define FONT_GOTHAM_BOOK_13 [UIFont fontWithName:@"GothamBook" size:13.0f]
-#define FONT_GOTHAM_BOOK_14 [UIFont fontWithName:@"GothamBook" size:14.0f]
-#define FONT_GOTHAM_BOOK_16 [UIFont fontWithName:@"GothamBook" size:16.0f]
-#define FONT_GOTHAM_BOOK_18 [UIFont fontWithName:@"GothamBook" size:18.0f]
-
 #define TEXT_COLOUR_DEFAULT_CELL_TEXT [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1.0]
 
 #define TEXT_COLOUR_DISABLE [UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1.0]

@@ -118,6 +118,9 @@ NoResultDelegate
 {
     [super viewDidLoad];
     
+    _tableView.estimatedRowHeight = 86;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
     _isNeedToSearch = YES;
     
     _products = [NSMutableArray new];
@@ -297,7 +300,8 @@ NoResultDelegate
     _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        if ([sender tag] == 11) {
+        UIBarButtonItem* button = (UIBarButtonItem*)sender;
+        if (button.tag == 11) {
             ProductAddEditViewController *vc = [ProductAddEditViewController new];
             vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -608,7 +612,7 @@ NoResultDelegate
                                                       [self deleteListAtIndexPath:indexPath];
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -639,7 +643,7 @@ NoResultDelegate
                                                       welf.lastActionIndexPath = indexPath;
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -667,7 +671,7 @@ NoResultDelegate
                                                       
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -687,7 +691,7 @@ NoResultDelegate
                                                       [self.navigationController presentViewController:navigation animated:YES completion:nil];
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 

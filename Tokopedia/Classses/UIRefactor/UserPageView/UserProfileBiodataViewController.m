@@ -166,7 +166,7 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width, 40)];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width, 40)];
-    titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+    titleLabel.font = [UIFont smallTheme];
     if(section == 0) {
         //titleLabel.text = CStringPenilaianUser;
         //[headerView addSubview:titleLabel];

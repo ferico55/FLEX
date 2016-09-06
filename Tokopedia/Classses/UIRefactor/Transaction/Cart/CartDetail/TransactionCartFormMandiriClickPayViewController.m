@@ -54,16 +54,16 @@
     //TODO::
     NSString *stepsToGetToken1 = @"Masukkan APPLI ke dalam token";
     NSMutableAttributedString *attributedString1 = [[NSMutableAttributedString alloc]  initWithString:stepsToGetToken1];
-    [attributedString1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_MEDIUM_12 range:[stepsToGetToken1 rangeOfString:@"APPLI"]];
+    [attributedString1 addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[stepsToGetToken1 rangeOfString:@"APPLI"]];
     NSString *stepsToGetToken2 = @"Masukkan 10 angka terakhir kartu ke dalam token";
     NSMutableAttributedString *attributedString2 = [[NSMutableAttributedString alloc]  initWithString:stepsToGetToken2];
-    [attributedString2 addAttribute:NSFontAttributeName value:FONT_GOTHAM_MEDIUM_12 range:[stepsToGetToken2 rangeOfString:@"10 angka terakhir"]];
+    [attributedString2 addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[stepsToGetToken2 rangeOfString:@"10 angka terakhir"]];
     NSString *stepsToGetToken3 = @"Masukkan harga transaksi ke dalam token";
     NSMutableAttributedString *attributedString3 = [[NSMutableAttributedString alloc]  initWithString:stepsToGetToken3];
-    [attributedString3 addAttribute:NSFontAttributeName value:FONT_GOTHAM_MEDIUM_12 range:[stepsToGetToken3 rangeOfString:@"harga transaksi"]];
+    [attributedString3 addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[stepsToGetToken3 rangeOfString:@"harga transaksi"]];
     NSString *stepsToGetToken4 = @"Masukkan nomor transaksi ke dalam token";
     NSMutableAttributedString *attributedString4 = [[NSMutableAttributedString alloc]  initWithString:stepsToGetToken4];
-    [attributedString4 addAttribute:NSFontAttributeName value:FONT_GOTHAM_MEDIUM_12 range:[stepsToGetToken4 rangeOfString:@"nomor transaksi"]];
+    [attributedString4 addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[stepsToGetToken4 rangeOfString:@"nomor transaksi"]];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     [attributedString1 addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0,10)];

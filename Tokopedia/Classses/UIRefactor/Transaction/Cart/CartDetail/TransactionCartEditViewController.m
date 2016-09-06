@@ -156,10 +156,10 @@
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
 
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 8.0;
+        style.lineSpacing = 6.0;
         
         NSDictionary *textAttributes = @{
-                                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                        NSFontAttributeName            : [UIFont title2Theme],
                                         NSParagraphStyleAttributeName  : style,
                                         NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
                                         };

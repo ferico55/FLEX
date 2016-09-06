@@ -307,7 +307,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
         
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
-        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+        [attributedText setAttributes:@{NSFontAttributeName:[UIFont title2ThemeMedium]} range:range];
         searchCell.searchTitle.attributedText = attributedText;
         [searchCell.searchImage setHidden:YES];
         [searchCell setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
@@ -642,7 +642,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    
+    vc.tkpdTabNavigationController = viewController;
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
     [viewController setNavigationTitle:searchText];

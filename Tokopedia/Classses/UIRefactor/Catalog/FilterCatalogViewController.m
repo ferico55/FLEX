@@ -77,8 +77,8 @@
         cell.textLabel.text = @"Lokasi Pengiriman";
         cell.detailTextLabel.text = _locationValue;
     }
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    cell.textLabel.font = [UIFont title2Theme];
+    cell.detailTextLabel.font = [UIFont title2Theme];
     return cell;
 }
 

@@ -28,26 +28,8 @@
 {
     _text = text?:@"";
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentCenter;
-    
-    UIColor *color = [UIColor colorWithRed:66.0/255.0
-                                     green:66.0/255.0
-                                      blue:66.0/255.0
-                                     alpha:1];
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : font,
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : color
-                                 };
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-    
-    _textLabel.attributedText = attributedText;
+    UIFont *font = [UIFont largeTheme];
+    _textLabel.text = _text;
     
     self.clipsToBounds = YES;
     self.layer.cornerRadius = 2;

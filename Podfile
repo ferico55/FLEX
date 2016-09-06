@@ -20,11 +20,16 @@ target "Tokopedia" do
     pod 'ComponentKit', '~> 0.14'
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
+    pod "JLPermissions/Contacts"
     pod 'Google/SignIn'
+    pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
     pod 'Masonry', '~> 1.0.1'
     pod 'CardIO'
     pod 'DownPicker'
+    pod 'LayoutKit'
+    pod 'APAddressBook/Swift'
+    pod 'Masonry'
 end
 
 target "TokopediaTests" do

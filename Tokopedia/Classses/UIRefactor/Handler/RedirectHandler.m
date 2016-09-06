@@ -12,8 +12,6 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "SalesNewOrderViewController.h"
 #import "TxOrderStatusViewController.h"
 

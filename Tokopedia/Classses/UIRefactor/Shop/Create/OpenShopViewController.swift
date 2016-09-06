@@ -234,7 +234,7 @@ import UIKit
             }
         }
         if shopName.length == 0 {
-            errorMessages.append("Nama Toko harus diisi")
+            errorMessages.append("Nama Toko harus diisi.")
         }
         if shopTagline.length == 0 {
             errorMessages.append("Slogan harus diisi.")

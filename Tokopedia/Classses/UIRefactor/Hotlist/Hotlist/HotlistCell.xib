@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="186"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="185"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="185.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkt-6B-BtT">
@@ -37,12 +30,12 @@
                                 <rect key="frame" x="0.0" y="141" width="300" height="33"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5m1-8w-hzi">
-                                        <rect key="frame" x="5" y="5" width="162" height="21"/>
+                                        <rect key="frame" x="5" y="5" width="35.5" height="21"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="tFw-W2-j3p"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -53,18 +46,18 @@
                                             <constraint firstAttribute="height" constant="21" id="Bsa-J9-ybZ"/>
                                             <constraint firstAttribute="width" constant="74" id="mT1-vB-uGy"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Un9-kF-Gui">
-                                        <rect key="frame" x="170" y="5" width="53" height="21"/>
+                                        <rect key="frame" x="163" y="5" width="60" height="21"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="53" id="gLS-dG-HfK"/>
-                                            <constraint firstAttribute="height" constant="21" id="ud7-kt-7Dp"/>
+                                            <constraint firstAttribute="height" constant="21" id="9EI-ZZ-gma"/>
+                                            <constraint firstAttribute="width" constant="60" id="NmH-zb-t58"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -74,11 +67,10 @@
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="1N9-Eg-J3D"/>
                                     <constraint firstAttribute="height" constant="33" id="INF-vy-nqk"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="leading" secondItem="jP7-8C-OZe" secondAttribute="leading" constant="5" id="NY2-Xm-bU1"/>
-                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="W4l-Qy-nKO"/>
                                     <constraint firstItem="Btf-hw-uIO" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="c1d-e1-hSa"/>
                                     <constraint firstAttribute="trailing" secondItem="Btf-hw-uIO" secondAttribute="trailing" constant="3" id="dyc-yU-oPY"/>
-                                    <constraint firstItem="Btf-hw-uIO" firstAttribute="leading" secondItem="Un9-kF-Gui" secondAttribute="trailing" id="o0e-li-s9u"/>
-                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="leading" secondItem="5m1-8w-hzi" secondAttribute="trailing" constant="3" id="r7t-6u-oAH"/>
+                                    <constraint firstItem="Btf-hw-uIO" firstAttribute="leading" secondItem="Un9-kF-Gui" secondAttribute="trailing" id="gFt-1H-IYE"/>
+                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="uEM-ox-e23"/>
                                 </constraints>
                             </view>
                         </subviews>

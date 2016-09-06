@@ -312,7 +312,7 @@
     
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     button.titleLabel.numberOfLines = 2;
-    button.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:15.0];
+    button.titleLabel.font = [UIFont title1ThemeMedium];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.textColor = [UIColor whiteColor];
 
