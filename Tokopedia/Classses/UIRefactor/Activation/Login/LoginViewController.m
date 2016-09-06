@@ -25,8 +25,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
-
-#import "Localytics.h"
 #import "Tokopedia-Swift.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>

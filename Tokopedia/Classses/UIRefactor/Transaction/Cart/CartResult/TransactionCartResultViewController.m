@@ -20,8 +20,6 @@
 #import "TxOrderTabViewController.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
-
-#import "Localytics.h"
 #import "TTTAttributedLabel.h"
 
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate, TTTAttributedLabelDelegate>

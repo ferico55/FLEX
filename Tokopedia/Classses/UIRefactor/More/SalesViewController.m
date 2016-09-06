@@ -13,8 +13,6 @@
 #import "SalesTransactionListViewController.h"
 #import "NotificationManager.h"
 
-#import "Localytics.h"
-
 @interface SalesViewController ()
 <
     NotificationManagerDelegate,

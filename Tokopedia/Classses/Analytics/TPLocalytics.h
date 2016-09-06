@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Localytics.h"
 #import "TransactionCartResult.h"
 #import "Product.h"
 #import "SearchAWS.h"

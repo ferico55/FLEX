@@ -8,7 +8,6 @@
 
 #import "RequestNotifyLBLM.h"
 #import "NotifyLBLM.h"
-#import "Localytics.h"
 #import "AlertLuckyView.h"
 
 @implementation RequestNotifyLBLM

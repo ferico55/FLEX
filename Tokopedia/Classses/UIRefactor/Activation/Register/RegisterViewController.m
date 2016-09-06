@@ -24,8 +24,6 @@
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 
-#import "Localytics.h"
-
 #import "TAGDataLayer.h"
 
 #import "ActivationRequest.h"

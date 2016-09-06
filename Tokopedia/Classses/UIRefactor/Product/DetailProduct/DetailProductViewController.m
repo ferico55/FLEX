@@ -78,7 +78,6 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
-#import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
 #import "NoResultReusableView.h"

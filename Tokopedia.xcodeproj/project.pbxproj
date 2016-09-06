@@ -867,10 +867,10 @@
 		458D93151D6ECFED00417C75 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 458D88D91D6ECFEC00417C75 /* vt-iOSlib-1.0.1.tar.gz */; };
 		458D93161D6ECFED00417C75 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 458D88DA1D6ECFEC00417C75 /* vt-iOSlib-1.0.1.zip */; };
 		458D93171D6ECFED00417C75 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D88DD1D6ECFEC00417C75 /* XYPieChart.m */; };
-		627065931D7EAF5700BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065921D7EAF5700BDE9F8 /* Localytics.framework */; };
-		627065941D7EAFB300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065921D7EAF5700BDE9F8 /* Localytics.framework */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
+		6270659C1D7EB80600BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
+		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
 		628514241D7004FD00FF0A96 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 6285081F1D7004F600FF0A96 /* TPAnalytics.m */; };
 		628514251D7004FD00FF0A96 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508211D7004F600FF0A96 /* TPLocalytics.m */; };
 		628514261D7004FD00FF0A96 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508241D7004F600FF0A96 /* URLCacheAlert.m */; };
@@ -3709,9 +3709,9 @@
 		458D88DC1D6ECFEC00417C75 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		458D88DD1D6ECFEC00417C75 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		627065921D7EAF5700BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Localytics.framework; path = "../../Downloads/Localytics-iOS-4.0.1/Localytics.framework"; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
 		6285081E1D7004F600FF0A96 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		6285081F1D7004F600FF0A96 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		628508201D7004F600FF0A96 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6788,7 +6788,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				627065931D7EAF5700BDE9F8 /* Localytics.framework in Frameworks */,
+				6270659C1D7EB80600BDE9F8 /* Localytics.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -6830,9 +6830,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */,
 				627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */,
 				627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */,
-				627065941D7EAFB300BDE9F8 /* Localytics.framework in Frameworks */,
 				FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC36DFA019B0656400AF74C1 /* XCTest.framework in Frameworks */,
 				FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -13454,9 +13454,9 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6270659B1D7EB80600BDE9F8 /* Localytics.framework */,
 				627065971D7EAFC900BDE9F8 /* libz.tbd */,
 				627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */,
-				627065921D7EAF5700BDE9F8 /* Localytics.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */,
@@ -16836,6 +16836,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -16862,6 +16863,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";

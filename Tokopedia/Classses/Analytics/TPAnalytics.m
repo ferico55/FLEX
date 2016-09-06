@@ -14,7 +14,6 @@
 #import "PromoProduct.h"
 #import "TransactionCartList.h"
 #import "PromoResult.h"
-#import "Localytics.h"
 #import "NSURL+Dictionary.h"
 
 @interface TPAnalytics ()
