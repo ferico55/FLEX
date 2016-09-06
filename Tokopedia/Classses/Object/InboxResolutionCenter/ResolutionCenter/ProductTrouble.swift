@@ -19,7 +19,7 @@ class ProductTrouble: NSObject {
     var pt_solution_remark : String = ""
     var pt_order_dtl_id : String = ""
     var pt_quantity : String = ""
-    var pt_free_return : String = ""
+    var pt_free_return : Int = 0
     var pt_primary_photo : String = ""
     var pt_primary_dtl_photo : String = ""
     var pt_last_selected_quantity = "1"

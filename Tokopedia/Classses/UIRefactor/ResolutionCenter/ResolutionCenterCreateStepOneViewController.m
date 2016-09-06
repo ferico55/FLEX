@@ -68,6 +68,15 @@ ResolutionCenterChooseProblemDelegate
 
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.productName.text = currentProduct.pt_product_name;
+        
+        if(currentProduct.pt_free_return == 1) {
+            cell.badgeProsecure.hidden = false;
+            cell.labelProsecure.hidden = false;
+        } else {
+            cell.badgeProsecure.hidden = true;
+            cell.labelProsecure.hidden = true;
+        }
+        
         cell.productImage.contentMode = UIViewContentModeScaleToFill;
         [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
         return cell;
