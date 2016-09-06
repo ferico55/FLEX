@@ -19,8 +19,8 @@ import UIKit
     @IBOutlet var solutionCell: UITableViewCell!
     @IBOutlet var returnMoneyViewHeight: NSLayoutConstraint!
     
-    @IBOutlet var buyerLabel: UILabel!
-    @IBOutlet var invoiceLabel: UILabel!
+    @IBOutlet var buyerButton: UIButton!
+    @IBOutlet var invoiceButton: UIButton!
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
@@ -183,8 +183,8 @@ import UIKit
         self .adjustUIForm(data.form)
     }
     private func adjustUIForm(form: EditResolutionForm) {
-        invoiceLabel.text = form.resolution_order.order_invoice_ref_num
-        buyerLabel.text = "Pembelian Oleh \(form.resolution_customer.customer_name)"
+        invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
+        buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", forState: .Normal)
         solutionLabel.text = form.resolution_last.last_solution_string
     }
     
@@ -273,6 +273,14 @@ import UIKit
     
     func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
         self.successEdit = success
+    }
+    
+    @IBAction func onTapInvoiceButton(sender: UIButton) {
+            NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+    }
+    
+    @IBAction func onTapBuyerButton(sender: UIButton) {
+    
     }
     
     private func requestSubmitEdit() {
