@@ -248,13 +248,12 @@ import UIKit
     }
     
     @objc private func onTapSubmit(){
-        
+        self.adjustPostData()
         let validation : ResolutionValidation = ResolutionValidation()
         if !validation.isValidSubmitEditResolution(self.postObject) {
             return;
         }
         
-        self.adjustPostData()
         if type == Type.Edit {
             postObject.editSolution = "1"
             self.requestSubmitEdit()
