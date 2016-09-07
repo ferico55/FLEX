@@ -218,7 +218,9 @@
         [_photoStackView addArrangedSubview:button];
     }];
     
-    [_photoStackView addArrangedSubview:_addImageButton];
+    if (_selectedImages.count < 5) {
+        [_photoStackView addArrangedSubview:_addImageButton];
+    }
 }
 - (IBAction)cancelButtonTapped:(id)sender {
     UIButton* button = (UIButton*)sender;
