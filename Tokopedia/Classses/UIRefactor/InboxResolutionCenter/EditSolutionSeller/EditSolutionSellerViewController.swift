@@ -96,6 +96,10 @@ import UIKit
         self.adjsutAlertProgressAppearance()
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     private func adjsutAlertProgressAppearance(){
         alertProgress = UIAlertView.init(title: nil, message: "Please wait...", delegate: nil, cancelButtonTitle: nil);
         

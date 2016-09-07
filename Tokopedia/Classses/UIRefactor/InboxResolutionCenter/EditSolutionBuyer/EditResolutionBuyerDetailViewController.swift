@@ -82,6 +82,10 @@ import UIKit
         reasonTextView.placeholder = "Alasan mengubah komplain"
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     private func setAppearanceLoadingView(){
         loadingView.delegate = self
         self.view .addSubview(loadingView)
