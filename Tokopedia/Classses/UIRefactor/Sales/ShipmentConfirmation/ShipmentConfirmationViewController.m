@@ -262,7 +262,7 @@
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
     
-    if (transaction.order_shipment.shipment_id == 10) {
+    if (transaction.order_is_pickup == 1) {
         [cell.acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
         [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 2;

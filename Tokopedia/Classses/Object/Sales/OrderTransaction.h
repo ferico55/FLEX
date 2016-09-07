@@ -33,5 +33,6 @@
 @property (strong, nonatomic) NSMutableArray *order_history;
 @property (strong, nonatomic) OrderDestination *order_destination;
 @property (strong, nonatomic) OrderSellerShop *order_shop;
+@property NSInteger order_is_pickup;
 
 @end

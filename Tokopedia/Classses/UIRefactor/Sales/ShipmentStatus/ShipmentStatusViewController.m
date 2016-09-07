@@ -176,7 +176,7 @@
         if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
             [cell showTrackButton];
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING &&
-                   order.order_shipment.shipment_id == 10) {
+                   order.order_is_pickup == 1) {
             [cell showTrackButton];
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||

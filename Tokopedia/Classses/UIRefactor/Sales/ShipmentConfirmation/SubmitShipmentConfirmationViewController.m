@@ -493,7 +493,7 @@
 }
 
 - (BOOL)isInstantCourier {
-    if (_order.order_shipment.shipment_id == 10) {
+    if (_order.order_is_pickup == 1) {
         return YES;
     } else {
         return NO;
