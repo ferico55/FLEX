@@ -251,6 +251,12 @@
             }
                 
             case 11: {
+                if (_list.count == 0) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Silakan menambahkan akun bank untuk melakukan penarikan dana."] delegate:self];
+                    [alert show];
+                    break;
+                }
+                
                 NSIndexPath *indexpath = _selectedIndexPath;
                 DepositFormBankAccountList *list = _list[indexpath.row];
                 NSString *bankName = [NSString stringWithFormat:@"%@ a/n %@ - %@", list.bank_account_number, list.bank_account_name, list.bank_name];
