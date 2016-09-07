@@ -174,40 +174,13 @@
 }
 
 -(void)setSelectedImages{
-//    for (UIButton *button in _uploadButtons) {
-//        button.hidden = YES;
-//        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
-//        [button addTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    for (UIButton *button in _cancelButtons) { button.hidden = YES; }
-//    for (int i = 0; i<_selectedImages.count; i++) {
-//        ((UIButton*)_uploadButtons[i]).hidden = NO;
-//        ((UIButton*)_cancelButtons[i]).hidden = NO;
-//        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
-//        [_uploadButtons[i] removeTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//    }
-//    if (_selectedImages.count<_uploadButtons.count) {
-//        UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
-//        uploadedButton.hidden = NO;
-//        
-//        
-//        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
-//    }
-    
-//    UIButton *lala = [UIButton buttonWithType:UIButtonTypeSystem];
-//    lala.backgroundColor = [UIColor redColor];
-//    lala.frame = CGRectMake(0, 0, 60, 60);
-//    [lala mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.height.equalTo(@30);
-//        make.width.equalTo(@30);
-//    }];
-//    
-//    [_photoStackView addArrangedSubview:lala];
+    __weak typeof(self) weakSelf = self;
     [_photoStackView removeAllSubviews];
     
     
     [_selectedImages enumerateObjectsUsingBlock:^(DKAsset *asset, NSUInteger index, BOOL *stop) {
+        UIView *container = [[UIView alloc] init];
+        
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setBackgroundImage:asset.thumbnailImage forState:UIControlStateNormal];
         
@@ -216,13 +189,32 @@
             make.width.equalTo(@90);
         }];
         
-        [button bk_addEventHandler:^(UIButton *button) {
+        [container addSubview:button];
+        
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [closeButton setBackgroundImage:[UIImage imageNamed:@"icon_cancel"] forState:UIControlStateNormal];
+        
+        [container addSubview:closeButton];
+        
+        [closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(button.mas_trailing);
+            make.centerY.equalTo(button.mas_top);
+        }];
+        
+        [closeButton bk_addEventHandler:^(UIButton *button) {
             [_selectedImages removeObjectAtIndex:index];
-            [self setSelectedImages];
+            [weakSelf setSelectedImages];
         }
                   forControlEvents:UIControlEventTouchUpInside];
         
-        [_photoStackView addArrangedSubview:button];
+        [container mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(button.mas_leading);
+            make.bottom.equalTo(button.mas_bottom).offset(10);
+            make.top.equalTo(closeButton.mas_top);
+            make.right.equalTo(closeButton.mas_right);
+        }];
+        
+        [_photoStackView addArrangedSubview:container];
     }];
     
     if (_selectedImages.count < 5) {

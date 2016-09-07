@@ -166,7 +166,7 @@
                         <rect key="frame" x="0.0" y="44" width="320" height="120"/>
                         <subviews>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="120" translatesAutoresizingMaskIntoConstraints="NO" id="Gdy-68-gXz" customClass="OAStackView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                                <rect key="frame" x="10" y="0.0" width="320" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="eSv-CB-hgf"/>
@@ -176,16 +176,16 @@
                                         <integer key="value" value="0"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="spacing">
-                                        <real key="value" value="10"/>
+                                        <real key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Gdy-68-gXz" secondAttribute="trailing" id="TBg-nR-4nO"/>
+                            <constraint firstAttribute="trailing" secondItem="Gdy-68-gXz" secondAttribute="trailing" constant="10" id="TBg-nR-4nO"/>
                             <constraint firstAttribute="bottom" secondItem="Gdy-68-gXz" secondAttribute="bottom" id="VD5-aM-oB0"/>
-                            <constraint firstItem="Gdy-68-gXz" firstAttribute="leading" secondItem="ThK-YM-K8z" secondAttribute="leading" id="Vtm-nL-Z4t"/>
+                            <constraint firstItem="Gdy-68-gXz" firstAttribute="leading" secondItem="ThK-YM-K8z" secondAttribute="leading" constant="10" id="Vtm-nL-Z4t"/>
                             <constraint firstItem="Gdy-68-gXz" firstAttribute="top" secondItem="ThK-YM-K8z" secondAttribute="top" id="ai8-yY-Tl4"/>
                             <constraint firstAttribute="height" constant="120" id="d8h-xZ-grM"/>
                         </constraints>
