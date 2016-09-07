@@ -49,29 +49,18 @@
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="AOR-v7-oCj" secondAttribute="trailing" constant="23" id="8ck-AZ-xea"/>
-                <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="AOR-v7-oCj" secondAttribute="leading" id="CQz-Kl-Gaa"/>
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="top" secondItem="CIZ-I1-FCl" secondAttribute="top" constant="6" id="F69-NL-GfH"/>
-                <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="Lq2-he-aFB"/>
                 <constraint firstAttribute="bottom" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="7" id="NC7-tT-iBu"/>
                 <constraint firstAttribute="trailing" secondItem="nxA-1c-vxF" secondAttribute="trailing" constant="3" id="Pzs-AD-fQI"/>
                 <constraint firstItem="nxA-1c-vxF" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="QbN-ve-JNE"/>
                 <constraint firstItem="Zx4-2G-i0W" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="TQ0-WE-lZA"/>
                 <constraint firstItem="Zx4-2G-i0W" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="ZxC-tR-T5U"/>
                 <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="leading" id="drZ-P7-GL7"/>
-                <constraint firstItem="Hao-wh-Meq" firstAttribute="top" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="6" id="iRd-jg-xKv"/>
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="ohd-s3-SRX"/>
                 <constraint firstAttribute="trailing" secondItem="Hao-wh-Meq" secondAttribute="trailing" id="pzW-jI-f6Y"/>
-                <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="trailing" priority="750" constant="15" id="tNv-7g-HyF"/>
                 <constraint firstAttribute="bottom" secondItem="Hao-wh-Meq" secondAttribute="bottom" id="yNh-vo-ccl"/>
             </constraints>
             <size key="customSize" width="320" height="50"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="CQz-Kl-Gaa"/>
-                    <exclude reference="Lq2-he-aFB"/>
-                    <exclude reference="iRd-jg-xKv"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="closeButton" destination="nxA-1c-vxF" id="TNM-eO-CqO"/>
                 <outlet property="searchLoopImageView" destination="Zx4-2G-i0W" id="kd6-80-sOr"/>

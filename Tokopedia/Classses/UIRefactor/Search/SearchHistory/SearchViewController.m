@@ -325,13 +325,14 @@ NSString *const RECENT_SEARCH = @"recent_search";
         
         searchCell.closeButton.hidden = YES;
         searchCell.searchLoopImageView.hidden = YES;
-        [searchCell addConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+        searchCell.searchTitleLeadingToSuperViewConstraint.constant = 21;
         if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
             searchCell.closeButton.hidden = NO;
             [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
         } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
             searchCell.searchLoopImageView.hidden = NO;
-            [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+            searchCell.searchTitleLeadingToSuperViewConstraint.constant = 46;
+
         }
         [searchCell setGreenSearchText:_searchBar.text];
     }
