@@ -40,16 +40,6 @@ class ResolutionValidation: NSObject {
     }
     
     func isValidSubmitEditResolution(postObject : ReplayConversationPostData) -> Bool{
-        if postObject.solution == "1"{
-            do{
-                try self.validateRefundSolution(postObject)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
-            } catch {
-                //other error
-            }
-        }
-        
         do{
             try self.validateSolution(postObject)
         } catch Errors.errorMessage(let message) {
@@ -65,17 +55,12 @@ class ResolutionValidation: NSObject {
         return errorMessages.count == 0
     }
     
-    private func validateRefundSolution(postObject: ReplayConversationPostData) throws{
-        guard postObject.refundAmount != "" else {
-            throw Errors.errorMessage("Jumlah pengembalian dana belum diisi.")
+    private func validateSolution(postObject : ReplayConversationPostData) throws {
+        
+        guard Int(postObject.refundAmount) <= Int(postObject.maxRefundAmount) else {
+            throw Errors.errorMessage("Nominal maksimal pengembalian dana sebesar \(postObject.maxRefundAmountIDR) .")
         }
         
-        guard Int(postObject.refundAmount) < Int(postObject.maxRefundAmount) else {
-            throw Errors.errorMessage("Jumlah refund tidak valid.")
-        }
-    }
-    
-    private func validateSolution(postObject : ReplayConversationPostData) throws {
         guard postObject.replyMessage != "" else {
             throw Errors.errorMessage("Alasan merubah solusi belum diisi.")
         }
@@ -87,6 +72,10 @@ class ResolutionValidation: NSObject {
         }
         
         try postObject.selectedProducts.forEach { (product) in
+            guard product.pt_last_selected_quantity != "" && Int(product.pt_last_selected_quantity) > 0 else {
+                throw Errors.errorMessage("Jumlah produk \(product.pt_product_name) belum diisi")
+            }
+            
             guard product.pt_trouble_id != "" else {
                 throw Errors.errorMessage("Masalah pada produk \(product.pt_product_name) belum dipilih")
             }
@@ -97,7 +86,7 @@ class ResolutionValidation: NSObject {
     }
     
     private func validateNonProductRelatedProblem(postObject: ReplayConversationPostData) throws {
-        guard postObject.troubleType != "" else {
+        guard postObject.troubleType != "" && Int(postObject.troubleType) != 0 else {
             throw Errors.errorMessage("Pilih detail masalah")
         }
     }

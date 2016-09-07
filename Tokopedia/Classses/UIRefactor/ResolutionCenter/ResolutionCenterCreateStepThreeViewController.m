@@ -12,6 +12,11 @@
 #import "RequestResolutionData.h"
 #import "ResolutionCenterCreatePOSTResponse.h"
 #import "RequestResolutionAction.h"
+#import <BlocksKit/BlocksKit.h>
+#import <BlocksKit/BlocksKit+UIKit.h>
+#import <OAStackView/OAStackView.h>
+#import <Masonry/Masonry.h>
+
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ResolutionCenterChooseSolutionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -25,7 +30,9 @@
 @property (strong, nonatomic) EditSolution *selectedSolution;
 @property (strong, nonatomic) IBOutlet UITextField *refundTextField;
 @property (strong, nonatomic) IBOutlet UIButton *solutionButton;
+@property (strong, nonatomic) IBOutlet OAStackView *photoStackView;
 @property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
+@property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 @end
 
 @implementation ResolutionCenterCreateStepThreeViewController{
@@ -44,18 +51,21 @@
     for(UIButton *btn in _cancelButtons) {
         btn.hidden = YES;
     }
+    
+    _photoStackView.alignment = OAStackViewAlignmentCenter;
+    [_photoStackView addArrangedSubview:_addImageButton];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
-                                                                troubleId:_result.troubleId
-                                                                    success:^(NSArray<EditSolution*>* list) {
-                                                                        _formSolutions = list;
-                                                                        
-                                                                    } failure:^(NSError *error) {
-                                                                        
-                                                                    }];
+//    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+//                                                                troubleId:_result.troubleId
+//                                                                    success:^(NSArray<EditSolution*>* list) {
+//                                                                        _formSolutions = list;
+//                                                                        
+//                                                                    } failure:^(NSError *error) {
+//                                                                        
+//                                                                    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,7 +149,8 @@
 }
 
 #pragma mark - Methods
-- (IBAction)uploadButtonTapped:(id)sender {
+- (IBAction)uploadButtonTapped:(UIButton*)button {
+    
     [self navigateToPhotoPicker];
 }
 -(void)navigateToPhotoPicker{
@@ -163,26 +174,54 @@
 }
 
 -(void)setSelectedImages{
-    for (UIButton *button in _uploadButtons) {
-        button.hidden = YES;
-        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
+    __weak typeof(self) weakSelf = self;
+    [_photoStackView removeAllSubviews];
+    
+    
+    [_selectedImages enumerateObjectsUsingBlock:^(DKAsset *asset, NSUInteger index, BOOL *stop) {
+        UIView *container = [[UIView alloc] init];
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setImage:asset.thumbnailImage forState:UIControlStateNormal];
+        
+        button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@90);
+            make.width.equalTo(@90);
+        }];
+        
+        [container addSubview:button];
+        
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [closeButton setBackgroundImage:[UIImage imageNamed:@"icon_cancel"] forState:UIControlStateNormal];
+        
+        [container addSubview:closeButton];
+        
+        [closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(button.mas_trailing);
+            make.centerY.equalTo(button.mas_top);
+        }];
+        
+        [closeButton bk_addEventHandler:^(UIButton *button) {
+            [_selectedImages removeObjectAtIndex:index];
+            [weakSelf setSelectedImages];
+        }
+                  forControlEvents:UIControlEventTouchUpInside];
+        
+        [container mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(button.mas_leading);
+            make.bottom.equalTo(button.mas_bottom).offset(10);
+            make.top.equalTo(closeButton.mas_top);
+            make.right.equalTo(closeButton.mas_right);
+        }];
+        
+        [_photoStackView addArrangedSubview:container];
+    }];
+    
+    if (_selectedImages.count < 5) {
+        [_photoStackView addArrangedSubview:_addImageButton];
     }
-    for (UIButton *button in _cancelButtons) { button.hidden = YES; }
-    for (int i = 0; i<_selectedImages.count; i++) {
-        ((UIButton*)_uploadButtons[i]).hidden = NO;
-        ((UIButton*)_cancelButtons[i]).hidden = NO;
-        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
-    }
-    if (_selectedImages.count<_uploadButtons.count) {
-        UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
-        uploadedButton.hidden = NO;
-        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
-    }
-}
-- (IBAction)cancelButtonTapped:(id)sender {
-    UIButton* button = (UIButton*)sender;
-    [_selectedImages removeObjectAtIndex:button.tag];
-    [self setSelectedImages];
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -199,20 +238,27 @@
 
 #pragma mark - Submit Create Resolution
 -(void)submitCreateResolution{
-    
-    [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
-                                                flagReceived:(_product_is_received)?@"1":@"0"
-                                                   troubleId:_result.troubleId?:@""
-                                                    solution:_selectedSolution.solution_id
-                                                refundAmount:_refundTextField.text
-                                                      remark:_result.remark?:@""
-                                           categoryTroubleId:_result.postObject.category_trouble_id
-                                       possibleTroubleObject:_result.postObject
-                                                imageObjects:_selectedImages
-                                                     success:^(ResolutionActionResult *data) {
-                                                         [_delegate didFinishCreateComplainInStepThree];
-                                                     } failure:^(NSError *error) {
-                                                         [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
-                                                     }];
+    if(!_selectedSolution) {
+        [StickyAlertView showErrorMessage:@[@"Mohon pilih solusi yang Anda inginkan terlebih dahulu"]];
+    } else if(_selectedImages.count == 0) {
+        [StickyAlertView showErrorMessage:@[@"Mohon lampirkan foto sebagai barang bukti"]];
+    } else {
+        [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
+                                                    flagReceived:(_product_is_received)?@"1":@"0"
+                                                       troubleId:_result.troubleId?:@""
+                                                        solution:_selectedSolution.solution_id
+                                                    refundAmount:_refundTextField.text
+                                                          remark:_result.remark?:@""
+                                               categoryTroubleId:_result.postObject.category_trouble_id
+                                           possibleTroubleObject:_result.postObject
+                                                    imageObjects:_selectedImages
+                                                         success:^(ResolutionActionResult *data) {
+                                                             [_delegate didFinishCreateComplainInStepThree];
+                                                         } failure:^(NSError *error) {
+
+                                                         }];
+        
+        
+    }
 }
 @end

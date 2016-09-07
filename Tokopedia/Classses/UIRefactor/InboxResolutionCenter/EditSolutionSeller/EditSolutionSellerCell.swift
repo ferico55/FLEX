@@ -10,7 +10,6 @@ import UIKit
 
 
 class EditSolutionSellerCell: UITableViewCell {
-    @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var freeReturnLogoImageView: UIImageView!
     @IBOutlet weak var troubleLabel: UILabel!
     @IBOutlet weak var troubleDescriptionLabel: UILabel!
@@ -24,8 +23,6 @@ class EditSolutionSellerCell: UITableViewCell {
     }
     
     func setViewModel(viewModel:ProductResolutionViewModel) {
-        productImageView.setImageWithUrl(NSURL.init(string: viewModel.productImageURLString)!, placeHolderImage: UIImage.init(named: "icon_toped_loading_grey-01.png"))
-        
         troubleLabel.text = viewModel.productTrouble
         troubleDescriptionLabel.text = viewModel.productTroubleDescription
         productNameLabel.text = viewModel.productName

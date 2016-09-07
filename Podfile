@@ -30,6 +30,8 @@ target "Tokopedia" do
     pod 'LayoutKit'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
+    pod 'TPKeyboardAvoiding', '~> 1.3'
+    pod 'OAStackView', '~> 1.0.1'
 end
 
 target "TokopediaTests" do

@@ -26,6 +26,8 @@ import UIKit
     private var allProducts : [ProductTrouble] = []
     private var firstResponderIndexPath : NSIndexPath?
     private var alertProgress : UIAlertView = UIAlertView()
+    private var loadingView : LoadingView = LoadingView()
+    private var nextButton : UIBarButtonItem = UIBarButtonItem()
     @IBOutlet var problemCell: UITableViewCell!
     
     private var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
@@ -39,15 +41,15 @@ import UIKit
         
         self.title = "Ubah Komplain"
         
-        let button : UIBarButtonItem = UIBarButtonItem(title: "Lanjut", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionBuyerViewController.nextPage))
-        self.navigationItem.rightBarButtonItem = button
+        nextButton = UIBarButtonItem(title: "Lanjut", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionBuyerViewController.nextPage))
+        self.navigationItem.rightBarButtonItem = nextButton
         
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(EditSolutionBuyerViewController.keyboardWillShow(_:)),
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillHide),
+                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
@@ -59,8 +61,6 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionBuyerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
-        tableView.tableHeaderView = headerView
-        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
         
@@ -71,6 +71,17 @@ import UIKit
         detailProblemDownPicker.shouldDisplayCancelButton = false
         
         self.requestFormEdit()
+        
+        self .setAppearanceLoadingView()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    private func setAppearanceLoadingView(){
+        loadingView.delegate = self
+        self.view .addSubview(loadingView)
     }
     
     @IBAction func onTapInvoiceButton(sender: UIButton) {
@@ -122,17 +133,21 @@ import UIKit
             
             self.adjustResolutionData(data)
             self.fetchAllProducts()
-            
+            self.tableView.tableFooterView = nil
+            self.nextButton.enabled = true
             self.isFinishRequest(true)
             
             }) { (error) in
-            
+                
+            self.nextButton.enabled = false
+            self.tableView.tableFooterView = self.loadingView.view
             self.isFinishRequest(true)
         }
     }
     
     private func adjustResolutionData(data: EditResolutionFormData){
         self.resolutionData = data
+        self.tableView.tableHeaderView = headerView
         self.adjustPostObject()
         self.adjustTroubleList()
         self.tableView.reloadData()
@@ -140,15 +155,22 @@ import UIKit
     }
     
     private func adjustPostObject(){
-        self.postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
-        self.postObject.replyMessage = resolutionData.form.resolution_last.last_category_trouble_string
-        self.postObject.troubleName = resolutionData.form.resolution_last.last_category_trouble_string
-        self.postObject.selectedProducts = resolutionData.form.resolution_last.last_product_trouble
-        self.postObject.category_trouble_id = resolutionData.form.resolution_last.last_category_trouble_type
-        self.postObject.category_trouble_text = resolutionData.form.resolution_last.last_category_trouble_string
+        if resolutionData.form.resolution_last.last_flag_received.boolValue == isGetProduct {
+            self.postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
+            self.postObject.replyMessage = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.troubleName = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.selectedProducts = resolutionData.form.resolution_last.last_product_trouble
+            self.postObject.category_trouble_id = resolutionData.form.resolution_last.last_category_trouble_type
+            self.postObject.category_trouble_text = resolutionData.form.resolution_last.last_category_trouble_string
+            self.postObject.troubleName = resolutionData.form.resolution_last.last_trouble_string
+        }
+        
         self.postObject.resolutionID = resolutionData.form.resolution_last.last_resolution_id.stringValue
-        self.postObject.flagReceived = resolutionData.form.resolution_last.last_flag_received.stringValue
-        self.postObject.troubleName = resolutionData.form.resolution_last.last_trouble_string
+        if isGetProduct {
+            self.postObject.flagReceived = "1"
+        } else {
+            self.postObject.flagReceived = "0"
+        }
     }
     
     private func adjustTroubleList(){
@@ -189,7 +211,6 @@ import UIKit
             self.tableView.reloadData()
             
             }) { (error) in
-                
             self.isFinishRequest(true)
         }
     }
@@ -254,9 +275,15 @@ extension EditSolutionBuyerViewController : GeneralTableViewControllerDelegate {
                 // remove trouble type (product related category trouble)
                 self.postObject.troubleType = ""
                 self.postObject.troubleName = ""
+                self.postObject.solution = ""
+                self.postObject.selectedSolution = EditSolution()
             }else {
                 // remove selected products (non product related category trouble)
                 self.postObject.selectedProducts = []
+                self.postObject.postObjectProducts = []
+                allProducts.forEach{$0.pt_selected = false}
+                self.postObject.solution = ""
+                self.postObject.selectedSolution = EditSolution()
             }
             self.adjustTroubleList()
             tableView.reloadData()
@@ -279,6 +306,14 @@ extension EditSolutionBuyerViewController : UITextFieldDelegate{
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)
         return true
+    }
+}
+
+extension EditSolutionBuyerViewController : LoadingViewDelegate{
+    //MARK: LoadingViewDelegate
+    
+    func pressRetryButton() {
+        self.refresh()
     }
 }
 
@@ -314,6 +349,8 @@ extension EditSolutionBuyerViewController : UITableViewDelegate {
             self.navigationController?.pushViewController(controller, animated: true)
         } else if indexPath.section == 1 {
             allProducts[indexPath.row].pt_selected = !allProducts[indexPath.row].pt_selected
+            //set last selected quantity to max product count
+            allProducts[indexPath.row].pt_last_selected_quantity = allProducts[indexPath.row].pt_quantity
             tableView.reloadData()
         }
     }
@@ -324,6 +361,9 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
     //MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if self.resolutionData.form.resolution_last.last_resolution_id == nil {
+            return 0
+        }
         return 2
     }
     
@@ -334,8 +374,10 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
         default:
             if Int(postObject.category_trouble_id) == 1 {
                 return allProducts.count
-            } else {
+            } else if Int(postObject.category_trouble_id) == 2 {
                 return 1
+            } else {
+                return 0
             }
         }
     }
@@ -343,7 +385,11 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            problemLabel.text = postObject.category_trouble_text
+            if postObject.category_trouble_text == "" {
+                problemLabel.text = "Pilih"
+            } else {
+                problemLabel.text = postObject.category_trouble_text
+            }
             return self.problemCell
         default:
             if Int(postObject.category_trouble_id) == 1 {
@@ -371,8 +417,10 @@ extension EditSolutionBuyerViewController : UITableViewDataSource {
         case 1:
             if Int(postObject.category_trouble_id) == 1 {
                 return "Pilih produk yang bermasalah"
-            } else {
+            } else if Int(postObject.category_trouble_id) == 2 {
                 return "Pilih Detail Masalah"
+            } else {
+                return ""
             }
         default:
             return ""

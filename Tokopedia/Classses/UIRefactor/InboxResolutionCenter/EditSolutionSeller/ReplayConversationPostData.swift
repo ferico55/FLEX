@@ -15,6 +15,7 @@ class ReplayConversationPostData: NSObject {
     var photos       : String = ""
     var refundAmount : String = ""
     var maxRefundAmount : String = ""
+    var maxRefundAmountIDR : String = ""
     var replyMessage : String = ""
     var resolutionID : String = ""
     var solution     : String = ""

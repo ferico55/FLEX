@@ -19,12 +19,12 @@ import UIKit
     @IBOutlet var solutionCell: UITableViewCell!
     @IBOutlet var returnMoneyViewHeight: NSLayoutConstraint!
     
-    @IBOutlet var buyerLabel: UILabel!
-    @IBOutlet var invoiceLabel: UILabel!
+    @IBOutlet var buyerButton: UIButton!
+    @IBOutlet var invoiceButton: UIButton!
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var reasonTextView: UITextView!
+    @IBOutlet weak var reasonTextView: TKPDTextView!
     @IBOutlet weak var refundTextField: UITextField!
     @IBOutlet weak var maxRefundLabel: UILabel!
     @IBOutlet weak var uploadImageContentView: UIView!
@@ -81,7 +81,7 @@ import UIKit
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillHide),
+                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
@@ -90,8 +90,14 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
+        reasonTextView.placeholder = "Jelaskan alasan anda mengubah detail permasalahan"
+        
         self.requestDataForm()
         self.adjsutAlertProgressAppearance()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     private func adjsutAlertProgressAppearance(){
@@ -183,16 +189,18 @@ import UIKit
         self .adjustUIForm(data.form)
     }
     private func adjustUIForm(form: EditResolutionForm) {
-        invoiceLabel.text = form.resolution_order.order_invoice_ref_num
-        buyerLabel.text = "Pembelian Oleh \(form.resolution_customer.customer_name)"
+        invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
+        buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", forState: .Normal)
         solutionLabel.text = form.resolution_last.last_solution_string
     }
     
     private func adjustUISolution(solution: EditSolution){
         solutionLabel.text = solution.solution_text
-        refundTextField.text = solution.refund_amt
         maxRefundLabel.text = solution.max_refund_idr
         maxRefundDescriptionLabel.text = solution.refund_text_desc
+        
+        postObject.maxRefundAmount = solution.max_refund
+        postObject.maxRefundAmountIDR = solution.max_refund_idr
         
         if solution.show_refund_box == "0"{
             returnMoneyViewHeight.constant = 0
@@ -241,8 +249,12 @@ import UIKit
     
     @objc private func onTapSubmit(){
         
-        self.adjustPostData()
+        let validation : ResolutionValidation = ResolutionValidation()
+        if !validation.isValidSubmitEditResolution(self.postObject) {
+            return;
+        }
         
+        self.adjustPostData()
         if type == Type.Edit {
             postObject.editSolution = "1"
             self.requestSubmitEdit()
@@ -260,7 +272,7 @@ import UIKit
         }
         
         postObject.resolutionID = resolutionID
-        postObject.refundAmount = refundTextField.text!
+        postObject.refundAmount = (refundTextField.text?.stringByReplacingOccurrencesOfString(".", withString: ""))!
         postObject.replyMessage = reasonTextView.text
         if Int(resolutionData.form.resolution_by.by_customer) == 1 {
             postObject.actionBy     = "1"
@@ -273,6 +285,14 @@ import UIKit
     
     func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
         self.successEdit = success
+    }
+    
+    @IBAction func onTapInvoiceButton(sender: UIButton) {
+            NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+    }
+    
+    @IBAction func onTapBuyerButton(sender: UIButton) {
+    
     }
     
     private func requestSubmitEdit() {
@@ -360,14 +380,24 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
 extension EditSolutionSellerViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
     
+    func textViewDidChange(textView: UITextView) {
+        reasonTextView.placeholderLabel.hidden = !textView.text.isEmpty
+    }
+    
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 2)
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
         return true
     }
 }
 
 extension EditSolutionSellerViewController : UITextFieldDelegate{
     //MARK: UITextFieldDelegate
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        NSNumberFormatter.setTextFieldFormatterString(textField, string: string)
+        return true
+        
+    }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)
@@ -409,10 +439,10 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
             solutionCell.contentView.backgroundColor = UIColor.clearColor()
             return self.solutionCell
         case 2:
+            return self.uploadImageCell
+        case 3:
             reasonCell.contentView.backgroundColor = UIColor.clearColor()
             return self.reasonCell
-        case 3:
-            return self.uploadImageCell
         default:
             let cell:EditSolutionSellerCell = tableView.dequeueReusableCellWithIdentifier("EditSolutionSellerCellIdentifier")! as! EditSolutionSellerCell
             cell.setViewModel(resolutionData.form.resolution_last.last_product_trouble[indexPath.row].sellerEditViewModel)
@@ -428,9 +458,9 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
         case 1:
             return "Solusi yang diinginkan"
         case 2:
-            return "Alasan ubah solusi"
-        case 3:
             return "Lampirkan Foto Bukti"
+        case 3:
+            return "Alasan ubah solusi"
         default:
             return ""
         }

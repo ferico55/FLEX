@@ -948,7 +948,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
      
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
-        if ([product.pt_free_return integerValue] == 1){
+        if (product.pt_free_return == 1){
             [marks addObject:@"(Free Return)"];
         }
         [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
@@ -1200,7 +1200,9 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         if (isReplyEnable == NO) {
             [_listResolutionConversation removeLastObject];
         }else if(conversationLast) {
-            _addedLastConversation = conversationLast;
+            if(conversationLast.refund_amt_idr)_addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
+            if(conversationLast.solution_string)_addedLastConversation.solution_string = conversationLast.solution_string;
+            if(conversationLast.trouble_string)_addedLastConversation.trouble_string = conversationLast.trouble_string;
             [self refreshRequest];
         }
         [self hideReplyButton:!isReplyEnable];

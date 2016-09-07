@@ -19,12 +19,13 @@
 UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate,
-ResolutionCenterCreateStepTwoCellDelegate
+ResolutionCenterCreateStepTwoCellDelegate,
+UITextViewDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
 @property (strong, nonatomic) IBOutlet DownPicker *priceProblemTextField;
-@property (strong, nonatomic) IBOutlet UITextView *priceProblemTextView;
+@property (strong, nonatomic) IBOutlet RSKPlaceholderTextView *priceProblemTextView;
 
 @end
 
@@ -77,6 +78,7 @@ ResolutionCenterCreateStepTwoCellDelegate
         ProductTrouble* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
         ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
         
+        
         ResolutionCenterCreateStepTwoCell *cell = nil;
         NSString *cellid = @"ResolutionCenterCreateStepTwoCell";
         cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -109,9 +111,14 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        _priceProblemTextView.delegate = self;
         return _priceProblemCell;
     }
     
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    _result.remark = _priceProblemTextView.text;
 }
 
 -(NSMutableArray*)generateDownPickerChoices{
@@ -138,10 +145,6 @@ ResolutionCenterCreateStepTwoCellDelegate
     }
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self.view endEditing:YES];
-}
-
 #pragma mark - Method
 -(void)troublePickerValueChanged:(id)picker{
     DownPicker* downPicker = (DownPicker*)picker;
@@ -165,15 +168,25 @@ ResolutionCenterCreateStepTwoCellDelegate
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
 }
 
+- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
+    ResolutionCenterCreatePOSTProduct* postProduct = [_result.postObject.product_list objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    postProduct.remark = textView.text;
+}
+
 #pragma mark - Request
 -(BOOL)verifyForm{
     for(ResolutionCenterCreatePOSTProduct *prod in _result.postObject.product_list){
-        if(!prod.trouble_id){
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada barang yang belum Anda pilih masalahnya."] delegate:self];
-            [alert show];
+        if([prod.trouble_id isEqualToString:@""]){            
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah untuk produk yang ingin di komplain."]];
             return NO;
         }
     }
+    
+    if(([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"] ) && (_result.remark == nil || [_result.remark isEqualToString:@""])) {
+        [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
+        return NO;
+    }
+
     return YES;
 }
 @end
