@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateStepThreeViewController">
             <connections>
+                <outlet property="addImageButton" destination="eHH-XL-PiC" id="nfZ-5J-NXv"/>
                 <outlet property="maxRefundLabel" destination="2vh-nE-FY6" id="OuN-yV-w2n"/>
                 <outlet property="photoCell" destination="NLW-hR-rp9" id="cnk-q3-Hbe"/>
+                <outlet property="photoStackView" destination="Gdy-68-gXz" id="vU9-gT-Kav"/>
                 <outlet property="refundCell" destination="DfM-iZ-8IM" id="Szy-ch-JDu"/>
                 <outlet property="refundTextField" destination="DK2-3m-52S" id="CwV-B3-7cy"/>
                 <outlet property="scrollViewUploadPhoto" destination="ThK-YM-K8z" id="IEf-GV-xUO"/>
@@ -26,17 +19,7 @@
                 <outlet property="solutionCell" destination="SrN-HB-a0r" id="cu0-Mf-ReM"/>
                 <outlet property="tableView" destination="OG8-eR-WdK" id="0gB-X0-YCZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outletCollection property="uploadButtons" destination="tFy-FR-csz" id="aOA-en-axA"/>
-                <outletCollection property="cancelButtons" destination="iMu-Va-8cc" id="2Ei-EO-fSZ"/>
-                <outletCollection property="uploadButtons" destination="puQ-W3-44O" id="1wL-oU-AOY"/>
-                <outletCollection property="uploadButtons" destination="gDb-Hv-xNv" id="3hK-F3-IEX"/>
-                <outletCollection property="uploadButtons" destination="OA2-WC-Tpc" id="8DX-qJ-n0u"/>
                 <outletCollection property="uploadButtons" destination="eHH-XL-PiC" id="GVy-fp-gAz"/>
-                <outletCollection property="cancelButtons" destination="ghr-hh-lrS" id="hER-T8-F3Y"/>
-                <outletCollection property="cancelButtons" destination="LdK-ch-JOo" id="834-dY-uYL"/>
-                <outletCollection property="cancelButtons" destination="iMu-Va-8cc" id="wJS-WJ-nZX"/>
-                <outletCollection property="cancelButtons" destination="zhq-6I-UEw" id="NQm-j1-Y0y"/>
-                <outletCollection property="cancelButtons" destination="G9y-QK-qwj" id="KEJ-rx-WSN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -63,7 +46,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SrN-HB-a0r" id="NZ7-fz-2Dl">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solusi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2X-Mz-WGm">
@@ -98,7 +81,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="119"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DfM-iZ-8IM" id="9dF-be-awI">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="118.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="118"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Invoice" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EwW-pG-vDb">
@@ -166,7 +149,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="236"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NLW-hR-rp9" id="M2R-Zq-DaZ">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="235.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="235"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lampirkan foto barang sebagai bukti" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U4a-Ia-GFq">
@@ -182,117 +165,27 @@
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ThK-YM-K8z">
                         <rect key="frame" x="0.0" y="44" width="320" height="120"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gdy-68-gXz">
-                                <rect key="frame" x="0.0" y="0.0" width="520" height="120"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eHH-XL-PiC">
-                                        <rect key="frame" x="15" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="IgI-HZ-rhc"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OA2-WC-Tpc">
-                                        <rect key="frame" x="115" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="Led-FC-GUH"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDb-Hv-xNv">
-                                        <rect key="frame" x="215" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="jrL-qK-0W7"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tFy-FR-csz">
-                                        <rect key="frame" x="315" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="lZF-4f-NuW"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puQ-W3-44O">
-                                        <rect key="frame" x="415" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="Yvz-r8-4ro"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghr-hh-lrS">
-                                        <rect key="frame" x="285" y="15" width="20" height="20"/>
-                                        <state key="normal" image="icon_cancel.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="-1" eventType="touchDragInside" id="22c-Qk-mLo"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LdK-ch-JOo">
-                                        <rect key="frame" x="385" y="15" width="20" height="20"/>
-                                        <state key="normal" image="icon_cancel.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="-1" eventType="touchDragInside" id="u16-4Y-XDS"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iMu-Va-8cc">
-                                        <rect key="frame" x="484" y="15" width="20" height="20"/>
-                                        <state key="normal" image="icon_cancel.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="YLJ-z8-7ob"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zhq-6I-UEw">
-                                        <rect key="frame" x="185" y="15" width="20" height="20"/>
-                                        <state key="normal" image="icon_cancel.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="zyb-hz-Pqn"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9y-QK-qwj">
-                                        <rect key="frame" x="85" y="15" width="20" height="20"/>
-                                        <state key="normal" image="icon_cancel.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="MsI-MV-BLt"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="120" translatesAutoresizingMaskIntoConstraints="NO" id="Gdy-68-gXz" customClass="OAStackView">
+                                <rect key="frame" x="10" y="0.0" width="320" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="BTx-OF-XDM"/>
-                                    <constraint firstAttribute="width" constant="520" id="CIW-dE-b94"/>
+                                    <constraint firstAttribute="height" constant="120" id="eSv-CB-hgf"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Gdy-68-gXz" secondAttribute="trailing" constant="-199" id="TBg-nR-4nO"/>
+                            <constraint firstAttribute="trailing" secondItem="Gdy-68-gXz" secondAttribute="trailing" constant="10" id="TBg-nR-4nO"/>
                             <constraint firstAttribute="bottom" secondItem="Gdy-68-gXz" secondAttribute="bottom" id="VD5-aM-oB0"/>
-                            <constraint firstItem="Gdy-68-gXz" firstAttribute="leading" secondItem="ThK-YM-K8z" secondAttribute="leading" id="Vtm-nL-Z4t"/>
+                            <constraint firstItem="Gdy-68-gXz" firstAttribute="leading" secondItem="ThK-YM-K8z" secondAttribute="leading" constant="10" id="Vtm-nL-Z4t"/>
                             <constraint firstItem="Gdy-68-gXz" firstAttribute="top" secondItem="ThK-YM-K8z" secondAttribute="top" id="ai8-yY-Tl4"/>
                             <constraint firstAttribute="height" constant="120" id="d8h-xZ-grM"/>
                         </constraints>
@@ -355,9 +248,20 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="245" y="380"/>
         </tableViewCell>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eHH-XL-PiC">
+            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+            <state key="normal" backgroundImage="icon_upload_image.png">
+                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <connections>
+                <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="IgI-HZ-rhc"/>
+            </connections>
+            <point key="canvasLocation" x="204" y="97"/>
+        </button>
     </objects>
     <resources>
-        <image name="icon_cancel.png" width="20" height="20"/>
         <image name="icon_upload_image.png" width="90" height="90"/>
     </resources>
 </document>
