@@ -50,6 +50,8 @@
     for(UIButton *btn in _cancelButtons) {
         btn.hidden = YES;
     }
+    
+    _photoStackView.alignment = OAStackViewAlignmentCenter;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -201,9 +203,9 @@
 //    
 //    [_photoStackView addArrangedSubview:lala];
     
-    [_selectedImages bk_each:^(UIImage *image) {
+    [_selectedImages bk_each:^(DKAsset *asset) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.backgroundColor = [UIColor redColor];
+        [button setBackgroundImage:asset.thumbnailImage forState:UIControlStateNormal];
         
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@90);
