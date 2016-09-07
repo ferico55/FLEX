@@ -64,7 +64,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tulis alasan Anda disini"/>
+                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tuliskan detil masalah Anda di sini"/>
                         </userDefinedRuntimeAttributes>
                     </textView>
                 </subviews>

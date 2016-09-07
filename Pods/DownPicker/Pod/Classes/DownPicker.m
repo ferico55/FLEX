@@ -34,7 +34,7 @@
         self->toolbarStyle = UIBarStyleDefault;
 		
         // set language defaults
-        self->placeholder = @"Tap to choose...";
+        self->placeholder = @"Pilih detil permasalahan";
         self->placeholderWhileSelecting = @"Pick an option...";
 		self->toolbarDoneButtonText = @"Done";
         self->toolbarCancelButtonText = @"Cancel";
