@@ -14,6 +14,9 @@
 #import "RequestResolutionAction.h"
 #import <BlocksKit/BlocksKit.h>
 #import <BlocksKit/BlocksKit+UIKit.h>
+#import <OAStackView/OAStackView.h>
+#import <Masonry/Masonry.h>
+
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ResolutionCenterChooseSolutionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -27,6 +30,7 @@
 @property (strong, nonatomic) EditSolution *selectedSolution;
 @property (strong, nonatomic) IBOutlet UITextField *refundTextField;
 @property (strong, nonatomic) IBOutlet UIButton *solutionButton;
+@property (strong, nonatomic) IBOutlet OAStackView *photoStackView;
 @property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
 @end
 
@@ -50,14 +54,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
-                                                                troubleId:_result.troubleId
-                                                                    success:^(NSArray<EditSolution*>* list) {
-                                                                        _formSolutions = list;
-                                                                        
-                                                                    } failure:^(NSError *error) {
-                                                                        
-                                                                    }];
+//    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+//                                                                troubleId:_result.troubleId
+//                                                                    success:^(NSArray<EditSolution*>* list) {
+//                                                                        _formSolutions = list;
+//                                                                        
+//                                                                    } failure:^(NSError *error) {
+//                                                                        
+//                                                                    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -166,26 +170,48 @@
 }
 
 -(void)setSelectedImages{
-    for (UIButton *button in _uploadButtons) {
-        button.hidden = YES;
-        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    for (UIButton *button in _cancelButtons) { button.hidden = YES; }
-    for (int i = 0; i<_selectedImages.count; i++) {
-        ((UIButton*)_uploadButtons[i]).hidden = NO;
-        ((UIButton*)_cancelButtons[i]).hidden = NO;
-        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
-        [_uploadButtons[i] removeTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//    for (UIButton *button in _uploadButtons) {
+//        button.hidden = YES;
+//        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
+//        [button addTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    for (UIButton *button in _cancelButtons) { button.hidden = YES; }
+//    for (int i = 0; i<_selectedImages.count; i++) {
+//        ((UIButton*)_uploadButtons[i]).hidden = NO;
+//        ((UIButton*)_cancelButtons[i]).hidden = NO;
+//        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
+//        [_uploadButtons[i] removeTarget:self action:@selector(uploadButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//    }
+//    if (_selectedImages.count<_uploadButtons.count) {
+//        UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
+//        uploadedButton.hidden = NO;
+//        
+//        
+//        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
+//    }
+    
+//    UIButton *lala = [UIButton buttonWithType:UIButtonTypeSystem];
+//    lala.backgroundColor = [UIColor redColor];
+//    lala.frame = CGRectMake(0, 0, 60, 60);
+//    [lala mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.height.equalTo(@30);
+//        make.width.equalTo(@30);
+//    }];
+//    
+//    [_photoStackView addArrangedSubview:lala];
+    
+    [_selectedImages bk_each:^(UIImage *image) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.backgroundColor = [UIColor redColor];
         
-    }
-    if (_selectedImages.count<_uploadButtons.count) {
-        UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
-        uploadedButton.hidden = NO;
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@90);
+            make.width.equalTo(@90);
+        }];
         
-        
-        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
-    }
+        [_photoStackView addArrangedSubview:button];
+    }];
 }
 - (IBAction)cancelButtonTapped:(id)sender {
     UIButton* button = (UIButton*)sender;
