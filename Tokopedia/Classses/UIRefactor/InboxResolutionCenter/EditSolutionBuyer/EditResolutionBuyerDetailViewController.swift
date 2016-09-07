@@ -311,9 +311,9 @@ import UIKit
     }
     
     @objc private func keyboardWillHide(notification: NSNotification){
-        UIView.animateWithDuration(0.3) {
-            if self.firstResponderIndexPath != nil {
-                self.tableView.contentInset = UIEdgeInsetsZero
+        UIView.animateWithDuration(0.3) { [weak self] _ in
+            if self?.firstResponderIndexPath != nil {
+                self?.tableView.contentInset = UIEdgeInsetsZero
             }
         }
     }
