@@ -111,9 +111,8 @@ import UIKit
         let controller : EditResolutionBuyerDetailViewController = EditResolutionBuyerDetailViewController()
         controller.postObject = postObject
         controller.resolutionData = resolutionData
-        controller.didSuccessEdit { (solutionLast, conversationLast, replyEnable) in
-            self.successEdit!(solutionLast: solutionLast, conversationLast: conversationLast , replyEnable: replyEnable)
-            self.navigationController?.popViewControllerAnimated(true)
+        controller.didSuccessEdit { [weak self](solutionLast, conversationLast, replyEnable) in
+            self?.successEdit?(solutionLast: solutionLast, conversationLast: conversationLast , replyEnable: replyEnable)
         }
         
         self.navigationController!.pushViewController(controller, animated: true)

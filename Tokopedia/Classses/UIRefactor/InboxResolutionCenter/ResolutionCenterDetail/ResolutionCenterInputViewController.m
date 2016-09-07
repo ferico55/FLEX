@@ -343,22 +343,24 @@
         EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
         controller.isGetProduct = isGotTheOrder;
         controller.resolutionID = _resolutionID;
+        __weak typeof(self) wself = self;
         [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [self.navigationController popToViewController:_delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:YES];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
         EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
         controller.isGetProduct = isGotTheOrder;
         controller.resolutionID = _resolutionID?:@"";
+        __weak typeof(self) wself = self;
         [controller didSuccessEdit:^(ResolutionLast * solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [self.navigationController popToViewController:_delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:YES];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }
