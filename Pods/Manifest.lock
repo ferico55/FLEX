@@ -86,6 +86,7 @@ PODS:
     - NJKWebViewProgress/ProgressView (= 0.2.3)
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
+  - OAStackView (1.0.1)
   - RestKit (0.20.3):
     - RestKit/Core (= 0.20.3)
   - RestKit/Core (0.20.3):
@@ -133,6 +134,7 @@ DEPENDENCIES:
   - Masonry
   - Masonry (~> 1.0.1)
   - NJKWebViewProgress
+  - OAStackView (~> 1.0.1)
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.0.0)
@@ -174,6 +176,7 @@ SPEC CHECKSUMS:
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
+  OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   RestKit: aac0c81c60d30fdd829d627d062f0eea231eb52c
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46

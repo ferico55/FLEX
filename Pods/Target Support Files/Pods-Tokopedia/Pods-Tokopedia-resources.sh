@@ -71,6 +71,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
   install_resource "LayoutKit/Assets"
   install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/OAStackView.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperAssets.xcassets"
@@ -86,6 +87,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
   install_resource "LayoutKit/Assets"
   install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/OAStackView.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
