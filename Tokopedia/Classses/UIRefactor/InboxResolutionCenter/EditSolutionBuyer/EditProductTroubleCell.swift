@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
+class EditProductTroubleCell: UITableViewCell, UITextViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var productNameLabel: UILabel!
     @IBOutlet weak var freeReturnViewHeight: NSLayoutConstraint!
@@ -17,7 +17,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     @IBOutlet weak var troublePicker: UITextField!
     @IBOutlet weak var selectedImageView: UIImageView!
     
-    @IBOutlet weak var quantityLabel: UILabel!
+    @IBOutlet weak var quantityTextField: UITextField!
     @IBOutlet weak var quantityStepper: UIStepper!
     
     private var startEditTextView : (() -> Void)?
@@ -43,7 +43,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
         troublePicker.text = viewModel.productTrouble
         problemTextView.text = viewModel.productTroubleDescription
         productNameLabel.text = viewModel.productName
-        quantityLabel.text = viewModel.productQuantity
+        quantityTextField.text = viewModel.productQuantity
         
         if viewModel.isFreeReturn {
             freeReturnViewHeight.constant = 0
@@ -73,7 +73,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
     @IBAction func onChangeQuantityStepper(sender: UIStepper) {
         let quantity : String = String(format:"%.0f", sender.value)
         productTrouble.pt_last_selected_quantity = quantity
-        quantityLabel.text = quantity
+        quantityTextField.text = quantity
     }
     
     func startEditTextView(completion: ()->Void){
@@ -93,4 +93,21 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate {
         productTrouble.pt_solution_remark = problemTextView.text
     }
     
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        self.startEditTextView!()
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        if  string == "" { return true }
+        
+        var txtAfterUpdate:NSString = textField.text! as NSString
+        txtAfterUpdate = txtAfterUpdate.stringByReplacingCharactersInRange(range, withString: string)
+        return Int(txtAfterUpdate as String)! <= Int(quantityStepper.maximumValue)
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        productTrouble.pt_last_selected_quantity = quantityTextField.text!
+    }
 }

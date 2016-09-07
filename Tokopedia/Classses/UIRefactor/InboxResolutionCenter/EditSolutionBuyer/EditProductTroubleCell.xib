@@ -90,10 +90,10 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="153"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Produk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghr-y7-TSl">
-                                <rect key="frame" x="15" y="8" width="145" height="29"/>
+                                <rect key="frame" x="15" y="8" width="120" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="54n-xn-XtL"/>
-                                    <constraint firstAttribute="width" constant="145" id="fBN-3X-w11"/>
+                                    <constraint firstAttribute="width" constant="120" id="fBN-3X-w11"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -110,15 +110,6 @@
                                     <action selector="onChangeQuantityStepper:" destination="i5L-tY-RRU" eventType="valueChanged" id="xqT-8P-0Ab"/>
                                 </connections>
                             </stepper>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Js-JK-HeE">
-                                <rect key="frame" x="168" y="15" width="28" height="15"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="PTe-vb-C9G"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GB4-yA-AMw">
                                 <rect key="frame" x="15" y="45" width="290" height="30"/>
                                 <constraints>
@@ -148,22 +139,31 @@
                                     <outlet property="delegate" destination="i5L-tY-RRU" id="jIi-2J-LHn"/>
                                 </connections>
                             </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KiH-u5-9gL">
+                                <rect key="frame" x="156" y="8" width="47" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="i5L-tY-RRU" id="9oZ-TY-Efk"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="oKf-gH-1Xn" secondAttribute="bottom" constant="8" id="1D4-2M-za2"/>
+                            <constraint firstItem="YYL-QW-eeo" firstAttribute="leading" secondItem="KiH-u5-9gL" secondAttribute="trailing" constant="8" id="2vW-rO-2Op"/>
                             <constraint firstAttribute="height" constant="153" id="6Tw-dK-UvS"/>
                             <constraint firstItem="Ghr-y7-TSl" firstAttribute="top" secondItem="3lI-f5-LXD" secondAttribute="top" constant="8" id="FYQ-GN-aH4"/>
                             <constraint firstAttribute="bottom" secondItem="oKf-gH-1Xn" secondAttribute="bottom" id="GHw-nY-Tuq"/>
                             <constraint firstAttribute="trailing" secondItem="oKf-gH-1Xn" secondAttribute="trailing" constant="15" id="GdE-f7-BTe"/>
                             <constraint firstAttribute="trailing" secondItem="YYL-QW-eeo" secondAttribute="trailing" constant="15" id="Pjy-2p-1QM"/>
-                            <constraint firstItem="YYL-QW-eeo" firstAttribute="leading" secondItem="5Js-JK-HeE" secondAttribute="trailing" constant="15" id="Q1j-PR-dnO"/>
+                            <constraint firstItem="GB4-yA-AMw" firstAttribute="top" secondItem="KiH-u5-9gL" secondAttribute="bottom" constant="8" id="RdE-lm-jtC"/>
                             <constraint firstItem="oKf-gH-1Xn" firstAttribute="leading" secondItem="3lI-f5-LXD" secondAttribute="leading" constant="15" id="V8G-7v-hNm"/>
                             <constraint firstAttribute="trailing" secondItem="GB4-yA-AMw" secondAttribute="trailing" constant="15" id="eKM-Yy-rsD"/>
-                            <constraint firstItem="5Js-JK-HeE" firstAttribute="top" secondItem="3lI-f5-LXD" secondAttribute="top" constant="15" id="fUZ-2O-X0M"/>
                             <constraint firstItem="Ghr-y7-TSl" firstAttribute="leading" secondItem="3lI-f5-LXD" secondAttribute="leading" constant="15" id="oCO-hL-QDi"/>
+                            <constraint firstItem="KiH-u5-9gL" firstAttribute="top" secondItem="3lI-f5-LXD" secondAttribute="top" constant="8" id="oQS-ti-VEQ"/>
                             <constraint firstItem="oKf-gH-1Xn" firstAttribute="top" secondItem="GB4-yA-AMw" secondAttribute="bottom" constant="8" id="tCi-pK-5Z4"/>
-                            <constraint firstItem="5Js-JK-HeE" firstAttribute="leading" secondItem="Ghr-y7-TSl" secondAttribute="trailing" constant="8" id="vR1-d1-Vbo"/>
+                            <constraint firstItem="KiH-u5-9gL" firstAttribute="leading" secondItem="Ghr-y7-TSl" secondAttribute="trailing" constant="21" id="tKL-RD-okq"/>
                             <constraint firstItem="YYL-QW-eeo" firstAttribute="top" secondItem="3lI-f5-LXD" secondAttribute="top" constant="8" id="wha-gH-6tz"/>
                             <constraint firstItem="GB4-yA-AMw" firstAttribute="top" secondItem="YYL-QW-eeo" secondAttribute="bottom" constant="8" id="wth-A2-8TS"/>
                             <constraint firstItem="GB4-yA-AMw" firstAttribute="leading" secondItem="3lI-f5-LXD" secondAttribute="leading" constant="15" id="zf4-sy-SVh"/>
@@ -200,8 +200,8 @@
                 <outlet property="problemTextView" destination="oKf-gH-1Xn" id="ST2-8X-f3L"/>
                 <outlet property="productImageView" destination="Ghp-Co-rN8" id="uhc-LM-zGe"/>
                 <outlet property="productNameLabel" destination="PiY-9L-ICT" id="tui-V0-ZyY"/>
-                <outlet property="quantityLabel" destination="5Js-JK-HeE" id="opf-lH-Sre"/>
                 <outlet property="quantityStepper" destination="YYL-QW-eeo" id="9uH-SP-YM2"/>
+                <outlet property="quantityTextField" destination="KiH-u5-9gL" id="4Wf-hV-9tz"/>
                 <outlet property="selectedImageView" destination="m5t-sz-XWK" id="NOm-w8-MDi"/>
                 <outlet property="troublePicker" destination="GB4-yA-AMw" id="bd2-2X-SYo"/>
             </connections>

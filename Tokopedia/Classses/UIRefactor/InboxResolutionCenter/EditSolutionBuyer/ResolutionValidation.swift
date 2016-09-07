@@ -87,6 +87,10 @@ class ResolutionValidation: NSObject {
         }
         
         try postObject.selectedProducts.forEach { (product) in
+            guard product.pt_last_selected_quantity != "" && Int(product.pt_last_selected_quantity) > 0 else {
+                throw Errors.errorMessage("Jumlah produk \(product.pt_product_name) belum diisi")
+            }
+            
             guard product.pt_trouble_id != "" else {
                 throw Errors.errorMessage("Masalah pada produk \(product.pt_product_name) belum dipilih")
             }
