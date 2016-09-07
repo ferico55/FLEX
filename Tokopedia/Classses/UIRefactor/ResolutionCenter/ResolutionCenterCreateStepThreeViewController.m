@@ -58,14 +58,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
-//                                                                troubleId:_result.troubleId
-//                                                                    success:^(NSArray<EditSolution*>* list) {
-//                                                                        _formSolutions = list;
-//                                                                        
-//                                                                    } failure:^(NSError *error) {
-//                                                                        
-//                                                                    }];
+    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                troubleId:_result.troubleId
+                                                                    success:^(NSArray<EditSolution*>* list) {
+                                                                        _formSolutions = list;
+                                                                        
+                                                                    } failure:^(NSError *error) {
+                                                                        
+                                                                    }];
 }
 
 - (void)didReceiveMemoryWarning {
