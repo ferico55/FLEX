@@ -191,7 +191,6 @@ import UIKit
     private func adjustUIForm(form: EditResolutionForm) {
         invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
         buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", forState: .Normal)
-        solutionLabel.text = form.resolution_last.last_solution_string
     }
     
     private func adjustUISolution(solution: EditSolution){
