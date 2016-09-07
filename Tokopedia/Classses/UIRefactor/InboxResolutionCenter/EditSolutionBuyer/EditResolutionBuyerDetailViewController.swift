@@ -152,9 +152,8 @@ import UIKit
         
         alertProgress.show()
         RequestResolution.fetchReplayConversation(self.postObjectEditSolution(), onSuccess: { (data) in
-        
-            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             
         }) {
             

@@ -348,7 +348,7 @@
             if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
                 [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [wself.navigationController popToViewController:wself.delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:NO];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
@@ -360,7 +360,7 @@
             if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
                 [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [wself.navigationController popToViewController:wself.delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:NO];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }
