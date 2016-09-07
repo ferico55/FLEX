@@ -90,7 +90,7 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
-        reasonTextView.placeholder = "Jelaskan alasan anda mengubah detail permasalahan"
+        reasonTextView.placeholder = "Tulis alasan anda disini"
         
         self.requestDataForm()
         self.adjsutAlertProgressAppearance()

@@ -79,7 +79,7 @@ import UIKit
         self.adjustAlertProgressAppearance()
         self.setAppearanceLoadingView()
 
-        reasonTextView.placeholder = "Alasan mengubah komplain"
+        reasonTextView.placeholder = "Tulis alasan anda disini"
     }
     
     deinit {
