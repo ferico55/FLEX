@@ -223,11 +223,6 @@
         [_photoStackView addArrangedSubview:_addImageButton];
     }
 }
-- (IBAction)cancelButtonTapped:(id)sender {
-    UIButton* button = (UIButton*)sender;
-    [_selectedImages removeObjectAtIndex:button.tag];
-    [self setSelectedImages];
-}
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self.view endEditing:YES];
