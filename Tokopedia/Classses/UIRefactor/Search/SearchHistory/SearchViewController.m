@@ -67,7 +67,6 @@ NotificationManagerDelegate
 
 NSString *const SEARCH_AUTOCOMPLETE = @"autocomplete";
 NSString *const RECENT_SEARCH = @"recent_search";
-double const FOOTER_HEIGHT = 20;
 
 #pragma mark - Lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -86,13 +85,14 @@ double const FOOTER_HEIGHT = 20;
     _searchSuggestionDataArray = [NSMutableArray new];
     [self.navigationController.navigationBar setTranslucent:NO];
     
+    [self.searchBar becomeFirstResponder];
+    [self.searchBar setShowsBookmarkButton:NO];
+    
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
     [self.view addSubview:_searchBar];
     
     _searchBar.delegate = self;
     _searchBar.showsCancelButton = NO;
-    
-    [self generateSearchBarAccessoryView];
     
     [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
@@ -109,7 +109,6 @@ double const FOOTER_HEIGHT = 20;
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"SearchAutoCompleteCellFooterViewIdentifier"];
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
     
@@ -153,10 +152,6 @@ double const FOOTER_HEIGHT = 20;
     
     [self initNotificationManager];
     
-    [self.searchBar becomeFirstResponder];
-    [self.searchBar setText:nil];
-    [self.searchBar setShowsBookmarkButton:NO];
-    
     if([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
     } else {
@@ -182,6 +177,7 @@ double const FOOTER_HEIGHT = 20;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self.searchBar resignFirstResponder];
 }
 
 #pragma mark - Memory Management
@@ -312,13 +308,6 @@ double const FOOTER_HEIGHT = 20;
             }
         }
         view = header;
-    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        UICollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellFooterViewIdentifier" forIndexPath:indexPath];
-        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, FOOTER_HEIGHT)];
-        [backgroundView setBackgroundColor:[UIColor colorWithRed:247.0/255 green:247.0/255 blue:247.0/255 alpha:1.0]];
-        [footerView addSubview:backgroundView];
-
-        view = footerView;
     }
     
     return view;
@@ -344,7 +333,6 @@ double const FOOTER_HEIGHT = 20;
             searchCell.searchLoopImageView.hidden = NO;
             [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
         }
-        
         [searchCell setGreenSearchText:_searchBar.text];
     }
     
@@ -373,16 +361,6 @@ double const FOOTER_HEIGHT = 20;
     }
     return size;
 }
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
-    if (section != _searchSuggestionDataArray.count - 1) {
-        size = CGSizeMake(collectionView.bounds.size.width, FOOTER_HEIGHT);
-    }
-
-    return size;
-}
-
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     return 1.0;
@@ -578,20 +556,7 @@ double const FOOTER_HEIGHT = 20;
     }];
 }
 
--(void) generateSearchBarAccessoryView {
-    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
-    [keyboardToolbar sizeToFit];
-    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                      target:nil action:nil];
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                      target:self action:@selector(hideKeyboard:)];
-    keyboardToolbar.items = @[flexBarButton, doneBarButton];
-    self.searchBar.inputAccessoryView = keyboardToolbar;
-}
-
--(void) hideKeyboard: (UIBarButtonItem*) barButtonItem {
+-(void) hideKeyboard {
     [self.searchBar resignFirstResponder];
 }
 
@@ -656,6 +621,12 @@ double const FOOTER_HEIGHT = 20;
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
+}
+
+#pragma mark - Scroll View Delegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self hideKeyboard];
 }
 
 @end
