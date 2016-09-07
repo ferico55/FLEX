@@ -53,7 +53,7 @@ import UIKit
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(EditResolutionBuyerDetailViewController.keyboardWillHide),
+                                                         selector: #selector(EditResolutionBuyerDetailViewController.keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
@@ -80,6 +80,10 @@ import UIKit
         self.setAppearanceLoadingView()
 
         reasonTextView.placeholder = "Alasan mengubah komplain"
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     private func setAppearanceLoadingView(){
@@ -123,9 +127,10 @@ import UIKit
     
     private func adjustUISolution(solution: EditSolution){
         solutionLabel.text = solution.solution_text
-        refundTextField.text = solution.refund_amt
         maxRefundLabel.text = solution.max_refund_idr
         maxInvoicedescriptionLabel.text = solution.refund_text_desc
+        self.postObject.maxRefundAmountIDR = solution.max_refund_idr
+        self.postObject.maxRefundAmount = solution.max_refund
         
         if solution.show_refund_box == "0"{
             refundViewHeight.constant = 0
@@ -149,7 +154,6 @@ import UIKit
         RequestResolution.fetchReplayConversation(self.postObjectEditSolution(), onSuccess: { (data) in
         
             self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
-            self.navigationController?.popViewControllerAnimated(false)
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
             
         }) {
@@ -159,7 +163,7 @@ import UIKit
     }
     
     private func postObjectEditSolution()->ReplayConversationPostData{
-        postObject.refundAmount = refundTextField.text!
+        postObject.refundAmount = refundTextField.text!.stringByReplacingOccurrencesOfString(".", withString: "")
         postObject.editSolution = "1"
         postObject.replyMessage = reasonTextView.text
         return postObject
@@ -338,10 +342,41 @@ extension EditResolutionBuyerDetailViewController : UITextViewDelegate {
 
 extension EditResolutionBuyerDetailViewController : UITextFieldDelegate{
     //MARK: UITextFieldDelegate
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        NSNumberFormatter.setTextFieldFormatterString(textField, string: string)
+        return true
+    }
+
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)
         return true
+    }
+}
+
+extension NSNumberFormatter {
+    class func setTextFieldFormatterString(textField: UITextField, string: String){
+        let formatter : NSNumberFormatter = NSNumberFormatter.init()
+        formatter.usesGroupingSeparator = true
+        formatter.secondaryGroupingSize = 3
+        
+        if string.characters.count == 0 {
+            formatter.groupingSeparator = "."
+            formatter.groupingSize = 4
+            let num : NSString = (textField.text! as NSString).stringByReplacingOccurrencesOfString(".", withString: "")
+            let str = formatter.stringFromNumber(NSNumber.init(double: num.doubleValue))
+            textField.text = str
+        } else {
+            formatter.groupingSeparator = "."
+            formatter.groupingSize = 2
+            formatter.usesGroupingSeparator = true
+            var num : NSString = textField.text! as NSString
+            if num != "" {
+                num = (textField.text! as NSString).stringByReplacingOccurrencesOfString(".", withString: "")
+                let str = formatter.stringFromNumber(NSNumber.init(double: num.doubleValue))
+                textField.text = str
+            }
+        }
     }
 }
 

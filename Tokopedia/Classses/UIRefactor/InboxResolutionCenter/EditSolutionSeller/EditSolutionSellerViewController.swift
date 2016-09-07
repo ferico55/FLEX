@@ -81,7 +81,7 @@ import UIKit
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillHide),
+                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
@@ -94,6 +94,10 @@ import UIKit
         
         self.requestDataForm()
         self.adjsutAlertProgressAppearance()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     private func adjsutAlertProgressAppearance(){
@@ -192,9 +196,11 @@ import UIKit
     
     private func adjustUISolution(solution: EditSolution){
         solutionLabel.text = solution.solution_text
-        refundTextField.text = solution.refund_amt
         maxRefundLabel.text = solution.max_refund_idr
         maxRefundDescriptionLabel.text = solution.refund_text_desc
+        
+        postObject.maxRefundAmount = solution.max_refund
+        postObject.maxRefundAmountIDR = solution.max_refund_idr
         
         if solution.show_refund_box == "0"{
             returnMoneyViewHeight.constant = 0
@@ -243,8 +249,12 @@ import UIKit
     
     @objc private func onTapSubmit(){
         
-        self.adjustPostData()
+        let validation : ResolutionValidation = ResolutionValidation()
+        if !validation.isValidSubmitEditResolution(self.postObject) {
+            return;
+        }
         
+        self.adjustPostData()
         if type == Type.Edit {
             postObject.editSolution = "1"
             self.requestSubmitEdit()
@@ -262,7 +272,7 @@ import UIKit
         }
         
         postObject.resolutionID = resolutionID
-        postObject.refundAmount = refundTextField.text!
+        postObject.refundAmount = (refundTextField.text?.stringByReplacingOccurrencesOfString(".", withString: ""))!
         postObject.replyMessage = reasonTextView.text
         if Int(resolutionData.form.resolution_by.by_customer) == 1 {
             postObject.actionBy     = "1"
@@ -382,6 +392,12 @@ extension EditSolutionSellerViewController : UITextViewDelegate {
 
 extension EditSolutionSellerViewController : UITextFieldDelegate{
     //MARK: UITextFieldDelegate
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        NSNumberFormatter.setTextFieldFormatterString(textField, string: string)
+        return true
+        
+    }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)

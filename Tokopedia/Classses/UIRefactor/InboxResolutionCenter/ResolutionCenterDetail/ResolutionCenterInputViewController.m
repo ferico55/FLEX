@@ -109,6 +109,10 @@
     [_messageTextView becomeFirstResponder];
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 -(void)adjustActionLabel
 {
     NSString *actionByString;
