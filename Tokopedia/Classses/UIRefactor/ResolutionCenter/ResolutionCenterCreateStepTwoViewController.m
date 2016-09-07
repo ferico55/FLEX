@@ -24,7 +24,7 @@ ResolutionCenterCreateStepTwoCellDelegate
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
 @property (strong, nonatomic) IBOutlet DownPicker *priceProblemTextField;
-@property (strong, nonatomic) IBOutlet UITextView *priceProblemTextView;
+@property (strong, nonatomic) IBOutlet RSKPlaceholderTextView *priceProblemTextView;
 
 @end
 
@@ -48,6 +48,7 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    _result.remark = _priceProblemTextView.text;
 }
 
 -(void)copyProductToJSONObject{
