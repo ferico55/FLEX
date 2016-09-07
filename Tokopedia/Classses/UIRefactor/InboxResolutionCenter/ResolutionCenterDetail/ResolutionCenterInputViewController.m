@@ -105,8 +105,6 @@
     _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
     
     [_lastSolutionLabel setCustomAttributedText:_lastSolution];
-    
-    [_messageTextView becomeFirstResponder];
 }
 
 -(void)dealloc{
@@ -138,6 +136,7 @@
     [super viewWillAppear:animated];
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    [_messageTextView becomeFirstResponder];
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
@@ -186,6 +185,7 @@
     CGRect frame = _footerView.frame;
     frame.size.width = _messageTextView.frame.size.width;
     _footerView.frame = frame;
+    _imageScrollView.contentSize = _imageContentView.frame.size;
 }
 
 -(void)adjustFooterButton
@@ -404,6 +404,10 @@
     }
     for (UIButton *button in _cancelButtons) { button.hidden = YES; }
     for (int i = 0; i<_selectedImages.count; i++) {
+        if ( i == _uploadButtons.count) {
+            [_selectedImages removeLastObject];
+            break;
+        }
         ((UIButton*)_uploadButtons[i]).hidden = NO;
         ((UIButton*)_cancelButtons[i]).hidden = NO;
         [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
@@ -416,7 +420,6 @@
          uploadedButton = (UIButton*)_uploadButtons[4];
     }
     uploadedButton.hidden = NO;
-    _imageScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+20, 0);
 
     if (_selectedImages.count == 0) {
         [_imageScrollView removeFromSuperview];
@@ -426,6 +429,7 @@
         frame.origin.y = _messageTextView.contentSize.height;
         _imageScrollView.frame = frame;
         frame = _imageScrollView.frame;
+        _imageScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+20, 0);
     }
 }
 

@@ -206,6 +206,10 @@ import UIKit
         deleteButtons.forEach{ $0.hidden = true }
         
         for (index,asset) in postObject.selectedAssets.enumerate() {
+            if index == imageButtons.count {
+                postObject.selectedAssets.removeLast()
+                break
+            }
             imageButtons[index].hidden = false
             deleteButtons[index].hidden = false
             imageButtons[index].setBackgroundImage(asset.thumbnailImage, forState: .Normal)
