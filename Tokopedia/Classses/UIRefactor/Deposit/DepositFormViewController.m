@@ -268,7 +268,7 @@
                                                                   }
                                                               }
                                                               onFailure:^(NSError *errorResult) {
-                                                                  
+                                                                  [self enableButton];
                                                               }];
                 }
             }
