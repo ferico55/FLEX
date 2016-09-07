@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateStepThreeViewController">
             <connections>
+                <outlet property="addImageButton" destination="eHH-XL-PiC" id="nfZ-5J-NXv"/>
                 <outlet property="maxRefundLabel" destination="2vh-nE-FY6" id="OuN-yV-w2n"/>
                 <outlet property="photoCell" destination="NLW-hR-rp9" id="cnk-q3-Hbe"/>
                 <outlet property="photoStackView" destination="Gdy-68-gXz" id="vU9-gT-Kav"/>
@@ -166,18 +167,6 @@
                         <subviews>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="120" translatesAutoresizingMaskIntoConstraints="NO" id="Gdy-68-gXz" customClass="OAStackView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eHH-XL-PiC">
-                                        <rect key="frame" x="15" y="15" width="90" height="90"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                        <state key="normal" backgroundImage="icon_upload_image.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="IgI-HZ-rhc"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
@@ -256,6 +245,18 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="245" y="380"/>
         </tableViewCell>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eHH-XL-PiC">
+            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+            <state key="normal" backgroundImage="icon_upload_image.png">
+                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <connections>
+                <action selector="uploadButtonTapped:" destination="-1" eventType="touchUpInside" id="IgI-HZ-rhc"/>
+            </connections>
+            <point key="canvasLocation" x="204" y="97"/>
+        </button>
     </objects>
     <resources>
         <image name="icon_upload_image.png" width="90" height="90"/>

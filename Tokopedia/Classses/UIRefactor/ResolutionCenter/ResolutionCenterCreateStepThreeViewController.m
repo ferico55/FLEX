@@ -32,6 +32,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *solutionButton;
 @property (strong, nonatomic) IBOutlet OAStackView *photoStackView;
 @property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
+@property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 @end
 
 @implementation ResolutionCenterCreateStepThreeViewController{
@@ -52,6 +53,7 @@
     }
     
     _photoStackView.alignment = OAStackViewAlignmentCenter;
+    [_photoStackView addArrangedSubview:_addImageButton];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -202,6 +204,7 @@
 //    }];
 //    
 //    [_photoStackView addArrangedSubview:lala];
+    [_photoStackView removeAllSubviews];
     
     [_selectedImages bk_each:^(DKAsset *asset) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -214,6 +217,8 @@
         
         [_photoStackView addArrangedSubview:button];
     }];
+    
+    [_photoStackView addArrangedSubview:_addImageButton];
 }
 - (IBAction)cancelButtonTapped:(id)sender {
     UIButton* button = (UIButton*)sender;
