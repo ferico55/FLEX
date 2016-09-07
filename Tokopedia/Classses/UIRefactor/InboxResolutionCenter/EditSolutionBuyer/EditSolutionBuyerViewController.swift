@@ -49,7 +49,7 @@ import UIKit
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillHide),
+                                                         selector: #selector(EditSolutionBuyerViewController.keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
         
