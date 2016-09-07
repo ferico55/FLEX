@@ -206,7 +206,8 @@
 //    [_photoStackView addArrangedSubview:lala];
     [_photoStackView removeAllSubviews];
     
-    [_selectedImages bk_each:^(DKAsset *asset) {
+    
+    [_selectedImages enumerateObjectsUsingBlock:^(DKAsset *asset, NSUInteger index, BOOL *stop) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setBackgroundImage:asset.thumbnailImage forState:UIControlStateNormal];
         
@@ -214,6 +215,12 @@
             make.height.equalTo(@90);
             make.width.equalTo(@90);
         }];
+        
+        [button bk_addEventHandler:^(UIButton *button) {
+            [_selectedImages removeObjectAtIndex:index];
+            [self setSelectedImages];
+        }
+                  forControlEvents:UIControlEventTouchUpInside];
         
         [_photoStackView addArrangedSubview:button];
     }];
