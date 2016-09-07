@@ -12,10 +12,10 @@
 #import "ProductDetail.h"
 #import "TransactionAction.h"
 #import "TransactionCartEditViewController.h"
-
+#import "MMNumberKeyboard.h"
 #import "Tokopedia-Swift.h"
 
-@interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
+@interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, MMNumberKeyboardDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -79,6 +79,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = NO;
+    keyboard.delegate = self;
+    _quantityTextField.inputView = keyboard;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -140,7 +145,7 @@
     qty += (int)sender.value;
     
     //set min and max value
-    qty = fmin(999, qty);
+    qty = fmin(9999, qty);
     _quantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
     [self alertAndResetIfQtyTextFieldBelowMin];
@@ -205,18 +210,18 @@
     _activeTextView = nil;
 }
 
-- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString*)string
-{
-    NSString* newText;
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSString *amount = _quantityTextField.text;
+    amount = [amount stringByAppendingString:text];
     
-    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    __weak typeof(self) weakSelf = self;
     
-    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
-        [self alertAndResetIfQtyTextFieldBelowMin];
-    }];
+    [quantityDelayedActionManager whenNotCalledFor:2
+                                          doAction:^{
+                                              [weakSelf alertAndResetIfQtyTextFieldBelowMin];
+                                          }];
     
-    return [newText isNumber] && [newText intValue] < 1000;
+    return [amount isNumber] && [amount integerValue] < 10000;
 }
 
 -(void)alertAndResetIfQtyTextFieldBelowMin
