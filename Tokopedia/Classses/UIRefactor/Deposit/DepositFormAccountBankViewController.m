@@ -11,6 +11,7 @@
 #import "SettingBankNameViewController.h"
 #import "BankAccountFormList.h"
 #import "profile.h"
+#import "MMNumberKeyboard.h"
 
 @interface DepositFormAccountBankViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankNameViewControllerDelegate> {
     NSMutableDictionary *_datainput;
@@ -55,6 +56,11 @@
     self.navigationItem.rightBarButtonItem = barbuttonright;
 
     [_container addSubview:_contentView];
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = NO;
+    keyboard.delegate = self;
+    _accountNumberTextField.inputView = keyboard;
 }
 
 #pragma mark - ViewController Life
