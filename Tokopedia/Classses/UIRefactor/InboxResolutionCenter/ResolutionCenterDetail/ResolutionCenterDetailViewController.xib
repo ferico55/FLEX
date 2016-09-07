@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -12,6 +12,8 @@
                 <outlet property="buyerThumbView" destination="FFc-W4-g7O" id="A3Q-8J-SEC"/>
                 <outlet property="dateTimeLabel" destination="mfP-nr-xB1" id="vGd-sK-BPc"/>
                 <outlet property="footerView" destination="23D-UF-aIh" id="rL4-m7-gEg"/>
+                <outlet property="freeReturnsCell" destination="5Vi-Qh-o6m" id="9dS-R3-26u"/>
+                <outlet property="freeReturnsInfoLabel" destination="BgR-GF-Jri" id="tEY-NY-FZX"/>
                 <outlet property="headerInfoView" destination="GQj-sG-yhB" id="5ff-3A-PKB"/>
                 <outlet property="headerView" destination="s8o-KD-9LU" id="7QV-gX-YDJ"/>
                 <outlet property="infoLabel" destination="9b2-6w-0D2" id="igH-gL-hQh"/>
@@ -264,7 +266,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbZ-4F-JG8" id="9az-Qc-hMA">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cti-C9-twK">
@@ -304,8 +306,62 @@
                 <action selector="gesture:" destination="-1" id="qsH-BG-565"/>
             </connections>
         </tapGestureRecognizer>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5Vi-Qh-o6m" userLabel="Free Returns Cell">
+            <rect key="frame" x="0.0" y="0.0" width="370" height="110"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Vi-Qh-o6m" id="jl5-1z-UrO">
+                <rect key="frame" x="0.0" y="0.0" width="370" height="109.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUy-Gl-IQk">
+                        <rect key="frame" x="10" y="0.0" width="350" height="109.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-free-return" translatesAutoresizingMaskIntoConstraints="NO" id="5ZT-wO-Jnk">
+                                <rect key="frame" x="5" y="42" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="aeB-GA-xVX"/>
+                                    <constraint firstAttribute="width" constant="25" id="l0e-6s-7aL"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BgR-GF-Jri" customClass="TTTAttributedLabel">
+                                <rect key="frame" x="40" y="8" width="306" height="93.5"/>
+                                <string key="text">Fitur Free Returns hanya mendukung pengembalian produk dengan menggunakan JNE Reguler. Tokopedia hanya menanggung biaya ongkos kirim maksimal Rp 50.000,-. Lihat aturan pengembalian di sini</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.80000000000000004" green="0.97254901960784312" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="BgR-GF-Jri" firstAttribute="leading" secondItem="5ZT-wO-Jnk" secondAttribute="trailing" constant="10" id="3ge-RW-HE6"/>
+                            <constraint firstItem="5ZT-wO-Jnk" firstAttribute="leading" secondItem="qUy-Gl-IQk" secondAttribute="leading" constant="5" id="BBV-I0-aEu"/>
+                            <constraint firstAttribute="bottom" secondItem="BgR-GF-Jri" secondAttribute="bottom" constant="8" id="Erp-BZ-jnZ"/>
+                            <constraint firstAttribute="trailing" secondItem="BgR-GF-Jri" secondAttribute="trailing" constant="4" id="cx4-ta-aQI"/>
+                            <constraint firstItem="5ZT-wO-Jnk" firstAttribute="centerY" secondItem="qUy-Gl-IQk" secondAttribute="centerY" id="jLs-Tm-13A"/>
+                            <constraint firstItem="BgR-GF-Jri" firstAttribute="top" secondItem="qUy-Gl-IQk" secondAttribute="top" constant="8" id="yyz-pR-riu"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" red="0.3411764706" green="0.85490196080000003" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="qUy-Gl-IQk" secondAttribute="trailing" constant="10" id="8lK-La-ebV"/>
+                    <constraint firstItem="qUy-Gl-IQk" firstAttribute="leading" secondItem="jl5-1z-UrO" secondAttribute="leading" constant="10" id="NxP-r1-NMS"/>
+                    <constraint firstItem="qUy-Gl-IQk" firstAttribute="top" secondItem="jl5-1z-UrO" secondAttribute="top" id="eVf-wy-nfm"/>
+                    <constraint firstAttribute="bottom" secondItem="qUy-Gl-IQk" secondAttribute="bottom" id="yfY-45-n1L"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="-221.5" y="178"/>
+        </tableViewCell>
     </objects>
     <resources>
+        <image name="icon-free-return" width="16" height="16"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>
     </resources>
 </document>
