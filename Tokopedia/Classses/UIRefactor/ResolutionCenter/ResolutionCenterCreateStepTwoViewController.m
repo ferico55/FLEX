@@ -19,12 +19,13 @@
 UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate,
-ResolutionCenterCreateStepTwoCellDelegate
+ResolutionCenterCreateStepTwoCellDelegate,
+UITextViewDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
 @property (strong, nonatomic) IBOutlet DownPicker *priceProblemTextField;
-@property (strong, nonatomic) IBOutlet UITextView *priceProblemTextView;
+@property (strong, nonatomic) IBOutlet RSKPlaceholderTextView *priceProblemTextView;
 
 @end
 
@@ -48,6 +49,7 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    _result.remark = _priceProblemTextView.text;
 }
 
 -(void)copyProductToJSONObject{
@@ -109,9 +111,14 @@ ResolutionCenterCreateStepTwoCellDelegate
         }
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        _priceProblemTextView.delegate = self;
         return _priceProblemCell;
     }
     
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    _result.remark = _priceProblemTextView.text;
 }
 
 -(NSMutableArray*)generateDownPickerChoices{
@@ -174,6 +181,12 @@ ResolutionCenterCreateStepTwoCellDelegate
             return NO;
         }
     }
+    
+    if(([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"] ) && (_result.remark == nil || [_result.remark isEqualToString:@""])) {
+        [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
+        return NO;
+    }
+
     return YES;
 }
 @end
