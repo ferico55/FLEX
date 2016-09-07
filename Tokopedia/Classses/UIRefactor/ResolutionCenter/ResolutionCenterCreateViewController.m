@@ -204,16 +204,19 @@ ResolutionCenterCreateStepThreeDelegate
                                      completion:nil];
         }
     }else{
-        if([_stepOneViewController.result.postObject.category_trouble_id isEqualToString:@"2"] || _stepOneViewController.result.selectedProduct.count > 0) {
+        if([_stepOneViewController.result.postObject.category_trouble_id isEqualToString:@"2"] ||
+           [_stepOneViewController.result.postObject.category_trouble_id isEqualToString:@"3"] ||
+           _stepOneViewController.result.selectedProduct.count > 0) {
             _currentIndex++;
             [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
                                       direction:UIPageViewControllerNavigationDirectionForward
                                        animated:YES
                                      completion:nil];
+        } else if(!_stepOneViewController.result.postObject.category_trouble_id) {
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah terlebih dahulu"]];
         } else {
             [StickyAlertView showErrorMessage:@[@"Mohon pilih produk yang bermasalah terlebih dahulu"]];
         }
-        
     }
 }
 
