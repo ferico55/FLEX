@@ -168,6 +168,20 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    switch (_typeComplaint) {
+        case TypeComplaintAll:
+            [TPAnalytics trackScreenName:@"Resolution Center List All"];
+            break;
+        case TypeComplaintMine:
+            [TPAnalytics trackScreenName:@"Resolution Center List Mine"];
+            break;
+        case TypeComplaintBuyer:
+            [TPAnalytics trackScreenName:@"Resolution Center List Buyer"];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated

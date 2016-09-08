@@ -46,6 +46,12 @@ ResolutionCenterChooseProblemDelegate
     [self fetchForm];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Create Problem Page"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     

@@ -75,6 +75,12 @@ import UIKit
         self .setAppearanceLoadingView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Problem Page")
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

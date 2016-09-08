@@ -145,6 +145,11 @@ typedef enum {
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Detail Page"];
+}
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {

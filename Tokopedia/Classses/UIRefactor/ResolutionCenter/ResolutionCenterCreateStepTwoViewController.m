@@ -45,6 +45,9 @@ UITextViewDelegate
     if(_shouldFlushOptions){
         [self copyProductToJSONObject];
     }
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Create Detail Problem Page"];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

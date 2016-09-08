@@ -66,6 +66,8 @@
                                                                     } failure:^(NSError *error) {
                                                                         
                                                                     }];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Create Solution Page"];
 }
 
 - (void)didReceiveMemoryWarning {
