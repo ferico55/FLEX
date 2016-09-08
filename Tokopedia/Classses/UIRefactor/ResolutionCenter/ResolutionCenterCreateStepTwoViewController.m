@@ -103,7 +103,7 @@ UIPickerViewDelegate
         
         cell.delegate = self;
         
-        if(currentProduct.pt_free_return == 3) {
+        if([currentProduct.pt_free_return isEqualToString:@"3"]) {
             cell.prosecureBadge.hidden = false;
             cell.prosecureLabel.hidden = false;
         } else {
