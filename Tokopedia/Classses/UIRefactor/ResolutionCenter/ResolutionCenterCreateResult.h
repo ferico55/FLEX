@@ -26,4 +26,5 @@
 
 -(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId;
 -(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId;
+- (ResolutionCenterCreateTroubleList*)selectedTroubleById:(NSString*)troubleId categoryId:(NSString*)categoryId;
 @end

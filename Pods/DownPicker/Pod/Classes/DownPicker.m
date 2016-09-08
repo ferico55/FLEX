@@ -35,7 +35,7 @@
 		
         // set language defaults
         self->placeholder = @"Pilih detil permasalahan";
-        self->placeholderWhileSelecting = @"Pick an option...";
+        self->placeholderWhileSelecting = @"Pilih detil permasalahan";
 		self->toolbarDoneButtonText = @"Done";
         self->toolbarCancelButtonText = @"Cancel";
         
@@ -81,6 +81,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self->textField.text = [dataArray objectAtIndex:row];
+    self.didSelectDownPickerAtIndex(row);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
