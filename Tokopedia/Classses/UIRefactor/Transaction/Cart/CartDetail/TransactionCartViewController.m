@@ -1513,11 +1513,18 @@
 {
     // should be phone numbers text field
     if (textField.tag < 0) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
+        
         NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         return [newString isNumber];
     }
     
     if (textField == _saldoTokopediaAmountTextField) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
         
