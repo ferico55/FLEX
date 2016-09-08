@@ -75,7 +75,7 @@ ResolutionCenterChooseProblemDelegate
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.productName.text = currentProduct.pt_product_name;
         
-        if(currentProduct.pt_free_return == 1) {
+        if([currentProduct.pt_free_return isEqualToString:@"3"]) {
             cell.badgeProsecure.hidden = false;
             cell.labelProsecure.hidden = false;
         } else {

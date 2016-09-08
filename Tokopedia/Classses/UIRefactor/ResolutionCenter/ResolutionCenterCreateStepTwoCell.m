@@ -36,8 +36,8 @@
     [_delegate didChangeStepperValue:sender];
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    [_delegate didRemarkFieldEndEditing:textView withSelectedCell:self];
+- (void)textViewDidChange:(UITextView *)textView {
+    [_delegate didRemarkTextChange:textView withSelectedCell:self];
 }
 
 @end

@@ -26,6 +26,9 @@
 @property (nonatomic) NSString* text;
 @property (nonatomic) NSInteger selectedIndex;
 
+@property (nonatomic, copy) void(^didSelectDownPickerAtIndex)(NSInteger index);
+
+
 -(id)initWithTextField:(UITextField *)tf;
 -(id)initWithTextField:(UITextField *)tf withData:(NSArray*) data;
 

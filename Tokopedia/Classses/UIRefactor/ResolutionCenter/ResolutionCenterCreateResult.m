@@ -46,4 +46,19 @@
     return result;
 }
 
+
+- (ResolutionCenterCreateTroubleList*)selectedTroubleById:(NSString*)troubleId categoryId:(NSString*)categoryId {
+    NSArray* troubles = [self generatePossibleTroubleListWithCategoryTroubleId:categoryId];
+    
+    __block ResolutionCenterCreateTroubleList* selectedTrouble;
+    
+    [troubles bk_each:^(ResolutionCenterCreateTroubleList* trouble) {
+        if([trouble.trouble_id isEqualToString:troubleId]) {
+            selectedTrouble = trouble;
+        }
+    }];
+    
+    return selectedTrouble;
+}
+
 @end
