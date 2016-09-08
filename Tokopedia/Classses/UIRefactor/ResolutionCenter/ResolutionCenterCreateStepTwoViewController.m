@@ -89,6 +89,8 @@ UIPickerViewDelegate
         if(cell == nil){
             cell = [ResolutionCenterCreateStepTwoCell newcell];
             cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+            [cell.troublePicker setPlaceholder:@"Pilih detil permasalahan"];
+            [cell.troublePicker setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -123,12 +125,19 @@ UIPickerViewDelegate
             cell.problemTextView.text = @"";
         }
         
-        
-        cell.troublePicker.didSelectDownPickerAtIndex = ^(NSInteger index){
+        [cell.troublePicker bk_removeEventHandlersForControlEvents:UIControlEventValueChanged];
+        [cell.troublePicker bk_addEventHandler:^(DownPicker* picker) {
             NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
-            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:index];
+            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:picker.selectedIndex];
             postProduct.trouble_id = selectedTrouble.trouble_id;
-        };
+        } forControlEvents:UIControlEventValueChanged];
+        
+        
+//        cell.troublePicker.didSelectDownPickerAtIndex = ^(NSInteger index){
+//            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+//            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:index];
+//            postProduct.trouble_id = selectedTrouble.trouble_id;
+//        };
         
         return cell;
     }else{
