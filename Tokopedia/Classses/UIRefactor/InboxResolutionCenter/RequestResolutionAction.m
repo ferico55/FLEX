@@ -757,7 +757,7 @@ static failedCompletionBlock failedRequest;
     networkManager.isUsingHmac = YES;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/action/resolution-center/reject_admin_resolution_validation.pl"
+                                  path:@"/v4/action/resolution-center/reject_admin_resolution_validation_new.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
