@@ -72,4 +72,6 @@
 
 @property (nonatomic, strong) NSDictionary *productFieldObjects;
 
++ (NSInteger)maximumPurchaseQuantity;
+
 @end
