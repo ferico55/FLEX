@@ -28,9 +28,9 @@ class EditSolutionSellerCell: UITableViewCell {
         productNameLabel.text = viewModel.productName
         
         if viewModel.isFreeReturn {
-            freeReturnViewHeight.constant = 0
-        } else {
             freeReturnViewHeight.constant = 20
+        } else {
+            freeReturnViewHeight.constant = 0
         }
     }
     

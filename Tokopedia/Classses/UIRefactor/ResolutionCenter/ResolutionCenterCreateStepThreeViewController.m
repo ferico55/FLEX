@@ -58,14 +58,16 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
-//                                                                troubleId:_result.troubleId
-//                                                                    success:^(NSArray<EditSolution*>* list) {
-//                                                                        _formSolutions = list;
-//                                                                        
-//                                                                    } failure:^(NSError *error) {
-//                                                                        
-//                                                                    }];
+    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                troubleId:_result.troubleId
+                                                                    success:^(NSArray<EditSolution*>* list) {
+                                                                        _formSolutions = list;
+                                                                        
+                                                                    } failure:^(NSError *error) {
+                                                                        
+                                                                    }];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Create Solution Page"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -179,8 +181,6 @@
     
     
     [_selectedImages enumerateObjectsUsingBlock:^(DKAsset *asset, NSUInteger index, BOOL *stop) {
-        UIView *container = [[UIView alloc] init];
-        
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:asset.thumbnailImage forState:UIControlStateNormal];
         
@@ -191,16 +191,14 @@
             make.width.equalTo(@90);
         }];
         
-        [container addSubview:button];
-        
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [closeButton setBackgroundImage:[UIImage imageNamed:@"icon_cancel"] forState:UIControlStateNormal];
         
-        [container addSubview:closeButton];
+        [button addSubview:closeButton];
         
         [closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(button.mas_trailing);
-            make.centerY.equalTo(button.mas_top);
+            make.trailing.equalTo(button.mas_trailing);
+            make.top.equalTo(button.mas_top);
         }];
         
         [closeButton bk_addEventHandler:^(UIButton *button) {
@@ -209,14 +207,7 @@
         }
                   forControlEvents:UIControlEventTouchUpInside];
         
-        [container mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(button.mas_leading);
-            make.bottom.equalTo(button.mas_bottom).offset(10);
-            make.top.equalTo(closeButton.mas_top);
-            make.right.equalTo(closeButton.mas_right);
-        }];
-        
-        [_photoStackView addArrangedSubview:container];
+        [_photoStackView addArrangedSubview:button];
     }];
     
     if (_selectedImages.count < 5) {

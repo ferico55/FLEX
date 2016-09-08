@@ -79,7 +79,13 @@ import UIKit
         self.adjustAlertProgressAppearance()
         self.setAppearanceLoadingView()
 
-        reasonTextView.placeholder = "Alasan mengubah komplain"
+        reasonTextView.placeholder = "Tulis alasan anda disini"
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Solution Page")
     }
     
     deinit {
@@ -152,9 +158,8 @@ import UIKit
         
         alertProgress.show()
         RequestResolution.fetchReplayConversation(self.postObjectEditSolution(), onSuccess: { (data) in
-        
-            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             
         }) {
             
@@ -207,6 +212,10 @@ import UIKit
         deleteButtons.forEach{ $0.hidden = true }
         
         for (index,asset) in postObject.selectedAssets.enumerate() {
+            if index == imageButtons.count {
+                postObject.selectedAssets.removeLast()
+                break
+            }
             imageButtons[index].hidden = false
             deleteButtons[index].hidden = false
             imageButtons[index].setBackgroundImage(asset.thumbnailImage, forState: .Normal)
@@ -311,9 +320,9 @@ import UIKit
     }
     
     @objc private func keyboardWillHide(notification: NSNotification){
-        UIView.animateWithDuration(0.3) {
-            if self.firstResponderIndexPath != nil {
-                self.tableView.contentInset = UIEdgeInsetsZero
+        UIView.animateWithDuration(0.3) { [weak self] _ in
+            if self?.firstResponderIndexPath != nil {
+                self?.tableView.contentInset = UIEdgeInsetsZero
             }
         }
     }

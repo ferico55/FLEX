@@ -90,10 +90,20 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
-        reasonTextView.placeholder = "Jelaskan alasan anda mengubah detail permasalahan"
+        reasonTextView.placeholder = "Tulis alasan anda disini"
         
         self.requestDataForm()
         self.adjsutAlertProgressAppearance()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if type == .Edit {
+            TPAnalytics.trackScreenName("Resolution Center Seller Edit Page")
+        } else {
+            TPAnalytics.trackScreenName("Resolution Center Appeal Page")
+        }
     }
     
     deinit {
@@ -191,7 +201,6 @@ import UIKit
     private func adjustUIForm(form: EditResolutionForm) {
         invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
         buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", forState: .Normal)
-        solutionLabel.text = form.resolution_last.last_solution_string
     }
     
     private func adjustUISolution(solution: EditSolution){
@@ -233,6 +242,10 @@ import UIKit
         deleteImageButtons.forEach{ $0.hidden = true }
         
         for (index,asset) in postObject.selectedAssets.enumerate() {
+            if index == uploadImageButtons.count {
+                postObject.selectedAssets.removeLast()
+                break
+            }
             uploadImageButtons[index].hidden = false
             deleteImageButtons[index].hidden = false
             uploadImageButtons[index].setBackgroundImage(asset.thumbnailImage, forState: .Normal)
@@ -248,13 +261,12 @@ import UIKit
     }
     
     @objc private func onTapSubmit(){
-        
+        self.adjustPostData()
         let validation : ResolutionValidation = ResolutionValidation()
         if !validation.isValidSubmitEditResolution(self.postObject) {
             return;
         }
         
-        self.adjustPostData()
         if type == Type.Edit {
             postObject.editSolution = "1"
             self.requestSubmitEdit()
@@ -300,8 +312,8 @@ import UIKit
         alertProgress.show()
         
         RequestResolution.fetchReplayConversation(postObject, onSuccess: { (data) in
-                self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
-            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+                self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+                self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             
             }) {
                 self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
@@ -318,7 +330,7 @@ import UIKit
                                                          message: reasonTextView.text,
                                                          imageObjects: postObject.selectedAssets,
                                                          success: { (data) in
-            self.successEdit!(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
                                                             
         }) { (error) in
@@ -357,9 +369,9 @@ import UIKit
     }
     
     @objc private func keyboardWillHide(notification: NSNotification){
-        UIView.animateWithDuration(0.3) {
-            if self.firstResponderIndexPath != nil {
-                self.tableView.contentInset = UIEdgeInsetsZero
+        UIView.animateWithDuration(0.3) { [weak self] _ in
+            if self?.firstResponderIndexPath != nil {
+                self?.tableView.contentInset = UIEdgeInsetsZero
             }
         }
     }

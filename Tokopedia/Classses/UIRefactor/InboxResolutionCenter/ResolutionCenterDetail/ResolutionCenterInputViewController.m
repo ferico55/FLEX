@@ -105,7 +105,14 @@
     _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
     
     [_lastSolutionLabel setCustomAttributedText:_lastSolution];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
+    [TPAnalytics trackScreenName:@"Resolution Center Input Replay Page"];
+    
+    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     [_messageTextView becomeFirstResponder];
 }
 
@@ -131,13 +138,6 @@
     
     _buyerSellerLabel.backgroundColor = actionByBgColor;
     _buyerSellerLabel.text = actionByString;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
@@ -186,6 +186,7 @@
     CGRect frame = _footerView.frame;
     frame.size.width = _messageTextView.frame.size.width;
     _footerView.frame = frame;
+    _imageScrollView.contentSize = _imageContentView.frame.size;
 }
 
 -(void)adjustFooterButton
@@ -343,22 +344,24 @@
         EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
         controller.isGetProduct = isGotTheOrder;
         controller.resolutionID = _resolutionID;
+        __weak typeof(self) wself = self;
         [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [self.navigationController popToViewController:_delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:NO];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }else {
         EditSolutionBuyerViewController *controller = [EditSolutionBuyerViewController new];
         controller.isGetProduct = isGotTheOrder;
         controller.resolutionID = _resolutionID?:@"";
+        __weak typeof(self) wself = self;
         [controller didSuccessEdit:^(ResolutionLast * solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                [_delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
+            if ([wself.delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                [wself.delegate addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:YES];
             }
-            [self.navigationController popToViewController:_delegate animated:YES];
+            [wself.navigationController popToViewController:wself.delegate animated:NO];
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }
@@ -402,6 +405,10 @@
     }
     for (UIButton *button in _cancelButtons) { button.hidden = YES; }
     for (int i = 0; i<_selectedImages.count; i++) {
+        if ( i == _uploadButtons.count) {
+            [_selectedImages removeLastObject];
+            break;
+        }
         ((UIButton*)_uploadButtons[i]).hidden = NO;
         ((UIButton*)_cancelButtons[i]).hidden = NO;
         [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
@@ -414,7 +421,6 @@
          uploadedButton = (UIButton*)_uploadButtons[4];
     }
     uploadedButton.hidden = NO;
-    _imageScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+20, 0);
 
     if (_selectedImages.count == 0) {
         [_imageScrollView removeFromSuperview];
@@ -424,6 +430,7 @@
         frame.origin.y = _messageTextView.contentSize.height;
         _imageScrollView.frame = frame;
         frame = _imageScrollView.frame;
+        _imageScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+20, 0);
     }
 }
 

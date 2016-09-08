@@ -18,6 +18,10 @@
     return [_remark_str kv_decodeHTMLCharacterEntities];
 }
 
+-(NSString *)user_image{
+    return _user_image?:_user_img;
+}
+
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"remark",
@@ -29,6 +33,7 @@
                       @"user_url",
                       @"create_time_wib",
                       @"user_name",
+                      @"user_image",
                       @"user_img",
                       @"solution",
                       @"remark_str",

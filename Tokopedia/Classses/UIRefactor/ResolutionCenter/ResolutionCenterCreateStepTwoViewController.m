@@ -20,7 +20,8 @@ UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate,
 ResolutionCenterCreateStepTwoCellDelegate,
-UITextViewDelegate
+UITextViewDelegate,
+UIPickerViewDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
@@ -45,6 +46,9 @@ UITextViewDelegate
     if(_shouldFlushOptions){
         [self copyProductToJSONObject];
     }
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Create Detail Problem Page"];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -84,6 +88,9 @@ UITextViewDelegate
         cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if(cell == nil){
             cell = [ResolutionCenterCreateStepTwoCell newcell];
+            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+            [cell.troublePicker setPlaceholder:@"Pilih detil permasalahan"];
+            [cell.troublePicker setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -98,12 +105,40 @@ UITextViewDelegate
         
         cell.delegate = self;
         
-        if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
-            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker];
+        if([currentProduct.pt_free_return isEqualToString:@"3"]) {
+            cell.prosecureBadge.hidden = false;
+            cell.prosecureLabel.hidden = false;
+        } else {
+            cell.prosecureBadge.hidden = true;
+            cell.prosecureLabel.hidden = true;
         }
-        [cell.troublePicker setData:[self generateDownPickerChoices]];
-        cell.troublePicker.tag = indexPath.row;
-        [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        if(![postProduct.trouble_id isEqualToString:@""]) {
+            cell.troublePicker.getTextField.text = [_result selectedTroubleById:postProduct.trouble_id categoryId:_result.postObject.category_trouble_id].trouble_text;
+        } else {
+            cell.troublePicker.getTextField.text = @"";
+        }
+        
+        if(![postProduct.remark isEqualToString:@""]) {
+            cell.problemTextView.text = postProduct.remark;
+        } else {
+            cell.problemTextView.text = @"";
+        }
+        
+        [cell.troublePicker bk_removeEventHandlersForControlEvents:UIControlEventValueChanged];
+        [cell.troublePicker bk_addEventHandler:^(DownPicker* picker) {
+            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:picker.selectedIndex];
+            postProduct.trouble_id = selectedTrouble.trouble_id;
+        } forControlEvents:UIControlEventValueChanged];
+        
+        
+//        cell.troublePicker.didSelectDownPickerAtIndex = ^(NSInteger index){
+//            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+//            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:index];
+//            postProduct.trouble_id = selectedTrouble.trouble_id;
+//        };
+        
         return cell;
     }else{
         if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
@@ -168,7 +203,7 @@ UITextViewDelegate
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
 }
 
-- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
+- (void)didRemarkTextChange:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
     ResolutionCenterCreatePOSTProduct* postProduct = [_result.postObject.product_list objectAtIndex:[self.tableView indexPathForCell:cell].row];
     postProduct.remark = textView.text;
 }

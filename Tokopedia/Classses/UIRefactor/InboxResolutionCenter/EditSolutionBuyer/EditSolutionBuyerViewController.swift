@@ -75,6 +75,12 @@ import UIKit
         self .setAppearanceLoadingView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Problem Page")
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -111,9 +117,8 @@ import UIKit
         let controller : EditResolutionBuyerDetailViewController = EditResolutionBuyerDetailViewController()
         controller.postObject = postObject
         controller.resolutionData = resolutionData
-        controller.didSuccessEdit { (solutionLast, conversationLast, replyEnable) in
-            self.successEdit!(solutionLast: solutionLast, conversationLast: conversationLast , replyEnable: replyEnable)
-            self.navigationController?.popViewControllerAnimated(true)
+        controller.didSuccessEdit { [weak self](solutionLast, conversationLast, replyEnable) in
+            self?.successEdit?(solutionLast: solutionLast, conversationLast: conversationLast , replyEnable: replyEnable)
         }
         
         self.navigationController!.pushViewController(controller, animated: true)
@@ -257,9 +262,9 @@ import UIKit
     }
     
     @objc private func keyboardWillHide(notification: NSNotification){
-        UIView.animateWithDuration(0.3) {
-            if self.firstResponderIndexPath != nil {
-                self.tableView.contentInset = UIEdgeInsetsZero
+        UIView.animateWithDuration(0.3) { [weak self] _ in
+            if self?.firstResponderIndexPath != nil {
+                self?.tableView.contentInset = UIEdgeInsetsZero
             }
         }
     }
