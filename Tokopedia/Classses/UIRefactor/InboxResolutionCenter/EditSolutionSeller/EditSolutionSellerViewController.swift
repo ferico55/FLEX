@@ -96,6 +96,16 @@ import UIKit
         self.adjsutAlertProgressAppearance()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if type == .Edit {
+            TPAnalytics.trackScreenName("Resolution Center Seller Edit Page")
+        } else {
+            TPAnalytics.trackScreenName("Resolution Center Appeal Page")
+        }
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

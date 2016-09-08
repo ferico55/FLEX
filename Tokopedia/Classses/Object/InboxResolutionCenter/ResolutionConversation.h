@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSString *create_time_wib;
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_img;
+@property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSNumber *solution;
 @property (nonatomic, strong) NSString *remark_str;
 @property (nonatomic, strong) NSString *input_resi;

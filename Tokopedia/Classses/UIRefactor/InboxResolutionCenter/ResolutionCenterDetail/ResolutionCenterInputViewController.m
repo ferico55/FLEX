@@ -107,6 +107,15 @@
     [_lastSolutionLabel setCustomAttributedText:_lastSolution];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Input Replay Page"];
+    
+    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    [_messageTextView becomeFirstResponder];
+}
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -129,14 +138,6 @@
     
     _buyerSellerLabel.backgroundColor = actionByBgColor;
     _buyerSellerLabel.text = actionByString;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-    [_messageTextView becomeFirstResponder];
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText

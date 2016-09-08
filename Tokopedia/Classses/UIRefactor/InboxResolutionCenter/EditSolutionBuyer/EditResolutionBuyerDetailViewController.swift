@@ -82,6 +82,12 @@ import UIKit
         reasonTextView.placeholder = "Tulis alasan anda disini"
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Solution Page")
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

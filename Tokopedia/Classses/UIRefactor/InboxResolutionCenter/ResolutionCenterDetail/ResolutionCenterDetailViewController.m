@@ -145,6 +145,21 @@ typedef enum {
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Resolution Center Detail Page"];
+    self.title = @"Pusat Resolusi";
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.title = @"";
+}
+
+
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {
@@ -199,19 +214,6 @@ typedef enum {
     _buyerSellerLabel.backgroundColor = COLOR_BUYER;//(_resolutionDetail.resolution_by.by_customer == 1)?COLOR_SELLER:COLOR_BUYER;
 
 }
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.title = @"Pusat Resolusi";
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.title = @"";
-}
-
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -572,7 +574,7 @@ typedef enum {
     //    cell.markView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:194.0/255.0 alpha:1];
     //}
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:conversation.user_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:conversation.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.buyerProfileImageView;
     thumb.image = nil;
@@ -916,7 +918,7 @@ typedef enum {
      
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
-        if (product.pt_free_return == 1){
+        if ([product.pt_free_return integerValue] == 3){
             [marks addObject:@"(Free Return)"];
         }
         [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
@@ -1171,14 +1173,13 @@ typedef enum {
             if(conversationLast.refund_amt_idr)_addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
             if(conversationLast.solution_string)_addedLastConversation.solution_string = conversationLast.solution_string;
             if(conversationLast.trouble_string)_addedLastConversation.trouble_string = conversationLast.trouble_string;
-            [self refreshRequest];
         }
         [self hideReplyButton:!isReplyEnable];
     } else {
         [_listResolutionConversation addObject:conversationLast];
         [self hideReplyButton:!isReplyEnable];
     }
-
+    [self refreshRequest];
     [_tableView reloadData];
 }
 

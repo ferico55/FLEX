@@ -46,9 +46,9 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate, UITextFieldDe
         quantityTextField.text = viewModel.productQuantity
         
         if viewModel.isFreeReturn {
-            freeReturnViewHeight.constant = 0
-        } else {
             freeReturnViewHeight.constant = 20
+        } else {
+            freeReturnViewHeight.constant = 0
         }
         
         if viewModel.isSelected {
