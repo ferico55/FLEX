@@ -155,6 +155,7 @@ import UIKit
         self.tableView.tableHeaderView = headerView
         self.adjustPostObject()
         self.adjustTroubleList()
+        self.setHeaderAppearanceData(resolutionData)
         self.tableView.reloadData()
 
     }
@@ -221,8 +222,6 @@ import UIKit
     }
     
     private func adjustAppearance(){
-        self.setHeaderAppearanceData(resolutionData)
-        
         detailProblemDownPicker.addTarget(self, action: #selector(EditSolutionBuyerViewController.troublePickerValueChanged(_:)), forControlEvents: .ValueChanged)
         
         resolutionData.form.resolution_last.last_product_trouble.forEach { (productTrouble) in
