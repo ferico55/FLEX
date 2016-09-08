@@ -1173,14 +1173,13 @@ typedef enum {
             if(conversationLast.refund_amt_idr)_addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
             if(conversationLast.solution_string)_addedLastConversation.solution_string = conversationLast.solution_string;
             if(conversationLast.trouble_string)_addedLastConversation.trouble_string = conversationLast.trouble_string;
-            [self refreshRequest];
         }
         [self hideReplyButton:!isReplyEnable];
     } else {
         [_listResolutionConversation addObject:conversationLast];
         [self hideReplyButton:!isReplyEnable];
     }
-
+    [self refreshRequest];
     [_tableView reloadData];
 }
 
