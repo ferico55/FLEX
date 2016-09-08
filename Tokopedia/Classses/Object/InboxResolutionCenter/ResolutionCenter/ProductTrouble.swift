@@ -19,7 +19,7 @@ class ProductTrouble: NSObject {
     var pt_solution_remark : String = ""
     var pt_order_dtl_id : String = ""
     var pt_quantity : String = ""
-    var pt_free_return : Int = 0
+    var pt_free_return : String = ""
     var pt_primary_photo : String = ""
     var pt_primary_dtl_photo : String = ""
     var pt_last_selected_quantity = "1"
@@ -33,6 +33,12 @@ class ProductTrouble: NSObject {
             viewModel.productName = self.pt_product_name
             viewModel.productTrouble = "\(self.pt_quantity) \(self.pt_trouble_name)"
             viewModel.productTroubleDescription = pt_solution_remark
+            if Int(pt_free_return) == 3 {
+                viewModel.isFreeReturn = true
+            } else  {
+                viewModel.isFreeReturn = false
+            }
+            
             return viewModel
         }
     }
@@ -48,6 +54,12 @@ class ProductTrouble: NSObject {
             viewModel.productTroubleDescription = pt_solution_remark
             viewModel.isSelected = pt_selected
             viewModel.troubleTypeList = pt_trouble_list
+            if Int(pt_free_return) == 3 {
+                viewModel.isFreeReturn = true
+            } else  {
+                viewModel.isFreeReturn = false
+            }
+            
             
             return viewModel
         }

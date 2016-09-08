@@ -918,7 +918,7 @@ typedef enum {
      
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
-        if (product.pt_free_return == 1){
+        if ([product.pt_free_return integerValue] == 3){
             [marks addObject:@"(Free Return)"];
         }
         [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
