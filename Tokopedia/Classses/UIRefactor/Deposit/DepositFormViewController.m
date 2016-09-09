@@ -553,7 +553,6 @@
             NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[number doubleValue]]];
             _totalAmount.text = str;
         }
-        return YES;
     }
 
     return YES;
