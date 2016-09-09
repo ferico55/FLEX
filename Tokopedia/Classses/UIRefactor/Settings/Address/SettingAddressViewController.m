@@ -463,7 +463,10 @@
     if (_page==1)_doneBarButtonItem.enabled = NO;
     [[self getNetworkRequest] requestWithBaseUrl:[NSString v4Url] path:@"/v4/people/get_address.pl" method:RKRequestMethodGET parameter:[self getAddressParameter] mapping:[AddressForm mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             [self requestSuccess:successResult withOperation:operation];
+            [_refreshControl endRefreshing];
+        
     } onFailure:^(NSError *errorResult) {
+        [_refreshControl endRefreshing];
         NSLog(@"%@", errorResult);
     }];
 }
