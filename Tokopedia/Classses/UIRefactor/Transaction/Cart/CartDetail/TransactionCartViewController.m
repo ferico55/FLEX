@@ -412,7 +412,7 @@
             }
             else
             {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi.";
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
             }
         }
         else
@@ -1178,11 +1178,12 @@
 }
 
 - (CGFloat)getLabelHeightWithText:(NSString*)text {
-    CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
+    NSInteger labelWidth = 253;
+    CGSize maximumLabelSize = CGSizeMake(labelWidth,9999);
     NSStringDrawingContext *context = [NSStringDrawingContext new];
     CGSize expectedLabelSize = [text boundingRectWithSize:maximumLabelSize
                                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                 attributes:@{NSFontAttributeName:[UIFont title1Theme]}
                                                     context:context].size;
     
     return expectedLabelSize.height;
@@ -1512,11 +1513,18 @@
 {
     // should be phone numbers text field
     if (textField.tag < 0) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
+        
         NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         return [newString isNumber];
     }
     
     if (textField == _saldoTokopediaAmountTextField) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
         
@@ -2075,11 +2083,6 @@
         }
         else if(indexPath.row <= list.cart_products.count) {
             ProductDetail *product = list.cart_products[indexPath.row-1];
-//            return [_tableView fd_heightForCellWithIdentifier:@"TransactionCartCellIdentifier"
-//                                             cacheByIndexPath:indexPath
-//                                                configuration:^(TransactionCartCell *cell) {
-//                                                    [cell setViewModel:product.viewModel];
-//                                                }];
             return [self productRowHeight:product];
         }
         else if ( indexPath.row == list.cart_products.count + 2) {
@@ -2305,7 +2308,7 @@
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
                                                         options:NSStringDrawingUsesLineFragmentOrigin
-                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:21.0f]}
+                                                     attributes:@{NSFontAttributeName:[UIFont title1Theme]}
                                                         context:context].size;
         
         return expectedLabelSize.height;
@@ -2319,7 +2322,7 @@
     
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+    CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByWordWrapping];
     
@@ -2339,9 +2342,9 @@
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         expectedErrorLabelSize = [errorText boundingRectWithSize:maximumLabelSize
                                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0f]}
+                                                        attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                            context:context].size;
-        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
+        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 32;
     } else {
         expectedErrorLabelSize.height = 0;
     }
@@ -2490,7 +2493,7 @@
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
         _voucherAmountLabel.text = voucherString;
-        _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+        _voucherAmountLabel.font = [UIFont microTheme];
         
         _buttonVoucherInfo.hidden = YES;
         _buttonCancelVoucher.hidden = NO;
@@ -2629,6 +2632,25 @@
             klikBCAUserID:userIDKlikBCA
                   success:^(TransactionBuyResult *data) {
                       
+                      NSArray <TransactionCartList *> *carts = data.transaction.carts;
+                      NSMutableArray *productIDs = [NSMutableArray new];
+                      NSInteger quantity = 0;
+                      
+                      for (TransactionCartList *cart in carts) {
+                          NSArray <ProductDetail *> *products = cart.cart_products;
+                          for (ProductDetail *product in products) {
+                              [productIDs addObject:product.product_id];
+                          }
+                          quantity = quantity + [cart.cart_total_product integerValue];
+                      }
+                      
+                      [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total,
+                                                                                                AFEventParamContentType : @"Product",
+                                                                                                AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs],
+                                                                                                AFEventParamQuantity : [@(quantity) stringValue],
+                                                                                                AFEventParamCurrency : @"IDR",
+                                                                                                AFEventOrderId : data.transaction.payment_id}];
+                      
                       TransactionSummaryDetail *summary = data.transaction;
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
@@ -2674,12 +2696,15 @@
                               }
                               [_tableView reloadData];
                           } error:^(NSError *error) {
-                              [self doClearAllData];
-                              [_refreshControl beginRefreshing];
-                              [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-                              _paymentMethodView.hidden = YES;
-                              [_noInternetConnectionView generateRequestErrorViewWithError:error];
-                              [_tableView addSubview:_noInternetConnectionView];
+                              if (error) {
+                                  [self doClearAllData];
+                                  [_refreshControl beginRefreshing];
+                                  [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                  _paymentMethodView.hidden = YES;
+                                  [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                  [_tableView addSubview:_noInternetConnectionView];
+                              }
+                              
                               [self isLoading:NO];
                           }];
 }

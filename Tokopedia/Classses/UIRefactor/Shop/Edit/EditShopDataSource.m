@@ -74,8 +74,8 @@ NSInteger const SectionForShopTagDescription = 0;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"shopName"];
         cell.textLabel.text = @"Nama Toko";
-        cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        cell.textLabel.font = [UIFont title2Theme];
+        cell.detailTextLabel.font = [UIFont title2Theme];
         cell.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -108,8 +108,8 @@ NSInteger const SectionForShopTagDescription = 0;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"shopStatus"];
         cell.textLabel.text = @"Status Toko";
-        cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        cell.detailTextLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+        cell.textLabel.font = [UIFont title2Theme];
+        cell.detailTextLabel.font = [UIFont title2Theme];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:189.0/255.0 blue:65.0/255.0 alpha:1];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -136,7 +136,7 @@ NSInteger const SectionForShopTagDescription = 0;
             lbl.text = [NSString stringWithFormat:@"Toko akan tutup pada %@, 00:00.", _shop.closed_schedule_detail.close_start];
         }
         lbl.textAlignment = NSTextAlignmentLeft;
-        lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+        lbl.font = [UIFont smallTheme];
         [lbl setNumberOfLines:0];
         [lbl sizeToFit];
         [footer addSubview:lbl];

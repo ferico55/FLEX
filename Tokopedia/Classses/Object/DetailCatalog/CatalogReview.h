@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CatalogReview : NSObject
+@interface CatalogReview : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *review_from_image;
 @property (nonatomic, strong) NSString *review_rating;

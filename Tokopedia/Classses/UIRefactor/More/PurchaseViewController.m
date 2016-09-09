@@ -11,7 +11,6 @@
 #import "TxOrderTabViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
-#import "Localytics.h"
 
 @interface PurchaseViewController ()<NotificationManagerDelegate>
 {
@@ -100,28 +99,6 @@
     _paymentConfirmationValueLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation]?:@"0";
     _orderStatusValueLabel.text = _notification.result.purchase.purchase_order_status?:@"0";
     _receiveConfirmationValueLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                 };
-    
-    _paymentConfirmationLabel.attributedText = [[NSAttributedString alloc] initWithString:_paymentConfirmationLabel.text?:@""
-                                                                               attributes:attributes];
-    
-    _orderStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_orderStatusLabel.text?:@""
-                                                                       attributes:attributes];
-    
-    _receiveStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_receiveStatusLabel.text?:@""
-                                                                         attributes:attributes];
-    
-    _transactionListLabel.attributedText = [[NSAttributedString alloc] initWithString:_transactionListLabel.text?:@""
-                                                                           attributes:attributes];
 }
 
 #pragma mark - Notification Manager Delegate

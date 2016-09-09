@@ -7,9 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "iCarousel.h"
+#import "SwipeView.h"
+#import "AnnouncementTickerView.h"
+
+@class PulsaView;
 
 @interface CategoryDataSource : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property(nonatomic, weak) UIViewController *delegate;
+@property(nonatomic, weak) iCarousel *slider;
+@property(nonatomic, weak) SwipeView *digitalGoodsSwipeView;
+@property(nonatomic, weak) PulsaView* pulsaContainer;
+
+@property(nonatomic, weak) AnnouncementTickerView *ticker;
 
 @end

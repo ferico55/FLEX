@@ -229,6 +229,7 @@
     [super viewWillAppear:animated];
     self.title = @"Pusat Resolusi";
     _networkManager.delegate = self;
+    [TPAnalytics trackScreenName:@"Inbox Resolution Detail Page"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1326,7 +1327,7 @@
     if (section == 0) {
         if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
             [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
-            return [self findHeightForText:_infoLabel.text havingWidth:_infoLabel.frame.size.width andFont:FONT_GOTHAM_BOOK_18].height;
+            return [self findHeightForText:_infoLabel.text havingWidth:_infoLabel.frame.size.width andFont:[UIFont title1ThemeMedium]].height;
         }
         return 0;
     }

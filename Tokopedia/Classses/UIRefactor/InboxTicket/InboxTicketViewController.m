@@ -77,6 +77,11 @@ NoResultDelegate
     [self initNoResultView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Inbox Ticket Page"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -141,7 +146,7 @@ NoResultDelegate
     
     cell.titleLabel.text = ticket.ticket_title;
     if ([ticket.ticket_read_status isEqualToString:@"1"]) {
-        cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+        cell.titleLabel.font = [UIFont largeThemeMedium];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;

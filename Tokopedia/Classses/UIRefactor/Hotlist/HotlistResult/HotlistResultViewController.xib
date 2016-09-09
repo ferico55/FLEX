@@ -5,12 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HotlistResultViewController">
             <connections>
@@ -106,7 +100,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kye-YT-baO">
-                            <rect key="frame" x="0.0" y="0.0" width="79.5" height="48"/>
+                            <rect key="frame" x="0.0" y="0.0" width="80" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="rgm-yG-Bwj"/>
                             </constraints>
@@ -131,7 +125,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBz-Qj-ipQ">
-                            <rect key="frame" x="79" y="0.0" width="80.5" height="48"/>
+                            <rect key="frame" x="79" y="0.0" width="81" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="YHO-TI-wmK"/>
                             </constraints>
@@ -318,8 +312,8 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="mBb-aS-tY9">
-                    <rect key="frame" x="15" y="25" width="290" height="100"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <rect key="frame" x="15" y="18" width="290" height="107"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -327,7 +321,7 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="mBb-aS-tY9" firstAttribute="leading" secondItem="91z-Sh-o8k" secondAttribute="leading" constant="15" id="ZeR-iz-QLL"/>
-                <constraint firstItem="mBb-aS-tY9" firstAttribute="top" secondItem="91z-Sh-o8k" secondAttribute="top" constant="25" id="aR8-SA-aLX"/>
+                <constraint firstItem="mBb-aS-tY9" firstAttribute="top" secondItem="91z-Sh-o8k" secondAttribute="top" constant="18" id="aR8-SA-aLX"/>
                 <constraint firstAttribute="trailing" secondItem="mBb-aS-tY9" secondAttribute="trailing" constant="15" id="hA2-Fn-pgK"/>
                 <constraint firstAttribute="bottom" secondItem="mBb-aS-tY9" secondAttribute="bottom" constant="25" id="rHb-eD-9Qi"/>
             </constraints>
@@ -380,7 +374,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="188" id="ORy-Tg-kol"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>

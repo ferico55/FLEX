@@ -15,7 +15,6 @@
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
-#import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
@@ -30,7 +29,6 @@ UIScrollViewDelegate,
 UITableViewDataSource,
 UITableViewDelegate,
 TKPDAlertViewDelegate,
-CategoryMenuViewDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
 >
@@ -51,6 +49,7 @@ FilterCategoryViewDelegate
     NSString *_productNameBeforeCopy;
     
     BOOL _isDoneRequestCatalog;
+    BOOL _isProductNameEditable;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -112,15 +111,17 @@ FilterCategoryViewDelegate
         case TYPE_ADD_EDIT_PRODUCT_ADD:
             self.title =  @"Tambah Produk";
             [self setDefaultForm];
+            [TPAnalytics trackScreenName:@"Add Product Page"];
             break;
         case TYPE_ADD_EDIT_PRODUCT_EDIT:
             self.title = @"Ubah Produk";
-            _productNameTextField.enabled = NO;
             [self fetchFormEditProductID:_productID];
+            [TPAnalytics trackScreenName:@"Edit Product Page"];
             break;
         case TYPE_ADD_EDIT_PRODUCT_COPY:
             self.title = @"Salin Produk";
             [self fetchFormEditProductID:_productID];
+            [TPAnalytics trackScreenName:@"Copy Product Page"];
             break;
         default:
             break;
@@ -362,7 +363,7 @@ FilterCategoryViewDelegate
             cell = _section1TableViewCell[indexPath.row];
             if (indexPath.row == BUTTON_PRODUCT_PRODUCT_NAME) {
                 if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-                    _productNameViewCell.hidden = NO;
+                    _productNameViewCell.hidden = _isProductNameEditable;
                 }
             }
             if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
@@ -451,7 +452,7 @@ FilterCategoryViewDelegate
             switch (indexPath.row) {
                 case BUTTON_PRODUCT_PRODUCT_NAME:
                 {
-                    if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                    if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT && !_isProductNameEditable) {
                         UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                         [editableNameProductAlert show];
                     }
@@ -613,7 +614,9 @@ FilterCategoryViewDelegate
     _productNameTextField.text = product.product_name;
     _productNameBeforeCopy = product.product_name;
     
-    _productNameTextField.enabled = (_type ==TYPE_ADD_EDIT_PRODUCT_ADD || _type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
+    _isProductNameEditable = [product.product_name_editable boolValue];
+    
+    _productNameTextField.enabled = (_type ==TYPE_ADD_EDIT_PRODUCT_ADD || _type == TYPE_ADD_EDIT_PRODUCT_COPY || _isProductNameEditable)?YES:NO;
     
     CGFloat priceInteger = [price floatValue];
     if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH)
@@ -778,7 +781,7 @@ FilterCategoryViewDelegate
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == _productNameTextField) {
-        if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT && !_isProductNameEditable) {
             UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
             [editableNameProductAlert show];
         }
@@ -937,11 +940,9 @@ FilterCategoryViewDelegate
 {
     _nextBarButtonItem.enabled = isEnable;
     
-    _productNameTextField.userInteractionEnabled = isEnable;
     _minimumOrderTextField.userInteractionEnabled = isEnable;
     _productPriceTextField.userInteractionEnabled = isEnable;
-    _productWeightTextField.userInteractionEnabled = isEnable;
-    
+    _productWeightTextField.userInteractionEnabled = isEnable;    
 }
 
 #pragma mark - Keyboard Notification

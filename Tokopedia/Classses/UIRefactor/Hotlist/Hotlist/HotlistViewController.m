@@ -105,7 +105,7 @@
 }
 
 - (void)requestHotlist {
-    [_requestHotlistManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_requestHotlistManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/hotlist/get_hotlist.pl"
                                  method:RKRequestMethodGET
                               parameter:@{

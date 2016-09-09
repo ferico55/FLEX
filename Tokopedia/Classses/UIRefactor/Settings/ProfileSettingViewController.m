@@ -59,6 +59,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Profile Settings Page"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -150,7 +151,7 @@
         cell.imageView.image = imgView.image;
     }
     
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+    cell.textLabel.font = [UIFont title2Theme];
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
     
     return cell;

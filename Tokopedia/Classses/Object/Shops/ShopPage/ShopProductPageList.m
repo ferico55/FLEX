@@ -12,6 +12,7 @@
 @implementation ShopProductPageList
 +(RKObjectMapping *)mapping{
     RKObjectMapping *shopProductPageListMapping = [RKObjectMapping mappingForClass:[ShopProductPageList class]];
+    
     [shopProductPageListMapping addAttributeMappingsFromArray:@[@"shop_lucky",
                                                                 @"shop_gold_status",
                                                                 @"shop_id",
@@ -42,6 +43,9 @@
                                                                 @"shop_is_owner",
                                                                 @"product_url",
                                                                 @"product_name"]];
+    
+    [shopProductPageListMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
+    
     return shopProductPageListMapping;
 }
 
@@ -66,6 +70,7 @@
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
+        [viewModel setBadges:self.badges];
         
         _viewModel = viewModel;
     }

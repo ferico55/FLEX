@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TKPDTabHomeViewController.h"
 
-@interface MyWishlistViewController : GAITrackedViewController
-{
+@interface MyWishlistViewController : GAITrackedViewController {
     IBOutlet UIView *viewNoData;
 }
+
 @property NSInteger index;
-@property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 @end

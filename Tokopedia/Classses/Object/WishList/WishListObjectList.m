@@ -40,6 +40,7 @@
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setShopLocation:self.shop_location];
+        [viewModel setBadges:self.badges];
         
         _viewModel = viewModel;
     }

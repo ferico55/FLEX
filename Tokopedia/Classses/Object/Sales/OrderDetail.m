@@ -40,7 +40,8 @@
                       @"detail_pdf",
                       @"detail_order_status",
                       @"detail_dropship_name",
-                      @"detail_dropship_telp"
+                      @"detail_dropship_telp",
+                      @"detail_free_return"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

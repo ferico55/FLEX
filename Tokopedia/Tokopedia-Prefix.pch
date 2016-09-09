@@ -50,7 +50,6 @@
     #import "TKPDSecureStorage.h"
     #import "UITextView+UITextView_Placeholder.h"
     #import "NSString+HTML.h"
-    #import "NSStringAttribute.h"
     #import "UserAuthentificationManager.h"
     #import "NSMutableAttributedString+TKPCategory.h"
 
@@ -66,7 +65,7 @@
 
     #import "TPAnalytics.h"
     #import "TPLocalytics.h"
-    #import "Localytics.h"
+    #import <Localytics/Localytics.h>
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
@@ -77,5 +76,5 @@
     #import "StickyAlertView+NetworkErrorHandler.h"
     #import "FBTweakInline.h"
     #import "NSString+TPBaseUrl.h"
-
+    #import "UIFont+Theme.h"
 #endif

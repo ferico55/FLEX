@@ -49,7 +49,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CCellIdentifier];
-        cell.textLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
+        cell.textLabel.font = [UIFont title2Theme];
         cell.accessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.height-25, cell.bounds.size.height-25)];
         ((UIImageView *) cell.accessoryView).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_check_orange" ofType:@"png"]];
     }

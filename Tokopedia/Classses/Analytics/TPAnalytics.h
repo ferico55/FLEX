@@ -60,4 +60,8 @@
 
 + (void)trackSearchWithAction:(NSString *)action keyword:(NSString *)keyword;
 
++ (void)trackClickRegisterOnPage:(NSString *)page;
++ (void)trackSuccessRegisterWithChannel:(NSString *)channel;
++ (void)trackErrorRegisterWithFieldName:(NSString *)name;
+
 @end

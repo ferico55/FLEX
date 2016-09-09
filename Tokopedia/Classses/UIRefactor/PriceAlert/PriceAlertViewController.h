@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ProductDetail, DetailPriceAlert, CatalogInfo, AlertPriceNotificationViewController;
+@class ProductDetail, DetailPriceAlert, CatalogInfo;
 
 @interface PriceAlertViewController : UIViewController
 {

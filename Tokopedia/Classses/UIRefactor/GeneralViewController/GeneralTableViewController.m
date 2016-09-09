@@ -32,11 +32,14 @@
 
     [super viewDidLoad];
     
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 44;
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0;
 
     _textAttributes = @{
-                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                        NSFontAttributeName            : [UIFont title2Theme],
                         NSParagraphStyleAttributeName  : style,
                         };
     
@@ -175,10 +178,10 @@
     else if (_tableViewCellStyle == UITableViewCellStyleSubtitle) {
         if ([object isKindOfClass:[NSArray class]]) {
             cell.textLabel.text = [object objectAtIndex:0];
-            cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.textLabel.font = [UIFont title2Theme];
             
             cell.detailTextLabel.text = [object objectAtIndex:1];
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
         }
     }

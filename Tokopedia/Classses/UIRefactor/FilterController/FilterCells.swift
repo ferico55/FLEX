@@ -20,11 +20,9 @@ class TextFieldCell: UITableViewCell
         self.titleLabel = UILabel.init(frame: CGRect(x:15, y:10, width: self.frame.size.width, height:15))
         self.textField = UITextField(frame: CGRect(x: 20, y: self.titleLabel.frame.size.height+self.titleLabel.frame.origin.y, width: self.frame.size.width-100, height: 30));
         
-        let fontTextField = UIFont.init(name: "GothamBook", size: 13)
-        self.textField.font = fontTextField
+        self.textField.font = UIFont.title2Theme()
         
-        let fontTitle = UIFont.init(name: "GothamBook", size: 13)
-        self.titleLabel.font = fontTitle
+        self.titleLabel.font = UIFont.title2Theme()
         self.titleLabel.textColor = UIColor.grayColor()
         
         self.textField.borderStyle = UITextBorderStyle.None
@@ -58,8 +56,7 @@ class switchCell: UITableViewCell
         
         self.accessoryView = self.switchView
         
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        self.textLabel?.font = font
+        self.textLabel?.font = UIFont.title2Theme()
     }
     
     func switchChanged(sender:UISwitch) -> Void {
@@ -85,8 +82,7 @@ class FilterTableViewCell: UITableViewCell
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         label.numberOfLines = 0
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        label.font = font
+        label.font = UIFont.title2Theme()
         arrowImageView.contentMode = .ScaleAspectFit
         selectedImageView.contentMode = .ScaleAspectFit
         selectedImageView.hidden = true

@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 @interface TalkCell ()
 
-@property (strong, nonatomic) NSDictionary *messageAttribute;
 @property (strong, nonatomic) ReportViewController *reportController;
 
 @end
@@ -68,11 +67,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     
-    _messageAttribute = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-        NSParagraphStyleAttributeName  : style,
-    };
-    
     _userManager = [UserAuthentificationManager new];
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
@@ -104,8 +98,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
+    self.messageLabel.text = modelView.talkMessage;
     
-    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:modelView.talkMessage attributes:_messageAttribute];
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
     

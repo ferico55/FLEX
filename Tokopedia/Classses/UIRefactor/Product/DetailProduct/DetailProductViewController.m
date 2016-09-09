@@ -18,7 +18,6 @@
 #import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
-#import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 #import "detail.h"
@@ -52,11 +51,9 @@
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
-#import "ProductReviewViewController.h"
 #import "ProductTalkViewController.h"
 #import "ProductAddEditViewController.h"
 
-#import "DetailProductOtherView.h"
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
@@ -81,7 +78,6 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
-#import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
 #import "NoResultReusableView.h"
@@ -109,12 +105,10 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
-LabelMenuDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
-DetailProductOtherViewDelegate,
 LoginViewDelegate,
 TokopediaNetworkManagerDelegate,
 EtalaseViewControllerDelegate,
@@ -123,7 +117,8 @@ CMPopTipViewDelegate,
 UIAlertViewDelegate,
 NoResultDelegate,
 UICollectionViewDelegate,
-OtherProductDelegate
+OtherProductDelegate,
+TTTAttributedLabelDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
@@ -186,7 +181,7 @@ OtherProductDelegate
     NSTimer *_timer;
     
     __weak RKObjectManager  *_objectPromoteManager;
-    LabelMenu *lblDescription;
+    TTTAttributedLabel* _descriptionLabel;
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
@@ -234,7 +229,6 @@ OtherProductDelegate
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
-@property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
@@ -295,7 +289,7 @@ OtherProductDelegate
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
-    fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    fontDesc = [UIFont smallTheme];
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -570,26 +564,8 @@ OtherProductDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
+                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
                 }
-                return;
-                
-                
-                
-                // go to review page
-                ProductReviewViewController *vc = [ProductReviewViewController new];
-                NSArray *images = _product.data.product_images;
-                ProductImages *image = images[0];
-                
-                vc.data = @{
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            API_PRODUCT_NAME_KEY : _formattedProductTitle,
-                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-                
                 break;
             }
             case 13:
@@ -879,9 +855,9 @@ OtherProductDelegate
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [bt.titleLabel setFont:[UIFont microTheme]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
+    [bt.titleLabel setFont:[UIFont title2ThemeMedium]];
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
@@ -898,13 +874,13 @@ OtherProductDelegate
                 CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
                 if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                     
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
                 }
                 else
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
                 }
                 [expandCollapseButton removeFromSuperview];
@@ -931,12 +907,12 @@ OtherProductDelegate
             
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
             }
             else
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
             }
             
@@ -1963,6 +1939,13 @@ OtherProductDelegate
                 
                 [btnShare removeConstraint:_btnShareTrailingConstraint];
                 [btnShare removeConstraint:_btnShareLeadingConstraint];
+                
+                [btnShare mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(viewContentWishList).offset(10);
+                    make.right.equalTo(viewContentWishList).offset(10);
+                }];
+                
+                
                 [self hideReportButton:YES];
             } else {
                 if(!_product.isDummyProduct) {
@@ -1973,14 +1956,6 @@ OtherProductDelegate
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
-                [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
-                btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = btnPriceAlert.layer.borderWidth = 1.0f;
-                btnWishList.imageEdgeInsets = btnPriceAlert.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                btnWishList.titleEdgeInsets = btnPriceAlert.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Set background wishlist
                 if([_product.data.info.product_already_wishlist isEqualToString:@"1"])
@@ -2077,8 +2052,8 @@ OtherProductDelegate
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
-                                                                                 AFEventParamPrice : price,
-                                                                                 AFEventParamContentId : _product.data.info.product_id,
+                                                                                 AFEventParamPrice : price?:@"",
+                                                                                 AFEventParamContentId : _product.data.info.product_id?:@"",
                                                                                  AFEventParamCurrency : @"IDR",
                                                                                  AFEventParamContentType : @"Product"
                                                                                  }];
@@ -2164,22 +2139,12 @@ OtherProductDelegate
     
 }
 
-#pragma mark - View Delegate
-- (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
-{
-    SearchAWSProduct *product = _otherProductObj[index];
-    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.data.shop_info.shop_name];
-    }
-}
-
 #pragma mark - Methods
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
-    CGFloat fontSize = 13;
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
-    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIFont *boldFont = [UIFont smallThemeMedium];
+    UIFont *regularFont = [UIFont smallTheme];
     UIColor *foregroundColor = [UIColor whiteColor];
     
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
@@ -2265,15 +2230,12 @@ OtherProductDelegate
     //                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
 }
 
-- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
-{
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
     style.alignment = alignment;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName: (color == nil) ? [UIColor whiteColor] : color,
                                  NSFontAttributeName:(font == nil)? fontDesc : font,
-                                 NSParagraphStyleAttributeName: style,
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
     lblDesc.attributedText = attributedText;
@@ -2295,19 +2257,52 @@ OtherProductDelegate
 {
     if(strText == nil)  return CGRectZero;
     CGRect rectLblDesc = CGRectMake(20, originY, width, 9999);
-    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:[UIFont smallTheme] withAlignment:NSTextAlignmentLeft];
     
-    lblDescription = [[LabelMenu alloc] initWithFrame:rectLblDesc];
-    lblDescription.backgroundColor = [UIColor clearColor];
-    [lblDescription setNumberOfLines:0];
-    lblDescription.delegate = self;
-    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
-    lblDescription.textColor = [UIColor blackColor];
-    lblDescription.userInteractionEnabled = YES;
-    [lblDescription addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [mView addSubview:lblDescription];
+    _descriptionLabel = [[TTTAttributedLabel alloc] initWithFrame:rectLblDesc];
+    _descriptionLabel.backgroundColor = [UIColor clearColor];
+    [_descriptionLabel setNumberOfLines:0];
+    _descriptionLabel.delegate = self;
+    _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString: [NSString extracTKPMEUrl:strText] attributes: @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                                                                                                                  NSFontAttributeName: [UIFont smallTheme]}];
+    _descriptionLabel.textColor = [UIColor lightGrayColor];
+    _descriptionLabel.userInteractionEnabled = YES;
+    [_descriptionLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
+    
+    _descriptionLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    NSArray *matches = [linkDetector matchesInString:_descriptionLabel.text options:0 range:NSMakeRange(0, [_descriptionLabel.text length])];
+    
+    for(NSTextCheckingResult* match in matches) {
+        [_descriptionLabel addLinkToURL:match.URL withRange:match.range];
+    }
+    
+    [mView addSubview:_descriptionLabel];
     
     return rectLblDesc;
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    __weak __typeof(self) weakSelf = self;
+    
+    NSString* theRealUrl;
+    if([url.host isEqualToString:@"www.tokopedia.com"]) {
+        theRealUrl = url.absoluteString;
+    } else {
+        theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    }
+    
+    WebViewController *controller = [[WebViewController alloc] init];
+    controller.strURL = theRealUrl;
+    controller.strTitle = @"Mengarahkan...";
+    controller.onTapLinkWithUrl = ^(NSURL* url) {
+        if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)expand:(CustomButtonExpandDesc *)sender
@@ -2429,7 +2424,7 @@ OtherProductDelegate
     
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
+    UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
@@ -2620,7 +2615,7 @@ OtherProductDelegate
         } completion:nil];
         
         CGRect frame = _shopinformationview.frame;
-        frame.size.height = 457;
+        frame.size.height = 467;
         _shopinformationview.frame = frame;
         
         _table.tableFooterView = _shopinformationview;
@@ -3011,7 +3006,7 @@ OtherProductDelegate
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag
 {
-    [UIPasteboard generalPasteboard].string = lblDescription.text;
+    [UIPasteboard generalPasteboard].string = _descriptionLabel.text;
 }
 
 #pragma mark - Other Method

@@ -19,17 +19,8 @@
 
 @implementation DetailShipmentStatusCell
 
-static CGFloat messageTextSize = 14.0;
-
 - (void)awakeFromNib {
     _circle.layer.cornerRadius = _circle.frame.size.width / 2;
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    _textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                                                      NSParagraphStyleAttributeName  : style,
-                                                                      NSForegroundColorAttributeName : [UIColor blackColor]}];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -52,8 +43,7 @@ static CGFloat messageTextSize = 14.0;
     if (text) {
         text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
         text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-        [_textAttributes setObject:[UIFont fontWithName:@"GothamMedium" size:12] forKey:NSFontAttributeName];
-        _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];    
+        _statusLabel.text = text;
     }
 }
 
@@ -65,7 +55,7 @@ static CGFloat messageTextSize = 14.0;
         text = @"Pembeli";
     }
     
-    [_textAttributes setObject:[UIFont fontWithName:@"GothamBook" size:10] forKey:NSFontAttributeName];
+    [_textAttributes setObject:[UIFont microTheme] forKey:NSFontAttributeName];
     _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];
     [_subjectLabel sizeToFit];
 }
@@ -77,7 +67,7 @@ static CGFloat messageTextSize = 14.0;
 
 + (CGFloat)maxTextWidth {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        return 220.0f;
+        return 197.0f;
     } else {
         return 400.0f;
     }
@@ -85,9 +75,10 @@ static CGFloat messageTextSize = 14.0;
 
 + (CGSize)messageSize:(NSString*)message {
     message = [message stringByAppendingString:@"\n\n"];
-    CGSize size = [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
-                      constrainedToSize:CGSizeMake([self maxTextWidth], 600)
-                          lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [message boundingRectWithSize:CGSizeMake([self maxTextWidth], 9999.0)
+                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                     attributes:@{NSFontAttributeName:[UIFont largeThemeMedium]}
+                                        context:[NSStringDrawingContext new]].size;
     size.height += 40;
     return size;
 }

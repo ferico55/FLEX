@@ -259,7 +259,10 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    func  textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if Int(string) == nil && string != "" {
+            return false
+        }
         
         let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         

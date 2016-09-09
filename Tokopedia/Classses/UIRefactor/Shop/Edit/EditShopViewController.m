@@ -7,7 +7,6 @@
 //
 
 #import "EditShopViewController.h"
-#import "EditShopStatusViewController.h"
 #import "TKPDPhotoPicker.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
@@ -33,7 +32,6 @@
 
 @interface EditShopViewController ()
 <
-    EditShopStatusDelegate,
     EditShopDelegate,
     TKPDPhotoPickerDelegate,
     GenerateHostDelegate,
@@ -91,6 +89,11 @@
     
     [self generateHost];
     [self fetchShopInformation];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Info Setting Page"];
 }
 
 -(void)viewDidAppear:(BOOL)animated{

@@ -20,10 +20,10 @@
     
     self.remainingDaysLabel.layer.cornerRadius = 1;
 
-    [self.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [self.acceptButton.titleLabel setFont:[UIFont microTheme]];
     [self.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
 
-    [self.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [self.rejectButton.titleLabel setFont:[UIFont microTheme]];
     [self.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     
     UITapGestureRecognizer *invoiceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];

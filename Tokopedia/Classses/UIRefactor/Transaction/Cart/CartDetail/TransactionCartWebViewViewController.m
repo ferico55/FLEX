@@ -13,6 +13,9 @@
 #import "RequestCart.h"
 #import "TxOrderTabViewController.h"
 #import "TxOrderStatusViewController.h"
+#import "RequestCart.h"
+#import "TransactionActionResult.h"
+#import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
@@ -360,8 +363,6 @@
     {
         NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
         if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
-            
-            [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", _gatewayCode]];
 
             NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
             if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
@@ -373,10 +374,59 @@
                 vc.viewControllerTitle = @"Status Pemesanan";
                 [self.navigationController pushViewController:vc animated:YES];
             } else {
+                TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+                networkManager.isUsingHmac = YES;
                 
                 NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+                NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
+                NSArray *products = _toppayParam[@"items"];
+                NSMutableArray *productIDs = [NSMutableArray new];
+                NSInteger quantity = 0;
                 
-                [_delegate shouldDoRequestTopPayThxCode:[paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""];
+                for (NSDictionary *product in products) {
+                    [productIDs addObject:product[@"id"]];
+                    quantity = quantity + [product[@"quantity"] integerValue];
+                }
+                
+                [RequestCart fetchToppayThanksCode:paymentID
+                                           success:^(TransactionActionResult *data) {
+                                               if (data.is_success == 1) {
+                                                   NSDictionary *parameter = data.parameter;
+                                                   NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
+                                                   NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
+                                                   
+                                                   [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
+                                                   
+                                                   [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
+                                                                                                                             AFEventParamContentType : @"Product",
+                                                                                                                             AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                                                                             AFEventParamQuantity : [@(quantity) stringValue]?:@"",
+                                                                                                                             AFEventParamCurrency : _toppayParam[@"currency"]?:@"",
+                                                                                                                             AFEventOrderId : paymentID}];
+                                                   
+                                                   [Localytics tagEvent:@"Event : Finished Transaction"
+                                                             attributes:@{
+                                                                          @"Payment Method" : paymentMethod,
+                                                                          @"Total Transaction" : [revenue stringValue]?:@"",
+                                                                          @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                                                          @"Total Shipping Fee" : @""
+                                                                          }
+                                                  customerValueIncrease:revenue];
+                                                   
+                                                   [Localytics incrementValueBy:0
+                                                            forProfileAttribute:@"Profile : Total Transaction"
+                                                                      withScope:LLProfileScopeApplication];
+                                               }
+                                               
+                                               
+                                           }
+                                             error:^(NSError *error) {
+                                                 
+                                                 
+                                             }];
+                
+                
+                [_delegate shouldDoRequestTopPayThxCode:paymentID];
                 if ([self isModal]) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 } else
