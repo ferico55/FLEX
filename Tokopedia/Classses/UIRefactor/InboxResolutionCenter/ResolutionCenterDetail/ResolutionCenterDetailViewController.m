@@ -225,7 +225,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     
     if ([_resolutionDetail.resolution_order.order_free_return  isEqual: @"1"]) {
-        if ([_resolutionDetail.resolution_last.last_solution_string rangeOfString:@"Retur produk dan kembalikan dana"].location != NSNotFound || [_resolutionDetail.resolution_last.last_solution_string isEqual: @"Retur produk"]) {
+        if ([_resolutionDetail.resolution_last.last_solution_string rangeOfString:@"Retur produk dan kembalikan dana"].location != NSNotFound || [_resolutionDetail.resolution_last.last_solution_string isEqual: @"Tukar barang sesuai pesanan"]) {
             return 2;
         }
     }
@@ -1036,7 +1036,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         imageName = @"icon_order_check-01.png";
     }
     if ([titleButton isEqualToString:BUTTON_TITLE_APPEAL]) {
-        imageName = @"icon_order_cancel-01.png";
+        imageName = @"icon_track_grey.png";
     }
     
     return imageName;
