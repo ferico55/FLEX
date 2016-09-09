@@ -68,13 +68,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGRect frame = _headerView.frame;
-    frame.size.width = screenWidth;
-    _headerView.frame = frame;
-    
     _selectedImages = [NSMutableArray new];
     
     _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
@@ -100,7 +93,7 @@
     [self adjustActionLabel];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd MMMM yyyy HH:mm"];
+    [formatter setDateFormat:@"dd MMMM yyyy"];
     
     _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
     
@@ -178,6 +171,12 @@
 
 -(void)viewDidLayoutSubviews
 {
+    
+    CGRect screenRect = self.view.bounds;
+    CGFloat screenWidth = screenRect.size.width;
+    CGRect headerFrame = _headerView.frame;
+    headerFrame.size.width = screenWidth;
+    _headerView.frame = headerFrame;
     UIEdgeInsets inset = _messageTextView.textContainerInset;
     inset.left = 15;
     inset.top = _headerView.frame.size.height + 10;
