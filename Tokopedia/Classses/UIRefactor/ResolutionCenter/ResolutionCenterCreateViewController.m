@@ -51,7 +51,7 @@ ResolutionCenterCreateStepThreeDelegate
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setHidden:NO];
     
-    self.title = @"Status Toko";
+    self.title = @"Buka Komplain";
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
     self.navigationItem.leftBarButtonItem = backButton;
     

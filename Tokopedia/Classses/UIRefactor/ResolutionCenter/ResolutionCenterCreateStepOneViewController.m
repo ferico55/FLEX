@@ -142,10 +142,10 @@ ResolutionCenterChooseProblemDelegate
     UILabel *lbl = [[UILabel alloc]initWithFrame:header.frame];
     lbl.backgroundColor = [UIColor clearColor];
     if(section == 0){
-        lbl.text = @"Masalah pada barang yang Anda terima";
+        lbl.text = @"MASALAH PADA BARANG YANG ANDA TERIMA";
     }else{
         if(_shouldShowProblematicProduct){
-            lbl.text = @"Pilih dan isi data produk yang bermasalah";
+            lbl.text = @"PILIH DAN ISI DATA PRODUK YANG BERMASALAH";
         }
     }
     lbl.textAlignment = NSTextAlignmentLeft;
