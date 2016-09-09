@@ -1036,7 +1036,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         imageName = @"icon_order_check-01.png";
     }
     if ([titleButton isEqualToString:BUTTON_TITLE_APPEAL]) {
-        imageName = @"icon_order_cancel-01.png";
+        imageName = @"icon_track_grey.png";
     }
     
     return imageName;
