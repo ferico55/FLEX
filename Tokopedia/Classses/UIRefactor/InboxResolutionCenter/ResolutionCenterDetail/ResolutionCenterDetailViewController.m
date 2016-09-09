@@ -399,7 +399,8 @@ typedef enum {
         SettingAddressViewController *addressViewController = [SettingAddressViewController new];
         addressViewController.delegate = self;
         addressViewController.data = @{@"type":@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
-                                       @"conversation":conversation
+                                       @"conversation":conversation,
+                                       @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
     }
