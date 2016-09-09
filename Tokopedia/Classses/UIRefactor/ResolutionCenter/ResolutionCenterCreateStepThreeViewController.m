@@ -244,6 +244,7 @@
                                            possibleTroubleObject:_result.postObject
                                                     imageObjects:_selectedImages
                                                          success:^(ResolutionActionResult *data) {
+                                                             [StickyAlertView showSuccessMessage:@[@"Komplain telah berhasil dibuat."]];
                                                              [_delegate didFinishCreateComplainInStepThree];
                                                          } failure:^(NSError *error) {
 
