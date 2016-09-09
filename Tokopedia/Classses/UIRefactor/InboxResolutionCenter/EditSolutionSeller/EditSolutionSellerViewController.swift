@@ -332,6 +332,7 @@ import UIKit
                                                         success: { (data) in
                                                             self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
                                                             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+                                                            self.navigationController?.popViewControllerAnimated(true)
                                                             
         }) { (error) in
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
