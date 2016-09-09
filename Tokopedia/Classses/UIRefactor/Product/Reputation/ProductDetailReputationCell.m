@@ -40,7 +40,7 @@
 {
     CGRect sizeOfMessage = [tvDesc.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
                                                      options:NSStringDrawingUsesLineFragmentOrigin
-                                                  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0f]}
+                                                  attributes:@{NSFontAttributeName:[UIFont smallTheme]}
                                                      context:nil];
     //temporary fix to measure height for distance between desc and date,
     //if you know better solution, please change this

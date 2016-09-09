@@ -614,7 +614,7 @@ FilterCategoryViewDelegate
     _productNameTextField.text = product.product_name;
     _productNameBeforeCopy = product.product_name;
     
-    _isProductNameEditable = [product.product_name_editable boolValue];
+    _isProductNameEditable = [product.product_name_editable isEqualToString:@"1"];
     
     _productNameTextField.enabled = (_type ==TYPE_ADD_EDIT_PRODUCT_ADD || _type == TYPE_ADD_EDIT_PRODUCT_COPY || _isProductNameEditable)?YES:NO;
     
