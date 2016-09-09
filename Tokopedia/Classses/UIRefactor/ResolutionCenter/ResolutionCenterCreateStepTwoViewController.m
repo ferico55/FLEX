@@ -100,7 +100,7 @@ UIPickerViewDelegate
         cell.quantityStepper.value = [postProduct.quantity integerValue];
         cell.quantityStepper.stepValue = 1.0f;
         cell.quantityStepper.minimumValue = 1;
-        cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
+        cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
         cell.quantityStepper.tag = indexPath.row;
         
         cell.delegate = self;
