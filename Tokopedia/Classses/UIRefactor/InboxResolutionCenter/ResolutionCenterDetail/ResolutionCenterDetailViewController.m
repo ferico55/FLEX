@@ -63,6 +63,9 @@ typedef enum {
 #define BUTTON_TITLE_TRACK @"Lacak"
 #define BUTTON_TITLE_CANCEL_COMPLAIN @"Batalkan Komplain"
 
+
+NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/seputar-free-returns";
+
 @interface ResolutionCenterDetailViewController ()
 <
     UITableViewDelegate,
@@ -76,7 +79,8 @@ typedef enum {
     UISplitViewControllerDelegate,
     SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
-    addressDelegate
+    addressDelegate,
+    TTTAttributedLabelDelegate
 >
 {
     BOOL _isNodata;
@@ -109,6 +113,8 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *replayConversationView;
 @property (strong, nonatomic) IBOutlet UIView *headerInfoView;
 @property (strong, nonatomic) IBOutlet UILabel *infoLabel;
+@property (strong, nonatomic) IBOutlet UITableViewCell *freeReturnsCell;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *freeReturnsInfoLabel;
 
 @end
 
@@ -216,31 +222,58 @@ typedef enum {
 }
 
 #pragma mark - Table View Data Source
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    if ([_resolutionDetail.resolution_order.order_free_return  isEqual: @"1"]) {
+        if ([_resolutionDetail.resolution_last.last_solution_string rangeOfString:@"Retur produk dan kembalikan dana"].location != NSNotFound || [_resolutionDetail.resolution_last.last_solution_string isEqual: @"Retur produk"]) {
+            return 2;
+        }
+    }
+    return 1;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _isNodata ? 0 : _listResolutionConversation.count;
+    if (section == 0){
+        return _isNodata ? 0 : _listResolutionConversation.count;
+    }else if (section == 1){
+        return 1;
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    if (conversation.view_more == 1)
-    {
-        cell = _loadMoreCell;
-        NSString *buttonLoadMoreTitle = [NSString stringWithFormat:@"Lihat %@ Pesan Sebelumnya",conversation.left_count?:@"0"];
-        [_loadMoreButton setTitle:buttonLoadMoreTitle forState:UIControlStateNormal];
-    }
-    else if ((conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])||
-             conversation.isAddedConversation)
-        cell = [self cellSystemResolutionAtIndexPath:indexPath];
-    else
-        cell = [self cellDetailResolutionAtIndexPath:indexPath];
-    
-    if ([self isShowTrackAndEditButton:conversation]) {
-        ShipmentCourier *selectedShipment = [ShipmentCourier new];
-        selectedShipment.shipment_name = conversation.kurir_name;
-        selectedShipment.shipment_id = conversation.input_kurir;
-        [_dataInput setObject:selectedShipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+    if (indexPath.section == 0) {
+        ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
+        if (conversation.view_more == 1)
+        {
+            cell = _loadMoreCell;
+            NSString *buttonLoadMoreTitle = [NSString stringWithFormat:@"Lihat %@ Pesan Sebelumnya",conversation.left_count?:@"0"];
+            [_loadMoreButton setTitle:buttonLoadMoreTitle forState:UIControlStateNormal];
+        }
+        else if ((conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])||
+                 conversation.isAddedConversation)
+            cell = [self cellSystemResolutionAtIndexPath:indexPath];
+        else
+            cell = [self cellDetailResolutionAtIndexPath:indexPath];
+        
+        if ([self isShowTrackAndEditButton:conversation]) {
+            ShipmentCourier *selectedShipment = [ShipmentCourier new];
+            selectedShipment.shipment_name = conversation.kurir_name;
+            selectedShipment.shipment_id = conversation.input_kurir;
+            [_dataInput setObject:selectedShipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+        }
+    } else if(indexPath.section == 1){
+        cell = _freeReturnsCell;
+        
+        _freeReturnsInfoLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        _freeReturnsInfoLabel.delegate = self;
+        NSRange range = [_freeReturnsInfoLabel.text rangeOfString:@"di sini"];
+        
+        _freeReturnsInfoLabel.linkAttributes = @{(id)kCTForegroundColorAttributeName : [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1], NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)};
+        
+        [_freeReturnsInfoLabel addLinkToURL:[NSURL URLWithString: FREE_RETURNS_INFO_LINK] withRange:range];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1280,6 +1313,17 @@ typedef enum {
     } onFailure:^{
         
     }];
+}
+
+#pragma mark - TTTAttributedLabel Delegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    if ([url.absoluteString  isEqual: FREE_RETURNS_INFO_LINK]) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strURL = FREE_RETURNS_INFO_LINK ;
+        webViewController.strTitle = @"Seputar Free Returns";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
 }
 
 @end
