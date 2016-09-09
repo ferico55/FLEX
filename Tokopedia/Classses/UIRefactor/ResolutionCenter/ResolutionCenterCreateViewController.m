@@ -33,7 +33,8 @@ ResolutionCenterCreateStepThreeDelegate
 @property (strong, nonatomic) IBOutlet UIButton *secondButton;
 @property (strong, nonatomic) IBOutlet UIButton *thirdButton;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
-@property (strong, nonatomic) IBOutlet UIButton *shopNameButton;
+@property (strong, nonatomic) IBOutlet UIButton *invoiceButton;
+@property (strong, nonatomic) IBOutlet UILabel *shopNameLabel;
 
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @end
@@ -63,8 +64,8 @@ ResolutionCenterCreateStepThreeDelegate
     [self initPageIndicator];
     [self initPageControl];
 
-    [_shopNameButton setTitle:[NSString stringWithFormat:@"Pembelian dari %@", _order.order_shop.shop_name]
-                     forState:UIControlStateNormal];
+    [_shopNameLabel setText:[NSString stringWithFormat:@"Pembelian dari %@", _order.order_shop.shop_name]];
+    [_invoiceButton setTitle:_order.order_detail.detail_invoice forState:UIControlStateNormal];
 }
 
 -(void)initPageIndicator{
