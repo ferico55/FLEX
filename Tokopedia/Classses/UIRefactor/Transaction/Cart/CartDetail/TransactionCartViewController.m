@@ -2644,12 +2644,12 @@
                           quantity = quantity + [cart.cart_total_product integerValue];
                       }
                       
-                      [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total,
+                      [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total?:@"",
                                                                                                 AFEventParamContentType : @"Product",
                                                                                                 AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs],
                                                                                                 AFEventParamQuantity : [@(quantity) stringValue],
                                                                                                 AFEventParamCurrency : @"IDR",
-                                                                                                AFEventOrderId : data.transaction.payment_id}];
+                                                                                                AFEventOrderId : data.transaction.payment_id?:@""}];
                       
                       TransactionSummaryDetail *summary = data.transaction;
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
