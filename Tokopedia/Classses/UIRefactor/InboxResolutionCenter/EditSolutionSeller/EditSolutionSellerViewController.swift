@@ -41,7 +41,7 @@ import UIKit
     private var postObject : ReplayConversationPostData = ReplayConversationPostData()
     private var firstResponderIndexPath : NSIndexPath?
     private var alertProgress : UIAlertView = UIAlertView()
-
+    
     
     var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
     var resolutionID : String = ""
@@ -68,9 +68,9 @@ import UIKit
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ReasonCellIdentifier")
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "SolutionCellIdentifier")
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "uploadImageCellIdentifier")
-
+        
         self.tableView.tableHeaderView = headerView
-
+        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
         
@@ -90,10 +90,10 @@ import UIKit
         refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
-        reasonTextView.placeholder = "Tulis alasan anda disini"
+        reasonTextView.placeholder = "Tulis alasan Anda disini"
         
         self.requestDataForm()
-        self.adjsutAlertProgressAppearance()
+        self.adjustAlertProgressAppearance()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -110,7 +110,7 @@ import UIKit
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    private func adjsutAlertProgressAppearance(){
+    private func adjustAlertProgressAppearance(){
         alertProgress = UIAlertView.init(title: nil, message: "Please wait...", delegate: nil, cancelButtonTitle: nil);
         
         let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(50, 10, 37, 37)) as UIActivityIndicatorView
@@ -180,11 +180,11 @@ import UIKit
             tableView.setContentOffset(CGPoint.init(x: 0, y: -self.refreshControl.frame.size.height), animated: true)
             refreshControl.beginRefreshing()
         }
-
+        
     }
     
     private func setSelectedSolutionWithData(data:EditResolutionFormData){
-
+        
         for solution in data.form.resolution_solution_list where Int(solution.solution_id) == Int(data.form.resolution_last.last_solution) {
             postObject.selectedSolution = solution
             postObject.selectedSolution.refund_amt = data.form.resolution_last.last_refund_amt.stringValue
@@ -256,7 +256,7 @@ import UIKit
             uploadedButton.hidden = false
             
             uploadScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
-
+            
         }
     }
     
@@ -300,11 +300,11 @@ import UIKit
     }
     
     @IBAction func onTapInvoiceButton(sender: UIButton) {
-            NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+        NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
     }
     
     @IBAction func onTapBuyerButton(sender: UIButton) {
-    
+        
     }
     
     private func requestSubmitEdit() {
@@ -312,11 +312,11 @@ import UIKit
         alertProgress.show()
         
         RequestResolution.fetchReplayConversation(postObject, onSuccess: { (data) in
-                self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
-                self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
             
-            }) {
-                self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+        }) {
+            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
         }
     }
     
@@ -324,14 +324,14 @@ import UIKit
         
         alertProgress.show()
         
-        RequestResolutionAction .fetchAppealResolutionID(resolutionID,
-                                                         solution: postObject.selectedSolution.solution_id,
-                                                         refundAmount: refundTextField.text,
-                                                         message: reasonTextView.text,
-                                                         imageObjects: postObject.selectedAssets,
-                                                         success: { (data) in
-            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
-            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+        RequestResolutionAction.fetchAppealResolutionID(resolutionID,
+                                                        solution: postObject.selectedSolution.solution_id,
+                                                        refundAmount: refundTextField.text,
+                                                        message: reasonTextView.text,
+                                                        imageObjects: postObject.selectedAssets,
+                                                        success: { (data) in
+                                                            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+                                                            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
                                                             
         }) { (error) in
             self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
@@ -385,7 +385,7 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
             self.adjustUISolution(postObject.selectedSolution)
             tableView.reloadData()
         }
-
+        
     }
 }
 
