@@ -7,7 +7,6 @@
 //
 
 #import "EditShopViewController.h"
-#import "EditShopStatusViewController.h"
 #import "TKPDPhotoPicker.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
@@ -33,7 +32,6 @@
 
 @interface EditShopViewController ()
 <
-    EditShopStatusDelegate,
     EditShopDelegate,
     TKPDPhotoPickerDelegate,
     GenerateHostDelegate,

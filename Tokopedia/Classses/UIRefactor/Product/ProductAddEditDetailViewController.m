@@ -554,9 +554,9 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)adjustReturnableNotesLabel
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 5.0;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_pengembalianProductLabel.text];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_10 range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
     [attributedString addAttribute:NSForegroundColorAttributeName
                              value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
                              range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];

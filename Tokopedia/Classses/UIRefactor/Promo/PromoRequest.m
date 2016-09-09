@@ -122,6 +122,9 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     [parameter setObject: hotlistId forKey: @"h"];
     [parameter addEntriesFromDictionary:filterParameter];
     
+    //need to remove q for hotlist to get topads, request by gun
+    [parameter removeObjectForKey:@"q"];
+    
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET

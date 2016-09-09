@@ -119,8 +119,6 @@
     [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
     
-    self.alertLabel.attributedText = self.alertAttributedString;
-    
     self.filterController = [FilterShipmentConfirmationViewController new];
     self.filterController.delegate = self;
     
@@ -154,22 +152,6 @@
                                                               target:self
                                                               action:@selector(tap:)];
     return button;
-}
-
-#pragma mark - Note view
-
-- (NSAttributedString *)alertAttributedString {
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"GothamBook" size:11],
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_alertLabel.text attributes:attributes];
-    return attributedString;
 }
 
 #pragma mark - Table view data source

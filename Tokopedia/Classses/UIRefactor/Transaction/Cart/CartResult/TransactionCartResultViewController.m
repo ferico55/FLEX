@@ -50,7 +50,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (strong, nonatomic) IBOutlet UIView *headerPaymentListView;
-@property (weak, nonatomic) IBOutlet UILabel *footerLabel1;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *footerLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
@@ -68,9 +68,10 @@
 @end
 
 #define kTKPDMORE_PRIVACY_URL @"https://m.tokopedia.com/privacy.pl"
-#define kTKPDMORE_HELP_URL @"https://www.tokopedia.com/bantuan"
+#define kTKPDMORE_HELP_URL @"https://m.tokopedia.com/bantuan"
 #define kTKPDMORE_HELP_TITLE @"Bantuan"
 #define kTKPDMORE_PRIVACY_TITLE @"Kebijakan Privasi"
+#define kTKPDMORE_PAYMENT_CONFIRMATION @"Konfirmasi Pembayaran"
 
 @implementation TransactionCartResultViewController
 
@@ -294,9 +295,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
-        TxOrderTabViewController *vc = [TxOrderTabViewController new];
-        
-        [self.navigationController pushViewController:vc animated:YES];
+        [self goToTxOrderTabViewController];
     }
     else if (button == _paymentStatusButton)
     {
@@ -428,9 +427,9 @@
         cell.textLabel.text = detail;
         cell.detailTextLabel.text = totalPayment;
         cell.textLabel.textColor = [UIColor blackColor];
-        cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+        cell.textLabel.font = [UIFont title2Theme];
         cell.detailTextLabel.textColor = [UIColor blackColor];
-        cell.detailTextLabel.font = FONT_DEFAULT_CELL_TKPD;
+        cell.detailTextLabel.font = [UIFont title2Theme];
     }
     
     cell.backgroundColor = [UIColor colorWithRed:255.f/255.f green:255.f/255.f blue:229.f/255.f alpha:1];
@@ -681,10 +680,10 @@
         
         // font
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:NSMakeRange(0, attibutestring.length)];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[tableTitleLabel rangeOfString:[NSString stringWithFormat:@"User ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user ]]];
         
         [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
@@ -724,20 +723,13 @@
 
 -(void)adjustFooterPaymentConfirmation
 {
-    NSString *string1 = _footerLabel1.text;
+    _footerLabel1.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    _footerLabel1.delegate = self;
     
-    NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
-    [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
+    NSRange range = [_footerLabel1.text rangeOfString:@"Konfirmasi Pembayaran"];
+    _footerLabel1.linkAttributes = @{(id)kCTForegroundColorAttributeName : [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1], NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)};
     
-    //add color
-    [title1 addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                   range:[string1 rangeOfString:@"Konfirmasi Pembayaran"]];
-    
-    //add alignment
-    [title1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title1.length)];
-    
-    _footerLabel1.attributedText = title1;
+    [_footerLabel1 addLinkToURL:[NSURL URLWithString: kTKPDMORE_PAYMENT_CONFIRMATION] withRange:range];
 }
 
 -(void)adjustFooterIndomaret
@@ -763,22 +755,22 @@
         NSMutableAttributedString *attibutestring = [[NSMutableAttributedString alloc]initWithString:label.text];
         // font
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_BOOK_12
+                               value:[UIFont smallTheme]
                                range:NSMakeRange(0, attibutestring.length)];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[label.text rangeOfString:@"Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[label.text rangeOfString:[NSString stringWithFormat:@"%@",_cartBuy.transaction.indomaret.payment_code]]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[label.text rangeOfString:[NSString stringWithFormat:@"%@",_cartBuy.transaction.indomaret.charge_real_idr]]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[label.text rangeOfString:@"kode pembayaran Indomaret"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_12
+                               value:[UIFont smallTheme]
                                range:[label.text rangeOfString:@"Tunjukkan kode pembayaran"]];
         [attibutestring addAttribute:NSForegroundColorAttributeName
                                value:[UIColor colorWithRed:200.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1]
@@ -789,7 +781,7 @@
                                    range:[label.text rangeOfString:@"otomatis"]];
         }
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"KeyBCA Token"]];
         
         //add alignment
@@ -820,28 +812,28 @@
         
         // font
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_BOOK_11
+                               value:[UIFont microTheme]
                                range:NSMakeRange(0, attibutestring.length)];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"www.klikbca.com"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"e-Commerce"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"Marketplace"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"Tokopedia"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"KeyBCA Token"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"Tokopedia otomatis memverifikasi pembayaran Anda"]];
         [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
+                               value:[UIFont microTheme]
                                range:[label.text rangeOfString:@"disini"]];
         
         //add color
@@ -868,10 +860,20 @@
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     if ([url.absoluteString  isEqual: kTKPDMORE_HELP_URL]) {
         WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = kTKPDMORE_HELP_URL;
+        webViewController.strURL = [kTKPDMORE_HELP_URL stringByAppendingString:@"?flag_app=3&device=ios"];
         webViewController.strTitle = kTKPDMORE_HELP_TITLE;
         [self.navigationController pushViewController:webViewController animated:YES];
+    } else {
+        [self goToTxOrderTabViewController];
     }
+}
+
+# pragma mark - Navigation 
+
+- (void) goToTxOrderTabViewController {
+    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

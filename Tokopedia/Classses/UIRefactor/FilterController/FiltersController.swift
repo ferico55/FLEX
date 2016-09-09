@@ -64,7 +64,6 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.source = searchDataSource.description()
         self.rootCategoryID = rootCategoryID
         completionHandlerResponse = onReceivedFilterDataOption
-        
         super.init()
         
         self .presentControllerFilter()

@@ -96,7 +96,7 @@
     if(![_phoneNumberTextField.text isEqualToString:@""]){
         [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
             if([result.data.is_success isEqualToString:@"1"]){
-                NSString* successMessages = @"Sukses mengirimkan kode OTP(One Time Password), mohon cek inbox SMS Anda.";
+                NSString* successMessages = @"Sukses mengirimkan kode OTP (One Time Password), mohon cek inbox SMS Anda.";
                 [_titleMessage setText:successMessages];
                 
                 [self animateImageView];
@@ -108,11 +108,11 @@
                 [alert show];
             }
         } onFailure:^(NSError *error) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi Internet."] delegate:self];
             [alert show];
         }];
     }else{
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum mengisi nomor HP anda."] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum mengisi nomor HP Anda."] delegate:self];
         [alert show];
     }
     
@@ -205,7 +205,7 @@
                                            [alert show];
                                        }
                                    } onFailure:^(NSError *error) {
-                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi Internet"] delegate:self];
                                        [alert show];
                                    }];
     }else{

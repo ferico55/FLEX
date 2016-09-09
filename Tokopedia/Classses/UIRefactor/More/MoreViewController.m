@@ -8,7 +8,6 @@
 #import "SplitReputationViewController.h"
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
-#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "MoreViewController.h"
 #import "more.h"
@@ -34,19 +33,16 @@
 #import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TKPDTabViewController.h"
 #import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
 #import "NotificationManager.h"
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserContainerViewController.h"
-#import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
@@ -62,7 +58,6 @@
 
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
-#import "MoreNavigationController.h"
 
 #import "DepositRequest.h"
 
@@ -560,7 +555,7 @@
             break;
             
         case 4:
-            return 6;
+            return 5;
             break;
             
         case 5:
@@ -710,30 +705,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
-            
-            /*
-            InboxReviewViewController *vc = [InboxReviewViewController new];
-            vc.data=@{@"nav":@"inbox-review"};
-            
-            InboxReviewViewController *vc1 = [InboxReviewViewController new];
-            vc1.data=@{@"nav":@"inbox-review-my-product"};
-            
-            InboxReviewViewController *vc2 = [InboxReviewViewController new];
-            vc2.data=@{@"nav":@"inbox-review-my-review"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
-            */
         } else if (indexPath.row == 3) {
-            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-            [wrapperController.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
-        } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                 
@@ -760,7 +732,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
-        } else if (indexPath.row == 5) {
+        } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;

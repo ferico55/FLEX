@@ -26,7 +26,6 @@
 #define CList @"list"
 #define CCondition @"condition"
 #define CSort @"order_by"
-#define CGothamBook @"Gotham Book"
 
 
 #define CStringKecepatan @"Kecepatan"

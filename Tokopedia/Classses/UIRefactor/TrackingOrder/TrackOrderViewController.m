@@ -59,7 +59,7 @@
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+                                 NSFontAttributeName            : [UIFont largeThemeMedium],
                                  NSParagraphStyleAttributeName  : style,
                                  NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
                                  };
@@ -229,8 +229,8 @@
         }
     }
 
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+    cell.textLabel.font = [UIFont largeTheme];
+    cell.detailTextLabel.font = [UIFont smallTheme];
     cell.detailTextLabel.textColor = [UIColor grayColor];
 
     if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
@@ -351,7 +351,7 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 41)];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 8, self.view.frame.size.width-15, 41)];
-    label.font = [UIFont fontWithName:@"GothamBook" size:14];
+    label.font = [UIFont largeTheme];
     label.textColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
 
     if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {

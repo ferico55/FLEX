@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CatalogPrice : NSObject
+@interface CatalogPrice : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *price_min;
 @property (nonatomic, strong) NSString *price_max;

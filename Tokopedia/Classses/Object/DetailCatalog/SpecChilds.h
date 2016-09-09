@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SpecChilds : NSObject
+@interface SpecChilds : NSObject<TKPObjectMapping>
 
 @property (strong, nonatomic) NSArray *spec_val;
 @property (strong, nonatomic) NSString *spec_key;

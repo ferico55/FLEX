@@ -476,19 +476,8 @@
 -(void)setShopInfoData
 {
     _labelshopname.text = _shop.result.info.shop_name;
-//    _labelshoptagline.text = _shop.result.info.shop_tagline;
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                                 NSParagraphStyleAttributeName  : style
-                                 };
-    
-    NSString *tagline = _shop.result.info.shop_tagline;
-    _labelshoptagline.attributedText = [[NSAttributedString alloc] initWithString:tagline
-                                                                       attributes:attributes];
+    _labelshoptagline.text = _shop.result.info.shop_tagline;
+
     _labelshoptagline.numberOfLines = 0;
     [_labelshoptagline sizeToFit];
     

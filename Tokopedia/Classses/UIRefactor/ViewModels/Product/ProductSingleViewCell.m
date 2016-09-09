@@ -69,7 +69,7 @@
     
     self.productPrice.text = @"Mulai dari";
     self.productPriceWidthConstraint.constant = -50;
-    self.productPrice.font = [UIFont fontWithName:@"GothamBook" size:11.0];
+    self.productPrice.font = [UIFont microTheme];
     
     self.catalogPriceLabel.text = viewModel.catalogPrice;
     self.catalogPriceLabel.hidden = NO;
