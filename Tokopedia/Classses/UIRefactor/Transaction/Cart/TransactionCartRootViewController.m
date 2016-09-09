@@ -18,8 +18,6 @@
 #import "MainViewController.h"
 
 #import "NotificationManager.h"
-
-#import "Localytics.h"
 #define normalWidth 320
 #define normalHeight 568
 

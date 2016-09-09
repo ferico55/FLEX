@@ -19,6 +19,7 @@
 #import "NavigateViewController.h"
 #import "RequestATC.h"
 #import "TPLocalytics.h"
+#import "MMNumberKeyboard.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -62,7 +63,8 @@ typedef enum
     UITableViewDelegate,
     UITextViewDelegate,
     UITextFieldDelegate,
-    UIAlertViewDelegate
+    UIAlertViewDelegate,
+    MMNumberKeyboardDelegate
 >
 {
     BOOL _isnodata;
@@ -165,6 +167,11 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = NO;
+    keyboard.delegate = self;
+    _productQuantityTextField.inputView = keyboard;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -459,7 +466,7 @@ typedef enum
     qty += (int)sender.value;
     
     //limit quantity min and max value
-    qty = fmin(999, qty);
+    qty = fmin(10000, qty);
     _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
     [self alertAndResetIfQtyTextFieldBelowMin];
@@ -1007,27 +1014,22 @@ typedef enum
     [self adjustViewIsLoading:NO];
 }
 
-#pragma mark - Textfield Delegate
-
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-}
-
-- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString*)string
-{
-    NSString* newText;
-
-    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-
-    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
-        _isFinishRequesting = NO;
-        [self alertAndResetIfQtyTextFieldBelowMin];
-        [self doCalculate];
-        [self requestRate];
-    }];
+#pragma mark - MMNumberKeyboard Delegate
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSString *amount = _productQuantityTextField.text;
+    amount = [amount stringByAppendingString:text];
     
-    return [newText isNumber] && [newText integerValue] < 1000;
+    __weak typeof(self) weakSelf = self;
+    
+    [quantityDelayedActionManager whenNotCalledFor:2
+                                          doAction:^{
+                                              _isFinishRequesting = NO;
+                                              [weakSelf alertAndResetIfQtyTextFieldBelowMin];
+                                              [weakSelf doCalculate];
+                                              [weakSelf requestRate];
+                                          }];
+    
+    return [amount isNumber] && [amount integerValue] <= 10000;
 }
 
 #pragma mark - Text View Delegate

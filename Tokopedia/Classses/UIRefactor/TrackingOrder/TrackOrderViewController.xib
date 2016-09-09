@@ -489,6 +489,7 @@
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UdR-O5-jeX">
                     <rect key="frame" x="15" y="69" width="290" height="281"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <string key="text">Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:
 
    Penjual keliru menginput nomor resi atau tanggal pengiriman.
@@ -502,7 +503,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="VTc-U5-OE6" secondAttribute="trailing" id="6eC-g3-Ixk"/>
                 <constraint firstItem="VTc-U5-OE6" firstAttribute="top" secondItem="RLg-S3-tDZ" secondAttribute="top" id="84t-Mf-J6C"/>

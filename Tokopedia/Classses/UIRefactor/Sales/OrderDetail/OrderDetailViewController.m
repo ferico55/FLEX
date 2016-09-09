@@ -157,6 +157,7 @@ typedef enum TagRequest {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Order Detail Page"];
 }
 
 - (void)didReceiveMemoryWarning

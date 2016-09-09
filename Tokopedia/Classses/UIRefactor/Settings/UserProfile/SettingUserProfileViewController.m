@@ -111,6 +111,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    [TPAnalytics trackScreenName:@"Setting User Profile Page"];
     [self initView];
     [_verifyButton setUserInteractionEnabled:YES];
     [_verifyButton setHidden:NO];

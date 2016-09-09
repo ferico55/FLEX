@@ -24,8 +24,6 @@
 #import "SearchAutoCompleteHeaderView.h"
 #import "UIView+HVDLayout.h"
 
-#import "Localytics.h"
-
 #import "ImagePickerCategoryController.h"
 
 NSString *const searchPath = @"/search/%@";

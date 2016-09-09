@@ -45,8 +45,6 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
-#import "Localytics.h"
-
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"

@@ -58,7 +58,8 @@
                                        otherButtonTitles:nil];
         }
     } else if (_viewModelCart.errors.count > 0) {
-        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"]) {
+        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"] ||
+            [_viewModelCart.errors[0].name isEqualToString:@"courier-max-limit"]) {
             popup = [[UIActionSheet alloc] initWithTitle:nil
                                                 delegate:self
                                        cancelButtonTitle:@"Batal"
@@ -191,7 +192,7 @@
                                                      attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                         context:context].size;
         _errorLabel.text = errorText;
-        _errorViewHeightConstraint.constant = expectedLabelSize.height + 16;
+        _errorViewHeightConstraint.constant = expectedLabelSize.height + 32;
     } else {
         _errorViewHeightConstraint.constant = 0;
     }

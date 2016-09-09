@@ -78,8 +78,6 @@ PODS:
   - JLPermissions/Notification (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
-  - LayoutKit (0.2.1)
-  - Localytics (3.5.1)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
@@ -127,10 +125,7 @@ DEPENDENCIES:
   - GoogleTagManager
   - JLPermissions/Contacts
   - JLPermissions/Notification
-  - LayoutKit
-  - Localytics (~> 3.5.0)
   - Masonry
-  - Masonry (~> 1.0.1)
   - NJKWebViewProgress
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK
@@ -168,8 +163,6 @@ SPEC CHECKSUMS:
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
-  LayoutKit: 650bf944830763dcf04002478bef040967bbc2df
-  Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   RestKit: aac0c81c60d30fdd829d627d062f0eea231eb52c
