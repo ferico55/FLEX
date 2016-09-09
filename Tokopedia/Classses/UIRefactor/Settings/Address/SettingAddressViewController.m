@@ -477,6 +477,7 @@
     
     if (status) {
         [self requestProcess:object];
+        [_refreshControl endRefreshing];
     }
     else
     {
