@@ -132,18 +132,13 @@ UIPickerViewDelegate
             postProduct.trouble_id = selectedTrouble.trouble_id;
         } forControlEvents:UIControlEventValueChanged];
         
-        
-//        cell.troublePicker.didSelectDownPickerAtIndex = ^(NSInteger index){
-//            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
-//            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:index];
-//            postProduct.trouble_id = selectedTrouble.trouble_id;
-//        };
-        
         return cell;
     }else{
         if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
         }
+        [_priceProblemTextField setPlaceholder:@"Pilih detil permasalahan"];
+        [_priceProblemTextField setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         _priceProblemTextView.delegate = self;
@@ -217,9 +212,16 @@ UIPickerViewDelegate
         }
     }
     
-    if(([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"] ) && (_result.remark == nil || [_result.remark isEqualToString:@""])) {
-        [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
-        return NO;
+    if([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"]) {
+        if(_result.remark == nil || [_result.remark isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
+            return NO;
+        }
+        
+        if(_result.troubleId == nil || [_result.troubleId isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah Anda terlebih dahulu."]];
+            return NO;
+        }
     }
 
     return YES;
