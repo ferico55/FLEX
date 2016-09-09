@@ -16,14 +16,15 @@
     TokopediaNetworkManager* deleteNetworkManager;
 }
 
--(void)requestEtalaseFilterWithShopId:(NSString *)shopId page:(NSInteger)page onSuccess:(void (^)(Etalase *etalase))successCallback onFailure:(void (^)(NSError *error))errorCallback{
+-(void)requestEtalaseFilterWithShopId:(NSString *)shopId shopDomain:(NSString*)domain page:(NSInteger)page onSuccess:(void (^)(Etalase *etalase))successCallback onFailure:(void (^)(NSError *error))errorCallback{
     etalaseNetworkManager = [TokopediaNetworkManager new];
     etalaseNetworkManager.isUsingHmac = YES;
     [etalaseNetworkManager requestWithBaseUrl:[NSString v4Url]
                                          path:@"/v4/shop/get_shop_etalase.pl"
                                        method:RKRequestMethodGET
-                                    parameter:@{@"shop_id"    : shopId,
-                                                @"page"       : @(page)}
+                                    parameter:@{@"shop_id"    : shopId?:@"",
+                                                @"shop_domain" : domain?:@"",
+                                                @"page"       : @(page)?:@(1)}
                                       mapping:[Etalase mapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         Etalase *etalase = [successResult.dictionary objectForKey:@""];
