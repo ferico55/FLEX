@@ -9090,7 +9090,6 @@
 				457330B91D87A1B400EF3B29 /* Navigator */,
 				457330BC1D87A1B400EF3B29 /* NotificationManager */,
 				457330C61D87A1B400EF3B29 /* Onboarding */,
-				457330C91D87A1B400EF3B29 /* Order VIPER */,
 				457330CB1D87A1B400EF3B29 /* PriceAlert */,
 				457330D71D87A1B400EF3B29 /* Product */,
 				457331751D87A1B400EF3B29 /* ProductDataSource.swift */,
@@ -10200,21 +10199,6 @@
 				457330C81D87A1B400EF3B29 /* IntroViewController.xib */,
 			);
 			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		457330C91D87A1B400EF3B29 /* Order VIPER */ = {
-			isa = PBXGroup;
-			children = (
-				457330CA1D87A1B400EF3B29 /* List */,
-			);
-			path = "Order VIPER";
-			sourceTree = "<group>";
-		};
-		457330CA1D87A1B400EF3B29 /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
 			sourceTree = "<group>";
 		};
 		457330CB1D87A1B400EF3B29 /* PriceAlert */ = {
