@@ -84,6 +84,7 @@
     [super viewDidLoad];
     
     self.title = @"Konfirmasi Pengiriman";
+    self.alertLabel.text = [self announcementString];
     
     [TPAnalytics trackScreenName:@"Sales - Shipping Confirmation"];
     
@@ -628,6 +629,10 @@
         _tableView.tableFooterView = noResultView;
         _tableView.sectionFooterHeight = noResultView.frame.size.height;
     }
+}
+
+- (NSString*)announcementString {
+    return @"Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon 4 hari kerja (Senin - Jumat) setelah order diverifikasi";
 }
 
 @end
