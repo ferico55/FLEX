@@ -113,6 +113,9 @@
     if ([[url absoluteString] rangeOfString:@"/home"].location != NSNotFound) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:nil];
     }
+    else if ([[url absoluteString] rangeOfString:@"pulsa"].location != NSNotFound) {
+        [self activeController:self.activeController showWebViewURL:url];
+    }
     else if([explodedPathUrl[1] isEqualToString:@"p"]) {
         //directory
         [self redirectToDirectory:explodedPathUrl];

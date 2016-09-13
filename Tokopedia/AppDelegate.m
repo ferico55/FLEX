@@ -234,6 +234,10 @@
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
         [DeeplinkController handleURL:url];
     }
+    if ([userInfo objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
+        [DeeplinkController handleURL:url];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application
