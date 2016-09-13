@@ -51,11 +51,10 @@ ResolutionCenterCreateStepThreeDelegate
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setHidden:NO];
-    
+
     self.title = @"Buka Komplain";
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
-    self.navigationItem.leftBarButtonItem = backButton;
-    
+    [self changeBackButtonToBatal];
+   
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut" style: UIBarButtonItemStyleDone target:self action:@selector(didTapNextButton)];
     self.navigationItem.rightBarButtonItem = nextButton;
     
@@ -191,6 +190,9 @@ ResolutionCenterCreateStepThreeDelegate
     if(_currentIndex == 0){
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }else{
+        if(_currentIndex == 1) {
+            [self changeBackButtonToBatal];
+        }
         _currentIndex--;
         [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:NO]]
                                   direction:UIPageViewControllerNavigationDirectionReverse
@@ -217,6 +219,7 @@ ResolutionCenterCreateStepThreeDelegate
         if([_stepOneViewController.result.postObject.category_trouble_id isEqualToString:@"2"] ||
            [_stepOneViewController.result.postObject.category_trouble_id isEqualToString:@"3"] ||
            _stepOneViewController.result.selectedProduct.count > 0) {
+            [self changeBackButtonToArrow];
             _currentIndex++;
             [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
                                       direction:UIPageViewControllerNavigationDirectionForward
@@ -233,6 +236,28 @@ ResolutionCenterCreateStepThreeDelegate
 -(void)didFinishCreateComplainInStepThree{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [_delegate didFinishCreateComplain];
+}
+
+#pragma mark - Customize Back Button Item
+
+-(void) changeBackButtonToArrow {
+    UIImage *backImage = [UIImage imageNamed:@"icon_arrow_white"];
+    UIButton *customBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    customBackButton.frame = CGRectMake(-100, 0, 20, 20);
+//    [customBackButton setImage:backImage forState:UIControlStateNormal];
+    [customBackButton setBackgroundImage:backImage forState:UIControlStateNormal];
+    
+    [customBackButton addTarget:self action:@selector(didTapBackButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"q" style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    backButtonItem.customView = customBackButton;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = backButtonItem;
+}
+
+-(void) changeBackButtonToBatal {
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    self.navigationItem.leftBarButtonItem = backButton;
 }
 
 @end
