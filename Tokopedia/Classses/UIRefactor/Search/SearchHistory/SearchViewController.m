@@ -82,6 +82,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:nil];
+    
     _searchSuggestionDataArray = [NSMutableArray new];
     [self.navigationController.navigationBar setTranslucent:NO];
     
@@ -145,8 +147,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _authManager = [UserAuthentificationManager new];
-    debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
-    }];
 
     [self getUserSearchSuggestionDataWithQuery:@""];
     
@@ -301,10 +301,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
             header.titleLabel.text = searchSuggestionData.name;
             
             if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
+                header.deleteButton.hidden = NO;
                 [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
                 [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
             } else {
                 [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+                header.deleteButton.hidden = YES;
             }
         }
         view = header;
@@ -387,14 +389,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
         
         [self.navigationController pushViewController:controller animated:YES];
     } else {
-        NSString *actionForTracker = @"";
-        if ([searchSuggestionData.id  isEqual: @"autocomplete"]) {
-            actionForTracker = @"Search Autocomplete";
-        } else if ([searchSuggestionData.id  isEqual: @"recent_search"]) {
-            actionForTracker = @"Search History";
-        } else if ([searchSuggestionData.id  isEqual: @"popular_search"]) {
-            actionForTracker = @"Popular Search";
-        }
+        
+        NSString *actionForTracker = [self actionForTrackerWithSearchSuggestionDataId: searchSuggestionData.id];
         [TPAnalytics trackSearchWithAction:actionForTracker keyword:searchSuggestionItem.keyword];
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -594,6 +590,19 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_collectionView reloadData];
 }
 
+- (NSString*) actionForTrackerWithSearchSuggestionDataId: (NSString*) searchuggestionDataId {
+    NSString *actionForTracker = @"";
+    if ([searchuggestionDataId  isEqual: @"autocomplete"]) {
+        actionForTracker = @"Search Autocomplete";
+    } else if ([searchuggestionDataId  isEqual: @"recent_search"]) {
+        actionForTracker = @"Search History";
+    } else if ([searchuggestionDataId  isEqual: @"popular_search"]) {
+        actionForTracker = @"Popular Search";
+    }
+    
+    return actionForTracker;
+}
+
 #pragma mark - Image search
 
 - (void)takePhoto:(UIButton *)sender {
@@ -623,11 +632,4 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
 }
-
-#pragma mark - Scroll View Delegate
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self hideKeyboard];
-}
-
 @end
