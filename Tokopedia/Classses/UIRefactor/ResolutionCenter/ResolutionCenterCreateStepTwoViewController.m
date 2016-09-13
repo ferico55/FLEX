@@ -42,9 +42,9 @@ UIPickerViewDelegate
     _tableView.allowsSelection = NO;
     [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 30, 0)];
     
-    _currentStepperValue = [_result.selectedProduct bk_map:^NSNumber *(ProductTrouble *trouble) {
+    _currentStepperValue = [NSMutableArray arrayWithArray:[_result.selectedProduct bk_map:^NSNumber *(ProductTrouble *trouble) {
         return @(trouble.pt_quantity.integerValue);
-    }];
+    }]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
