@@ -14,22 +14,24 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if(self != nil) {
-        [self setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0f]];
+        [self setBackgroundColor:[UIColor whiteColor]];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         [self addSubview:label];
-        [label setFont:[UIFont title2ThemeMedium]];
+        [label setFont:[UIFont microThemeMedium]];
+        [label setTextColor:[UIColor colorWithRed:155.0/255 green:155.0/255 blue:155.0/255 alpha:1.0]];
         
         UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectZero];
         [self addSubview:deleteButton];
         [deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [deleteButton.titleLabel setFont:[UIFont microThemeMedium]];
+        [deleteButton.titleLabel setFont:[UIFont title2Theme]];
         [deleteButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+        [deleteButton setTitleColor:[UIColor colorWithRed:255.0/255 green:87.0/255 blue:34.0/255 alpha:1.0] forState:UIControlStateNormal];
         
         _deleteButton = deleteButton;
         _titleLabel = label;
         
-        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 10, 5, 50)];
-        [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 50, 5, 10)];
+        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(7.5, 20, 5, 50)];
+        [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(7.5, 200, 5, 15)];
     }
     
     return self;
