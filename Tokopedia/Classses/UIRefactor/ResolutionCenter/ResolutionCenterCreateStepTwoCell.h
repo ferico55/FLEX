@@ -11,8 +11,8 @@
 #import "Tokopedia-Swift.h"
 
 @protocol ResolutionCenterCreateStepTwoCellDelegate <NSObject>
-- (void) didChangeStepperValue:(UIStepper*)stepper;
-- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView*)textView withSelectedCell:(UITableViewCell*)cell;
+- (void)didChangeStepperValue:(UIStepper*)stepper;
+- (void)didRemarkTextChange:(RSKPlaceholderTextView*)textView withSelectedCell:(UITableViewCell*)cell;
 @end
 
 @interface ResolutionCenterCreateStepTwoCell : UITableViewCell <UITextViewDelegate>

@@ -31,7 +31,7 @@ ResolutionCenterChooseProblemDelegate
 
 @implementation ResolutionCenterCreateStepOneViewController{
     BOOL _shouldShowProblematicProduct;
-    
+    ResolutionCenterChooseProblemViewController *_problemViewController;
 }
 
 - (void)viewDidLoad {
@@ -75,7 +75,7 @@ ResolutionCenterChooseProblemDelegate
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.productName.text = currentProduct.pt_product_name;
         
-        if(currentProduct.pt_free_return == 1) {
+        if([currentProduct.pt_free_return isEqualToString:@"3"]) {
             cell.badgeProsecure.hidden = false;
             cell.labelProsecure.hidden = false;
         } else {
@@ -109,12 +109,19 @@ ResolutionCenterChooseProblemDelegate
     }
 }
 
+- (UIViewController *)problemViewController {
+    if (_problemViewController == nil) {
+        _problemViewController = [ResolutionCenterChooseProblemViewController new];
+        _problemViewController.delegate = self;
+        _problemViewController.list_ts = _result.formData.list_ts;
+    }
+    
+    return _problemViewController;
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0 && _result.formData){
-        ResolutionCenterChooseProblemViewController *vc = [ResolutionCenterChooseProblemViewController new];
-        vc.delegate = self;
-        vc.list_ts = _result.formData.list_ts;
-        [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController pushViewController:[self problemViewController] animated:YES];
     }else if(indexPath.section == 1){
         ProductTrouble *selectedProduct = [_listProducts objectAtIndex:indexPath.row];
         [_result.selectedProduct addObject:selectedProduct];
@@ -135,10 +142,10 @@ ResolutionCenterChooseProblemDelegate
     UILabel *lbl = [[UILabel alloc]initWithFrame:header.frame];
     lbl.backgroundColor = [UIColor clearColor];
     if(section == 0){
-        lbl.text = @"Masalah pada barang yang Anda terima";
+        lbl.text = @"MASALAH PADA BARANG YANG ANDA TERIMA";
     }else{
         if(_shouldShowProblematicProduct){
-            lbl.text = @"Pilih dan isi data produk yang bermasalah";
+            lbl.text = @"PILIH DAN ISI DATA PRODUK YANG BERMASALAH";
         }
     }
     lbl.textAlignment = NSTextAlignmentLeft;

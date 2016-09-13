@@ -20,7 +20,8 @@ UITableViewDelegate,
 UITableViewDataSource,
 UIScrollViewDelegate,
 ResolutionCenterCreateStepTwoCellDelegate,
-UITextViewDelegate
+UITextViewDelegate,
+UIPickerViewDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
@@ -87,6 +88,9 @@ UITextViewDelegate
         cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if(cell == nil){
             cell = [ResolutionCenterCreateStepTwoCell newcell];
+            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+            [cell.troublePicker setPlaceholder:@"Pilih detil permasalahan"];
+            [cell.troublePicker setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -96,22 +100,45 @@ UITextViewDelegate
         cell.quantityStepper.value = [postProduct.quantity integerValue];
         cell.quantityStepper.stepValue = 1.0f;
         cell.quantityStepper.minimumValue = 1;
-        cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
+        cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
         cell.quantityStepper.tag = indexPath.row;
         
         cell.delegate = self;
         
-        if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
-            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker];
+        if([currentProduct.pt_free_return isEqualToString:@"3"]) {
+            cell.prosecureBadge.hidden = false;
+            cell.prosecureLabel.hidden = false;
+        } else {
+            cell.prosecureBadge.hidden = true;
+            cell.prosecureLabel.hidden = true;
         }
-        [cell.troublePicker setData:[self generateDownPickerChoices]];
-        cell.troublePicker.tag = indexPath.row;
-        [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        if(![postProduct.trouble_id isEqualToString:@""]) {
+            cell.troublePicker.getTextField.text = [_result selectedTroubleById:postProduct.trouble_id categoryId:_result.postObject.category_trouble_id].trouble_text;
+        } else {
+            cell.troublePicker.getTextField.text = @"";
+        }
+        
+        if(![postProduct.remark isEqualToString:@""]) {
+            cell.problemTextView.text = postProduct.remark;
+        } else {
+            cell.problemTextView.text = @"";
+        }
+        
+        [cell.troublePicker bk_removeEventHandlersForControlEvents:UIControlEventValueChanged];
+        [cell.troublePicker bk_addEventHandler:^(DownPicker* picker) {
+            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:picker.selectedIndex];
+            postProduct.trouble_id = selectedTrouble.trouble_id;
+        } forControlEvents:UIControlEventValueChanged];
+        
         return cell;
     }else{
         if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
         }
+        [_priceProblemTextField setPlaceholder:@"Pilih detil permasalahan"];
+        [_priceProblemTextField setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         _priceProblemTextView.delegate = self;
@@ -171,7 +198,7 @@ UITextViewDelegate
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
 }
 
-- (void)didRemarkFieldEndEditing:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
+- (void)didRemarkTextChange:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
     ResolutionCenterCreatePOSTProduct* postProduct = [_result.postObject.product_list objectAtIndex:[self.tableView indexPathForCell:cell].row];
     postProduct.remark = textView.text;
 }
@@ -185,9 +212,16 @@ UITextViewDelegate
         }
     }
     
-    if(([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"] ) && (_result.remark == nil || [_result.remark isEqualToString:@""])) {
-        [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
-        return NO;
+    if([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"]) {
+        if(_result.remark == nil || [_result.remark isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
+            return NO;
+        }
+        
+        if(_result.troubleId == nil || [_result.troubleId isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah Anda terlebih dahulu."]];
+            return NO;
+        }
     }
 
     return YES;

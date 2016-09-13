@@ -767,8 +767,9 @@ static failedCompletionBlock failedRequest;
                                  
                                  if (response.data.is_success == 1) {
                                      success(response.data);
+                                     [StickyAlertView showSuccessMessage:@[@"Sukses naik banding."]];
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding."]];
                                      failedRequest(nil);
                                  }
                                  
@@ -795,9 +796,10 @@ static failedCompletionBlock failedRequest;
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];
                                  
                                  if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:@[@"Sukses naik banding."]];
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding."]];
                                      failedRequest(nil);
                                  }
                                  

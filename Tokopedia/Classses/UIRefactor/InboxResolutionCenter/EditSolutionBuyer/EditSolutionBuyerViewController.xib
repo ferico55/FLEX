@@ -45,11 +45,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zox-Iw-fol" id="zVC-bS-1ll">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kategori Masalah" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ex-Ab-rul">
-                        <rect key="frame" x="15" y="0.0" width="128" height="43.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Kategori Masalah" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ex-Ab-rul">
+                        <rect key="frame" x="15" y="0.0" width="128" height="44"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="128" id="6hF-W1-Tr8"/>
                         </constraints>
@@ -57,8 +57,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ynj-I8-uG8">
-                        <rect key="frame" x="143" y="0.0" width="129" height="43.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ynj-I8-uG8">
+                        <rect key="frame" x="143" y="0.0" width="129" height="44"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="43.5" id="bug-HY-e75"/>
                         </constraints>
@@ -82,11 +82,11 @@
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="8ax-XC-CJg">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8ax-XC-CJg" id="GUK-Cg-XrY">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="8ax-XC-CJg" id="GUK-Cg-XrY">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pilih masalah produk" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i5D-ex-aWD" customClass="UIDownPicker">
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pilih masalah produk" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i5D-ex-aWD" customClass="UIDownPicker">
                         <rect key="frame" x="8" y="3" width="304" height="36"/>
                         <color key="tintColor" red="0.074509803920000006" green="0.56470588239999997" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -138,7 +138,7 @@
                                 <action selector="onTapInvoiceButton:" destination="-1" eventType="touchUpInside" id="9tA-fN-3nT"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxf-cC-iMq">
+                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxf-cC-iMq">
                             <rect key="frame" x="0.0" y="19" width="320" height="41"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <state key="normal">
