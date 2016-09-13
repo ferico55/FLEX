@@ -62,6 +62,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Payment Setting Page"];
     if (self.openShop) {
         self.navigationItem.rightBarButtonItem = self.saveButton;
         for (Payment *payment in self.paymentOptions) {

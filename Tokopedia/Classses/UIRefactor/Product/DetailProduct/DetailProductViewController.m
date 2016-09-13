@@ -78,7 +78,6 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
-#import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
 #import "NoResultReusableView.h"
@@ -2053,8 +2052,8 @@ TTTAttributedLabelDelegate
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
-                                                                                 AFEventParamPrice : price,
-                                                                                 AFEventParamContentId : _product.data.info.product_id,
+                                                                                 AFEventParamPrice : price?:@"",
+                                                                                 AFEventParamContentId : _product.data.info.product_id?:@"",
                                                                                  AFEventParamCurrency : @"IDR",
                                                                                  AFEventParamContentType : @"Product"
                                                                                  }];

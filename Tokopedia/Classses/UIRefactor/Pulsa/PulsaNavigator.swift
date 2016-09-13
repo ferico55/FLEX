@@ -95,7 +95,7 @@ class PulsaNavigator: NSObject {
     func navigateToWebTicker(url: NSURL) {
         let controller = WebViewController()
         controller.strURL = url.absoluteString
-        controller.strTitle = "Mengarahkan..."
+        controller.strTitle = ""
         controller.onTapLinkWithUrl = {[weak self] (url) in
             if url.absoluteString == "https://www.tokopedia.com/" {
                 self!.controller.navigationController?.popViewControllerAnimated(true)

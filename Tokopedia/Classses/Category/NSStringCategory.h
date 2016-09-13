@@ -32,4 +32,6 @@
 
 + (NSString *)joinStringsWithBullets:(NSArray *)strings;
 
++ (NSString *)jsonStringArrayFromArray:(NSArray *)array;
+
 @end

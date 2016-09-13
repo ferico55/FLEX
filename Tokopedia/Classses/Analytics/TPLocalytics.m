@@ -22,8 +22,8 @@
         }
     }
     NSDictionary *attributes = @{
-        @"Items in Cart": [NSNumber numberWithInt:itemsInCart],
-        @"Value of Cart": cartResult.grand_total_idr,
+        @"Items in Cart": @(itemsInCart),
+        @"Value of Cart": cartResult.grand_total_idr?:@"",
     };
     [Localytics tagEvent:@"Cart Viewed" attributes:attributes];
 }
@@ -36,7 +36,7 @@
     NSString *productQuantity = product.product_quantity;
     
     NSDictionary *attributes = @{
-        @"Product Id" : productId,
+        @"Product Id" : productId?:@"",
         @"Category" : product.product_cat_name?:@"",
         @"Price" : price?:@(0),
         @"Value of Cart" : total?:@"",
@@ -62,8 +62,8 @@
     Breadcrumb *category = response.data.breadcrumb[response.data.breadcrumb.count - 1];
 
     NSDictionary *attributes = @{
-        @"Product ID": response.data.info.product_id,
-        @"Category": category.department_name,
+        @"Product ID": response.data.info.product_id?:@"",
+        @"Category": category.department_name?:@"",
         @"Price": price?:@(0),
         @"Price Alert": response.data.info.product_price_alert?:@"",
         @"Wishlist": response.data.info.product_already_wishlist?:@""
@@ -87,7 +87,7 @@
     NSDictionary *attributes = @{
                                  @"Success": success? @"Yes": @"No",
                                  @"Previous Screen": @"Login",
-                                 @"Method": method
+                                 @"Method": method?:@""
                                  };
     
     [Localytics tagEvent:@"Registration Summary" attributes:attributes];
@@ -104,8 +104,8 @@
 
 + (void)trackAddProductPriceAlert:(ProductDetail *)product price:(NSString *)price success:(BOOL)isSuccess {
     NSDictionary *attributes = @{@"Completed" : isSuccess?@"Yes":@"No",
-                                 @"Product ID" : product.product_id,
-                                 @"Alert Price" : price};
+                                 @"Product ID" : product.product_id?:@"",
+                                 @"Alert Price" : price?:@""};
     
     [Localytics tagEvent:@"Price Alert" attributes:attributes];
 }

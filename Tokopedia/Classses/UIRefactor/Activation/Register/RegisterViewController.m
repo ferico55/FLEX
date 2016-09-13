@@ -24,14 +24,13 @@
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 
-#import "Localytics.h"
-
 #import "TAGDataLayer.h"
 
 #import "ActivationRequest.h"
 #import "AuthenticationService.h"
 #import "Tokopedia-Swift.h"
 #import "TTTAttributedLabel.h"
+#import "MMNumberKeyboard.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -44,7 +43,8 @@ UIAlertViewDelegate,
 TKPDAlertViewDelegate,
 FBSDKLoginButtonDelegate,
 GIDSignInUIDelegate,
-TTTAttributedLabelDelegate
+TTTAttributedLabelDelegate,
+MMNumberKeyboardDelegate
 >
 {
     UITextField *_activetextfield;
@@ -115,6 +115,11 @@ TTTAttributedLabelDelegate
     [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
     
 //    _agreementLabel.userInteractionEnabled = YES;
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = false;
+    keyboard.delegate = self;
+    _textfieldphonenumber.inputView = keyboard;
     
     [_container addSubview:_contentView];
     
@@ -304,6 +309,8 @@ TTTAttributedLabelDelegate
             }
             case 13 : {
                 
+                [TPAnalytics trackClickRegisterOnPage:@"Step 1"];
+                
                 NSMutableArray *messages = [NSMutableArray new];
                 
                 NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
@@ -333,44 +340,55 @@ TTTAttributedLabelDelegate
                     
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
                     } else if (![test evaluateWithObject:fullname]) {
                         [messages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
                     }
                     
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
                     } else if (phone.length < 6) {
                         [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
                     }
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
                     }
                     else
                     {
                         if (![email isEmail]) {
                             [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
                         }
                     }
                     if (!pass || [pass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
                     }
                     else
                     {
                         if (pass.length < 6) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_COUNT];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
                         }
                     }
                     if (!confirmpass || [confirmpass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_CONFIRM_PASSWORD];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
                     }
                     else
                     {
                         if (![pass isEqualToString:confirmpass]) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD];
+                            [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
                         }
                     }
                     if (!isagree) {
                         [messages addObject:ERRORMESSAGE_NULL_AGREMENT];
+                        [TPAnalytics trackErrorRegisterWithFieldName:@"Syarat dan Ketentuan"];
                     }
                 }
                 
@@ -479,6 +497,7 @@ TTTAttributedLabelDelegate
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             [TPLocalytics trackRegistrationWithProvider:@"0" success:YES];
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            [TPAnalytics trackSuccessRegisterWithChannel:@"Email"];
             
             TKPDAlert *alert = [TKPDAlert newview];
             NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
@@ -541,10 +560,6 @@ TTTAttributedLabelDelegate
         [_textfieldphonenumber becomeFirstResponder];
         _activetextfield = _textfieldphonenumber;
     }
-    else if (textField == _textfieldphonenumber){
-        [_textfieldemail becomeFirstResponder];
-        _activetextfield = _textfieldemail;
-    }
     else if (textField ==_textfieldemail){
         [_textfieldemail resignFirstResponder];
     }
@@ -566,15 +581,27 @@ TTTAttributedLabelDelegate
     if (textField == _textfieldemail) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIEMAILKEY];
     }
-    if (textField == _textfieldphonenumber) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIPHONEKEY];
-    }
     if (textField == _textfieldpassword) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIPASSKEY];
     }
     if (textField == _textfieldconfirmpass) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APICONFIRMPASSKEY];
     }
+    return YES;
+}
+
+#pragma mark - MMNumberKeyboard Delegate
+- (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard {
+    [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
+    [_textfieldemail becomeFirstResponder];
+    _activetextfield = _textfieldemail;
+    return YES;
+}
+
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSString *string = _textfieldphonenumber.text;
+    string = [string stringByAppendingString:text];
+    [_datainput setObject:string forKey:kTKPDREGISTER_APIPHONEKEY];
     return YES;
 }
 

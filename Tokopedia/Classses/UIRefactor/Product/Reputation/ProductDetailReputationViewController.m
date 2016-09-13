@@ -113,6 +113,9 @@
     growTextView.placeholder = CKirimPesanMu;
     dictRequestLikeDislike = [NSMutableDictionary new];
     
+    tableReputation.estimatedRowHeight = 44.0;
+    tableReputation.rowHeight = UITableViewAutomaticDimension;
+    
     
     //Disable send button
     if(!_isMyProduct) {
@@ -482,37 +485,6 @@
     return 0;
     
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *reuseIdentifier = CCellIdentifier;
-    ProductDetailReputationCell *cell = [dictCell objectForKey:reuseIdentifier];
-    if (! cell) {
-        NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
-        cell = [tempArr objectAtIndex:0];
-        [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont title2Theme]];
-        [dictCell setObject:cell forKey:reuseIdentifier];
-    }
-    
-    
-    cell.getTvDesc.text = _detailReputationReview.review_response.response_message;
-    cell.getLblDate.text = _detailReputationReview.review_response.response_time_fmt;
-    
-    [cell.getViewLabelUser setText:_detailReputationReview.product_owner.full_name];
-    [cell.getViewLabelUser setLabelBackground:_detailReputationReview.review_user_label];
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    cell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-    [cell setNeedsLayout];
-    [cell layoutIfNeeded];
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    height += 1;
-    
-    return height;
-}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

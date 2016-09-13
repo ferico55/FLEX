@@ -8,7 +8,6 @@
 
 #import "CategoryDataSource.h"
 #import "CategoryViewCell.h"
-#import "Localytics.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"

@@ -13,8 +13,9 @@
 #import "profile.h"
 #import "string.h"
 #import "DepositRequest.h"
+#import "MMNumberKeyboard.h"
 
-@interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
+@interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate, MMNumberKeyboardDelegate> {
     NSString *_clearTotalAmount;
     
     NSOperationQueue *_operationQueue;
@@ -56,6 +57,9 @@
     NSMutableArray *_listBankAccount;
 
     DepositRequest *_depositRequest;
+    
+    MMNumberKeyboard *_otpKeyboard;
+    MMNumberKeyboard *_amountKeyboard;
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *useableSaldoIDR;
@@ -161,6 +165,17 @@
     [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
 
     [_containerScrollView addSubview:_contentView];
+    
+    _otpKeyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    _otpKeyboard.allowsDecimalPoint = false;
+    _otpKeyboard.delegate = self;
+    
+    _amountKeyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    _amountKeyboard.allowsDecimalPoint = false;
+    _amountKeyboard.delegate = self;
+    
+    _totalAmount.inputView = _amountKeyboard;
+    _kodeOTP.inputView = _otpKeyboard;
 }
 
 #pragma mark - Request Deposit Info
@@ -253,7 +268,7 @@
                                                                   }
                                                               }
                                                               onFailure:^(NSError *errorResult) {
-                                                                  
+                                                                  [self enableButton];
                                                               }];
                 }
             }
@@ -407,7 +422,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [TPAnalytics trackScreenName:@"Deposit Form Page"];
     [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", [UIScreen mainScreen].bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
     CGFloat contentSizeWidth = [UIScreen mainScreen].bounds.size.width;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
@@ -515,54 +530,50 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch * touch = [touches anyObject];
     if(touch.phase == UITouchPhaseBegan) {
-        [_totalAmount resignFirstResponder];
         [_tokopediaPassword resignFirstResponder];
-        [_kodeOTP resignFirstResponder];
     }
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if (textField == _totalAmount) {
-
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            if([string length]==0)
-            {
-                [formatter setGroupingSeparator:@","];
-                [formatter setGroupingSize:4];
-                [formatter setUsesGroupingSeparator:YES];
-                [formatter setSecondaryGroupingSize:3];
-                NSString *num = textField.text ;
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
-                NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-                textField.text = str;
-                return YES;
-            }
-            else {
-                [formatter setGroupingSeparator:@","];
-                [formatter setGroupingSize:2];
-                [formatter setUsesGroupingSeparator:YES];
-                [formatter setSecondaryGroupingSize:3];
-                NSString *num = textField.text ;
-                if(![num isEqualToString:@""])
-                {
-                    num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
-                    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-                    textField.text = str;
-                }
-                return YES;
-            }
-
-    }
-    return YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [_totalAmount resignFirstResponder];
     [_tokopediaPassword resignFirstResponder];
-    [_kodeOTP resignFirstResponder];
 }
 
+#pragma mark - MMNumberKeyboard Delegate
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    
+    if (numberKeyboard == _amountKeyboard) {
+        formatter.groupingSeparator = @".";
+        formatter.groupingSize = 2;
+        formatter.usesGroupingSeparator = YES;
+        formatter.secondaryGroupingSize = 3;
+        NSString *number = _totalAmount.text;
+        if (![number isEqualToString:@""]) {
+            number = [number stringByReplacingOccurrencesOfString:@"." withString:@""];
+            NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[number doubleValue]]];
+            _totalAmount.text = str;
+        }
+    }
 
+    return YES;
+}
+
+- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard {
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    
+    if (numberKeyboard == _amountKeyboard) {
+        formatter.groupingSeparator = @".";
+        formatter.groupingSize = 4;
+        formatter.usesGroupingSeparator = YES;
+        formatter.secondaryGroupingSize = 3;
+        NSString *number = [_totalAmount.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        if (![number isEqualToString:@""]) {
+            NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[number doubleValue]]];
+            _totalAmount.text = str;
+        }
+    }
+    
+    return YES;
+}
 
 @end

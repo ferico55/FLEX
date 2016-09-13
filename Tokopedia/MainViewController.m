@@ -39,8 +39,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-#import "Localytics.h"
-
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
