@@ -30,7 +30,9 @@ UIPickerViewDelegate
 
 @end
 
-@implementation ResolutionCenterCreateStepTwoViewController
+@implementation ResolutionCenterCreateStepTwoViewController {
+    NSMutableArray<NSNumber *> *_currentStepperValue;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,6 +41,10 @@ UIPickerViewDelegate
     _tableView.dataSource = self;
     _tableView.allowsSelection = NO;
     [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 30, 0)];
+    
+    _currentStepperValue = [_result.selectedProduct bk_map:^NSNumber *(ProductTrouble *trouble) {
+        return @(trouble.pt_quantity.integerValue);
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -96,8 +102,8 @@ UIPickerViewDelegate
         
         [cell.productName setTitle:currentProduct.pt_product_name forState:UIControlStateNormal];
         [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
-        cell.quantityLabel.text = postProduct.quantity;
-        cell.quantityStepper.value = [postProduct.quantity integerValue];
+        cell.quantityLabel.text = _currentStepperValue[indexPath.row].stringValue;
+        cell.quantityStepper.value = _currentStepperValue[indexPath.row].integerValue;
         cell.quantityStepper.stepValue = 1.0f;
         cell.quantityStepper.minimumValue = 1;
         cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
@@ -196,6 +202,8 @@ UIPickerViewDelegate
 -(void)didChangeStepperValue:(UIStepper *)stepper{
     ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:stepper.tag];
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
+    
+    _currentStepperValue[stepper.tag] = @(stepper.value);
 }
 
 - (void)didRemarkTextChange:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
