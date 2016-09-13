@@ -97,6 +97,7 @@
     [super viewDidLoad];
 
     self.title = @"Pesanan Baru";
+    self.alertLabel.text = [self announcementString];
 
     [TPAnalytics trackScreenName:@"Sales - New Order"];
 
@@ -716,6 +717,10 @@
                    products:products
             productQuantity:productQuantity];
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:1];
+}
+
+- (NSString*)announcementString {
+    return @"Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon (2 hari) setelah order di verifikasi";
 }
 
 @end
