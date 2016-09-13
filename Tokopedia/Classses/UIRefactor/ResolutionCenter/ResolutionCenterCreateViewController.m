@@ -102,22 +102,17 @@ ResolutionCenterCreateStepThreeDelegate
 
 - (void)initViewControllers{
     _stepOneViewController = [ResolutionCenterCreateStepOneViewController new];
-    _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
     _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
     
     _stepOneViewController.result = self.result;
     _stepOneViewController.order = self.order;
     _stepOneViewController.product_is_received = _product_is_received;
     
-    _stepTwoViewController.result = self.result;
-    _stepTwoViewController.order = self.order;
-    
     _stepThreeViewController.result = self.result;
     _stepThreeViewController.product_is_received = _product_is_received;
     _stepThreeViewController.delegate = self;
     
     _stepOneViewController.type  = _type;
-    _stepTwoViewController.type  = _type;
     
     _stepOneViewController.resolutionID = _resolutionID;
     
@@ -169,6 +164,11 @@ ResolutionCenterCreateStepThreeDelegate
         [_secondButton setBackgroundColor:greenColor];
         [_thirdButton setBackgroundColor:grayColor];
         [_progressBar setProgress:0.5 animated:YES];
+        
+        _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
+        _stepTwoViewController.result = self.result;
+        _stepTwoViewController.order = self.order;
+        _stepTwoViewController.type  = _type;
         _stepTwoViewController.shouldFlushOptions = isGoingForward;
         return _stepTwoViewController;
     }else if(index == 2){
