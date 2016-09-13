@@ -2593,7 +2593,6 @@
 		457342281D87A1B800EF3B29 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 4573380B1D87A1B700EF3B29 /* vt-iOSlib-1.0.1.tar.gz */; };
 		457342291D87A1B800EF3B29 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4573380C1D87A1B700EF3B29 /* vt-iOSlib-1.0.1.zip */; };
 		4573422A1D87A1B800EF3B29 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4573380F1D87A1B700EF3B29 /* XYPieChart.m */; };
-		4573422B1D87A1B800EF3B29 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 457338111D87A1B700EF3B29 /* Settings.bundle */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659C1D7EB80600BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -6392,7 +6391,6 @@
 		4573380C1D87A1B700EF3B29 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		4573380E1D87A1B700EF3B29 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4573380F1D87A1B700EF3B29 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
-		457338111D87A1B700EF3B29 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -11691,7 +11689,6 @@
 				457334841D87A1B500EF3B29 /* Images */,
 				457337ED1D87A1B700EF3B29 /* Libraries */,
 				457338101D87A1B700EF3B29 /* licenses */,
-				457338111D87A1B700EF3B29 /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -13522,7 +13519,6 @@
 				457342131D87A1B800EF3B29 /* icon_upload_image@2x.png in Resources */,
 				45733C061D87A1B700EF3B29 /* HomeTabViewController.xib in Resources */,
 				45733E8C1D87A1B800EF3B29 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
-				4573422B1D87A1B800EF3B29 /* Settings.bundle in Resources */,
 				4573408E1D87A1B800EF3B29 /* icon_problem_new_user@3x.png in Resources */,
 				457340E71D87A1B800EF3B29 /* icon_smile@3x.png in Resources */,
 				457340101D87A1B800EF3B29 /* icon_maintenance_grey@2x.png in Resources */,
