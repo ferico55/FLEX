@@ -25,6 +25,7 @@ ResolutionCenterCreateStepThreeDelegate
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
+//TODO: should use UINavigationController instead to control navigation
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) ResolutionCenterCreateStepOneViewController *stepOneViewController;
 @property (strong, nonatomic) ResolutionCenterCreateStepTwoViewController *stepTwoViewController;
@@ -161,10 +162,12 @@ ResolutionCenterCreateStepThreeDelegate
         [_thirdButton setBackgroundColor:grayColor];
         [_progressBar setProgress:0.5 animated:YES];
         
-        _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
-        _stepTwoViewController.result = self.result;
-        _stepTwoViewController.order = self.order;
-        _stepTwoViewController.type  = _type;
+        if (isGoingForward) {
+            _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
+            _stepTwoViewController.result = self.result;
+            _stepTwoViewController.order = self.order;
+            _stepTwoViewController.type  = _type;
+        }
         _stepTwoViewController.shouldFlushOptions = isGoingForward;
         return _stepTwoViewController;
     }else if(index == 2){
@@ -173,10 +176,12 @@ ResolutionCenterCreateStepThreeDelegate
         [_thirdButton setBackgroundColor:greenColor];
         [_progressBar setProgress:1 animated:YES];
         
-        _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
-        _stepThreeViewController.result = self.result;
-        _stepThreeViewController.product_is_received = _product_is_received;
-        _stepThreeViewController.delegate = self;
+        if (isGoingForward) {
+            _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
+            _stepThreeViewController.result = self.result;
+            _stepThreeViewController.product_is_received = _product_is_received;
+            _stepThreeViewController.delegate = self;
+        }
         return _stepThreeViewController;
     }
     return nil;
