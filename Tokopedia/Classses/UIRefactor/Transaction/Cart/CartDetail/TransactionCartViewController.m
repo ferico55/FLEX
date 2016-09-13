@@ -2646,8 +2646,8 @@
                       
                       [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total?:@"",
                                                                                                 AFEventParamContentType : @"Product",
-                                                                                                AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs],
-                                                                                                AFEventParamQuantity : [@(quantity) stringValue],
+                                                                                                AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                                                AFEventParamQuantity : [@(quantity) stringValue]?:@"",
                                                                                                 AFEventParamCurrency : @"IDR",
                                                                                                 AFEventOrderId : data.transaction.payment_id?:@""}];
                       

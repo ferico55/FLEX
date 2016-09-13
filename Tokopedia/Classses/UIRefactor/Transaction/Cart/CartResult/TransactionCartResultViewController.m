@@ -637,7 +637,7 @@
     
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
-                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
+                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee?:@"",
                                                                               }];
         
     NSString *paymentMethod = _cartBuy.transaction.gateway_name;
