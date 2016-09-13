@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
-#import "GenerateHost.h"
+#import "Tokopedia-Swift.h"
+#import "ResolutionConversation.h"
 
 #pragma mark - Delegate
 @protocol InboxResolutionCenterOpenViewControllerDelegate <NSObject>
 @optional
--(void)setGenerateHost:(GeneratedHost*)generateHost;
 - (void)updateDataSolution:(NSString*)selectedSolution refundAmount:(NSString*)refund remark:(NSString*)note;
-- (void)changeSolution:(NSString*)solutionType troubleType:(NSString*)troubleType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID isGotTheOrder:(BOOL)isGotTheOrder;
-- (void)appealSolution:(NSString*)solutionType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID;
 - (void)didFailureComplainOrder:(TxOrderStatusList*)order atIndexPath:(NSIndexPath*)indexPath;
+- (void)addResolutionLast:(ResolutionLast*)resolutionLast conversationLast:(ResolutionConversation*)conversationLast replyEnable:(BOOL)isReplyEnable;
 @end
 
 @protocol SyncroDelegate <NSObject>
@@ -48,7 +47,6 @@
 @property NSString *selectedProblem;
 @property NSString *selectedSolution;
 @property NSArray *uploadedPhotos;
-@property (nonatomic, strong) GenerateHost *generatehost;
 
 @property BOOL isChangeSolution;
 @property BOOL isActionBySeller;
@@ -61,5 +59,8 @@
 @property NSString *invoice;
 @property NSString *note;
 @property NSString *totalRefund;
+@property NSString *resolutionID;
+
+@property NSArray <DKAsset*>*images;
 
 @end

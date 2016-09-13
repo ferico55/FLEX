@@ -12,9 +12,10 @@
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"pending_days",
+    NSArray *keys = @[//@"pending_days",
                       @"type",
-                      @"counter_days"];
+                      //@"counter_days"
+                      ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

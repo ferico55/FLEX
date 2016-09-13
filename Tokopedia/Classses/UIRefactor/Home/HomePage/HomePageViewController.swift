@@ -83,7 +83,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
+         
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.stopBannerRequest()
         

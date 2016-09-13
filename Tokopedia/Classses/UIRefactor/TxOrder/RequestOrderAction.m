@@ -38,7 +38,7 @@ static failedCompletionBlock failedUploadProof;
         TransactionAction *response = [successResult.dictionary objectForKey:@""];
         
         if (response.data.is_success == 1) {
-            success(order,response.result);
+            success(order,response.data);
         }
         else{
             [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];

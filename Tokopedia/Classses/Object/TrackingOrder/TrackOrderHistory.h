@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TrackOrderHistory : UIViewController
+@interface TrackOrderHistory : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *date;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *city;
-
-+ (RKObjectMapping *)mapping;
 
 @end

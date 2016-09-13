@@ -9,16 +9,25 @@
 #import "TrackOrderHistory.h"
 
 @implementation TrackOrderHistory
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"date",
+                      @"status",
+                      @"city"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 - (NSString *)status {
     return [_status kv_decodeHTMLCharacterEntities];
-}
-
-+ (RKObjectMapping *)mapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    [mapping addAttributeMappingsFromArray:@[@"date", @"status", @"city"]];
-
-    return mapping;
 }
 
 @end

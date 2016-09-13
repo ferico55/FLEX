@@ -13,5 +13,6 @@
 @interface UploadImageHelperResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *file_uploaded;
+@property (nonatomic, strong) NSString *is_success;
 
 @end

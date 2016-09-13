@@ -23,6 +23,7 @@
 #import "FBTweakShakeWindow.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "Tokopedia-Swift.h"
 
 #ifdef DEBUG
 #import "FlexManager.h"

@@ -15,7 +15,6 @@
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ResolutionCenterDetailViewController.h"
-#import "RequestCancelResolution.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -33,8 +32,12 @@
 
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
-
+#import "RequestResolutionData.h"
 #import "RequestOrderData.h"
+#import "RequestResolutionData.h"
+#import "ResolutionCenterCreateViewController.h"
+
+#import "Tokopedia-Swift.h"
 
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
@@ -43,7 +46,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
     NSString *_URINext;
@@ -66,7 +69,6 @@
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
     
-    RequestCancelResolution *_requestCancelComplain;
     FilterSalesTransactionListViewController *_filterSalesTransactionList;
     
     UIViewController *_detailViewController;
@@ -699,8 +701,9 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     
-    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution) {
-        [_list removeObject:resolution];
+    __block InboxResolutionCenterList *reso = resolution;
+    [RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
+        [_list removeObject:reso];
         [_tableView reloadData];
         [self refreshRequest];
     } failure:^(NSError *error) {
@@ -749,24 +752,26 @@
         }
         
         TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_COMPLAIN_KEY];
-        InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-        vc.controllerTitle = @"Buka Komplain";
-        if (buttonIndex == 0) {
-            //Tidak Terima Barang
-            vc.isGotTheOrder = NO;
-        }
-        else if (buttonIndex ==1)
-        {
-            //Terima barang
-            vc.isGotTheOrder = YES;
-            
-        }
-        vc.isChangeSolution = NO;
-        vc.isCanEditProblem = YES;
+        
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
         vc.order = order;
         vc.delegate = self;
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        if(buttonIndex == 0){
+            vc.product_is_received = NO;
+        }else if(buttonIndex == 1){
+            vc.product_is_received = YES;
+        }
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTranslucent:NO];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
+}
+
+-(void)didFinishCreateComplain{
+    [self refreshRequest];
 }
 
 #pragma mark - Cell Show Button Validation
@@ -945,38 +950,44 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-    NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
-    NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-    NSString *selesaiString = @"Selesai";
-    void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
-        NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-        [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
-    };
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
 
     if ([self isOrderFreeReturn:order]) {
-        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
-        alertTitle = ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN;
-        [alertController setTitle: alertTitle];
-        [alertController setMessage:alertMessage];
-        selesaiString = @"OK";
-        OKActionHandler = ^void(UIAlertAction * _Nonnull action) {
-            // do nothing if user tap OK when order is Free Return
+        FreeReturnsConfirmationAlertView *confirmationAlert = [FreeReturnsConfirmationAlertView newview];
+        
+        confirmationAlert.didComplain = ^{
+            [confirmationAlert dismiss];
+            [self showAlertViewOpenComplain];
         };
+        
+        confirmationAlert.didOK = ^{
+            [confirmationAlert dismiss];
+          // do nothing if user tap OK when order is Free Returns
+        };
+        
+        [confirmationAlert show];
     } else {
+        NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        NSString *selesaiString = @"Selesai";
+        void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
+            NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+            [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+        };
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:cancelAction];
+        UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
+        UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self showAlertViewOpenComplain];
+        }];
+        
+        [alertController addAction:OKAction];
+        [alertController addAction:complainAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
     
-    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
-    UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self showAlertViewOpenComplain];
-    }];
-    
-    [alertController addAction:OKAction];
-    [alertController addAction:complainAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+
 }
 
 -(void)showAlertReorder

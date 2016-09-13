@@ -10,19 +10,33 @@
 
 @implementation TrackOrderDetail
 
-+ (RKObjectMapping *)mapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    [mapping addAttributeMappingsFromArray:@[@"shipper_city", @"shipper_name", @"receiver_city", @"send_date", @"receiver_name", @"service_code", @"delivered"]];
-    
-    return mapping;
-}
-
 - (NSString *)receiver_name {
     return [_receiver_name kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString *)shipper_name {
     return [_shipper_name kv_decodeHTMLCharacterEntities];
+}
+
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"shipper_city",
+                      @"shipper_name",
+                      @"receiver_city",
+                      @"send_date",
+                      @"receiver_name",
+                      @"service_code",
+                      @"delivered"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
 }
 
 @end

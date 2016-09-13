@@ -16,6 +16,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "AttachedPicture.h"
 #import "UIImageView+AFNetworking.h"
+#import "Tokopedia-Swift.h"
 
 @interface ProductAddCaptionViewController ()
 <

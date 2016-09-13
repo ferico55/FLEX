@@ -133,17 +133,6 @@
     
     _listTemp = [NSMutableArray new];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGRect frame = _searchBarView.frame;
-    frame.size.width = screenWidth;
-    _searchBarView.frame = frame;
-    
-    frame = _addNewAddressView.frame;
-    frame.size.width = screenWidth;
-    _addNewAddressView.frame = frame;
-    
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
@@ -238,6 +227,19 @@
 {
     [super viewWillDisappear:animated];
     [self cancel];
+}
+
+-(void)viewDidLayoutSubviews {
+    CGRect screenRect = self.view.bounds;
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _searchBarView.frame;
+    frame.size.width = screenWidth;
+    _searchBarView.frame = frame;
+    
+    frame = _addNewAddressView.frame;
+    frame.size.width = screenWidth;
+    _addNewAddressView.frame = frame;
 }
 
 #pragma mark - Table View Data Source
@@ -464,7 +466,10 @@
     if (_page==1)_doneBarButtonItem.enabled = NO;
     [[self getNetworkRequest] requestWithBaseUrl:[NSString v4Url] path:@"/v4/people/get_address.pl" method:RKRequestMethodGET parameter:[self getAddressParameter] mapping:[AddressForm mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             [self requestSuccess:successResult withOperation:operation];
+            [_refreshControl endRefreshing];
+        
     } onFailure:^(NSError *errorResult) {
+        [_refreshControl endRefreshing];
         NSLog(@"%@", errorResult);
     }];
 }
@@ -478,6 +483,7 @@
     
     if (status) {
         [self requestProcess:object];
+        [_refreshControl endRefreshing];
     }
     else
     {

@@ -14,5 +14,7 @@
 @property (nonatomic) NSInteger button_cancel;
 @property (nonatomic) NSInteger button_no_btn;
 @property (nonatomic) NSInteger button_edit;
+@property (nonatomic) NSInteger hide_no_reply;
+@property (nonatomic) NSInteger button_report_hide;
 
 @end

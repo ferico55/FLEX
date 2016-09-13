@@ -63,7 +63,7 @@
     NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
     NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
     NSString *userID = [auth getUserId];
-    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",kTkpdBaseURLString,invoicePDF,invoiceID,userID];
+    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",[NSString basicUrl],invoicePDF,invoiceID,userID];
     VC.urlAddress = invoiceURLforWS?:@"";
     [viewController.navigationController pushViewController:VC animated:YES];
 }

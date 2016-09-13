@@ -11,6 +11,7 @@
 
 @interface ShipmentResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray *shipment;
+@property (nonatomic, strong) NSArray <ShipmentCourier*>*list;
+@property (nonatomic, strong) NSArray <ShipmentCourier*>*shipment;
 
 @end

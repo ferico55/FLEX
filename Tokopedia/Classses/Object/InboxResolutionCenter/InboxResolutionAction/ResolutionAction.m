@@ -10,6 +10,10 @@
 
 @implementation ResolutionAction
 
+-(NSArray *)message_error{
+    return _message_error?:@[];
+}
+
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"message_error",
@@ -23,7 +27,7 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[ResolutionActionResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ResolutionActionResult mapping]]];
     return mapping;
 }
-
 @end

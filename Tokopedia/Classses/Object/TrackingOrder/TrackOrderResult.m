@@ -9,6 +9,10 @@
 #import "TrackOrderResult.h"
 
 @implementation TrackOrderResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
 
 -(void)setTrack_shipping:(TrackOrder *)track_shipping{
     _track_order = track_shipping;

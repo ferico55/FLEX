@@ -86,10 +86,9 @@
 + (NSString*) timeLeftSinceDate:(NSDate *)dateT
 {
     NSString *timeLeft;
+    NSDate *today = [NSDate date];
     
-    NSDate *today10am =[NSDate date];
-    
-    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
+    NSInteger seconds = [today timeIntervalSinceDate:dateT];
     
     NSInteger days = (int) (floor(seconds / (3600 * 24)));
     if(days) seconds -= days * 3600 * 24;
@@ -120,7 +119,7 @@
     }
     else if(seconds)
     {
-        timeLeft = [NSString stringWithFormat: @"%lds detik yang lalu", (long)seconds];
+        timeLeft = [NSString stringWithFormat: @"%ld detik yang lalu", (long)seconds];
     }
     else
     {

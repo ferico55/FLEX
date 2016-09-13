@@ -84,6 +84,7 @@ PODS:
     - NJKWebViewProgress/ProgressView (= 0.2.3)
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
+  - OAStackView (1.0.1)
   - RestKit (0.20.3):
     - RestKit/Core (= 0.20.3)
   - RestKit/Core (0.20.3):
@@ -103,6 +104,7 @@ PODS:
   - Rollout.io (1.0.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
+  - TPKeyboardAvoiding (1.3)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
   - Tweaks (2.0.0)
@@ -127,10 +129,12 @@ DEPENDENCIES:
   - JLPermissions/Notification
   - Masonry
   - NJKWebViewProgress
+  - OAStackView (~> 1.0.1)
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.0.0)
   - SPTPersistentCache (~> 1.0)
+  - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
   - Tweaks (~> 2.0.0)
   - UITableView+FDTemplateLayoutCell (~> 1.4)
@@ -165,11 +169,13 @@ SPEC CHECKSUMS:
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
+  OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   RestKit: aac0c81c60d30fdd829d627d062f0eea231eb52c
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
+  TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81

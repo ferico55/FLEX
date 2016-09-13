@@ -163,7 +163,7 @@
     networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_get_parameter.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
