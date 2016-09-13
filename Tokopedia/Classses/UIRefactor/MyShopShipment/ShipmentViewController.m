@@ -93,6 +93,11 @@
     self.networkManager.isUsingHmac = YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Shipment Setting Page"];
+}
+
 - (void)registerNibs {
     [self.tableView registerNib:[UINib nibWithNibName:@"ShipmentLocationViewCell" bundle:nil] forCellReuseIdentifier:@"location"];
     [self.tableView registerNib:[UINib nibWithNibName:@"ShipmentPostalCodeViewCell" bundle:nil] forCellReuseIdentifier:@"postal"];

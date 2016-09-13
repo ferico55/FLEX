@@ -44,7 +44,7 @@ public class DKAsset: NSObject {
             var actualHeight = original.size.height
             var actualWidth = original.size.width
             var imgRatio = actualWidth/actualHeight
-            let maxImageSize = CGSizeMake(320, 568)
+            let maxImageSize = CGSizeMake(600, 600)
             let widthView = maxImageSize.width;
             let heightView = maxImageSize.height;
             let maxRatio = widthView/heightView;

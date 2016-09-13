@@ -20,8 +20,6 @@
 #import "TxOrderTabViewController.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
-
-#import "Localytics.h"
 #import "TTTAttributedLabel.h"
 
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate, TTTAttributedLabelDelegate>
@@ -639,7 +637,7 @@
     
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
-                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
+                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee?:@"",
                                                                               }];
         
     NSString *paymentMethod = _cartBuy.transaction.gateway_name;

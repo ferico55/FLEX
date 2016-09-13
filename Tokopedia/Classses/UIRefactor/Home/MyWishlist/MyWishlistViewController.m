@@ -21,8 +21,6 @@
 #import "WishListObjectList.h"
 #import "HotListViewController.h"
 
-#import "Localytics.h"
-
 #import "RetryCollectionReusableView.h"
 #import "GeneralAction.h"
 #import "Tokopedia-Swift.h"

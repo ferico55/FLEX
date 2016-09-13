@@ -30,7 +30,9 @@ UIPickerViewDelegate
 
 @end
 
-@implementation ResolutionCenterCreateStepTwoViewController
+@implementation ResolutionCenterCreateStepTwoViewController {
+    NSMutableArray<NSNumber *> *_currentStepperValue;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,6 +41,10 @@ UIPickerViewDelegate
     _tableView.dataSource = self;
     _tableView.allowsSelection = NO;
     [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 30, 0)];
+    
+    _currentStepperValue = [NSMutableArray arrayWithArray:[_result.selectedProduct bk_map:^NSNumber *(ProductTrouble *trouble) {
+        return @(trouble.pt_quantity.integerValue);
+    }]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -96,11 +102,11 @@ UIPickerViewDelegate
         
         [cell.productName setTitle:currentProduct.pt_product_name forState:UIControlStateNormal];
         [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
-        cell.quantityLabel.text = postProduct.quantity;
-        cell.quantityStepper.value = [postProduct.quantity integerValue];
+        cell.quantityLabel.text = _currentStepperValue[indexPath.row].stringValue;
+        cell.quantityStepper.value = _currentStepperValue[indexPath.row].integerValue;
         cell.quantityStepper.stepValue = 1.0f;
         cell.quantityStepper.minimumValue = 1;
-        cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
+        cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
         cell.quantityStepper.tag = indexPath.row;
         
         cell.delegate = self;
@@ -132,18 +138,13 @@ UIPickerViewDelegate
             postProduct.trouble_id = selectedTrouble.trouble_id;
         } forControlEvents:UIControlEventValueChanged];
         
-        
-//        cell.troublePicker.didSelectDownPickerAtIndex = ^(NSInteger index){
-//            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
-//            ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:index];
-//            postProduct.trouble_id = selectedTrouble.trouble_id;
-//        };
-        
         return cell;
     }else{
         if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
         }
+        [_priceProblemTextField setPlaceholder:@"Pilih detil permasalahan"];
+        [_priceProblemTextField setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         _priceProblemTextView.delegate = self;
@@ -201,6 +202,8 @@ UIPickerViewDelegate
 -(void)didChangeStepperValue:(UIStepper *)stepper{
     ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:stepper.tag];
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
+    
+    _currentStepperValue[stepper.tag] = @(stepper.value);
 }
 
 - (void)didRemarkTextChange:(RSKPlaceholderTextView *)textView withSelectedCell:(UITableViewCell *)cell {
@@ -217,9 +220,16 @@ UIPickerViewDelegate
         }
     }
     
-    if(([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"] ) && (_result.remark == nil || [_result.remark isEqualToString:@""])) {
-        [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
-        return NO;
+    if([_result.postObject.category_trouble_id isEqualToString:@"2"] || [_result.postObject.category_trouble_id isEqualToString:@"3"]) {
+        if(_result.remark == nil || [_result.remark isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon isi alasan Anda terlebih dahulu."]];
+            return NO;
+        }
+        
+        if(_result.troubleId == nil || [_result.troubleId isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah Anda terlebih dahulu."]];
+            return NO;
+        }
     }
 
     return YES;

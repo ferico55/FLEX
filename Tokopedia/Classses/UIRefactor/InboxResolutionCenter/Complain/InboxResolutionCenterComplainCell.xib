@@ -158,7 +158,7 @@
                                 <color key="textColor" red="0.75699344758064513" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zec-CP-ipk">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zec-CP-ipk">
                                 <rect key="frame" x="62" y="52" width="63" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="cB9-M2-q5K"/>
@@ -171,14 +171,14 @@
                                     <action selector="actionReputation:" destination="GyV-91-6B2" eventType="touchUpInside" id="obf-dX-doY"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-free-return" translatesAutoresizingMaskIntoConstraints="NO" id="SY6-Wc-ifC">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon-free-return" translatesAutoresizingMaskIntoConstraints="NO" id="SY6-Wc-ifC">
                                 <rect key="frame" x="129" y="54" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="G2k-uM-AgD"/>
                                     <constraint firstAttribute="width" constant="15" id="Qfe-Z0-Hiy"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="free returns" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUo-kP-8Ow">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Free Returns" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUo-kP-8Ow">
                                 <rect key="frame" x="146" y="57" width="62" height="9"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

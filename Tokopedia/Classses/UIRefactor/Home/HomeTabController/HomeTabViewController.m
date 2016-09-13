@@ -31,7 +31,6 @@
 #import "NavigateViewController.h"
 #import "CategoryViewController.h"
 
-#import "Localytics.h"
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
 

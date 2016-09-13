@@ -1513,11 +1513,18 @@
 {
     // should be phone numbers text field
     if (textField.tag < 0) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
+        
         NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         return [newString isNumber];
     }
     
     if (textField == _saldoTokopediaAmountTextField) {
+        if ([[NSNumberFormatter new] numberFromString:string] == nil && ![string isEqualToString:@""]) {
+            return NO;
+        }
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
         
@@ -2337,7 +2344,7 @@
                                                            options:NSStringDrawingUsesLineFragmentOrigin
                                                         attributes:@{NSFontAttributeName:[UIFont title2Theme]}
                                                            context:context].size;
-        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
+        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 32;
     } else {
         expectedErrorLabelSize.height = 0;
     }
@@ -2625,6 +2632,25 @@
             klikBCAUserID:userIDKlikBCA
                   success:^(TransactionBuyResult *data) {
                       
+                      NSArray <TransactionCartList *> *carts = data.transaction.carts;
+                      NSMutableArray *productIDs = [NSMutableArray new];
+                      NSInteger quantity = 0;
+                      
+                      for (TransactionCartList *cart in carts) {
+                          NSArray <ProductDetail *> *products = cart.cart_products;
+                          for (ProductDetail *product in products) {
+                              [productIDs addObject:product.product_id];
+                          }
+                          quantity = quantity + [cart.cart_total_product integerValue];
+                      }
+                      
+                      [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total?:@"",
+                                                                                                AFEventParamContentType : @"Product",
+                                                                                                AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                                                AFEventParamQuantity : [@(quantity) stringValue]?:@"",
+                                                                                                AFEventParamCurrency : @"IDR",
+                                                                                                AFEventOrderId : data.transaction.payment_id?:@""}];
+                      
                       TransactionSummaryDetail *summary = data.transaction;
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
@@ -2670,12 +2696,15 @@
                               }
                               [_tableView reloadData];
                           } error:^(NSError *error) {
-                              [self doClearAllData];
-                              [_refreshControl beginRefreshing];
-                              [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-                              _paymentMethodView.hidden = YES;
-                              [_noInternetConnectionView generateRequestErrorViewWithError:error];
-                              [_tableView addSubview:_noInternetConnectionView];
+                              if (error) {
+                                  [self doClearAllData];
+                                  [_refreshControl beginRefreshing];
+                                  [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                  _paymentMethodView.hidden = YES;
+                                  [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                  [_tableView addSubview:_noInternetConnectionView];
+                              }
+                              
                               [self isLoading:NO];
                           }];
 }

@@ -136,6 +136,7 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Inbox Message Detail Page"];
 }
 
 - (void)dealloc{

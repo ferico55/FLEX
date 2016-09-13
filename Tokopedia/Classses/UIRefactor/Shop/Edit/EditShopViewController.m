@@ -91,6 +91,11 @@
     [self fetchShopInformation];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Info Setting Page"];
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
 }

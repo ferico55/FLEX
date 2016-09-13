@@ -25,6 +25,7 @@ ResolutionCenterCreateStepThreeDelegate
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
+//TODO: should use UINavigationController instead to control navigation
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) ResolutionCenterCreateStepOneViewController *stepOneViewController;
 @property (strong, nonatomic) ResolutionCenterCreateStepTwoViewController *stepTwoViewController;
@@ -33,7 +34,8 @@ ResolutionCenterCreateStepThreeDelegate
 @property (strong, nonatomic) IBOutlet UIButton *secondButton;
 @property (strong, nonatomic) IBOutlet UIButton *thirdButton;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
-@property (strong, nonatomic) IBOutlet UIButton *shopNameButton;
+@property (strong, nonatomic) IBOutlet UIButton *invoiceButton;
+@property (strong, nonatomic) IBOutlet UILabel *shopNameLabel;
 
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @end
@@ -49,10 +51,10 @@ ResolutionCenterCreateStepThreeDelegate
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setHidden:NO];
-    
-    self.title = @"Status Toko";
+
+    self.title = @"Buka Komplain";
     [self changeBackButtonToBatal];
-    
+   
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut" style: UIBarButtonItemStyleDone target:self action:@selector(didTapNextButton)];
     self.navigationItem.rightBarButtonItem = nextButton;
     
@@ -62,8 +64,8 @@ ResolutionCenterCreateStepThreeDelegate
     [self initPageIndicator];
     [self initPageControl];
 
-    [_shopNameButton setTitle:[NSString stringWithFormat:@"Pembelian dari %@", _order.order_shop.shop_name]
-                     forState:UIControlStateNormal];
+    [_shopNameLabel setText:[NSString stringWithFormat:@"Pembelian dari %@", _order.order_shop.shop_name]];
+    [_invoiceButton setTitle:_order.order_detail.detail_invoice forState:UIControlStateNormal];
 }
 
 -(void)initPageIndicator{
@@ -100,22 +102,13 @@ ResolutionCenterCreateStepThreeDelegate
 
 - (void)initViewControllers{
     _stepOneViewController = [ResolutionCenterCreateStepOneViewController new];
-    _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
-    _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
+    
     
     _stepOneViewController.result = self.result;
     _stepOneViewController.order = self.order;
     _stepOneViewController.product_is_received = _product_is_received;
     
-    _stepTwoViewController.result = self.result;
-    _stepTwoViewController.order = self.order;
-    
-    _stepThreeViewController.result = self.result;
-    _stepThreeViewController.product_is_received = _product_is_received;
-    _stepThreeViewController.delegate = self;
-    
     _stepOneViewController.type  = _type;
-    _stepTwoViewController.type  = _type;
     
     _stepOneViewController.resolutionID = _resolutionID;
     
@@ -167,6 +160,13 @@ ResolutionCenterCreateStepThreeDelegate
         [_secondButton setBackgroundColor:greenColor];
         [_thirdButton setBackgroundColor:grayColor];
         [_progressBar setProgress:0.5 animated:YES];
+        
+        if (isGoingForward) {
+            _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
+            _stepTwoViewController.result = self.result;
+            _stepTwoViewController.order = self.order;
+            _stepTwoViewController.type  = _type;
+        }
         _stepTwoViewController.shouldFlushOptions = isGoingForward;
         return _stepTwoViewController;
     }else if(index == 2){
@@ -174,6 +174,13 @@ ResolutionCenterCreateStepThreeDelegate
         [_secondButton setBackgroundColor:greenColor];
         [_thirdButton setBackgroundColor:greenColor];
         [_progressBar setProgress:1 animated:YES];
+        
+        if (isGoingForward) {
+            _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
+            _stepThreeViewController.result = self.result;
+            _stepThreeViewController.product_is_received = _product_is_received;
+            _stepThreeViewController.delegate = self;
+        }
         return _stepThreeViewController;
     }
     return nil;

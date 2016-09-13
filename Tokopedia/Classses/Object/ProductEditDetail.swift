@@ -28,6 +28,7 @@ class ProductEditDetail: NSObject {
     var product_returnable: String = "0"
     var product_catalog: CatalogList = CatalogList()
     var product_category :CategoryDetail = CategoryDetail()
+    var product_name_editable: String = ""
     
     
     static func mapping() -> RKObjectMapping {
@@ -48,7 +49,8 @@ class ProductEditDetail: NSObject {
             "product_etalase_id" : "product_etalase_id",
             "product_status" : "product_status",
             "product_short_desc" : "product_short_desc",
-            "product_weight_unit_name" : "product_weight_unit_name"
+            "product_weight_unit_name" : "product_weight_unit_name",
+            "product_name_editable" : "product_name_editable"
         ])
         
         return mapping

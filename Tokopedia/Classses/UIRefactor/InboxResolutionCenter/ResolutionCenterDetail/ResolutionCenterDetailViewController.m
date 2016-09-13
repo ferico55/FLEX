@@ -432,7 +432,8 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         SettingAddressViewController *addressViewController = [SettingAddressViewController new];
         addressViewController.delegate = self;
         addressViewController.data = @{@"type":@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
-                                       @"conversation":conversation
+                                       @"conversation":conversation,
+                                       @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
     }
@@ -955,7 +956,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
         if ([product.pt_free_return integerValue] == 3){
-            [marks addObject:@"(Free Return)"];
+            [marks addObject:@"(Free Returns)"];
         }
         [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
         [marks addObject:[NSString stringWithFormat:@"Deskripsi : %@",product.pt_solution_remark]];
@@ -1037,7 +1038,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         imageName = @"icon_order_check-01.png";
     }
     if ([titleButton isEqualToString:BUTTON_TITLE_APPEAL]) {
-        imageName = @"icon_order_cancel-01.png";
+        imageName = @"icon_track_grey.png";
     }
     
     return imageName;

@@ -46,6 +46,11 @@
     self.networkManager.timeInterval = 60;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Setting Password Page"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
