@@ -596,6 +596,8 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     [formatter setLocale:[NSLocale systemLocale]];
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
     NSDate *createDate = [formatter dateFromString:conversation.time_ago];
+    NSTimeInterval secondsInSevenHours = -7 * 60 * 60;
+    createDate = [createDate dateByAddingTimeInterval:secondsInSevenHours];
     NSString *sinceDateString = [NSString timeLeftSinceDate:createDate];
     cell.timeRemainingLabel.text = sinceDateString;
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
