@@ -11685,6 +11685,7 @@
 				457334821D87A1B500EF3B29 /* Database */,
 				457334841D87A1B500EF3B29 /* Images */,
 				457337ED1D87A1B700EF3B29 /* Libraries */,
+				457338101D87A1B700EF3B29 /* licenses */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -12804,6 +12805,13 @@
 				4573380F1D87A1B700EF3B29 /* XYPieChart.m */,
 			);
 			path = XYPieChart;
+			sourceTree = "<group>";
+		};
+		457338101D87A1B700EF3B29 /* licenses */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = licenses;
 			sourceTree = "<group>";
 		};
 		BB20E7D51D532EE9001673D9 /* Tokopedia */ = {
