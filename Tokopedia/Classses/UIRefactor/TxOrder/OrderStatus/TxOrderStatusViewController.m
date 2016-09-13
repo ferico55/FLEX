@@ -961,7 +961,7 @@
         
         confirmationAlert.didOK = ^{
             [confirmationAlert dismiss];
-          // do nothing if user tap OK when order is Free Return
+          // do nothing if user tap OK when order is Free Returns
         };
         
         [confirmationAlert show];

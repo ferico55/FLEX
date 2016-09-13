@@ -956,7 +956,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     for (ProductTrouble *product in conversation.product_trouble) {
         [marks addObject:[NSString stringWithFormat:@"Nama produk : %@",product.pt_product_name]];
         if ([product.pt_free_return integerValue] == 3){
-            [marks addObject:@"(Free Return)"];
+            [marks addObject:@"(Free Returns)"];
         }
         [marks addObject:[NSString stringWithFormat:@"Komplain : %@ %@",product.pt_quantity, product.pt_trouble_name]];
         [marks addObject:[NSString stringWithFormat:@"Deskripsi : %@",product.pt_solution_remark]];
