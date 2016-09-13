@@ -37,7 +37,7 @@ import UIKit
     private var refreshControl: UIRefreshControl!
     @IBOutlet var uploadImageCell: UITableViewCell!
     
-    private var resolutionD ata : EditResolutionFormData = EditResolutionFormData()
+    private var resolutionData : EditResolutionFormData = EditResolutionFormData()
     private var postObject : ReplayConversationPostData = ReplayConversationPostData()
     private var firstResponderIndexPath : NSIndexPath?
     private var alertProgress : UIAlertView = UIAlertView()
