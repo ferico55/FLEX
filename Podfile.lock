@@ -127,7 +127,6 @@ PODS:
   - TPKeyboardAvoiding (1.3)
   - TransitionKit (2.2.1)
   - TTTAttributedLabel (1.13.4)
-  - Tweaks (2.0.0)
   - UITableView+FDTemplateLayoutCell (1.4)
 
 DEPENDENCIES:
@@ -157,7 +156,6 @@ DEPENDENCIES:
   - SPTPersistentCache (~> 1.0)
   - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
-  - Tweaks (~> 2.0.0)
   - UITableView+FDTemplateLayoutCell (~> 1.4)
 
 SPEC CHECKSUMS:
@@ -201,7 +199,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
   TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
-  Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
 
 COCOAPODS: 0.39.0

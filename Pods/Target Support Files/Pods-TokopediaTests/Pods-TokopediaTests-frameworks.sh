@@ -108,7 +108,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-TokopediaTests/TPKeyboardAvoiding.framework"
   install_framework "Pods-TokopediaTests/TTTAttributedLabel.framework"
   install_framework "Pods-TokopediaTests/TransitionKit.framework"
-  install_framework "Pods-TokopediaTests/Tweaks.framework"
   install_framework "Pods-TokopediaTests/UITableView_FDTemplateLayoutCell.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -135,6 +134,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-TokopediaTests/TPKeyboardAvoiding.framework"
   install_framework "Pods-TokopediaTests/TTTAttributedLabel.framework"
   install_framework "Pods-TokopediaTests/TransitionKit.framework"
-  install_framework "Pods-TokopediaTests/Tweaks.framework"
   install_framework "Pods-TokopediaTests/UITableView_FDTemplateLayoutCell.framework"
 fi
