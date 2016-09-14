@@ -630,6 +630,7 @@ EtalaseViewControllerDelegate
     vc.isEditable = NO;
     vc.showOtherEtalase = YES;
     vc.initialSelectedEtalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    vc.shopDomain = _shop.result.info.shop_domain;
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShopId:shopId];
