@@ -82,10 +82,10 @@
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.hidesBottomBarWhenPushed = YES;
     vc2.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_shop"};
-    
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    vc.tkpdTabNavigationController = viewController;
     NSDictionary *data = @{searchTypeKey : @(1),categoryIdKey : categoryId};
     [viewController setData:data];
     [viewController setNavigationTitle:categoryName];
