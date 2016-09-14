@@ -202,13 +202,12 @@
 
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
     
-    NSDictionary* param = @{@"action" : @"check_voucher_code",
-                            @"voucher_code" : voucherCode
-                            };
+    NSDictionary* param = @{@"voucher_code" : voucherCode};
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"tx-voucher.pl"
-                                method:RKRequestMethodPOST
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-voucher/check_voucher_code.pl"
+                                method:RKRequestMethodGET
                              parameter:param
                                mapping:[TransactionVoucher mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

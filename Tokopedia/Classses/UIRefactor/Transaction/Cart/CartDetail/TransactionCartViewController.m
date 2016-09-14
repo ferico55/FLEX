@@ -2484,7 +2484,7 @@
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *voucher) {
         
-        _voucherData = voucher.result.data_voucher;
+        _voucherData = voucher.data.data_voucher;
         
         _voucherCodeButton.hidden = YES;
         _voucherAmountLabel.hidden = NO;
@@ -2492,6 +2492,9 @@
         NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        if (![_voucherData.voucher_promo_desc isEqualToString:@""]){
+            voucherString = _voucherData.voucher_promo_desc;
+        }
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont microTheme];
         
