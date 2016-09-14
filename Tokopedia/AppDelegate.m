@@ -125,11 +125,22 @@
                 }
             }
         }
-
+        
+        NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (pushNotificationData) {
+            [self handlePushNotificationWithData:pushNotificationData];
+        }
     });
+    
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
+}
+
+- (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {
+    [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
+                                                        object:nil
+                                                      userInfo:pushNotificationData];
 }
 
 - (void)configureAppIndexing {
@@ -222,7 +233,7 @@
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect object:nil userInfo:userInfo];
+        [self handlePushNotificationWithData:userInfo];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
     }

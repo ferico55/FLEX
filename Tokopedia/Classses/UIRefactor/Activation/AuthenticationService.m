@@ -115,7 +115,19 @@
                              parameter:@{}
                                mapping:[AccountInfo mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 successCallback(successResult.dictionary[@""]);
+                                 AccountInfo *accountInfo = successResult.dictionary[@""];
+                                 
+                                 if (!accountInfo.error) {
+                                     successCallback(accountInfo);
+                                 } else {
+                                     NSError *error = [NSError errorWithDomain:@"Accounts"
+                                                                          code:-112233
+                                                                      userInfo:@{
+                                                                                 NSLocalizedDescriptionKey: accountInfo.errorDescription
+                                                                                 }];
+                                     
+                                     failureCallback(error);
+                                 }
                              }
                              onFailure:failureCallback];
 }
@@ -174,7 +186,7 @@
             @"grant_type" : @"extension",
             @"social_id" : userProfile.userId,
             @"social_type" : userProfile.provider,
-            @"email" : userProfile.email,
+            @"email" : userProfile.email?: @"",
             @"full_name": userProfile.name,
     };
 
@@ -189,7 +201,19 @@
                      parameter:parameter
                        mapping:[OAuthToken mapping]
                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                         onRequestTokenSuccess(successResult.dictionary[@""]);
+                         OAuthToken *oAuthToken = successResult.dictionary[@""];
+                         
+                         if (!oAuthToken.error) {
+                             onRequestTokenSuccess(oAuthToken);
+                         } else {
+                             NSError *error = [NSError errorWithDomain:@"Accounts"
+                                                                  code:-112233
+                                                              userInfo:@{
+                                                                         NSLocalizedDescriptionKey: oAuthToken.errorDescription
+                                                                         }];
+                             
+                             failureCallback(error);
+                         }
                      }
                      onFailure:failureCallback];
 }
@@ -278,33 +302,38 @@
                        mapping:[OAuthToken mapping]
                      onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                          OAuthToken *oAuthToken = mappingResult.dictionary[@""];
-
-                         [self getUserInfoWithOAuthToken:oAuthToken
-                                         successCallback:^(AccountInfo *accountInfo) {
-                                             if (accountInfo.createdPassword) {
-                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                     oAuthToken:oAuthToken
-                                                                        onAuthenticationSuccess:successCallback
-                                                                                failureCallback:failureCallback];
-                                             } else {
-                                                 CreatePasswordUserProfile *userProfile = [CreatePasswordUserProfile new];
-                                                 userProfile.provider = @"4";
-                                                 userProfile.email = accountInfo.email;
-                                                 userProfile.name = accountInfo.name;
-
-
-                                                 [self createPasswordWithUserProfile:userProfile
-                                                                          oAuthToken:oAuthToken
-                                                                         accountInfo:accountInfo
-                                                                   onPasswordCreated:^{
-                                                                       [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                           oAuthToken:oAuthToken
-                                                                                              onAuthenticationSuccess:successCallback
-                                                                                                      failureCallback:failureCallback];
-                                                                   }];
+                         
+                         if (oAuthToken.error) {
+                         NSError *error = [NSError errorWithDomain:@"foo" code:112233 userInfo:@{NSLocalizedDescriptionKey : oAuthToken.errorDescription}];
+                         failureCallback(error);
+                         } else {
+                             [self getUserInfoWithOAuthToken:oAuthToken
+                                             successCallback:^(AccountInfo *accountInfo) {
+                                                 if (accountInfo.createdPassword) {
+                                                     [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                         oAuthToken:oAuthToken
+                                                                            onAuthenticationSuccess:successCallback
+                                                                                    failureCallback:failureCallback];
+                                                 } else {
+                                                     CreatePasswordUserProfile *userProfile = [CreatePasswordUserProfile new];
+                                                     userProfile.provider = @"4";
+                                                     userProfile.email = accountInfo.email;
+                                                     userProfile.name = accountInfo.name;
+                                                     
+                                                     
+                                                     [self createPasswordWithUserProfile:userProfile
+                                                                              oAuthToken:oAuthToken
+                                                                             accountInfo:accountInfo
+                                                                       onPasswordCreated:^{
+                                                                           [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                                               oAuthToken:oAuthToken
+                                                                                                  onAuthenticationSuccess:successCallback
+                                                                                                          failureCallback:failureCallback];
+                                                                       }];
+                                                 }
                                              }
-                                         }
-                                         failureCallback:failureCallback];
+                                             failureCallback:failureCallback];
+                         }
                      }
                      onFailure:failureCallback];
 }
