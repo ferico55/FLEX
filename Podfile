@@ -1,7 +1,9 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-target "Tokopedia" do
+use_frameworks!
+
+def common_pods
     pod 'RestKit',  '~> 0.27.0'
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
@@ -32,6 +34,10 @@ target "Tokopedia" do
     pod 'AFNetworking', '~> 3.1.0'
 end
 
+target "Tokopedia" do
+    common_pods
+end
+
 target "TokopediaTests" do
-    pod 'RestKit',  '~> 0.27.0'
+    common_pods
 end
