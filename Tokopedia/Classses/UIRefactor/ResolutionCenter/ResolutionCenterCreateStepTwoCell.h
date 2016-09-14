@@ -25,8 +25,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *prosecureLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UIStepper *quantityStepper;
-@property (strong, nonatomic) IBOutlet UILabel *quantityLabel;
 @property (strong, nonatomic) IBOutlet RSKPlaceholderTextView *problemTextView;
+@property (strong, nonatomic) IBOutlet UITextField *quantityTextField;
 
 @property (weak, nonatomic) id<ResolutionCenterCreateStepTwoCellDelegate> delegate;
 
