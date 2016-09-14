@@ -12,6 +12,7 @@
 
 @interface EtalaseRequest : NSObject
 -(void)requestEtalaseFilterWithShopId:(NSString*)shopId
+                           shopDomain:(NSString*)domain
                                  page:(NSInteger)page
                             onSuccess:(void (^)(Etalase *etalase))successCallback
                             onFailure:(void (^)(NSError *error))errorCallback;

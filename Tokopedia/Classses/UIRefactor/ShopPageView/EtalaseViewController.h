@@ -18,6 +18,7 @@
 @interface EtalaseViewController : UIViewController
 @property (strong, nonatomic) NSString* shopId;
 @property (strong, nonatomic) NSString* userId;
+@property (strong, nonatomic) NSString* shopDomain;
 
 @property (nonatomic) BOOL showOtherEtalase;
 @property (nonatomic) BOOL enableAddEtalase;

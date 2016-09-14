@@ -256,6 +256,7 @@
 
 -(void)requestCertainShopEtalase{
     [etalaseRequest requestEtalaseFilterWithShopId:_shopId
+                                        shopDomain:_shopDomain
                                               page:page
                                          onSuccess:^(Etalase *etalase) {
                                              if(page == 1){
