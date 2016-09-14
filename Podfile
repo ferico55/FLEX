@@ -2,7 +2,7 @@
 # platform :ios, "6.0"
 
 target "Tokopedia" do
-    pod 'RestKit',  '~> 0.20.0'
+    pod 'RestKit',  '~> 0.27.0'
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
     pod 'GoogleAppIndexing'
@@ -29,8 +29,9 @@ target "Tokopedia" do
     pod 'Masonry'
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
+    pod 'AFNetworking', '~> 3.1.0'
 end
 
 target "TokopediaTests" do
-    pod 'RestKit',  '~> 0.20.0'
+    pod 'RestKit',  '~> 0.27.0'
 end
