@@ -12943,6 +12943,7 @@
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */,
 				3FEF41142B3F44BF6746A1DE /* Rollout.io post-build */,
+				7041848328563DD0D68C3890 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -12962,6 +12963,7 @@
 				FC36DF9B19B0656400AF74C1 /* Frameworks */,
 				FC36DF9C19B0656400AF74C1 /* Resources */,
 				2340CF76B183AE415524ED79 /* Copy Pods Resources */,
+				817BAC840492E118911FF150 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -14347,6 +14349,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=6 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
+		};
+		7041848328563DD0D68C3890 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		817BAC840492E118911FF150 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		9852790493753292549B327E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -16089,6 +16121,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -16112,6 +16145,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
