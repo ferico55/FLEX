@@ -221,7 +221,7 @@
                                               [weakSelf alertAndResetIfQtyTextFieldBelowMin];
                                           }];
     
-    return [newText isNumber] && [newText intValue] <= [ProductDetail maximumPurchaseQuantity];
+    return [amount isNumber] && [amount intValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
 -(void)alertAndResetIfQtyTextFieldBelowMin
