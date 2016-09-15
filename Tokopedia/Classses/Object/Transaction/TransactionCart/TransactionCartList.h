@@ -19,7 +19,7 @@
 
 @property (nonatomic, strong) NSString *cart_total_logistic_fee;
 @property(nonatomic,strong) ShippingInfoShipments *cart_shipments;
-@property(nonatomic,strong) NSArray *cart_products;
+@property(nonatomic,strong) NSArray<ProductDetail*> *cart_products;
 @property (nonatomic,strong) AddressFormList *cart_destination;
 
 @property (nonatomic, strong) NSString *cart_total_cart_count;

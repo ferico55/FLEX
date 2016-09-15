@@ -57,7 +57,6 @@
     NSArray *_shipments;
     
     TokopediaNetworkManager *_networkManagerShipmentForm;
-    TokopediaNetworkManager *_networkManagerCalculate;
     TokopediaNetworkManager *_networkManagerEditAddress;
     TokopediaNetworkManager *_networkManagereditInsurance;
     
@@ -68,7 +67,6 @@
 }
 
 #define TAG_REQUEST_FORM 10
-#define TAG_REQUEST_CALCULATE 11
 #define TAG_REQUEST_EDIT_ADDRESS 12
 #define TAG_REQUEST_EDIT_INSURANCE 13
 
@@ -123,10 +121,9 @@
     [self setTextAddress:address];
     
     if (_indexPage == 0) {
-        [_networkManagerCalculate doRequest];
-        _isFinishCalculate = NO;
-        [_tableView reloadData];
+        [self doRequestFormShipment];
     }
+    
     TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
     if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
@@ -163,9 +160,68 @@
     self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
 }
 
+-(ShippingFormPostObject*)getShipmentFormPostObject{
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
 
--(NSString*)addressString:(GMSAddress*)address
-{
+    ShippingFormPostObject *object = [ShippingFormPostObject new];
+    object.addressID = [NSString stringWithFormat:@"%zd", address.address_id];
+    object.shipmentID = _selectedShipment.shipment_id;
+    object.shipmentPackageID = _selectedShipmentPackage.sp_id;
+    object.shopID = cart.cart_shop.shop_id;
+    
+    return object;
+}
+
+-(void)doRequestFormShipment {
+    
+    _isFinishCalculate = NO;
+    
+    [RequestCartShipment fetchCalculatePriceWithObject:[self objectCalculatePost] onSuccess:^(TransactionCalculatePriceResult * data) {
+        
+        _shipments = data.shipment;
+        
+        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+        NSMutableArray *shipmentIDs = [NSMutableArray new];
+        for (ShippingInfoShipments *shipment in _shipments) {
+            [shipmentIDs addObject:shipment.shipment_id?:@""];
+        }
+        NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
+        if(NSNotFound == indexShipment) {
+            NSLog(@"not found");
+            return;
+            indexShipment = 0;
+        }
+        ShippingInfoShipments *shipment = _shipments[indexShipment];
+        _selectedShipment = shipment;
+        
+        NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
+        for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
+            [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
+        }
+        NSArray *shipmentPackages = shipment.shipment_package;
+        NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
+        if(NSNotFound == indexShipmentPackage) {
+            NSLog(@"not found");
+        }
+        else{
+            ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+            _selectedShipmentPackage = shipmentPackage;
+        }
+        
+        _isFinishCalculate = YES;
+        [_tableView reloadData];
+        
+    } onFailure:^{
+        
+        _isFinishCalculate = YES;
+        [_tableView reloadData];
+        
+    }];
+}
+
+
+-(NSString*)addressString:(GMSAddress*)address {
     NSString *strSnippet = @"Lokasi Pengiriman";
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
     strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare]?:@"Lokasi pengiriman";
@@ -175,10 +231,6 @@
 
 -(void)initNetworkManager
 {
-    _networkManagerCalculate = [TokopediaNetworkManager new];
-    _networkManagerCalculate.tagRequest = TAG_REQUEST_CALCULATE;
-    _networkManagerCalculate.delegate = self;
-    
     _networkManagerEditAddress = [TokopediaNetworkManager new];
     _networkManagerEditAddress.tagRequest = TAG_REQUEST_EDIT_ADDRESS;
     _networkManagerEditAddress.delegate = self;
@@ -250,8 +302,6 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     
-    [_networkManagerCalculate requestCancel];
-    _networkManagerCalculate.delegate = nil;
     [_networkManagerEditAddress requestCancel];
     _networkManagerEditAddress.delegate = nil;
     [_networkManagereditInsurance requestCancel];
@@ -263,12 +313,6 @@
 #pragma mark - Request
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-        return [self objectManagerCalculate];
-    }
-    if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        return [self objecManagerEditAddress];
-    }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         return [self objectManagerEditInsurance];
     }
@@ -277,12 +321,6 @@
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-        return [self paramCalculate];
-    }
-    if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        return [self paramEditAddress];
-    }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         return [self paramEditInsurance];
     }
@@ -291,12 +329,6 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-        return API_TRANSACTION_CART_PATH;
-    }
-    if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        return API_ACTION_TRANSACTION_PATH;
-    }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         return API_ACTION_TRANSACTION_PATH;
     }
@@ -307,15 +339,7 @@
 {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    
-    if (tag == TAG_REQUEST_CALCULATE) {
-        TransactionCalculatePrice *calculate = stat;
-        return calculate.status;
-    }
-    if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
+
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         TransactionAction *action = stat;
         return action.status;
@@ -326,9 +350,6 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-        
-    }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         _isFinishCalculate = NO;
     }
@@ -339,10 +360,6 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-        _isFinishCalculate = YES;
-        [self requestSuccessActionCalculate:successResult withOperation:operation];
-    }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         _isFinishCalculate = YES;
         [self requestSuccessActionEditAddress:successResult withOperation:operation];
@@ -356,8 +373,6 @@
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if (tag == TAG_REQUEST_CALCULATE) {
-    }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         
     }
@@ -369,114 +384,29 @@
 }
 
 #pragma mark - Request Action Calculate Price
--(RKObjectManager*)objectManagerCalculate
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePrice class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"auto_resi":@"auto_resi"}];
-    
-    RKObjectMapping *rpxMapping = [RKObjectMapping mappingForClass:[RPX class]];
-    [rpxMapping addAttributeMappingsFromDictionary:@{@"indomaret_logo":@"indomaret_logo"}];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:rpxMapping]];
-    
-    RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
-    [shipmentsMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
-                                                       kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY,
-                                                       kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY
-                                                       ]];
-    
-    RKObjectMapping *shipmentspackageMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipmentPackage class]];
-    [shipmentspackageMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIDESCKEY,
-                                                              kTKPDSHOPSHIPMENT_APIACTIVEKEY,
-                                                              kTKPDSHOPSHIPMENT_APINAMEKEY,
-                                                              kTKPDSHOPSHIPMENT_APISPIDKEY,
-                                                              API_SHIPMENT_PRICE,
-                                                              API_SHIPMENT_PRICE_TOTAL
-                                                              ]];
-    
-    RKRelationshipMapping *resultRel= [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resultRel];
 
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
-                                                                                   toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
-                                                                                 withMapping:shipmentsMapping];
-    [resultMapping addPropertyMapping:shipmentRel];
-
-    RKRelationshipMapping *shipmentPackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY
-                                                                                     toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY
-                                                                                   withMapping:shipmentspackageMapping];
-    [shipmentsMapping addPropertyMapping:shipmentPackageRel];
+-(CalculatePostObject*)objectCalculatePost{
     
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_TRANSACTION_CART_PATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramCalculate
-{
-    NSString *action = ACTION_CALCULATE_PRICE;
-    NSString *toDoCalculate = CALCULATE_ADDRESS;
     TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    
-    NSInteger productID = [[_dataInput objectForKey:API_PRODUCT_ID_KEY]integerValue];
-    NSInteger quantity = [[_dataInput objectForKey:API_QUANTITY_KEY]integerValue];
-    NSInteger insuranceID = [[_dataInput objectForKey:API_INSURANCE_KEY]integerValue];
+    NSString *quantity = [_dataInput objectForKey:API_QUANTITY_KEY];
+    NSString *insuranceID = [_dataInput objectForKey:API_INSURANCE_KEY];
     NSString *weight = cart.cart_total_weight;
-    
+    NSString *shopID = cart.cart_shop.shop_id;
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-    NSInteger addressID = (address.address_id==0)?-1:address.address_id;
-    NSNumber *districtID = address.district_id?:@(0);
-    NSString *addressName = address.address_name?:@"";
-    NSString *addressStreet = address.address_street?:@"";
-    NSString *provinceName = address.province_name?:@"";
-    NSNumber *cityID = address.city_id?:@(0);
-    NSString *disctrictName = address.district_name?:@"";
-    NSString *postalCode = address.postal_code?:@"";
-    NSString *recieverName = address.receiver_name?:@"";
-    NSString *recieverPhone = address.receiver_phone?:@"";
     
-    NSDictionary* param = @{API_ACTION_KEY:action,
-                            API_DO_KEY : toDoCalculate,
-                            API_PRODUCT_ID_KEY:@(productID),
-                            API_DISTRICT_ID_KEY: districtID,
-                            API_ADDRESS_ID_KEY : @(addressID),
-                            API_ADDRESS_NAME_KEY: addressName,
-                            API_ADDRESS_STREET_KEY : addressStreet,
-                            API_ADDRESS_PROVINCE_KEY:provinceName,
-                            API_ADDRESS_CITY_KEY:cityID,
-                            API_ADDRESS_DISTRICT_KEY:disctrictName,
-                            API_POSTAL_CODE_KEY:postalCode,
-                            API_RECIEVER_NAME_KEY:recieverName,
-                            API_RECIEVER_PHONE_KEY:recieverPhone,
-                            API_CALCULATE_QUANTTITY_KEY:@(quantity),
-                            API_INSURANCE_KEY:@(insuranceID),
-                            //API_SHIPPING_ID_KEY:@(shippingID),
-                            //API_SHIPPING_PRODUCT_KEY:@(shippingProduct),
-                            API_CALCULATE_WEIGHT_KEY:weight,
-                            kTKPD_SHOPIDKEY:cart.cart_shop.shop_id?:@"",
-                            kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY]?:@(0)
-                            };
-    return param;
+    CalculatePostObject *object = [CalculatePostObject new];
+    object.productID    = [cart.cart_products firstObject].product_id;
+    object.quantity     = quantity;
+    object.weight       = weight;
+    object.shopID       = shopID;
+    object.insuranceID  = insuranceID;
+    object.addressID    = [NSString stringWithFormat:@"%zd",address.address_id];
+    object.postalCode   = address.address_postal;
+    object.districtID   = address.address_district_id;
+    
+    return object;
 }
+
 - (IBAction)tapEditLocation:(id)sender {
     if (_isFinishCalculate) {
         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
@@ -484,168 +414,7 @@
     }
 }
 
--(void)requestSuccessActionCalculate:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionCalculatePrice *calculate = stat;
-    BOOL status = [calculate.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(calculate.message_error)
-        {
-            NSArray *array = calculate.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *view = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-            [view show];
-        }
-        else
-        {
-            _isFinishCalculate = YES;
-            NSArray *shipments = calculate.result.shipment;
-            _shipments = shipments;
-            
-            NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-            for (ShippingInfoShipments *shipment in _shipments) {
-                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
-                    _selectedShipment = shipment;
-                }
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
-                        _selectedShipmentPackage = package;
-                    }
-                    if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
-                        [shipmentPackages addObject:package];
-                    }
-                }
-                
-                if ([calculate.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
-                    shipment.auto_resi_image = calculate.result.rpx.indomaret_logo;
-                } else {
-                    shipment.auto_resi_image = @"";
-                }
-
-                
-                if (shipmentPackages.count>0) {
-                    shipment.shipment_package = shipmentPackages;
-                    [shipmentSupporteds addObject:shipment];
-                }
-            }
-            
-            _shipments = shipmentSupporteds;
-            
-            if (_isFirstLoad)
-            {
-                TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-                NSMutableArray *shipmentIDs = [NSMutableArray new];
-                for (ShippingInfoShipments *shipment in shipments) {
-                    [shipmentIDs addObject:shipment.shipment_id?:@""];
-                }
-                NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
-                if(NSNotFound == indexShipment) {
-                    NSLog(@"not found");
-                    return;
-                    indexShipment = 0;
-                }
-                ShippingInfoShipments *shipment = shipments[indexShipment];
-                _selectedShipment = shipment;
-                
-                NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
-                for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
-                    [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
-                }
-                NSArray *shipmentPackages = shipment.shipment_package;
-                NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
-                if(NSNotFound == indexShipmentPackage) {
-                    NSLog(@"not found");
-                }
-                else{
-                    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                    _selectedShipmentPackage = shipmentPackage;
-                }
-            }
-            else
-            {
-                _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
-                _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
-            }
-            
-            [_networkManagerEditAddress doRequest];
-            [_tableView reloadData];
-        }
-    }
-}
-
 #pragma mark - Request Action Edit Address
-
--(RKObjectManager*)objecManagerEditAddress
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramEditAddress
-{
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    ShippingInfoShipments *shipment = _selectedShipment;
-    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
-    
-    NSString *action = ACTION_EDIT_ADDRESS_CART;
-    NSString *shopID = cart.cart_shop.shop_id;//[[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSInteger oldAddressID = cart.cart_destination.address_id;
-    NSString * oldShipmentID = cart.cart_shipments.shipment_id;
-    NSString * oldShipmentPackageID = cart.cart_shipments.shipment_package_id;
-    NSInteger addressID = address.address_id?:(-1);
-    NSString * shipmentID = shipment.shipment_id;
-    NSString * shipmentPackageID =shipmentPackage.sp_id?:@"";
-    NSString *receiverName = address.receiver_name?:@"";
-    NSString *recieverPhone = address.receiver_phone?:@"";
-    NSString *addressName = address.address_name?:@"";
-    NSString *addressStreet = address.address_street?:@"";
-    NSNumber *districtID = address.district_id?:@(0);
-    NSString *postalcode = address.postal_code?:@"";
-    NSNumber *cityID = address.city_id?:@(0);
-    NSNumber *provinceID = address.province_id?:@(0);
-    
-    NSDictionary* param = @{API_ACTION_KEY:action,
-                            kTKPD_SHOPIDKEY:shopID,
-                            API_OLD_ADDRESS_ID_KEY:@(oldAddressID),
-                            API_OLD_SHIPMENT_ID_KEY : oldShipmentID,
-                            API_OLD_SHIPMENT_PACKAGE_ID_KEY:oldShipmentPackageID,
-                            API_ADDRESS_ID_KEY : @(addressID),
-                            API_SHIPMENT_ID_KEY:shipmentID,
-                            API_SHIPMENT_PACKAGE_ID:shipmentPackageID,
-                            API_RECIEVER_NAME_KEY:receiverName,
-                            API_RECIEVER_PHONE_KEY:recieverPhone,
-                            API_ADDRESS_NAME_KEY:addressName,
-                            API_ADDRESS_STREET_KEY:addressStreet,
-                            API_DISTRICT_ID_KEY:districtID,
-                            API_POSTAL_CODE_KEY:postalcode,
-                            API_CITY_ID_KEY :cityID,
-                            API_PROVINCE_ID:provinceID
-                            };
-    return param;
-}
 
 -(void)requestSuccessActionEditAddress:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -656,73 +425,12 @@
     
     if (status) {
         if (action.result.is_success == 1) {
-            NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-            
-            if (!_isFirstLoad)
-            {
-                if (_isRequestForShipment) {
-                    _isRequestForShipment = NO;
-                    array = @[@"Anda telah berhasil mengubah kurir pengiriman"];
-                }
-                else
-                {
-                    _isFinishCalculate = NO;
-                    array = @[@"Anda telah berhasil mengubah alamat tujuan"];
-                }
-                
-                StickyAlertView *view = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-                [view show];
-                
-                TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                cart.cart_destination = address;
-                cart.cart_shipments = _selectedShipment;
-                cart.cart_shipments.shipment_package = _selectedShipment.shipment_package;
-                cart.cart_shipments.shipment_package_id = _selectedShipmentPackage.sp_id;
-                cart.cart_shipments.shipment_package_name = _selectedShipmentPackage.name;
-                
-                [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
-                [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-                
-                NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
-                                           DATA_CART_DETAIL_LIST_KEY: cart};
-                
-                [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
-                [_tableView reloadData];
-            }
-            
-            _isFirstLoad = NO;
+
 
         }
         else
         {
-            NSArray *array = action.message_error;
-            if (array == nil) {
-                if (_isRequestForShipment) {
-                    _isRequestForShipment = NO;
-                    array = @[@"Gagal mengubah kurir pengiriman"];
-                }
-                else
-                {
-                    array = @[@"Gagal mengubah alamat tujuan"];
-                }
-            }
-            if (!_isFirstLoad)
-            {
-                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                [alert show];
-                TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-                [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
-                _selectedShipment = cart.cart_shipments;
-                
-                ShippingInfoShipmentPackage *package = [ShippingInfoShipmentPackage new];
-                package.name = cart.cart_shipments.shipment_package_name;
-                package.sp_id = cart.cart_shipments.shipment_package_id;
-                _selectedShipmentPackage = package;
-                
-                [_tableView reloadData];
-            }
-            _isFirstLoad = NO;
+
         }
     }
 
@@ -1014,17 +722,170 @@
 
 -(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
 {
-    [_networkManagerCalculate doRequest];
+    [self doRequestCalculateCart];
+}
+
+-(void)doRequestCalculateCart{
+    _isFinishCalculate = NO;
+    [_tableView reloadData];
+    
+    [RequestCartShipment fetchCalculatePriceWithObject:[self objectCalculatePost]
+                                             onSuccess:^(TransactionCalculatePriceResult * data) {
+        
+        _isFinishCalculate = YES;
+        NSArray *shipments = data.shipment;
+        _shipments = shipments;
+        
+        NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+        for (ShippingInfoShipments *shipment in _shipments) {
+            if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                _selectedShipment = shipment;
+            }
+            NSMutableArray *shipmentPackages = [NSMutableArray new];
+            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                    _selectedShipmentPackage = package;
+                }
+                if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
+                    [shipmentPackages addObject:package];
+                }
+            }
+            
+            if ([data.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                shipment.auto_resi_image = data.rpx.indomaret_logo;
+            } else {
+                shipment.auto_resi_image = @"";
+            }
+            
+            
+            if (shipmentPackages.count>0) {
+                shipment.shipment_package = shipmentPackages;
+                [shipmentSupporteds addObject:shipment];
+            }
+        }
+        
+        _shipments = shipmentSupporteds;
+        
+        if (_isFirstLoad)
+        {
+            TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+            NSMutableArray *shipmentIDs = [NSMutableArray new];
+            for (ShippingInfoShipments *shipment in shipments) {
+                [shipmentIDs addObject:shipment.shipment_id?:@""];
+            }
+            NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
+            if(NSNotFound == indexShipment) {
+                NSLog(@"not found");
+                return;
+                indexShipment = 0;
+            }
+            ShippingInfoShipments *shipment = shipments[indexShipment];
+            _selectedShipment = shipment;
+            
+            NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
+            for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
+                [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
+            }
+            NSArray *shipmentPackages = shipment.shipment_package;
+            NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
+            if(NSNotFound == indexShipmentPackage) {
+                NSLog(@"not found");
+            }
+            else{
+                ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+                _selectedShipmentPackage = shipmentPackage;
+            }
+        }
+        else
+        {
+            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
+        }
+        
+        [self doRequestEditAddress];
+        [_tableView reloadData];
+        
+    } onFailure:^{
+        _isFinishCalculate = YES;
+        [_tableView reloadData];
+    }];
+}
+
+-(CartEditAddressPostObject*)editAddressObjectPost{
+    
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    
+    CartEditAddressPostObject *object = [CartEditAddressPostObject new];
+    object.shopID = cart.cart_shop.shop_id;
+    object.oldAddressID = [NSString stringWithFormat:@"%zd",cart.cart_destination.address_id];
+    object.oldShipmentID = [NSString stringWithFormat:@"%zd",cart.cart_shipments.shipment_id];
+    object.oldShipmentPackageID = [NSString stringWithFormat:@"%zd",cart.cart_shipments.shipment_package_id];
+    object.addressID = [NSString stringWithFormat:@"%zd",address.address_id];
+    object.addressName = address.address_name;
+    object.addressStreet = address.address_street;
+    object.provinceID = [address.province_id stringValue];
+    object.cityID = [address.city_id stringValue];
+    object.districtID = address.address_district_id;
+    object.receiverName = address.receiver_name;
+    object.receiverPhone = address.receiver_phone;
+    object.postalCode = address.postal_code;
+    object.shipmentID = _selectedShipment.shipment_id;
+    object.shipmentPackageID = _selectedShipmentPackage.sp_id;
+    
+    return object;
+}
+
+-(void)doRequestEditAddress{
+    [RequestCartShipment fetchEditAddress:[self editAddressObjectPost]
+                                onSuccess:^(TransactionAction * response) {
+                                    
+                                    if (!_isFirstLoad)
+                                    {
+                                        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+                                        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                                        cart.cart_destination = address;
+                                        cart.cart_shipments = _selectedShipment;
+                                        cart.cart_shipments.shipment_package = _selectedShipment.shipment_package;
+                                        cart.cart_shipments.shipment_package_id = _selectedShipmentPackage.sp_id;
+                                        cart.cart_shipments.shipment_package_name = _selectedShipmentPackage.name;
+                                        
+                                        [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
+                                        [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+                                        
+                                        NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
+                                                                   DATA_CART_DETAIL_LIST_KEY: cart};
+                                        
+                                        [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+                                        [_tableView reloadData];
+                                    }
+                                    
+                                    _isFirstLoad = NO;
+                                    
+    } onFailure:^{
+        
+        if (!_isFirstLoad) {
+            TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+            [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
+            _selectedShipment = cart.cart_shipments;
+            
+            ShippingInfoShipmentPackage *package = [ShippingInfoShipmentPackage new];
+            package.name = cart.cart_shipments.shipment_package_name;
+            package.sp_id = cart.cart_shipments.shipment_package_id;
+            _selectedShipmentPackage = package;
+            
+            [_tableView reloadData];
+        }
+        _isFirstLoad = NO;
+    }];
 }
 
 -(void)requestSuccessAddAddress:(AddressFormList *)address
 {
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
-    [_networkManagerCalculate doRequest];
-    
     [_tableView reloadData];
-    [_networkManagerCalculate doRequest];
+    [self doRequestCalculateCart];
 }
 
 -(void)chooseAddress
@@ -1109,7 +970,7 @@
 {
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     address.address_country = address.country_name?address.country_name:address.address_country;
-    address.address_district = address.district_name;
+    address.address_district_id = [address.district_id stringValue];
     address.address_postal = address.postal_code;
     address.address_city = address.city_name;
     address.address_province = address.province_name;
@@ -1120,7 +981,7 @@
     }
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
-    [_networkManagerCalculate doRequest];
+    [self doRequestEditAddress];
     
     [_tableView reloadData];
 }

@@ -66,7 +66,11 @@
                       @"addr_id",
                       @"addr_name",
                       @"longitude",
-                      @"latitude"];
+                      @"latitude",
+                      @"address_district_id",
+                      @"address_province_id",
+                      @"address_city_id"
+                      ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

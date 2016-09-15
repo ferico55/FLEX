@@ -36,6 +36,10 @@
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
 
+@property (nonatomic, strong) NSString *address_district_id;
+@property (nonatomic, strong) NSString *address_province_id;
+@property (nonatomic, strong) NSString *address_city_id;
+
 @property (nonatomic, strong) AddressViewModel *viewModel;
 
 @end

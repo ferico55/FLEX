@@ -1162,11 +1162,13 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
+        if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
+            [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
+        }
         return _headerInfoView;
     }
     return nil;
 }
-
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {

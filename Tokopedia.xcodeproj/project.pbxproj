@@ -22,6 +22,7 @@
 		347917F01D87A15500A3324E /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790E011D87A15400A3324E /* Tokopedia-Info.plist */; };
 		347917F11D87A15500A3324E /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 34790E031D87A15400A3324E /* Tokopedia.entitlements */; };
 		347917F21D87A15500A3324E /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34790E041D87A15400A3324E /* Tokopedia.xcworkspace */; };
+		458A10E91D8927B300181E2C /* RequestCartShipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458A10E81D8927B300181E2C /* RequestCartShipment.swift */; };
 		45B828501D87EEB300458EB9 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818851D87EEAC00458EB9 /* TPAnalytics.m */; };
 		45B828511D87EEB300458EB9 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818871D87EEAC00458EB9 /* TPLocalytics.m */; };
 		45B828521D87EEB300458EB9 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8188A1D87EEAC00458EB9 /* URLCacheAlert.m */; };
@@ -2609,6 +2610,9 @@
 		45B832681D87EEB400458EB9 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45B8284B1D87EEB300458EB9 /* vt-iOSlib-1.0.1.tar.gz */; };
 		45B832691D87EEB400458EB9 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45B8284C1D87EEB300458EB9 /* vt-iOSlib-1.0.1.zip */; };
 		45B8326A1D87EEB400458EB9 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8284F1D87EEB300458EB9 /* XYPieChart.m */; };
+		45F2D36F1D8A76A0000EAD80 /* CartEditShipmentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F2D36E1D8A76A0000EAD80 /* CartEditShipmentResponse.swift */; };
+		45F2D3711D8A76F5000EAD80 /* CartShipmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F2D3701D8A76F5000EAD80 /* CartShipmentData.swift */; };
+		45F2D3731D8A7856000EAD80 /* CartShipmentForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F2D3721D8A7856000EAD80 /* CartShipmentForm.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659C1D7EB80600BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -2693,6 +2697,7 @@
 		34790E041D87A15400A3324E /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		3479FE751D87A14800A3324E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3479FE761D87A14800A3324E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		458A10E81D8927B300181E2C /* RequestCartShipment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestCartShipment.swift; sourceTree = "<group>"; };
 		45B818841D87EEAC00458EB9 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45B818851D87EEAC00458EB9 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45B818861D87EEAC00458EB9 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6420,6 +6425,9 @@
 		45B8284C1D87EEB300458EB9 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		45B8284E1D87EEB300458EB9 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		45B8284F1D87EEB300458EB9 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		45F2D36E1D8A76A0000EAD80 /* CartEditShipmentResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartEditShipmentResponse.swift; sourceTree = "<group>"; };
+		45F2D3701D8A76F5000EAD80 /* CartShipmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartShipmentData.swift; sourceTree = "<group>"; };
+		45F2D3721D8A7856000EAD80 /* CartShipmentForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartShipmentForm.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -8317,6 +8325,7 @@
 		45B81C951D87EEAE00458EB9 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				45F2D36D1D8A767F000EAD80 /* CartEditShipmentForm */,
 				45B81C961D87EEAE00458EB9 /* ListRekeningBank.h */,
 				45B81C971D87EEAE00458EB9 /* ListRekeningBank.m */,
 				45B81C981D87EEAE00458EB9 /* Rates */,
@@ -11370,6 +11379,7 @@
 				45B824141D87EEB000458EB9 /* TransactionCartRootViewController.h */,
 				45B824151D87EEB000458EB9 /* TransactionCartRootViewController.m */,
 				45B824161D87EEB000458EB9 /* TransactionCartRootViewController.xib */,
+				458A10E81D8927B300181E2C /* RequestCartShipment.swift */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
@@ -12831,6 +12841,16 @@
 				45B8284F1D87EEB300458EB9 /* XYPieChart.m */,
 			);
 			path = XYPieChart;
+			sourceTree = "<group>";
+		};
+		45F2D36D1D8A767F000EAD80 /* CartEditShipmentForm */ = {
+			isa = PBXGroup;
+			children = (
+				45F2D36E1D8A76A0000EAD80 /* CartEditShipmentResponse.swift */,
+				45F2D3701D8A76F5000EAD80 /* CartShipmentData.swift */,
+				45F2D3721D8A7856000EAD80 /* CartShipmentForm.swift */,
+			);
+			path = CartEditShipmentForm;
 			sourceTree = "<group>";
 		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
@@ -14392,6 +14412,7 @@
 				45B828FF1D87EEB300458EB9 /* FavoriteShopActionResult.m in Sources */,
 				45B82C771D87EEB300458EB9 /* ProductResolutionViewModel.swift in Sources */,
 				45B82AF71D87EEB300458EB9 /* ObserveOn.swift in Sources */,
+				45F2D3731D8A7856000EAD80 /* CartShipmentForm.swift in Sources */,
 				45B82EA81D87EEB300458EB9 /* RequestCart.m in Sources */,
 				45B829951D87EEB300458EB9 /* ProfileEditForm.m in Sources */,
 				45B82E291D87EEB300458EB9 /* EditShopNoteViewCell.m in Sources */,
@@ -14510,6 +14531,7 @@
 				45B829251D87EEB300458EB9 /* InboxMessageList.m in Sources */,
 				45B82AA41D87EEB300458EB9 /* DKCamera.swift in Sources */,
 				45B82CC91D87EEB300458EB9 /* ShipmentLocationPickupViewCell.m in Sources */,
+				458A10E91D8927B300181E2C /* RequestCartShipment.swift in Sources */,
 				45B828761D87EEB300458EB9 /* NSUserDefaultCategory.m in Sources */,
 				45B82A331D87EEB300458EB9 /* ShopShipping.m in Sources */,
 				45B82D5C1D87EEB300458EB9 /* PulsaStatus.swift in Sources */,
@@ -14742,6 +14764,7 @@
 				45B82A081D87EEB300458EB9 /* NotesResult.swift in Sources */,
 				45B82E8E1D87EEB300458EB9 /* TransactionCartCell.m in Sources */,
 				45B8295D1D87EEB300458EB9 /* LikeDislikePostResult.m in Sources */,
+				45F2D3711D8A76F5000EAD80 /* CartShipmentData.swift in Sources */,
 				45B82EA41D87EEB300458EB9 /* TransactionCartResultPaymentCell.m in Sources */,
 				45B82D6C1D87EEB300458EB9 /* ResolutionCenterCreatePOSTResponse.m in Sources */,
 				45B8295C1D87EEB300458EB9 /* LikeDislikePost.m in Sources */,
@@ -15480,6 +15503,7 @@
 				45B82D161D87EEB300458EB9 /* HelpfulReviewRequest.m in Sources */,
 				45B828C71D87EEB300458EB9 /* DepositSummary.m in Sources */,
 				45B82C3A1D87EEB300458EB9 /* HistoryProductViewController.m in Sources */,
+				45F2D36F1D8A76A0000EAD80 /* CartEditShipmentResponse.swift in Sources */,
 				45B829051D87EEB300458EB9 /* GoogleDistanceMatrixElement.m in Sources */,
 				45B82AFB1D87EEB300458EB9 /* Reduce.swift in Sources */,
 				45B82B2F1D87EEB300458EB9 /* CurrentThreadScheduler.swift in Sources */,
