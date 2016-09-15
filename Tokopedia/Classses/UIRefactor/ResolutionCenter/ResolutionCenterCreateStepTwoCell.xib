@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -11,7 +11,6 @@
             <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
@@ -102,12 +101,6 @@
                                     <action selector="stepperValueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="8MH-Zr-9c3"/>
                                 </connections>
                             </stepper>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHD-tB-ih8">
-                                <rect key="frame" x="197" y="18" width="6" height="12"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QiR-kW-ZCb" customClass="UIDownPicker">
                                 <rect key="frame" x="8" y="45" width="304" height="30"/>
                                 <constraints>
@@ -137,22 +130,32 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tulis alasan Anda disini..."/>
                                 </userDefinedRuntimeAttributes>
                             </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-X3-0EX">
+                                <rect key="frame" x="153" y="8" width="50" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Dqx-bP-FAh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VFg-T1-Hgl" firstAttribute="leading" secondItem="a73-Im-AyE" secondAttribute="leading" constant="8" id="1Kw-kF-NcO"/>
-                            <constraint firstItem="LHD-tB-ih8" firstAttribute="top" secondItem="a73-Im-AyE" secondAttribute="top" constant="18" id="704-L7-vro"/>
+                            <constraint firstItem="PtP-X3-0EX" firstAttribute="centerY" secondItem="I4s-O4-2gE" secondAttribute="centerY" id="C0d-oX-fGQ"/>
                             <constraint firstAttribute="trailing" secondItem="I4s-O4-2gE" secondAttribute="trailing" constant="8" id="CpV-4F-Ccj"/>
-                            <constraint firstItem="I4s-O4-2gE" firstAttribute="leading" secondItem="LHD-tB-ih8" secondAttribute="trailing" constant="15" id="Czc-RR-3r6"/>
                             <constraint firstAttribute="bottom" secondItem="VFg-T1-Hgl" secondAttribute="bottom" constant="8" id="KsR-wc-c1v"/>
                             <constraint firstAttribute="trailing" secondItem="QiR-kW-ZCb" secondAttribute="trailing" constant="8" id="P7I-ez-CIz"/>
+                            <constraint firstItem="PtP-X3-0EX" firstAttribute="bottom" secondItem="I4s-O4-2gE" secondAttribute="bottom" id="QW4-Ox-J7A"/>
                             <constraint firstItem="I4s-O4-2gE" firstAttribute="top" secondItem="a73-Im-AyE" secondAttribute="top" constant="8" id="YG4-xr-OWt"/>
                             <constraint firstItem="QiR-kW-ZCb" firstAttribute="top" secondItem="I4s-O4-2gE" secondAttribute="bottom" constant="8" id="Yg9-NQ-4MP"/>
                             <constraint firstAttribute="trailing" secondItem="VFg-T1-Hgl" secondAttribute="trailing" constant="8" id="ctW-x7-MNi"/>
+                            <constraint firstItem="I4s-O4-2gE" firstAttribute="leading" secondItem="PtP-X3-0EX" secondAttribute="trailing" constant="15" id="imF-F7-yiH"/>
                             <constraint firstItem="Gd4-5N-B29" firstAttribute="leading" secondItem="a73-Im-AyE" secondAttribute="leading" constant="8" id="jWB-At-sjL"/>
                             <constraint firstItem="Gd4-5N-B29" firstAttribute="top" secondItem="a73-Im-AyE" secondAttribute="top" constant="8" id="pme-Eh-r6Q"/>
                             <constraint firstItem="QiR-kW-ZCb" firstAttribute="leading" secondItem="a73-Im-AyE" secondAttribute="leading" constant="8" id="sMa-m0-bWR"/>
                             <constraint firstItem="VFg-T1-Hgl" firstAttribute="top" secondItem="QiR-kW-ZCb" secondAttribute="bottom" constant="8" id="yny-ht-HrJ"/>
+                            <constraint firstItem="PtP-X3-0EX" firstAttribute="top" secondItem="I4s-O4-2gE" secondAttribute="top" id="zup-kx-Xcb"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -174,8 +177,8 @@
                 <outlet property="productName" destination="3go-XQ-EaF" id="Qve-MC-qlv"/>
                 <outlet property="prosecureBadge" destination="0LN-8o-8B8" id="3yB-sh-O8I"/>
                 <outlet property="prosecureLabel" destination="TkT-Ob-2Sd" id="j7E-09-89C"/>
-                <outlet property="quantityLabel" destination="LHD-tB-ih8" id="T4O-gE-goV"/>
                 <outlet property="quantityStepper" destination="I4s-O4-2gE" id="UGg-by-BwU"/>
+                <outlet property="quantityTextField" destination="PtP-X3-0EX" id="WTM-Ux-QZl"/>
                 <outlet property="troublePicker" destination="QiR-kW-ZCb" id="Gg6-fb-rEe"/>
             </connections>
             <point key="canvasLocation" x="299" y="211"/>

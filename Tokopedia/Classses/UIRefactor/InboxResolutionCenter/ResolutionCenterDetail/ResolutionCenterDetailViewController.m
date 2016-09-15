@@ -148,7 +148,8 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
+    _tableView.sectionHeaderHeight = UITableViewAutomaticDimension;
+    _tableView.estimatedSectionHeaderHeight = 2;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -1162,10 +1163,11 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
-            [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
+        NSString * disputeInfo = _resolutionDetail.resolution_dispute.dispute_split_info;
+        if (![disputeInfo isEqualToString:@"0"]) {
+            _infoLabel.text = disputeInfo;
+            return _headerInfoView;
         }
-        return _headerInfoView;
     }
     return nil;
 }

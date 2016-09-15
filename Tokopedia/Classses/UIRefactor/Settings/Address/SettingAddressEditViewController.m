@@ -417,8 +417,12 @@
     
     [[self getNetworkManager] requestWithBaseUrl:[NSString v4Url] path:[self getPath] method:[self getRequestMethod] parameter:[self getParameter]  mapping: [ProfileSettings mapping ] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         [self requestSuccessActionAddAddress:successResult withOperation:operation];
+        _barbuttonsave.enabled = YES;
+        self.navigationItem.rightBarButtonItem = _barbuttonsave;
     } onFailure:^(NSError *errorResult) {
         [self requestFailureActionAddAddress:errorResult];
+        _barbuttonsave.enabled = YES;
+        self.navigationItem.rightBarButtonItem = _barbuttonsave;
     }];
 }
 

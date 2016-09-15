@@ -157,6 +157,8 @@ ImageSearchRequestDelegate
     NSArray<CategoryDetail*> *_selectedCategories;
     
     NSString *_rootCategoryID;
+    
+    NSString *_defaultSearchCategory;
 }
 
 #pragma mark - Initialization
@@ -188,6 +190,9 @@ ImageSearchRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
+    _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
+;
+
     
     _start = 0;
     
@@ -912,8 +917,11 @@ ImageSearchRequestDelegate
           for (ListFilter *filter in _filterResponse.filter){
               if ([filter.title  isEqual: @"Kategori"]){
                   if (filter.isMultipleSelect == NO) {
-                      NSLog(@"%@", [selectedCategories objectAtIndex: 0].name );
-                      [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                      if (selectedCategories.count > 0) {
+                          [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                      } else {
+                          [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
+                      }
                   }
               }
           }
