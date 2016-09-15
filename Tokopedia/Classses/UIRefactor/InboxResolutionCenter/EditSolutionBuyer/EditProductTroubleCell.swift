@@ -61,8 +61,9 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate, UITextFieldDe
         
         troubleDownPicker.addTarget(self, action: #selector(EditProductTroubleCell.troubleDownPickerSelected(_:)), forControlEvents: .ValueChanged)
         
-        quantityStepper.value = Double(viewModel.productQuantity)!
         quantityStepper.maximumValue = Double(viewModel.maxQuantity)!
+        quantityStepper.value = Double(viewModel.productQuantity)!
+        
     }
     
     func troubleDownPickerSelected(sender : DownPicker){

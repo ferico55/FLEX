@@ -102,11 +102,23 @@ UIPickerViewDelegate
         
         [cell.productName setTitle:currentProduct.pt_product_name forState:UIControlStateNormal];
         [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.pt_primary_photo]];
-        cell.quantityLabel.text = _currentStepperValue[indexPath.row].stringValue;
+        cell.quantityTextField.text = _currentStepperValue[indexPath.row].stringValue;
+        [cell.quantityTextField setBk_shouldChangeCharactersInRangeWithReplacementStringBlock:^BOOL(UITextField * textField, NSRange range, NSString *string) {
+            NSString * totalAmount = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+            if ([totalAmount integerValue] > [currentProduct.pt_quantity integerValue] || [string rangeOfCharacterFromSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location != NSNotFound) {
+                return NO;
+            }
+            
+            ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
+            postProduct.quantity = totalAmount?[NSString stringWithFormat:@"%@", @(totalAmount.integerValue)]:@"0";
+            _currentStepperValue[indexPath.row] = @(totalAmount.integerValue);
+            return YES;
+        }];
+        
+        cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
         cell.quantityStepper.value = _currentStepperValue[indexPath.row].integerValue;
         cell.quantityStepper.stepValue = 1.0f;
         cell.quantityStepper.minimumValue = 1;
-        cell.quantityStepper.maximumValue = [currentProduct.pt_quantity integerValue];
         cell.quantityStepper.tag = indexPath.row;
         
         cell.delegate = self;
@@ -214,8 +226,13 @@ UIPickerViewDelegate
 #pragma mark - Request
 -(BOOL)verifyForm{
     for(ResolutionCenterCreatePOSTProduct *prod in _result.postObject.product_list){
-        if([prod.trouble_id isEqualToString:@""]){            
-            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah untuk produk yang ingin di komplain."]];
+        if([[prod.quantity stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqual:@"0"]) {
+            [StickyAlertView showErrorMessage:@[@"Mohon masukkan jumlah produk yang ingin dikomplain"]];
+            return NO;
+        }
+        
+        if([prod.trouble_id isEqualToString:@""]){
+            [StickyAlertView showErrorMessage:@[@"Mohon pilih masalah untuk produk yang ingin dikomplain."]];
             return NO;
         }
     }
