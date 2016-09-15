@@ -1019,7 +1019,7 @@ typedef enum
     NSString *amount = _productQuantityTextField.text;
     amount = [amount stringByAppendingString:text];
     
-    return [newText isNumber] && [newText integerValue] <= [ProductDetail maximumPurchaseQuantity];
+    return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
 #pragma mark - Text View Delegate
