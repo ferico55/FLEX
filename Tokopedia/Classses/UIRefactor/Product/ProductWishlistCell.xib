@@ -77,19 +77,19 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Victory" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5K-Pe-vVV">
-                                <rect key="frame" x="7" y="196" width="131" height="15"/>
+                                <rect key="frame" x="7" y="196" width="69" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakarta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKp-Ma-mvF">
-                                <rect key="frame" x="17" y="214" width="60" height="13"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Malang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKp-Ma-mvF">
+                                <rect key="frame" x="17" y="214" width="60" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HP2-b5-WIV" customClass="TKPDStackView">
-                                <rect key="frame" x="77" y="213" width="60" height="14"/>
+                                <rect key="frame" x="77" y="-44" width="60" height="14"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="1cC-R8-omu"/>
@@ -97,7 +97,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="NLM-gg-oMC">
-                                <rect key="frame" x="7" y="215" width="10" height="10"/>
+                                <rect key="frame" x="7" y="216" width="10" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="10" id="3rl-Xu-hAp"/>
                                     <constraint firstAttribute="height" constant="10" id="At1-0i-yWi"/>
@@ -153,11 +153,11 @@
                             <constraint firstItem="FOQ-ii-Zdl" firstAttribute="leading" secondItem="Idk-87-dsS" secondAttribute="leading" constant="7" id="4YQ-k4-SRq"/>
                             <constraint firstItem="uNV-gk-lCp" firstAttribute="centerY" secondItem="FOQ-ii-Zdl" secondAttribute="centerY" id="4uO-W3-DlR"/>
                             <constraint firstItem="NKp-Ma-mvF" firstAttribute="top" secondItem="m5K-Pe-vVV" secondAttribute="bottom" constant="3" id="7F0-57-fbA"/>
-                            <constraint firstItem="NLM-gg-oMC" firstAttribute="top" secondItem="m5K-Pe-vVV" secondAttribute="bottom" constant="3" id="8fa-Wo-Upp"/>
+                            <constraint firstItem="NLM-gg-oMC" firstAttribute="top" secondItem="m5K-Pe-vVV" secondAttribute="bottom" constant="5" id="8fa-Wo-Upp"/>
                             <constraint firstAttribute="trailing" secondItem="RQc-tU-Kr9" secondAttribute="trailing" constant="8" id="BW7-6Q-KR4"/>
                             <constraint firstAttribute="trailing" secondItem="fxd-Cw-NAO" secondAttribute="trailing" constant="7" id="COs-Lz-v3i"/>
                             <constraint firstItem="NLM-gg-oMC" firstAttribute="centerY" secondItem="NKp-Ma-mvF" secondAttribute="centerY" id="EgG-0X-3Zm"/>
-                            <constraint firstItem="R9x-Jm-WYp" firstAttribute="top" secondItem="NKp-Ma-mvF" secondAttribute="bottom" constant="7" id="EyK-QT-ggo"/>
+                            <constraint firstItem="R9x-Jm-WYp" firstAttribute="top" secondItem="NKp-Ma-mvF" secondAttribute="bottom" constant="5" id="EyK-QT-ggo"/>
                             <constraint firstItem="NLM-gg-oMC" firstAttribute="centerY" secondItem="NKp-Ma-mvF" secondAttribute="centerY" id="FxD-QP-PFU"/>
                             <constraint firstItem="NLM-gg-oMC" firstAttribute="leading" secondItem="Idk-87-dsS" secondAttribute="leading" constant="7" id="Ieu-Tk-zI0"/>
                             <constraint firstItem="HP2-b5-WIV" firstAttribute="leading" secondItem="NKp-Ma-mvF" secondAttribute="trailing" id="LfS-6z-QO0"/>
@@ -166,7 +166,7 @@
                             <constraint firstItem="DVO-vT-ijw" firstAttribute="top" secondItem="Idk-87-dsS" secondAttribute="top" constant="7" id="TIs-rE-VKC"/>
                             <constraint firstItem="bdt-TS-Ynj" firstAttribute="top" secondItem="fxd-Cw-NAO" secondAttribute="bottom" id="a0h-ae-lcN"/>
                             <constraint firstAttribute="bottom" secondItem="m5K-Pe-vVV" secondAttribute="bottom" constant="17.5" id="ah4-r2-Egr"/>
-                            <constraint firstItem="RQc-tU-Kr9" firstAttribute="top" secondItem="NKp-Ma-mvF" secondAttribute="bottom" constant="7" id="b1t-IC-RTu"/>
+                            <constraint firstItem="RQc-tU-Kr9" firstAttribute="top" secondItem="NKp-Ma-mvF" secondAttribute="bottom" constant="5" id="b1t-IC-RTu"/>
                             <constraint firstAttribute="trailing" secondItem="DVO-vT-ijw" secondAttribute="trailing" constant="7" id="dc8-m2-CwH"/>
                             <constraint firstItem="bdt-TS-Ynj" firstAttribute="leading" secondItem="Idk-87-dsS" secondAttribute="leading" constant="7" id="f3W-m2-vyx"/>
                             <constraint firstItem="HP2-b5-WIV" firstAttribute="centerY" secondItem="NKp-Ma-mvF" secondAttribute="centerY" id="hCr-Tu-TWN"/>
@@ -203,9 +203,11 @@
                                 <exclude reference="REW-cJ-xUU"/>
                                 <exclude reference="qcb-nU-hDY"/>
                                 <exclude reference="u36-Xw-0DB"/>
+                                <exclude reference="EgG-0X-3Zm"/>
                                 <exclude reference="FxD-QP-PFU"/>
                                 <exclude reference="j05-Yd-xKk"/>
                                 <exclude reference="xdn-P2-785"/>
+                                <exclude reference="hCr-Tu-TWN"/>
                             </mask>
                         </variation>
                     </view>
