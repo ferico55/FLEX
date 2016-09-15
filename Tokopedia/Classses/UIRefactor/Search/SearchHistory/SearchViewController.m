@@ -392,6 +392,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         [TPAnalytics trackSearchWithAction:actionForTracker keyword:searchSuggestionItem.keyword];
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
+        [_searchBar setText:searchSuggestionItem.keyword];
         [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
     }
 }
