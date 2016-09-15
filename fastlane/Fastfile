@@ -8,7 +8,7 @@ def build_app
   build_number = Time.new.strftime("%Y%m%d%H%M")
   increment_build_number build_number: build_number
 
-  gym(scheme: "Tokopedia", clean: true)  
+  gym(scheme: "Tokopedia", clean: true, use_legacy_build_api: true)  
 
   commit_version_bump(
     message: 'Version Bump by fastlane',
