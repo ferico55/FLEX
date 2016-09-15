@@ -145,7 +145,7 @@
     qty += (int)sender.value;
     
     //set min and max value
-    qty = fmin(10000, qty);
+    qty = fmin([ProductDetail maximumPurchaseQuantity], qty);
     _quantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
     [self alertAndResetIfQtyTextFieldBelowMin];
@@ -221,7 +221,7 @@
                                               [weakSelf alertAndResetIfQtyTextFieldBelowMin];
                                           }];
     
-    return [amount isNumber] && [amount integerValue] <= 10000;
+    return [newText isNumber] && [newText intValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
 -(void)alertAndResetIfQtyTextFieldBelowMin

@@ -466,7 +466,7 @@ typedef enum
     qty += (int)sender.value;
     
     //limit quantity min and max value
-    qty = fmin(10000, qty);
+    qty = fmin([ProductDetail maximumPurchaseQuantity], qty);
     _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
     [self alertAndResetIfQtyTextFieldBelowMin];
@@ -1019,17 +1019,7 @@ typedef enum
     NSString *amount = _productQuantityTextField.text;
     amount = [amount stringByAppendingString:text];
     
-    __weak typeof(self) weakSelf = self;
-    
-    [quantityDelayedActionManager whenNotCalledFor:2
-                                          doAction:^{
-                                              _isFinishRequesting = NO;
-                                              [weakSelf alertAndResetIfQtyTextFieldBelowMin];
-                                              [weakSelf doCalculate];
-                                              [weakSelf requestRate];
-                                          }];
-    
-    return [amount isNumber] && [amount integerValue] <= 10000;
+    return [newText isNumber] && [newText integerValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
 #pragma mark - Text View Delegate
