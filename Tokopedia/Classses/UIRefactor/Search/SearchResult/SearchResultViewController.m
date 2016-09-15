@@ -157,6 +157,8 @@ ImageSearchRequestDelegate
     NSArray<CategoryDetail*> *_selectedCategories;
     
     NSString *_rootCategoryID;
+    
+    NSString *_defaultSearchCategory;
 }
 
 #pragma mark - Initialization
@@ -188,6 +190,9 @@ ImageSearchRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
+    _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
+;
+
     
     _start = 0;
     
@@ -915,7 +920,7 @@ ImageSearchRequestDelegate
                       if (selectedCategories.count > 0) {
                           [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
                       } else {
-                          [self.tkpdTabNavigationController setNavigationTitle: [_params objectForKey:@"department_name"]];
+                          [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
                       }
                   }
               }
