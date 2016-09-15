@@ -244,7 +244,6 @@ ResolutionCenterCreateStepThreeDelegate
     UIImage *backImage = [UIImage imageNamed:@"icon_arrow_white"];
     UIButton *customBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
     customBackButton.frame = CGRectMake(-100, 0, 20, 20);
-//    [customBackButton setImage:backImage forState:UIControlStateNormal];
     [customBackButton setBackgroundImage:backImage forState:UIControlStateNormal];
     
     [customBackButton addTarget:self action:@selector(didTapBackButton) forControlEvents:UIControlEventTouchUpInside];
