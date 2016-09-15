@@ -912,8 +912,11 @@ ImageSearchRequestDelegate
           for (ListFilter *filter in _filterResponse.filter){
               if ([filter.title  isEqual: @"Kategori"]){
                   if (filter.isMultipleSelect == NO) {
-                      NSLog(@"%@", [selectedCategories objectAtIndex: 0].name );
-                      [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                      if (selectedCategories.count > 0) {
+                          [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                      } else {
+                          [self.tkpdTabNavigationController setNavigationTitle: [_params objectForKey:@"department_name"]];
+                      }
                   }
               }
           }
