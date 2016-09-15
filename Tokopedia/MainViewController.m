@@ -383,7 +383,7 @@ typedef enum TagRequest {
     
     proxy.titleTextAttributes = @{
                                   NSForegroundColorAttributeName: kTKPDNAVIGATION_TITLECOLOR,
-                                  NSShadowAttributeName: shadow
+                                  NSShadowAttributeName: shadow,
                                   };
 }
 
@@ -398,7 +398,9 @@ typedef enum TagRequest {
     tabBar.backgroundImage = [UIImage imageNamed:@"tabnav_bg"];
     
     NSUInteger index = 0;
-    NSDictionary *textAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont microTheme]};
+    NSDictionary *textAttributes = @{
+                                     NSForegroundColorAttributeName:[UIColor blackColor],
+                                     NSFontAttributeName:IS_IPAD?[UIFont microTheme]:[UIFont systemFontOfSize:11]};
     for(NSDictionary* item in items) {
         
         UITabBarItem *tabBarItem = [tabBar.items objectAtIndex:index];
