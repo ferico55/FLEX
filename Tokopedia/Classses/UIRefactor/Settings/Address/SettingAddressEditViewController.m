@@ -304,11 +304,11 @@
                         NSString *addressName = _textfieldaddressname.text?:@"";
                         NSString *addressStreet = _textviewaddress.text?:@"";
                         NSString *postcode = _textfieldpostcode.text?:@"";
-                        NSNumber *districtID = _selectedDistrict[DATA_ID_KEY];
+                        NSString *districtID = _selectedDistrict[DATA_ID_KEY];
                         NSString *districtName = _selectedDistrict[DATA_NAME_KEY]?:@"";
-                        NSNumber *cityID = _selectedCity[DATA_ID_KEY]?:@(0);
+                        NSString *cityID = _selectedCity[DATA_ID_KEY]?:@(0);
                         NSString *cityName = _selectedCity[DATA_NAME_KEY]?:@"";
-                        NSNumber *provinceID = _selectedProvince[DATA_ID_KEY]?:@(0);
+                        NSString *provinceID = _selectedProvince[DATA_ID_KEY]?:@(0);
                         NSString *provName = _selectedProvince[DATA_NAME_KEY]?:@"";
                         NSString *phone = _textfieldphonenumber.text?:@"";
                         
@@ -327,7 +327,7 @@
                         detailAddress.longitude = _longitude?:@"";
                         detailAddress.latitude = _latitude?:@"";
                         detailAddress.address = -1;
-                        detailAddress.address_id = -1;
+                        detailAddress.address_id = @"-1";
                         
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         

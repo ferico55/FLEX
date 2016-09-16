@@ -138,7 +138,7 @@
     else{
         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:stat.message_status?:@[@"Anda berhasil menambah alamat"] delegate:_delegate];
         [alert show];
-        _addedAddress.address_id = [stat.data.address_id integerValue];
+        _addedAddress.address_id = stat.data.address_id;
         [_delegate requestSuccessAddAddress:_addedAddress];
     }
 }
@@ -205,7 +205,7 @@
                               [StickyAlertView showSuccessMessage:setting.message_status?:@[@"Anda berhasil menambah alamat"]];
                               AddressFormList *addedAddress = [AddressFormList new];
                               addedAddress = address;
-                              addedAddress.address_id =  [setting.data.address_id integerValue];
+                              addedAddress.address_id =  setting.data.address_id;
                               success(setting.data, addedAddress);
                           }
                           else{

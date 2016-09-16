@@ -26,18 +26,18 @@
 @property (nonatomic, strong) NSString *cart_total_logistic_fee_idr;
 @property (nonatomic, strong) NSString *cart_can_process;
 @property (nonatomic, strong) NSString *cart_total_product_price;
-@property (nonatomic, strong) NSNumber *cart_insurance_price;
+@property (nonatomic, strong) NSString *cart_insurance_price;
 @property (nonatomic, strong) NSString *cart_total_product_price_idr;
 @property (nonatomic, strong) NSString *cart_total_weight;
 @property (nonatomic, strong) NSString *cart_customer_id;
-@property (nonatomic, strong) NSNumber *cart_insurance_prod;
+@property (nonatomic, strong) NSString *cart_insurance_prod;
 @property (nonatomic, strong) NSString *cart_insurance_name;
 @property (nonatomic, strong) NSString *cart_total_amount_idr;
 @property (nonatomic, strong) NSString *cart_shipping_rate_idr;
 @property (nonatomic, strong) NSString *cart_is_allow_checkout;
 @property (nonatomic, strong) NSString *cart_product_type;
-@property (nonatomic, strong) NSNumber *cart_force_insurance;
-@property (nonatomic, strong) NSNumber *cart_cannot_insurance;
+@property (nonatomic, strong) NSString *cart_force_insurance;
+@property (nonatomic, strong) NSString *cart_cannot_insurance;
 
 @property (nonatomic, strong) NSString *cart_error_message_1;
 @property (nonatomic, strong) NSString *cart_error_message_2;
