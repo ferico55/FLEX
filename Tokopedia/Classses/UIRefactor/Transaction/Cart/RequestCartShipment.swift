@@ -129,6 +129,17 @@ class RequestCartShipment: NSObject {
                                                 if response.message_status.count > 0{
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
+                                                
+                                                let shipments : [ShippingInfoShipments] = response.data.shipment.filter{ $0.shipment_available == "1" }
+                                                response.data.shipment = shipments
+                                                shipments.forEach({ (shipment) in
+                                                    if response.data.auto_resi .contains(shipment.shipment_id) && shipment.shipment_id == "3" {
+                                                        shipment.auto_resi_image = response.data.rpx.indomaret_logo
+                                                    } 
+                                                    let packages : [ShippingInfoShipmentPackage] = shipment.shipment_package.filter{ $0.package_available == "1" }
+                                                    shipment.shipment_package = packages
+                                                })
+                                                
                                                 onSuccess(data: response.data)
                                             }
                                             

@@ -39,14 +39,12 @@
 @import GoogleMaps;
 @interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate, RequestAddAddressDelegate>
 {
-    NSMutableDictionary *_dataInput;
-    
     BOOL _isFinishCalculate;
     
-    BOOL _isFirstLoad;
-    
+    TransactionCartList *_selectedCart;
     ShippingInfoShipments *_selectedShipment;
     ShippingInfoShipmentPackage *_selectedShipmentPackage;
+    AddressFormList *_selectedAddress;
     NSArray *_shipments;
     
     RequestEditAddress *_requestEditAddress;
@@ -80,31 +78,26 @@
     
     self.title = @"Detail Pengiriman";
     
-    _dataInput = [NSMutableDictionary new];
-    
     _tableViewSummaryCell = [NSArray sortViewsWithTagInArray:_tableViewSummaryCell];
     _tableViewCell = [NSArray sortViewsWithTagInArray:_tableViewCell];
     
-    TransactionCartList *cartList = [_data objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    [_dataInput setObject:cartList forKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cartList.cart_destination;
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
-    _selectedShipment = cartList.cart_shipments;
+    _selectedCart = [_data objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    _selectedAddress = _selectedCart.cart_destination;
+    _selectedShipment = _selectedCart.cart_shipments;
     ShippingInfoShipmentPackage *package = [ShippingInfoShipmentPackage new];
-    package.name = cartList.cart_shipments.shipment_package_name;
-    package.sp_id = cartList.cart_shipments.shipment_package_id;
+    package.name = _selectedCart.cart_shipments.shipment_package_name;
+    package.sp_id = _selectedCart.cart_shipments.shipment_package_id;
     _selectedShipmentPackage = package;
 
-    [self setTextAddress:address];
+    [self setTextAddress:_selectedAddress];
     
     if (_indexPage == 0) {
-        [self doRequestFormShipment];
+        [self doRequestCalculateCart];
     }
     
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
+    if ([_selectedCart.cart_destination.latitude integerValue]!=0 && [_selectedCart.cart_destination.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
-        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedCart.cart_destination.latitude doubleValue], [_selectedCart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
             if (error != nil){
                 return;
             }
@@ -131,72 +124,8 @@
                                                  name:@"ShowErrorMessageOnShippingPage"
                                                object:nil];
     
-    _isFirstLoad = YES;
-
-    
-    self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
     _tableView.estimatedRowHeight = 40.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-}
-
--(ShippingFormPostObject*)getShipmentFormPostObject{
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-
-    ShippingFormPostObject *object = [ShippingFormPostObject new];
-    object.addressID = address.address_id;
-    object.shipmentID = _selectedShipment.shipment_id;
-    object.shipmentPackageID = _selectedShipmentPackage.sp_id;
-    object.shopID = cart.cart_shop.shop_id;
-    
-    return object;
-}
-
--(void)doRequestFormShipment {
-    
-    _isFinishCalculate = NO;
-    
-    [RequestCartShipment fetchCalculatePriceWithObject:[self postObjectCalculate] onSuccess:^(TransactionCalculatePriceResult * data) {
-        
-        _shipments = data.shipment;
-        
-        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        NSMutableArray *shipmentIDs = [NSMutableArray new];
-        for (ShippingInfoShipments *shipment in _shipments) {
-            [shipmentIDs addObject:shipment.shipment_id?:@""];
-        }
-        NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
-        if(NSNotFound == indexShipment) {
-            NSLog(@"not found");
-            return;
-            indexShipment = 0;
-        }
-        ShippingInfoShipments *shipment = _shipments[indexShipment];
-        _selectedShipment = shipment;
-        
-        NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
-        for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
-            [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
-        }
-        NSArray *shipmentPackages = shipment.shipment_package;
-        NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
-        if(NSNotFound == indexShipmentPackage) {
-            NSLog(@"not found");
-        }
-        else{
-            ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-            _selectedShipmentPackage = shipmentPackage;
-        }
-        
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-        
-    } onFailure:^{
-        
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-        
-    }];
 }
 
 
@@ -228,11 +157,6 @@
     [_addressStreetLabel setCustomAttributedText: [NSString convertHTML:addressStreet]?:@"-"];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -240,32 +164,9 @@
 
 #pragma mark - Request Action Calculate Price
 
--(CalculatePostObject*)postObjectCalculate{
-    
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    NSString *quantity = [_dataInput objectForKey:API_QUANTITY_KEY];
-    NSString *insuranceID = [_dataInput objectForKey:API_INSURANCE_KEY];
-    NSString *weight = cart.cart_total_weight;
-    NSString *shopID = cart.cart_shop.shop_id;
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-    
-    CalculatePostObject *object = [CalculatePostObject new];
-    object.productID    = [cart.cart_products firstObject].product_id;
-    object.quantity     = quantity;
-    object.weight       = weight;
-    object.shopID       = shopID;
-    object.insuranceID  = insuranceID;
-    object.addressID    = address.address_id;
-    object.postalCode   = address.address_postal;
-    object.districtID   = address.address_district_id;
-    
-    return object;
-}
-
 - (IBAction)tapEditLocation:(id)sender {
     if (_isFinishCalculate) {
-        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-        [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self];
+        [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) type:TypePlacePickerTypeEditPlace infoAddress:_selectedAddress.viewModel fromViewController:self];
     }
 }
 
@@ -311,8 +212,7 @@
     }
     else
     {
-        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        if ([cart.cart_total_product integerValue] == 1 && indexPath.row == 5) {
+        if ([_selectedCart.cart_total_product integerValue] == 1 && indexPath.row == 5) {
             return 0;
         }
         if (indexPath.row == 2) {
@@ -389,15 +289,11 @@
     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     
     [_pinLocationNameButton.titleLabel setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
-    AddressFormList *addressList = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
-    addressList.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
-    [_dataInput setObject:addressList forKey:DATA_ADDRESS_DETAIL_KEY];
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    cart.cart_destination = addressList;
-    [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+    _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    _selectedCart.cart_destination = _selectedAddress;
     _isFinishCalculate = NO;
-    [[self requestEditAddress] doRequestWithAddress:addressList];
+    [[self requestEditAddress] doRequestWithAddress:_selectedAddress];
 }
 
 -(RequestEditAddress*)requestEditAddress
@@ -409,145 +305,19 @@
     return _requestEditAddress;
 }
 
--(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
-{
-    [self doRequestCalculateCart];
-}
-
--(void)doRequestCalculateCart{
-    _isFinishCalculate = NO;
-    [_tableView reloadData];
-    
-    [RequestCartShipment fetchCalculatePriceWithObject:[self postObjectCalculate]
-                                             onSuccess:^(TransactionCalculatePriceResult * data) {
-        
-        _isFinishCalculate = YES;
-        NSArray *shipments = data.shipment;
-        _shipments = shipments;
-        
-        NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-        for (ShippingInfoShipments *shipment in _shipments) {
-            if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
-                _selectedShipment = shipment;
-            }
-            NSMutableArray *shipmentPackages = [NSMutableArray new];
-            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
-                    _selectedShipmentPackage = package;
-                }
-                if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
-                    [shipmentPackages addObject:package];
-                }
-            }
-            
-            if ([data.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
-                shipment.auto_resi_image = data.rpx.indomaret_logo;
-            } else {
-                shipment.auto_resi_image = @"";
-            }
-            
-            
-            if (shipmentPackages.count>0) {
-                shipment.shipment_package = shipmentPackages;
-                [shipmentSupporteds addObject:shipment];
-            }
-        }
-        
-        _shipments = shipmentSupporteds;
-        
-        _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
-        _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
-        
-        [self doRequestEditAddress];
-        [_tableView reloadData];
-        
-    } onFailure:^{
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-    }];
-}
-
--(CartEditAddressPostObject*)postObjectEditAddress{
-    
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    
-    CartEditAddressPostObject *object = [CartEditAddressPostObject new];
-    object.shopID = cart.cart_shop.shop_id;
-    object.oldAddressID = cart.cart_destination.address_id;
-    object.oldShipmentID = cart.cart_shipments.shipment_id;
-    object.oldShipmentPackageID = cart.cart_shipments.shipment_package_id;
-    object.addressID = address.address_id;
-    object.addressName = address.address_name;
-    object.addressStreet = address.address_street;
-    object.provinceID = address.address_province_id;
-    object.cityID = address.address_city_id;
-    object.districtID = address.address_district_id;
-    object.receiverName = address.receiver_name;
-    object.receiverPhone = address.receiver_phone;
-    object.postalCode = address.postal_code;
-    object.shipmentID = _selectedShipment.shipment_id;
-    object.shipmentPackageID = _selectedShipmentPackage.sp_id;
-    
-    return object;
-}
-
--(void)doRequestEditAddress{
-    _isFinishCalculate = NO;
-    
-    [RequestCartShipment fetchEditAddress:[self postObjectEditAddress]
-                                onSuccess:^(TransactionAction * response) {
-                                    
-                                        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-                                        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                                        cart.cart_destination = address;
-                                        cart.cart_shipments = _selectedShipment;
-                                        cart.cart_shipments.shipment_package = _selectedShipment.shipment_package;
-                                        cart.cart_shipments.shipment_package_id = _selectedShipmentPackage.sp_id;
-                                        cart.cart_shipments.shipment_package_name = _selectedShipmentPackage.name;
-                                        
-                                        [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
-                                        [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-                                        
-                                        NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
-                                                                   DATA_CART_DETAIL_LIST_KEY: cart};
-                                    
-                                        [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
-                                        _isFinishCalculate = YES;
-                                        [_tableView reloadData];
-    } onFailure:^{
-        
-        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
-        _selectedShipment = cart.cart_shipments;
-        
-        ShippingInfoShipmentPackage *package = [ShippingInfoShipmentPackage new];
-        package.name = cart.cart_shipments.shipment_package_name;
-        package.sp_id = cart.cart_shipments.shipment_package_id;
-        _selectedShipmentPackage = package;
-            
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-    }];
-}
-
 -(void)requestSuccessAddAddress:(AddressFormList *)address
 {
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
-    
+    _selectedAddress = address;
     [_tableView reloadData];
     [self doRequestCalculateCart];
 }
 
 -(void)chooseAddress
 {
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     SettingAddressViewController *addressViewController = [SettingAddressViewController new];
     addressViewController.delegate = self;
-    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                   DATA_INDEXPATH_KEY: selectedIndexPath,
-                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+                                   DATA_ADDRESS_DETAIL_KEY:_selectedAddress?:[AddressFormList new]};
     [self.navigationController pushViewController:addressViewController animated:YES];
 }
 
@@ -605,9 +375,7 @@
 
 -(void)chooseInsurance
 {
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-
-    if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
+    if ([_selectedCart.cart_force_insurance integerValue]!=1&&[_selectedCart.cart_cannot_insurance integerValue]!=1) {
         AlertPickerView *picker = [AlertPickerView newview];
         picker.delegate = self;
         picker.tag = TAG_PICKER_ALERT_INSURANCE;
@@ -625,8 +393,7 @@
     address.address_postal = address.postal_code;
     address.address_city = address.city_name;
     address.address_province = address.province_name;
-    
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    _selectedAddress = address;
     
     [self doRequestEditAddress];
     
@@ -646,30 +413,10 @@
                 break;
             }
         }
-        NSMutableArray *availablePackage = [NSMutableArray new];
+        _selectedShipment = shipmentObject;
+        _selectedShipmentPackage = _selectedShipment.shipment_package.firstObject;
         
-        for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
-                [availablePackage addObject:package];
-            }
-        }
-        if (availablePackage.count==0) {
-            isValidShipment = NO;
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        else
-        {
-            _selectedShipment = shipmentObject;
-            for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-                if (![package.price isEqualToString:@"0"]) {
-                    _selectedShipmentPackage = package;
-                }
-            }
-        }
-    }
-    else if (indexPath.row == 4)
-    {
+    } else if (indexPath.row == 4) {
         for (ShippingInfoShipments *shipment in _shipments) {
             if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
@@ -695,65 +442,16 @@
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == TAG_PICKER_ALERT_INSURANCE) {
-        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        
         NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
         NSString *value = [ARRAY_INSURACE[index] objectForKey:DATA_VALUE_KEY];
         NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
         
-        cart.cart_insurance_prod = value;
-        cart.cart_insurance_name = name;
-        [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+        _selectedCart.cart_insurance_prod = value;
+        _selectedCart.cart_insurance_name = name;
+        
         [_tableView reloadData];
         
         [self doRequestEditInsurance];
-    }
-}
-
--(CartEditInsurancePostObject*)postObjectEditInsurance{
-    CartEditInsurancePostObject *object = [CartEditInsurancePostObject new];
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    
-    object.addressID = address.address_id;
-    object.productInsurance = cart.cart_insurance_prod;
-    object.shipmentPackageID = cart.cart_shipments.shipment_package_id;
-    object.shipmentID = cart.cart_shipments.shipment_id;
-    object.shopID = cart.cart_shop.shop_id;
-    
-    return object;
-}
-
--(void)doRequestEditInsurance{
-    
-    _isFinishCalculate = NO;
-    
-    [RequestCartShipment fetchEditInsurance:[self postObjectEditInsurance]
-                                  onSuccess:^(TransactionAction * data) {
-
-        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
-                                   DATA_CART_DETAIL_LIST_KEY: cart
-                                   };
-        [_delegate editInsuranceUserInfo:userInfo];
-                                      
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-        
-    } onFailure:^{
-        
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
-        
-    }];
-}
-
--(void)setData:(NSDictionary *)data
-{
-    _data = data;
-    if (data) {
-        [_dataInput setObject:[_data objectForKey:DATA_CART_DETAIL_LIST_KEY] forKey:DATA_CART_DETAIL_LIST_KEY];
-        [_tableView reloadData];
     }
 }
 
@@ -761,20 +459,16 @@
 -(UITableViewCell*)cellCartDetailAtIndexPage:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell;
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-    ShippingInfoShipments *shipment = _selectedShipment;
-    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     
     if (indexPath.section == 0) {
         cell = _tableViewCell[indexPath.row];
         switch (indexPath.row) {
             case 0:
-                cell.detailTextLabel.text = address.address_name?:@"None";
+                cell.detailTextLabel.text = _selectedAddress.address_name?:@"None";
                 break;
             case 1:
             {
-                [self setTextAddress:address];
+                [self setTextAddress:_selectedAddress];
             }
                 break;
             case 2:
@@ -793,7 +487,7 @@
             }
             case 3:
             {
-                cell.detailTextLabel.text = shipment.shipment_name;
+                cell.detailTextLabel.text = _selectedShipment.shipment_name;
                 if (!_isFinishCalculate) {
                     UIActivityIndicatorView *activityView =
                     [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -808,7 +502,7 @@
                 break;
             case 4:
             {
-                NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
+                NSString *shipmentPackageName = _selectedShipmentPackage.name;
                 cell.detailTextLabel.text = shipmentPackageName;
                 if (!_isFinishCalculate) {
                     UIActivityIndicatorView *activityView =
@@ -825,18 +519,18 @@
             case 5:
             {
                 NSString *insuranceName;
-                if ([cart.cart_cannot_insurance integerValue]==1) {
+                if ([_selectedCart.cart_cannot_insurance integerValue]==1) {
                    insuranceName = @"Tidak didukung";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
-                else if ([cart.cart_force_insurance integerValue]==1) {
+                else if ([_selectedCart.cart_force_insurance integerValue]==1) {
                     insuranceName = @"Wajib Asuransi";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
                 else{
-                    insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
+                    insuranceName = _selectedCart.cart_insurance_name?:([_selectedCart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
                      cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
@@ -862,7 +556,7 @@
             case 0:
             {
                 cell = _tableViewCell[6];
-                NSString *totalPayment = shipmentPackage.price?:cart.cart_shipping_rate_idr;
+                NSString *totalPayment = _selectedShipmentPackage.price?:_selectedCart.cart_shipping_rate_idr;
                 [cell.detailTextLabel setText:totalPayment animated:YES];
                 if (!_isFinishCalculate) {
                     UIActivityIndicatorView *activityView =
@@ -878,7 +572,7 @@
             case 1:
             {
                 cell = _tableViewCell[7];
-                NSString *insuranceCost = cart.cart_insurance_price_idr;
+                NSString *insuranceCost = _selectedCart.cart_insurance_price_idr;
                 [cell.detailTextLabel setText:insuranceCost animated:YES];
                 if (!_isFinishCalculate) {
                     UIActivityIndicatorView *activityView =
@@ -902,10 +596,6 @@
 -(UITableViewCell*)cellCartSummaryAtIndexPage:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell;
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-    ShippingInfoShipments *shipment = _selectedShipment;
-    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     NSString *dropshipName = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
     NSString *dropshipPhone = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
     NSString *partialString = [_data objectForKey:DATA_PARTIAL_LIST_KEY];
@@ -913,32 +603,28 @@
     cell = _tableViewSummaryCell[indexPath.row];
     switch (indexPath.row) {
         case 0:
-            cell.detailTextLabel.text = address.address_name?:@"";
+            cell.detailTextLabel.text = _selectedAddress.address_name?:@"";
             break;
         case 1:
             break;
         case 3:
         {
-            NSString *shipmentPackageName = shipmentPackage.name?:shipment.shipment_package_name;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",shipment.shipment_name?:@"",shipmentPackageName];
+            NSString *shipmentPackageName = _selectedShipmentPackage.name;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",_selectedShipment.shipment_name?:@"",shipmentPackageName];
             break;
         }
         case 4:
         {
             NSString *insuranceName;
-            if ([cart.cart_cannot_insurance integerValue]==1)
-            {
+            if ([_selectedCart.cart_cannot_insurance integerValue]==1) {
                 insuranceName = @"Tidak didukung";
                 cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-            else if ([cart.cart_force_insurance integerValue] == 1)
-            {
+            } else if ([_selectedCart.cart_force_insurance integerValue] == 1) {
                 insuranceName = @"Wajib Asuransi";
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
-            else
-            {
-                insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
+            else {
+                insuranceName = _selectedCart.cart_insurance_name?:([_selectedCart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
             cell.detailTextLabel.text = insuranceName;
@@ -979,12 +665,12 @@
     NSDictionary *userInfo = aNotification.userInfo;
     _isFinishCalculate = YES;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = cart.cart_destination;
+    _selectedCart = cart;
+    _selectedAddress = cart.cart_destination;
     
-    if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
+    if ([_selectedAddress.latitude integerValue]!=0 && [_selectedAddress.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
-        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
             if (error != nil){
                 [self adjustLocationName:@"Lokasi Pengiriman"];
                 return;
@@ -1023,6 +709,134 @@
                                       buttonTitle:nil
                                       dismissable:YES
                                            action:nil];
+}
+
+#pragma mark - Post Object
+-(CartEditAddressPostObject*)postObjectEditAddress{
+    
+    CartEditAddressPostObject *object = [CartEditAddressPostObject new];
+    object.shopID = _selectedCart.cart_shop.shop_id;
+    object.oldAddressID = _selectedCart.cart_destination.address_id;
+    object.oldShipmentID = _selectedCart.cart_shipments.shipment_id;
+    object.oldShipmentPackageID = _selectedCart.cart_shipments.shipment_package_id;
+    object.addressID = _selectedAddress.address_id;
+    object.addressName = _selectedAddress.address_name;
+    object.addressStreet = _selectedAddress.address_street;
+    object.provinceID = _selectedAddress.address_province_id;
+    object.cityID = _selectedAddress.address_city_id;
+    object.districtID = _selectedAddress.address_district_id;
+    object.receiverName = _selectedAddress.receiver_name;
+    object.receiverPhone = _selectedAddress.receiver_phone;
+    object.postalCode = _selectedAddress.postal_code;
+    object.shipmentID = _selectedShipment.shipment_id;
+    object.shipmentPackageID = _selectedShipmentPackage.sp_id;
+    
+    return object;
+}
+
+-(CalculatePostObject*)postObjectCalculate{
+    
+    CalculatePostObject *object = [CalculatePostObject new];
+    object.productID    = [_selectedCart.cart_products firstObject].product_id;
+    object.weight       = _selectedCart.cart_total_weight;
+    object.shopID       = _selectedCart.cart_shop.shop_id;
+    object.insuranceID  = _selectedCart.cart_insurance_prod;
+    object.addressID    = _selectedAddress.address_id;
+    object.postalCode   = _selectedAddress.address_postal;
+    object.districtID   = _selectedAddress.address_district_id;
+    
+    return object;
+}
+
+-(CartEditInsurancePostObject*)postObjectEditInsurance{
+    
+    CartEditInsurancePostObject *object = [CartEditInsurancePostObject new];
+    object.addressID = _selectedAddress.address_id;
+    object.productInsurance = _selectedCart.cart_insurance_prod;
+    object.shipmentPackageID = _selectedCart.cart_shipments.shipment_package_id;
+    object.shipmentID = _selectedCart.cart_shipments.shipment_id;
+    object.shopID = _selectedCart.cart_shop.shop_id;
+    
+    return object;
+}
+
+#pragma mark - request
+-(void)doRequestCalculateCart{
+    _isFinishCalculate = NO;
+    [_tableView reloadData];
+    
+    [RequestCartShipment fetchCalculatePriceWithObject:[self postObjectCalculate]
+                                             onSuccess:^(TransactionCalculatePriceResult * data) {
+                                                 
+                                                 _isFinishCalculate = YES;
+                                                 _shipments = data.shipment;
+                                                 [_tableView reloadData];
+                                                 
+                                             } onFailure:^{
+                                                 
+                                                 _isFinishCalculate = YES;
+                                                 [_tableView reloadData];
+                                                 
+                                             }];
+}
+
+-(void)doRequestEditAddress{
+    _isFinishCalculate = NO;
+    [_tableView reloadData];
+    
+    [RequestCartShipment fetchEditAddress:[self postObjectEditAddress]
+                                onSuccess:^(TransactionAction * response) {
+                                    
+                                    _selectedCart.cart_destination = _selectedAddress;
+                                    _selectedCart.cart_shipments = _selectedShipment;
+                                    _selectedCart.cart_shipments.shipment_package = _selectedShipment.shipment_package;
+                                    _selectedCart.cart_shipments.shipment_package_id = _selectedShipmentPackage.sp_id;
+                                    _selectedCart.cart_shipments.shipment_package_name = _selectedShipmentPackage.name;
+                                    
+                                    NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
+                                                               DATA_CART_DETAIL_LIST_KEY: _selectedCart};
+                                    [self doRequestCalculateCart];
+                                    [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+                                    _isFinishCalculate = YES;
+                                    [_tableView reloadData];
+                                    
+                                } onFailure:^{
+                                    
+                                    _selectedShipment = _selectedCart.cart_shipments;
+                                    
+                                    ShippingInfoShipmentPackage *package = [ShippingInfoShipmentPackage new];
+                                    package.name = _selectedCart.cart_shipments.shipment_package_name;
+                                    package.sp_id = _selectedCart.cart_shipments.shipment_package_id;
+                                    _selectedShipmentPackage = package;
+                                    
+                                    _isFinishCalculate = YES;
+                                    [_tableView reloadData];
+                                    
+                                }];
+}
+
+-(void)doRequestEditInsurance{
+    
+    _isFinishCalculate = NO;
+    [_tableView reloadData];
+    
+    [RequestCartShipment fetchEditInsurance:[self postObjectEditInsurance]
+                                  onSuccess:^(TransactionAction * data) {
+                                      
+                                      NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
+                                                                 DATA_CART_DETAIL_LIST_KEY: _selectedCart
+                                                                 };
+                                      [_delegate editInsuranceUserInfo:userInfo];
+                                      
+                                      _isFinishCalculate = YES;
+                                      [_tableView reloadData];
+                                      
+                                  } onFailure:^{
+                                      
+                                      _isFinishCalculate = YES;
+                                      [_tableView reloadData];
+                                      
+                                  }];
 }
 
 @end
