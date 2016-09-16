@@ -298,47 +298,7 @@
             case 11: {
                 //submit
                 if ([self isValidInput]) {
-                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
-
-                        NSString *receivernName = _textfieldreceivername.text?:@"";
-                        NSString *addressName = _textfieldaddressname.text?:@"";
-                        NSString *addressStreet = _textviewaddress.text?:@"";
-                        NSString *postcode = _textfieldpostcode.text?:@"";
-                        NSString *districtID = _selectedDistrict[DATA_ID_KEY];
-                        NSString *districtName = _selectedDistrict[DATA_NAME_KEY]?:@"";
-                        NSString *cityID = _selectedCity[DATA_ID_KEY]?:@(0);
-                        NSString *cityName = _selectedCity[DATA_NAME_KEY]?:@"";
-                        NSString *provinceID = _selectedProvince[DATA_ID_KEY]?:@(0);
-                        NSString *provName = _selectedProvince[DATA_NAME_KEY]?:@"";
-                        NSString *phone = _textfieldphonenumber.text?:@"";
-                        
-                        AddressFormList *detailAddress = [AddressFormList new];
-                        detailAddress.address_name = addressName;
-                        detailAddress.receiver_name = receivernName;
-                        detailAddress.address_street = addressStreet;
-                        detailAddress.postal_code = postcode;
-                        detailAddress.district_name = districtName;
-                        detailAddress.district_id = districtID;
-                        detailAddress.city_id = cityID;
-                        detailAddress.city_name = cityName;
-                        detailAddress.province_id = provinceID;
-                        detailAddress.province_name = provName;
-                        detailAddress.receiver_phone = phone;
-                        detailAddress.longitude = _longitude?:@"";
-                        detailAddress.latitude = _latitude?:@"";
-                        detailAddress.address = -1;
-                        detailAddress.address_id = @"-1";
-                        
-                        NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
-                        
-                        [_delegate SettingAddressEditViewController:self withUserInfo:userInfo];
-                        
-                        [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                            [self.navigationController popViewControllerAnimated:YES];
-                        }];
-                    } else {
-                        [self requestActionAddAddress:_datainput];
-                    }
+                    [self requestActionAddAddress:_datainput];
                 }
                 break;
             }
@@ -493,23 +453,25 @@
                                                                     object:nil
                                                                   userInfo:userinfo];
                 
+                AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY]?:[AddressFormList new];
+                address.address_id = setting.data.address_id?:@"";
+                address.receiver_name = _textfieldreceivername.text?:@"";
+                address.address_name = _textfieldaddressname.text?:@"";
+                address.address_street = _textviewaddress.text?:@"";
+                address.postal_code = _textfieldpostcode.text?:@"";
+                address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
+                address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
+                address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
+                address.receiver_phone = _textfieldphonenumber.text?:@"";
+                address.longitude = _longitude;
+                address.latitude = _latitude;
+                
                 if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
-                    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-                    address.receiver_name = _textfieldreceivername.text?:@"";
-                    address.address_name = _textfieldaddressname.text?:@"";
-                    address.address_street = _textviewaddress.text?:@"";
-                    address.postal_code = _textfieldpostcode.text?:@"";
-                    address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
-                    address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
-                    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
-                    address.receiver_phone = _textfieldphonenumber.text?:@"";
-                    address.longitude = _longitude;
-                    address.latitude = _latitude;
                     [self.delegate successEditAddress:address];
                 }
                 
-                if ([self.delegate respondsToSelector:@selector(successAddAddress)]) {
-                    [self.delegate successAddAddress];
+                if ([self.delegate respondsToSelector:@selector(successAddAddress:)]) {
+                    [self.delegate successAddAddress:address];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
                 

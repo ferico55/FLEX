@@ -1180,10 +1180,16 @@
 
 #pragma mark - Address add delegate
 
-- (void)successAddAddress
+- (void)successAddAddress:(AddressFormList*)address
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
+    
+    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [_delegate SettingAddressViewController:self withUserInfo:@{DATA_ADDRESS_DETAIL_KEY: address}];
+    }
     
     [self request];
 }
