@@ -37,7 +37,7 @@
 #define TAG_PICKER_ALERT_INSURANCE 10
 
 @import GoogleMaps;
-@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate, RequestAddAddressDelegate>
+@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate>
 {
     BOOL _isFinishCalculate;
     
@@ -46,8 +46,6 @@
     ShippingInfoShipmentPackage *_selectedShipmentPackage;
     AddressFormList *_selectedAddress;
     NSArray *_shipments;
-    
-    RequestEditAddress *_requestEditAddress;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -293,23 +291,9 @@
     _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
     _selectedCart.cart_destination = _selectedAddress;
     _isFinishCalculate = NO;
-    [[self requestEditAddress] doRequestWithAddress:_selectedAddress];
-}
+    
 
--(RequestEditAddress*)requestEditAddress
-{
-    if (!_requestEditAddress) {
-        _requestEditAddress = [RequestEditAddress new];
-        _requestEditAddress.delegate = self;
-    }
-    return _requestEditAddress;
-}
-
--(void)requestSuccessAddAddress:(AddressFormList *)address
-{
-    _selectedAddress = address;
-    [_tableView reloadData];
-    [self doRequestCalculateCart];
+    [self doRequestEditAddress];
 }
 
 -(void)chooseAddress
@@ -395,7 +379,7 @@
     address.address_province = address.province_name;
     _selectedAddress = address;
     
-    [self doRequestEditAddress];
+    [self doRequestChangeAddress];
     
     [_tableView reloadData];
 }
@@ -431,7 +415,7 @@
     }
     
     if (isValidShipment) {
-        [self doRequestEditAddress];
+        [self doRequestChangeAddress];
     }
     
     [_tableView reloadData];
@@ -780,7 +764,7 @@
                                              }];
 }
 
--(void)doRequestEditAddress{
+-(void)doRequestChangeAddress{
     _isFinishCalculate = NO;
     [_tableView reloadData];
     
@@ -837,6 +821,27 @@
                                       [_tableView reloadData];
                                       
                                   }];
+}
+
+-(void)doRequestEditAddress{
+    
+    _isFinishCalculate = NO;
+    [_tableView reloadData];
+    
+    [RequestEditAddress fetchEditAddress:_selectedAddress
+                              isFromCart:@"0"
+                                 success:^(ProfileSettingsResult *data) {
+                                     
+                                     _isFinishCalculate = YES;
+                                     [_tableView reloadData];
+                                     [self doRequestEditAddress];
+                                     
+                                 } failure:^(NSError *error) {
+                                     
+                                     _isFinishCalculate = YES;
+                                     [_tableView reloadData];
+                                     
+                                 }];
 }
 
 @end
