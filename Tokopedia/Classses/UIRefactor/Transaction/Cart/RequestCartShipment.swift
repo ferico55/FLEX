@@ -46,6 +46,15 @@ class CartEditAddressPostObject : NSObject {
     var postalCode  : String = ""
 }
 
+class CartEditInsurancePostObject: NSObject {
+    var addressID        : String = "-1"
+    var productInsurance : String = "0"
+    var shipmentID       : String = ""
+    var shipmentPackageID: String = ""
+    var shopID           : String = ""
+    var userID           : String = ""
+}
+
 class RequestCartShipment: NSObject {
     
     class func fetchShipmentFormWithObject(postObject: ShippingFormPostObject,onSuccess: ((data:CartShipmentForm) -> Void), onFailure:(()->Void)) {
@@ -139,7 +148,7 @@ class RequestCartShipment: NSObject {
             "city_id"               : postObject.cityID,
             "district_id"           : postObject.districtID,
             "old_address_id"        : postObject.oldAddressID,
-            "old_shipment_id"       : postObject.oldShipmentPackageID,
+            "old_shipment_id"       : postObject.oldShipmentID,
             "old_shipment_package_id": postObject.oldShipmentPackageID,
             "postal_code"           : postObject.postalCode,
             "province_id"           : postObject.provinceID,
@@ -178,6 +187,46 @@ class RequestCartShipment: NSObject {
                 onFailure()
         }
         
+    }
+    
+    class func fetchEditInsurance(postObject: CartEditInsurancePostObject,onSuccess: ((data:TransactionAction) -> Void), onFailure:(()->Void))  {
+        let auth : UserAuthentificationManager = UserAuthentificationManager()
+        
+        let param : [String : String] = [
+            "address_id"            : postObject.addressID,
+            "product_insurance"     : postObject.productInsurance,
+            "shipment_id"           : postObject.shipmentID,
+            "shipment_package_id"   : postObject.shipmentPackageID,
+            "shop_id"               : postObject.shopID,
+            "user_id"               : auth.getUserId()
+        ]
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/action/tx-cart/edit_insurance.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: TransactionAction.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : TransactionAction = result[""] as! TransactionAction
+                                            
+                                            if response.data.is_success == 1 {
+                                                if response.message_status.count > 0{
+                                                    StickyAlertView.showSuccessMessage(response.message_status)
+                                                }
+                                                onSuccess(data: response)
+                                            } else {
+                                                if response.message_error.count > 0{
+                                                    StickyAlertView.showErrorMessage(response.message_error)
+                                                }
+                                                onFailure()
+                                            }
+        }) { (error) in
+            onFailure()
+        }
     }
 
 }
