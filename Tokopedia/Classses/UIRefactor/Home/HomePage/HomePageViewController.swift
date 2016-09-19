@@ -76,7 +76,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         self.requestBanner()
         self.requestTicker()
-        self.requestMiniSlider()
+//        self.requestMiniSlider()
 
         TPAnalytics.trackScreenName("Top Category")
     }
