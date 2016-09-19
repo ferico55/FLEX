@@ -65,7 +65,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
         self.initViewLayout()
-        self.requestPulsaWidget()
+//        self.requestPulsaWidget()
         
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.collectionView = self.collectionView
@@ -118,7 +118,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             slider.mas_makeConstraints { make in
                 make.height.equalTo()(self.sliderHeight)
                 make.top.left().right().equalTo()(self.sliderPlaceholder)
-                make.bottom.equalTo()(self.sliderPlaceholder.mas_bottom).offset()(-10)
+                make.bottom.equalTo()(self.sliderPlaceholder.mas_bottom)
             }
             
             let timer = NSTimer.bk_timerWithTimeInterval(5.0, block: { (timer) in
@@ -134,14 +134,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     func initViewLayout() {
         self.sliderPlaceholder = UIView(frame: CGRectZero)
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
-        self.pulsaPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
+//        self.pulsaPlaceholder = UIView(frame: CGRectZero)
+//        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
         self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.miniSliderPlaceholder = UIView(frame: CGRectZero)
         
         self.collectionView.addSubview(self.tickerPlaceholder)
         self.collectionView.addSubview(self.sliderPlaceholder)
-        self.collectionView.addSubview(self.pulsaPlaceholder)
+//        self.collectionView.addSubview(self.pulsaPlaceholder)
         self.collectionView.addSubview(self.miniSliderPlaceholder)
         
         self.sliderPlaceholder.mas_makeConstraints { make in
@@ -149,14 +149,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             make.top.equalTo()(self.tickerPlaceholder.mas_bottom)
         }
         
-        self.pulsaPlaceholder.mas_makeConstraints { make in
-            make.left.right().equalTo()(self.view)
-            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
-        }
-        
+//        self.pulsaPlaceholder.mas_makeConstraints { make in
+//            make.left.right().equalTo()(self.view)
+//            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
+//        }
+//        
         self.miniSliderPlaceholder.mas_makeConstraints { make in
             make.left.right().equalTo()(self.view)
-            make.top.equalTo()(self.pulsaPlaceholder?.mas_bottom)
+            make.top.equalTo()(self.sliderPlaceholder?.mas_bottom)
         }
     }
     
