@@ -75,7 +75,7 @@
     [self setDefaultData:_data];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -91,7 +91,6 @@
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,12 +117,6 @@
 //    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
 
--(void)setCaptureMap
-{
-    _captureMap = [_mapview captureMapScreen];
-
-}
-
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
@@ -142,7 +135,7 @@
                 AddressFormList *address = _address;
                 //TODO:: Uncomment for showing map address
                 if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
-                    vc.imageMap = _captureMap?: [_mapview captureMapScreen];
+                    vc.imageMap = [UIImage imageNamed:@"map_gokil.png"];
                     vc.longitude = address.longitude;
                     vc.latitude = address.latitude;
                 }
@@ -213,8 +206,6 @@
         
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
             [self mapPosition];
-        } else {
-            _mapViewHeight.constant = 0;
         }
     }
 }
@@ -274,6 +265,20 @@
     return 5;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AddressFormList *address = _address;
+
+    if (indexPath.section == 2 && indexPath.row == 1) {
+        if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
+            return 0;
+        } else {
+            return 194;
+        }
+    }
+    return UITableViewAutomaticDimension;
+}
+
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
     [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 infoAddress:_address.viewModel fromViewController:self];
@@ -304,7 +309,7 @@
     self.labelphonenumber.text = address.receiver_phone;
     
     //TODO:: Uncomment for showing map address
-    if (![address.longitude integerValue] == 0 && ![address.latitude integerValue] == 0) {
+    if (!([address.longitude integerValue] == 0 && [address.latitude integerValue] == 0)) {
             [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
     }
     
