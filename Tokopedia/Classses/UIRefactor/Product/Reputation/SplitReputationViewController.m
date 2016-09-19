@@ -35,7 +35,6 @@
     splitViewController.viewControllers = [NSArray arrayWithObjects:masterVC, detailVC, nil];
     splitViewController.delegate = self;
     [self.view addSubview:splitViewController.view];
-    [splitViewController setValue:[NSNumber numberWithFloat:350.0] forKey:@"_masterColumnWidth"];
     
     //Add Constraint
     UIView *splitView = splitViewController.view;
