@@ -39,7 +39,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: Selector("didTapBackButton:"))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didTapBackButton(_:)))
         
         _networkManager = TokopediaNetworkManager()
         _networkManager.isUsingHmac = true
@@ -143,7 +143,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 self.setLabelSpacing(questionTitle)
                 answerField.placeholder = securityQuestion.data.example
                 
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didTapSavePhoneButton"))
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didTapSavePhoneButton))
                 
             } else if(questionType1 == "0"){
                 //set OTP view
@@ -152,7 +152,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 questionViewType2.HVD_fillInSuperViewWithInsets(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
                 requestOTPButton .setTitle(buttonTitle, forState: .Normal)
                 
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didSubmitOTP"))
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didSubmitOTP))
             }
         }
     }

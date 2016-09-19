@@ -291,7 +291,7 @@ public class DKImagePickerController: UINavigationController {
                     rootVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: barButtonImage,
                         style: .Plain,
                         target: self,
-                        action: "dismiss")
+                        action: #selector(DKImagePickerController.dismiss))
 				} else {
 					rootVC.navigationItem.leftBarButtonItem = nil
 				}
@@ -324,7 +324,7 @@ public class DKImagePickerController: UINavigationController {
         let button = UIButton(type: UIButtonType.System)
 		button.setTitleColor(UINavigationBar.appearance().tintColor ?? self.navigationBar.tintColor, forState: UIControlState.Normal)
         button.reversesTitleShadowWhenHighlighted = true
-        button.addTarget(self, action: "done", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(MHVerticalTabBarControllerDelegate.done), forControlEvents: UIControlEvents.TouchUpInside)
       
         return button
     }()
@@ -346,10 +346,10 @@ public class DKImagePickerController: UINavigationController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "selectedImage:",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DKImagePickerController.selectedImage(_:)),
                                                                    name: DKImageSelectedNotification,
                                                                  object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "unselectedImage:",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DKImagePickerController.unselectedImage(_:)),
                                                                    name: DKImageUnselectedNotification,
                                                                  object: nil)
     }
