@@ -690,42 +690,7 @@
                         [self doRequestBuy];
                     }
                     break;
-                case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        NSDictionary *data = @{DATA_KEY:_dataInput,
-                                               DATA_CART_SUMMARY_KEY: _cartSummary
-                                               };
-                        [_delegate pushVC:self toMandiriClickPayVCwithData:data];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_BCA_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        [TransactionCartWebViewViewController pushBCAKlikPayFrom:self cartDetail:_cartSummary];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_MANDIRI_E_CASH:
-                {
-                    if ([self isValidInput]) {
-                        [self doRequestBuy];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_CC:
-                case TYPE_GATEWAY_INSTALLMENT:
-                {
-                    [self pushToCCInformation];
-                }
-                    break;
-                case TYPE_GATEWAY_BRI_EPAY:
-                {
-                    [TransactionCartWebViewViewController pushBRIEPayFrom:self cartDetail:_cartSummary];
-                }
-                    break;
-                default:
+                 default:
                     break;
             }
         }
@@ -2658,25 +2623,12 @@
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
                       _cartBuy = data;
-                      switch ([_cartSummary.gateway integerValue]) {
-                          case TYPE_GATEWAY_MANDIRI_E_CASH:
-                          {
-                              [TransactionCartWebViewViewController pushMandiriECashFrom:self
-                                                                              cartDetail:summary
-                                                                             LinkMandiri:data.link_mandiri?:@""];
-                          }
-                              break;
-                          default:
-                          {
-                              NSDictionary *userInfo = @{
-                                                         DATA_CART_RESULT_KEY:data,
-                                                         API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
-                                                         };
-                              [self.delegate didFinishRequestBuyData:userInfo];
-                              [_dataInput removeAllObjects];
-                          }
-                              break;
-                      }
+                      NSDictionary *userInfo = @{
+                                                 DATA_CART_RESULT_KEY:data,
+                                                 API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                                 };
+                      [self.delegate didFinishRequestBuyData:userInfo];
+                      [_dataInput removeAllObjects];
                       [self isLoading:NO];
                   } error:^(NSError *error) {
                       if (error) {
