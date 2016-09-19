@@ -1019,6 +1019,26 @@ typedef enum
     NSString *amount = _productQuantityTextField.text;
     amount = [amount stringByAppendingString:text];
     
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
+    return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
+}
+
+- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard {
+    NSString *amount = _productQuantityTextField.text;
+    
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
     return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
