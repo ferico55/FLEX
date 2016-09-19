@@ -245,13 +245,13 @@
     
     NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
     NSString *shopID = cart.cart_shop.shop_id?:@"";
-    NSInteger addressID = cart.cart_destination.address_id;
+    NSString *addressID = cart.cart_destination.address_id?:@"";
     NSString *shipmentID = cart.cart_shipments.shipment_id?:@"";
     NSString *shipmentPackageID = cart.cart_shipments.shipment_package_id?:@"";
     
     NSDictionary* param = @{@"product_cart_id"      :@(productCartID),
                             @"shop_id"              :shopID,
-                            @"address_id"           :@(addressID),
+                            @"address_id"           :addressID,
                             @"shipment_id"          :shipmentID,
                             @"shipment_package_id"  :shipmentPackageID
                             };
