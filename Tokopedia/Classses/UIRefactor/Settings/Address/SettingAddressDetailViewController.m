@@ -118,12 +118,6 @@
 //    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
 
--(void)setCaptureMap
-{
-    _captureMap = [_mapview captureMapScreen];
-
-}
-
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
@@ -142,7 +136,7 @@
                 AddressFormList *address = _address;
                 //TODO:: Uncomment for showing map address
                 if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
-                    vc.imageMap = _captureMap?: [_mapview captureMapScreen];
+                    vc.imageMap = [UIImage imageNamed:@"map_gokil.png"];
                     vc.longitude = address.longitude;
                     vc.latitude = address.latitude;
                 }
