@@ -19,11 +19,11 @@ import UIKit
         super.viewDidLoad()
         self.title = isEdit ? "Ubah Gambar" : "Tambah Gambar"
         
-        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .Bordered, target: self, action: "tap:")
+        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .Bordered, target: self, action: nil)
         cancelBarButton.tag = 10
         self.navigationItem.rightBarButtonItem = cancelBarButton
         
-        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .Bordered, target: self, action: "tap:")
+        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .Bordered, target: self, action: nil)
         doneBarButton.tag = 11
         self.navigationItem.rightBarButtonItem = doneBarButton
         

@@ -21,10 +21,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     var tickerRequest: AnnouncementTickerRequest!
     var tickerView: AnnouncementTickerView!
     
-    var pulsaView = PulsaView!()
+    var pulsaView: PulsaView!
     var prefixes = Dictionary<String, Dictionary<String, String>>()
-    var requestManager = PulsaRequest!()
-    var navigator = PulsaNavigator!()
+    var requestManager: PulsaRequest!
+    var navigator: PulsaNavigator!
     
     var sliderPlaceholder: UIView!
     var pulsaPlaceholder: UIView!
