@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "Login.h"
 
 @protocol LoginViewDelegate <NSObject>
 
@@ -15,6 +16,7 @@
 
 @optional
 - (void)cancelLoginView;
+- (void)didLoginSuccess:(Login*) login;
 
 @end
 

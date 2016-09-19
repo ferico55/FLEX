@@ -17,6 +17,7 @@
 @interface AuthenticationService : NSObject
 
 @property (weak) UIViewController *viewController;
+@property (nonatomic, copy) void (^loginSuccessBlock)(Login* login);
 + (instancetype)sharedService;
 
 - (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback;
