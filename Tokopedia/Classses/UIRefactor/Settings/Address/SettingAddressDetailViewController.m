@@ -75,7 +75,7 @@
     [self setDefaultData:_data];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -298,7 +298,7 @@
     self.labelphonenumber.text = address.receiver_phone;
     
     //TODO:: Uncomment for showing map address
-    if (![address.longitude integerValue] == 0 && ![address.latitude integerValue] == 0) {
+    if (!([address.longitude integerValue] == 0 && [address.latitude integerValue] == 0)) {
             [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
     }
     
