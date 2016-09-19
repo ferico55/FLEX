@@ -17,6 +17,8 @@
 #import "TokopediaNetworkManager.h"
 #import "NavigateViewController.h"
 #import "RequestObject.h"
+#import "RequestEditAddress.h"
+#import "RequestAddAddress.h"
 #import "Tokopedia-Swift.h"
 
 #pragma mark - Setting Address Edit View Controller
@@ -28,16 +30,11 @@
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate,
-    TokopediaNetworkManagerDelegate,
     TKPPlacePickerDelegate
 >
 {
     NSInteger _type;
     
-    NSInteger _requestcount;
-    
-    __weak RKObjectManager *_objectmanagerActionAddAddress;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     NSDictionary *tempDictUserInfo;
     
     NSOperationQueue *_operationQueue;
@@ -87,12 +84,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonMapLocation;
 @property (weak, nonatomic) IBOutlet UILabel *opsionalLabel;
 
--(void)cancelActionAddAddress;
--(void)requestActionAddAddress:(id)object;
--(void)requestSuccessActionAddAddress:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionAddAddress:(id)object;
--(void)requestProcessActionAddAddress:(id)object;
--(void)requestTimeoutActionAddAddress;
 
 @end
 
@@ -141,31 +132,6 @@
     
     _textviewaddress.placeholder = @"Tulis alamat";
     
-    [_textfieldreceivername becomeFirstResponder];
-    [_textfieldreceivername addTarget:self
-                               action:@selector(textFieldShouldEndEditing:)
-                     forControlEvents:UIControlEventEditingChanged];
-    
-    [_textfieldaddressname addTarget:self
-                              action:@selector(textFieldShouldEndEditing:)
-                    forControlEvents:UIControlEventEditingChanged];
-    
-    [_textfieldpostcode addTarget:self
-                           action:@selector(textFieldShouldEndEditing:)
-                 forControlEvents:UIControlEventEditingChanged];
-    
-    _textfieldpostcode.delegate = self;
-    
-    [_textfieldphonenumber addTarget:self
-                              action:@selector(textFieldShouldEndEditing:)
-                    forControlEvents:UIControlEventEditingChanged];
-    
-    _textfieldphonenumber.delegate = self;
-    
-    [_textfieldpass addTarget:self
-                       action:@selector(textFieldShouldEndEditing:)
-             forControlEvents:UIControlEventEditingChanged];
-    
     _constraintBottomMapName.constant = 20;
 
 }
@@ -179,7 +145,7 @@
     
     if (self.navigationController.viewControllers[0] == self) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
         barButtonItem.tag = 10;
@@ -232,16 +198,8 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-    tokopediaNetworkManager = nil;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -298,7 +256,7 @@
             case 11: {
                 //submit
                 if ([self isValidInput]) {
-                    [self requestActionAddAddress:_datainput];
+                    [self doSubmit];
                 }
                 break;
             }
@@ -311,17 +269,10 @@
     }
 }
 
-//TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
-    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-//    address = [AddressFormList new];
-//    address.address_name = @"Alamat Kantor";
-//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
-//    address.receiver_name = @"Orang Keren";
-//    address.receiver_phone = @"0812345678";
+    AddressFormList *address = [self getAddressWithAddressID:nil];
     [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self ];
 }
-//
 
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
@@ -335,19 +286,9 @@
 {
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
-    
-    //MARK :: PO Wishes don't automating fill address
-    //if ([_textviewaddress.text isEqualToString:@""]){
-//        _textviewaddress.text = addressStreet;
-//        _textviewaddress.placeholderLabel.hidden = YES;
-    //}
-    //if ([_textfieldpostcode.text isEqualToString:@""])
-//        _textfieldpostcode.text = addressStreet;
-//    _textfieldpostcode.text = address.postalCode;
+
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
-//    _mapImageView.image = mapImage;
-//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
     _constraintBottomMapName.constant = 0;
     
@@ -355,151 +296,114 @@
     _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
 }
 
-#pragma mark - Request Action AddAddress
--(void)cancelActionAddAddress
-{
-//    [_requestActionAddAddress cancel];
-//    _requestActionAddAddress = nil;
-    [_objectmanagerActionAddAddress.operationQueue cancelAllOperations];
-    _objectmanagerActionAddAddress = nil;
+#pragma mark - Request Action Submit
+
+-(void)doSubmit{
+    if (_type == TYPE_ADD_EDIT_PROFILE_EDIT || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO){
+    
+        [self requestActionEditAddress];
+    } else {
+        [self requestActionAddAddress];
+    }
 }
 
--(void)requestActionAddAddress:(id)object
-{
-    if ([self getNetworkManager].getObjectRequest.isExecuting) return;
+-(void)requestActionAddAddress{
     
+    _barbuttonsave.enabled = NO;
     [_act startAnimating];
     UIBarButtonItem *loadingBar = [[UIBarButtonItem alloc] initWithCustomView:_act];
     self.navigationItem.rightBarButtonItem = loadingBar;
     
-    tempDictUserInfo = (NSDictionary*)object;
-    _barbuttonsave.enabled = NO;
-    
-    [[self getNetworkManager] requestWithBaseUrl:[NSString v4Url] path:[self getPath] method:[self getRequestMethod] parameter:[self getParameter]  mapping: [ProfileSettings mapping ] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        [self requestSuccessActionAddAddress:successResult withOperation:operation];
+    AddressFormList *address = [self getAddressWithAddressID:nil];
+
+    [RequestAddAddress fetchAddAddress:address isFromCart:@"" success:^(ProfileSettingsResult *data, AddressFormList *address) {
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
+        address = [self getAddressWithAddressID:data.address_id];
+        
+        if ([self.delegate respondsToSelector:@selector(successAddAddress:)]) {
+            [self.delegate successAddAddress:address];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
         _barbuttonsave.enabled = YES;
         self.navigationItem.rightBarButtonItem = _barbuttonsave;
-    } onFailure:^(NSError *errorResult) {
-        [self requestFailureActionAddAddress:errorResult];
+        
+    } failure:^(NSError *error) {
         _barbuttonsave.enabled = YES;
         self.navigationItem.rightBarButtonItem = _barbuttonsave;
     }];
 }
 
--(void)requestSuccessActionAddAddress:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ProfileSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+-(void)requestActionEditAddress{
     
-    if (status) {
-        [self requestProcessActionAddAddress:object];
-    }
-}
-
--(void)requestFailureActionAddAddress:(id)object
-{
-    [self requestProcessActionAddAddress:object];
-}
-
--(void)requestProcessActionAddAddress:(id)object
-{
-    if ([object isKindOfClass:[NSError class]]) {
+    _barbuttonsave.enabled = NO;
+    [_act startAnimating];
+    UIBarButtonItem *loadingBar = [[UIBarButtonItem alloc] initWithCustomView:_act];
+    self.navigationItem.rightBarButtonItem = loadingBar;
+    
+    [RequestEditAddress fetchEditAddress:[self getAddressWithAddressID:nil]
+                              isFromCart:@""
+                            userPassword:_textfieldpass.text
+                                 success:^(ProfileSettingsResult *data) {
+       
+        [self.navigationController popViewControllerAnimated:YES];
+           
+         NSDictionary *userinfo;
+         if (self.navigationController.viewControllers[0] == self) {
+             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+         } else {
+             NSArray *viewcontrollers = self.navigationController.viewControllers;
+             NSInteger index = viewcontrollers.count-3;
+             [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+             userinfo = @{
+                          kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
+                          kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
+                          };
+         }
+         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY
+                                                             object:nil
+                                                           userInfo:userinfo];
+                                     
         
-        if ([[object userInfo] objectForKey:NSLocalizedDescriptionKey]) {
-            NSString *errorMessage = [[object userInfo] objectForKey:NSLocalizedDescriptionKey];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
-            [alert show];
-            
-            self.navigationItem.rightBarButtonItem = _barbuttonsave;
+        if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
+            [self.delegate successEditAddress: [self getAddressWithAddressID:nil]];
         }
+                                     
+         _barbuttonsave.enabled = YES;
+         self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
+    } failure:^(NSError *error) {
         
-    } else {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        ProfileSettings *setting = stat;
-        BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        _barbuttonsave.enabled = YES;
+        self.navigationItem.rightBarButtonItem = _barbuttonsave;
         
-        if (status) {
-            if(setting.message_error) {
-                NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                [alert show];
-            }
-            if ([setting.data.is_success boolValue]) {
-                //TODO:: add alert
-                NSDictionary *userinfo;
-                if (_type == TYPE_ADD_EDIT_PROFILE_EDIT || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO){
-                    //TODO: Behavior after edit
-                    
-                    // If presented
-                    if (self.navigationController.viewControllers[0] == self) {
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    } else {
-                        NSArray *viewcontrollers = self.navigationController.viewControllers;
-                        NSInteger index = viewcontrollers.count-3;
-                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                        userinfo = @{
-                                     kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
-                                     kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
-                                     };
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY
-                                                                    object:nil
-                                                                  userInfo:userinfo];
-                
-                AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY]?:[AddressFormList new];
-                address.address_id = setting.data.address_id?:@"";
-                address.receiver_name = _textfieldreceivername.text?:@"";
-                address.address_name = _textfieldaddressname.text?:@"";
-                address.address_street = _textviewaddress.text?:@"";
-                address.postal_code = _textfieldpostcode.text?:@"";
-                address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
-                address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
-                address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
-                address.receiver_phone = _textfieldphonenumber.text?:@"";
-                address.longitude = _longitude;
-                address.latitude = _latitude;
-                
-                if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
-                    [self.delegate successEditAddress:address];
-                }
-                
-                if ([self.delegate respondsToSelector:@selector(successAddAddress:)]) {
-                    [self.delegate successAddAddress:address];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                
-                NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                [alert show];
-            }
-        }
-    }
+    }];
 }
 
--(void)requestTimeoutActionAddAddress
-{
-    [self cancelActionAddAddress];
+
+-(AddressFormList *)getAddressWithAddressID:(NSString*)newAddressID{
+    
+    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY]?:[AddressFormList new];
+    address.address_id = address.address_id?:newAddressID?:@"";
+    address.receiver_name = _textfieldreceivername.text?:@"";
+    address.address_name = _textfieldaddressname.text?:@"";
+    address.address_street = _textviewaddress.text?:@"";
+    address.postal_code = _textfieldpostcode.text?:@"";
+    address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
+    address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
+    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
+    address.province_id = _selectedProvince[DATA_ID_KEY]?:address.province_id?:@"";
+    address.city_id = _selectedCity[DATA_ID_KEY]?:address.city_id?:@"";
+    address.district_id = _selectedDistrict[DATA_ID_KEY]?:address.district_id?:@"";
+    address.receiver_phone = _textfieldphonenumber.text?:@"";
+    address.longitude = _longitude;
+    address.latitude = _latitude;
+    
+    return address;
 }
 
 #pragma mark - Methods
-- (TokopediaNetworkManager *)getNetworkManager
-{
-    if(tokopediaNetworkManager == nil)
-    {
-        tokopediaNetworkManager = [TokopediaNetworkManager new];
-        tokopediaNetworkManager.isUsingHmac = YES;
-    }
-    
-    return tokopediaNetworkManager;
-}
-
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
@@ -540,11 +444,7 @@
             _buttoncity.enabled = NO;
         }
         
-        //TODO:: Uncomment for showing map address
         if ([list.longitude integerValue] != 0) {
-//            _mapImageView.image = _imageMap;
-//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
-
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                 
                 if (error != nil){
@@ -569,7 +469,6 @@
 
             }];
         }
-        //
     }
 }
 
@@ -716,46 +615,6 @@
     return YES;
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if([_textfieldreceivername isFirstResponder]){
-        
-        [_textfieldaddressname becomeFirstResponder];
-    }
-    else if ([_textfieldaddressname isFirstResponder]){
-        
-        [_textviewaddress becomeFirstResponder];
-    }
-    else if ([_textviewaddress isFirstResponder]){
-        
-        [_textfieldpostcode becomeFirstResponder];
-    }
-    else if([_textfieldpostcode isFirstResponder])
-    {
-        [_textfieldpostcode resignFirstResponder];
-    }
-    
-    return YES;
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (textField == _textfieldreceivername) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY];
-    }
-    if (textField == _textfieldaddressname) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
-    }
-    if (textField == _textfieldpostcode) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
-    }
-    if (textField == _textfieldphonenumber) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY];
-    }
-    if (textField == _textfieldpass) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
-    }
-    return YES;
-}
 
 #pragma mark - Text View Delegate
 
@@ -858,86 +717,4 @@
     sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter
-{
-    NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
-    tempDictUserInfo = nil;
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    
-    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
-    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
-    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
-    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
-    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
-    
-    NSString *recievername = _textfieldreceivername.text?:@"";
-    NSString *addressname = _textfieldaddressname.text?:@"";
-    NSString *phone = _textfieldphonenumber.text?:@"";
-    NSString *postalcode = _textfieldpostcode.text?:@"";
-    
-    NSString *addressstreet = _textviewaddress.text?:@"";
-    NSString *password = _textfieldpass.text?:@"";
-    NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
-    NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
-    //TODO:: Lat Long
-    
-    NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
-                           kTKPDPROFILESETTING_APIADDRESSIDKEY : addressid,
-                           kTKPDPROFILESETTING_APICITYKEY : city,
-                           kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
-                           kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
-                           kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
-                           kTKPDPROFILESETTING_APIPROVINCEKEY : province,
-                           kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
-                           kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
-                           kTKPDPROFILESETTING_APIDISTRICTKEY : district,
-                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password,
-                           @"longitude": longitude,
-                           @"latitude": latitude
-                           };
-    
-    return param;
-}
-
--(int)getRequestMethod
-{
-    return RKRequestMethodPOST;
-}
-
-- (NSString *)getPath {
-    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/v4/action/people/edit_address.pl":@"/v4/action/people/add_address.pl";
-}
-
-- (id)getObjectManager:(int)tag
-{
-    _objectmanagerActionAddAddress = [TKPMappingManager objectManagerEditAddress];
-    return _objectmanagerActionAddAddress;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    return ((ProfileSettings *) stat).status;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    [self requestSuccessActionAddAddress:successResult withOperation:operation];
-    [_act stopAnimating];
-    _barbuttonsave.enabled = YES;
-    self.navigationItem.rightBarButtonItem = _barbuttonsave;
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self requestFailureActionAddAddress:errorResult];
-    [_act stopAnimating];
-    _barbuttonsave.enabled = YES;
-    self.navigationItem.rightBarButtonItem = _barbuttonsave;
-}
-
 @end

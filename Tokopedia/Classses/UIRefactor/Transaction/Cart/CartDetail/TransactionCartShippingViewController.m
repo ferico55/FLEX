@@ -829,7 +829,9 @@
     [_tableView reloadData];
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
-                              isFromCart:@"0"
+                              isFromCart:@"1"
+                            userPassword:@""
+
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      _isFinishCalculate = YES;
