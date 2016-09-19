@@ -91,7 +91,6 @@
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -207,8 +206,6 @@
         
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
             [self mapPosition];
-        } else {
-            _mapViewHeight.constant = 0;
         }
     }
 }
@@ -266,6 +263,20 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 5;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AddressFormList *address = _address;
+
+    if (indexPath.section == 2 && indexPath.row == 1) {
+        if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
+            return 0;
+        } else {
+            return 194;
+        }
+    }
+    return UITableViewAutomaticDimension;
 }
 
 //TODO:: Uncomment for showing map address
