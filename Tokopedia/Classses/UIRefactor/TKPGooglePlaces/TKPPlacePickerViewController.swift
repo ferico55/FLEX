@@ -403,6 +403,9 @@ import GoogleMaps
         strSnippet = adjustStrSnippet(address.administrativeArea, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.postalCode, strSnippet: strSnippet)
         
+        if address.lines.count > 0 {
+            strSnippet = address.lines.last as! String
+        }
         return strSnippet
     }
     
@@ -424,7 +427,11 @@ import GoogleMaps
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
-        let addressString : String = TKPAddressStreet().getStreetAddress(address.thoroughfare)
+        var addressString : String = ""
+        
+        if (address.thoroughfare != nil) {
+            addressString = TKPAddressStreet().getStreetAddress(address.thoroughfare)
+        }
         
         var postalCode : String!
         if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}
