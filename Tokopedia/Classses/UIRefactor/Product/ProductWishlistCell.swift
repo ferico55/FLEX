@@ -74,7 +74,7 @@ class ProductWishlistCell : UICollectionViewCell {
         self.badgesView.orientation = .RightToLeft;
         
         
-        var urls = NSMutableArray()
+        let urls = NSMutableArray()
         viewModel.badges.enumerate().map { index, badge in
             urls.addObject(badge.image_url)
         }
