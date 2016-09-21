@@ -1809,10 +1809,9 @@ TTTAttributedLabelDelegate
                                    label:@"Report"];
         [self goToReportProductViewController];
     } else {
-        [[AuthenticationService sharedService] signInFromViewController:self onSignInSuccess:^(Login * login) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self goToReportProductViewController];
-            });
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationService sharedService] signInFromViewController:self onSignInSuccess:^(LoginResult * loginResult) {
+            [weakSelf goToReportProductViewController];
         }];
     }
 }

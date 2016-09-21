@@ -16,7 +16,7 @@
 
 @optional
 - (void)cancelLoginView;
-- (void)didLoginSuccess:(Login*) login;
+- (void)didLoginSuccess:(LoginResult*) login;
 
 @end
 

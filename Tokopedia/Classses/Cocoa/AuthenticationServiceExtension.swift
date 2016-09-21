@@ -14,11 +14,11 @@ extension AuthenticationService: LoginViewDelegate {
         
     }
     
-    public func didLoginSuccess(login: Login) {
-        loginSuccessBlock(login)
+    public func didLoginSuccess(loginResult: LoginResult) {
+        loginSuccessBlock(loginResult)
     }
     
-    func signInFromViewController(viewController: UIViewController, onSignInSuccess: (login: Login!) -> Void){
+    func signInFromViewController(viewController: UIViewController, onSignInSuccess: (loginResult: LoginResult!) -> Void){
         
         let loginViewController: LoginViewController = LoginViewController()
         loginViewController.isPresentedViewController = true
@@ -29,8 +29,8 @@ extension AuthenticationService: LoginViewDelegate {
         navigationController.navigationBar.translucent = false;
         
         viewController.presentViewController(navigationController, animated: true, completion: nil)
-        loginSuccessBlock = { login in
-            onSignInSuccess(login: login)
+        loginSuccessBlock = { loginResult in
+            onSignInSuccess(loginResult: loginResult)
         }
     }
     
