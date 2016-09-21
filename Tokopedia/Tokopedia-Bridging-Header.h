@@ -66,10 +66,8 @@
 #import <Masonry/Masonry.h>
 #import "CardIO.h"
 #import "WebViewController.h"
-#import "Downpicker.h"
 #import "GAITrackedViewController.h"
 #import "LoginViewController.h"
-#import "UIAlertView+BlocksKit.h"
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
@@ -96,7 +94,6 @@
 #import "RequestResolutionAction.h"
 #import "ResolutionCenterCreateSolutionList.h"
 #import "NSArrayCategory.h"
-#import "UIDownPicker.h"
 #import "ResolutionCenterChooseProblemViewController.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UIFont+Theme.h"
@@ -113,9 +110,12 @@
 #import "TKPDAlertView.h"
 #import "LoadingView.h"
 
+// TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
 @import SPTPersistentCache;
 @import RestKit;
 @import APAddressBook;
 @import JLPermissions;
 @import EAIntroView;
+@import DownPicker;
+@import BlocksKit;
