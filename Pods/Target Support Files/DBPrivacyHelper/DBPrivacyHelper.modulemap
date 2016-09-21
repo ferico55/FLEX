@@ -1,0 +1,6 @@
+framework module DBPrivacyHelper {
+  umbrella header "DBPrivacyHelper-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,3 +1,7 @@
-COMPONENTKIT_CLANG_CXX_LANGUAGE_STANDARD = c++11
-COMPONENTKIT_CLANG_CXX_LIBRARY = libc++
-COMPONENTKIT_OTHER_LDFLAGS = -l"c++" -framework "CoreText" -framework "UIKit"
+CLANG_CXX_LANGUAGE_STANDARD = c++11
+CLANG_CXX_LIBRARY = libc++
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ComponentKit" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AppsFlyerFramework" "${PODS_ROOT}/Headers/Public/CardIO" "${PODS_ROOT}/Headers/Public/Google" "${PODS_ROOT}/Headers/Public/GoogleAnalytics" "${PODS_ROOT}/Headers/Public/GoogleAppIndexing" "${PODS_ROOT}/Headers/Public/GoogleAppUtilities" "${PODS_ROOT}/Headers/Public/GoogleAuthUtilities" "${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities" "${PODS_ROOT}/Headers/Public/GoogleMaps" "${PODS_ROOT}/Headers/Public/GoogleNetworkingUtilities" "${PODS_ROOT}/Headers/Public/GoogleSignIn" "${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities" "${PODS_ROOT}/Headers/Public/GoogleTagManager" "${PODS_ROOT}/Headers/Public/GoogleUtilities" "${PODS_ROOT}/Headers/Public/Reveal-iOS-SDK" "${PODS_ROOT}/Headers/Public/Rollout.io"
+OTHER_LDFLAGS = -l"c++" -framework "CoreText" -framework "UIKit"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES
