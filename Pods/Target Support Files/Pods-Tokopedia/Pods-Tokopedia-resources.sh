@@ -58,39 +58,19 @@ install_resource()
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperAssets.xcassets"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/en.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/es.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/it.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/ja.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/ko.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/pt-PT.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/zh-Hant.lproj"
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/OAStackView.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperAssets.xcassets"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/en.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/es.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/it.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/ja.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/ko.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/pt-PT.lproj"
-  install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/zh-Hant.lproj"
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/OAStackView.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
-if [[ "${ACTION}" == "install" ]]; then
+if [[ "${ACTION}" == "install" ]] && [[ "${SKIP_INSTALL}" == "NO" ]]; then
   mkdir -p "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
   rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 fi

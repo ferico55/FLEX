@@ -23,10 +23,7 @@
 #import "CustomNotificationView.h"
 
 #import <QuartzCore/QuartzCore.h>
-#import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"
-#import <JLPermissions/JLNotificationPermission.h>
-#import <JLPermissions/JLContactsPermission.h>
 
 #import "OpenShopDomainViewCell.h"
 #import "OpenShopImageViewCell.h"
@@ -65,8 +62,6 @@
 #import <BlocksKit/BlocksKit+UIKit.h>
 #import <BlocksKit/NSObject+A2DynamicDelegate.h>
 #import "NSURL+Dictionary.h"
-#import <NJKWebViewProgress/NJKWebViewProgress.h>
-#import <NJKWebViewProgress/NJKWebViewProgressView.h>
 #import "UIImage+Resize.h"
 #import <Masonry/Masonry.h>
 #import "CardIO.h"
@@ -87,8 +82,6 @@
 #import "NSString+HTML.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
-#import <APAddressBook/APAddressBook-Bridging.h>
-#import "SPTPersistentCache.h"
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
 #import "CategoryDataSource.h"
@@ -119,3 +112,10 @@
 #import "NavigateViewController.h"
 #import "TKPDAlertView.h"
 #import "LoadingView.h"
+
+@import NJKWebViewProgress;
+@import SPTPersistentCache;
+@import RestKit;
+@import APAddressBook;
+@import JLPermissions;
+@import EAIntroView;

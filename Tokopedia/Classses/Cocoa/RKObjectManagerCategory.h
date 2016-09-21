@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RKObjectManager.h>
 
 
 @interface RKObjectManager (TkpdCategory)
