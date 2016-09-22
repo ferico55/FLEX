@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DataUser : NSObject <TKPObjectMapping>
+@interface DataUser : NSObject
 
 @property (nonatomic, strong)NSString *hobby;
 @property (nonatomic, strong)NSString *birth_day;
@@ -21,7 +21,6 @@
 @property (nonatomic, strong)NSString *gender;
 @property (nonatomic, strong)NSString *user_image;
 
-+(NSDictionary *) attributeMappingDictionary;
 +(RKObjectMapping *) mapping;
 
 @end

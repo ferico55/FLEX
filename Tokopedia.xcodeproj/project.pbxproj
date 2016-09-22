@@ -21,6 +21,7 @@
 		347917F01D87A15500A3324E /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790E011D87A15400A3324E /* Tokopedia-Info.plist */; };
 		347917F11D87A15500A3324E /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 34790E031D87A15400A3324E /* Tokopedia.entitlements */; };
 		347917F21D87A15500A3324E /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34790E041D87A15400A3324E /* Tokopedia.xcworkspace */; };
+		45628BDC1D938901005B03B0 /* SettingUserProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45628BDB1D938901005B03B0 /* SettingUserProfileRequest.swift */; };
 		45B828501D87EEB300458EB9 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818851D87EEAC00458EB9 /* TPAnalytics.m */; };
 		45B828511D87EEB300458EB9 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818871D87EEAC00458EB9 /* TPLocalytics.m */; };
 		45B828521D87EEB300458EB9 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8188A1D87EEAC00458EB9 /* URLCacheAlert.m */; };
@@ -2699,6 +2700,7 @@
 		34790E041D87A15400A3324E /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		3479FE751D87A14800A3324E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3479FE761D87A14800A3324E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		45628BDB1D938901005B03B0 /* SettingUserProfileRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingUserProfileRequest.swift; sourceTree = "<group>"; };
 		45B818841D87EEAC00458EB9 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45B818851D87EEAC00458EB9 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45B818861D87EEAC00458EB9 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -11026,6 +11028,7 @@
 				45B823081D87EEB000458EB9 /* SettingUserProfileViewController.h */,
 				45B823091D87EEB000458EB9 /* SettingUserProfileViewController.m */,
 				45B8230A1D87EEB000458EB9 /* SettingUserProfileViewController.xib */,
+				45628BDB1D938901005B03B0 /* SettingUserProfileRequest.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -15785,6 +15788,7 @@
 				45B82A931D87EEB300458EB9 /* ImageResult.m in Sources */,
 				45B829B61D87EEB300458EB9 /* PromoShopImage.m in Sources */,
 				45B82E7F1D87EEB300458EB9 /* ShippingOptionsViewController.m in Sources */,
+				45628BDC1D938901005B03B0 /* SettingUserProfileRequest.swift in Sources */,
 				45B82A4E1D87EEB300458EB9 /* TransactionATCFormResult.m in Sources */,
 				45B82BA21D87EEB300458EB9 /* GenerateHostRequest.m in Sources */,
 				45B82DFB1D87EEB300458EB9 /* SettingBankDetailViewController.m in Sources */,

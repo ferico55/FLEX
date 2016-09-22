@@ -32,11 +32,11 @@
 
 #import "PhoneVerifViewController.h"
 #import "PhoneVerifRequest.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Edit View Controller
 
 typedef NS_ENUM(NSInteger, RequestType) {
-    RequestTypeGetData,
     RequestTypeSubmitData,
     RequestTypeUploadImage,
 };
@@ -184,15 +184,14 @@ typedef NS_ENUM(NSInteger, PickerView) {
 #pragma mark - Request Method
 
 - (void)requestGetData {
-    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    network.tagRequest = RequestTypeGetData;
-    network.delegate = self;
-    [network doRequest];
-    
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    [SettingUserProfileRequest fetchUserProfileForm:^(DataUser * data) {
+        
+        [self showUserData:data];
+        [self showSaveButton];
+        
+    } onFailure:^{
+        
+    }];
 }
 
 - (void)requestSubmitData {
@@ -213,9 +212,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (NSString *)getPath:(int)tag {
     NSString *path = @"";
-    if (tag == RequestTypeGetData) {
-        path = kTKPDPROFILE_SETTINGAPIPATH;
-    } else if (tag == RequestTypeSubmitData) {
+    if (tag == RequestTypeSubmitData) {
         path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
     } else if (tag == RequestTypeUploadImage) {
         path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
@@ -225,11 +222,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *parameter = @{};
-    if (tag == RequestTypeGetData) {
-        parameter = @{
-            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY
-        };
-    } else if (tag == RequestTypeSubmitData) {
+  if (tag == RequestTypeSubmitData) {
         NSString *userPassword = self.passwordTextField.text?:@"";
         parameter = @{
             kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
@@ -255,9 +248,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (id)getObjectManager:(int)tag {
     RKObjectManager *objectManager;
-    if (tag == RequestTypeGetData) {
-        objectManager = [self getDataObjectManager];
-    } else if (tag == RequestTypeSubmitData) {
+    if (tag == RequestTypeSubmitData) {
         objectManager = [self submitDataObjectManager];
     } else if (tag == RequestTypeUploadImage) {
         objectManager = [self uploadImageObjectManager];
@@ -265,46 +256,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
     return objectManager;
 }
 
-- (RKObjectManager *)getDataObjectManager {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditResult class]];
-    
-    RKObjectMapping *datauserMapping = [RKObjectMapping mappingForClass:[DataUser class]];
-    [datauserMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIHOBBYKEY,
-                                                     kTKPDPROFILE_APIBIRTHDAYKEY,
-                                                     kTKPDPROFILE_APIFULLNAMEKEY,
-                                                     kTKPDPROFILE_APIBIRTHMONTHKEY,
-                                                     kTKPDPROFILE_APIBIRTHYEARKEY,
-                                                     kTKPDPROFILE_APIGENDERKEY,
-                                                     kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                     kTKPDPROFILE_APIUSEREMAILKEY,
-                                                     kTKPDPROFILE_APIUSERMESSENGERKEY,
-                                                     kTKPDPROFILE_APIUSERPHONEKEY]];
-
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                  toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                withMapping:datauserMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_SETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
 
 - (RKObjectManager *)submitDataObjectManager {
     RKObjectManager *objectManager =  [RKObjectManager sharedClient];
@@ -363,10 +314,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
     return objectManager;
 }
 
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    return [[mappingResult.dictionary objectForKey:@""] status];
-}
-
 - (void)actionBeforeRequest:(int)tag {
     if (tag == RequestTypeSubmitData) {
         [self showLoadingBar];
@@ -382,13 +329,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     // Replace loading with save button
     [self showSaveButton];
 
-    if (tag == RequestTypeGetData) {
-        
-        ProfileEdit *response = [mappingResult.dictionary objectForKey:@""];
-        self.userData = response.result.data_user;
-        [self showUserData:_userData];
-        
-    } else if (tag == RequestTypeSubmitData) {
+    if (tag == RequestTypeSubmitData) {
         
         ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
         BOOL isSuccess = [response.result.is_success boolValue];
@@ -439,6 +380,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (void)showUserData:(DataUser *)userData {
+    _userData = userData;
+    
     // Set value to outlet
     self.fullNameLabel.text = userData.full_name;
     self.birthdateLabel.text = [NSString stringWithFormat:@"%@/%@/%@", userData.birth_day, userData.birth_month, userData.birth_year];
