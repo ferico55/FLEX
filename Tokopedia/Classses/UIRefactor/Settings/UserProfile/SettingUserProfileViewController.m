@@ -37,7 +37,6 @@
 #pragma mark - Profile Edit View Controller
 
 typedef NS_ENUM(NSInteger, RequestType) {
-    RequestTypeSubmitData,
     RequestTypeUploadImage,
 };
 
@@ -191,14 +190,37 @@ typedef NS_ENUM(NSInteger, PickerView) {
         
     } onFailure:^{
         
+        [self showSaveButton];
+        
     }];
 }
 
 - (void)requestSubmitData {
-    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    network.tagRequest = RequestTypeSubmitData;
-    network.delegate = self;
-    [network doRequest];
+    
+    [self showLoadingBar];
+    
+    _userData.user_password = _passwordTextField.text?:@"";
+    
+    [SettingUserProfileRequest fetchEditUserProfile:_userData onSuccess:^{
+        
+        // Notify other controller that edit profile is success
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
+                                                            object:nil
+                                                          userInfo:nil];
+        
+        // Notify delegate controller that edit profile is success
+        if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
+            [_delegate successEditUserProfile];
+        }
+        
+        // Reset password field
+        self.passwordTextField.text = @"";
+        
+        [self showSaveButton];
+        
+    } onFailure:^{
+        [self showSaveButton];
+    }];
 }
 
 - (void)requestUploadPhoto {
@@ -212,9 +234,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (NSString *)getPath:(int)tag {
     NSString *path = @"";
-    if (tag == RequestTypeSubmitData) {
-        path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
-    } else if (tag == RequestTypeUploadImage) {
+    if (tag == RequestTypeUploadImage) {
         path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
     }
     return path;
@@ -222,21 +242,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *parameter = @{};
-  if (tag == RequestTypeSubmitData) {
-        NSString *userPassword = self.passwordTextField.text?:@"";
-        parameter = @{
-            kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
-            kTKPDPROFILE_APIFULLNAMEKEY    : _userData.full_name,
-            kTKPDPROFILE_APIBIRTHDAYKEY    : _userData.birth_day,
-            kTKPDPROFILE_APIBIRTHMONTHKEY  : _userData.birth_month,
-            kTKPDPROFILE_APIBIRTHYEARKEY   : _userData.birth_year,
-            kTKPDPROFILE_APIGENDERKEY      : _userData.gender,
-            kTKPDPROFILE_APIHOBBYKEY       : _userData.hobby,
-            kTKPDPROFILE_APIMESSENGERKEY   : _userData.user_messenger,
-            kTKPDPROFILE_APIPASSKEY        : userPassword,
-            kTKPDPROFILE_APIMSISDNKEY      : _userData.user_phone
-        };
-    } else if (tag == RequestTypeUploadImage) {
+    if (tag == RequestTypeUploadImage) {
         parameter = @{
             kTKPDPROFILE_APIACTIONKEY           : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
             kTKPDPROFILE_APIFILEUPLOADEDKEY     : _uploadImageData.result.pic_obj,
@@ -248,42 +254,12 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (id)getObjectManager:(int)tag {
     RKObjectManager *objectManager;
-    if (tag == RequestTypeSubmitData) {
-        objectManager = [self submitDataObjectManager];
-    } else if (tag == RequestTypeUploadImage) {
+if (tag == RequestTypeUploadImage) {
         objectManager = [self uploadImageObjectManager];
     }
     return objectManager;
 }
 
-
-- (RKObjectManager *)submitDataObjectManager {
-    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSMESSAGEKEY,
-                                                   kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY
-                                                   ]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-
-    return objectManager;
-}
 
 - (RKObjectManager *)uploadImageObjectManager {
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
@@ -315,9 +291,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    if (tag == RequestTypeSubmitData) {
-        [self showLoadingBar];
-    } else if (tag == RequestTypeUploadImage) {
+ 
+    if (tag == RequestTypeUploadImage) {
         [self showLoadingBar];
     }
 }
@@ -328,40 +303,11 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
     // Replace loading with save button
     [self showSaveButton];
-
-    if (tag == RequestTypeSubmitData) {
+    
+    if (tag == RequestTypeUploadImage) {
         
         ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
-        BOOL isSuccess = [response.result.is_success boolValue];
-        if (isSuccess) {
-            // Shows success message save data
-            NSArray *successMessages = response.message_status?:@[kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-            [alert show];
-            
-            // Notify other controller that edit profile is success
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:nil];
-
-            // Notify delegate controller that edit profile is success
-            if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
-                [_delegate successEditUserProfile];
-            }
-            
-            // Reset password field
-            self.passwordTextField.text = @"";
-            
-        } else {
-            NSArray *errorMessages = response.message_error?:@[kTKPDMESSAGE_ERROREDITPROFILEMESSAGEKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        
-    } else if (tag == RequestTypeUploadImage) {
-        
-        ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
-        BOOL isSuccess = [response.result.is_success boolValue];
+        BOOL isSuccess = [response.data.is_success boolValue];
         BOOL hasErrorMessages = response.message_error?YES:NO;
         if (isSuccess) {
             // Notify other controller that upload image is success

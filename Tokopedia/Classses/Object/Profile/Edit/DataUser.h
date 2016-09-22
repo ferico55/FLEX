@@ -20,6 +20,7 @@
 @property (nonatomic, strong)NSString *user_phone;
 @property (nonatomic, strong)NSString *gender;
 @property (nonatomic, strong)NSString *user_image;
+@property (nonatomic, strong)NSString *user_password;
 
 +(RKObjectMapping *) mapping;
 
