@@ -78,11 +78,13 @@
 - (void)showAllButton
 {
     _twoButtonsView.hidden = NO;
+    _oneButtonView.hidden = YES;
 }
 
 - (void)showTrackButton
 {
     _oneButtonView.hidden = NO;
+    _twoButtonsView.hidden = YES;
 }
 
 - (void)hideDayLeftInformation
