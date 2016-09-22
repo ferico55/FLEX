@@ -72,16 +72,12 @@ TokopediaNetworkManagerDelegate
     _networkManager.delegate = self;
     _networkManager.isUsingHmac = NO;
     
-    _generateHostRequest = [GenerateHostRequest new];
-    
-    [_generateHostRequest requestGenerateHostWithNewAdd:@"1"
-                                              onSuccess:^(GenerateHostResult *result) {
-                                                  _generatedHost = result.generated_host;
-                                                  self.navigationItem.rightBarButtonItem.enabled = YES;
-                                              }
-                                              onFailure:^(NSError *errorResult) {
-                                                  
-                                              }];
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        _generatedHost = host;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    } onFailure:^{
+        
+    }];
     
     _reviewRequest = [ReviewRequest new];
     _fileUploaded = [NSMutableDictionary new];

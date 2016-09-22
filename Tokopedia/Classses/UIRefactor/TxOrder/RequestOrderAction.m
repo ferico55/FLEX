@@ -8,7 +8,7 @@
 
 #import "RequestOrderAction.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 #import "RequestUploadImage.h"
 #import "TxOrderConfirmation.h"
 #import "TxOrderConfirmed.h"
@@ -166,7 +166,7 @@ static failedCompletionBlock failedUploadProof;
 
 +(void)fetchImageProof:(UIImage*)image imageName:(NSString*)imageName requestObject:(RequestObjectUploadImage*)object success:(void(^)(ImageResult *data))success {
     
-    [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
         NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",host.upload_host];
         [RequestUploadImage requestUploadImage:image
                                 withUploadHost:uploadImageBaseURL
@@ -182,8 +182,9 @@ static failedCompletionBlock failedUploadProof;
                                          failedCompletionSubmitConfirmation(error);
                                      }];
         
-    } failure:^(NSError *error) {
-        failedCompletionSubmitConfirmation(error);
+        
+    } onFailure:^{
+        failedCompletionSubmitConfirmation(nil);
     }];
 }
 

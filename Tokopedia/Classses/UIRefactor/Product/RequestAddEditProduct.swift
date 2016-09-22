@@ -123,7 +123,7 @@ enum RequestError : ErrorType {
         
         var generatedHost : GeneratedHost = GeneratedHost()
         
-        self.getGeneratedHost()
+        GenerateHostObservable.getGeneratedHost()
             .flatMap { (host) -> Observable<[ProductEditImages]> in
                 generatedHost = host
                 return self.getEditProductImages(form.product_images, generatedHost: generatedHost, productID: form.product.product_id).doOnError({ (error) in
@@ -318,7 +318,7 @@ enum RequestError : ErrorType {
         var uploadedImages : [ProductEditImages] = form.product_images
         var postKeyParam : String = ""
 
-        self.getGeneratedHost()
+        GenerateHostObservable.getGeneratedHost()
         .flatMap { (host) -> Observable<[ProductEditImages]> in
             generatedHost = host
             return getImageURLAddProducts(form.product_images, generatedHost: host).doOnError({ (error) in
@@ -653,20 +653,6 @@ enum RequestError : ErrorType {
     }
 
     //MARK: - UPLOAD IMAGE
-    private class func getGeneratedHost() -> Observable<GeneratedHost> {
-        return Observable.create({ (observer) -> Disposable in
-            RequestGenerateHost .fetchGenerateHostSuccess({ (generatedHost) in
-                observer.onNext(generatedHost)
-                observer.onCompleted()
-            }) { (error) in
-                observer.onError(RequestError.networkError)
-                StickyAlertView.showErrorMessage(["Gagal generate host"])
-            }
-            
-            return NopDisposable.instance
-        })
-    }
-    
     private class func getPostKeyEditProductID(productID:String, selectedImage:ProductEditImages, generatedHost:GeneratedHost) -> Observable<ProductEditImages>{
 
         return Observable.create({ (observer) -> Disposable in
