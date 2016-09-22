@@ -19,7 +19,6 @@
 #import "AlertListView.h"
 #import "AlertPickerView.h"
 #import "RequestUploadImage.h"
-#import "RequestGenerateHost.h"
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"

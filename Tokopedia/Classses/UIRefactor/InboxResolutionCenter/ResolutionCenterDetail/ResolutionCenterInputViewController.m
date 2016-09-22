@@ -16,7 +16,6 @@
 #import "CameraController.h"
 #import "detail.h"
 #import "GenerateHost.h"
-#import "requestGenerateHost.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
 #import "RequestUploadImage.h"
