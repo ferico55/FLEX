@@ -1,8 +1,12 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-target "Tokopedia" do
-    pod 'RestKit',  '~> 0.20.0'
+use_frameworks!
+
+def common_pods
+    # Tweaks is installed manually, the use_frameworks! makes the Tweaks options not showing.
+    
+    pod 'RestKit',  '~> 0.27.0'
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
     pod 'GoogleAppIndexing'
@@ -13,7 +17,6 @@ target "Tokopedia" do
     pod 'Rollout.io', '~> 1.0.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
-    pod 'Tweaks', '~> 2.0.0'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
     pod 'ComponentKit', '~> 0.14'
@@ -29,8 +32,16 @@ target "Tokopedia" do
     pod 'Masonry'
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
+    
+    # This is used only to support UIImageView+AFNetworking.
+    # If we can replace this with SDWebImage for example, this library won't be needed anymore.
+    pod 'AFNetworking', '~> 3.1.0'
+end
+
+target "Tokopedia" do
+    common_pods
 end
 
 target "TokopediaTests" do
-    pod 'RestKit',  '~> 0.20.0'
+    common_pods
 end

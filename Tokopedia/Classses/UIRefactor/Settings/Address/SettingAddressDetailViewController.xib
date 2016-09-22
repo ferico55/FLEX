@@ -15,7 +15,7 @@
                 <outlet property="labelpostcode" destination="tqt-HM-glW" id="zqJ-ay-KLU"/>
                 <outlet property="labelprovince" destination="r1Y-RP-fCb" id="myN-lL-GuS"/>
                 <outlet property="labelreceivername" destination="XbT-b4-SB0" id="AeG-cz-xAz"/>
-                <outlet property="mapViewHeight" destination="hlV-TD-5dv" id="hBH-Gx-uqy"/>
+                <outlet property="mapViewHeight" destination="gcY-NV-OIk" id="fv7-H0-O2t"/>
                 <outlet property="mapview" destination="dGI-zU-X7j" id="lxC-s2-a16"/>
                 <outlet property="tableView" destination="P60-yr-Zpl" id="T2o-Yf-1Xx"/>
                 <outlet property="view" destination="xfa-3D-kB9" id="ryG-pO-gk9"/>
@@ -1048,11 +1048,14 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-zU-X7j" customClass="TKPMapView" customModule="Tokopedia" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="194"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="194" id="gcY-NV-OIk"/>
+                        </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aD1-P7-ae5">
                         <rect key="frame" x="0.0" y="1" width="320" height="193"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="193" id="hlV-TD-5dv"/>
+                            <constraint firstAttribute="height" constant="193" id="SKA-yB-085"/>
                         </constraints>
                         <connections>
                             <action selector="tapMapDetail:" destination="-1" eventType="touchUpInside" id="v5P-Xe-Hds"/>
@@ -1060,14 +1063,14 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="aD1-P7-ae5" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="8lU-4t-UJk"/>
-                    <constraint firstAttribute="bottom" secondItem="dGI-zU-X7j" secondAttribute="bottom" id="EdC-76-B2w"/>
-                    <constraint firstAttribute="trailing" secondItem="dGI-zU-X7j" secondAttribute="trailing" id="Lcn-lo-DDt"/>
-                    <constraint firstAttribute="trailing" secondItem="aD1-P7-ae5" secondAttribute="trailing" id="Xi6-ph-upu"/>
-                    <constraint firstItem="dGI-zU-X7j" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="c50-yh-Lwk"/>
-                    <constraint firstItem="dGI-zU-X7j" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="i6d-je-plF"/>
-                    <constraint firstAttribute="bottom" secondItem="aD1-P7-ae5" secondAttribute="bottom" id="jvI-NQ-dza"/>
-                    <constraint firstItem="aD1-P7-ae5" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="sUo-5w-4jc"/>
+                    <constraint firstAttribute="trailing" secondItem="aD1-P7-ae5" secondAttribute="trailing" id="8HQ-uO-Cbq"/>
+                    <constraint firstItem="dGI-zU-X7j" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="JYx-e5-A0E"/>
+                    <constraint firstAttribute="trailing" secondItem="dGI-zU-X7j" secondAttribute="trailing" id="P7z-2V-Fob"/>
+                    <constraint firstItem="aD1-P7-ae5" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" constant="1" id="SIO-rw-WlA"/>
+                    <constraint firstItem="dGI-zU-X7j" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="UZP-kl-PN0"/>
+                    <constraint firstItem="aD1-P7-ae5" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="bTr-zR-IME"/>
+                    <constraint firstAttribute="bottom" secondItem="dGI-zU-X7j" secondAttribute="bottom" id="cjI-xJ-wEI"/>
+                    <constraint firstAttribute="bottom" secondItem="aD1-P7-ae5" secondAttribute="bottom" id="y83-BU-ayr"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="51" y="941"/>

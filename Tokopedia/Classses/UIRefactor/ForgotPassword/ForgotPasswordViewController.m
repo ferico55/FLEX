@@ -12,7 +12,7 @@
 #import "GeneralAction.h"
 #import "string_settings.h"
 #import "RegisterViewController.h"
-#import <BlocksKit+UIKit.h>
+@import BlocksKit;
 
 @interface ForgotPasswordViewController (){
     TokopediaNetworkManager *_networkManager;

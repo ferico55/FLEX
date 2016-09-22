@@ -27,7 +27,7 @@
 #import "string_inbox_talk.h"
 #import "WebViewController.h"
 
-#import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
+@import UITableView_FDTemplateLayoutCell;
 #import "Tokopedia-Swift.h"
 
 @interface ProductTalkDetailViewController ()

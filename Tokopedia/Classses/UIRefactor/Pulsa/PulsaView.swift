@@ -107,6 +107,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         self.selectedCategory = categories[0]
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     func buildAllView(category: PulsaCategory) {
         self.subviews.enumerate().forEach { index, subview in
             if(index > 0) {

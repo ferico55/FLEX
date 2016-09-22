@@ -91,7 +91,7 @@
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
         
-        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
