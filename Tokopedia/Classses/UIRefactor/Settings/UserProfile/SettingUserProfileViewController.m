@@ -13,7 +13,6 @@
 #import "UploadImage.h"
 #import "ProfileEdit.h"
 #import "ProfileEditForm.h"
-#import "UploadImageParams.h"
 
 #import "AlertDatePickerView.h"
 #import "AlertListView.h"
@@ -23,8 +22,6 @@
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"
-#import "TokopediaNetworkManager.h"
-
 #import "TKPDPhotoPicker.h"
 
 #import "UIImage+ImageEffects.h"
@@ -35,10 +32,6 @@
 #import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Edit View Controller
-
-typedef NS_ENUM(NSInteger, RequestType) {
-    RequestTypeUploadImage,
-};
 
 typedef NS_ENUM(NSInteger, PickerView) {
     PickerViewDate,
@@ -51,15 +44,10 @@ typedef NS_ENUM(NSInteger, PickerView) {
     UITextViewDelegate,
     UIScrollViewDelegate,
     TKPDAlertViewDelegate,
-    RequestUploadImageDelegate,
-    GenerateHostDelegate,
-    TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate
 >
 
 // Data
-@property (strong, nonatomic) GeneratedHost *generatedHostData;
-@property (strong, nonatomic) UploadImage *uploadImageData;
 @property (strong, nonatomic) DataUser *userData;
 
 // Container
@@ -183,6 +171,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 #pragma mark - Request Method
 
 - (void)requestGetData {
+    
     [SettingUserProfileRequest fetchUserProfileForm:^(DataUser * data) {
         
         [self showUserData:data];
@@ -223,107 +212,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
     }];
 }
 
-- (void)requestUploadPhoto {
-    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    network.tagRequest = RequestTypeUploadImage;
-    network.delegate = self;
-    [network doRequest];
-}
-
-#pragma mark - Network delegate
-
-- (NSString *)getPath:(int)tag {
-    NSString *path = @"";
-    if (tag == RequestTypeUploadImage) {
-        path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
-    }
-    return path;
-}
-
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = @{};
-    if (tag == RequestTypeUploadImage) {
-        parameter = @{
-            kTKPDPROFILE_APIACTIONKEY           : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
-            kTKPDPROFILE_APIFILEUPLOADEDKEY     : _uploadImageData.result.pic_obj,
-            @"server_id"                        : _generatedHostData.server_id
-        };
-    }
-    return parameter;
-}
-
-- (id)getObjectManager:(int)tag {
-    RKObjectManager *objectManager;
-if (tag == RequestTypeUploadImage) {
-        objectManager = [self uploadImageObjectManager];
-    }
-    return objectManager;
-}
-
-
-- (RKObjectManager *)uploadImageObjectManager {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSMESSAGEKEY,
-                                                   kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY
-                                                   ]];
-
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
-    
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
-- (void)actionBeforeRequest:(int)tag {
- 
-    if (tag == RequestTypeUploadImage) {
-        [self showLoadingBar];
-    }
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult
-             withOperation:(RKObjectRequestOperation *)operation
-                   withTag:(int)tag {
-
-    // Replace loading with save button
-    [self showSaveButton];
-    
-    if (tag == RequestTypeUploadImage) {
-        
-        ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
-        BOOL isSuccess = [response.data.is_success boolValue];
-        BOOL hasErrorMessages = response.message_error?YES:NO;
-        if (isSuccess) {
-            // Notify other controller that upload image is success
-            NSDictionary *userInfo = @{
-                kTKPDPROFILE_APIPROFILEPHOTOKEY : _profileImageView.image,
-                @"file_th": _uploadImageData.result.file_th
-            };
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:userInfo];
-        } else if (hasErrorMessages) {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
-            [alert show];
-        }
-    }
-}
 
 - (void)showUserData:(DataUser *)userData {
     _userData = userData;
@@ -371,10 +259,6 @@ if (tag == RequestTypeUploadImage) {
         self.verificationPhoneView.hidden = NO;
         self.verificationPhoneViewHeight.constant = 100;
     }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    [self showSaveButton];
 }
 
 - (void)setUserProfilePicture {
@@ -470,9 +354,9 @@ if (tag == RequestTypeUploadImage) {
         NSCalendarUnit calendarUnit = NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
         NSDateComponents *components = [[NSCalendar currentCalendar] components:calendarUnit fromDate:date];
         
-        self.userData.birth_day = [NSString stringWithFormat:@"%d", [components day]];
-        self.userData.birth_month = [NSString stringWithFormat:@"%d", [components month]];
-        self.userData.birth_year = [NSString stringWithFormat:@"%d", [components year]];
+        self.userData.birth_day = [NSString stringWithFormat:@"%zd", [components day]];
+        self.userData.birth_month = [NSString stringWithFormat:@"%zd", [components month]];
+        self.userData.birth_year = [NSString stringWithFormat:@"%zd", [components year]];
         
         NSString *birthdate = [NSString stringWithFormat:@"%@/%@/%@",
                                _userData.birth_day,
@@ -516,54 +400,35 @@ if (tag == RequestTypeUploadImage) {
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
     NSMutableDictionary *object = [NSMutableDictionary new];
     [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
-    [object setObject:self.profileImageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     
     NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIImage *image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
 
     self.profileImageView.image = image;
+    self.profileImageView.alpha = 0.5;
+    [self showLoadingBar];
     
-    [self uploadImageData:object];
-}
-
-#pragma mark - Upload profile image
-
-- (void)uploadImageData:(NSDictionary *)data {
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:data
-                             generatedHost:_generatedHostData
-                                    action:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:API_UPLOAD_PROFILE_IMAGE_DATA_NAME
-                                   success:^(id imageObject, UploadImage *uploadImageData) {
-                                       self.uploadImageData = uploadImageData;
-                                       [self requestUploadPhoto];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       // Show error messages
-                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
-                                       [alert show];
-                                       
-                                       // Show user profile image
-                                       [self setUserProfilePicture];
-                                   }];
-}
-
-- (void)failedUploadErrorMessage:(NSArray *)errorMessage {
-    
-}
-
-#pragma mark - Request Generate Host
-
--(void)successGenerateHost:(GenerateHost *)generateHost
-{
-    _generatedHostData = generateHost.result.generated_host;
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
+    [SettingUserProfileRequest fetchUploadProfilePicture:image onSuccess:^(NSString * imageURLString) {
+        
+        self.profileImageView.alpha = 1;
+        [self showSaveButton];
+        
+        // Notify other controller that upload image is success
+        NSDictionary *userInfo = @{
+                                   kTKPDPROFILE_APIPROFILEPHOTOKEY : _profileImageView.image,
+                                   @"file_th": imageURLString?:@""
+                                   };
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                                            object:nil
+                                                          userInfo:userInfo];
+        [self.profileImageView setImage:image];
+        
+        
+    } onFailure:^{
+        // Show user profile image
+        [self setUserProfilePicture];
+        [self showSaveButton];
+    }];
 }
 
 @end

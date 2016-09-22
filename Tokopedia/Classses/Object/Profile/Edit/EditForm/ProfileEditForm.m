@@ -9,6 +9,15 @@
 #import "ProfileEditForm.h"
 
 @implementation ProfileEditForm
+
+-(NSArray *)message_status{
+    return _message_status?:@[];
+}
+
+-(NSArray *)message_error{
+    return _message_error?:@[];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"message_error",
