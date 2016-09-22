@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F898FE5F692C563213A7FCDAC5240BD9E0D12068",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "F898FE5F692C563213A7FCDAC5240BD9E0D12068" : 0,
+    "6A950CF6333E4E0A56294754E1B1864CD5D1F658" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A15A684C-752F-46F5-8668-7DA42788221A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "F898FE5F692C563213A7FCDAC5240BD9E0D12068" : "ios-tokopedia\/",
+    "6A950CF6333E4E0A56294754E1B1864CD5D1F658" : "learnings\/ios\/Tweaks\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Tokopedia",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Tokopedia.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/facebook\/Tweaks.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6A950CF6333E4E0A56294754E1B1864CD5D1F658"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/tokopedia\/ios-tokopedia.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F898FE5F692C563213A7FCDAC5240BD9E0D12068"
+    }
+  ]
+}

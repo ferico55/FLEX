@@ -7,7 +7,7 @@
 //
 
 #import "MiniSlideData.h"
-#import <RestKit/ObjectMapping/RKObjectMapping.h>
+#import <RestKit/RestKit.h>
 #import "MiniSlide.h"
 
 @implementation MiniSlideData

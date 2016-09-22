@@ -35,7 +35,6 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @end
 
@@ -288,7 +287,6 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    [_act startAnimating];
      NSLog(@"URL shouldStartLoadWithRequest: %@", webView.request.URL.absoluteString);
     NSLog(@"URL shouldStartLoadWithRequest: %@", request.URL.absoluteString);
 
@@ -473,7 +471,6 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [_act stopAnimating];
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
     NSLog(@"html String WebView %@", html);
     NSLog(@"URL webViewDidFinishLoad: %@", webView.request.URL.absoluteString);
@@ -521,7 +518,6 @@
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView stopLoading];
-    [_act stopAnimating];
     NSString *errorMessage ;
 
     NSLog(@"%@", error.localizedDescription);
