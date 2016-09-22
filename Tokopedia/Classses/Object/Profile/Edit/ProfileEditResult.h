@@ -10,7 +10,7 @@
 
 #import "DataUser.h"
 
-@interface ProfileEditResult : NSObject <TKPObjectMapping>
+@interface ProfileEditResult : NSObject
 
 @property (nonatomic, strong) DataUser *data_user;
 

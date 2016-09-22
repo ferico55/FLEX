@@ -71,7 +71,6 @@ typedef enum
 #define kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY @"upload_profile_image"
 #define kTKPDPROFILE_APIUPLOADGENERATEHOSTKEY @"generate_host"
 #define kTKPDPROFILE_APIGETPROFILEFORMKEY @"get_profile_form"
-#define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
 #define kTKPDPROFILE_APIEDITPROFILEKEY  @"edit_profile"
 #define kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY    @"upload_profile_picture"
