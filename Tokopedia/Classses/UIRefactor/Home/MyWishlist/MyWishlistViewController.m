@@ -26,6 +26,8 @@
 #import "Tokopedia-Swift.h"
 #import "UIAlertView+BlocksKit.h"
 #import "TransactionATCViewController.h"
+#import "MyWishlistMojitoData.h"
+#import "MyWishlistMojitoResponse.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
@@ -155,16 +157,22 @@ typedef enum TagRequest {
 - (void)loadProduct {
     TokopediaNetworkManager* network = [TokopediaNetworkManager new];
     network.isUsingHmac = YES;
-    [network requestWithBaseUrl:[NSString v4Url]
-                           path:@"/v4/home/get_wishlist.pl"
+    [network requestWithBaseUrl:[NSString mojitoUrl]
+                           path:[self getWishlistPath]
                          method:RKRequestMethodGET
-                      parameter:@{@"page" : @(_page), @"limit" : @"10"}
-                        mapping:[self mapping]
+                      parameter:@{@"page" : @(_page), @"count" : @"10"}
+                        mapping:[MyWishlistMojitoResponse mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                           [self didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+//                         MyWishlistMojitoResponse *wh = [successResult.dictionary objectForKey:@""];
                       } onFailure:^(NSError *errorResult) {
                           _isFailRequest = NO;
                       }];
+}
+
+-(NSString *) getWishlistPath {
+    NSString *userId = [_userManager getUserId];
+    return [[@"/v1.0.1/users/" stringByAppendingString:userId] stringByAppendingString:@"/wishlist/products"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -195,20 +203,22 @@ typedef enum TagRequest {
     
     ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
     
-    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
+    
+    
+    MyWishlistMojitoData *list = ((MyWishlistMojitoData *)[_product objectAtIndex:indexPath.row]);
     [cell setViewModel:list.viewModel];
     
     __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
-        transactionVC.productID = list.product_id;
+        transactionVC.productID = list.id;
         transactionVC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:transactionVC animated:YES];
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
         [UIAlertView bk_showAlertViewWithTitle:@"Hapus Wishlist"
-                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.product_name]
+                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.name]
                              cancelButtonTitle:@"Tidak"
                              otherButtonTitles:@[@"Yakin"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -276,6 +286,9 @@ typedef enum TagRequest {
     WishListObjectList *product = [_product objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
+//    MyWishlistMojitoData *product = [_product objectAtIndex:indexPath.row];
+//    [TPAnalytics trackProductClick:product];
+//    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:product.price withId:product.id withImageurl:product.image withShopName:product.shop.name];
 }
 
 #pragma mark - Memory Management
@@ -343,23 +356,24 @@ typedef enum TagRequest {
     return statusMapping;
 }
 
-- (void)didReceiveProduct:(WishListObject*)productStore {
+- (void)didReceiveProduct:(MyWishlistMojitoResponse*)productStore {
     if(_page == 1) {
-        _product = [productStore.data.list mutableCopy];
+        _product = [productStore.data mutableCopy];
     } else {
-        [_product addObjectsFromArray: productStore.data.list];
+        [_product addObjectsFromArray: productStore.data];
     }
     
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
-        _nextPageUri =  productStore.data.paging.uri_next;
-        _page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
-        
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        }
+        //_nextPageUri =  productStore.data.paging.uri_next;
+        //_page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
+        _page = _page + 1;
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+//        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+//            //remove loadingview if there is no more item
+//            [_flowLayout setFooterReferenceSize:CGSizeZero];
+//        }
         [_noResultView removeFromSuperview];
     } else {
         // no data at all
