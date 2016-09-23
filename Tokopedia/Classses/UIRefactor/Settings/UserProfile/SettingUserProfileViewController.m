@@ -410,6 +410,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [SettingUserProfileRequest fetchUploadProfilePicture:image onSuccess:^(NSString * imageURLString) {
         
         self.profileImageView.alpha = 1;
+        [self.profileImageView setImage:image];
         [self showSaveButton];
         
         // Notify other controller that upload image is success
@@ -420,8 +421,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                             object:nil
                                                           userInfo:userInfo];
-        [self.profileImageView setImage:image];
-        
         
     } onFailure:^{
         // Show user profile image
