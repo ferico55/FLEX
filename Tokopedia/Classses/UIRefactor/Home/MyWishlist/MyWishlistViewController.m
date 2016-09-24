@@ -166,7 +166,6 @@ typedef enum TagRequest {
                         mapping:[MyWishlistMojitoResponse mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                           [self didReceiveProduct:[successResult.dictionary objectForKey:@""]];
-//                         MyWishlistMojitoResponse *wh = [successResult.dictionary objectForKey:@""];
                       } onFailure:^(NSError *errorResult) {
                           _isFailRequest = NO;
                       }];
@@ -365,14 +364,13 @@ typedef enum TagRequest {
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
-        //_nextPageUri =  productStore.data.paging.uri_next;
-        //_page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
-        _page = _page + 1;
+        _nextPageUri =  productStore.pagination.uri_next;
+        _page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-//        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-//            //remove loadingview if there is no more item
-//            [_flowLayout setFooterReferenceSize:CGSizeZero];
-//        }
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+            //remove loadingview if there is no more item
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+        }
         [_noResultView removeFromSuperview];
     } else {
         // no data at all

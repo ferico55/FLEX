@@ -331,8 +331,6 @@ TTTAttributedLabelDelegate
     tokopediaOtherProduct.isUsingHmac = NO;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
-    tokopediaNetworkManagerWishList.delegate = self;
-    tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
     
     _request = [PriceAlertRequest new];
     
@@ -1713,7 +1711,6 @@ TTTAttributedLabelDelegate
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     _promoteNetworkManager.delegate = nil;
     
-    tokopediaNetworkManagerWishList.delegate = nil;
     [tokopediaNetworkManagerWishList requestCancel];
     
     _promoteNetworkManager.delegate = nil;
@@ -2763,11 +2760,23 @@ TTTAttributedLabelDelegate
 {
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
-        tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
-        [tokopediaNetworkManagerWishList doRequest];
         
         NSString *productId = _product.data.info.product_id?:@"";
         NSString *productName = _product.data.info.product_name?:@"";
+        
+        NSString *urlPath = [[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString:@"/wishlist"];
+        
+        NSDictionary *wishListPostParameter = @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
+                                               kTKPDDETAIL_APIPRODUCTIDKEY : productId};
+        
+        
+        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:urlPath method:RKRequestMethodPOST parameter: wishListPostParameter mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            [self didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
+        } onFailure:^(NSError *errorResult) {
+            [self didFailedAddWishListWithErrorResult:errorResult];
+        }];
+        
+       
         
         NSArray *categories = _product.data.breadcrumb;
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
@@ -3062,6 +3071,58 @@ TTTAttributedLabelDelegate
                                                      withId:product.product_id
                                                withImageurl:product.product_image
                                                withShopName:product.shop_name];
+}
+
+#pragma mark - WishList method
+
+-(void) didSuccessAddWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation {
+    NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
+    WishListObject *wishListObject = [result objectForKey:@""];
+    BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    StickyAlertView *alert;
+    
+    if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+    {
+        alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
+        [self setBackgroundWishlist:YES];
+        btnWishList.tag = 0;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+        [self setRequestingAction:btnWishList isLoading:NO];
+        
+        NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+        
+        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
+                                                                                       AFEventParamPrice : price?:@"",
+                                                                                       AFEventParamContentType : @"Product",
+                                                                                       AFEventParamContentId : _product.data.info.product_id?:@"",
+                                                                                       AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
+                                                                                       AFEventParamQuantity : @(1)
+                                                                                       }];
+    }
+    else
+    {
+        //wishlist max is 1000, set custom error message. If other error happened, use default error message.
+        if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
+            alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
+        }else{
+            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+        }
+        
+        
+        [self setBackgroundWishlist:NO];
+        btnWishList.tag = 1;
+        [self setRequestingAction:btnWishList isLoading:NO];
+    }
+    
+    [alert show];
+}
+
+-(void) didFailedAddWishListWithErrorResult: (NSError *) error {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+    [alert show];
+    [self setBackgroundWishlist:NO];
+    btnWishList.tag = 1;
+    [self setRequestingAction:btnWishList isLoading:NO];
 }
 
 @end

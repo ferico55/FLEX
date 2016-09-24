@@ -52,4 +52,15 @@
     return pagingMapping;
 }
 
++(NSDictionary *)attributeMappingDictionaryForWishlist
+{
+    return [[NSDictionary alloc] initWithObjectsAndKeys:@"uri_next",@"next_url", nil];
+}
+
++ (RKObjectMapping*)mappingForWishlist {
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:[self attributeMappingDictionaryForWishlist]];
+    return pagingMapping;
+}
+
 @end

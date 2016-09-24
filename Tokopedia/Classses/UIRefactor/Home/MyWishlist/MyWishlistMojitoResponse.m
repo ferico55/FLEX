@@ -8,6 +8,7 @@
 
 #import "MyWishlistMojitoResponse.h"
 #import "MyWishlistMojitoData.h"
+#import "Paging.h"
 
 @implementation MyWishlistMojitoResponse
 
@@ -16,6 +17,7 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[MyWishlistMojitoData mapping]]];
+    [mapping addPropertyMapping: [RKRelationshipMapping relationshipMappingFromKeyPath:@"pagination" toKeyPath:@"pagination" withMapping:[Paging mappingForWishlist]]];
     return mapping;
 }
 @end

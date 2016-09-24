@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Paging.h"
 
 @interface MyWishlistMojitoResponse : NSObject <TKPObjectMapping>
     @property (nonatomic, strong) NSArray *data;
+    @property (nonatomic, strong) Paging *pagination;
 @end
