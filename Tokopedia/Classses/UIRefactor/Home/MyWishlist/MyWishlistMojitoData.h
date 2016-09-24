@@ -16,7 +16,7 @@
     @property (nonatomic, strong) NSString *name;
     @property (nonatomic, strong) NSString *url;
     @property (nonatomic, strong) NSString *image;
-    @property (nonatomic) CGFloat price;
+    @property (nonatomic, strong) NSNumber *price;
     @property (nonatomic, strong) NSString *price_formatted;
     @property (nonatomic) NSNumber *minimum_order;
     @property (nonatomic, strong) NSArray *wholesale_price;
@@ -29,6 +29,7 @@
 
     @property (nonatomic, strong) ProductModelView *viewModel;
 
+    - (NSDictionary *)productFieldObjects;
    
 
 @end

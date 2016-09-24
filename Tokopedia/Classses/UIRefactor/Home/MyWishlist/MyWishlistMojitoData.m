@@ -10,6 +10,7 @@
 #import "MyWishlistMojitoWholesalePrice.h"
 #import "MyWishlistMojitoShop.h"
 #import "MyWishlistMojitoBadge.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @implementation MyWishlistMojitoData
 
@@ -34,7 +35,7 @@
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
         [viewModel setProductName:self.name];
-        [viewModel setProductPrice:[NSString stringWithFormat:@"%.2f", self.price]];
+        [viewModel setProductPrice: [[NSNumberFormatter IDRFormatter] stringFromNumber:self.price]];
         [viewModel setProductShop:self.shop.name];
         [viewModel setProductThumbUrl:self.image];
         [viewModel setIsGoldShopProduct:self.shop.gold_merchant];
@@ -60,6 +61,16 @@
         _viewModel = viewModel;
     }
     return _viewModel;
+}
+
+- (NSDictionary *)productFieldObjects {
+    NSDictionary *productFieldObjects = @{
+                                          @"name"     : _name,
+                                          @"id"       : _id,
+                                          @"price"    : _price,
+                                          @"brand"    : _shop.name,
+                                          };
+    return productFieldObjects;
 }
 
 @end

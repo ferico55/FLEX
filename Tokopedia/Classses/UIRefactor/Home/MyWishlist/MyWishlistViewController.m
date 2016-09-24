@@ -29,6 +29,8 @@
 #import "MyWishlistMojitoData.h"
 #import "MyWishlistMojitoResponse.h"
 
+#import "NSNumberFormatter+IDRFormater.h"
+
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
@@ -240,13 +242,13 @@ typedef enum TagRequest {
     return cell;
 }
 
-- (void)requestRemoveWishlist:(WishListObjectList*)list withIndexPath:(NSIndexPath*)indexPath {
+- (void)requestRemoveWishlist:(MyWishlistMojitoData*)list withIndexPath:(NSIndexPath*)indexPath {
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
     [removeWishlistRequest requestWithBaseUrl:[NSString v4Url]
                                          path:@"/v4/action/wishlist/remove_wishlist_product.pl"
                                        method:RKRequestMethodGET
-                                    parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
+                                    parameter:@{@"product_id" : list.id, @"user_id" : [_userManager getUserId]}
                                       mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         [_collectionView performBatchUpdates:^ {
@@ -283,12 +285,9 @@ typedef enum TagRequest {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    WishListObjectList *product = [_product objectAtIndex:indexPath.row];
+    MyWishlistMojitoData *product = [_product objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:product];
-    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
-//    MyWishlistMojitoData *product = [_product objectAtIndex:indexPath.row];
-//    [TPAnalytics trackProductClick:product];
-//    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:product.price withId:product.id withImageurl:product.image withShopName:product.shop.name];
+    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[[NSNumberFormatter IDRFormatter] stringFromNumber:product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
 }
 
 #pragma mark - Memory Management
