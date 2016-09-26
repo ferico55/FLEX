@@ -915,7 +915,7 @@
 -(void)setDefaultAddressData:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
     _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
     [self setAsDefaultAtIndexPath:_indexPath];
@@ -924,7 +924,7 @@
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
     _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
     switch (button.tag) {
@@ -1100,7 +1100,7 @@
         CGFloat padding = 15;
         NSIndexPath *indexpath = ((GeneralList1GestureCell*) cell).indexpath;
         AddressFormList *list = _list[indexpath.section];
-        [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+        [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
         
         UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
         MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"Hapus"
@@ -1180,10 +1180,16 @@
 
 #pragma mark - Address add delegate
 
-- (void)successAddAddress
+- (void)successAddAddress:(AddressFormList*)address
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
+    
+    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [_delegate SettingAddressViewController:self withUserInfo:@{DATA_ADDRESS_DETAIL_KEY: address}];
+    }
     
     [self request];
 }

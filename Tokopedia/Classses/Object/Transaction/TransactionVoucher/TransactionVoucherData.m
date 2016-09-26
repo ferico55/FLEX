@@ -17,7 +17,8 @@
                       @"voucher_status",
                       @"voucher_expired_time",
                       @"voucher_minimal_amount",
-                      @"voucher_no_other_promotion"
+                      @"voucher_no_other_promotion",
+                      @"voucher_promo_desc"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -11,16 +11,7 @@
 #import "AddressFormList.h"
 #import "ProfileSettings.h"
 
-@protocol RequestAddAddressDelegate <NSObject>
-@required
--(void)requestSuccessAddAddress:(AddressFormList*)address;
-
-@end
-
-@interface RequestAddAddress : NSObject <TokopediaNetworkManagerDelegate>
-
-@property (nonatomic, weak) IBOutlet id<RequestAddAddressDelegate> delegate;
--(void)doRequestWithAddress:(AddressFormList*)address;
+@interface RequestAddAddress : NSObject
 
 +(void)fetchAddAddress:(AddressFormList*)address isFromCart:(NSString*)isFromCart success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure;
 

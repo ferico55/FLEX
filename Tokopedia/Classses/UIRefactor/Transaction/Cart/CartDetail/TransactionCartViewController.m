@@ -690,42 +690,7 @@
                         [self doRequestBuy];
                     }
                     break;
-                case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        NSDictionary *data = @{DATA_KEY:_dataInput,
-                                               DATA_CART_SUMMARY_KEY: _cartSummary
-                                               };
-                        [_delegate pushVC:self toMandiriClickPayVCwithData:data];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_BCA_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        [TransactionCartWebViewViewController pushBCAKlikPayFrom:self cartDetail:_cartSummary];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_MANDIRI_E_CASH:
-                {
-                    if ([self isValidInput]) {
-                        [self doRequestBuy];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_CC:
-                case TYPE_GATEWAY_INSTALLMENT:
-                {
-                    [self pushToCCInformation];
-                }
-                    break;
-                case TYPE_GATEWAY_BRI_EPAY:
-                {
-                    [TransactionCartWebViewViewController pushBRIEPayFrom:self cartDetail:_cartSummary];
-                }
-                    break;
-                default:
+                 default:
                     break;
             }
         }
@@ -2484,7 +2449,7 @@
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *voucher) {
         
-        _voucherData = voucher.result.data_voucher;
+        _voucherData = voucher.data.data_voucher;
         
         _voucherCodeButton.hidden = YES;
         _voucherAmountLabel.hidden = NO;
@@ -2492,6 +2457,9 @@
         NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        if (![_voucherData.voucher_promo_desc isEqualToString:@""]){
+            voucherString = _voucherData.voucher_promo_desc;
+        }
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont microTheme];
         
@@ -2655,25 +2623,12 @@
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
                       _cartBuy = data;
-                      switch ([_cartSummary.gateway integerValue]) {
-                          case TYPE_GATEWAY_MANDIRI_E_CASH:
-                          {
-                              [TransactionCartWebViewViewController pushMandiriECashFrom:self
-                                                                              cartDetail:summary
-                                                                             LinkMandiri:data.link_mandiri?:@""];
-                          }
-                              break;
-                          default:
-                          {
-                              NSDictionary *userInfo = @{
-                                                         DATA_CART_RESULT_KEY:data,
-                                                         API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
-                                                         };
-                              [self.delegate didFinishRequestBuyData:userInfo];
-                              [_dataInput removeAllObjects];
-                          }
-                              break;
-                      }
+                      NSDictionary *userInfo = @{
+                                                 DATA_CART_RESULT_KEY:data,
+                                                 API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                                 };
+                      [self.delegate didFinishRequestBuyData:userInfo];
+                      [_dataInput removeAllObjects];
                       [self isLoading:NO];
                   } error:^(NSError *error) {
                       if (error) {

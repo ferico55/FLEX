@@ -242,6 +242,7 @@ typedef enum
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
+                            userPassword:@""
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      [self successEditAddress:address longitude:longitude latitude:latitude result:data];

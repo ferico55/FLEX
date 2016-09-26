@@ -10,6 +10,22 @@
 
 @implementation AddressFormList
 
+-(NSString *)postal_code{
+    return _postal_code?:_address_postal;
+}
+
+-(NSString *)province_id{
+    return _province_id?:_address_province_id;
+}
+
+-(NSString *)district_id{
+    return _district_id?:_address_district_id;
+}
+
+-(NSString *)city_id{
+    return _city_id?:_address_city_id;
+}
+
 - (NSString *)address_name {
     return [_address_name kv_decodeHTMLCharacterEntities];
 }
@@ -66,7 +82,11 @@
                       @"addr_id",
                       @"addr_name",
                       @"longitude",
-                      @"latitude"];
+                      @"latitude",
+                      @"address_district_id",
+                      @"address_province_id",
+                      @"address_city_id"
+                      ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
