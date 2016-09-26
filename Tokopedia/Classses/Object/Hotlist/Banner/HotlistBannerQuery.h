@@ -21,5 +21,6 @@
 @property (nonatomic, strong) NSString *pmax;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) NSString *hot_id;
 
 @end
