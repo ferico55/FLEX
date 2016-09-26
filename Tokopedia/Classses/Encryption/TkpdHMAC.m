@@ -42,6 +42,38 @@
     return output;
 }
 
+- (NSString*)signatureWithBaseUrl:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                        parameter:(NSDictionary*)parameter
+                             date:(NSString*)date {
+    
+    NSDictionary* secrets = @{[NSString v4Url] : @"web_service_v4",
+                              [NSString mojitoUrl] : @"mojito_api_v1"};
+    
+    NSString *output;
+    NSString *secret = [secrets objectForKey:url];
+    
+    //set request method
+    [self setRequestMethod:method];
+    [self setParameterMD5:parameter];
+    [self setTkpdPath:path];
+    [self setSecret:secret];
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
+                              date, [self getTkpdPath]];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    return output;
+}
+
 - (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date {
     NSString *output;
     NSString *secret = @"web_service_v4";

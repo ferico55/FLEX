@@ -363,7 +363,7 @@
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString* date = [hmac getDate];
-        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:bindedParameters date:date];
+        NSString* signature = [hmac signatureWithBaseUrl:baseUrl method:[self getStringRequestMethod:method] path:path parameter:bindedParameters date:date];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];

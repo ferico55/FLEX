@@ -21,7 +21,12 @@
     UserAuthentificationManager *_userManager;
 }
 
-- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date;
+- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date DEPRECATED_MSG_ATTRIBUTE("Use signatureWithMethod: instead.");
+- (NSString*)signatureWithBaseUrl:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                        parameter:(NSDictionary*)parameter
+                             date:(NSString*)date;
 - (NSString *)getRequestMethod;
 - (NSString *)getParameterMD5;
 - (NSString *)getContentType;
