@@ -245,11 +245,7 @@ typedef enum TagRequest {
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
     NSString *productId = list.id;
-    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl]
-                                         path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"]
-                                       method:RKRequestMethodDELETE
-                                    parameter:nil
-                                      mapping:[self actionRemoveWishlistMapping]
+    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : [_userManager getUserId]} parameter:nil mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         [_collectionView performBatchUpdates:^ {
                                             [_product removeObjectAtIndex:indexPath.row];

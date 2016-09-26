@@ -29,7 +29,7 @@
                              date:(NSString*)date;
 - (NSString *)getRequestMethod;
 - (NSString *)getParameterMD5;
-- (NSString *)getContentType;
+- (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl;
 - (NSString *)getDate;
 - (NSString *)getTkpdPath;
 - (NSString *)getSecret;

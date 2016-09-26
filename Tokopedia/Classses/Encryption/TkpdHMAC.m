@@ -48,11 +48,11 @@
                         parameter:(NSDictionary*)parameter
                              date:(NSString*)date {
     
-    NSDictionary* secrets = @{[NSString v4Url] : @"web_service_v4",
-                              [NSString mojitoUrl] : @"mojito_api_v1"};
-    
     NSString *output;
-    NSString *secret = [secrets objectForKey:url];
+    NSString *secret = @"web_service_v4";
+    if ([url isEqual:[NSString mojitoUrl]]) {
+        secret =  @"mojito_api_v1";
+    }
     
     //set request method
     [self setRequestMethod:method];
@@ -60,7 +60,7 @@
     [self setTkpdPath:path];
     [self setSecret:secret];
     
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
                               date, [self getTkpdPath]];
     
     const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
@@ -84,7 +84,7 @@
     [self setTkpdPath:path];
     [self setSecret:secret];
     
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:@""],
                               date, [self getTkpdPath]];
     //    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
     
@@ -150,8 +150,8 @@
     _date = date;
 }
 
-- (NSString*)getContentType {
-    return [self.getRequestMethod isEqualToString:@"GET"] ? @"" : @"application/x-www-form-urlencoded; charset=utf-8";
+- (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl {
+    return [self.getRequestMethod isEqualToString:@"GET"] ? @"" : [baseUrl isEqual: [NSString mojitoUrl]] ? @"application/json" : @"application/x-www-form-urlencoded; charset=utf-8";
 }
 
 - (void)setContentType:(NSString*)contentType {

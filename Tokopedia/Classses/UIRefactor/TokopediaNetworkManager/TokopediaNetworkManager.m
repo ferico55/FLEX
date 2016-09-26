@@ -79,7 +79,7 @@
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentTypeWithBaseUrl:@""]];
         [_objectManager.HTTPClient setDefaultHeader:@"Date" value:date];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
@@ -363,11 +363,12 @@
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString* date = [hmac getDate];
-        NSString* signature = [hmac signatureWithBaseUrl:baseUrl method:[self getStringRequestMethod:method] path:path parameter:bindedParameters date:date];
+        
+        NSString* signature = [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(method) path:path parameter:bindedParameters date:date];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentTypeWithBaseUrl:baseUrl]];
         [_objectManager.HTTPClient setDefaultHeader:@"Date" value:date];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
@@ -379,7 +380,6 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
-        
         
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
