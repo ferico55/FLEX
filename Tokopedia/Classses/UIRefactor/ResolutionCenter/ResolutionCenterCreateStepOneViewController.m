@@ -173,6 +173,7 @@ ResolutionCenterChooseProblemDelegate
     if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
         _result.troubleId = nil;
+        [_result.selectedProduct removeAllObjects];
         _problemLabel.text = selectedProblem.category_trouble_text?:@"";
         [_tableView reloadData];
     }else{
