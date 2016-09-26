@@ -412,9 +412,9 @@
     
     if (status && [actionOrder.result.is_success boolValue]) {
         
-        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+        NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
     
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
         [alert show];
 
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
