@@ -362,7 +362,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Tidak Membantu", ticket.ticket_detail_message];
     }
     
-    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont largeTheme]} context:nil];
+    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18]} context:nil];
 
     height = cellRowHeight + paragraphRect.size.height;
     
