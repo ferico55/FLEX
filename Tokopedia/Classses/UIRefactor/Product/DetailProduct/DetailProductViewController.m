@@ -1149,7 +1149,7 @@ TTTAttributedLabelDelegate
             [button setTitle:@"" forState:UIControlStateNormal];
         }
     }
-    if ([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING)
+    if (![self isProductActive])
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
     else
         [cell.etalasebutton setTitle:_product.data.info.product_etalase?:@"-" forState:UIControlStateNormal];
@@ -2114,7 +2114,8 @@ TTTAttributedLabelDelegate
         case 13:
         {
             // Etalase
-            if(_product.data.info.product_etalase_id != nil) {
+            if(_product.data.info.product_etalase_id != nil && [self isProductActive]) {
+                
                 ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
@@ -2129,6 +2130,7 @@ TTTAttributedLabelDelegate
                     container.initialEtalase = initEtalase;
                 }
                 [self.navigationController pushViewController:container animated:YES];
+            
             }
             
             break;
@@ -2136,7 +2138,6 @@ TTTAttributedLabelDelegate
         default:
             break;
     }
-    
 }
 
 #pragma mark - Methods
@@ -3062,6 +3063,14 @@ TTTAttributedLabelDelegate
                                                      withId:product.product_id
                                                withImageurl:product.product_image
                                                withShopName:product.shop_name];
+}
+
+- (BOOL)isProductActive {
+    if ([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
