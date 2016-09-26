@@ -17,6 +17,7 @@ PODS:
   - APAddressBook/Core (0.2.3)
   - APAddressBook/Swift (0.2.3):
     - APAddressBook/Core
+  - Appsee (2.2)
   - AppsFlyerFramework (4.5.1)
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
@@ -132,6 +133,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - APAddressBook/Swift
+  - Appsee
   - AppsFlyerFramework
   - BlocksKit (~> 2.2.5)
   - CardIO
@@ -161,6 +163,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
+  Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
