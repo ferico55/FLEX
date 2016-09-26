@@ -412,9 +412,9 @@
     
     if (status && [actionOrder.result.is_success boolValue]) {
         
-        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+        NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
     
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
         [alert show];
 
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -480,7 +480,7 @@
 }
 
 - (BOOL)isInstantCourier {
-    if (_order.order_shipment.shipment_id == 10) {
+    if (_order.order_is_pickup == 1) {
         return YES;
     } else {
         return NO;

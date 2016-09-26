@@ -175,10 +175,14 @@
     if (order.order_detail.detail_ship_ref_num) {
         if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
             [cell showTrackButton];
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING &&
-                   order.order_shipment.shipment_id == 10) {
-            [cell showTrackButton];
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING) {
+            if(order.order_is_pickup == 1) {
+                [cell showTrackButton];
+            } else {
+                [cell showAllButton];
+            }
+            
+        } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
