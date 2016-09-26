@@ -574,6 +574,7 @@
         }
         
     }
+    [cell setUserInteractionEnabled:_isFinishCalculate];
     return cell;
 }
 
@@ -633,7 +634,7 @@
         default:
             break;
     }
-    [cell setUserInteractionEnabled:NO];
+    [cell setUserInteractionEnabled:_isFinishCalculate];
     return cell;
 }
 
@@ -835,12 +836,19 @@
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      _isFinishCalculate = YES;
+                                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
+                                                                DATA_CART_DETAIL_LIST_KEY: _selectedCart
+                                                                };
+                                     [_delegate editInsuranceUserInfo:userInfo];
                                      [_tableView reloadData];
-                                     [self doRequestEditAddress];
                                      
                                  } failure:^(NSError *error) {
                                      
                                      _isFinishCalculate = YES;
+                                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
+                                                                DATA_CART_DETAIL_LIST_KEY: _selectedCart
+                                                                };
+                                     [_delegate editInsuranceUserInfo:userInfo];
                                      [_tableView reloadData];
                                      
                                  }];
