@@ -167,6 +167,17 @@
 
 - (void)showTalkCommentsAtIndexPath:(NSIndexPath *)indexPath {
     TalkList* list = _talkList[indexPath.row];
+    NSString *type = @"";
+    
+    if (self.inboxTalkType == InboxTalkTypeAll) {
+        type = NAV_TALK;
+    } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+        type = NAV_TALK_FOLLOWING;
+    } else {
+        type = NAV_TALK_MYPRODUCT;
+    }
+    
+    [TPAnalytics trackInboxTalkAction:@"View" label:type];
 
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
 
@@ -178,6 +189,7 @@
     ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
     detailVC.fetchDataAtBeginning = YES;
     detailVC.talk = list;
+    detailVC.inboxTalkType = type;
     detailVC.indexPath = indexPath;
     detailVC.enableDeepNavigation = [NavigationHelper shouldDoDeepNavigation];
 

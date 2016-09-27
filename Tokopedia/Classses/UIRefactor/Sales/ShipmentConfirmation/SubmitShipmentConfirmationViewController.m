@@ -398,10 +398,10 @@
                                      method:RKRequestMethodPOST
                                   parameter:parameters
                                     mapping:[ActionOrder mapping]
-                                  onSuccess:^(RKMappingResult *mappingResult,
-                                              RKObjectRequestOperation *operation) {
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                                       [self actionRequestSuccess:mappingResult];
                                   } onFailure:^(NSError *error) {
+                                      [TPLocalytics trackShipmentConfirmation:NO];
                                       [self actionRequestFailure:error];
                                   }];
 }
@@ -411,7 +411,7 @@
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        
+        [TPLocalytics trackShipmentConfirmation:YES];        
         NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
     
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
@@ -424,6 +424,7 @@
         }
         
     } else if (actionOrder.message_error.count > 0){
+        [TPLocalytics trackShipmentConfirmation:NO];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                         message:actionOrder.message_error[0]
                                                        delegate:self

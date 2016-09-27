@@ -515,6 +515,7 @@
 }
 
 - (IBAction)btnSendTapped {
+    [TPAnalytics trackInboxTalkAction:@"Send" label:_inboxTalkType];
     [self submitTalk];
 }
 

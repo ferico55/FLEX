@@ -387,6 +387,7 @@
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
         NSString *userId = [auth getUserId]?:@"";
+        [TPAnalytics trackEtalaseAction:@"Add" label:@"Etalase"];
         [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
                                                  userId:userId
                                               onSuccess:^(ShopSettings *shopSettings) {

@@ -366,6 +366,8 @@
     };
 
     vc.data = [self dataForIndexPath:indexPath];
+    
+    [TPAnalytics trackInboxMessageAction:@"View" label:[_data objectForKey:@"nav"]?:@""];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {

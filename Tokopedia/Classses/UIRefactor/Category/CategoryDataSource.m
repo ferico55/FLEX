@@ -68,6 +68,7 @@
     NSString *categoryId = _categoryIds[index];
     
     [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : categoryName}];
+    [TPAnalytics trackClickCategoryWithCategoryName:categoryName];
     
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.hidesBottomBarWhenPushed = YES;

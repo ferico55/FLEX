@@ -668,6 +668,7 @@
                 }
                     break;
                 default:
+                    [TPAnalytics trackClickCartLabel:@"Checkout"];
                     if([self isValidInput]) {
 						_saldoErrorIcon.hidden = YES;
                         if([self isHandlePaymentWithNative]) {
@@ -681,6 +682,7 @@
         }
         if(_indexPage==1)
         {
+            [TPAnalytics trackPaymentEvent:@"clickPayment" category:@"Payment" action:@"Click" label:@"Pay Now"];
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
@@ -1706,10 +1708,10 @@
     }];
 }
 
--(void)shouldDoRequestTopPayThxCode:(NSString *)code
+-(void)shouldDoRequestTopPayThxCode:(NSString *)code toppayParam:(NSDictionary *)param
 {
-    [self isLoading:YES];
-    [self requestCartData];
+    [self isLoading:NO];
+    [self requestThanksPayment:param paymentID:code];
 }
 
 #pragma mark - Methods
@@ -2353,6 +2355,54 @@
 }
 
 #pragma mark - Request
+
+- (void)requestThanksPayment:(NSDictionary *)param paymentID:(NSString *)paymentID {
+    NSArray *products = param[@"items"];
+    NSMutableArray *productIDs = [NSMutableArray new];
+    NSInteger quantity = 0;
+    
+    for (NSDictionary *product in products) {
+        [productIDs addObject:product[@"id"]];
+        quantity = quantity + [product[@"quantity"] integerValue];
+    }
+    [TPAnalytics trackPaymentEvent:@"clickBack" category:@"Payment" action:@"Abandon" label:@"Thank You Page"];
+    [RequestCart fetchToppayThanksCode:paymentID
+                               success:^(TransactionActionResult *data) {
+                                   if (data.is_success == 1) {
+                                       NSDictionary *parameter = data.parameter;
+                                       NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
+                                       NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
+                                       
+                                       [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
+                                       
+                                       [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
+                                                                                                                 AFEventParamContentType : @"Product",
+                                                                                                                 AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                                                                 AFEventParamQuantity : [@(quantity) stringValue]?:@"",
+                                                                                                                 AFEventParamCurrency : param[@"currency"]?:@"",
+                                                                                                                 AFEventOrderId : paymentID}];
+                                       
+                                       [Localytics tagEvent:@"Event : Finished Transaction"
+                                                 attributes:@{
+                                                              @"Payment Method" : paymentMethod,
+                                                              @"Total Transaction" : [revenue stringValue]?:@"",
+                                                              @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                                              @"Total Shipping Fee" : @""
+                                                              }
+                                      customerValueIncrease:revenue];
+                                       
+                                       [Localytics incrementValueBy:0
+                                                forProfileAttribute:@"Profile : Total Transaction"
+                                                          withScope:LLProfileScopeApplication];
+                                   }
+                                   [self requestCartData];
+                               } error:^(NSError *error) {
+                                [self requestCartData];
+                                     
+                                 }];
+    
+
+}
 
 -(void)requestCartData{
     
