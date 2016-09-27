@@ -200,6 +200,7 @@ typedef enum TagRequest {
     
     __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
+        [TPAnalytics trackClickBuyFromWishlist];
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
         transactionVC.productID = list.product_id;
         transactionVC.hidesBottomBarWhenPushed = YES;
@@ -275,6 +276,7 @@ typedef enum TagRequest {
     NavigateViewController *navigateController = [NavigateViewController new];
     WishListObjectList *product = [_product objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:product];
+    [TPAnalytics trackViewProductFromWishlistWithProductName:product.product_name];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 

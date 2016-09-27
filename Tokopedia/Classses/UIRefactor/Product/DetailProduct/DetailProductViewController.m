@@ -564,7 +564,7 @@ TTTAttributedLabelDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+                    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Review"];
                 }
                 break;
             }
@@ -591,9 +591,7 @@ TTTAttributedLabelDelegate
                 vc.data = data;
 
                 [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Talk"];
                 break;
             }
             case 15:
@@ -614,6 +612,7 @@ TTTAttributedLabelDelegate
             case 16:
             {
                 //Buy
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickBuy" action:@"Click" label:@"Buy"];
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
                     transactionVC.wholeSales = _product.data.wholesale_price;
@@ -2308,6 +2307,7 @@ TTTAttributedLabelDelegate
 
 - (void)expand:(CustomButtonExpandDesc *)sender
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Product Description"];
     isExpandDesc = !isExpandDesc;
     [_table reloadData];
 }
@@ -2324,7 +2324,7 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
-            [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Share"];
+            [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Share"];
         }];
         
     }
@@ -2384,6 +2384,7 @@ TTTAttributedLabelDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
+        [TPAnalytics trackProductDetailPageWithEvent:@"clickReport" action:@"Click" label:@"Report"];
         [self goToReportProductViewController];
     } else {
         LoginViewController *loginVC = [LoginViewController new];
@@ -2789,6 +2790,8 @@ TTTAttributedLabelDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
+        
+        [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {

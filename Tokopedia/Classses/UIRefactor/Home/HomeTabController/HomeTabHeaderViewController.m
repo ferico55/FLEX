@@ -133,7 +133,7 @@
 
 - (void)tapButton:(UIButton*)button {
     [self tap:button.tag];
-    
+    [TPAnalytics trackGoToHomepageTabWithIndex:button.tag];
     NSDictionary *userInfo = @{@"page" : @(button.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];
@@ -155,7 +155,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Home"];
             break;
         }
             
@@ -163,7 +162,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*1;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product Feed"];
             break;
         }
             
@@ -171,7 +169,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Wishlist"];
             break;
         }
             
@@ -179,7 +176,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*3;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product History"];
             break;
         }
             
@@ -187,7 +183,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*4;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Favorite Shop"];
             break;
         }
             

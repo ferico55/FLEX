@@ -275,6 +275,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
+    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }

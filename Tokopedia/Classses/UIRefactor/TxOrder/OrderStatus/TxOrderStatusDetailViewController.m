@@ -291,7 +291,7 @@
         switch (buttonIndex) {
             case 1://Selesai
             {
-                //[_delegate confirmDelivery:_order atIndexPath:_indexPath];
+                [_delegate confirmDelivery:_order atIndexPath:_indexPath];
                 [_delegate delegateViewController:self];
             }
                 break;

@@ -460,6 +460,12 @@
         if (should) {
             [self setSelectedIndex:index animated:NO];
             
+            if (index == 1) {
+                [TPAnalytics trackClickSearchResultTabWithName:@"Catalog"];
+            } else if (index == 2) {
+                [TPAnalytics trackClickSearchResultTabWithName:@"Shop"];
+            }
+            
             if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
                 
                 [_delegate tabBarController:self didSelectViewController:_viewControllers[index]];

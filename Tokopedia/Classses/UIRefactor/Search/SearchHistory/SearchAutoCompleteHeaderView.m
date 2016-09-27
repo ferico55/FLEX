@@ -29,12 +29,22 @@
         
         _deleteButton = deleteButton;
         _titleLabel = label;
+        CGFloat clearAllLeftInset = [self getClearAllLeftInset];
+        
         
         [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(7.5, 20, 5, 50)];
-        [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(7.5, 200, 5, 15)];
+        [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(7.5, clearAllLeftInset, 5, 15)];
     }
     
     return self;
+}
+
+- (CGFloat) getClearAllLeftInset {
+    CGFloat clearAllWidth = 60;
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size
+    .width;
+    CGFloat clearAllRightInset = 15;
+    return screenWidth -  clearAllWidth - clearAllRightInset;
 }
 
 

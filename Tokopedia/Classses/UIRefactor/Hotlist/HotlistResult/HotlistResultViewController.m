@@ -800,6 +800,7 @@ static NSString const *rows = @"12";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	List *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:list];
+    [TPAnalytics trackClickHotlistProductWithName:list.product_name];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
