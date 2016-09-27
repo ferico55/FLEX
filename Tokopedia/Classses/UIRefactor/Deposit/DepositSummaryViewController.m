@@ -311,6 +311,7 @@
     _useableSaldo = result.summary.summary_useable_deposit;
     _useableSaldoIDR = result.summary.summary_useable_deposit_idr;
     
+    _saldoLabel.text = _useableSaldoIDR;
     _totalSaldoTokopedia = result.summary.summary_total_deposit_idr;
     _holdDepositByCsIDR = result.summary.summary_deposit_hold_by_cs_idr;
     _holdDepositByTokopedia = result.summary.summary_deposit_hold_tx_1_day_idr;
@@ -570,6 +571,6 @@
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self loadData];
-    _saldoLabel.text = _useableSaldoIDR;
+    
 }
 @end

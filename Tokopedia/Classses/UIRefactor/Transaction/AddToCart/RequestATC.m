@@ -30,7 +30,7 @@
                                mapping:[TransactionATCForm mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
      TransactionATCForm *form = [successResult.dictionary objectForKey:@""];
-    if(form.message_error && form.data.form == nil)
+    if(form.message_error.count > 0 && form.data.form == nil)
      {
          NSArray *messages = form.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
          [StickyAlertView showErrorMessage:messages];
@@ -154,7 +154,7 @@
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
 
         TransactionCalculatePrice *calculate = [successResult.dictionary objectForKey:@""];
-        if(calculate.message_error){
+        if(calculate.message_error.count > 0){
             NSArray *messages = calculate.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
             [StickyAlertView showErrorMessage:messages];
             failed(nil);

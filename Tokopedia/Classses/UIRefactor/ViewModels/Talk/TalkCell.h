@@ -34,7 +34,7 @@
 
 @end
 
-@interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate> {
+@interface TalkCell : UITableViewCell <SmileyDelegate, CMPopTipViewDelegate> {
     NSString *_myShopID;
     NSString *_myUserID;
     NavigateViewController *_navigateController;
