@@ -686,7 +686,7 @@ typedef enum
                 return 243-50+_addressLabel.frame.size.height;
             }
             if ([cell isEqual:_pinLocationCell]) {
-                if ([_selectedShipment.shipper_id integerValue] == 10) {
+                if (_selectedShipmentPackage.is_show_map == 1) {
                     return 70;
                 }
                 return 0;

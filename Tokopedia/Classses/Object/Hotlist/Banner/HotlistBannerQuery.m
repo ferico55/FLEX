@@ -20,7 +20,8 @@
                       @"pmin",
                       @"pmax",
                       @"type",
-                      @"shop_id"
+                      @"shop_id",
+                      @"hot_id"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -101,7 +101,7 @@
         _changeReceiptButton.enabled = NO;
     }
     
-    if (_order.order_shipment.shipment_id == 10) {
+    if (_order.order_is_pickup == 1) {
         _changeReceiptButton.hidden = YES;
     }
     
