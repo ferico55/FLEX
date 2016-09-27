@@ -638,6 +638,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -2763,6 +2764,7 @@ TTTAttributedLabelDelegate
 
 - (void)setWishList
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
@@ -2791,7 +2793,7 @@ TTTAttributedLabelDelegate
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
         
-        [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {
