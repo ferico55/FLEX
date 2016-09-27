@@ -878,7 +878,13 @@
                 return 290-70+newFrame.size.height;
             }
             if (indexPath.row == 2) {
-                if ([_selectedShipment.shipment_id integerValue] == 10) {
+                //API is not supporting [shipment_is_pickup] condition per 23/09/2016
+                //have to use ugly approach temporary
+                //please update the API!
+                if ([_selectedShipment.shipment_id integerValue] == 10 ||
+                    [_selectedShipment.shipment_id integerValue] == 12 ||
+                    _selectedShipment.shipment_is_pickup == 1
+                    ) {
                     return 70;
                 }
                 return 0;
@@ -911,7 +917,9 @@
             return 0;
         }
         if (indexPath.row == 2) {
-            if ([_selectedShipment.shipment_id integerValue] == 10) {
+            if ([_selectedShipment.shipment_id integerValue] == 10 ||
+                [_selectedShipment.shipment_id integerValue] == 12 ||
+                _selectedShipment.shipment_is_pickup == 1) {
                 return 70;
             }
             return 0;

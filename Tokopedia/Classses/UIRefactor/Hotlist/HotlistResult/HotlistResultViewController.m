@@ -808,10 +808,10 @@ static NSString const *rows = @"12";
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
+    if(_bannerResult.query.hot_id && (_page % 2 == 1 || _page == 1)){
         NSString *departmentId = [self selectedCategoryIDsString];
 
-        [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
+        [_promoRequest requestForProductHotlist:_bannerResult.query.hot_id
                                      department:departmentId
                                            page:_page / 2
                                 filterParameter:_selectedFilterParam
@@ -883,6 +883,7 @@ static NSString const *rows = @"12";
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
     _bannerResult = bannerResult;
+    
     [self setHeaderData];
     
     _pagecontrol.hidden = NO;
