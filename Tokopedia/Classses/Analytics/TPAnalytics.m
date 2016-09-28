@@ -963,4 +963,17 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackClickCreateShop {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickCreateShop",
+                           @"eventCategory" : @"Create Shop",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"Create"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
 @end

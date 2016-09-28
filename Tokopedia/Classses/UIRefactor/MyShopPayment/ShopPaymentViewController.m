@@ -208,6 +208,7 @@
 }
 
 - (void)validateShop {
+    [TPAnalytics trackClickCreateShop];
     self.navigationItem.rightBarButtonItem = self.loadingBarButton;
     // WS asked if longitude and latitude is 0.000000 then change it to empty string
     if ([[_parameters objectForKey:@"longitude"]  isEqual: @"0.000000"] && [[_parameters objectForKey:@"latitude"]  isEqual: @"0.000000"]) {

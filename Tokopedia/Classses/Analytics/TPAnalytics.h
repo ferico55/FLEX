@@ -115,4 +115,6 @@
 + (void)trackForgetPasswordEvent:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
 + (void)trackSecurityQuestionEvent:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
 
++ (void)trackClickCreateShop;
+
 @end

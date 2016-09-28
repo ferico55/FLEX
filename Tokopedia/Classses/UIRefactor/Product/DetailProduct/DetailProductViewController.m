@@ -638,6 +638,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -659,6 +660,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 18 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
@@ -1335,7 +1337,7 @@ TTTAttributedLabelDelegate
         [statusMapping addPropertyMapping:resulRel];
         
         //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[GeneralAction mapping] method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectWishListManager addResponseDescriptor:responseDescriptorStatus];
         
@@ -2763,6 +2765,7 @@ TTTAttributedLabelDelegate
 
 - (void)setWishList
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
@@ -2791,7 +2794,7 @@ TTTAttributedLabelDelegate
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
         
-        [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {
