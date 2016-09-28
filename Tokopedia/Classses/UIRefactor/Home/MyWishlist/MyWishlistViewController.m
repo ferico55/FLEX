@@ -159,13 +159,14 @@ typedef enum TagRequest {
 - (void)loadProduct {
     TokopediaNetworkManager* network = [TokopediaNetworkManager new];
     network.isUsingHmac = YES;
+    __weak typeof(self) weakSelf = self;
     [network requestWithBaseUrl:[NSString mojitoUrl]
                            path:[self getWishlistPath]
                          method:RKRequestMethodGET
                       parameter:@{@"page" : @(_page), @"count" : @"10"}
                         mapping:[MyWishlistMojitoResponse mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                          [self didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+                          [weakSelf didReceiveProduct:[successResult.dictionary objectForKey:@""]];
                       } onFailure:^(NSError *errorResult) {
                           _isFailRequest = NO;
                       }];
@@ -411,8 +412,8 @@ typedef enum TagRequest {
     NSString *productId = [notification object];
     
     for (int i = 0; i < _product.count; i++) {
-        WishListObjectList* wish = _product[i];
-        if ([wish.product_id isEqualToString:productId]) {
+        MyWishlistMojitoData* wish = _product[i];
+        if ([wish.id isEqualToString:productId]) {
             [_product removeObjectAtIndex:i];
             i--;
         }
