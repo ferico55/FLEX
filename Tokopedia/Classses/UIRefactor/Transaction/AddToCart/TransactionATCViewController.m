@@ -308,10 +308,7 @@ typedef enum
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
     [self doCalculate];
-    
-    if (_ATCForm.form.destination.address_id != 0) {
-        [self requestRate];
-    }
+    [self requestRate];
     
     [self adjustViewIsLoading:NO];
     
@@ -395,7 +392,7 @@ typedef enum
 }
 
 -(void)failedFetchShipmentFee:(NSError*)error{
-    if (_selectedAddress.address_id != 0) {
+    if (_shipments.count == 0) {
         [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
         _tableView.tableHeaderView = _messageZeroShipmentView;
     } else{
@@ -981,12 +978,12 @@ typedef enum
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
-    if (address.address_id <= 0) {
+    if ([address.address_id isEqualToString: noAddress]) {
         [self requestAddAddress:address];
         return;
     }
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -1009,7 +1006,7 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{

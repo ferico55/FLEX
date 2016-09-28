@@ -185,8 +185,14 @@
 {
     if (_indexPage==0) {
         if(indexPath.section==0 && indexPath.row == 2){
-            if ([_cart.cart_shipments.shipment_id integerValue] == 10) {
-                return 70;
+            //API is not supporting [shipment_is_pickup] condition per 23/09/2016
+            //have to use ugly approach temporary
+            //please update the API!
+            if ([_cart.cart_shipments.shipment_id integerValue] == 10 ||
+                [_cart.cart_shipments.shipment_id integerValue] == 12 ||
+                _cart.cart_shipments.shipment_is_pickup == 1
+                ) {
+                    return 70;
             }
             return 0;
         }
@@ -197,7 +203,13 @@
             return 0;
         }
         if (indexPath.row == 2) {
-            if ([_cart.cart_shipments.shipment_id integerValue] == 10) {
+            //API is not supporting [shipment_is_pickup] condition per 23/09/2016
+            //have to use ugly approach temporary
+            //please update the API!
+            if ([_cart.cart_shipments.shipment_id integerValue] == 10 ||
+                [_cart.cart_shipments.shipment_id integerValue] == 12 ||
+                _cart.cart_shipments.shipment_is_pickup == 1
+                ) {
                 return 70;
             }
             return 0;
