@@ -405,7 +405,7 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
-            _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
+            _ccFeeCell.textLabel.text = selectedGateway.gateway_desc;
         }
         else
         {
@@ -2075,15 +2075,6 @@
         }
         if (indexPath.row == 4) {
             return 0;
-        }
-    }
-    else
-    {
-        if (indexPath.row == 1) {
-            if ([selectedGateway.gateway integerValue] != TYPE_GATEWAY_CC &&
-                [selectedGateway.gateway integerValue] != TYPE_GATEWAY_INDOMARET) {
-                return 0;
-            }
         }
     }
     
