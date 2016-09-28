@@ -13,8 +13,8 @@ class CartShipmentData: NSObject {
     var form : CartShipmentForm = CartShipmentForm()
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "form", toKeyPath: "form", withMapping: CartShipmentForm.mapping()))
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "form", toKeyPath: "form", withMapping: CartShipmentForm.mapping()))
         
         return mapping
     }
