@@ -405,13 +405,7 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
-            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya administrasi.";
-            }
-            else
-            {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
-            }
+            _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
         }
         else
         {
@@ -739,19 +733,6 @@
     controller.tag = 2;
     _isSelectDurationInstallment = YES;
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-
--(void)pushToCCInformation
-{
-    TransactionCCViewController *vc = [TransactionCCViewController new];
-    vc.cartSummary = _cartSummary;
-    vc.delegate = self;
-    vc.selectedBank = _selectedInstallmentBank?:[InstallmentBank new];
-    vc.selectedTerm = _selectedInstallmentDuration?:[InstallmentTerm new];
-    vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
-    vc.data = [_dataInput copy];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)changeSwitchSaldo:(UISwitch *)switchSaldo
