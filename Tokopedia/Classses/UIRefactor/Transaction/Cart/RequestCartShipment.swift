@@ -29,13 +29,16 @@ class ShippingFormPostObject : NSObject {
 }
 
 class CartEditAddressPostObject : NSObject {
+    
+    static let noAddress : String = "-1"
+    
     var shopID          : String = ""
     var oldAddressID    : String = ""
     var oldShipmentID   : String = ""
     var oldShipmentPackageID : String = ""
     var shipmentID      : String = ""
     var shipmentPackageID : String = ""
-    var addressID   : String = "-1"
+    var addressID   : String = CartEditAddressPostObject.noAddress
     var addressName        : String = ""
     var addressStreet      : String = ""
     var provinceID  : String = ""

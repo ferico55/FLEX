@@ -10,6 +10,8 @@
 
 @implementation AddressFormList
 
+static NSString *noAddress = @"-1";
+
 -(NSString *)postal_code{
     return _postal_code?:_address_postal;
 }
@@ -36,6 +38,10 @@
 
 - (NSString *)address_street {
     return [_address_street kv_decodeHTMLCharacterEntities];
+}
+
+-(NSString *)address_id{
+    return ([_address_id integerValue]==0)?noAddress:_address_id;
 }
 
 - (AddressViewModel *)viewModel {
