@@ -627,6 +627,7 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    [TPAnalytics trackClickTabBarItemWithName:tabBarController.tabBar.selectedItem.title];
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];

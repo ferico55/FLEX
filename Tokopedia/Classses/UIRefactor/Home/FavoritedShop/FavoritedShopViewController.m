@@ -411,6 +411,7 @@ FavoriteShopRequestDelegate
         id shopTemp = [_shops objectAtIndex:indexpath.row];
         FavoritedShopList* favShop;
         favShop = (FavoritedShopList*)shopTemp;
+        [TPAnalytics trackClickShopOnFavoriteShopWithShopName:favShop.shop_name];
         container.data = @{
                            kTKPDDETAIL_APISHOPIDKEY:favShop.shop_id?:@0,
                            kTKPDDETAIL_APISHOPNAMEKEY:favShop.shop_name?:@"",

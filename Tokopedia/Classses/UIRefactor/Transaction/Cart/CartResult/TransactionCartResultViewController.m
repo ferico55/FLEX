@@ -21,6 +21,8 @@
 #import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
 #import "TTTAttributedLabel.h"
+#import "TransactionCartList.h"
+#import "ProductDetail.h"
 
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate, TTTAttributedLabelDelegate>
 {
@@ -101,6 +103,9 @@
     [self adjustFooterPurchaseStatus];
     
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(trackSuccess:) name:@"trackSuccessTransaction" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -116,6 +121,7 @@
         _isWillApearFromGallery = NO;
     }
     
+    //TODO: Should be placed on viewDidLoad, however viewDidLoad didn't called.
     [self setDataDefault];
     [_tableView reloadData];
     
@@ -293,6 +299,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
+        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
     else if (button == _paymentStatusButton)
@@ -635,34 +642,6 @@
                                  };
     [_listTotalPayment insertObject:metodePembayaran atIndex:1];
     
-    
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
-                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee?:@"",
-                                                                              }];
-        
-    NSString *paymentMethod = _cartBuy.transaction.gateway_name;
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
-
-    NSDictionary *attributes = @{
-        @"Payment Method" : paymentMethod,
-        @"Total Transaction" : paymentTotal,
-        @"Total Quantity" : @"",
-        @"Total Shipping Fee" : @""
-    };
-    
-    NSInteger totalPayment = 0;
-    
-    [Localytics tagEvent:@"Event : Finished Transaction"
-              attributes:attributes
-   customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
-
-    NSString *profileAttribute = @"Profile : Total Transaction";
-    
-    [Localytics incrementValueBy:totalPayment
-             forProfileAttribute:profileAttribute
-                       withScope:LLProfileScopeApplication];
-    
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
@@ -862,6 +841,7 @@
         webViewController.strTitle = kTKPDMORE_HELP_TITLE;
         [self.navigationController pushViewController:webViewController animated:YES];
     } else {
+        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
 }
@@ -873,5 +853,54 @@
     
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)trackSuccess:(NSNotification *)notification {
+    
+    NSMutableArray *productIDs = [NSMutableArray new];
+    NSInteger quantity = 0;
+    NSArray<TransactionCartList *> *carts = _cartBuy.transaction.carts;
+    
+    for (TransactionCartList *cart in carts) {
+        NSArray<ProductDetail *> *products = cart.cart_products;
+        for (ProductDetail *product in products) {
+            [productIDs addObject:product.product_id?:@""];
+        }
+        
+        quantity = quantity + [cart.cart_total_product integerValue];
+    }
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee?:@"",
+                                                                              AFEventParamContentType : @"Product",
+                                                                              AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                              AFEventParamQuantity : [@(quantity) stringValue]?:@"",
+                                                                              AFEventParamCurrency : @"IDR",
+                                                                              AFEventOrderId : _cartBuy.transaction.payment_id?:@""}];
+    
+    
+    NSString *paymentMethod = _cartBuy.transaction.gateway_name;
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    
+    NSDictionary *attributes = @{
+                                 @"Payment Method" : paymentMethod,
+                                 @"Total Transaction" : paymentTotal,
+                                 @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                 @"Total Shipping Fee" : @""
+                                 };
+    
+    NSInteger totalPayment = 0;
+    
+    [Localytics tagEvent:@"Event : Finished Transaction"
+              attributes:attributes
+   customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
+    
+    NSString *profileAttribute = @"Profile : Total Transaction";
+    
+    [Localytics incrementValueBy:totalPayment
+             forProfileAttribute:profileAttribute
+                       withScope:LLProfileScopeApplication];
+    
+}
+
 
 @end

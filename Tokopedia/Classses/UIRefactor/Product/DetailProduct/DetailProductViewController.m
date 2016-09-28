@@ -564,7 +564,7 @@ TTTAttributedLabelDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+                    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Review"];
                 }
                 break;
             }
@@ -591,9 +591,7 @@ TTTAttributedLabelDelegate
                 vc.data = data;
 
                 [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Talk"];
                 break;
             }
             case 15:
@@ -614,6 +612,7 @@ TTTAttributedLabelDelegate
             case 16:
             {
                 //Buy
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickBuy" action:@"Click" label:@"Buy"];
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
                     transactionVC.wholeSales = _product.data.wholesale_price;
@@ -639,6 +638,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -660,6 +660,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 18 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
@@ -2308,6 +2309,7 @@ TTTAttributedLabelDelegate
 
 - (void)expand:(CustomButtonExpandDesc *)sender
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Product Description"];
     isExpandDesc = !isExpandDesc;
     [_table reloadData];
 }
@@ -2324,7 +2326,7 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
-            [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Share"];
+            [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Share"];
         }];
         
     }
@@ -2384,6 +2386,7 @@ TTTAttributedLabelDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
+        [TPAnalytics trackProductDetailPageWithEvent:@"clickReport" action:@"Click" label:@"Report"];
         [self goToReportProductViewController];
     } else {
         LoginViewController *loginVC = [LoginViewController new];
@@ -2762,6 +2765,7 @@ TTTAttributedLabelDelegate
 
 - (void)setWishList
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
@@ -2789,6 +2793,8 @@ TTTAttributedLabelDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
+        
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {

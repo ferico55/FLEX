@@ -126,7 +126,6 @@
 
 -(IBAction)didTapSuccess:(id)sender
 {
-    [_delegate isSucessSprintAsia:@{}];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -287,7 +286,7 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-     NSLog(@"URL shouldStartLoadWithRequest: %@", webView.request.URL.absoluteString);
+    NSLog(@"URL shouldStartLoadWithRequest: %@", webView.request.URL.absoluteString);
     NSLog(@"URL shouldStartLoadWithRequest: %@", request.URL.absoluteString);
 
 
@@ -300,137 +299,28 @@
             ) {
             _isSuccessBCA = YES;
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
         
-        if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-            [backBarButtonItem setTintColor:[UIColor whiteColor]];
-            backBarButtonItem.tag = 20;
-            self.navigationItem.leftBarButtonItem = backBarButtonItem;
-        }
-        else if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_URL]||[webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_PAYEMNET_URL])
-        {
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-            [backBarButtonItem setTintColor:[UIColor whiteColor]];
-            backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-            self.navigationItem.leftBarButtonItem = backBarButtonItem;
-        }
-    }
-    else if(gateway == TYPE_GATEWAY_MANDIRI_E_CASH)
-    {
-        //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
-        NSString *stringURLEMoney = [self getStringURLMandiriECash];
-            if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    [_delegate shouldDoRequestEMoney:YES];
-                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-                [backBarButtonItem setTintColor:[UIColor whiteColor]];
-                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-                self.navigationItem.leftBarButtonItem = backBarButtonItem;
-            }
-        //}
-        //if ([request.URL.absoluteString rangeOfString:@"ws"].location != NSNotFound) {
-            //if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws/tx-payment-emoney.pl?id="].location != NSNotFound) {
-            //    [self.navigationController popViewControllerAnimated:YES];
-            //    [_delegate shouldDoRequestEMoney:NO];
-            //}
-        //}
-
-    }
-    else if (gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)
-    {
-        
-    }
-    else if (gateway == TYPE_GATEWAY_BRI_EPAY){
-        if ([request.URL.absoluteString rangeOfString:@"ecommerce/ecommerce_payment"].location != NSNotFound) {
-            self.navigationItem.leftBarButtonItem = nil;
-        }
-        if ([request.URL.absoluteString rangeOfString:BRI_EPAY_CALLBACK_URL].location != NSNotFound) {
-
-            if (!_isBRIEPayRequested) {
-                [_delegate shouldDoRequestBRIEPayCode:_transactionCode];
-                _isBRIEPayRequested = YES;
-            }
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            return NO;
-        }
-    }
-    else
-    {
-        NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
-        if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
-
-            NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
-            if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                TxOrderTabViewController *vc = [TxOrderTabViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-            } else if ([html rangeOfString:@"Status Pemesanan"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-                vc.action = @"get_tx_order_status";
-                vc.viewControllerTitle = @"Status Pemesanan";
-                [self.navigationController pushViewController:vc animated:YES];
-            } else {
-                TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-                networkManager.isUsingHmac = YES;
-                
-                NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
-                NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
-                NSArray *products = _toppayParam[@"items"];
-                NSMutableArray *productIDs = [NSMutableArray new];
-                NSInteger quantity = 0;
-                
-                for (NSDictionary *product in products) {
-                    [productIDs addObject:product[@"id"]];
-                    quantity = quantity + [product[@"quantity"] integerValue];
-                }
-                
-                [RequestCart fetchToppayThanksCode:paymentID
-                                           success:^(TransactionActionResult *data) {
-                                               if (data.is_success == 1) {
-                                                   NSDictionary *parameter = data.parameter;
-                                                   NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
-                                                   NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
-                                                   
-                                                   [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
-                                                   
-                                                   [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
-                                                                                                                             AFEventParamContentType : @"Product",
-                                                                                                                             AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
-                                                                                                                             AFEventParamQuantity : [@(quantity) stringValue]?:@"",
-                                                                                                                             AFEventParamCurrency : _toppayParam[@"currency"]?:@"",
-                                                                                                                             AFEventOrderId : paymentID}];
-                                                   
-                                                   [Localytics tagEvent:@"Event : Finished Transaction"
-                                                             attributes:@{
-                                                                          @"Payment Method" : paymentMethod,
-                                                                          @"Total Transaction" : [revenue stringValue]?:@"",
-                                                                          @"Total Quantity" : [@(quantity) stringValue]?:@"",
-                                                                          @"Total Shipping Fee" : @""
-                                                                          }
-                                                  customerValueIncrease:revenue];
-                                                   
-                                                   [Localytics incrementValueBy:0
-                                                            forProfileAttribute:@"Profile : Total Transaction"
-                                                                      withScope:LLProfileScopeApplication];
-                                               }
-                                               
-                                               
-                                           }
-                                             error:^(NSError *error) {
-                                                 
-                                                 
-                                             }];
-                
-                
-                [_delegate shouldDoRequestTopPayThxCode:paymentID];
-                if ([self isModal]) {
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                } else
-                {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
+        NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
+        if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+            TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([html rangeOfString:@"Status Pemesanan"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_status";
+            vc.viewControllerTitle = @"Status Pemesanan";
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+            NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
+            
+            [_delegate shouldDoRequestTopPayThxCode:paymentID toppayParam:_toppayParam];
+            if ([self isModal]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
             }
 
             return NO;
@@ -475,51 +365,13 @@
     NSLog(@"html String WebView %@", html);
     NSLog(@"URL webViewDidFinishLoad: %@", webView.request.URL.absoluteString);
     
-    NSInteger gateway = [_gateway integerValue];
-    
-    if(gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)
-    {
-        if (_isVeritrans)
-        {
-            if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                [self performSelector:@selector(requestCCCallback) withObject:nil afterDelay:3.0f];
-            }
-        }
-        else
-        {
-            if (([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound || [webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca-installment.pl"].location != NSNotFound) && webView.request.URL.absoluteString != nil) {
-                // get issuccess value
-                NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
-                if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    [transparentButton addTarget:self action:@selector(didTapSuccess:) forControlEvents:(UIControlEventTouchUpInside)];
-                    transparentButton.frame = webView.frame;
-                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-                    [self.webView addSubview:transparentButton];
-                }
-                if ([html rangeOfString:@"Ulangi"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    [transparentButton addTarget:self action:@selector(didTapRetry:) forControlEvents:(UIControlEventTouchUpInside)];
-                    transparentButton.frame = webView.frame;
-                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-                    [self.webView addSubview:transparentButton];
-                }
-            }
-        }
-    }
-}
-
--(void)requestCCCallback
-{
-    [_delegate doRequestCC:@{}];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView stopLoading];
     NSString *errorMessage ;
-
+    
     NSLog(@"%@", error.localizedDescription);
     
     if (error.code==-1009) {
@@ -598,10 +450,6 @@
     [super viewWillDisappear:animated];
     self.title = @"";
     
-    if (_isSuccessBCA) {
-        [_delegate shouldDoRequestBCAClickPay];
-    }
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{

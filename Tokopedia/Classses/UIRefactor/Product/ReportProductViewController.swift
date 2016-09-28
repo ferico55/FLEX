@@ -200,6 +200,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                         let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                         let reportProductResponse: ReportProductSubmitResponse = result[""] as! ReportProductSubmitResponse
                         if reportProductResponse.data.is_success == "1" {
+                            TPAnalytics.trackProductDetailPageWithEvent("reportSuccess", action: "Report Success", label: "Report Success")
                             weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
                         } else {
                             weakSelf.showErrorAlertViewWithIsNeedPopViewController(reportProductResponse.message_error[0])

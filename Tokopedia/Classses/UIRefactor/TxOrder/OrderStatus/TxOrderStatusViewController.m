@@ -600,6 +600,7 @@
 
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        [TPLocalytics trackReceiveConfirmation:YES];
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
@@ -612,12 +613,14 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
+        [TPLocalytics trackReceiveConfirmation:NO];
         [self failedConfirmDelivery:order];
     }];
 }
 
 -(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        [TPLocalytics trackReceiveConfirmation:YES];
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
@@ -630,6 +633,7 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
+        [TPLocalytics trackReceiveConfirmation:NO];
         [self failedConfirmDelivery:order];
     }];
 }

@@ -13,12 +13,8 @@
 @protocol TransactionCartWebViewViewControllerDelegate <NSObject>
 
 @required
-- (void)shouldDoRequestEMoney:(BOOL)isWSNew;
-- (void)shouldDoRequestBCAClickPay;
-- (void)doRequestCC:(NSDictionary*)param;
-- (void)isSucessSprintAsia:(NSDictionary*)param;
-- (void)shouldDoRequestBRIEPayCode:(NSString*)code;
-- (void)shouldDoRequestTopPayThxCode:(NSString*)code;
+
+- (void)shouldDoRequestTopPayThxCode:(NSString*)code toppayParam:(NSDictionary *)param;
 
 @end
 
