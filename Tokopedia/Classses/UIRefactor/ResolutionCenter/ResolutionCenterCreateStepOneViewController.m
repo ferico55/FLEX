@@ -123,6 +123,7 @@ ResolutionCenterChooseProblemDelegate
     if(indexPath.section == 0 && _result.formData){
         [self.navigationController pushViewController:[self problemViewController] animated:YES];
     }else if(indexPath.section == 1){
+        [_result.selectedProduct removeAllObjects];
         ProductTrouble *selectedProduct = [_listProducts objectAtIndex:indexPath.row];
         [_result.selectedProduct addObject:selectedProduct];
     }
@@ -172,6 +173,7 @@ ResolutionCenterChooseProblemDelegate
     if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
         _result.troubleId = nil;
+        [_result.selectedProduct removeAllObjects];
         _problemLabel.text = selectedProblem.category_trouble_text?:@"";
         [_tableView reloadData];
     }else{
