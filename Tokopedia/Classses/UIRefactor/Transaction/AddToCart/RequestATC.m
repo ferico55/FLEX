@@ -50,7 +50,7 @@
     NSString *shippingID = shipment.shipper_id;
     NSString *shippingProduct = shipmentPackage.shipper_product_id;
     
-    NSString *addressID = ([address.address_id integerValue]==0)?@"-1":address.address_id;
+    NSString *addressID = address.address_id?:@"";
     NSString *districtID = address.district_id?:@"";
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
@@ -114,7 +114,7 @@
     NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
-    NSString *addressID = ([address.address_id integerValue]==0)?@"-1":address.address_id?:0;
+    NSString *addressID = address.address_id?:@"";
     NSString *districtID = address.district_id?:@"0";
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
