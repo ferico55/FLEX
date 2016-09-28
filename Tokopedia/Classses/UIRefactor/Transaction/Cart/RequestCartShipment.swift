@@ -59,7 +59,7 @@ class RequestCartShipment: NSObject {
     
     class func fetchShipmentFormWithObject(postObject: ShippingFormPostObject,onSuccess: ((data:CartShipmentForm) -> Void), onFailure:(()->Void)) {
         
-        let auth : UserAuthentificationManager = UserAuthentificationManager()
+        let auth = UserAuthentificationManager()
         
         let param : [String : String] = [
             "change"            : "",
@@ -150,7 +150,7 @@ class RequestCartShipment: NSObject {
     
     class func fetchEditAddress(postObject: CartEditAddressPostObject,onSuccess: ((data:TransactionAction) -> Void), onFailure:(()->Void)) {
         
-        let auth : UserAuthentificationManager = UserAuthentificationManager()
+        let auth = UserAuthentificationManager()
         
         let param : [String : String] = [
             "address_id"            : postObject.addressID,
@@ -201,7 +201,7 @@ class RequestCartShipment: NSObject {
     }
     
     class func fetchEditInsurance(postObject: CartEditInsurancePostObject,onSuccess: ((data:TransactionAction) -> Void), onFailure:(()->Void))  {
-        let auth : UserAuthentificationManager = UserAuthentificationManager()
+        let auth = UserAuthentificationManager()
         
         let param : [String : String] = [
             "address_id"            : postObject.addressID,
