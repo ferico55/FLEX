@@ -9,6 +9,11 @@
 #import "TransactionCalculatePriceResult.h"
 
 @implementation TransactionCalculatePriceResult
+
+-(NSArray<NSString *> *)auto_resi{
+    return _auto_resi?:@[];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     return nil;

@@ -9,6 +9,7 @@
 #import "ShippingInfoShipmentPackage.h"
 
 @implementation ShippingInfoShipmentPackage
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"price_total",
@@ -16,7 +17,8 @@
                       @"desc",
                       @"active",
                       @"name",
-                      @"sp_id"
+                      @"sp_id",
+                      @"package_available"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

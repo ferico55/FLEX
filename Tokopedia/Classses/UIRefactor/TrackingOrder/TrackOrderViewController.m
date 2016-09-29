@@ -314,10 +314,10 @@
         if (indexPath.section < 2) {
             return 44;
         } else {
-            return 90;
+            return 110;
         }
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
-        return 90;
+        return 110;
     }
     return 44;
 }
