@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import OAStackView
 
 @IBDesignable
 @objc
@@ -16,7 +17,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     var digitalGoodsDataSource: DigitalGoodsDataSource!
     var carouselDataSource: CarouselDataSource!
-    var categoryDataSource: CategoryDataSource!
     
     var tickerRequest: AnnouncementTickerRequest!
     var tickerView: AnnouncementTickerView!
@@ -31,13 +31,15 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     var tickerPlaceholder: UIView!
     var miniSliderPlaceholder: UIView!
     var keyboardManager: PulsaKeyboardManager!
+    var isNeedRefreshPulsaView: Bool = true
     
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var flow: UICollectionViewFlowLayout!
-   
+    @IBOutlet var homePageScrollView: UIScrollView!
+    private var outerStackView: OAStackView!
+    
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
+    private let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -49,26 +51,27 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.categoryDataSource = CategoryDataSource()
-        self.categoryDataSource.delegate = self
         
-        flow.headerReferenceSize = CGSizeZero
-        
-        self.collectionView.keyboardDismissMode = .Interactive
-        self.collectionView.dataSource = self.categoryDataSource
-        self.collectionView.delegate = self.categoryDataSource
-        self.collectionView.backgroundColor = UIColor.whiteColor()
-        self.collectionView.collectionViewLayout = flow
-        
-        let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
-        self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
-
+        //        self.categoryDataSource = CategoryDataSource()
+        //        self.categoryDataSource.delegate = self
+        //
+        //        flow.headerReferenceSize = CGSizeZero
+        //
+        //        self.collectionView.keyboardDismissMode = .Interactive
+        //        self.collectionView.dataSource = self.categoryDataSource
+        //        self.collectionView.delegate = self.categoryDataSource
+        //        self.collectionView.backgroundColor = UIColor.whiteColor()
+        //        self.collectionView.collectionViewLayout = flow
+        //
+        //        let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
+        //        self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
+        //
+        //        self.initViewLayout()
+        //        self.requestPulsaWidget()
+        //
+        self.initKeyboardManager()
+        self.initOuterStackView()
         self.initViewLayout()
-        self.requestPulsaWidget()
-        
-        self.keyboardManager = PulsaKeyboardManager()
-        self.keyboardManager.collectionView = self.collectionView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -77,13 +80,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestBanner()
         self.requestTicker()
         self.requestMiniSlider()
-
+        self.requestPulsaWidget()
+        
         TPAnalytics.trackScreenName("Top Category")
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-         
+        
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.stopBannerRequest()
         
@@ -95,6 +99,196 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         self.keyboardManager.beginObservingKeyboard()
     }
+    
+    // MARK: Setup StackView
+    
+    func initOuterStackView() {
+        self.outerStackView = OAStackView()
+        setStackViewAttribute(self.outerStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        self.homePageScrollView.addSubview(self.outerStackView)
+        setupOuterStackViewConstraint()
+    }
+    
+    func setStackViewAttribute(stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
+        stackView.axis = axis
+        stackView.alignment = alignment
+        stackView.distribution = distribution
+        stackView.spacing = spacing
+    }
+    
+    func setupBannerView() {
+        self.requestBanner()
+    }
+    
+    func setupOuterStackViewConstraint() {
+        self.outerStackView.mas_makeConstraints { [weak self] (make) in
+            if let weakSelf = self {
+                make.top.mas_equalTo()(weakSelf.homePageScrollView.mas_top)
+                make.bottom.mas_equalTo()(weakSelf.homePageScrollView.mas_bottom)
+                make.left.mas_equalTo()(weakSelf.homePageScrollView.mas_left)
+                make.right.mas_equalTo()(weakSelf.homePageScrollView.mas_right)
+                make.width.mas_equalTo()(weakSelf.view.mas_width)
+            }
+        }
+    }
+    
+    // MARK: Init Layout
+    
+    func initViewLayout() {
+        self.sliderPlaceholder = UIView(frame: CGRectZero)
+        self.sliderPlaceholder.backgroundColor = self.backgroundColor
+        self.tickerPlaceholder = UIView(frame: CGRectZero)
+        self.miniSliderPlaceholder = UIView(frame: CGRectZero)
+        self.pulsaPlaceholder = UIView()
+        
+        // init slider
+        self.sliderPlaceholder.mas_makeConstraints { make in
+            make.height.mas_equalTo()(self.sliderHeight)
+        }
+        self.outerStackView.addArrangedSubview(self.sliderPlaceholder)
+        
+        // init pulsa widget
+        self.pulsaPlaceholder.mas_makeConstraints { (make) in
+            make.height.mas_equalTo()(100)
+        }
+        self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
+        
+        // init category
+        self.initCategoryLayout()
+        
+    }
+    
+    func initCategoryLayout(){
+        initCatRow1()
+        initCatRow2()
+        
+    }
+    
+    func initCatRow1() {
+        var categoryC1NameLabel: UILabel = UILabel()
+        categoryC1NameLabel.text = "Category Name"
+        categoryC1NameLabel.mas_makeConstraints { (make) in
+            make.height.mas_equalTo()(25)
+        }
+        categoryC1NameLabel.backgroundColor = UIColor.orangeColor()
+        var horizontalScrollView: UIScrollView = UIScrollView()
+        
+        var categoryC2NameLabelA = UILabel()
+        categoryC2NameLabelA.text = "Category C2 A"
+        categoryC2NameLabelA.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelA.backgroundColor = UIColor.greenColor()
+        var categoryC2NameLabelB = UILabel()
+        categoryC2NameLabelB.text = "Category C2 B"
+        categoryC2NameLabelB.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelB.backgroundColor = UIColor.brownColor()
+        var categoryC2NameLabelC = UILabel()
+        categoryC2NameLabelC.text = "Category C2 C"
+        categoryC2NameLabelC.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelC.backgroundColor =  UIColor.darkGrayColor()
+        
+        
+        
+        var horizontalStackView: OAStackView = OAStackView(arrangedSubviews: [categoryC2NameLabelA, categoryC2NameLabelB, categoryC2NameLabelC])
+        horizontalStackView.distribution =  .Fill
+        horizontalStackView.alignment = .Fill
+        horizontalStackView.spacing = 0.0
+        horizontalStackView.axis = .Horizontal
+        
+        horizontalScrollView.addSubview(horizontalStackView)
+        horizontalScrollView.mas_makeConstraints { (make) in
+            make.height.mas_equalTo()(75)
+        }
+        
+        horizontalStackView.mas_makeConstraints { (make) in
+            make.top.equalTo()(horizontalScrollView.mas_top)
+            make.bottom.equalTo()(horizontalScrollView.mas_bottom)
+            make.left.equalTo()(horizontalScrollView.mas_left)
+            make.right.equalTo()(horizontalScrollView.mas_right)
+            make.height.equalTo()(horizontalScrollView.mas_height)
+        }
+        
+        var verticalStackView  = OAStackView(arrangedSubviews: [categoryC1NameLabel, horizontalScrollView])
+        verticalStackView.alignment = .Fill
+        verticalStackView.distribution = .Fill
+        verticalStackView.axis = .Vertical
+        verticalStackView.spacing = 0.0
+        
+        outerStackView.addArrangedSubview(verticalStackView)
+    }
+    
+    func initCatRow2() {
+        var categoryC1NameLabel: UILabel = UILabel()
+        categoryC1NameLabel.text = "Category Name"
+        categoryC1NameLabel.mas_makeConstraints { (make) in
+            make.height.mas_equalTo()(25)
+        }
+        categoryC1NameLabel.backgroundColor = UIColor.orangeColor()
+        var horizontalScrollView: UIScrollView = UIScrollView()
+        
+        var categoryC2NameLabelA = UILabel()
+        categoryC2NameLabelA.text = "Category C2 E"
+        categoryC2NameLabelA.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelA.backgroundColor = UIColor.blueColor()
+        var categoryC2NameLabelB = UILabel()
+        categoryC2NameLabelB.text = "Category C2 F"
+        categoryC2NameLabelB.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelB.backgroundColor = UIColor.purpleColor()
+        var categoryC2NameLabelC = UILabel()
+        categoryC2NameLabelC.text = "Category C2 G"
+        categoryC2NameLabelC.mas_makeConstraints { (make) in
+            make.width.mas_equalTo()(200)
+        }
+        categoryC2NameLabelC.backgroundColor =  UIColor.magentaColor()
+        
+        
+        
+        var horizontalStackView: OAStackView = OAStackView(arrangedSubviews: [categoryC2NameLabelA, categoryC2NameLabelB, categoryC2NameLabelC])
+        horizontalStackView.distribution =  .Fill
+        horizontalStackView.alignment = .Fill
+        horizontalStackView.spacing = 0.0
+        horizontalStackView.axis = .Horizontal
+        
+        horizontalScrollView.addSubview(horizontalStackView)
+        horizontalScrollView.mas_makeConstraints { (make) in
+            make.height.mas_equalTo()(75)
+        }
+        
+        horizontalStackView.mas_makeConstraints { (make) in
+            make.top.equalTo()(horizontalScrollView.mas_top)
+            make.bottom.equalTo()(horizontalScrollView.mas_bottom)
+            make.left.equalTo()(horizontalScrollView.mas_left)
+            make.right.equalTo()(horizontalScrollView.mas_right)
+            make.height.equalTo()(horizontalScrollView.mas_height)
+        }
+        
+        var verticalStackView  = OAStackView(arrangedSubviews: [categoryC1NameLabel, horizontalScrollView])
+        verticalStackView.alignment = .Fill
+        verticalStackView.distribution = .Fill
+        verticalStackView.axis = .Vertical
+        verticalStackView.spacing = 0.0
+        
+        outerStackView.addArrangedSubview(verticalStackView)
+    }
+    
+    // MARK: Keyboard Manager
+    
+    func initKeyboardManager() {
+        self.keyboardManager = PulsaKeyboardManager()
+        self.keyboardManager.homePageScrollView = self.homePageScrollView
+    }
+    
+    // MARK: Method
+    
     
     func requestBanner() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
@@ -113,7 +307,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             slider.decelerationRate = 0.5
             
             self.sliderPlaceholder .addSubview(slider)
-            self.collectionView.bringSubviewToFront((self.sliderPlaceholder)!)
             
             slider.mas_makeConstraints { make in
                 make.height.equalTo()(self.sliderHeight)
@@ -123,41 +316,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             
             let timer = NSTimer.bk_timerWithTimeInterval(5.0, block: { (timer) in
                 slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
-            }, repeats: true)
+                }, repeats: true)
             NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
-
+            
             self.refreshCollectionViewHeaderSize()
-        })
-
-    }
-    
-    func initViewLayout() {
-        self.sliderPlaceholder = UIView(frame: CGRectZero)
-        self.sliderPlaceholder.backgroundColor = self.backgroundColor
-        self.pulsaPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
-        self.tickerPlaceholder = UIView(frame: CGRectZero)
-        self.miniSliderPlaceholder = UIView(frame: CGRectZero)
+            })
         
-        self.collectionView.addSubview(self.tickerPlaceholder)
-        self.collectionView.addSubview(self.sliderPlaceholder)
-        self.collectionView.addSubview(self.pulsaPlaceholder)
-        self.collectionView.addSubview(self.miniSliderPlaceholder)
-        
-        self.sliderPlaceholder.mas_makeConstraints { make in
-            make.left.right().equalTo()(self.view)
-            make.top.equalTo()(self.tickerPlaceholder.mas_bottom)
-        }
-        
-        self.pulsaPlaceholder.mas_makeConstraints { make in
-            make.left.right().equalTo()(self.view)
-            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
-        }
-        
-        self.miniSliderPlaceholder.mas_makeConstraints { make in
-            make.left.right().equalTo()(self.view)
-            make.top.equalTo()(self.sliderPlaceholder?.mas_bottom)
-        }
     }
     
     func mappingPrefixFromOperators(operators: [PulsaOperator]) {
@@ -192,7 +356,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         self.pulsaView.addActionNumberField();
         self.pulsaView.refreshContainerSize = {
-                self.refreshCollectionViewHeaderSize()
+            self.refreshPulsaWidgetHeight()
         }
         
         self.pulsaView.didPrefixEntered = { operatorId, categoryId in
@@ -203,7 +367,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.requestManager.didReceiveProduct = { products in
                 self.didReceiveProduct(products)
             }
-
+            
         }
         
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
@@ -254,11 +418,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     func requestMiniSlider() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
-        let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
         
         bannersStore.fetchMiniSlideWithCompletion({[unowned self] (slide, error) in
             if slide != nil {
-                let digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self.screenWidth, sliderHeightWithMargin))
+                let digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self.screenWidth, self.sliderHeightWithMargin))
                 self.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: digitalGoodsSwipeView)
                 self.digitalGoodsDataSource.delegate = self
                 
@@ -273,7 +436,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.miniSliderPlaceholder .addSubview(digitalGoodsSwipeView)
                 
                 digitalGoodsSwipeView.mas_makeConstraints { make in
-                    make.height.equalTo()(sliderHeightWithMargin)
+                    make.height.equalTo()(self.sliderHeightWithMargin)
                     make.top.left().right().bottom().equalTo()(self.miniSliderPlaceholder)
                 }
                 
@@ -286,10 +449,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 
             }
             
-        })
+            })
     }
     
     func requestPulsaWidget() {
+        guard self.isNeedRefreshPulsaView == true else {
+            self.isNeedRefreshPulsaView = true
+            return
+        }
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
@@ -306,6 +473,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
             
             self.pulsaView = PulsaView(categories: sortedCategories)
+            
+            self.pulsaPlaceholder.removeAllSubviews()
             self.pulsaView.attachToView(self.pulsaPlaceholder)
             
             self.navigator = PulsaNavigator()
@@ -352,7 +521,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 }
                 
                 self.tickerPlaceholder.mas_makeConstraints { make in
-                    make.top.equalTo()(self.collectionView.mas_top)
+                    //                    make.top.equalTo()(self.collectionView.mas_top)
                     make.left.right().equalTo()(self.view)
                 }
                 
@@ -372,9 +541,16 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     func refreshCollectionViewHeaderSize() {
         let debounced = Debouncer(delay: 0.1) {
-            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.miniSliderPlaceholder.frame.origin.y + self.miniSliderPlaceholder.frame.size.height)
+            //            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.miniSliderPlaceholder.frame.origin.y + self.miniSliderPlaceholder.frame.size.height)
+            
         }
-        
         debounced.call()
+    }
+    
+    func refreshPulsaWidgetHeight() {
+        self.pulsaPlaceholder.mas_updateConstraints { (make) in
+            make.height.mas_equalTo()(250)
+        }
+        super.updateViewConstraints()
     }
 }
