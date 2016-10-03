@@ -16069,9 +16069,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 201609200921;
+				CURRENT_PROJECT_VERSION = 201609291804;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -16114,9 +16114,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 201609200921;
+				CURRENT_PROJECT_VERSION = 201609291804;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = fast;
@@ -16145,9 +16145,9 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201609200921;
+				CURRENT_PROJECT_VERSION = 201609291804;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -16191,9 +16191,9 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
-				CURRENT_PROJECT_VERSION = 201609200921;
+				CURRENT_PROJECT_VERSION = 201609291804;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -16224,8 +16224,6 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
-					"-l\"AFNetworking\"",
-					"-l\"BlocksKit\"",
 					"-l\"GGLAnalytics\"",
 					"-l\"GGLCore\"",
 					"-l\"GSDK_Overload\"",
@@ -16249,13 +16247,8 @@
 					"-l\"GTM_core\"",
 					"-l\"GTM_iPhone\"",
 					"-l\"GoogleAnalytics\"",
-					"-l\"NJKWebViewProgress\"",
 					"-l\"ProtocolBuffers\"",
-					"-l\"RestKit\"",
-					"-l\"SOCKit\"",
-					"-l\"TTTAttributedLabel\"",
 					"-l\"TagManager\"",
-					"-l\"TransitionKit\"",
 					"-l\"c++\"",
 					"-l\"icucore\"",
 					"-l\"sqlite3\"",

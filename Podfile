@@ -46,3 +46,16 @@ end
 target "TokopediaTests" do
     common_pods
 end
+
+post_install do |installer|
+    
+    installer.pods_project.targets.each do |target|
+        installer.pods_project.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end   
+        
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end
+    end
+end

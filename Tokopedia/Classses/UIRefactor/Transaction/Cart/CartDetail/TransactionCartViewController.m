@@ -601,7 +601,7 @@
 -(void)setDataDropshipperCartSummary{
     for (TransactionCartList *cart in _cartSummary.carts) {
         NSInteger shopID = [cart.cart_shop.shop_id integerValue];
-        NSInteger addressID =cart.cart_destination.address_id;
+        NSInteger addressID =[cart.cart_destination.address_id integerValue];
         NSInteger shipmentID =[cart.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [cart.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -1092,7 +1092,7 @@
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
+        NSInteger addressID =[list.cart_destination.address_id integerValue];
         NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipperNameKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_NAME_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -1128,7 +1128,7 @@
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
+        NSInteger addressID =[list.cart_destination.address_id integerValue];
         //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
@@ -1395,7 +1395,7 @@
             NSInteger index = [[((AlertPickerView*)alertView).data objectForKey:DATA_INDEX_KEY] integerValue];
             TransactionCartList *list = _list[partialSection];
             NSInteger shopID = [list.cart_shop.shop_id integerValue];
-            NSInteger addressID =list.cart_destination.address_id;
+            NSInteger addressID =[list.cart_destination.address_id integerValue];
             //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
             NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
             
@@ -2432,7 +2432,7 @@
         for (TransactionCartList *newCart in newCarts) {
             
             if ([newCart.cart_shop.shop_id integerValue] == [cart.cart_shop.shop_id integerValue] &&
-                newCart.cart_destination.address_id == cart.cart_destination.address_id &&
+                [newCart.cart_destination.address_id integerValue] == [cart.cart_destination.address_id integerValue] &&
                 [newCart.cart_shipments.shipment_id integerValue] == [cart.cart_shipments.shipment_id integerValue] &&
                 [newCart.cart_shipments.shipment_package_id integerValue] == [cart.cart_shipments.shipment_package_id integerValue]
                 ) {
