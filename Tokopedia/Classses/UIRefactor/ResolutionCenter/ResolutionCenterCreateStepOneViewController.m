@@ -123,7 +123,6 @@ ResolutionCenterChooseProblemDelegate
     if(indexPath.section == 0 && _result.formData){
         [self.navigationController pushViewController:[self problemViewController] animated:YES];
     }else if(indexPath.section == 1){
-        [_result.selectedProduct removeAllObjects];
         ProductTrouble *selectedProduct = [_listProducts objectAtIndex:indexPath.row];
         [_result.selectedProduct addObject:selectedProduct];
     }
