@@ -45,8 +45,4 @@
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
 
-
-// AppsFlyer
-
-
 @end
