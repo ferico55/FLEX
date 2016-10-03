@@ -986,7 +986,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -1009,7 +1009,7 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
