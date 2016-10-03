@@ -12,6 +12,7 @@
 #import "WishlistObjectList.h"
 #import "List.h"
 #import "NSURL+Dictionary.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @interface AnalyticsManager()
 
@@ -42,6 +43,76 @@
 + (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes {
     [Localytics tagEvent:event?:@""
               attributes:attributes];
+}
+
++ (void)localyticsTrackCartView:(TransactionCartResult *)cart {
+    NSInteger itemsInCart = 0;
+    for (TransactionCartList *c in cart.list) {
+        for (ProductDetail *product in c.cart_products) {
+            itemsInCart = itemsInCart + [product.product_quantity integerValue];
+        }
+    }
+    
+    NSDictionary *attributes = @{
+                                 @"Items in Cart" : @(itemsInCart),
+                                 @"Value of Cart" : cart.grand_total_idr?:@""
+                                 };
+    
+    [self localyticsEvent:@"Cart Viewed" attributes:attributes];
+}
+
++ (void)localyticsTrackATC:(ProductDetail *)product {
+    NSString *productID = product.product_id;
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.product_price];
+    NSString *total = [NSString stringWithFormat:@"%zd", [product.product_total_price integerValue]];
+    NSString *productQuantity = product.product_quantity;
+    
+    NSDictionary *attributes = @{
+                                 @"Product Id" : productID?:@"",
+                                 @"Category" : product.product_cat_name?:@"",
+                                 @"Price" : price?:@(0),
+                                 @"Value of Cart" : total?:@"",
+                                 @"Items in Cart" : productQuantity?:@""
+                                 };
+    
+    NSString *profileAttribute = @"Profile : Last date has product in cart";
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [self localyticsEvent:@"Product Added to Cart" attributes:attributes];
+    [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
+}
+
++ (NSString *)providerWithMethod:(NSString *)method {
+    if ([method isEqualToString:@"1"]) {
+        return @"Facebook";
+    } else if ([method isEqualToString:@"2"]) {
+        return @"Google";
+    } else if ([method isEqualToString:@"4"]) {
+        return @"Yahoo";
+    } else if ([method isEqualToString:@"0"]) {
+        return @"Email";
+    } else {
+        return @"";
+    }
+}
+
++ (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success {
+    NSString *provider = [self providerWithMethod:method];
+    
+    NSDictionary *attributes = @{
+                                 @"Success" : success? @"Yes" : @"No",
+                                 @"Previous Screen" : @"Login",
+                                 @"Method" : provider?:@""
+                                 };
+    
+    [self localyticsEvent:@"Registration Summary" attributes:attributes];
+}
+
++ (void)localyticsTrackLogin:(BOOL)success {
+    [Localytics setValue:success?@"Yes":@"No" forProfileAttribute:@"Is Login"];
+    [self localyticsEvent:@"Login" attributes:@{@"success" : success?@"Yes":@"No"}];
 }
 
 // GA Tracking

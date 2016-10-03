@@ -12,12 +12,23 @@
 #import "PromoResult.h"
 #import "ProductDetail.h"
 #import "LoginResult.h"
+#import "TransactionCartResult.h"
 
 @interface AnalyticsManager : NSObject
 
 // Localytics
 + (void)localyticsEvent:(NSString *)event;
 + (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes;
++ (void)localyticsTrackCartView:(TransactionCartResult *)cart;
++ (void)localyticsTrackATC:(ProductDetail *)product;
++ (void)localyticsTrackProductView:(Product *)product;
++ (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success;
++ (void)localyticsTrackLogin:(BOOL)success;
+
++ (void)localyticsTrackWithdraw:(BOOL)success;
++ (void)localyticsTrackShipmentConfirmation:(BOOL)success;
++ (void)localyticsTrackGiveReview:(BOOL)success accuracy:(NSInteger)accuracy quality:(NSInteger)quality;
++ (void)localyticsTrackReceiveConfirmation:(BOOL)success;
 
 // Google Analytics (via GTM)
 + (void)trackScreenName:(NSString *)name;
