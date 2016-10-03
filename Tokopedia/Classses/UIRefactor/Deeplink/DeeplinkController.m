@@ -116,7 +116,7 @@
     else if ([[url absoluteString] rangeOfString:@"pulsa"].location != NSNotFound) {
         [self activeController:self.activeController showWebViewURL:url];
     }
-    else if([explodedPathUrl[1] isEqualToString:@"p"]) {
+    else if(explodedPathUrl.count > 1 && [explodedPathUrl[1] isEqualToString:@"p"]) {
         //directory
         [self redirectToDirectory:explodedPathUrl];
     }
@@ -128,13 +128,13 @@
             [self redirectToSearchPage];
         }
     }
-    else if([explodedPathUrl[1] isEqualToString:@"hot"]) {
+    else if(explodedPathUrl.count > 1 && [explodedPathUrl[1] isEqualToString:@"hot"]) {
         //hot
         NSDictionary *data = @{@"key":explodedPathUrl[2]};
         [self.navigator navigateToHotlistResultFromViewController:self.activeController
                                                          withData:data];
     }
-    else if([explodedPathUrl[1] isEqualToString:@"catalog"]) {
+    else if(explodedPathUrl.count > 1 && [explodedPathUrl[1] isEqualToString:@"catalog"]) {
         //catalog
         [self.navigator navigateToCatalogFromViewController:self.activeController
                                               withCatalogID:explodedPathUrl[2]

@@ -120,12 +120,8 @@ import GoogleMaps
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        if #available(iOS 8.0, *) {
-            locationManager.requestAlwaysAuthorization()
-        } else {
-            // Fallback on earlier versions
-        }
+
+        locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
     }
     
@@ -141,7 +137,7 @@ import GoogleMaps
     
     //MARK: - View Action
     @IBAction func tapDone(sender: AnyObject) {
-        let mapImage : UIImage = mapView.captureMapScreen()
+        let mapImage : UIImage = UIImage.init(named: "map_gokil.png")!
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
         self.navigationController?.popViewControllerAnimated(true)
     }

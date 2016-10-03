@@ -369,6 +369,17 @@
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSString *type = @"";
+    
+    if (_typeComplaint == TypeComplaintAll) {
+        type = @"inbox-resolution-all-complaints";
+    } else if (_typeComplaint == TypeComplaintMine) {
+        type = @"inbox-resolution-my-complaints";
+    } else {
+        type = @"inbox-resolution-buyer-complaints";
+    }
+    
+    [TPAnalytics trackInboxResolutionAction:@"View" label:type];
     _selectedDetailIndexPath = indexPath;
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];

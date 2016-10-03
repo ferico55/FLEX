@@ -13,12 +13,8 @@
 @protocol TransactionCartWebViewViewControllerDelegate <NSObject>
 
 @required
-- (void)shouldDoRequestEMoney:(BOOL)isWSNew;
-- (void)shouldDoRequestBCAClickPay;
-- (void)doRequestCC:(NSDictionary*)param;
-- (void)isSucessSprintAsia:(NSDictionary*)param;
-- (void)shouldDoRequestBRIEPayCode:(NSString*)code;
-- (void)shouldDoRequestTopPayThxCode:(NSString*)code;
+
+- (void)shouldDoRequestTopPayThxCode:(NSString*)code toppayParam:(NSDictionary *)param;
 
 @end
 
@@ -41,9 +37,6 @@
 @property NSString *paymentID;
 @property NSString *callbackURL;
 
-+(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
-+(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri;
-+(void)pushBRIEPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
 +(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName;
 
 @end

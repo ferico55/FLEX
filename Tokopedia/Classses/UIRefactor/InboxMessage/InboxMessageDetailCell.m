@@ -39,7 +39,7 @@ static CGFloat messageTextSize = 17.0;
 
 +(CGFloat)maxTextWidth {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        return 220.0f;
+        return 230.0f;
     } else {
         return 360.0f;
     }
@@ -56,7 +56,7 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont largeTheme] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {

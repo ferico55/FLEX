@@ -82,6 +82,11 @@ import UIKit
         tableView.registerNib(UINib(nibName: "ShopTagDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "ShopTagDescriptionViewCell")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        TPAnalytics.trackScreenName("Create Shop Page")
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

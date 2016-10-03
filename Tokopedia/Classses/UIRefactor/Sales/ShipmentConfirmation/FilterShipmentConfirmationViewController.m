@@ -114,8 +114,7 @@
                                @"3 Hari",
                                @"4 Hari",
                                @"5 Hari",
-                               @"6 Hari",
-                               @"7 Hari"
+                               @"6 Hari"
                                ];
         controller.selectedObject = _dueDate;
     } else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -148,7 +147,6 @@
             else if ([_dueDate isEqualToString:@"4 Hari"]) dueDate = @"5";
             else if ([_dueDate isEqualToString:@"5 Hari"]) dueDate = @"6";
             else if ([_dueDate isEqualToString:@"6 Hari"]) dueDate = @"7";
-            else if ([_dueDate isEqualToString:@"7 Hari"]) dueDate = @"8";
             [self.delegate filterShipmentInvoice:_invoice
                                          dueDate:dueDate
                                          courier:_selectedCourier];

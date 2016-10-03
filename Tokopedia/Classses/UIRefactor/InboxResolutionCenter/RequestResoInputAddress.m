@@ -69,7 +69,7 @@
                             @"city":address.city_id?:@"",
                             @"district":address.district_id?:@"",
                             @"address_street":address.address_street?:@"",
-                            @"address_id":@(address.address_id)?:@"",
+                            @"address_id":address.address_id?:@"",
                             @"address":@(address.address)?:@""
                                 }];
     if (oldDataID && ![oldDataID isEqualToString:@""]) {

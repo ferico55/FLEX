@@ -564,7 +564,7 @@ TTTAttributedLabelDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+                    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Review"];
                 }
                 break;
             }
@@ -591,9 +591,7 @@ TTTAttributedLabelDelegate
                 vc.data = data;
 
                 [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Talk"];
                 break;
             }
             case 15:
@@ -614,6 +612,7 @@ TTTAttributedLabelDelegate
             case 16:
             {
                 //Buy
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickBuy" action:@"Click" label:@"Buy"];
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
                     transactionVC.wholeSales = _product.data.wholesale_price;
@@ -639,6 +638,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -660,6 +660,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 18 : {
+                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
@@ -1149,7 +1150,7 @@ TTTAttributedLabelDelegate
             [button setTitle:@"" forState:UIControlStateNormal];
         }
     }
-    if ([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING)
+    if (![self isProductActive])
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
     else
         [cell.etalasebutton setTitle:_product.data.info.product_etalase?:@"-" forState:UIControlStateNormal];
@@ -1336,7 +1337,7 @@ TTTAttributedLabelDelegate
         [statusMapping addPropertyMapping:resulRel];
         
         //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[GeneralAction mapping] method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectWishListManager addResponseDescriptor:responseDescriptorStatus];
         
@@ -2114,7 +2115,8 @@ TTTAttributedLabelDelegate
         case 13:
         {
             // Etalase
-            if(_product.data.info.product_etalase_id != nil) {
+            if(_product.data.info.product_etalase_id != nil && [self isProductActive]) {
+                
                 ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
@@ -2129,6 +2131,7 @@ TTTAttributedLabelDelegate
                     container.initialEtalase = initEtalase;
                 }
                 [self.navigationController pushViewController:container animated:YES];
+            
             }
             
             break;
@@ -2136,7 +2139,6 @@ TTTAttributedLabelDelegate
         default:
             break;
     }
-    
 }
 
 #pragma mark - Methods
@@ -2307,6 +2309,7 @@ TTTAttributedLabelDelegate
 
 - (void)expand:(CustomButtonExpandDesc *)sender
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Product Description"];
     isExpandDesc = !isExpandDesc;
     [_table reloadData];
 }
@@ -2323,7 +2326,7 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
-            [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Share"];
+            [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Share"];
         }];
         
     }
@@ -2383,6 +2386,7 @@ TTTAttributedLabelDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
+        [TPAnalytics trackProductDetailPageWithEvent:@"clickReport" action:@"Click" label:@"Report"];
         [self goToReportProductViewController];
     } else {
         LoginViewController *loginVC = [LoginViewController new];
@@ -2761,6 +2765,7 @@ TTTAttributedLabelDelegate
 
 - (void)setWishList
 {
+    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
@@ -2788,6 +2793,8 @@ TTTAttributedLabelDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
+        
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {
@@ -3062,6 +3069,14 @@ TTTAttributedLabelDelegate
                                                      withId:product.product_id
                                                withImageurl:product.product_image
                                                withShopName:product.shop_name];
+}
+
+- (BOOL)isProductActive {
+    if ([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

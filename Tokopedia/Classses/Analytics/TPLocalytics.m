@@ -110,4 +110,26 @@
     [Localytics tagEvent:@"Price Alert" attributes:attributes];
 }
 
++ (void)trackDepositWithdraw:(BOOL)status {
+    [Localytics tagEvent:@"Deposit Withdraw"
+              attributes:@{@"Success" : status?@"Yes":@"No"}];
+}
+
++ (void)trackShipmentConfirmation:(BOOL)status {
+    [Localytics tagEvent:@"Shipment Confirmation"
+              attributes:@{@"Success" : status?@"Yes":@"No"}];
+}
+
++ (void)trackReceiveConfirmation:(BOOL)status {
+    [Localytics tagEvent:@"Receive Confirmation"
+              attributes:@{@"Success" : status?@"Yes":@"No"}];
+}
+
++ (void)trackGiveReview:(BOOL)status accuracy:(NSInteger)accuracy quality:(NSInteger)quality {
+    [Localytics tagEvent:@"Give Review"
+              attributes:@{@"Success" : status?@"Yes":@"No",
+                           @"Accuracy" : [@(accuracy) stringValue]?:@"",
+                           @"Quality" : [@(quality) stringValue]?:@""}];
+}
+
 @end

@@ -229,7 +229,7 @@
                                                                           method:RKRequestMethodPOST
                                                                             path:path
                                                                       parameters:nil
-                                                       constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                                       constructingBodyWithBlock:^(id<AFRKMultipartFormData> formData) {
                                                            [formData appendPartWithFileData:UIImagePNGRepresentation(image)
                                                                                        name:name
                                                                                    fileName:fileName

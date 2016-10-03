@@ -24,6 +24,7 @@
 #import <JLPermissions/JLNotificationPermission.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "Tokopedia-Swift.h"
+#import <Appsee/Appsee.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -61,6 +62,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    [self startAppsee];
     [self hideTitleBackButton];
     
     UIViewController* viewController = [self frontViewController];
@@ -91,7 +94,7 @@
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
         
-        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
@@ -135,6 +138,10 @@
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
+}
+
+-(void)startAppsee{
+    [Appsee start:@"f2c02b28ccd54635a7c73eb9dac5038f"];
 }
 
 - (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {

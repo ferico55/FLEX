@@ -67,8 +67,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.initViewLayout()
 //        self.requestPulsaWidget()
         
-        self.keyboardManager = PulsaKeyboardManager()
-        self.keyboardManager.collectionView = self.collectionView
+//        self.keyboardManager = PulsaKeyboardManager()
+//        self.keyboardManager.collectionView = self.collectionView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -87,13 +87,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.stopBannerRequest()
         
-        self.keyboardManager.endObservingKeyboard()
+//        self.keyboardManager.endObservingKeyboard()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.keyboardManager.beginObservingKeyboard()
+//        self.keyboardManager.beginObservingKeyboard()
     }
     
     func requestBanner() {

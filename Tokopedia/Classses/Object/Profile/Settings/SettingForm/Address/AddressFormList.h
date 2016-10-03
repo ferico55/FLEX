@@ -15,17 +15,17 @@
 @property (nonatomic, strong) NSString *receiver_name;
 @property (nonatomic, strong) NSString *address_name;
 @property (nonatomic, strong) NSString *addr_name;
-@property (nonatomic) NSInteger address_id;
-@property (nonatomic) NSInteger addr_id;
+@property (nonatomic, strong) NSString *address_id;
+@property (nonatomic, strong) NSString *addr_id;
 @property (nonatomic, strong) NSString *receiver_phone;
 @property (nonatomic, strong) NSString *province_name;
 @property (nonatomic, strong) NSString *postal_code;
 @property (nonatomic) NSInteger address_status;
 @property (nonatomic, strong) NSString *address_street;
 @property (nonatomic, strong) NSString *district_name;
-@property (nonatomic, strong) NSNumber *province_id;
-@property (nonatomic, strong) NSNumber *city_id;
-@property (nonatomic, strong) NSNumber *district_id;
+@property (nonatomic, strong) NSString *province_id;
+@property (nonatomic, strong) NSString *city_id;
+@property (nonatomic, strong) NSString *district_id;
 @property (nonatomic, strong) NSString *city_name;
 @property (nonatomic, strong) NSString *address_country;
 @property (nonatomic, strong) NSString *address_postal;
@@ -35,6 +35,10 @@
 @property (nonatomic) NSInteger address;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
+
+@property (nonatomic, strong) NSString *address_district_id;
+@property (nonatomic, strong) NSString *address_province_id;
+@property (nonatomic, strong) NSString *address_city_id;
 
 @property (nonatomic, strong) AddressViewModel *viewModel;
 

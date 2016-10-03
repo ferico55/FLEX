@@ -7,7 +7,6 @@
 //
 
 #import "SliderData.h"
-#import <RestKit/ObjectMapping/RKObjectMapping.h>
 
 @implementation SliderData
 

@@ -242,6 +242,7 @@ typedef enum
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
+                            userPassword:@""
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      [self successEditAddress:address longitude:longitude latitude:latitude result:data];
@@ -274,6 +275,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
+    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }
@@ -685,7 +687,7 @@ typedef enum
                 return 243-50+_addressLabel.frame.size.height;
             }
             if ([cell isEqual:_pinLocationCell]) {
-                if ([_selectedShipment.shipper_id integerValue] == 10) {
+                if (_selectedShipmentPackage.is_show_map == 1) {
                     return 70;
                 }
                 return 0;
@@ -1018,6 +1020,26 @@ typedef enum
 - (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
     NSString *amount = _productQuantityTextField.text;
     amount = [amount stringByAppendingString:text];
+    
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
+    return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
+}
+
+- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard {
+    NSString *amount = _productQuantityTextField.text;
+    
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
     
     return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
 }
