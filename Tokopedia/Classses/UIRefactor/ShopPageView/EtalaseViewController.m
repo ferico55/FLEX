@@ -89,7 +89,7 @@
         self.tableView.tableHeaderView = _tambahEtalaseView;
     }
     
-    [TPAnalytics trackScreenName:@"Etalase Page"];
+    [AnalyticsManager trackScreenName:@"Etalase Page"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -385,9 +385,11 @@
     if(!_isLoading){
         _isLoading = YES;
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        NSDictionary *loginData = [auth getUserLoginData];
         NSString *userId = [auth getUserId]?:@"";
-        [TPAnalytics trackEtalaseAction:@"Click" label:@"Add"];
+        [AnalyticsManager trackEventName:@"clickEtalase"
+                                category:GA_EVENT_CATEGORY_ETALASE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Add"];
         [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
                                                  userId:userId
                                               onSuccess:^(ShopSettings *shopSettings) {

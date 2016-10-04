@@ -100,9 +100,9 @@ import UIKit
         super.viewWillAppear(animated)
         
         if type == .Edit {
-            TPAnalytics.trackScreenName("Resolution Center Seller Edit Page")
+            AnalyticsManager.trackScreenName("Resolution Center Seller Edit Page")
         } else {
-            TPAnalytics.trackScreenName("Resolution Center Appeal Page")
+            AnalyticsManager.trackScreenName("Resolution Center Appeal Page")
         }
     }
     

@@ -14,6 +14,12 @@
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
+typedef NS_ENUM(NSInteger, EventCategoryType) {
+    EventCategoryTypeHomepage,
+    EventCategoryTypeRegister,
+    
+};
+
 @interface AnalyticsManager()
 
 @property (strong, nonatomic) TAGDataLayer *dataLayer;
@@ -45,6 +51,14 @@
               attributes:attributes];
 }
 
++ (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute {
+    [Localytics setValue:value forProfileAttribute:attribute];
+}
+
++ (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope {
+    [Localytics setValue:value forProfileAttribute:attribute withScope:scope];
+}
+
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart {
     NSInteger itemsInCart = 0;
     for (TransactionCartList *c in cart.list) {
@@ -59,6 +73,10 @@
                                  };
     
     [self localyticsEvent:@"Cart Viewed" attributes:attributes];
+}
+
++ (void)localyticsTrackProductView:(Product *)product {
+    
 }
 
 + (void)localyticsTrackATC:(ProductDetail *)product {
@@ -81,7 +99,7 @@
     NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
     
     [self localyticsEvent:@"Product Added to Cart" attributes:attributes];
-    [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
+    [self localyticeValue:currentDate profileAttribute:profileAttribute scope:LLProfileScopeApplication];
 }
 
 + (NSString *)providerWithMethod:(NSString *)method {
@@ -111,8 +129,26 @@
 }
 
 + (void)localyticsTrackLogin:(BOOL)success {
-    [Localytics setValue:success?@"Yes":@"No" forProfileAttribute:@"Is Login"];
+    [self localyticsValue:success?@"Yes":@"No" profileAttribute:@"Is Login"];
     [self localyticsEvent:@"Login" attributes:@{@"success" : success?@"Yes":@"No"}];
+}
+
++ (void)localyticsTrackWithdraw:(BOOL)success {
+    [self localyticsEvent:@"Deposit Withdraw" attributes:@{@"Success" : success?@"Yes":@"No"}];
+}
+
++ (void)localyticsTrackShipmentConfirmation:(BOOL)success {
+    [self localyticsEvent:@"Shipment Confirmation" attributes:@{@"Success" : success?@"Yes":@"No"}];
+}
+
++ (void)localyticsTrackReceiveConfirmation:(BOOL)success {
+    [self localyticsEvent:@"Receive Confirmation" attributes:@{@"Success" : success?@"Yes":@"No"}];
+}
+
++ (void)localyticsTrackGiveReview:(BOOL)success accuracy:(NSInteger)accuracy quality:(NSInteger)quality {
+    [self localyticsEvent:@"Give Review" attributes:@{@"Success" : success?@"Yes":@"No",
+                                                      @"Accuracy" : [@(accuracy) stringValue]?:@"",
+                                                      @"Quality" : [@(quality) stringValue]?:@""}];
 }
 
 // GA Tracking
@@ -162,8 +198,8 @@
     if ([manager.userManager isLogin]) {
         [manager.dataLayer push:@{@"user_id" : [manager.userManager getUserId]?:@""}];
         
-        [Localytics setValue:[manager.userManager getUserId]?:@"" forProfileAttribute:@"user_id"];
-        [Localytics setValue:[manager.userManager getUserId]?:@"" forProfileAttribute:@"shop_id"];
+        [self localyticsValue:[manager.userManager getUserId]?:@"" profileAttribute:@"user_id"];
+        [self localyticsValue:[manager.userManager getShopId]?:@"" profileAttribute:@"shop_id"];
     }
 }
 
@@ -223,10 +259,14 @@
     [manager.dataLayer push:data];
 }
 
-+ (void)trackProductView:(id)product {
++ (void)trackProductView:(Product *)product {
     if (!product) return;
+    if (product.data.breadcrumb.count == 0) return;
+    
+    // GA Tracking
     AnalyticsManager *manager = [[self alloc] init];
-    NSDictionary *productFieldObjects = [product productFieldObjects];
+    NSDictionary *productFieldObjects = [product.data.info productFieldObjects];
+    
     NSDictionary *data = @{
                            @"ecommerce" : @{
                                    @"detail" : @{
@@ -239,6 +279,29 @@
                            };
     
     [manager.dataLayer push:data];
+    
+    // Localytics Tracking
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.data.info.price?:product.data.info.product_price];
+    Breadcrumb *category = product.data.breadcrumb[product.data.breadcrumb.count - 1];
+    
+    NSDictionary *attributes = @{
+                                 @"Product ID" : product.data.info.product_id?:@"",
+                                 @"Category" : category.department_name?:@"",
+                                 @"Price" : price?:@(0),
+                                 @"Price Alert" : product.data.info.product_price_alert?:@"",
+                                 @"Wishlist" : product.data.info.product_already_wishlist?:@""
+                                 };
+    
+    [self localyticsEvent:@"Product Viewed" attributes:attributes];
+    
+    // AppsFlyer Tracking
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView
+                                      withValues:@{
+                                                   AFEventParamPrice : price?:@"",
+                                                   AFEventParamContentId : product.data.info.product_id?:@"",
+                                                   AFEventParamCurrency : @"IDR",
+                                                   AFEventParamContentType : @"Product"
+                                                   }];
 }
 
 + (void)trackProductAddToCart:(id)product {

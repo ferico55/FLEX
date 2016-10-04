@@ -13,15 +13,18 @@
 #import "ProductDetail.h"
 #import "LoginResult.h"
 #import "TransactionCartResult.h"
+#import <Localytics/LocalyticsTypes.h>
 
 @interface AnalyticsManager : NSObject
 
 // Localytics
 + (void)localyticsEvent:(NSString *)event;
 + (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes;
++ (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute;
++ (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
+
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart;
 + (void)localyticsTrackATC:(ProductDetail *)product;
-+ (void)localyticsTrackProductView:(Product *)product;
 + (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success;
 + (void)localyticsTrackLogin:(BOOL)success;
 
@@ -36,7 +39,7 @@
 + (void)trackUserInformation;
 + (void)trackProductImpressions:(NSArray *)products;
 + (void)trackProductClick:(id)product;
-+ (void)trackProductView:(id)product;
++ (void)trackProductView:(Product *)product;
 + (void)trackProductAddToCart:(id)product;
 + (void)trackRemoveProductFromCart:(id)product;
 + (void)trackRemoveProductsFromCart:(NSArray *)shops;

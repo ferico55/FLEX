@@ -78,7 +78,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestTicker()
         self.requestMiniSlider()
 
-        TPAnalytics.trackScreenName("Top Category")
+        AnalyticsManager.trackScreenName("Top Category")
     }
     
     override func viewDidDisappear(animated: Bool) {
