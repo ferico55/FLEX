@@ -135,8 +135,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Hot List Page";
-    [TPAnalytics trackScreenName:@"Hot List Page"];
+    [AnalyticsManager trackScreenName:@"Hot List Page"];
 
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
@@ -281,7 +280,10 @@
                             };
         controller.hidesBottomBarWhenPushed = YES;
         
-        [TPAnalytics trackClickEvent:@"clickHotlist" category:@"Hotlist" label:hotlist.title];
+        [AnalyticsManager trackEventName:@"clickHotlist"
+                                category:GA_EVENT_CATEGORY_HOTLIST
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:hotlist.title];
         
         [self.navigationController pushViewController:controller animated:YES];
         

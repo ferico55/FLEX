@@ -12,6 +12,7 @@
 #import "PromoResult.h"
 #import "ProductDetail.h"
 #import "LoginResult.h"
+#import "Login.h"
 #import "TransactionCartResult.h"
 #import <Localytics/LocalyticsTypes.h>
 
@@ -22,6 +23,8 @@
 + (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes;
 + (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute;
 + (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
++ (void)localyticsSetCustomerID:(NSString *)userID;
++ (void)localyticsSetCustomerFullName:(NSString *)fullName;
 
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart;
 + (void)localyticsTrackATC:(ProductDetail *)product;
@@ -58,5 +61,6 @@
 + (void)trackOpenPushNotificationSetting;
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
++ (void)trackLogin:(Login *)login;
 
 @end

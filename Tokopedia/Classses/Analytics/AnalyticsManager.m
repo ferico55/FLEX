@@ -59,6 +59,14 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [Localytics setValue:value forProfileAttribute:attribute withScope:scope];
 }
 
++ (void)localyticsSetCustomerID:(NSString *)userID {
+    [Localytics setCustomerId:userID?:@""];
+}
+
++ (void)localyticsSetCustomerFullName:(NSString *)fullName {
+    [Localytics setCustomerFullName:fullName?:@""];
+}
+
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart {
     NSInteger itemsInCart = 0;
     for (TransactionCartList *c in cart.list) {
@@ -73,10 +81,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                  };
     
     [self localyticsEvent:@"Cart Viewed" attributes:attributes];
-}
-
-+ (void)localyticsTrackProductView:(Product *)product {
-    
 }
 
 + (void)localyticsTrackATC:(ProductDetail *)product {
@@ -591,6 +595,21 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                            };
     
     [manager.dataLayer push:data];
+}
+
++ (void)trackLogin:(Login *)login {
+    // GA Tracking
+    [self trackAuthenticatedWithLoginResult:login.result];
+    
+    // Localytics Tracking
+    [self localyticsTrackLogin:YES];
+    [self localyticsSetCustomerID:login.result.user_id];
+    [self localyticsSetCustomerFullName:login.result.full_name];
+    [self localyticsValue:login.result.user_id?:@"" profileAttribute:@"user_id"];
+    [self localyticsValue:login.result.email?:@"" profileAttribute:@"user_email"];
+    
+    // AppsFlyer Tracking
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
 
 @end

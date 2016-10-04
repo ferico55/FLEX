@@ -28,7 +28,7 @@
     self.categories = [self getCategories];
     self.tableView.allowsMultipleSelection = NO;
     
-    [TPAnalytics trackScreenName:@"Snap Search Category"];
+    [AnalyticsManager trackScreenName:@"Snap Search Category"];
 }
 
 
@@ -91,7 +91,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSDictionary *category = self.categories[indexPath.row];
-    [TPAnalytics trackSnapSearchCategory:category[@"title"]];
+    [AnalyticsManager trackSnapSearchCategory:category[@"title"]];
     
     SearchResultViewController *controller = [SearchResultViewController new];
     controller.isFromAutoComplete = NO;
