@@ -70,7 +70,7 @@
     [super viewWillAppear:animated];
     [self saveLastAppearInfoToCache];
     
-    [TPAnalytics trackScreenName:@"Phone Verification Page"];
+    [AnalyticsManager trackScreenName:@"Phone Verification Page"];
 }
 
 -(void)saveLastAppearInfoToCache{

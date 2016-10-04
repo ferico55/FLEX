@@ -81,7 +81,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Address Setting Page"];
+    [AnalyticsManager trackScreenName:@"Shop Address Setting Page"];
 }
 
 - (void)didReceiveMemoryWarning {

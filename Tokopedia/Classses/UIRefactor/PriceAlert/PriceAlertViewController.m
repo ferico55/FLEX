@@ -107,7 +107,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Insert Price Alert Page"];
+    [AnalyticsManager trackScreenName:@"Insert Price Alert Page"];
 }
 
 /*

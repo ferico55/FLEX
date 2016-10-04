@@ -68,10 +68,6 @@
     NSString *currentFilter;
     UIRefreshControl *refreshControl;
     
-    //GTM
-    TAGContainer *_gtmContainer;
-    NSString *baseUrl, *baseActionUrl;
-    NSString *postUrl, *postActionUrl;
     NSString *_keyword;
     
     RequestLDExtension *_requestLD;
@@ -103,7 +99,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureGTM];
     _navigate = [NavigateViewController new];
     currentFilter = @"all";
     _keyword = @"";
@@ -152,7 +147,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Inbox Review Page"];
+    [AnalyticsManager trackScreenName:@"Inbox Review Page"];
     
     [tableContent reloadData];
     
@@ -349,7 +344,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     _keyword = searchBar.text;
     page = 0;
-    [TPAnalytics trackSearchInboxReview];
+    [AnalyticsManager trackSearchInboxReview];
     [_searchBar resignFirstResponder];
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -562,7 +557,10 @@
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
         
-        [TPAnalytics trackInboxReviewAction:@"View" label:self.strNav];
+        [AnalyticsManager trackEventName:@"clickReview"
+                                category:GA_EVENT_CATEGORY_INBOX_REVIEW
+                                  action:GA_EVENT_ACTION_VIEW
+                                   label:self.strNav];
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:vc];
@@ -728,22 +726,6 @@
 - (void)closeWindow {
     alertRateView = nil;
 }
-
-#pragma mark - GTM
-- (void)configureGTM {
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    
-    baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
-    postUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationPost];
-    
-    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
-    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
-}
-
 
 #pragma mark - CMPopTipView Delegate
 - (void)dismissAllPopTipViews

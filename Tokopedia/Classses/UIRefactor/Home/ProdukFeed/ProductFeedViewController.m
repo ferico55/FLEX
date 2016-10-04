@@ -179,10 +179,7 @@ FavoriteShopRequestDelegate
     [super viewWillAppear:animated];
     
     // UA
-    [TPAnalytics trackScreenName:@"Home - Product Feed"];
-    
-    // GA
-    self.screenName = @"Home - Product Feed";
+    [AnalyticsManager trackScreenName:@"Home - Product Feed"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomeTab:)
@@ -199,8 +196,11 @@ FavoriteShopRequestDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
-    [TPAnalytics trackProductClick:product];
-    [TPAnalytics trackClickProductOnProductFeedWithProductName:product.product_name];
+    [AnalyticsManager trackProductClick:product];
+    [AnalyticsManager trackEventName:@"clickFeed"
+                            category:GA_EVENT_CATEGORY_FEED
+                              action:GA_EVENT_ACTION_CLICK
+                               label:product.product_name];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -457,7 +457,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
             [_productDataSource addProducts: feed.data.products];
         }
         
-        [TPAnalytics trackProductImpressions:feed.data.products];
+        [AnalyticsManager trackProductImpressions:feed.data.products];
         
         _nextPageUri =  feed.data.paging.uri_next;
         _page++;
