@@ -77,4 +77,6 @@
     #import "FBTweakInline.h"
     #import "NSString+TPBaseUrl.h"
     #import "UIFont+Theme.h"
+    #import "AnalyticsManager.h"
+    #import "AnalyticsString.h"
 #endif

@@ -6474,6 +6474,7 @@
 		459EAD9B1D98DB760071EBF6 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		620D1E121D9D203A00DBA1AA /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		620D1E131D9D203A00DBA1AA /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
+		623B280F1DA34FCC004BE4DC /* AnalyticsString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyticsString.h; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -6644,6 +6645,7 @@
 				459E9DA31D98DB700071EBF6 /* TPLocalytics.m */,
 				620D1E121D9D203A00DBA1AA /* AnalyticsManager.h */,
 				620D1E131D9D203A00DBA1AA /* AnalyticsManager.m */,
+				623B280F1DA34FCC004BE4DC /* AnalyticsString.h */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
