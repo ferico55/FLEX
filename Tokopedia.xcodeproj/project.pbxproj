@@ -21,6 +21,10 @@
 		347917F01D87A15500A3324E /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790E011D87A15400A3324E /* Tokopedia-Info.plist */; };
 		347917F11D87A15500A3324E /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 34790E031D87A15400A3324E /* Tokopedia.entitlements */; };
 		347917F21D87A15500A3324E /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34790E041D87A15400A3324E /* Tokopedia.xcworkspace */; };
+		34900DD01DA26311004B7973 /* HomePageCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34900DCF1DA26311004B7973 /* HomePageCategoryData.swift */; };
+		34900DD21DA26364004B7973 /* HomePageCategoryLayoutSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34900DD11DA26364004B7973 /* HomePageCategoryLayoutSection.swift */; };
+		34900DD41DA26484004B7973 /* HomePageCategoryLayoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34900DD31DA26484004B7973 /* HomePageCategoryLayoutRow.swift */; };
+		34FBF0041DA398FC0000966B /* HomePageCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FBF0031DA398FC0000966B /* HomePageCategoryResponse.swift */; };
 		45B828501D87EEB300458EB9 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818851D87EEAC00458EB9 /* TPAnalytics.m */; };
 		45B828511D87EEB300458EB9 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B818871D87EEAC00458EB9 /* TPLocalytics.m */; };
 		45B828521D87EEB300458EB9 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8188A1D87EEAC00458EB9 /* URLCacheAlert.m */; };
@@ -2699,6 +2703,10 @@
 		34790E041D87A15400A3324E /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		3479FE751D87A14800A3324E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3479FE761D87A14800A3324E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		34900DCF1DA26311004B7973 /* HomePageCategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryData.swift; sourceTree = "<group>"; };
+		34900DD11DA26364004B7973 /* HomePageCategoryLayoutSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutSection.swift; sourceTree = "<group>"; };
+		34900DD31DA26484004B7973 /* HomePageCategoryLayoutRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutRow.swift; sourceTree = "<group>"; };
+		34FBF0031DA398FC0000966B /* HomePageCategoryResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryResponse.swift; sourceTree = "<group>"; };
 		45B818841D87EEAC00458EB9 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45B818851D87EEAC00458EB9 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45B818861D87EEAC00458EB9 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6598,6 +6606,17 @@
 			path = Tokopedia;
 			sourceTree = "<group>";
 		};
+		34900DCE1DA262D0004B7973 /* HomePageCategoryObject */ = {
+			isa = PBXGroup;
+			children = (
+				34900DCF1DA26311004B7973 /* HomePageCategoryData.swift */,
+				34FBF0031DA398FC0000966B /* HomePageCategoryResponse.swift */,
+				34900DD11DA26364004B7973 /* HomePageCategoryLayoutSection.swift */,
+				34900DD31DA26484004B7973 /* HomePageCategoryLayoutRow.swift */,
+			);
+			name = HomePageCategoryObject;
+			sourceTree = "<group>";
+		};
 		45B818821D87EEAC00458EB9 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -9835,6 +9854,7 @@
 		45B81FF21D87EEAF00458EB9 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				34900DCE1DA262D0004B7973 /* HomePageCategoryObject */,
 				45B81FF31D87EEAF00458EB9 /* AnnouncementTickerRequest.swift */,
 				45B81FF41D87EEAF00458EB9 /* AnnouncementTickerView.h */,
 				45B81FF51D87EEAF00458EB9 /* AnnouncementTickerView.m */,
@@ -14967,6 +14987,7 @@
 				45B82B781D87EEB300458EB9 /* AlertListView.m in Sources */,
 				45B82E031D87EEB300458EB9 /* SettingPasswordViewController.m in Sources */,
 				45B82ACB1D87EEB300458EB9 /* DisposeBase.swift in Sources */,
+				34900DD21DA26364004B7973 /* HomePageCategoryLayoutSection.swift in Sources */,
 				45B82A3C1D87EEB300458EB9 /* RateAttributes.m in Sources */,
 				45B82DE01D87EEB300458EB9 /* SearchResultCell.m in Sources */,
 				45B82B6E1D87EEB300458EB9 /* AlertInfoPaymentConfirmationView.m in Sources */,
@@ -15073,6 +15094,7 @@
 				45B82EAD1D87EEB300458EB9 /* TransactionObjectMapping.m in Sources */,
 				45B828C91D87EEB300458EB9 /* DepositSummaryList.m in Sources */,
 				45B832601D87EEB400458EB9 /* MarqueeLabel.m in Sources */,
+				34900DD01DA26311004B7973 /* HomePageCategoryData.swift in Sources */,
 				45B82A241D87EEB300458EB9 /* ShopSettings.m in Sources */,
 				45B82D4A1D87EEB300458EB9 /* PulsaCategoryAttribute.swift in Sources */,
 				45B82A8C1D87EEB300458EB9 /* OrderButton.m in Sources */,
@@ -15262,6 +15284,7 @@
 				45B82EBD1D87EEB300458EB9 /* TxOrderConfirmationDetailViewController.m in Sources */,
 				45B82EC31D87EEB300458EB9 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				45B829801D87EEB300458EB9 /* NotifyData.m in Sources */,
+				34FBF0041DA398FC0000966B /* HomePageCategoryResponse.swift in Sources */,
 				45B82B2E1D87EEB300458EB9 /* ConcurrentMainScheduler.swift in Sources */,
 				45B82AF51D87EEB300458EB9 /* Multicast.swift in Sources */,
 				45B82EA91D87EEB300458EB9 /* TransactionCartRootViewController.m in Sources */,
@@ -15724,6 +15747,7 @@
 				45B82BFE1D87EEB300458EB9 /* DeeplinkController.m in Sources */,
 				45B82EAC1D87EEB300458EB9 /* TransactionObjectManager.m in Sources */,
 				45B8298C1D87EEB300458EB9 /* ProductFeedList.m in Sources */,
+				34900DD41DA26484004B7973 /* HomePageCategoryLayoutRow.swift in Sources */,
 				45B82AEA1D87EEB300458EB9 /* DelaySubscription.swift in Sources */,
 				45B8286A1D87EEB300458EB9 /* UIViewCategory.swift in Sources */,
 				9216705A1D898C63000FD5B1 /* _FBTweakCollectionViewController.m in Sources */,

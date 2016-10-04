@@ -13,7 +13,7 @@ import OAStackView
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, LoginViewDelegate {
+class HomePageViewController: UIViewController, LoginViewDelegate, UIScrollViewDelegate {
     
     var digitalGoodsDataSource: DigitalGoodsDataSource!
     var carouselDataSource: CarouselDataSource!
@@ -27,11 +27,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     var navigator = PulsaNavigator!()
     
     var sliderPlaceholder: UIView!
-    var pulsaPlaceholder: UIView!
+    var pulsaPlaceholder: OAStackView!
     var tickerPlaceholder: UIView!
     var miniSliderPlaceholder: UIView!
+    var categoryPlaceholder: OAStackView!
     var keyboardManager: PulsaKeyboardManager!
     var isNeedRefreshPulsaView: Bool = true
+    var customScrollViewIndicators: [UIView]!
     
     @IBOutlet var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
@@ -40,6 +42,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     private let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
+    private let categoryColumnWidth: CGFloat = 70.0;
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -72,6 +75,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.initKeyboardManager()
         self.initOuterStackView()
         self.initViewLayout()
+        self.requestCategory()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -139,7 +143,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
         self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.miniSliderPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder = UIView()
+        self.pulsaPlaceholder = OAStackView()
+        self.setStackViewAttribute(self.pulsaPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        self.categoryPlaceholder = OAStackView()
+        self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
         
         // init slider
         self.sliderPlaceholder.mas_makeConstraints { make in
@@ -148,136 +155,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.outerStackView.addArrangedSubview(self.sliderPlaceholder)
         
         // init pulsa widget
-        self.pulsaPlaceholder.mas_makeConstraints { (make) in
-            make.height.mas_equalTo()(100)
-        }
         self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
         
         // init category
-        self.initCategoryLayout()
-        
-    }
-    
-    func initCategoryLayout(){
-        initCatRow1()
-        initCatRow2()
-        
-    }
-    
-    func initCatRow1() {
-        var categoryC1NameLabel: UILabel = UILabel()
-        categoryC1NameLabel.text = "Category Name"
-        categoryC1NameLabel.mas_makeConstraints { (make) in
-            make.height.mas_equalTo()(25)
-        }
-        categoryC1NameLabel.backgroundColor = UIColor.orangeColor()
-        var horizontalScrollView: UIScrollView = UIScrollView()
-        
-        var categoryC2NameLabelA = UILabel()
-        categoryC2NameLabelA.text = "Category C2 A"
-        categoryC2NameLabelA.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelA.backgroundColor = UIColor.greenColor()
-        var categoryC2NameLabelB = UILabel()
-        categoryC2NameLabelB.text = "Category C2 B"
-        categoryC2NameLabelB.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelB.backgroundColor = UIColor.brownColor()
-        var categoryC2NameLabelC = UILabel()
-        categoryC2NameLabelC.text = "Category C2 C"
-        categoryC2NameLabelC.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelC.backgroundColor =  UIColor.darkGrayColor()
-        
-        
-        
-        var horizontalStackView: OAStackView = OAStackView(arrangedSubviews: [categoryC2NameLabelA, categoryC2NameLabelB, categoryC2NameLabelC])
-        horizontalStackView.distribution =  .Fill
-        horizontalStackView.alignment = .Fill
-        horizontalStackView.spacing = 0.0
-        horizontalStackView.axis = .Horizontal
-        
-        horizontalScrollView.addSubview(horizontalStackView)
-        horizontalScrollView.mas_makeConstraints { (make) in
-            make.height.mas_equalTo()(75)
+        self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
+        self.categoryPlaceholder.mas_makeConstraints { (make) in
+            make.left.mas_equalTo()(self.outerStackView.mas_left).with().offset()(20)
         }
         
-        horizontalStackView.mas_makeConstraints { (make) in
-            make.top.equalTo()(horizontalScrollView.mas_top)
-            make.bottom.equalTo()(horizontalScrollView.mas_bottom)
-            make.left.equalTo()(horizontalScrollView.mas_left)
-            make.right.equalTo()(horizontalScrollView.mas_right)
-            make.height.equalTo()(horizontalScrollView.mas_height)
-        }
-        
-        var verticalStackView  = OAStackView(arrangedSubviews: [categoryC1NameLabel, horizontalScrollView])
-        verticalStackView.alignment = .Fill
-        verticalStackView.distribution = .Fill
-        verticalStackView.axis = .Vertical
-        verticalStackView.spacing = 0.0
-        
-        outerStackView.addArrangedSubview(verticalStackView)
-    }
-    
-    func initCatRow2() {
-        var categoryC1NameLabel: UILabel = UILabel()
-        categoryC1NameLabel.text = "Category Name"
-        categoryC1NameLabel.mas_makeConstraints { (make) in
-            make.height.mas_equalTo()(25)
-        }
-        categoryC1NameLabel.backgroundColor = UIColor.orangeColor()
-        var horizontalScrollView: UIScrollView = UIScrollView()
-        
-        var categoryC2NameLabelA = UILabel()
-        categoryC2NameLabelA.text = "Category C2 E"
-        categoryC2NameLabelA.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelA.backgroundColor = UIColor.blueColor()
-        var categoryC2NameLabelB = UILabel()
-        categoryC2NameLabelB.text = "Category C2 F"
-        categoryC2NameLabelB.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelB.backgroundColor = UIColor.purpleColor()
-        var categoryC2NameLabelC = UILabel()
-        categoryC2NameLabelC.text = "Category C2 G"
-        categoryC2NameLabelC.mas_makeConstraints { (make) in
-            make.width.mas_equalTo()(200)
-        }
-        categoryC2NameLabelC.backgroundColor =  UIColor.magentaColor()
-        
-        
-        
-        var horizontalStackView: OAStackView = OAStackView(arrangedSubviews: [categoryC2NameLabelA, categoryC2NameLabelB, categoryC2NameLabelC])
-        horizontalStackView.distribution =  .Fill
-        horizontalStackView.alignment = .Fill
-        horizontalStackView.spacing = 0.0
-        horizontalStackView.axis = .Horizontal
-        
-        horizontalScrollView.addSubview(horizontalStackView)
-        horizontalScrollView.mas_makeConstraints { (make) in
-            make.height.mas_equalTo()(75)
-        }
-        
-        horizontalStackView.mas_makeConstraints { (make) in
-            make.top.equalTo()(horizontalScrollView.mas_top)
-            make.bottom.equalTo()(horizontalScrollView.mas_bottom)
-            make.left.equalTo()(horizontalScrollView.mas_left)
-            make.right.equalTo()(horizontalScrollView.mas_right)
-            make.height.equalTo()(horizontalScrollView.mas_height)
-        }
-        
-        var verticalStackView  = OAStackView(arrangedSubviews: [categoryC1NameLabel, horizontalScrollView])
-        verticalStackView.alignment = .Fill
-        verticalStackView.distribution = .Fill
-        verticalStackView.axis = .Vertical
-        verticalStackView.spacing = 0.0
-        
-        outerStackView.addArrangedSubview(verticalStackView)
     }
     
     // MARK: Keyboard Manager
@@ -287,8 +172,109 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.keyboardManager.homePageScrollView = self.homePageScrollView
     }
     
-    // MARK: Method
+    // MARK: Request Method
     
+    func requestCategory() {
+        let networkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { (mappingResult, operation) in
+            dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                if let weakSelf = self {
+                    let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+                    let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
+                    let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
+                    weakSelf.customScrollViewIndicators = [UIView]();
+                    let verticalStackView = OAStackView()
+                    for (index, layout_section) in homePageCategoryData.layout_sections.enumerate() {
+                        let categoryTitlelabel: UILabel = UILabel()
+                        categoryTitlelabel.text = layout_section.title
+                        categoryTitlelabel.font = UIFont.largeTheme()
+                        categoryTitlelabel.textColor = UIColor(red: 75.0/255, green: 75.0/255, blue: 75.0/255, alpha: 1.0)
+                        categoryTitlelabel.mas_makeConstraints({ (make) in
+                            make.height.equalTo()(38)
+                        })
+                        
+                        
+                        weakSelf.setStackViewAttribute(verticalStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+                        verticalStackView.addArrangedSubview(categoryTitlelabel)
+                        
+                        let horizontalScrollView = UIScrollView()
+                        horizontalScrollView.tag = index
+                        horizontalScrollView.delegate = self
+                        horizontalScrollView.mas_makeConstraints({ (make) in
+                            make.height.equalTo()(75)
+                        })
+                        horizontalScrollView.showsHorizontalScrollIndicator = false
+                        
+                        let horizontalStackView = OAStackView()
+                        weakSelf.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+                        horizontalScrollView.addSubview(horizontalStackView)
+                        horizontalStackView.mas_makeConstraints({ (make) in
+                            make.top.mas_equalTo()(horizontalScrollView.mas_top)
+                            make.bottom.mas_equalTo()(horizontalScrollView.mas_bottom)
+                            make.left.mas_equalTo()(horizontalScrollView.mas_left)
+                            make.right.mas_equalTo()(horizontalScrollView.mas_right)
+                            make.height.mas_equalTo()(horizontalScrollView.mas_height)
+                        })
+                        
+                        for layout_row in layout_section.layout_rows {
+//                            let catLabel = UILabel()
+//                            catLabel.text = layout_row.name
+//                            catLabel.textAlignment = .Center
+//                            catLabel.mas_makeConstraints({ (make) in
+//                                make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
+//                            })
+                            let iconStackView = OAStackView()
+                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+                            let iconImageView = UIImageView(image: UIImage(named: "default_profile_picture"))
+                            iconStackView.addArrangedSubview(iconImageView)
+                            iconImageView.mas_makeConstraints({ (make) in
+                                make.height.mas_equalTo()(20)
+                            })
+                            let categoryNameLabel = UILabel()
+                            categoryNameLabel.text = layout_row.name
+                            categoryNameLabel.font = UIFont.microTheme()
+                            categoryNameLabel.textColor = UIColor(red: 153.0/255, green: 153.0/255, blue: 153.0/255, alpha: 1.0)
+                            categoryNameLabel.textAlignment = .Center
+                            categoryNameLabel.numberOfLines = 0
+                            iconStackView.addArrangedSubview(categoryNameLabel)
+                            iconStackView.mas_makeConstraints({ (make) in
+                                make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
+                            })
+                            horizontalStackView.addArrangedSubview(iconStackView)
+                        }
+                        
+                        if (CGFloat(layout_section.layout_rows.count) * weakSelf.categoryColumnWidth > weakSelf.screenWidth) {
+                            let customScrollView = UIView()
+                            let customScrollViewIndicator = UIView()
+                            weakSelf.customScrollViewIndicators.append(customScrollViewIndicator)
+                            customScrollViewIndicator.backgroundColor = UIColor(red: 255.0/255, green: 87.0/255, blue: 34.0/255, alpha: 1.0)
+                            customScrollView.addSubview(customScrollViewIndicator)
+                            customScrollView.mas_makeConstraints({ (make) in
+                                make.height.mas_equalTo()(2)
+                            })
+                            verticalStackView.addArrangedSubview(customScrollView)
+                            let widthScrollBar = (weakSelf.screenWidth - 20) * ((weakSelf.screenWidth - 20) / (weakSelf.categoryColumnWidth * CGFloat(layout_section.layout_rows.count)))
+                            customScrollViewIndicator.frame = CGRect(x: 0, y: 0, width: widthScrollBar, height: 2)
+                        }
+                        verticalStackView.addArrangedSubview(horizontalScrollView)
+                        
+                        var separatorView = UIView()
+                        separatorView.mas_makeConstraints({ (make) in
+                            make.height.mas_equalTo()(1)
+                        })
+                        separatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
+                        verticalStackView.addArrangedSubview(separatorView)
+                    }
+                    weakSelf.categoryPlaceholder.addArrangedSubview(verticalStackView)
+                }
+                })
+            
+            }) { (error) in
+                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                stickyAlertView.show()
+        }
+    }
     
     func requestBanner() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
@@ -473,9 +459,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
             
             self.pulsaView = PulsaView(categories: sortedCategories)
+            self.pulsaView.mas_makeConstraints({ (make) in
+                make.height.mas_equalTo()(100)
+            })
             
             self.pulsaPlaceholder.removeAllSubviews()
-            self.pulsaView.attachToView(self.pulsaPlaceholder)
+            self.pulsaPlaceholder.addArrangedSubview(self.pulsaView)
             
             self.navigator = PulsaNavigator()
             self.navigator.pulsaView = self.pulsaView
@@ -500,7 +489,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 
                 self.didReceiveOperator(sortedOperators)
             }
-            
         }
     }
     
@@ -548,9 +536,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     func refreshPulsaWidgetHeight() {
-        self.pulsaPlaceholder.mas_updateConstraints { (make) in
-            make.height.mas_equalTo()(250)
+        self.pulsaView.mas_updateConstraints { (make) in
+            make.height.mas_equalTo()(220)
         }
         super.updateViewConstraints()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.customScrollViewIndicators[scrollView.tag].frame.origin.x = scrollView.contentOffset.x * ((screenWidth - 20) / scrollView.contentSize.width)
     }
 }
