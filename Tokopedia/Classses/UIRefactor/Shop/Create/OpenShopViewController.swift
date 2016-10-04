@@ -68,7 +68,7 @@ import UIKit
         
         let requestHost: RequestGenerateHost = RequestGenerateHost()
         requestHost.delegate = self
-        requestHost.configureRestkitGenerateHost()
+//        requestHost.configureRestkitGenerateHost()
         requestHost.requestGenerateHost()
         
         checkDomainButton.layer.cornerRadius = 2
