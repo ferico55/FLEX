@@ -42,4 +42,6 @@
 
 @property (nonatomic, strong) AddressViewModel *viewModel;
 
+@property (nonatomic) BOOL isDefaultAddress;
+
 @end
