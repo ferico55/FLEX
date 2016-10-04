@@ -72,6 +72,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightConstraint;
 @property (nonatomic) float diffOldAndExpandedHeightDescription;
 @property (nonatomic) Boolean isShopDescriptionExpanded;
+@property (strong, nonatomic) IBOutlet UIView *soldAmountView;
 
 - (IBAction)gesture:(id)sender;
 
@@ -476,6 +477,8 @@
 
 -(void)setShopInfoData
 {
+    _soldAmountView.hidden = _shop.result.isOfficial;
+    
     _labelshopname.text = _shop.result.info.shop_name;
     _labelshoptagline.text = _shop.result.info.shop_tagline;
 
