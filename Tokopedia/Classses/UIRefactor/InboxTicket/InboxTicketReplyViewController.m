@@ -162,7 +162,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     
     _requestHost = [RequestGenerateHost new];
     _requestHost.delegate = self;
-    [_requestHost configureRestkitGenerateHost];
+//    [_requestHost configureRestkitGenerateHost];
     [_requestHost requestGenerateHost];
     
     self.photosImageView = [NSArray sortViewsWithTagInArray:_photosImageView];
