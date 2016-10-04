@@ -258,7 +258,7 @@
         }
     } else if(section == 2) {
         if([_notification.result.purchase.purchase_reorder integerValue] == 0 &&
-           [_notification.result.purchase.purchase_payment_conf integerValue] == 0 &&
+           [_notification.result.purchase.purchase_payment_confirm integerValue] == 0 &&
            [_notification.result.purchase.purchase_order_status integerValue] == 0 &&
            [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0
            ) {
