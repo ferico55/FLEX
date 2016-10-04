@@ -13191,6 +13191,7 @@
 					FC36DF8219B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -16186,7 +16187,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 201609291804;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
