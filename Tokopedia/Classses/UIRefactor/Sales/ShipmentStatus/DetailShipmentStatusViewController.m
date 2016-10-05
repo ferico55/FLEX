@@ -112,7 +112,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shipment Status Detail Page"];
+    [AnalyticsManager trackScreenName:@"Shipment Status Detail Page"];
     self.title = @"Detail Status";
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "

@@ -163,7 +163,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateFormViewAppearance];
-    [TPAnalytics trackScreenName:@"Create Password Page"];
+    [AnalyticsManager trackScreenName:@"Create Password Page"];
 }
 
 - (void)updateFormViewAppearance {
@@ -269,52 +269,54 @@
                 button.selected = YES;
             }
         } else if (button.tag == 2) {
-            
-            [TPAnalytics trackClickRegisterOnPage:@"Create Password Page"];
+            [AnalyticsManager trackEventName:@"clickRegister"
+                                    category:GA_EVENT_CATEGORY_REGISTER
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Create Password Page"];
             
             NSMutableArray *errorMessages = [NSMutableArray new];
 
             NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
             if ([_fullNameTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nama Lengkap - Create Password Page"];
             } else if (![test evaluateWithObject:_fullNameTextField.text]) {
                 [errorMessages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nama Lengkap - Create Password Page"];
             }
             
             if ([_passwordTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Kata Sandi harus diisi"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi Baru"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi Baru"];
             } else if (_passwordTextField.text.length < 6) {
                 [errorMessages addObject:@"Kata Sandi terlalu pendek, minimum 6 karakter"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi Baru"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi Baru"];
             }
             
             if ([_confirmPasswordTextfield.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi harus diisi"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi - Create Password Page"];
             } else if (_confirmPasswordTextfield.text.length < 6) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi terlalu pendek, minimum 6 karakter"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi - Create Password Page"];
             }
             
             if ([_phoneNumberTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Nomor HP harus diisi"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP - Create Password Page"];
             }
             
             if (_passwordTextField.text.length >= 6 &&
                 _confirmPasswordTextfield.text.length >= 6) {
                 if (![_passwordTextField.text isEqualToString:_confirmPasswordTextfield.text]) {
                     [errorMessages addObject:@"Ulangi Kata Sandi tidak sama dengan Kata Sandi"];
-                    [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
+                    [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi - Create Password Page"];
                 }
             }
             
             if (!_agreementButton.selected) {
                 [errorMessages addObject:@"Anda harus menyetujui Syarat dan Ketentuan dari Tokopedia"];
-                [TPAnalytics trackErrorRegisterWithFieldName:@"Syarat dan Ketentuan - Create Password Page"];
+                [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Syarat dan Ketentuan - Create Password Page"];
             }
             
             if (errorMessages.count > 0) {
@@ -464,8 +466,12 @@
 
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
     
-    [TPLocalytics trackRegistrationWithProvider:_userProfile.provider success:YES];
-    [TPAnalytics trackSuccessRegisterWithChannel:channel];
+    [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:YES];
+    
+    [AnalyticsManager trackEventName:@"registerSuccess"
+                            category:GA_EVENT_CATEGORY_REGISTER
+                              action:GA_EVENT_ACTION_REGISTER_SUCCESS
+                               label:channel];
 }
 
 #pragma mark - Keyboard Notification

@@ -188,8 +188,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Inbox Message";
-    [TPAnalytics trackScreenName:@"Inbox Message"];
+    [AnalyticsManager trackScreenName:@"Inbox Message"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -367,7 +366,10 @@
 
     vc.data = [self dataForIndexPath:indexPath];
     
-    [TPAnalytics trackInboxMessageAction:@"View" label:[_data objectForKey:@"nav"]?:@""];
+    [AnalyticsManager trackEventName:@"clickMessage"
+                            category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                              action:GA_EVENT_ACTION_VIEW
+                               label:[_data objectForKey:@"nav"]?:@""];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {

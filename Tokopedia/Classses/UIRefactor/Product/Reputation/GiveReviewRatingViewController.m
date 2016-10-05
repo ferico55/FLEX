@@ -69,7 +69,7 @@
     [super viewWillAppear:animated];
     self.title = _isEdit?@"Ubah Ulasan":@"Tulis Ulasan";
     
-    [TPAnalytics trackScreenName:@"Give Review Rating Page"];
+    [AnalyticsManager trackScreenName:@"Give Review Rating Page"];
 }
 
 - (void)didReceiveMemoryWarning {

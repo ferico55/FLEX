@@ -84,7 +84,7 @@ import UIKit
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        TPAnalytics.trackScreenName("Create Shop Page")
+        AnalyticsManager.trackScreenName("Create Shop Page")
     }
     
     override func awakeFromNib() {

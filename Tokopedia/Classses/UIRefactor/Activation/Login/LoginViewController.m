@@ -173,8 +173,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Login Page";
-    [TPAnalytics trackScreenName:@"Login Page"];
+    [AnalyticsManager trackScreenName:@"Login Page"];
     
     _loginButton.layer.cornerRadius = 3;
     
@@ -216,7 +215,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
     
-    [TPAnalytics trackLoginCTAButton];
+    [AnalyticsManager trackEventName:@"clickLogin"
+                            category:GA_EVENT_CATEGORY_LOGIN
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"CTA"];
     NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
     NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
     NSMutableArray *messages = [NSMutableArray new];
@@ -226,21 +228,30 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         valid = YES;
     }
     if (!email||[email isEqualToString:@""]) {
-        [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
+        [AnalyticsManager trackEventName:@"loginError"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_LOGIN_ERROR
+                                   label:@"Email"];
         message = @"Email harus diisi.";
         [messages addObject:message];
         valid = NO;
     }
     if (email) {
         if (![email isEmail]) {
-            [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
+            [AnalyticsManager trackEventName:@"loginError"
+                                    category:GA_EVENT_CATEGORY_LOGIN
+                                      action:GA_EVENT_ACTION_LOGIN_ERROR
+                                       label:@"Email"];
             message = @"Format email salah.";
             [messages addObject:message];
             valid = NO;
         }
     }
     if (!pass || [pass isEqualToString:@""]) {
-        [TPAnalytics trackErrorLoginWithFieldName:@"Kata Sandi"];
+        [AnalyticsManager trackEventName:@"loginError"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_LOGIN_ERROR
+                                   label:@"Kata Sandi"];
         message = @"Password harus diisi";
         [messages addObject:message];
         valid = NO;
@@ -270,7 +281,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)didTapRegisterButton {
-    [TPAnalytics trackRegisterThroughLogin];
+    [AnalyticsManager trackEventName:@"registerLogin"
+                            category:GA_EVENT_CATEGORY_LOGIN
+                              action:GA_EVENT_ACTION_REGISTER
+                               label:@"Register"];
     RegisterViewController *controller = [RegisterViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -285,7 +299,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 loginWithTokenString:token
                   fromViewController:self
                      successCallback:^(Login *login) {
-                         [TPAnalytics trackSuccessLoginWithChannel:@"Yahoo"];
+                         [AnalyticsManager trackEventName:@"loginSuccess"
+                                                 category:GA_EVENT_CATEGORY_LOGIN
+                                                   action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                                    label:@"Yahoo"];
                          [self onLoginSuccess:login];
                      }
                      failureCallback:^(NSError *error) {
@@ -305,7 +322,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                   password:pass
         fromViewController:self
            successCallback:^(Login *login) {
-               [TPAnalytics trackSuccessLoginWithChannel:@"Email"];
+               [AnalyticsManager trackEventName:@"loginSuccess"
+                                       category:GA_EVENT_CATEGORY_LOGIN
+                                         action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                          label:@"Email"];
                _barbuttonsignin.enabled = YES;
                [self unsetLoggingInState];
 
@@ -363,7 +383,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[GIDSignIn sharedInstance] disconnect];
 
     [self storeCredentialToKeychain:login];
-    [self trackUserSignIn:login];
+    
+    [AnalyticsManager trackLogin:login];
 
     [self notifyUserDidLogin];
 
@@ -398,20 +419,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)notifyUserDidLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-}
-
-- (void)trackUserSignIn:(Login *)login {
-    // Login UA
-    [TPAnalytics trackLoginUserID:login.result.user_id];
-    [TPAnalytics trackAuthenticatedWithLoginResult:login.result];
-    
-    [TPLocalytics trackLoginStatus:YES];
-    [Localytics setValue:login.result.user_id forProfileAttribute:@"user_id"];
-    [Localytics setValue:login.result.email forProfileAttribute:@"user_email"];
-    [Localytics setCustomerId:login.result.user_id];
-    [Localytics setCustomerFullName:login.result.full_name];
-
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
 
 - (void)storeCredentialToKeychain:(Login *)login {
@@ -545,7 +552,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
-                                 [TPAnalytics trackSuccessLoginWithChannel:@"Facebook"];
+                                 [AnalyticsManager trackEventName:@"loginSuccess"
+                                                         category:GA_EVENT_CATEGORY_LOGIN
+                                                           action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                                            label:@"Facebook"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
@@ -613,7 +623,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
-                                 [TPAnalytics trackSuccessLoginWithChannel:@"Google"];
+                                 [AnalyticsManager trackEventName:@"loginSuccess"
+                                                         category:GA_EVENT_CATEGORY_LOGIN
+                                                           action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                                            label:@"Google"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {

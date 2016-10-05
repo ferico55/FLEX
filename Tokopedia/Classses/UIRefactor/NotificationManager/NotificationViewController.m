@@ -171,7 +171,7 @@
     [super viewWillAppear:animated];
     
     // UA
-    [TPAnalytics trackScreenName:@"Top Notification Center"];
+    [AnalyticsManager trackScreenName:@"Top Notification Center"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -310,7 +310,10 @@
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
-                [TPAnalytics trackClickNotificationWithEventName:@"clickMessage" eventLabel:@"Message"];
+                [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                        category:GA_EVENT_CATEGORY_NOTIFICATION
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Message"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxRootViewController *controller = [InboxRootViewController new];
                     [self.delegate pushViewController:controller];
@@ -339,7 +342,10 @@
                 break;
             }
             case 1 : {
-                [TPAnalytics trackClickNotificationWithEventName:@"clickProductDiscussion" eventLabel:@"Product Discussion"];
+                [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                        category:GA_EVENT_CATEGORY_NOTIFICATION
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Product Discussion"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
                     [self.delegate pushViewController:controller];
@@ -388,7 +394,10 @@
             }
                 
             case 2 : {
-                [TPAnalytics trackClickNotificationWithEventName:@"clickReview" eventLabel:@"Review"];
+                [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                        category:GA_EVENT_CATEGORY_NOTIFICATION
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Review"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     splitViewController = [UISplitViewController new];
                     
@@ -407,7 +416,10 @@
             }
             case 3:
             {
-                [TPAnalytics trackClickNotificationWithEventName:@"clickHelp" eventLabel:@"Help"];
+                [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                        category:GA_EVENT_CATEGORY_NOTIFICATION
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Help"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                     
@@ -438,7 +450,10 @@
             }
                 
             case 4 : {
-                [TPAnalytics trackClickNotificationWithEventName:@"clickResoCenter" eventLabel:@"Resolution Center"];
+                [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                        category:GA_EVENT_CATEGORY_NOTIFICATION
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Resolution Center"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
@@ -459,19 +474,28 @@
     
     if([indexPath section] == 1) {
         if([indexPath row] == 0) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickNewOrder" eventLabel:@"New Order"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"New Order"];
             SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 1) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickDeliveryConfirmation" eventLabel:@"Delivery Confirmation"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Delivery Confirmation"];
             ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 2) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickDeliveryStatus" eventLabel:@"Delivery Status"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Delivery Status"];
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
@@ -480,7 +504,10 @@
     
     if([indexPath section] == 2) {
         if([indexPath row] == 0) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickCancelledOrder" eventLabel:@"Cancelled Order"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Canceled Order"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.action = @"get_tx_order_list";
             vc.isCanceledPayment = YES;
@@ -488,19 +515,28 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickOrderStatus" eventLabel:@"Order Status"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Order Status"];
             TxOrderTabViewController *vc = [TxOrderTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickOrderStatus" eventLabel:@"Order Status"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Order Status"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_status";
             vc.viewControllerTitle = @"Status Pemesanan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 3) {
-            [TPAnalytics trackClickNotificationWithEventName:@"clickRecieveConfirm" eventLabel:@"Receive Confirmation"];
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Receive Confirmation"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_deliver";
