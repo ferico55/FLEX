@@ -147,7 +147,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.pulsaPlaceholder = OAStackView()
         self.setStackViewAttribute(self.pulsaPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
         self.categoryPlaceholder = OAStackView()
-        self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 24.0)
         
         // init slider
         self.sliderPlaceholder.mas_makeConstraints { make in
@@ -184,8 +184,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                     let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
                     let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
-                    let verticalStackView = OAStackView()
+                    
                     for layout_section in homePageCategoryData.layout_sections {
+                        let verticalStackView = OAStackView()
                         let categoryTitlelabel: UILabel = UILabel()
                         categoryTitlelabel.text = layout_section.title
                         categoryTitlelabel.font = UIFont.largeTheme()
@@ -202,7 +203,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                         horizontalScrollView.showsHorizontalScrollIndicator = false
                         
                         let horizontalStackView = OAStackView()
-                        weakSelf.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Top, distribution: .Fill, spacing: 15.0)
+                        weakSelf.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 15.0)
                         horizontalScrollView.addSubview(horizontalStackView)
                         horizontalStackView.mas_makeConstraints({ (make) in
                             make.top.mas_equalTo()(horizontalScrollView.mas_top)
@@ -229,11 +230,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                         
                         for layout_row in layout_section.layout_rows {
                             let iconStackView = OAStackView()
-                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Center, distribution: .Fill, spacing: 0.0)
                             
                             let url = NSURL(string: layout_row.image_url)
                             let imageData: NSData? = NSData(contentsOfURL: url!)
                             var iconImageView: UIImageView = UIImageView()
+                            iconImageView.contentMode = .ScaleAspectFit
                             if let imageData = imageData {
                                 iconImageView = UIImageView(image: UIImage(data: imageData))
                             }
@@ -248,16 +250,24 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                             imageViewContainer.mas_makeConstraints({ (make) in
                                 make.height.mas_equalTo()(50)
                             })
+                            let categoryNameContainer = UIView()
+                            categoryNameContainer.mas_makeConstraints({ (make) in
+                                make.height.mas_equalTo()(30)
+                            })
                             let categoryNameLabel = UILabel()
                             categoryNameLabel.text = layout_row.name
                             categoryNameLabel.font = UIFont.microTheme()
                             categoryNameLabel.textColor = UIColor(red: 153.0/255, green: 153.0/255, blue: 153.0/255, alpha: 1.0)
                             categoryNameLabel.textAlignment = .Center
                             categoryNameLabel.numberOfLines = 0
+                            categoryNameContainer.addSubview(categoryNameLabel)
                             categoryNameLabel.mas_makeConstraints({ (make) in
-                                make.height.mas_equalTo()(30)
+                                make.top.mas_equalTo()(0)
+                                make.centerX.mas_equalTo()(categoryNameContainer)
+                                make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
                             })
-                            iconStackView.addArrangedSubview(categoryNameLabel)
+                            
+                            iconStackView.addArrangedSubview(categoryNameContainer)
                             iconStackView.mas_makeConstraints({ (make) in
                                 make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
                             })
@@ -286,8 +296,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                         })
                         bottomSeparatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
                         verticalStackView.addArrangedSubview(bottomSeparatorView)
+                        weakSelf.categoryPlaceholder.addArrangedSubview(verticalStackView)
                     }
-                    weakSelf.categoryPlaceholder.addArrangedSubview(verticalStackView)
                 }
                 })
             
@@ -602,6 +612,16 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
+                    let webViewController = WebViewController()
+                    webViewController.strURL = layoutRow.url
+                    webViewController.onTapLinkWithUrl = { [weak self] (url) in
+                        if let weakSelf = self {
+                            if url.absoluteString == "https://www.tokopedia.com/" {
+                                weakSelf.navigationController?.popViewControllerAnimated(true)
+                            }
+                        }
+                    }
+                    self.navigationController?.pushViewController(webViewController, animated: true)
                     
                 }
             }
