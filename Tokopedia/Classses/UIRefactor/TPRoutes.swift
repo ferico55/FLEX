@@ -15,16 +15,99 @@ class TPRoutes: NSObject {
     init(viewController: UIViewController) {
         super.init()
         
+        let navigator = NavigateViewController()
         
-        //shop page
-        JLRoutes.globalRoutes().addRoute("/:shopName/:productName") { (params: [String : AnyObject]!) -> Bool in
-            let navigator = NavigateViewController()
-            navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: params["shopName"] as! String)
+        //hot page
+        JLRoutes.globalRoutes().addRoute("/hot/:hotName") { (params: [String : AnyObject]!) -> Bool in
+            navigator.navigateToHotlistResultFromViewController(UIApplication.topViewController(), withData: ["key" : params["hotName"] as! String])
+            return true
+        }
+        
+        //directory
+        JLRoutes.globalRoutes().addRoute("/p/*") { (params: [String : AnyObject]) -> Bool in
+            let pathComponent = params[kJLRouteWildcardComponentsKey] as! [String]
+            if(pathComponent.count > 0) {
+                let departments = [
+                    "department_1" : pathComponent[0],
+                    "department_2" : pathComponent.count > 1 ? pathComponent[1] : "",
+                    "department_3" : pathComponent.count > 2 ? pathComponent[2] : "",
+                    "st" : "product",
+                    "sc_identifier" : pathComponent.joinWithSeparator("_")
+                ]
+                
+                navigator.navigateToSearchFromViewController(UIApplication.topViewController(), withData: departments)
+            }
+ 
+            return true
+        }
+        
+        //search
+        JLRoutes.globalRoutes().addRoute("/search/*") { (params: [String : AnyObject]!) -> Bool in
+            navigator.navigateToSearchFromViewController(UIApplication.topViewController(), withURL: params[kJLRouteURLKey] as! NSURL)
+            return true
+        }
+        
+        //catalog detail
+        JLRoutes.globalRoutes().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String : AnyObject]!) -> Bool in
+            navigator.navigateToCatalogFromViewController(UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
+            return true
+        }
+        
+        //create shop
+        JLRoutes.globalRoutes().addRoute("/buka-toko-online-gratis") { (params: [String : AnyObject]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            if(userManager.getShopId() != "") {
+                navigator.navigateToCatalogFromViewController(UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
+            }
             
             return true
         }
-
+        
+        //shop page
+        JLRoutes.globalRoutes().addRoute("/:shopName") { (params: [String : AnyObject]!) -> Bool in
+            let url = params[kJLRouteURLKey] as! NSURL
+            let shopName = params["shopName"] as! String
+            if(DeeplinkController.shouldOpenWebViewURL(url) || self.isContainPerlPostFix(shopName)) {
+                self.openWebView(url)
+            } else {
+                navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: shopName)
+            }
+            
+            return true
+        }
+        
+        //product detail page
+        JLRoutes.globalRoutes().addRoute("/:shopName/:productName") { (params: [String : AnyObject]!) -> Bool in
+            let url = params[kJLRouteURLKey] as! NSURL
+            let productName = params["productName"] as! String
+            let shopName = params["shopName"] as! String
+            
+            if(DeeplinkController.shouldOpenWebViewURL(url) || self.isContainPerlPostFix(productName)) {
+                self.openWebView(url)
+            } else {
+                let data = [
+                    "product_key" : productName,
+                    "shop_domain" : shopName
+                ]
+                navigator.navigateToProductFromViewController(UIApplication.topViewController(), withData: data)
+            }
+            
+            return true
+        }
     }
+    
+    private func openWebView(url: NSURL) {
+        let controller = WebViewController()
+        controller.strURL = url.absoluteString
+        
+        let visibleController = UIApplication.topViewController()
+        visibleController?.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    private func isContainPerlPostFix(urlPath: String) -> Bool {
+        return (urlPath.rangeOfString(".pl") != nil)
+    }
+    
 }
 
 extension UIApplication {

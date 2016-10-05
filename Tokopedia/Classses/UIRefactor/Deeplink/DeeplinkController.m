@@ -75,7 +75,7 @@
     return [self topViewController:presentedViewController];
 }
 
-- (BOOL)shouldOpenWebViewURL:(NSURL *)url {
++ (BOOL)shouldOpenWebViewURL:(NSURL *)url {
     BOOL shouldOpen = NO;
     
     [TPAnalytics trackUserId];
@@ -384,7 +384,7 @@
         NSURL *url = [GSDDeepLink handleDeepLink:deeplinkURL];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            if ([deeplinkController shouldOpenWebViewURL:url]) {
+            if ([DeeplinkController shouldOpenWebViewURL:url]) {
                 [deeplinkController activeController:deeplinkController.activeController showWebViewURL:url];
             } else {
                 [deeplinkController redirectToViewControllerWithURL:url];

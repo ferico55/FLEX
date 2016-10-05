@@ -28,6 +28,8 @@
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+- (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
+
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController
                                   promoData:(NSDictionary *)data
