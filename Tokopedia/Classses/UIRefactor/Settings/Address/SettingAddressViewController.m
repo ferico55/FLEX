@@ -59,10 +59,10 @@
     TokopediaNetworkManager *tokopediaNetworkManagerRequest;
     
     __weak RKObjectManager *_objectmanagerActionSetDefault;
-    __weak RKManagedObjectRequestOperation *_requestActionSetDefault;
+    RKManagedObjectRequestOperation *_requestActionSetDefault;
     
     __weak RKObjectManager *_objectmanagerActionDelete;
-    __weak RKManagedObjectRequestOperation *_requestActionDelete;
+    RKManagedObjectRequestOperation *_requestActionDelete;
     
     NSOperationQueue *_operationQueue;
     
