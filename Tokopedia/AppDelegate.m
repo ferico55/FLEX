@@ -247,7 +247,7 @@
     if ([userInfo objectForKey:@"Localytics Campaign"]) {
         NSString *campaign = [userInfo objectForKey:@"Localytics Campaign"];
         NSDictionary *attributes = @{@"Campaign" : campaign};
-        [Localytics tagEvent:@"Event : App Launch" attributes:attributes];
+        [AnalyticsManager localyticsEvent:@"Event : App Launch" attributes:attributes];
     }
     if ([userInfo objectForKey:@"Localytics Deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];

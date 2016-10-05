@@ -878,17 +878,17 @@
                                  @"Total Shipping Fee" : @""
                                  };
     
-    NSInteger totalPayment = 0;
-    
-    [Localytics tagEvent:@"Event : Finished Transaction"
-              attributes:attributes
-   customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
+    NSInteger totalPayment = [paymentTotal integerValue];
     
     NSString *profileAttribute = @"Profile : Total Transaction";
     
-    [Localytics incrementValueBy:totalPayment
-             forProfileAttribute:profileAttribute
-                       withScope:LLProfileScopeApplication];
+    [AnalyticsManager localyticsEvent:@"Event : Finished Transaction"
+                           attributes:attributes
+                customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
+    
+    [AnalyticsManager localyticsIncrementValue:totalPayment
+                              profileAttribute:profileAttribute
+                                         scope:LLProfileScopeApplication];
     
 }
 

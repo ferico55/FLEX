@@ -178,10 +178,4 @@
     _lplmPostUrl = [_gtmContainer stringForKey:@"lplm_post_url"]?:@"notify/v1";
 }
 
-//#pragma mark - L
-//-(void)addLocalyticsProfile
-//{
-//    [Localytics setValue:_notifyData.attributes.notify_buyer forProfileAttribute:@"Notify Buyer" withScope:LLProfileScopeApplication];
-//    [Localytics setValue:_notifyData.attributes.notify_seller forProfileAttribute:@"Notify Seller" withScope:LLProfileScopeApplication];
-//}
 @end

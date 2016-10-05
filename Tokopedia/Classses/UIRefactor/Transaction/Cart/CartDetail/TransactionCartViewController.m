@@ -2342,18 +2342,18 @@
                                                                                                                  AFEventParamCurrency : param[@"currency"]?:@"",
                                                                                                                  AFEventOrderId : paymentID}];
                                        
-                                       [Localytics tagEvent:@"Event : Finished Transaction"
-                                                 attributes:@{
-                                                              @"Payment Method" : paymentMethod,
-                                                              @"Total Transaction" : [revenue stringValue]?:@"",
-                                                              @"Total Quantity" : [@(quantity) stringValue]?:@"",
-                                                              @"Total Shipping Fee" : @""
-                                                              }
-                                      customerValueIncrease:revenue];
+                                       [AnalyticsManager localyticsEvent:@"Event : Finished Transaction"
+                                                              attributes:@{
+                                                                           @"Payment Method" : paymentMethod,
+                                                                           @"Total Transaction" : [revenue stringValue]?:@"",
+                                                                           @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                                                           @"Total Shipping Fee" : @""
+                                                                           }
+                                                   customerValueIncrease:revenue];
                                        
-                                       [Localytics incrementValueBy:0
-                                                forProfileAttribute:@"Profile : Total Transaction"
-                                                          withScope:LLProfileScopeApplication];
+                                       [AnalyticsManager localyticsIncrementValue:[revenue integerValue]
+                                                                 profileAttribute:@"Profile : Total Transaction"
+                                                                            scope:LLProfileScopeApplication];
                                    }
                                    [self requestCartData];
                                } error:^(NSError *error) {

@@ -22,10 +22,12 @@
 // Localytics
 + (void)localyticsEvent:(NSString *)event;
 + (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes;
++ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes customerValueIncrease:(NSNumber *)value;
 + (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute;
 + (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
 + (void)localyticsSetCustomerID:(NSString *)userID;
 + (void)localyticsSetCustomerFullName:(NSString *)fullName;
++ (void)localyticsIncrementValue:(NSInteger)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
 
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart;
 + (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success;
