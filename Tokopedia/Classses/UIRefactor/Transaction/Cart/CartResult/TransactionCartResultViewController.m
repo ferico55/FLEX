@@ -127,7 +127,7 @@
     
     TransactionBuyResult *result = [_data objectForKey:DATA_CART_RESULT_KEY];
     NSString *voucherCode = [_data objectForKey:API_VOUCHER_CODE_KEY];
-    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
+    [AnalyticsManager trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -299,7 +299,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
-        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
+        [AnalyticsManager trackEventName:@"clickConfirm" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_CLICK label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
     else if (button == _paymentStatusButton)
@@ -831,7 +831,7 @@
         webViewController.strTitle = kTKPDMORE_HELP_TITLE;
         [self.navigationController pushViewController:webViewController animated:YES];
     } else {
-        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
+        [AnalyticsManager trackEventName:@"clickConfirm" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_CLICK label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
 }

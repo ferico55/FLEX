@@ -27,7 +27,6 @@
 + (void)localyticsSetCustomerFullName:(NSString *)fullName;
 
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart;
-+ (void)localyticsTrackATC:(ProductDetail *)product;
 + (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success;
 + (void)localyticsTrackLogin:(BOOL)success;
 
@@ -43,7 +42,7 @@
 + (void)trackProductImpressions:(NSArray *)products;
 + (void)trackProductClick:(id)product;
 + (void)trackProductView:(Product *)product;
-+ (void)trackProductAddToCart:(id)product;
++ (void)trackProductAddToCart:(ProductDetail *)product;
 + (void)trackRemoveProductFromCart:(id)product;
 + (void)trackRemoveProductsFromCart:(NSArray *)shops;
 + (void)trackPromoClick:(PromoResult *)promoResult;
