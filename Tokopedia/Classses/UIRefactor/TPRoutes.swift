@@ -17,6 +17,34 @@ class TPRoutes: NSObject {
         
         let navigator = NavigateViewController()
         
+        //kereta
+        JLRoutes.globalRoutes().addRoute("/kereta-api") { (params: [String : AnyObject]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            
+            let pulsaUrl = "https://tiket.tokopedia.com/kereta-api?utm_source=ios"
+            let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+            let url = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
+            
+            
+            self.openWebView(NSURL(string: url)!)
+            
+            return true
+        }
+        
+        //pulsa
+        JLRoutes.globalRoutes().addRoute("/pulsa") { (params: [String : AnyObject]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            
+            let pulsaUrl = "https://pulsa.tokopedia.com?utm_source=ios"
+            let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+            let url = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
+            
+            
+            self.openWebView(NSURL(string: url)!)
+            
+            return true
+        }
+        
         //hot page
         JLRoutes.globalRoutes().addRoute("/hot/:hotName") { (params: [String : AnyObject]!) -> Bool in
             navigator.navigateToHotlistResultFromViewController(UIApplication.topViewController(), withData: ["key" : params["hotName"] as! String])
