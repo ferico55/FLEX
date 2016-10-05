@@ -25,10 +25,10 @@
     NSArray *_listPrivacy;
     NSMutableArray *_listSwitchStatus;
     
-    __weak RKObjectManager *_objectManagerAction;
-    __weak RKManagedObjectRequestOperation *_requestAction;
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectManagerAction;
+    RKManagedObjectRequestOperation *_requestAction;
+    RKObjectManager *_objectManager;
+    RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     
     NSMutableDictionary *_dataInput;

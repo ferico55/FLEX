@@ -37,7 +37,7 @@
     FavoriteShop *_favoriteshop;
     ProfileInfo *_profile;
     
-    __weak RKObjectManager *_objectmanager;
+    RKObjectManager *_objectmanager;
     RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     
