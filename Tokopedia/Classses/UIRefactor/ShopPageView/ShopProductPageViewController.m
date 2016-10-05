@@ -335,8 +335,7 @@ EtalaseViewControllerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop - Product List"];
-    self.screenName = @"Shop - Product List";
+    [AnalyticsManager trackScreenName:@"Shop - Product List"];
 }
 
 - (void)didReceiveMemoryWarning {

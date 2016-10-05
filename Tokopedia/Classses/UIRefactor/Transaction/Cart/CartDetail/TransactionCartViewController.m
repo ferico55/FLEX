@@ -280,8 +280,7 @@
     [super viewWillAppear:animated];
     
     if (_indexPage == 0) {
-        [TPAnalytics trackScreenName:@"Shopping Cart"];
-        self.screenName = @"Shopping Cart";
+        [AnalyticsManager trackScreenName:@"Shopping Cart"];
         
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
@@ -296,8 +295,7 @@
         _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 40)];
         
     } else {
-        [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
-        self.screenName = @"Shopping Cart Summary";
+        [AnalyticsManager trackScreenName:@"Shopping Cart Summary"];
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
         if (_list.count>0) {
@@ -2338,7 +2336,7 @@
                                        NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
                                        NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
                                        
-                                       [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
+                                       [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
                                        
                                        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
                                                                                                                  AFEventParamContentType : @"Product",

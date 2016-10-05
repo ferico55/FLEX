@@ -232,8 +232,7 @@ MMNumberKeyboardDelegate
     
     self.title = kTKPDREGISTER_NEW_TITLE;
     
-    [TPAnalytics trackScreenName:@"Register Page"];
-    self.screenName = @"Register Page";
+    [AnalyticsManager trackScreenName:@"Register Page"];
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;

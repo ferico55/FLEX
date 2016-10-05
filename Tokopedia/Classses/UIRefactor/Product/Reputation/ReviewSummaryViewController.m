@@ -90,7 +90,7 @@ TokopediaNetworkManagerDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Review Summary Page"];
+    [AnalyticsManager trackScreenName:@"Review Summary Page"];
 }
 
 - (void)didReceiveMemoryWarning {

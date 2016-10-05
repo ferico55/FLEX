@@ -103,7 +103,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Resolution Center Input Replay Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Input Replay Page"];
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     [_messageTextView becomeFirstResponder];

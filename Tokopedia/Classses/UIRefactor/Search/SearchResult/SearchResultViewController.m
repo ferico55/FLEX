@@ -220,16 +220,13 @@ ImageSearchRequestDelegate
     
     if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if(self.isFromAutoComplete) {
-            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
-            self.screenName = @"Product Search Results (From Auto Complete Search)";
+            [AnalyticsManager trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
         } else {
-            [TPAnalytics trackScreenName:@"Product Search Results" gridType:self.cellType];
-            self.screenName = @"Product Search Results";
+            [AnalyticsManager trackScreenName:@"Product Search Results" gridType:self.cellType];
         }
     }
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        [TPAnalytics trackScreenName:@"Catalog Search Results"];
-        self.screenName = @"Catalog Search Results";
+        [AnalyticsManager trackScreenName:@"Catalog Search Results"];
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {

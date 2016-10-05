@@ -218,8 +218,7 @@ typedef enum
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    [TPAnalytics trackScreenName:@"Add to Cart"];
-    self.screenName = @"Add to Cart";
+    [AnalyticsManager trackScreenName:@"Add to Cart"];
 }
 
 - (IBAction)tapPinLocationButton:(id)sender {

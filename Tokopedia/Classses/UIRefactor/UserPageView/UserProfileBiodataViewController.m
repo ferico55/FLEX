@@ -83,8 +83,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated]; 
-    [TPAnalytics trackScreenName:@"Profile - Profile Information"];
-    self.screenName = @"Profile - Profile Information";
+    [AnalyticsManager trackScreenName:@"Profile - Profile Information"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

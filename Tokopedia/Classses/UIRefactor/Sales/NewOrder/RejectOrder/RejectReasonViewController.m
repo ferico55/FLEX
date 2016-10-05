@@ -58,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Reject Reason Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Page"];
 }
 
 #pragma mark - TableView Delegate and DataSource

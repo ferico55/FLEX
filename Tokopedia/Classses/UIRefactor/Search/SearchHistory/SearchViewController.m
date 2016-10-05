@@ -156,8 +156,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         _searchBarTrailingConstraint.constant = 0;
     }
     
-    [TPAnalytics trackScreenName:@"Search Page"];
-    self.screenName = @"Search Page";
+    [AnalyticsManager trackScreenName:@"Search Page"];
     
     self.hidesBottomBarWhenPushed = NO;
     
@@ -605,7 +604,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - Image search
 
 - (void)takePhoto:(UIButton *)sender {
-    [TPAnalytics trackScreenName:@"Snap Search Camera"];
+    [AnalyticsManager trackScreenName:@"Snap Search Camera"];
     
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
