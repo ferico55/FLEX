@@ -650,7 +650,6 @@ FilterCategoryViewDelegate
             [self setImageButtons];
         } failure:nil];
     }
-    [self setImageButtons];
 }
 
 -(void)addImageFromAsset{

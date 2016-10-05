@@ -21,6 +21,7 @@
 		347917F01D87A15500A3324E /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790E011D87A15400A3324E /* Tokopedia-Info.plist */; };
 		347917F11D87A15500A3324E /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 34790E031D87A15400A3324E /* Tokopedia.entitlements */; };
 		347917F21D87A15500A3324E /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34790E041D87A15400A3324E /* Tokopedia.xcworkspace */; };
+		450F37A11DA39BC10041BC14 /* ProfileFavoriteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F37A01DA39BC10041BC14 /* ProfileFavoriteRequest.swift */; };
 		459EAD9C1D98DB760071EBF6 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA11D98DB700071EBF6 /* TPAnalytics.m */; };
 		459EAD9D1D98DB760071EBF6 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA31D98DB700071EBF6 /* TPLocalytics.m */; };
 		459EAD9E1D98DB760071EBF6 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA61D98DB700071EBF6 /* URLCacheAlert.m */; };
@@ -2711,6 +2712,7 @@
 		34790E041D87A15400A3324E /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		3479FE751D87A14800A3324E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3479FE761D87A14800A3324E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		450F37A01DA39BC10041BC14 /* ProfileFavoriteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFavoriteRequest.swift; sourceTree = "<group>"; };
 		459E9DA01D98DB700071EBF6 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		459E9DA11D98DB700071EBF6 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		459E9DA21D98DB700071EBF6 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -11788,6 +11790,7 @@
 				459EA9C71D98DB730071EBF6 /* ProfileFavoriteShopViewController.h */,
 				459EA9C81D98DB730071EBF6 /* ProfileFavoriteShopViewController.m */,
 				459EA9C91D98DB730071EBF6 /* ProfileFavoriteShopViewController.xib */,
+				450F37A01DA39BC10041BC14 /* ProfileFavoriteRequest.swift */,
 			);
 			path = FavoriteShop;
 			sourceTree = "<group>";
@@ -15517,6 +15520,7 @@
 				459EB0411D98DB760071EBF6 /* CombineLatest.swift in Sources */,
 				459EB3A01D98DB770071EBF6 /* ShopSettingViewController.m in Sources */,
 				459EB1BA1D98DB760071EBF6 /* InboxMessageDetailCell.m in Sources */,
+				450F37A11DA39BC10041BC14 /* ProfileFavoriteRequest.swift in Sources */,
 				459EAE431D98DB760071EBF6 /* FavoritedResult.m in Sources */,
 				459EB3AB1D98DB770071EBF6 /* ShopPageHeader.m in Sources */,
 				459EB2D21D98DB770071EBF6 /* ResolutionCenterCreateStepTwoCell.m in Sources */,

@@ -111,6 +111,7 @@
 #import "LoadingView.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "FavoriteShop.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
