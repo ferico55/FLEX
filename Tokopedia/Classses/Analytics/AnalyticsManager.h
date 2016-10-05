@@ -10,6 +10,7 @@
 #import "TAGDataLayer.h"
 #import "TAGManager.h"
 #import "PromoResult.h"
+#import "Product.h"
 #import "ProductDetail.h"
 #import "LoginResult.h"
 #import "Login.h"

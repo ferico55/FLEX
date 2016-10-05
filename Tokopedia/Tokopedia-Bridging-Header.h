@@ -33,8 +33,6 @@
 
 #import "ShipmentViewController.h"
 
-#import "TPAnalytics.h"
-
 #import "AddShop.h"
 #import "RequestUploadImage.h"
 #import "RequestGenerateHost.h"
@@ -46,7 +44,6 @@
 
 #import <GoogleMaps/GoogleMaps.h>
 
-#import "TPAnalytics.h"
 #import "EtalaseList.h"
 #import "MHVerticalTabBarController.h"
 #import "EtalaseViewController.h"

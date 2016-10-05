@@ -63,8 +63,6 @@
     #import "TKPString.h"
     #import "TKPObjectMapping.h"
 
-    #import "TPAnalytics.h"
-    #import "TPLocalytics.h"
     #import <Localytics/Localytics.h>
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"

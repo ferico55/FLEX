@@ -11,6 +11,7 @@
 #import "ProductFeedList.h"
 #import "WishlistObjectList.h"
 #import "List.h"
+#import "Breadcrumb.h"
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
