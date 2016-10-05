@@ -110,6 +110,10 @@
 #import "TKPDAlertView.h"
 #import "LoadingView.h"
 
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+
+
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
 @import SPTPersistentCache;

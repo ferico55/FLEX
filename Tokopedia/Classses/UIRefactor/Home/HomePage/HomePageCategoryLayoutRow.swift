@@ -15,10 +15,11 @@ class HomePageCategoryLayoutRow: NSObject {
     var image_url: String!
     var type: String!
     var additional_info: String!
+    var category_id: String!
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: HomePageCategoryLayoutRow.self)
-        mapping.addAttributeMappingsFromArray(["id", "name", "url", "image_url", "type", "additional_info"])
+        mapping.addAttributeMappingsFromArray(["id", "name", "url", "image_url", "type", "additional_info", "category_id"])
         
         return mapping
     }
