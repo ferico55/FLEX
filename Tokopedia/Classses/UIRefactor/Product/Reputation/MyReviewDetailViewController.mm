@@ -103,7 +103,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];s
+    [super viewDidLoad];
     
     _isRefreshView = NO;
     _getDataFromMasterInServer = @"0";

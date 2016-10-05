@@ -39,14 +39,11 @@
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
 {
-    TAGContainer *_gtmContainer;
-    NSString *productBaseUrl, *reviewActionBaseUrl;
-    NSString *productPostUrl, *reviewActionPostUrl;
     
     NSMutableParagraphStyle *style;
     CMPopTipView *popTipView;
@@ -71,7 +68,6 @@ static NSInteger userViewHeight = 70;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureGTM];
     [self initNavigation];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
@@ -412,7 +408,6 @@ static NSInteger userViewHeight = 70;
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
-//            [[self getNetworkManager:CTagGetProductReview] doRequest];
             [self doRequestGetProductReview];
         }
     }
@@ -529,7 +524,6 @@ static NSInteger userViewHeight = 70;
     [self unloadRequesting];
     
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
     
     NSNumber *monthRange = @(0);
@@ -603,7 +597,6 @@ static NSInteger userViewHeight = 70;
     }
     
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 - (IBAction)actionFilter6Month:(id)sender {
@@ -619,7 +612,6 @@ static NSInteger userViewHeight = 70;
     animationHasShown = NO;
     
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 - (IBAction)actionFilterAllTime:(id)sender {
@@ -636,7 +628,6 @@ static NSInteger userViewHeight = 70;
     animationHasShown = NO;
     
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 - (IBAction)actionSegmentedValueChange:(id)sender {
@@ -645,7 +636,6 @@ static NSInteger userViewHeight = 70;
     [arrList removeAllObjects];
     [tableContent reloadData];
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 - (void)actionVote:(id)sender {
@@ -757,7 +747,6 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 - (void)redirectToProductDetailReputation:(DetailReputationReview *)detailReputationReview withIndexPath:(NSIndexPath *)indexPath {
@@ -942,145 +931,9 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag {
-    if(tag == CTagGetProductReview) {
-        NSMutableDictionary *dictFilter = [NSMutableDictionary new];
-        [dictFilter setObject:@"get_product_review" forKey:@"action"];
-        [dictFilter setObject:_strShopDomain forKey:@"shop_domain"];
-        [dictFilter setObject:_strProductID forKey:@"product_id"];
-        
-        if(btnFilter6Month.tag == 1) {
-            [dictFilter setObject:@(6) forKey:@"month_range"];
-        }
-        [dictFilter setObject:@(page) forKey:@"page"];
-        
-        if((int)segmentedControl.selectedSegmentIndex==0 && filterStar>0) {//Quality
-            [dictFilter setObject:@(filterStar) forKey:@"shop_quality"];
-        }
-        else if(filterStar > 0){
-            [dictFilter setObject:@(filterStar) forKey:@"shop_accuracy"];
-        }
-        
-        return dictFilter;
-    }
-    
-    return nil;
-}
-- (NSString*)getPath:(int)tag {
-    if(tag == CTagGetProductReview) {
-        return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
-    }
-    
-    return nil;
-}
-- (id)getObjectManager:(int)tag {
-    if(tag == CTagGetProductReview) {
-        RKObjectManager *objectManager;
-        if([productBaseUrl isEqualToString:kTkpdBaseURLString] || [productBaseUrl isEqualToString:@""]) {
-            objectManager = [RKObjectManager sharedClient];
-        } else {
-            objectManager = [RKObjectManager sharedClient:productBaseUrl];
-        }
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[Review mapping]
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return objectManager;
-    }
-    
-    return nil;
-}
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*) result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagGetProductReview) {
-        Review *tempReview = stat;
-        return tempReview.status;
-    }
-    
-    return nil;
-}
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagGetProductReview) {
-        review = stat;
-        NSMutableArray *contentsToAdd = [[NSMutableArray alloc] initWithArray:review.result.list];
-        for(DetailReputationReview *detailReputation in contentsToAdd){
-            detailReputation.product_id = _strProductID;
-            detailReputation.review_product_id = _strProductID;
-        }
-        
-        if(page==0 && review.result.list!=nil) {
-            arrList = [[NSMutableArray alloc] initWithArray:contentsToAdd];
-            
-            segmentedControl.enabled = YES;
-            btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
-            [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
-        }
-        else if(review.result.list != nil) {
-            [arrList addObjectsFromArray:contentsToAdd];
-        }
-        
-        //Check next page
-        strUri = review.result.paging.uri_next;
-        page = (int)[[[self getNetworkManager:CTagGetProductReview] splitUriToPage:strUri] integerValue];
-        
-
-        //Add delegate to talbe view
-        if(arrList!=nil && arrList.count>0) {
-            if(tableContent.delegate == nil) {
-                tableContent.delegate = self;
-                tableContent.dataSource = self;
-            }
-            
-            [tableContent reloadData];
-            [self setLoadingView:NO];
-        }
-        else  {
-            [self setLoadingView:NO];
-            
-            if(noResultView == nil) {
-                noResultView = [NoResultView new];
-            }
-            tableContent.tableFooterView = noResultView.view;
-        }
-    }
-}
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    if(tag == CTagGetProductReview) {
-        
-    }
-}
-- (void)actionBeforeRequest:(int)tag {
-}
-- (void)actionRequestAsync:(int)tag {
-}
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(tag == CTagGetProductReview) {
-        [self setLoadingView:NO];
-        
-        
-        if(loadingView == nil) {
-            loadingView = [LoadingView new];
-            loadingView.delegate = self;
-        }
-        
-        tableContent.tableFooterView = loadingView.view;
-    }
-}
-
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton{
     [self setLoadingView:YES];
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
 }
 
@@ -1107,7 +960,6 @@ static NSInteger userViewHeight = 70;
 
 #pragma mark - HelpfulReviewRequestDelegate
 - (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
-//    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
     
     [helpfulReviews removeAllObjects];
@@ -1138,17 +990,5 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-#pragma mark - GTM
-- (void)configureGTM {
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    productBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
-    productPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
-    reviewActionBaseUrl = [_gtmContainer stringForKey:GTMKeyActionReviewBase];
-    reviewActionPostUrl = [_gtmContainer stringForKey:GTMKeyActionReviewPost];
-}
 @end
 
