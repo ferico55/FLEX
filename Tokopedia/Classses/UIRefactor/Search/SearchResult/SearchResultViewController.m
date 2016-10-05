@@ -43,7 +43,6 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
-#import "TPLocalytics.h"
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
 #import "SpellCheckRequest.h"

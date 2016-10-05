@@ -488,7 +488,7 @@ MMNumberKeyboardDelegate
                                                                                delegate:self];
             [alertView show];
             
-            [TPLocalytics trackRegistrationWithProvider:@"0" success:NO];
+            [AnalyticsManager localyticsTrackRegistration:@"0" success:NO];
         } else {
             [self.view layoutSubviews];
             

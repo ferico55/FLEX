@@ -15,8 +15,7 @@
 #import "TextField.h"
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
-#import "WebViewController.h"
-#import "TPLocalytics.h"
+#import "WebViewController.h
 #import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 #import "Tokopedia-Swift.h"

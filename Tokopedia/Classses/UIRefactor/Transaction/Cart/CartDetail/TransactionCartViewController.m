@@ -2408,7 +2408,7 @@
                 }
             }
         }
-        [TPLocalytics trackCartView:_cart];
+        [AnalyticsManager localyticsTrackCartView:_cart];
         
     } error:^(NSError *error) {
         [_noResultView removeFromSuperview];

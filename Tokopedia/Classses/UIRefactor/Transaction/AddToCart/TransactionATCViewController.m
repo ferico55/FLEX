@@ -18,7 +18,6 @@
 #import "TransactionShipmentATCTableViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "TPLocalytics.h"
 #import "MMNumberKeyboard.h"
 
 #import "NSNumberFormatter+IDRFormater.h"

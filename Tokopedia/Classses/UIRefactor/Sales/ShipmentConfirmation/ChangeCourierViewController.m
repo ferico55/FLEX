@@ -371,7 +371,7 @@ BarCodeDelegate
         [self actionRequestSuccess:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [TPLocalytics trackShipmentConfirmation:NO];
+        [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
         [self actionRequestFailure:error orderId:self.order.order_detail.detail_order_id];
         [timer invalidate];
     }];
@@ -385,7 +385,7 @@ BarCodeDelegate
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        [TPLocalytics trackShipmentConfirmation:YES];
+        [AnalyticsManager localyticsTrackShipmentConfirmation:YES];
         NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
         
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
@@ -398,7 +398,7 @@ BarCodeDelegate
         }
         
     } else {
-        [TPLocalytics trackShipmentConfirmation:NO];
+        [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
         NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
                                                                        delegate:self];
