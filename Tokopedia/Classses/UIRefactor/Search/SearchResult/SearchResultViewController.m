@@ -1187,9 +1187,9 @@ ImageSearchRequestDelegate
 
     if (_start == 0) {
         if (search.data.products.count > 0) {
-            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
+            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
         } else {
-            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
+            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
         }
     }
     

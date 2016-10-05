@@ -394,9 +394,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
-                                                      userInfo:nil];
-    
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+                                                      userInfo:nil];    
 }
 
 - (void)navigateToProperPage:(Login *)login {

@@ -2792,13 +2792,10 @@ TTTAttributedLabelDelegate
                                      @"Product Category" : productCategory
                                      };
         
-        [Localytics tagEvent:@"Event : Add To Wishlist" attributes:attributes];
+        [AnalyticsManager localyticsEvent:@"Event : Add To Wishlist" attributes:attributes];
         
-        [Localytics incrementValueBy:1
-                 forProfileAttribute:@"Profile : Has Wishlist"
-                           withScope:LLProfileScopeApplication];
-        
-        
+        [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
+                
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {

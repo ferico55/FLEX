@@ -52,6 +52,12 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
               attributes:attributes];
 }
 
++ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes customerValueIncrease:(NSNumber *)value {
+    [Localytics tagEvent:event?:@""
+              attributes:attributes
+   customerValueIncrease:value];
+}
+
 + (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute {
     [Localytics setValue:value forProfileAttribute:attribute];
 }
@@ -66,6 +72,10 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 + (void)localyticsSetCustomerFullName:(NSString *)fullName {
     [Localytics setCustomerFullName:fullName?:@""];
+}
+
++ (void)localyticsIncrementValue:(NSInteger)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope {
+    [Localytics incrementValueBy:value forProfileAttribute:attribute withScope:scope];
 }
 
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart {
@@ -606,6 +616,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [self localyticsSetCustomerFullName:login.result.full_name];
     [self localyticsValue:login.result.user_id?:@"" profileAttribute:@"user_id"];
     [self localyticsValue:login.result.email?:@"" profileAttribute:@"user_email"];
+    [self localyticsValue:@"Yes" profileAttribute:@"Is Login"];
     
     // AppsFlyer Tracking
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];

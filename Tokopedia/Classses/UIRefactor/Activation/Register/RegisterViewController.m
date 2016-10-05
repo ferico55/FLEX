@@ -875,7 +875,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+    [AnalyticsManager trackLogin:login];
 }
 
 @end
