@@ -21,8 +21,6 @@
 		347917F01D87A15500A3324E /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790E011D87A15400A3324E /* Tokopedia-Info.plist */; };
 		347917F11D87A15500A3324E /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 34790E031D87A15400A3324E /* Tokopedia.entitlements */; };
 		347917F21D87A15500A3324E /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34790E041D87A15400A3324E /* Tokopedia.xcworkspace */; };
-		459EAD9C1D98DB760071EBF6 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA11D98DB700071EBF6 /* TPAnalytics.m */; };
-		459EAD9D1D98DB760071EBF6 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA31D98DB700071EBF6 /* TPLocalytics.m */; };
 		459EAD9E1D98DB760071EBF6 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA61D98DB700071EBF6 /* URLCacheAlert.m */; };
 		459EAD9F1D98DB760071EBF6 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DA81D98DB700071EBF6 /* URLCacheConnection.m */; };
 		459EADA01D98DB760071EBF6 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E9DAA1D98DB700071EBF6 /* URLCacheController.m */; };
@@ -2712,10 +2710,6 @@
 		34790E041D87A15400A3324E /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		3479FE751D87A14800A3324E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3479FE761D87A14800A3324E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		459E9DA01D98DB700071EBF6 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
-		459E9DA11D98DB700071EBF6 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
-		459E9DA21D98DB700071EBF6 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
-		459E9DA31D98DB700071EBF6 /* TPLocalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPLocalytics.m; sourceTree = "<group>"; };
 		459E9DA51D98DB700071EBF6 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		459E9DA61D98DB700071EBF6 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		459E9DA71D98DB700071EBF6 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -6639,10 +6633,6 @@
 		459E9D9F1D98DB700071EBF6 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				459E9DA01D98DB700071EBF6 /* TPAnalytics.h */,
-				459E9DA11D98DB700071EBF6 /* TPAnalytics.m */,
-				459E9DA21D98DB700071EBF6 /* TPLocalytics.h */,
-				459E9DA31D98DB700071EBF6 /* TPLocalytics.m */,
 				620D1E121D9D203A00DBA1AA /* AnalyticsManager.h */,
 				620D1E131D9D203A00DBA1AA /* AnalyticsManager.m */,
 				623B280F1DA34FCC004BE4DC /* AnalyticsString.h */,
@@ -14719,7 +14709,6 @@
 				459EAE7B1D98DB760071EBF6 /* ResolutionBy.m in Sources */,
 				459EB0B91D98DB760071EBF6 /* VerifiedStatusResult.m in Sources */,
 				459EB44F1D98DB770071EBF6 /* ProductCell.m in Sources */,
-				459EAD9C1D98DB760071EBF6 /* TPAnalytics.m in Sources */,
 				459EB18F1D98DB760071EBF6 /* TagManagerHandler.m in Sources */,
 				459EB02A1D98DB760071EBF6 /* NopDisposable.swift in Sources */,
 				459EB3591D98DB770071EBF6 /* SettingBankEditViewController.m in Sources */,
@@ -15321,7 +15310,6 @@
 				459EAFC41D98DB760071EBF6 /* TxOrderCancelPaymentFormForm.m in Sources */,
 				459EAEAB1D98DB760071EBF6 /* TotalLikeDislike.m in Sources */,
 				459EADDC1D98DB760071EBF6 /* DiscoverResponse.swift in Sources */,
-				459EAD9D1D98DB760071EBF6 /* TPLocalytics.m in Sources */,
 				459EB3201D98DB770071EBF6 /* ChangeReceiptNumberViewController.m in Sources */,
 				459EAFEE1D98DB760071EBF6 /* UploadImageValidationResult.m in Sources */,
 				459EB0FC1D98DB760071EBF6 /* DetailedImageCell.swift in Sources */,

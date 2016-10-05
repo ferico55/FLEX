@@ -127,7 +127,7 @@
     
     TransactionBuyResult *result = [_data objectForKey:DATA_CART_RESULT_KEY];
     NSString *voucherCode = [_data objectForKey:API_VOUCHER_CODE_KEY];
-    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
+    [AnalyticsManager trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -299,7 +299,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
-        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
+        [AnalyticsManager trackEventName:@"clickConfirm" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_CLICK label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
     else if (button == _paymentStatusButton)
@@ -464,8 +464,7 @@
     
      if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
          
-         [TPAnalytics trackScreenName:@"Thank you page - Saldo Tokopedia"];
-         self.screenName = @"Thank you page - Saldo Tokopedia";
+         [AnalyticsManager trackScreenName:@"Thank you page - Saldo Tokopedia"];
          
          NSArray *detailPaymentIfUsingSaldo = @[
                                                 @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
@@ -490,18 +489,15 @@
          
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
         
-            [TPAnalytics trackScreenName:@"Thank you page - Transfer Bank"];
-            self.screenName = @"Thank you page - Transfer Bank";
+            [AnalyticsManager trackScreenName:@"Thank you page - Transfer Bank"];
             
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
 
-            [TPAnalytics trackScreenName:@"Thank you page - KlikBCA"];
-            self.screenName = @"Thank you page - KlikBCA";
+            [AnalyticsManager trackScreenName:@"Thank you page - KlikBCA"];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
         
-            [TPAnalytics trackScreenName:@"Thank you page - Indomaret"];
-            self.screenName = @"Thank you page - Indomaret";
+            [AnalyticsManager trackScreenName:@"Thank you page - Indomaret"];
 
         }
         
@@ -571,33 +567,27 @@
         
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
 
-            [TPAnalytics trackScreenName:@"Thank you page - Mandiri eCash"];
-            self.screenName = @"Thank you page - Mandiri eCash";
+            [AnalyticsManager trackScreenName:@"Thank you page - Mandiri eCash"];
             
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]) {
 
-            [TPAnalytics trackScreenName:@"Thank you page - Mandiri ClickPay"];
-            self.screenName = @"Thank you page - Mandiri ClickPay";
+            [AnalyticsManager trackScreenName:@"Thank you page - Mandiri ClickPay"];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)]) {
             
-            [TPAnalytics trackScreenName:@"Thank you page - KlikBCA"];
-            self.screenName = @"Thank you page - KlikBCA";
+            [AnalyticsManager trackScreenName:@"Thank you page - KlikBCA"];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]) {
         
-            [TPAnalytics trackScreenName:@"Thank you page - Credit Card"];
-            self.screenName = @"Thank you page - Credit Card";
+            [AnalyticsManager trackScreenName:@"Thank you page - Credit Card"];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]) {
 
-            [TPAnalytics trackScreenName:@"Thank you page - Installment"];
-            self.screenName = @"Thank you page - Installment";
+            [AnalyticsManager trackScreenName:@"Thank you page - Installment"];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BRI_EPAY)]) {
             
-            [TPAnalytics trackScreenName:@"Thank you page - BRI E-PAY"];
-            self.screenName = @"Thank you page - BRI E-PAY";
+            [AnalyticsManager trackScreenName:@"Thank you page - BRI E-PAY"];
             
         }
         
@@ -841,7 +831,7 @@
         webViewController.strTitle = kTKPDMORE_HELP_TITLE;
         [self.navigationController pushViewController:webViewController animated:YES];
     } else {
-        [TPAnalytics trackPaymentEvent:@"clickConfirm" category:@"Payment" action:@"Click" label:@"Thank You Page"];
+        [AnalyticsManager trackEventName:@"clickConfirm" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_CLICK label:@"Thank You Page"];
         [self goToTxOrderTabViewController];
     }
 }

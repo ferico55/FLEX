@@ -64,7 +64,7 @@
 }
 
 - (void)setSortValues {
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     TAGContainer *container = appDelegate.container;

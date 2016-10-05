@@ -53,6 +53,9 @@
 #define GA_EVENT_CATEGORY_LOGIN @"Login"
 #define GA_EVENT_CATEGORY_CARDIO_SCAN @"Card IO Scan"
 #define GA_EVENT_CATEGORY_FORGOT_PASSWORD @"Forgot Password"
+#define GA_EVENT_CATEGORY_SECURITY_QUESTION @"Security Question"
+#define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
+#define GA_EVENT_CATEGORY_SEARCH_RESULT @"Search Result"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
@@ -80,5 +83,6 @@
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"
 #define GA_EVENT_ACTION_LOGIN_ERROR @"Login Error"
 #define GA_EVENT_ACTION_RESET_SUCCESS @"Reset Success"
+#define GA_EVENT_ACTION_OTP_SUCCESS @"OTP Success"
 
 #endif /* AnalyticsString_h */

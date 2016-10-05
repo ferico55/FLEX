@@ -173,8 +173,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Shop - Note List"];
-    self.screenName = @"Shop - Note List";
+    [AnalyticsManager trackScreenName:@"Shop - Note List"];
     
     if (!_isrefreshview) {
         if (_isNoData && _page < 1) {

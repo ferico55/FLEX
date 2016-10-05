@@ -49,7 +49,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Settings Page"];
+    [AnalyticsManager trackScreenName:@"Shop Settings Page"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

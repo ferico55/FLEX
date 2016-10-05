@@ -86,8 +86,6 @@
 
 #import "PriceAlertRequest.h"
 
-#import "TPLocalytics.h"
-
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
 

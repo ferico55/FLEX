@@ -18,7 +18,6 @@
 #import "SettingAddressEditViewController.h"
 #import "SettingAddressExpandedCell.h"
 #import "TokopediaNetworkManager.h"
-#import "TPAnalytics.h"
 
 #import "MGSwipeButton.h"
 
@@ -207,13 +206,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Setting Address Page"];
-    
-//    if (!_isrefreshview) {
-//        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-//            [self request];
-//        }
-//    }
+    [AnalyticsManager trackScreenName:@"Setting Address Page"];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -872,7 +865,7 @@
                 NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
                 
                 if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
-                    [TPAnalytics trackClickEvent:@"clickATC" category:@"Add to Cart" label:@"Add Address"];
+                    [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Add Address"];
                 }
                 
                 NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;

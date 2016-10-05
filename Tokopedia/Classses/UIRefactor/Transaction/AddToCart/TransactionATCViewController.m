@@ -18,7 +18,6 @@
 #import "TransactionShipmentATCTableViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "TPLocalytics.h"
 #import "MMNumberKeyboard.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
@@ -218,8 +217,7 @@ typedef enum
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    [TPAnalytics trackScreenName:@"Add to Cart"];
-    self.screenName = @"Add to Cart";
+    [AnalyticsManager trackScreenName:@"Add to Cart"];
 }
 
 - (IBAction)tapPinLocationButton:(id)sender {
@@ -275,7 +273,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
-    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
+    [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }
@@ -843,13 +841,10 @@ typedef enum
     alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
     [alertView show];
     
-    [self pushLocalyticsData];
-    
-    [TPAnalytics trackAddToCart:_selectedProduct];
-    [TPLocalytics trackAddToCart:_selectedProduct];
+    [AnalyticsManager trackProductAddToCart:_selectedProduct];
     
     if (self.isSnapSearchProduct) {
-        [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+        [AnalyticsManager trackSnapSearchAddToCart:_selectedProduct];
     }
     
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
@@ -1194,17 +1189,6 @@ typedef enum
     }
     
     return insurance;
-}
-
-- (void)pushLocalyticsData {
-    ProductDetail *product = _selectedProduct;
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
-    NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
-    product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
-    product.product_quantity =_productQuantityTextField.text;
-
-    [TPAnalytics trackAddToCart:product];
 }
 
 -(void)alertAndResetIfQtyTextFieldBelowMin

@@ -11,7 +11,6 @@
 #import "Login.h"
 #import "GeneralAction.h"
 #import "Tokopedia-Swift.h"
-#import "TPLocalytics.h"
 
 @implementation ActivationRequest {
     TokopediaNetworkManager *doLoginPlusNetworkManager;
@@ -135,11 +134,11 @@
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                       NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                       Login *obj = [result objectForKey:@""];
-                                      [TPLocalytics trackLoginStatus:YES];
+                                      [AnalyticsManager trackLogin:obj];
                                       successCallback(obj);
                                   }
                                   onFailure:^(NSError *errorResult) {
-                                      [TPLocalytics trackLoginStatus:NO];
+                                      [AnalyticsManager localyticsTrackLogin:NO];
                                       errorCallback(errorResult);
                                   }];
 }

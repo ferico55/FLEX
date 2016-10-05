@@ -169,7 +169,7 @@
 - (void)configureGTM {
     _userManager = [UserAuthentificationManager new];
 
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

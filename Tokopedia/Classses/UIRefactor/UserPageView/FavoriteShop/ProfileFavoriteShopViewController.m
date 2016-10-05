@@ -144,8 +144,7 @@
 {
     [super viewWillAppear:animated];
 
-    [TPAnalytics trackScreenName:@"Profile - Favorited Shop"];
-    self.screenName = @"Profile - Favorited Shop";
+    [AnalyticsManager trackScreenName:@"Profile - Favorited Shop"];
     
     if (!_isrefreshview) {
         [self configureRestKit];

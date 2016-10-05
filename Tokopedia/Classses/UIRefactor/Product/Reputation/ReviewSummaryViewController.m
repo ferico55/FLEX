@@ -90,7 +90,7 @@ TokopediaNetworkManagerDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Review Summary Page"];
+    [AnalyticsManager trackScreenName:@"Review Summary Page"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -302,10 +302,8 @@ TokopediaNetworkManagerDelegate
                                                                    token:_token
                                                                     host:_generatedHost.upload_host
                                                                onSuccess:^(SubmitReviewResult *result) {
-                                                                   [TPLocalytics trackGiveReview:YES
-                                                                                        accuracy:_accuracyRate
-                                                                                         quality:_qualityRate];
-                                                                   [TPAnalytics trackSuccessSubmitReview:1];
+                                                                   [AnalyticsManager localyticsTrackGiveReview:YES accuracy:_accuracyRate quality:_qualityRate];
+                                                                   [AnalyticsManager trackSuccessSubmitReview:1];
                                                                    NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                                                                    
                                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengisi ulasan"]
@@ -322,10 +320,8 @@ TokopediaNetworkManagerDelegate
                                                                    }
                                                                }
                                                                onFailure:^(NSError *error) {
-                                                                   [TPLocalytics trackGiveReview:NO
-                                                                                        accuracy:_accuracyRate
-                                                                                         quality:_qualityRate];
-                                                                   [TPAnalytics trackSuccessSubmitReview:0];
+                                                                   [AnalyticsManager localyticsTrackGiveReview:NO accuracy:_accuracyRate quality:_qualityRate];
+                                                                   [AnalyticsManager trackSuccessSubmitReview:0];
                                                                    [self sendButtonIsLoading:NO];
                                                                }];
         }

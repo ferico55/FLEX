@@ -11,6 +11,7 @@
 #import "ProductFeedList.h"
 #import "WishlistObjectList.h"
 #import "List.h"
+#import "Breadcrumb.h"
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -81,29 +82,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                  };
     
     [self localyticsEvent:@"Cart Viewed" attributes:attributes];
-}
-
-+ (void)localyticsTrackATC:(ProductDetail *)product {
-    NSString *productID = product.product_id;
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.product_price];
-    NSString *total = [NSString stringWithFormat:@"%zd", [product.product_total_price integerValue]];
-    NSString *productQuantity = product.product_quantity;
-    
-    NSDictionary *attributes = @{
-                                 @"Product Id" : productID?:@"",
-                                 @"Category" : product.product_cat_name?:@"",
-                                 @"Price" : price?:@(0),
-                                 @"Value of Cart" : total?:@"",
-                                 @"Items in Cart" : productQuantity?:@""
-                                 };
-    
-    NSString *profileAttribute = @"Profile : Last date has product in cart";
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
-    
-    [self localyticsEvent:@"Product Added to Cart" attributes:attributes];
-    [self localyticeValue:currentDate profileAttribute:profileAttribute scope:LLProfileScopeApplication];
 }
 
 + (NSString *)providerWithMethod:(NSString *)method {
@@ -308,7 +286,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                                    }];
 }
 
-+ (void)trackProductAddToCart:(id)product {
++ (void)trackProductAddToCart:(ProductDetail *)product {
     if (!product) return;
     AnalyticsManager *manager = [[self alloc] init];
     NSDictionary *productFieldObjects = [product productFieldObjects];
@@ -322,6 +300,27 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                    }
                            };
     [manager.dataLayer push:data];
+    
+    NSString *productID = product.product_id;
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.product_price];
+    NSString *total = [NSString stringWithFormat:@"%zd", [product.product_total_price integerValue]];
+    NSString *productQuantity = product.product_quantity;
+    
+    NSDictionary *attributes = @{
+                                 @"Product Id" : productID?:@"",
+                                 @"Category" : product.product_cat_name?:@"",
+                                 @"Price" : price?:@(0),
+                                 @"Value of Cart" : total?:@"",
+                                 @"Items in Cart" : productQuantity?:@""
+                                 };
+    
+    NSString *profileAttribute = @"Profile : Last date has product in cart";
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [self localyticsEvent:@"Product Added to Cart" attributes:attributes];
+    [self localyticeValue:currentDate profileAttribute:profileAttribute scope:LLProfileScopeApplication];
 }
 
 + (void)trackRemoveProductFromCart:(id)product {

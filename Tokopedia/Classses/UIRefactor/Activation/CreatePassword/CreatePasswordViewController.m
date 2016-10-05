@@ -16,7 +16,6 @@
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
 #import "WebViewController.h"
-#import "TPLocalytics.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 #import "Tokopedia-Swift.h"
@@ -430,11 +429,13 @@
                                                             _onPasswordCreated();
                                                         }
                                                     } else if (result.message_error) {
+                                                        [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                                                                        delegate:self];
                                                         [alert show];
                                                         [self enableTextFields];
                                                     } else {
+                                                        [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Registrasi gagal silahkan coba lagi."]
                                                                                                                        delegate:self];
                                                         [alert show];
@@ -445,6 +446,7 @@
                                                     _signupButton.layer.opacity = 1;
                                                 }
                                                 onFailure:^(NSError *errorResult) {
+                                                    [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
                                                     [self enableTextFields];
                                                 }];
 }
