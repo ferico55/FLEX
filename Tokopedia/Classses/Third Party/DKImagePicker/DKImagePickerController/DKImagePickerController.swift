@@ -64,7 +64,7 @@ public class DKAsset: NSObject {
             let rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
             UIGraphicsBeginImageContext(rect.size)
             original.drawInRect(rect)
-            let resized : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+            let resized : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
             UIGraphicsEndImageContext()
             
             return resized
@@ -119,23 +119,23 @@ public class DKAsset: NSObject {
         // Now we draw the underlying CGImage into a new context, applying the transform
         // calculated above.
         
-        let ctx = CGBitmapContextCreate(nil, Int(newImageWidth), Int(newImageHeight), CGImageGetBitsPerComponent(image.CGImage), 0, CGImageGetColorSpace(image.CGImage), CGImageGetBitmapInfo(image.CGImage).rawValue)
+        let ctx = CGBitmapContextCreate(nil, Int(newImageWidth), Int(newImageHeight), CGImageGetBitsPerComponent(image.CGImage!), 0, CGImageGetColorSpace(image.CGImage!)!, CGImageGetBitmapInfo(image.CGImage!).rawValue)
         
-        CGContextConcatCTM(ctx, transform);
+        CGContextConcatCTM(ctx!, transform);
         
         switch (imageOrientation) {
         case .Left, .LeftMirrored, .Right, .RightMirrored:
             // Grr...
-            CGContextDrawImage(ctx, CGRectMake(0, 0, newImageHeight, newImageWidth), image.CGImage)
+            CGContextDrawImage(ctx!, CGRectMake(0, 0, newImageHeight, newImageWidth), image.CGImage!)
             break
             
         default:
-            CGContextDrawImage(ctx, CGRectMake(0, 0, newImageWidth, newImageHeight), image.CGImage)
+            CGContextDrawImage(ctx!, CGRectMake(0, 0, newImageWidth, newImageHeight), image.CGImage!)
             break
         }
         
         // And now we just create a new UIImage from the drawing context
-        let cgimg = CGBitmapContextCreateImage(ctx)
+        let cgimg = CGBitmapContextCreateImage(ctx!)
         let img = UIImage(CGImage: cgimg!)
         
         return img
@@ -291,7 +291,7 @@ public class DKImagePickerController: UINavigationController {
                     rootVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: barButtonImage,
                         style: .Plain,
                         target: self,
-                        action: "dismiss")
+                        action: #selector(DKImagePickerController.dismiss))
 				} else {
 					rootVC.navigationItem.leftBarButtonItem = nil
 				}
@@ -324,7 +324,7 @@ public class DKImagePickerController: UINavigationController {
         let button = UIButton(type: UIButtonType.System)
 		button.setTitleColor(UINavigationBar.appearance().tintColor ?? self.navigationBar.tintColor, forState: UIControlState.Normal)
         button.reversesTitleShadowWhenHighlighted = true
-        button.addTarget(self, action: "done", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(MHVerticalTabBarControllerDelegate.done), forControlEvents: UIControlEvents.TouchUpInside)
       
         return button
     }()
@@ -346,10 +346,10 @@ public class DKImagePickerController: UINavigationController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "selectedImage:",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DKImagePickerController.selectedImage(_:)),
                                                                    name: DKImageSelectedNotification,
                                                                  object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "unselectedImage:",
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DKImagePickerController.unselectedImage(_:)),
                                                                    name: DKImageUnselectedNotification,
                                                                  object: nil)
     }
