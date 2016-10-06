@@ -17,7 +17,6 @@
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
-#import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
@@ -183,7 +182,6 @@
     NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     if(url != nil) {
         [_tagManager previewWithUrl:url];
-//        [DeeplinkController handleURL:url];
     }
     
     [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
