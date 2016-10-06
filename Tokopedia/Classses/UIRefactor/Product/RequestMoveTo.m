@@ -15,14 +15,14 @@
 {
     NSOperationQueue *_operationQueue;
     
-    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
+    RKObjectManager *_objectmanagerActionMoveToWarehouse;
+    RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
     
-    __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
+    RKObjectManager *_objectmanagerActionMoveToEtalase;
+    RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
-    __weak RKObjectManager *_objectmanagerActionAddEtalase;
-    __weak RKManagedObjectRequestOperation *_requestActionAddEtalase;
+    RKObjectManager *_objectmanagerActionAddEtalase;
+    RKManagedObjectRequestOperation *_requestActionAddEtalase;
     
     NSString *_etalaseName;
     NSString *_etalaseID;

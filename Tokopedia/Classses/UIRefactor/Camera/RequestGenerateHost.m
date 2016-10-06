@@ -12,7 +12,7 @@
 
 @implementation RequestGenerateHost
 {
-    __weak RKObjectManager *_objectManagerGenerateHost;
+    RKObjectManager *_objectManagerGenerateHost;
     RKManagedObjectRequestOperation *_requestGenerateHost;
     
     NSOperationQueue *_operationQueue;

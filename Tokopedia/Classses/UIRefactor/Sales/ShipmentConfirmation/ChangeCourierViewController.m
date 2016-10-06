@@ -31,8 +31,8 @@ BarCodeDelegate
     NSString *strNoResi;
     BOOL _shouldReloadData;
     
-    __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKObjectManager *_actionObjectManager;
+    RKManagedObjectRequestOperation *_actionRequest;
     RKResponseDescriptor *_responseActionDescriptorStatus;
     
     NSOperationQueue *_operationQueue;

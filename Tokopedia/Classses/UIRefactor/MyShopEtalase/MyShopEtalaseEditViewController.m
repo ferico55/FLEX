@@ -18,8 +18,8 @@
     
     NSInteger _requestcount;
     
-    __weak RKObjectManager *_objectmanagerActionAddEtalase;
-    __weak RKManagedObjectRequestOperation *_requestActionAddEtalase;
+    RKObjectManager *_objectmanagerActionAddEtalase;
+    RKManagedObjectRequestOperation *_requestActionAddEtalase;
     
     NSOperationQueue *_operationQueue;
     
