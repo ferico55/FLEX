@@ -37,8 +37,8 @@
     FavoriteShop *_favoriteshop;
     ProfileInfo *_profile;
     
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectmanager;
+    RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     
     NSString *_cachepath;
@@ -313,7 +313,7 @@
 
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDPROFILE_PEOPLEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_PEOPLEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }

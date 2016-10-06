@@ -38,7 +38,7 @@
 
     __strong NSOperationQueue *operationQueue = [NSOperationQueue new];
     
-    __weak RKManagedObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:pathPattern parameters:parameters];
+    RKManagedObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:pathPattern parameters:parameters];
 
     [operationQueue addOperation:request];
     

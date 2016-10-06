@@ -32,7 +32,6 @@
         self.dataManager = [ContactUsFormDataManager new];
         self.requestHost = [RequestGenerateHost new];
         self.requestHost.delegate = self;
-        [self.requestHost configureRestkitGenerateHost];
     }
     return self;
 }
