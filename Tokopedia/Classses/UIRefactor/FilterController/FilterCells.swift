@@ -52,7 +52,7 @@ class switchCell: UITableViewCell
         
         self.switchView = UISwitch.init(frame: CGRectZero)
         self.switchView.on = isSelected
-        self.switchView.addTarget(self, action: "switchChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        self.switchView.addTarget(self, action: #selector(switchCell.switchChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         self.accessoryView = self.switchView
         
