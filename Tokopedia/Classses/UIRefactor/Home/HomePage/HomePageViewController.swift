@@ -55,24 +55,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        self.categoryDataSource = CategoryDataSource()
-        //        self.categoryDataSource.delegate = self
-        //
-        //        flow.headerReferenceSize = CGSizeZero
-        //
-        //        self.collectionView.keyboardDismissMode = .Interactive
-        //        self.collectionView.dataSource = self.categoryDataSource
-        //        self.collectionView.delegate = self.categoryDataSource
-        //        self.collectionView.backgroundColor = UIColor.whiteColor()
-        //        self.collectionView.collectionViewLayout = flow
-        //
-        //        let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
-        //        self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
-        //
-        //        self.initViewLayout()
-        //        self.requestPulsaWidget()
-        //
         self.initKeyboardManager()
         self.initOuterStackView()
         self.initViewLayout()
@@ -148,6 +130,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.setStackViewAttribute(self.pulsaPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
         self.categoryPlaceholder = OAStackView()
         self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 24.0)
+        
+        self.outerStackView.addArrangedSubview(self.tickerPlaceholder)
+        
         
         // init slider
         self.sliderPlaceholder.mas_makeConstraints { make in
@@ -235,7 +220,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                             let url = NSURL(string: layout_row.image_url)
                             let imageData: NSData? = NSData(contentsOfURL: url!)
                             var iconImageView: UIImageView = UIImageView()
-                            iconImageView.contentMode = .ScaleAspectFit
                             if let imageData = imageData {
                                 iconImageView = UIImageView(image: UIImage(data: imageData))
                             }
@@ -246,6 +230,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                                 make.height.mas_equalTo()(25)
                                 make.width.mas_equalTo()(25)
                             })
+                            iconImageView.contentMode = .ScaleAspectFit
                             iconStackView.addArrangedSubview(imageViewContainer)
                             imageViewContainer.mas_makeConstraints({ (make) in
                                 make.height.mas_equalTo()(50)
@@ -335,8 +320,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
                 }, repeats: true)
             NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
-            
-            self.refreshCollectionViewHeaderSize()
             })
         
     }
@@ -461,9 +444,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     digitalGoodsSwipeView.alignment = .Center
                     digitalGoodsSwipeView.isCenteredChild = true
                 }
-                
-                self.refreshCollectionViewHeaderSize()
-                
             }
             
             })
@@ -550,20 +530,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     make.top.bottom().equalTo()(self.tickerPlaceholder)
                 }
                 
-                self.refreshCollectionViewHeaderSize()
+                self.tickerPlaceholder.addSubview(self.tickerView)
             }
             
         }) { (error) in
             
         }
-    }
-    
-    func refreshCollectionViewHeaderSize() {
-        let debounced = Debouncer(delay: 0.1) {
-            //            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.miniSliderPlaceholder.frame.origin.y + self.miniSliderPlaceholder.frame.size.height)
-            
-        }
-        debounced.call()
     }
     
     func refreshPulsaWidgetHeight() {
