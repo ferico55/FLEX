@@ -10,37 +10,28 @@ import UIKit
 
 class TPRoutes: NSObject {
     
-    var activeController: UIViewController!
-    
-    init(viewController: UIViewController) {
+    override init() {
         super.init()
         
         let navigator = NavigateViewController()
         
         //kereta
+        JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
+            NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
+            
+            return true
+        }
+        
+        //kereta
         JLRoutes.globalRoutes().addRoute("/kereta-api") { (params: [String : AnyObject]!) -> Bool in
-            let userManager = UserAuthentificationManager()
-            
-            let pulsaUrl = "https://tiket.tokopedia.com/kereta-api?utm_source=ios"
-            let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-            let url = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
-            
-            
-            self.openWebView(NSURL(string: url)!)
+            self.openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
             
             return true
         }
         
         //pulsa
         JLRoutes.globalRoutes().addRoute("/pulsa") { (params: [String : AnyObject]!) -> Bool in
-            let userManager = UserAuthentificationManager()
-            
-            let pulsaUrl = "https://pulsa.tokopedia.com?utm_source=ios"
-            let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-            let url = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
-            
-            
-            self.openWebView(NSURL(string: url)!)
+            self.openWebView(NSURL(string: "https://pulsa.tokopedia.com?utm_source=ios")!)
             
             return true
         }
@@ -126,7 +117,13 @@ class TPRoutes: NSObject {
     
     private func openWebView(url: NSURL) {
         let controller = WebViewController()
-        controller.strURL = url.absoluteString
+        let userManager = UserAuthentificationManager()
+        
+        var urlString = url.absoluteString
+        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+        urlString = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(urlString!.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
+        
+        controller.strURL = urlString
         
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)
