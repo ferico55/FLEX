@@ -57,7 +57,7 @@ internal class DKAssetGroupDetailVC: UICollectionViewController {
             self.contentView.addSubview(cameraView)
             
             let cameraButton = UIButton(frame: frame)
-            cameraButton.addTarget(self, action: "cameraButtonClicked", forControlEvents: .TouchUpInside)
+            cameraButton.addTarget(self, action: #selector(DKImageCameraCell.cameraButtonClicked), forControlEvents: .TouchUpInside)
 //            cameraButton.setImage(DKImageResource.cameraImage(), forState: .Normal)
             cameraButton.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
             self.contentView.addSubview(cameraButton)
@@ -242,7 +242,7 @@ internal class DKAssetGroupDetailVC: UICollectionViewController {
             } else {
                 permissionView.permitButton.setTitle(DKImageLocalizedStringWithKey("permit"), forState: .Normal)
                 permissionView.permitButton.setTitleColor(UIColor(red: 0, green: 122.0 / 255, blue: 1, alpha: 1), forState: .Normal)
-                permissionView.permitButton.addTarget(permissionView, action: "gotoSettings", forControlEvents: .TouchUpInside)
+                permissionView.permitButton.addTarget(permissionView, action: #selector(DKPermissionView.gotoSettings), forControlEvents: .TouchUpInside)
             }
             permissionView.permitButton.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
             permissionView.permitButton.sizeToFit()
@@ -284,7 +284,7 @@ internal class DKAssetGroupDetailVC: UICollectionViewController {
 		let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSFontAttributeName] as? UIFont
 		button.titleLabel!.font = globalTitleFont ?? UIFont.boldSystemFontOfSize(18.0)
 		
-		button.addTarget(self, action: "showGroupSelector", forControlEvents: .TouchUpInside)
+		button.addTarget(self, action: #selector(DKAssetGroupDetailVC.showGroupSelector), forControlEvents: .TouchUpInside)
         return button
     }()
 	
