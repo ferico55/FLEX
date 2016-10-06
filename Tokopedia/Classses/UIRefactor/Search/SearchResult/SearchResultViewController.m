@@ -1477,6 +1477,13 @@ ImageSearchRequestDelegate
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
+- (TopadsSource)topadsSource {
+    if(_isFromDirectory) {
+        return TopadsSourceDirectory;
+    }
+    return TopadsSourceSearch;
+}
+
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
     if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:[self directoryType]]){
         NavigateViewController *navigateController = [NavigateViewController new];

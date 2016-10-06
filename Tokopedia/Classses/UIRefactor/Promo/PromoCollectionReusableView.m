@@ -212,7 +212,19 @@ TKPDAlertViewDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan"]];
+        NSString* topadsSource;
+        if([_delegate topadsSource] == TopadsSourceFeed) {
+            topadsSource = @"fav_product";
+        } else if([_delegate topadsSource] == TopadsSourceSearch) {
+            topadsSource = @"search";
+        } else if([_delegate topadsSource] == TopadsSourceHotlist) {
+            topadsSource = @"hotlist";
+        } else if([_delegate topadsSource] == TopadsSourceDirectory) {
+            topadsSource = @"directory";
+        }
+        
+        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium-ios", topadsSource];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
 }
 
