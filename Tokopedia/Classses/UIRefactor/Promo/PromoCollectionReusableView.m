@@ -223,7 +223,7 @@ TKPDAlertViewDelegate
             topadsSource = @"directory";
         }
         
-        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium-ios", topadsSource];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium=ios", topadsSource];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
 }
