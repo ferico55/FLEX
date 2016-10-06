@@ -62,7 +62,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    TPRoutes *routes = [[TPRoutes alloc] initWithViewController:[self frontViewController]];
+    TPRoutes *routes = [[TPRoutes alloc] init];
     [self startAppsee];
     [self hideTitleBackButton];
     
