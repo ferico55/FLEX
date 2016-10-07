@@ -73,6 +73,7 @@
 @property (nonatomic) float diffOldAndExpandedHeightDescription;
 @property (nonatomic) Boolean isShopDescriptionExpanded;
 @property (strong, nonatomic) IBOutlet UIView *soldAmountView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *successTransactionHeightConstraint;
 
 - (IBAction)gesture:(id)sender;
 
@@ -138,6 +139,18 @@
     [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
     
     _isShopDescriptionExpanded = NO;
+    
+    [self adjustStatisticCellHeight];
+}
+
+- (void)adjustStatisticCellHeight {
+    if (_shop.result.isOfficial) {
+        _successTransactionHeightConstraint.constant = 0;
+    }
+    CGRect statisticCellFrame = _statisticCell.frame;
+    statisticCellFrame.size.height = [_statisticCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    _statisticCell.frame = statisticCellFrame;
+    [_statisticCell layoutIfNeeded];
 }
 
 - (void)setTopLabelLayoutWidth {
@@ -354,7 +367,6 @@
     else if (indexPath.row == _shop.result.address.count+1)
     {
         cell = _statisticCell;
-
     }
     else if (indexPath.row<=_shipments.count+_shop.result.address.count+1)
     {
