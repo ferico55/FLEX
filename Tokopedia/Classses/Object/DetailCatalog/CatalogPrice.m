@@ -10,4 +10,19 @@
 
 @implementation CatalogPrice
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"price_min",
+                      @"price_max",
+                     ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end

@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPPlacePickerViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
@@ -51,7 +34,6 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wrD-rD-Jjn" customClass="TKPMapView" customModule="Tokopedia" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="VBW-3j-MoJ"/>
@@ -59,34 +41,28 @@
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="vxt-Bn-wWg">
                     <rect key="frame" x="265" y="230" width="70" height="70"/>
-                    <animations/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tq3-y5-YOS">
                     <rect key="frame" x="160" y="150" width="280" height="74"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xf5-Ix-U7Q">
                             <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
-                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
                             <rect key="frame" x="-160" y="-150" width="320" height="32"/>
-                            <animations/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_triangle_down_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="r8s-lq-IBA">
                             <rect key="frame" x="130" y="64" width="20" height="10"/>
-                            <animations/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lokasi yang Dituju" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STy-T0-3SC">
                             <rect key="frame" x="10" y="0.0" width="210" height="64"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48X-qA-qCM">
                             <rect key="frame" x="230" y="0.0" width="50" height="64"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="8YW-d2-agI"/>
@@ -99,7 +75,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="STy-T0-3SC" firstAttribute="top" secondItem="tq3-y5-YOS" secondAttribute="top" id="0uJ-04-ZKn"/>
@@ -121,7 +96,6 @@
                 </view>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="1f4-A5-wM6">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                    <animations/>
                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="LYd-1R-6wY"/>
@@ -129,7 +103,6 @@
                 </searchBar>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XX-Ir-udL">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.2622451241" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                     <connections>
@@ -141,17 +114,15 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat Kantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moC-Bm-Mzo">
                             <rect key="frame" x="15" y="10" width="545" height="20"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="kmq-Le-8fX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_down.png" translatesAutoresizingMaskIntoConstraints="NO" id="3H3-8N-MDv">
                             <rect key="frame" x="560" y="0.0" width="40" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="cgG-ez-yTn"/>
                                 <constraint firstAttribute="width" constant="40" id="mf7-VE-Cvk"/>
@@ -159,85 +130,76 @@
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas*" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fi4-ZV-BFR">
                             <rect key="frame" x="15" y="31" width="545" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="T51-vn-za2"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="10"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9A3-3j-agu">
-                            <rect key="frame" x="0.0" y="60" width="600" height="1"/>
-                            <animations/>
+                            <rect key="frame" x="0.0" y="66" width="600" height="1"/>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="wDr-bs-175"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4QJ-0K-71G">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4QJ-0K-71G">
                             <rect key="frame" x="15" y="77" width="118" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="sod-ww-XUG"/>
                                 <constraint firstAttribute="width" constant="118" id="xKF-FR-op6"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbQ-wr-Aej">
                             <rect key="frame" x="15" y="100" width="570" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="32d-pV-DDP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIZ-8b-fld">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIZ-8b-fld">
                             <rect key="frame" x="15" y="135" width="107" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="107" id="5Q7-kK-ZAN"/>
                                 <constraint firstAttribute="height" constant="21" id="JRB-Ng-tWL"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="9dZ-KQ-oc1">
                             <rect key="frame" x="15" y="158" width="570" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="UnM-8R-9ar"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Telepon Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eE-CE-F5G">
                             <rect key="frame" x="15" y="200" width="130" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="C1b-Zr-kso"/>
                                 <constraint firstAttribute="width" constant="130" id="OUx-8Q-68i"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wef-Tu-0dr">
                             <rect key="frame" x="15" y="223" width="570" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="8cn-3R-LBV"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHk-CY-Fjd">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="cVq-Z0-ms6"/>
                             </constraints>
@@ -246,7 +208,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
                     <constraints>
@@ -254,7 +215,7 @@
                         <constraint firstItem="0eE-CE-F5G" firstAttribute="top" secondItem="9dZ-KQ-oc1" secondAttribute="bottom" constant="21" id="2Xh-NB-xNN"/>
                         <constraint firstItem="mHk-CY-Fjd" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="2nU-bQ-5Gs"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="276" id="88i-7z-Ejt"/>
-                        <constraint firstItem="9A3-3j-agu" firstAttribute="top" secondItem="3H3-8N-MDv" secondAttribute="bottom" constant="20" id="8E2-c2-EfZ"/>
+                        <constraint firstItem="9A3-3j-agu" firstAttribute="top" secondItem="3H3-8N-MDv" secondAttribute="bottom" constant="26" id="8E2-c2-EfZ"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="BAf-SO-GOQ"/>
                         <constraint firstAttribute="trailing" secondItem="9dZ-KQ-oc1" secondAttribute="trailing" constant="15" id="BEK-jt-oI5"/>
                         <constraint firstItem="3H3-8N-MDv" firstAttribute="leading" secondItem="moC-Bm-Mzo" secondAttribute="trailing" id="D7h-L0-uKy"/>
@@ -273,7 +234,7 @@
                         <constraint firstAttribute="trailing" secondItem="mHk-CY-Fjd" secondAttribute="trailing" id="jK9-2b-mYK"/>
                         <constraint firstItem="3H3-8N-MDv" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="mI4-U4-mr8"/>
                         <constraint firstItem="Fi4-ZV-BFR" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="n9E-I4-cmN"/>
-                        <constraint firstItem="4QJ-0K-71G" firstAttribute="top" secondItem="9A3-3j-agu" secondAttribute="bottom" constant="16" id="nOX-ls-6Bp"/>
+                        <constraint firstItem="4QJ-0K-71G" firstAttribute="top" secondItem="9A3-3j-agu" secondAttribute="bottom" constant="10" id="nOX-ls-6Bp"/>
                         <constraint firstItem="wef-Tu-0dr" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="oxl-kn-iVy"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="top" secondItem="tbQ-wr-Aej" secondAttribute="bottom" constant="14" id="q8b-Gc-plY"/>
                         <constraint firstAttribute="trailing" secondItem="9A3-3j-agu" secondAttribute="trailing" id="rQw-fB-9yA"/>
@@ -287,7 +248,6 @@
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="72z-zm-lQ5">
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
-                    <animations/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.2622451241" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                     <connections>
@@ -296,7 +256,6 @@
                 </view>
                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JeQ-fs-NTa">
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="4qH-1g-Wi3"/>
@@ -304,7 +263,6 @@
                     </connections>
                 </tableView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="1f4-A5-wM6" secondAttribute="trailing" id="AlU-PB-d5V"/>

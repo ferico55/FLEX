@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SpecChilds.h"
 
-@interface CatalogSpecs : NSObject
+@interface CatalogSpecs : NSObject<TKPObjectMapping>
 
 @property (strong, nonatomic) NSArray *spec_childs;
 @property (strong, nonatomic) NSString *spec_header;

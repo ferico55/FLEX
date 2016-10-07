@@ -681,7 +681,7 @@
 {
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
-                                 NSFontAttributeName            : [UIFont fontWithName:@"Gotham Medium" size:15.0],
+                                 NSFontAttributeName            : [UIFont title1ThemeMedium],
                                  };
     
     NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string

@@ -7,14 +7,14 @@
 //
 
 #import "MiniSlideData.h"
-#import <RestKit/ObjectMapping/RKObjectMapping.h>
+#import <RestKit/RestKit.h>
 #import "MiniSlide.h"
 
 @implementation MiniSlideData
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"banners" toKeyPath:@"banners" withMapping:[MiniSlide mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"slides" toKeyPath:@"slides" withMapping:[MiniSlide mapping]]];
     
     return mapping;
 }

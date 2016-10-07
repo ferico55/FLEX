@@ -25,12 +25,6 @@ typedef enum {
     TROUBLE_DIFF_CARRIER        = 4
 }TYPE_TROUBLE;
 
-typedef enum {
-    ACTION_BY_BUYER         = 1,
-    ACTION_BY_SELLER        = 2,
-    ACTION_BY_TOKOPEDIA     = 3
-}TYPE_ACTION_BY;
-
 #define API_ACTION_KEY @"action"
 #define API_RESOLUTION_ID_KEY @"resolution_id"
 #define API_SHIPPING_REF_KEY @"shipping_ref"

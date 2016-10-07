@@ -37,7 +37,16 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_searchTitle text]];
     
     NSRange range = [[_searchTitle text] rangeOfString:searchText options:NSCaseInsensitiveSearch];
-    [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]} range:range];
+    [attributedText setAttributes:@{NSFontAttributeName:[UIFont title2ThemeMedium]} range:range];
+    [_searchTitle setAttributedText:attributedText];
+}
+
+- (void) setGreenSearchText:(NSString*)searchText {
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_searchTitle text]];
+    
+    NSRange range = [[_searchTitle text] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+    UIColor *tokopediaGreenColor = [UIColor colorWithRed:65.0/255 green:181.0/255 blue:73.0/255 alpha:1.0];
+    [attributedText setAttributes:@{NSForegroundColorAttributeName:tokopediaGreenColor} range: range];
     [_searchTitle setAttributedText:attributedText];
 }
 

@@ -23,8 +23,11 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
 
-    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment" toKeyPath:@"shipment" withMapping:[ShipmentCourier mapping]];
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[ShipmentCourier mapping]];
     [mapping addPropertyMapping:relMapping];
+    
+    RKRelationshipMapping *relShipmentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment" toKeyPath:@"shipment" withMapping:[ShipmentCourier mapping]];
+    [mapping addPropertyMapping:relShipmentMapping];
     return mapping;
 }
 

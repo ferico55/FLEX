@@ -175,10 +175,14 @@
     if (order.order_detail.detail_ship_ref_num) {
         if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
             [cell showTrackButton];
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING &&
-                   order.order_shipment.shipment_id == 10) {
-            [cell showTrackButton];
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING) {
+            if(order.order_is_pickup == 1) {
+                [cell showTrackButton];
+            } else {
+                [cell showAllButton];
+            }
+            
+        } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
@@ -209,7 +213,7 @@
          order.order_deadline.deadline_finish_day_left) {
         cell.dateFinishLabel.hidden = NO;
         cell.dateFinishLabel.text = @"Selesai Otomatis";
-        cell.dateFinishLabel.font = [UIFont fontWithName:@"GothamBook" size:9];
+        cell.dateFinishLabel.font = [UIFont microTheme];
         cell.finishLabel.hidden = NO;
         cell.finishLabel.text = order.order_deadline.deadline_finish_date;        
     }

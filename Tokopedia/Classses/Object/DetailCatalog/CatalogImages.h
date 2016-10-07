@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CatalogImages : NSObject
+@interface CatalogImages : NSObject<TKPObjectMapping>
 
 @property (nonatomic) NSInteger image_primary;
 @property (nonatomic, strong) NSString *image_src;

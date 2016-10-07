@@ -14,7 +14,6 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import <AppsFlyer/AppsFlyer.h>
-#import "Localytics.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
@@ -24,6 +23,8 @@
 #import "FBTweakShakeWindow.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "Tokopedia-Swift.h"
+#import <Appsee/Appsee.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -61,6 +62,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    [self startAppsee];
     [self hideTitleBackButton];
     
     UIViewController* viewController = [self frontViewController];
@@ -91,7 +94,7 @@
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
         
-        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
@@ -125,11 +128,26 @@
                 }
             }
         }
-
+        
+        NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (pushNotificationData) {
+            [self handlePushNotificationWithData:pushNotificationData];
+        }
     });
+    
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
+}
+
+-(void)startAppsee{
+    [Appsee start:@"f2c02b28ccd54635a7c73eb9dac5038f"];
+}
+
+- (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {
+    [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
+                                                        object:nil
+                                                      userInfo:pushNotificationData];
 }
 
 - (void)configureAppIndexing {
@@ -222,7 +240,7 @@
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect object:nil userInfo:userInfo];
+        [self handlePushNotificationWithData:userInfo];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
     }
@@ -233,6 +251,10 @@
     }
     if ([userInfo objectForKey:@"Localytics Deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
+        [DeeplinkController handleURL:url];
+    }
+    if ([userInfo objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
         [DeeplinkController handleURL:url];
     }
 }

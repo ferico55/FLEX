@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Localytics.h"
 #import "TransactionCartResult.h"
 #import "Product.h"
 #import "SearchAWS.h"
@@ -22,5 +21,10 @@
 + (void)trackLoginStatus:(BOOL)status;
 + (void)trackScreenName:(NSString *)screenName;
 + (void)trackAddProductPriceAlert:(ProductDetail *)product price:(NSString *)price success:(BOOL)isSuccess;
+
++ (void)trackDepositWithdraw:(BOOL)status;
++ (void)trackShipmentConfirmation:(BOOL)status;
++ (void)trackGiveReview:(BOOL)status accuracy:(NSInteger)accuracy quality:(NSInteger)quality;
++ (void)trackReceiveConfirmation:(BOOL)status;
 
 @end

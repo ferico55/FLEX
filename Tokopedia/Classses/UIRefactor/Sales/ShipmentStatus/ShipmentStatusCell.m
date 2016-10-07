@@ -8,9 +8,7 @@
 
 #import "ShipmentStatusCell.h"
 
-@interface ShipmentStatusCell () {
-    NSDictionary *_statusLabelAttributes;
-}
+@interface ShipmentStatusCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *userView;
 
@@ -43,15 +41,6 @@
     _twoButtonsView.frame = frame;
     [_containerView addSubview:_twoButtonsView];
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    _statusLabelAttributes = @{
-                                NSForegroundColorAttributeName  : [UIColor blackColor],
-                                NSFontAttributeName             : _statusLabel.font,
-                                NSParagraphStyleAttributeName   : style,
-                              };
-    
     UITapGestureRecognizer *invoiceTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(tap:)];
     _invoiceNumberLabel.tag = 1;
@@ -78,11 +67,13 @@
 - (void)showAllButton
 {
     _twoButtonsView.hidden = NO;
+    _oneButtonView.hidden = YES;
 }
 
 - (void)showTrackButton
 {
     _oneButtonView.hidden = NO;
+    _twoButtonsView.hidden = YES;
 }
 
 - (void)hideDayLeftInformation
@@ -96,8 +87,7 @@
     text = text ?: @"-";
     NSString *status = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     status = [status stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:status
-                                                                  attributes:_statusLabelAttributes];
+    _statusLabel.text = status;
 }
 
 

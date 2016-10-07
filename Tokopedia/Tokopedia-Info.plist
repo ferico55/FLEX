@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.88</string>
+	<string>1.90</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -81,7 +81,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>201609291804</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -93,6 +93,15 @@
 				<dict/>
 				<key>KitName</key>
 				<string>Crashlytics</string>
+			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>apikey</key>
+					<string>f2c02b28ccd54635a7c73eb9dac5038f</string>
+				</dict>
+				<key>KitName</key>
+				<string>Appsee</string>
 			</dict>
 		</array>
 	</dict>
@@ -121,14 +130,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Show your location on the map</string>
 	<key>UIAppFonts</key>
-	<array>
-		<string>GothamBook.ttf</string>
-		<string>GothamMedium.ttf</string>
-		<string>GothamLight.ttf</string>
-		<string>GothamBlack.ttf</string>
-		<string>Lato-Regular.ttf</string>
-		<string>Lato-Bold.ttf</string>
-	</array>
+	<array/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

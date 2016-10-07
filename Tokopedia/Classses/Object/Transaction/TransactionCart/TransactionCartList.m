@@ -18,7 +18,7 @@
         tempViewModel.isLuckyMerchant = _cart_shop.lucky_merchant;
         tempViewModel.logiscticFee = _cart_logistic_fee;
         tempViewModel.totalProductPriceIDR = _cart_total_product_price_idr;
-        tempViewModel.insuranceFee = [_cart_insurance_price stringValue];
+        tempViewModel.insuranceFee = _cart_insurance_price;
         tempViewModel.shippingRateIDR = _cart_shipping_rate_idr;
         tempViewModel.totalAmountIDR = _cart_total_amount_idr;
         tempViewModel.errors = _errors;

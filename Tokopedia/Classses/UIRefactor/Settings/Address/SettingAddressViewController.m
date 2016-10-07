@@ -60,10 +60,10 @@
     TokopediaNetworkManager *tokopediaNetworkManagerRequest;
     
     __weak RKObjectManager *_objectmanagerActionSetDefault;
-    __weak RKManagedObjectRequestOperation *_requestActionSetDefault;
+    RKManagedObjectRequestOperation *_requestActionSetDefault;
     
     __weak RKObjectManager *_objectmanagerActionDelete;
-    __weak RKManagedObjectRequestOperation *_requestActionDelete;
+    RKManagedObjectRequestOperation *_requestActionDelete;
     
     NSOperationQueue *_operationQueue;
     
@@ -127,18 +127,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _table.rowHeight = UITableViewAutomaticDimension;
+    _table.estimatedRowHeight = 40;
+    
     _listTemp = [NSMutableArray new];
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGRect frame = _searchBarView.frame;
-    frame.size.width = screenWidth;
-    _searchBarView.frame = frame;
-    
-    frame = _addNewAddressView.frame;
-    frame.size.width = screenWidth;
-    _addNewAddressView.frame = frame;
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
@@ -214,6 +207,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Setting Address Page"];
     
 //    if (!_isrefreshview) {
 //        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -233,6 +227,19 @@
 {
     [super viewWillDisappear:animated];
     [self cancel];
+}
+
+-(void)viewDidLayoutSubviews {
+    CGRect screenRect = self.view.bounds;
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _searchBarView.frame;
+    frame.size.width = screenWidth;
+    _searchBarView.frame = frame;
+    
+    frame = _addNewAddressView.frame;
+    frame.size.width = screenWidth;
+    _addNewAddressView.frame = frame;
 }
 
 #pragma mark - Table View Data Source
@@ -333,21 +340,8 @@
                 NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %@",
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
-                
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:address
-                                                                                                attributes:attributes];
-                
-                ((SettingAddressExpandedCell*)cell).addressLabel.attributedText = addressAttributedText;
+                ((SettingAddressExpandedCell*)cell).addressLabel.text = address;
+                ((SettingAddressExpandedCell*)cell).addressLabel.font = [UIFont largeTheme];
                 ((SettingAddressExpandedCell*)cell).phoneLabel.text = list.receiver_phone;
             }
         }
@@ -368,27 +362,6 @@
 }
 
 #pragma mark - Table View Delegate
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-        return 44;
-    } else {
-        AddressFormList *list = _list[indexPath.section];
-        
-        NSString *string = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
-                            [NSString convertHTML:list.address_street], list.district_name, list.city_name,
-                            list.province_name, list.country_name, list.postal_code];
-        
-        //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize maximumLabelSize = CGSizeMake(190,9999);
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:NSLineBreakByTruncatingTail];
-        return 243-35+expectedLabelSize.height;
-
-    }
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -493,7 +466,10 @@
     if (_page==1)_doneBarButtonItem.enabled = NO;
     [[self getNetworkRequest] requestWithBaseUrl:[NSString v4Url] path:@"/v4/people/get_address.pl" method:RKRequestMethodGET parameter:[self getAddressParameter] mapping:[AddressForm mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             [self requestSuccess:successResult withOperation:operation];
+            [_refreshControl endRefreshing];
+        
     } onFailure:^(NSError *errorResult) {
+        [_refreshControl endRefreshing];
         NSLog(@"%@", errorResult);
     }];
 }
@@ -507,6 +483,7 @@
     
     if (status) {
         [self requestProcess:object];
+        [_refreshControl endRefreshing];
     }
     else
     {
@@ -938,7 +915,7 @@
 -(void)setDefaultAddressData:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
     _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
     [self setAsDefaultAtIndexPath:_indexPath];
@@ -947,7 +924,7 @@
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
     _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
     switch (button.tag) {
@@ -1123,7 +1100,7 @@
         CGFloat padding = 15;
         NSIndexPath *indexpath = ((GeneralList1GestureCell*) cell).indexpath;
         AddressFormList *list = _list[indexpath.section];
-        [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+        [_datainput setObject:list.address_id forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
         
         UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
         MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"Hapus"
@@ -1203,10 +1180,16 @@
 
 #pragma mark - Address add delegate
 
-- (void)successAddAddress
+- (void)successAddAddress:(AddressFormList*)address
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
+    
+    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [_delegate SettingAddressViewController:self withUserInfo:@{DATA_ADDRESS_DETAIL_KEY: address}];
+    }
     
     [self request];
 }

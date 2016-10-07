@@ -1,11 +1,14 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-target "Tokopedia" do
-    pod 'RestKit',  '~> 0.20.0'
+use_frameworks!
+
+def common_pods
+    # Tweaks is installed manually, the use_frameworks! makes the Tweaks options not showing.
+    
+    pod 'RestKit',  '~> 0.27.0'
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
-    pod 'Localytics',  '~> 3.5.0'
     pod 'GoogleAppIndexing'
     pod 'Google/Analytics'
     pod 'GoogleTagManager'
@@ -14,19 +17,45 @@ target "Tokopedia" do
     pod 'Rollout.io', '~> 1.0.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
-    pod 'Tweaks', '~> 2.0.0'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
     pod 'ComponentKit', '~> 0.14'
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
+    pod "JLPermissions/Contacts"
     pod 'Google/SignIn'
+    pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
-    pod 'Masonry', '~> 1.0.1'
     pod 'CardIO'
     pod 'DownPicker'
+    pod 'APAddressBook/Swift'
+    pod 'Masonry'
+    pod 'TPKeyboardAvoiding', '~> 1.3'
+    pod 'OAStackView', '~> 1.0.1'
+    pod 'Appsee'
+    
+    # This is used only to support UIImageView+AFNetworking.
+    # If we can replace this with SDWebImage for example, this library won't be needed anymore.
+    pod 'AFNetworking', '~> 3.1.0'
+end
+
+target "Tokopedia" do
+    common_pods
 end
 
 target "TokopediaTests" do
-    pod 'RestKit',  '~> 0.20.0'
+    common_pods
+end
+
+post_install do |installer|
+    
+    installer.pods_project.targets.each do |target|
+        installer.pods_project.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end   
+        
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end
+    end
 end

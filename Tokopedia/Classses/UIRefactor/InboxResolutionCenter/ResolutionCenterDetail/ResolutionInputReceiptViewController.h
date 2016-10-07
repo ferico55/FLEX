@@ -10,10 +10,11 @@
 
 #import "ShipmentCourier.h"
 #import "ResolutionConversation.h"
+#import "ResolutionLast.h"
 
 @protocol ResolutionInputReceiptViewControllerDelegate <NSObject>
 @required
-- (void)receiptNumber:(NSString*)receiptNumber withShipmentAgent:(ShipmentCourier*)shipmentAgent withAction:(NSString *)action conversation:(ResolutionConversation*)conversation;
+- (void)addResolutionLast:(ResolutionLast*)resolutionLast conversationLast:(ResolutionConversation*)conversationLast replyEnable:(BOOL)isReplyEnable;
 @end
 
 @interface ResolutionInputReceiptViewController : UIViewController
@@ -23,6 +24,9 @@
 
 
 @property (nonatomic) NSString *action;
+@property (nonatomic) NSString *resolutionID;
+@property (nonatomic) NSString *conversationID;
+@property (nonatomic) BOOL isInputResi;
 
 @property ShipmentCourier *selectedShipment;
 @property ResolutionConversation *conversation;

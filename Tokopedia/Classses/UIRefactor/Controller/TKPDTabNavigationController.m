@@ -204,7 +204,7 @@
         for (NSInteger i = 0; i < count; i++) {
             c = viewControllers[i];
             if (c.TKPDTabNavigationItem == nil) {
-                c.TKPDTabNavigationItem = (TKPDTabNavigationItem*)c.tabBarItem;
+                c.TKPDTabNavigationItem = (TKPDTabNavigationItemInNavVC*)c.tabBarItem;
             }
         }
         
@@ -460,6 +460,12 @@
         if (should) {
             [self setSelectedIndex:index animated:NO];
             
+            if (index == 1) {
+                [TPAnalytics trackClickSearchResultTabWithName:@"Catalog"];
+            } else if (index == 2) {
+                [TPAnalytics trackClickSearchResultTabWithName:@"Shop"];
+            }
+            
             if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
                 
                 [_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
@@ -698,7 +704,7 @@
 
 @dynamic TKPDTabNavigationItem;
 
-- (TKPDTabNavigationItem *)TKPDTabNavigationItem
+- (TKPDTabNavigationItemInNavVC *)TKPDTabNavigationItem
 {
     id o = objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
     if (o == nil) {
@@ -708,7 +714,7 @@
     return o;
 }
 
-- (void)setTKPDTabNavigationItem:(TKPDTabNavigationItem *)TKPDTabNavigationItem
+- (void)setTKPDTabNavigationItem:(TKPDTabNavigationItemInNavVC *)TKPDTabNavigationItem
 {
     objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }

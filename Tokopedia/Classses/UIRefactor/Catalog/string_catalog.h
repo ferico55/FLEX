@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#define API_CATALOG_PATH                @"catalog.pl"
+#define API_CATALOG_PATH                @"/v4/catalog/get_catalog_detail.pl"
 #define API_GET_CATALOG_DETAIL_KEY      @"get_catalog_detail"
 #define API_ACTION_KEY                  @"action"
 #define API_CATALOG_ID_KEY              @"catalog_id"

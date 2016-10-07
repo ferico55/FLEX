@@ -24,7 +24,6 @@
 #import "DetailProductViewController.h"
 #import "CatalogViewController.h"
 
-#import "GeneralProductCell.h"
 #import "SearchResultViewController.h"
 #import "SortViewController.h"
 #import "FilterViewController.h"
@@ -34,8 +33,6 @@
 #import "LoadingView.h"
 
 #import "URLCacheController.h"
-#import "GeneralPhotoProductCell.h"
-#import "GeneralSingleProductCell.h"
 
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
@@ -54,6 +51,8 @@
 
 #import "ImageSearchResponse.h"
 #import "ImageSearchRequest.h"
+
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Search Result View Controller
 
@@ -158,6 +157,8 @@ ImageSearchRequestDelegate
     NSArray<CategoryDetail*> *_selectedCategories;
     
     NSString *_rootCategoryID;
+    
+    NSString *_defaultSearchCategory;
 }
 
 #pragma mark - Initialization
@@ -189,6 +190,9 @@ ImageSearchRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
+    _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
+;
+
     
     _start = 0;
     
@@ -908,6 +912,20 @@ ImageSearchRequestDelegate
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
                                                                                
            _selectedCategories = selectedCategories;
+                                                                               
+          // if search result is category result, then if filter is being added, change the navigation title
+          for (ListFilter *filter in _filterResponse.filter){
+              if ([filter.title  isEqual: @"Kategori"]){
+                  if (filter.isMultipleSelect == NO) {
+                      if (selectedCategories.count > 0) {
+                          [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                      } else {
+                          [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
+                      }
+                  }
+              }
+          }
+                                                                               
            _selectedFilters = selectedFilters;
            _selectedFilterParam = paramFilters;
            [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
@@ -1016,11 +1034,22 @@ ImageSearchRequestDelegate
         }else{
             [parameter setObject:@"search" forKey:@"source"];
         }
+        [parameter setObject:[self getUniqueId] forKey:@"unique_id"];
     }
     
     [parameter addEntriesFromDictionary:_selectedSortParam];
     [parameter addEntriesFromDictionary:_selectedFilterParam];
     return parameter;
+}
+
+-(NSString*) getUniqueId {
+    NSString *userId = [_userManager getUserId];
+    
+    if ([userId  isEqual: @"0"]) {
+        userId = [_userManager getMyDeviceToken];
+    }
+    
+    return userId;
 }
 
 -(NSString*)selectedCategoryIDsString{
@@ -1243,6 +1272,8 @@ ImageSearchRequestDelegate
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+            
+            [TPAnalytics trackSearchNoResultWithKeyword:[_data objectForKey:@"search"]?:@""];
 
             if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
@@ -1510,7 +1541,7 @@ ImageSearchRequestDelegate
 -(void)didReceiveUploadedImageURL:(NSString *)imageURL{
     _image_url = imageURL;
 
-    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/search/snapsearch.pl"
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]

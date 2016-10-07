@@ -19,7 +19,8 @@
                       @"price",
                       @"formatted_price",
                       @"ut",
-                      @"check_sum"
+                      @"check_sum",
+                      @"is_show_map"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

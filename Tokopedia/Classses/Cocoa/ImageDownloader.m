@@ -20,7 +20,7 @@ static char kAFImageRequestOperationObjectKey;
 
 
 @interface ImageDownloader (_AFNetworking)
-@property (readwrite, nonatomic, strong, setter = af_setImageRequestOperation:) AFImageRequestOperation *af_imageRequestOperation;
+@property (readwrite, nonatomic, strong, setter = af_setImageRequestOperation:) AFRKImageRequestOperation *af_imageRequestOperation;
 @end
 
 @implementation ImageDownloader (_AFNetworking)
@@ -29,11 +29,11 @@ static char kAFImageRequestOperationObjectKey;
 
 @implementation ImageDownloader
 
-- (AFHTTPRequestOperation *)af_imageRequestOperation {
-    return (AFHTTPRequestOperation *)objc_getAssociatedObject(self, &kAFImageRequestOperationObjectKey);
+- (AFRKHTTPRequestOperation *)af_imageRequestOperation {
+    return (AFRKHTTPRequestOperation *)objc_getAssociatedObject(self, &kAFImageRequestOperationObjectKey);
 }
 
-- (void)af_setImageRequestOperation:(AFImageRequestOperation *)imageRequestOperation {
+- (void)af_setImageRequestOperation:(AFRKImageRequestOperation *)imageRequestOperation {
     objc_setAssociatedObject(self, &kAFImageRequestOperationObjectKey, imageRequestOperation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -75,13 +75,13 @@ static char kAFImageRequestOperationObjectKey;
             success(nil, nil, cachedImage);
         }
     } else {
-        AFImageRequestOperation *requestOperation = [[AFImageRequestOperation alloc] initWithRequest:urlRequest];
+        AFRKImageRequestOperation *requestOperation = [[AFRKImageRequestOperation alloc] initWithRequest:urlRequest];
         
 #ifdef _AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES_
         requestOperation.allowsInvalidSSLCertificate = YES;
 #endif
         
-        [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [requestOperation setCompletionBlockWithSuccess:^(AFRKHTTPRequestOperation *operation, id responseObject) {
             if ([urlRequest isEqual:[self.af_imageRequestOperation request]]) {
                 if (self.af_imageRequestOperation == operation) {
                     self.af_imageRequestOperation = nil;
@@ -93,7 +93,7 @@ static char kAFImageRequestOperationObjectKey;
             }
             
             [[[self class] af_sharedImageCache] cacheImage:responseObject forRequest:urlRequest];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(AFRKHTTPRequestOperation *operation, NSError *error) {
             if ([urlRequest isEqual:[self.af_imageRequestOperation request]]) {
                 if (self.af_imageRequestOperation == operation) {
                     self.af_imageRequestOperation = nil;

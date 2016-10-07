@@ -60,28 +60,6 @@ class TKPMapView: GMSMapView {
         self.camera = cameraPosition
     }
     
-    func captureMapScreen() -> UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(self.frame.size, true, 0.0)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        let refWidth:CGFloat = CGFloat(CGImageGetWidth(image.CGImage))
-        let refHeight:CGFloat = CGFloat(CGImageGetHeight(image.CGImage))
-        
-        let x:CGFloat = (refWidth - 220) / 2.0
-        let y:CGFloat = ((refHeight - 220) / 2.0) - 40
-        
-        let cropRect : CGRect = CGRectMake(x, y, 220, 220)
-        let imageRef : CGImageRef = CGImageCreateWithImageInRect(image.CGImage, cropRect)!
-        
-        let cropped : UIImage = UIImage.init(CGImage: imageRef, scale: 0, orientation: image.imageOrientation)
-        
-        return cropped
-    }
-    
     func updateAddress(address:String){
         self.infoWindowView.addressLabel!.setCustomAttributedText(address)
     }

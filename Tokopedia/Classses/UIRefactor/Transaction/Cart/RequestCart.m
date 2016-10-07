@@ -163,7 +163,7 @@
     networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_get_parameter.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -202,13 +202,12 @@
 
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
     
-    NSDictionary* param = @{@"action" : @"check_voucher_code",
-                            @"voucher_code" : voucherCode
-                            };
+    NSDictionary* param = @{@"voucher_code" : voucherCode};
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"tx-voucher.pl"
-                                method:RKRequestMethodPOST
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-voucher/check_voucher_code.pl"
+                                method:RKRequestMethodGET
                              parameter:param
                                mapping:[TransactionVoucher mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -246,22 +245,22 @@
     
     NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
     NSString *shopID = cart.cart_shop.shop_id?:@"";
-    NSInteger addressID = cart.cart_destination.address_id;
+    NSString *addressID = cart.cart_destination.address_id?:@"";
     NSString *shipmentID = cart.cart_shipments.shipment_id?:@"";
     NSString *shipmentPackageID = cart.cart_shipments.shipment_package_id?:@"";
     
-    NSDictionary* param = @{@"action"               :@"cancel_cart",
-                            @"product_cart_id"      :@(productCartID),
+    NSDictionary* param = @{@"product_cart_id"      :@(productCartID),
                             @"shop_id"              :shopID,
-                            @"address_id"           :@(addressID),
+                            @"address_id"           :addressID,
                             @"shipment_id"          :shipmentID,
                             @"shipment_package_id"  :shipmentPackageID
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
     networkManager.isUsingDefaultError = NO;
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"action/tx-cart.pl"
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-cart/cancel_cart.pl"
                                 method:RKRequestMethodPOST
                              parameter:param mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -270,7 +269,7 @@
                                  id stat = [result objectForKey:@""];
                                  
                                  TransactionAction *action = stat;
-                                 if (action.result.is_success == 1) {
+                                 if (action.data.is_success == 1) {
                                      [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]]
                                                                               type:NotificationTypeSuccess
                                                                           duration:4.0
@@ -393,16 +392,16 @@
     NSString *productNotes = product.product_notes?:@"";
     NSString *productQty = product.product_quantity?:@"";
     
-    NSDictionary* param = @{@"action"           : @"edit_product",
-                            @"product_cart_id"  : @(productCartID),
+    NSDictionary* param = @{@"product_cart_id"  : @(productCartID),
                             @"product_notes"    : productNotes,
                             @"product_quantity" : productQty
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
     networkManager.isUsingDefaultError = NO;
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"action/tx-cart.pl"
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-cart/edit_product.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
@@ -411,7 +410,7 @@
                                  id stat = [result objectForKey:@""];
                                  TransactionAction *action = stat;
                                  
-                                 if (action.result.is_success == 1) {
+                                 if (action.data.is_success == 1) {
                                      NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                                      [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:successMessages]
                                                                               type:NotificationTypeSuccess

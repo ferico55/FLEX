@@ -64,7 +64,6 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.source = searchDataSource.description()
         self.rootCategoryID = rootCategoryID
         completionHandlerResponse = onReceivedFilterDataOption
-        
         super.init()
         
         self .presentControllerFilter()
@@ -149,13 +148,16 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private func presentControllerSort(){
         let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
-                self.selectedSort = selectedSort
-                self.completionHandlerSort(self.selectedSort, paramSort)
-            }) { (response) in
-                self.filterResponse = response
-                self.completionHandlerResponse(response)
+            self.selectedSort = selectedSort
+            if selectedSort.name != "" {
+                TPAnalytics.trackSortWithSortName(selectedSort.name)
+            }
+            self.completionHandlerSort(self.selectedSort, paramSort)
+        }) { (response) in
+            self.filterResponse = response
+            self.completionHandlerResponse(response)
         }
-
+        
         let navigation: UINavigationController = UINavigationController.init(rootViewController: controller)
         navigation.navigationBar.translucent = false
         presentedController.navigationController!.presentViewController(navigation, animated: true, completion: nil)
@@ -267,10 +269,14 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     // MARK: - MHVerticalTabBarController Delegate
     func done() {
-        
         var params : [String: String] = [:]
+        var labels : [String] = []
         for filter in selectedFilters {
             let filterParam = params[filter.key]
+            let key = filter.key
+            if !(labels.contains(key)){
+                labels.append(key)
+            }
             var value : String?
             if filterParam != nil && filterParam != "" {
                 value = "\(filterParam!),\(filter.value)"
@@ -280,9 +286,15 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             
             params[filter.key] = value
         }
+        
+        if selectedCategories.count > 0 {
+            labels.append("category")
+        }
 
+        TPAnalytics.trackFilterWithSelectedFilters(labels)
         completionHandlerFilter(selectedCategories, selectedFilters, params)
     }
+    
     func didTapResetButton(button: UIButton!) {
         selectedCategories = []
         selectedFilters = []

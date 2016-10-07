@@ -23,9 +23,7 @@
 #import "CustomNotificationView.h"
 
 #import <QuartzCore/QuartzCore.h>
-#import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"
-#import <JLPermissions/JLNotificationPermission.h>
 
 #import "OpenShopDomainViewCell.h"
 #import "OpenShopImageViewCell.h"
@@ -64,29 +62,62 @@
 #import <BlocksKit/BlocksKit+UIKit.h>
 #import <BlocksKit/NSObject+A2DynamicDelegate.h>
 #import "NSURL+Dictionary.h"
-#import <NJKWebViewProgress/NJKWebViewProgress.h>
-#import <NJKWebViewProgress/NJKWebViewProgressView.h>
 #import "UIImage+Resize.h"
 #import <Masonry/Masonry.h>
 #import "CardIO.h"
 #import "WebViewController.h"
-#import "Downpicker.h"
 #import "GAITrackedViewController.h"
 #import "LoginViewController.h"
-#import "UIAlertView+BlocksKit.h"
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
-
 #import "Product.h"
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
 #import "GeneralAction.h"
 #import "AddProductValidation.h"
-#import "UIView+BlocksKit.h"
+#import "CustomNotificationView.h"
+#import "NSString+HTML.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "iCarousel.h"
+#import "CarouselDataSource.h"
+#import "CategoryDataSource.h"
 
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
+#import "ResolutionCenterCreateTroubleList.h"
+#import "ResolutionLast.h"
+#import "ResolutionOrder.h"
+#import "ResolutionBy.h"
+#import "RequestResolutionData.h"
+#import "RequestResolutionAction.h"
+#import "ResolutionCenterCreateSolutionList.h"
+#import "NSArrayCategory.h"
+#import "ResolutionCenterChooseProblemViewController.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
+#import "UIFont+Theme.h"
+#import "QueueImageDownloader.h"
+#import "ProductBadge.h"
+#import "MMNumberKeyboard.h"
+#import "NSStringCategory.h"
+#import "UIViewController+TKPAdditions.h"
+#import "TKPAppFlow.h"
+#import "TKPStoreManager.h"
+#import "TKPHomeBannerStore.h"
+#import "TKPHomeProductsStore.h"
+#import "NavigateViewController.h"
+#import "TKPDAlertView.h"
+#import "LoadingView.h"
+#import "TransactionCalculatePrice.h"
+#import "TransactionAction.h"
 
+// TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
+@import NJKWebViewProgress;
+@import SPTPersistentCache;
+@import RestKit;
+@import APAddressBook;
+@import JLPermissions;
+@import EAIntroView;
+@import DownPicker;
+@import BlocksKit;

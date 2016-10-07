@@ -8,13 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import "Tokopedia-Swift.h"
-#import "PlacePickerViewController.h"
+
 @class AddressViewModel;
-
 @class TKPPlacePickerViewController;
-
 @class LuckyDealWord;
+@class SearchAWSProduct;
 
 @interface NavigateViewController : NSObject
 

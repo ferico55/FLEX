@@ -31,8 +31,8 @@ BarCodeDelegate
     NSString *strNoResi;
     BOOL _shouldReloadData;
     
-    __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKObjectManager *_actionObjectManager;
+    RKManagedObjectRequestOperation *_actionRequest;
     RKResponseDescriptor *_responseActionDescriptorStatus;
     
     NSOperationQueue *_operationQueue;
@@ -88,17 +88,6 @@ BarCodeDelegate
     
     _operationQueue = [NSOperationQueue new];
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor grayColor],
-                                 };
-    
-    _footerLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerLabel.text
-                                                                  attributes:attributes];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -145,22 +134,22 @@ BarCodeDelegate
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Agen kurir";
             cell.detailTextLabel.text = _selectedCourier.shipment_name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont largeTheme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 1) {
             cell.textLabel.text = @"Paket pengiriman";
             cell.detailTextLabel.text = _selectedCourierPackage.name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont largeTheme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        cell.textLabel.font = [UIFont largeTheme];
     } else if (indexPath.section == 1) {
         UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
         textField.placeholder = @"Nomor resi";
         textField.tag = 1;
-        textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+        textField.font = [UIFont largeTheme];
         textField.text = strNoResi;
         [cell addSubview:textField];
         
@@ -382,6 +371,7 @@ BarCodeDelegate
         [self actionRequestSuccess:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [TPLocalytics trackShipmentConfirmation:NO];
         [self actionRequestFailure:error orderId:self.order.order_detail.detail_order_id];
         [timer invalidate];
     }];
@@ -395,7 +385,7 @@ BarCodeDelegate
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        
+        [TPLocalytics trackShipmentConfirmation:YES];
         NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
         
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
@@ -408,6 +398,7 @@ BarCodeDelegate
         }
         
     } else {
+        [TPLocalytics trackShipmentConfirmation:NO];
         NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
                                                                        delegate:self];

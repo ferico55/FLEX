@@ -10,7 +10,6 @@
 #import "OrderDetailProductCell.h"
 #import "OrderDetailProductInformationCell.h"
 #import "ProductQuantityViewController.h"
-#import "ChooseProductViewController.h"
 #import "OrderRejectExplanationViewController.h"
 #import "ShipmentConfirmationViewController.h"
 #import "DetailShipmentStatusViewController.h"
@@ -49,7 +48,6 @@ typedef enum TagRequest {
     UITableViewDataSource,
     UITableViewDelegate,
     ProductQuantityDelegate,
-    ChooseProductDelegate,
     SubmitShipmentConfirmationDelegate,
     CancelShipmentConfirmationDelegate,
     TokopediaNetworkManagerDelegate,
@@ -159,6 +157,7 @@ typedef enum TagRequest {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Order Detail Page"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -238,7 +237,7 @@ typedef enum TagRequest {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"GothamBook" size:13],
+                                 NSFontAttributeName: [UIFont smallTheme],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
@@ -276,14 +275,14 @@ typedef enum TagRequest {
 
 - (void)setPickupData {
     // GO-KILAT
-    if (_transaction.order_shipment.shipment_id == 10) {
+    if (_transaction.order_is_pickup == 1) {
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 6.0;
         
         NSDictionary *attributes = @{
             NSForegroundColorAttributeName  : [UIColor blackColor],
-            NSFontAttributeName             : [UIFont fontWithName:@"GothamBook" size:13],
+            NSFontAttributeName             : [UIFont smallTheme],
             NSParagraphStyleAttributeName   : style,
         };
         
@@ -393,7 +392,7 @@ typedef enum TagRequest {
     
     [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
 
-    if (_transaction.order_shipment.shipment_id == 10) {
+    if (_transaction.order_is_pickup == 1) {
         [_acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
     } else if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
         [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
@@ -525,7 +524,7 @@ typedef enum TagRequest {
         style.lineSpacing = 4.0;
         
         NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSFontAttributeName            : [UIFont smallTheme],
                                      NSParagraphStyleAttributeName  : style,
                                      NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
                                      };

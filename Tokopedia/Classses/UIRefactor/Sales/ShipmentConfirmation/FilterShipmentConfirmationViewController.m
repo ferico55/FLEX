@@ -73,14 +73,14 @@
             
             UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-30, 45)];
             textField.placeholder = @"Nama Penerima / Invoice";
-            textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+            textField.font = [UIFont title2Theme];
             [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
             [cell addSubview:textField];
             
         } else if (indexPath.section == 1) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-            cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.textLabel.font = [UIFont title2Theme];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -114,8 +114,7 @@
                                @"3 Hari",
                                @"4 Hari",
                                @"5 Hari",
-                               @"6 Hari",
-                               @"7 Hari"
+                               @"6 Hari"
                                ];
         controller.selectedObject = _dueDate;
     } else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -148,7 +147,6 @@
             else if ([_dueDate isEqualToString:@"4 Hari"]) dueDate = @"5";
             else if ([_dueDate isEqualToString:@"5 Hari"]) dueDate = @"6";
             else if ([_dueDate isEqualToString:@"6 Hari"]) dueDate = @"7";
-            else if ([_dueDate isEqualToString:@"7 Hari"]) dueDate = @"8";
             [self.delegate filterShipmentInvoice:_invoice
                                          dueDate:dueDate
                                          courier:_selectedCourier];

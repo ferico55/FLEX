@@ -44,6 +44,7 @@
     
     BOOL _isNewRekening;
     BOOL _isFinishRequestForm;
+    BOOL _shouldHideAddNewBankAccountButton;
     
     UITextField *_activeTextField;
     UITextView *_activeTextView;
@@ -388,6 +389,9 @@
 #pragma mark - Table View Delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (_shouldHideAddNewBankAccountButton) {
+        return 1;
+    }
     if ([self isPaymentTypeTransfer] && (section == 3 || section == 4)) {
         return 1;
     }
@@ -415,7 +419,7 @@
                 style.lineSpacing = 6.0;
                 
                 NSDictionary *attributes = @{
-                                             NSFontAttributeName: FONT_GOTHAM_BOOK_16,
+                                             NSFontAttributeName: [UIFont title1Theme],
                                              NSParagraphStyleAttributeName: style,
                                              };
                 
@@ -450,6 +454,9 @@
             }
             break;
         case 3:
+            if (_shouldHideAddNewBankAccountButton) {
+                return 0;
+            }
             if ([self isPaymentTypeDefault]) {
                 return 0;
             }
@@ -615,6 +622,7 @@
 -(void)doRequestDataEditConfirmPaymentID:(NSString*)paymentID{
     [self isLoading:YES];
     [RequestOrderData fetchDataEditConfirmationID:paymentID success:^(TxOrderPaymentEditForm *data) {
+        _shouldHideAddNewBankAccountButton = (data.bank_account.bank_account_list.count >= 10);
         [self isLoading:NO];
         [self setDefaultDataConfirmed:data];
         [_tableView reloadData];
@@ -639,6 +647,7 @@
     
     [self isLoading:YES];
     [RequestOrderData fetchDataConfirmConfirmationID:paymentID success:^(TxOrderConfirmPaymentFormForm *data) {
+        _shouldHideAddNewBankAccountButton = (data.bank_account.count >= 10);
         [self isLoading:NO];
         [self setDefaultDataConfirmation:data];
         [_tableView reloadData];
@@ -1166,8 +1175,8 @@
     NSIndexPath *bankAccountIndexPath = [_dataInput objectForKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
     NSIndexPath *systemBankIndexPath = [_dataInput objectForKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
     
-    NSArray *systemBankList =(_isConfirmed)?formIsConfirmed.sysbank_account.sysbank_list:form.sysbank_account;
-     NSArray *methodList =(_isConfirmed)?formIsConfirmed.method.method_list:form.method;
+    NSArray *systemBankList = (_isConfirmed)?formIsConfirmed.sysbank_account.sysbank_list:form.sysbank_account;
+    NSArray *methodList = (_isConfirmed)?formIsConfirmed.method.method_list:form.method;
     NSArray *bankAccountList = (_isConfirmed)?formIsConfirmed.bank_account.bank_account_list:form.bank_account;
     
     if ([indexPath isEqual:systemBankIndexPath]) {

@@ -32,7 +32,8 @@ import UIKit
                 pickerController.selectedAssets = selectedAssets as! [DKAsset]
             }
             pickerController.didSelectAssets = {(assets: [DKAsset]) in
-                return completion(assets: assets)
+                let numberOfPhotos = min(assets.count, maxSelected)
+                return completion(assets: Array(assets[0..<numberOfPhotos]))
             }
             viewController.presentViewController(pickerController, animated: true) {}
     }

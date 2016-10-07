@@ -47,7 +47,7 @@
             button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
         }
 
-        button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+        button.titleLabel.font = [UIFont title2ThemeMedium];
         button.tag = buttonTag;
         [button setTitle:buttonTitle forState:UIControlStateNormal];
         [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -133,7 +133,7 @@
 
 - (void)tapButton:(UIButton*)button {
     [self tap:button.tag];
-    
+    [TPAnalytics trackGoToHomepageTabWithIndex:button.tag];
     NSDictionary *userInfo = @{@"page" : @(button.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];
@@ -155,7 +155,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Home"];
             break;
         }
             
@@ -163,7 +162,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*1;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product Feed"];
             break;
         }
             
@@ -171,7 +169,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Wishlist"];
             break;
         }
             
@@ -179,7 +176,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*3;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product History"];
             break;
         }
             
@@ -187,7 +183,6 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*4;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
-            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Favorite Shop"];
             break;
         }
             
@@ -217,25 +212,6 @@
     }
 }
 
-// MARK: Cleanup
-
-- (void)orientationChanged:(NSNotification *)note {
-    for (UIButton *button in _scrollView.subviews) {
-        [button removeFromSuperview];
-    }
-    
-    if(_loggedIn) {
-        [self initButton];
-    } else {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*1 - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
-        [button setTitle:@"HOME" forState:UIControlStateNormal];
-        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
-        button.tag = 1;
-        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:button];
-    }
-
-}
 
 
 - (void)dealloc {

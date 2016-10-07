@@ -8,7 +8,6 @@
 
 #import "CategoryDataSource.h"
 #import "CategoryViewCell.h"
-#import "Localytics.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
@@ -45,15 +44,9 @@
     CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
     NSInteger index = indexPath.row;
     
-    NSString *title =_categoryNames[index];
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:6];
-    [paragrahStyle setAlignment:NSTextAlignmentCenter];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
-    
-    cell.categoryLabel.attributedText = attributedString;
+    cell.categoryLabel.text = _categoryNames[index];
+    cell.categoryLabel.textAlignment = NSTextAlignmentCenter;
+    cell.categoryLabel.numberOfLines = 0;
     
     NSString *imageName = [NSString stringWithFormat:@"icon_%zd",index];
     cell.icon.image = [UIImage imageNamed:imageName];
@@ -75,24 +68,25 @@
     NSString *categoryId = _categoryIds[index];
     
     [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : categoryName}];
+    [TPAnalytics trackClickCategoryWithCategoryName:categoryName];
     
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.hidesBottomBarWhenPushed = YES;
     vc.isFromDirectory = YES;
-	vc.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
+    vc.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.hidesBottomBarWhenPushed = YES;
-    vc.isFromDirectory = YES;
-	vc1.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
+    vc1.isFromDirectory = YES;
+    vc1.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.hidesBottomBarWhenPushed = YES;
     vc2.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_shop"};
-    
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    vc.tkpdTabNavigationController = viewController;
     NSDictionary *data = @{searchTypeKey : @(1),categoryIdKey : categoryId};
     [viewController setData:data];
     [viewController setNavigationTitle:categoryName];

@@ -57,6 +57,11 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didKeyboardHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        TPAnalytics.trackScreenName("Security Question Page")
+    }
+    
     func dismissKeyboard() {
         answerField.resignFirstResponder()
         otpField.resignFirstResponder()
@@ -195,6 +200,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         }
         
         if(answer.data.allow_login == "1") {
+            TPAnalytics.trackSecurityQuestionEvent("OTPSuccess", category: "Security Question", action: "OTP Success", label: "Confirm OTP")
             self.successAnswerCallback(answer)
             self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
         }

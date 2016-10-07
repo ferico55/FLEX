@@ -27,22 +27,7 @@
 {
     detailText = detailText?:@"";
     _detailText = detailText;
-    
-    UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    style.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: [UIColor whiteColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:detailText attributes:attributes];
-    
-    _detailTextLabel.attributedText = attributedText;
-    
+    _detailTextLabel.text = _detailText?:@"";
     [_detailTextLabel sizeToFit];
     
     CGRect frame = self.frame;

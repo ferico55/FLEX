@@ -8,14 +8,12 @@
 #import "AlertRateView.h"
 #import "CMPopTipView.h"
 #import "detail.h"
-#import "DetailMyReviewReputationViewController.h"
 #import "DetailMyInboxReputation.h"
 #import "GeneralAction.h"
 #import "LoadingView.h"
 #import "Paging.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "MyReviewReputation.h"
-#import "MyReviewReputationCell.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
 #import "NavigateViewController.h"
@@ -38,6 +36,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
 #import "InboxReputationResult.h"
+#import "Tokopedia-Swift.h"
 
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
@@ -46,7 +45,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -451,7 +450,7 @@
     
     [cell.theirUserName setText:current.reviewee_name];
     [cell.theirUserName setText:[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
-                       withFont:[UIFont fontWithName:@"GothamMedium" size:13.0]];
+                       withFont:[UIFont smallThemeMedium]];
     [cell.theirUserName setLabelBackground:[current.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
     
     [cell.button.layer setBorderColor:[[UIColor colorWithRed:60/255.0 green:179/255.0 blue:57/255.0 alpha:1.0] CGColor]];
@@ -491,171 +490,6 @@
     [self navigateToReviewDetailAtIndexPath:indexPath];
 }
 
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        NSMutableDictionary *dictParam = [NSMutableDictionary new];
-        if(_getDataFromMasterDB) {
-            _getDataFromMasterDB = NO;
-            [dictParam setObject:@(1) forKey:@"n"];
-        }
-        
-        [dictParam setObject:CActionGetInboxReputation forKey:@"action"];
-        [dictParam setObject:strNav forKey:@"nav"];
-        [dictParam setObject:@(page) forKey:@"page"];
-        [dictParam setObject:_segmentedReviewReputationViewController.getSelectedFilter forKey:@"filter"];
-        
-        return dictParam;
-    }
-    else if(tag == CTagInsertReputation) {
-        return @{@"action" : CInsertReputation,
-                 @"reputation_score" : emoticonState,
-                 @"reputation_id" : strRequestingInsertReputation,
-                 @"buyer_seller" : strInsertReputationRole};
-    }
-    
-    return nil;
-}
-
-- (NSString*)getPath:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        return [postUrl isEqualToString:@""] ? @"inbox-reputation.pl" : postUrl;
-    }
-    else if(tag == CTagInsertReputation) {
-        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        RKObjectManager *objectManager;
-        if([baseUrl isEqualToString:kTkpdBaseURLString] || [baseUrl isEqualToString:@""]) {
-            objectManager = [RKObjectManager sharedClient];
-        } else {
-            objectManager = [RKObjectManager sharedClient:baseUrl];
-        }
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[MyReviewReputation class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{CStatus:CStatus,
-                                                            CMessageError:CMessageError,
-                                                            CMessageStatus:CMessageStatus,
-                                                            CServerProcessTime:CServerProcessTime}];
-        
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[MyReviewReputationResult class]];
-        RKObjectMapping *detailReputationMapping = [RKObjectMapping mappingForClass:[DetailMyInboxReputation class]];
-        [detailReputationMapping addAttributeMappingsFromArray:@[CUpdatedReputationReview,
-                                                                 CReputationInboxID,
-                                                                 CReputationScore,
-                                                                 CScoreEditTimeFmt,
-                                                                 CRevieweeScoreStatus,
-                                                                 CShopID,
-                                                                 CShowBookmark,
-                                                                 CBuyerScrore,
-                                                                 CRevieweePicture,
-                                                                 CRevieweeName,
-                                                                 CCreateTimeFmt,
-                                                                 CReputationID,
-                                                                 CRevieweeUri,
-                                                                 CRevieweeScore,
-                                                                 CSellerScore,
-                                                                 CInboxID,
-                                                                 CInvoiceRefNum,
-                                                                 CInvoiceUri,
-                                                                 CReadStatus,
-                                                                 CCreateTimeAgo,
-                                                                 CRevieweeRole,
-                                                                 COrderID,
-                                                                 @"auto_read",
-                                                                 @"reputation_progress",
-                                                                 @"my_score_image",
-                                                                 @"their_score_image",
-                                                                 CUnaccessedReputationReview,
-                                                                 CShowRevieweeSCore,
-                                                                 CRole,
-                                                                 @"reputation_days_left"]];
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext,
-                                                            CUriPrevious:CUriPrevious}];
- 
-        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-        
-        RKObjectMapping *reputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-        [reputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                     CNegative,
-                                                                     CNeutral,
-                                                                     CPositif]];
-        //relation
-        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
-        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reputationMapping]];
-        
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:detailReputationMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return objectManager;
-    }
-    else if(tag == CTagInsertReputation) {
-        RKObjectManager *objectManager;
-        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
-            objectManager = [RKObjectManager sharedClient];
-        } else {
-            objectManager = [RKObjectManager sharedClient:baseActionUrl];
-        }
-
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        RKRelationshipMapping *LDRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ld" toKeyPath:@"ld" withMapping:[LuckyDeal mapping]];
-        [resultMapping addPropertyMapping:LDRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return objectManager;
-    }
-    
-    return nil;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*) result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagGetInboxReputation) {
-        MyReviewReputation *action = stat;
-        return action.status;
-    }
-    else if(tag == CTagInsertReputation) {
-        GeneralAction *action = stat;
-        return action.status;
-    }
-
-    return nil;
-}
-
-
 - (void)showFirstDataOnFirstShowInIpad {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (arrList.count && !hasShownData && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -667,157 +501,6 @@
         }
     });
 }
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagGetInboxReputation) {
-        MyReviewReputation *result = (MyReviewReputation *)stat;
-        if(page == 0) {
-            isRefreshing = NO;
-            arrList = [[NSMutableArray alloc] initWithArray:result.result.list];
-        }
-        else {
-            [arrList addObjectsFromArray:result.result.list];
-        }
-        
-        strUriNext = result.result.paging.uri_next;
-        page = [[[self getNetworkManager:tag] splitUriToPage:strUriNext] intValue];
-        
-        
-        //Check any data or not
-        if(arrList.count == 0) {
-            if([currentFilter isEqualToString:@"all"]){
-                if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                    [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                }else{
-                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                }
-            }else if([currentFilter isEqualToString:@"not-read"]){
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-            }else if([currentFilter isEqualToString:@"not-review"]){
-                [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-            }
-            tableContent.tableFooterView = _noResultView;
-        }
-        else{
-            [self loadMoreData:NO];
-            [_noResultView removeFromSuperview];
-        }
-        if(tableContent.delegate == nil) {
-            tableContent.delegate = self;
-            tableContent.dataSource = self;
-        }
-        
-        [self showFirstDataOnFirstShowInIpad];
-        
-        [tableContent reloadData];
-        
-        UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        [firstCell setSelected:YES];
-    }
-    else if(tag == CTagInsertReputation) {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        formatter.dateFormat = @"d MMMM yyyy, HH:mm";
-        DetailMyInboxReputation *selectedReputation = arrList[indexPathInsertReputation.row];
-        GeneralAction *action = [resultDict objectForKey:@""];
-        if([action.result.is_success isEqualToString:@"1"]) {
-			if (action.result.ld.url && ![action.result.ld.url isEqualToString:@""]) {
-            	_requestLD = [RequestLDExtension new];
-            	_requestLD.luckyDeal = action.result.ld;
-            	_requestLD.delegate = self;
-            	[_requestLD doRequestMemberExtendURLString:action.result.ld.url];
-        	}
-
-            if([selectedReputation.role isEqualToString:@"2"]) {//Seller
-                if(selectedReputation.buyer_score!=nil && ![selectedReputation.buyer_score isEqualToString:@""])
-                    selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
-                
-                selectedReputation.buyer_score = emoticonState;
-                selectedReputation.viewModel.buyer_score = selectedReputation.buyer_score;
-            }
-            else {
-                if(selectedReputation.seller_score!=nil && ![selectedReputation.seller_score isEqualToString:@""])
-                    selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
-                
-                
-                selectedReputation.seller_score = emoticonState;
-                selectedReputation.viewModel.seller_score = selectedReputation.seller_score;
-            }
-            
-            selectedReputation.viewModel.just_updated = @"1";
-            selectedReputation.viewModel.their_score_image = givenSmileyImageString;
-            
-            //Get view controller based on device (ipad / iphone)
-            UIViewController *tempViewController;
-            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                UINavigationController *navController = [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC getDetailNavigation];
-                if(navController.viewControllers.count > 0) {
-                    tempViewController = [navController.viewControllers firstObject];
-                }
-            }
-            else {
-                tempViewController = [self.navigationController.viewControllers lastObject];
-            }
-            
-            //Update ui detail reputation
-            if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-                [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:selectedReputation.reputation_id withState:emoticonState];
-                
-                if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                    [self showAlertAfterGiveRate];
-            }
-            else {
-                [self showAlertAfterGiveRate];
-            }
-        
-        } else {
-            //gagal
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error delegate:self];
-            [stickyAlertView show];
-        }
-        
-        strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
-        [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
-        indexPathInsertReputation = nil;
-    }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-}
-
-- (void)actionBeforeRequest:(int)tag {
-}
-
-- (void)actionRequestAsync:(int)tag {
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        if(page == 0)
-            isRefreshing = NO;
-        tableContent.tableFooterView = [self getLoadView].view;
-    }
-    else if(tag == CTagInsertReputation) {
-        //Update ui detail reputation
-        UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
-        if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-            [((DetailMyReviewReputationViewController *) tempViewController) failedInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id];
-        }
-        else {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedInsertReputation] delegate:self];
-            [stickyAlertView show];
-        }
-        
-        strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
-        [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
-        indexPathInsertReputation = nil;
-    }
-}
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton
@@ -878,6 +561,8 @@
         vc.detailMyInboxReputation = tempObj;
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
+        
+        [TPAnalytics trackInboxReviewAction:@"View" label:self.strNav];
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:vc];
@@ -1038,99 +723,11 @@
 
 }
 
-- (void)actionFooter:(id)sender {
-    if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        //Set flag to read -> From unread
-        tempObj.read_status = CValueRead;
-        tempObj.viewModel.read_status = CValueRead;
-        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
-        detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
-        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
-        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
-        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
-            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
-        }];
-
-        
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:detailMyReviewReputationViewController];
-        }
-        else {
-            [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
-        }
-    }
-}
-
 
 #pragma mark - AlertRate Delegate
 - (void)closeWindow {
     alertRateView = nil;
 }
-
-
-- (void)submitWithSelected:(int)tag {
-    if(strRequestingInsertReputation != nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CPleaseWait] delegate:self];
-        [stickyAlertView show];
-        indexPathInsertReputation = nil;
-        
-        return;
-    }
-
-    DetailMyInboxReputation *tempObj = arrList[alertRateView.tag];
-    NSString *strCurrentScore = ([tempObj.viewModel.role isEqualToString:@"2"]?tempObj.viewModel.buyer_score:tempObj.viewModel.seller_score);
-    switch (tag) {
-        case CTagMerah:
-        {
-            if([strCurrentScore isEqualToString:CReviewScoreBad]) {
-                [self alertWarningReviewSmiley];
-                return;
-            }
-            emoticonState = CReviewScoreBad;
-            givenSmileyImageString = @"smiley_bad";
-        }
-            break;
-        case CTagKuning:
-        {
-            if([strCurrentScore isEqualToString:CReviewScoreNeutral]) {
-                [self alertWarningReviewSmiley];
-                return;
-            }
-            emoticonState = CReviewScoreNeutral;
-            givenSmileyImageString = @"smiley_neutral";
-        }
-            break;
-        case CTagHijau:
-        {
-            if([strCurrentScore isEqualToString:CReviewScoreGood]) {
-                [self alertWarningReviewSmiley];
-                return;
-            }
-            emoticonState = CReviewScoreGood;
-            givenSmileyImageString = @"smiley_good";
-        }
-            break;
-    }
-
-    
-    strRequestingInsertReputation = tempObj.reputation_id;
-    strInsertReputationRole = tempObj.role;
-    
-    indexPathInsertReputation = [NSIndexPath indexPathForRow:alertRateView.tag inSection:0];
-    [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
-    alertRateView = nil;
-    
-    //Update ui detail my review reputation
-    UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
-    if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-        [((DetailMyReviewReputationViewController *) tempViewController) doingActInsertReview:tempObj.reputation_id];
-    }
-    
-    //Request to server
-    [[self getNetworkManager:CTagInsertReputation] doRequest];
-}
-
 
 #pragma mark - GTM
 - (void)configureGTM {

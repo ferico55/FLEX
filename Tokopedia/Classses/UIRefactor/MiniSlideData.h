@@ -11,6 +11,6 @@
 
 @interface MiniSlideData : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSArray *banners;
+@property (strong, nonatomic) NSArray *slides;
 
 @end

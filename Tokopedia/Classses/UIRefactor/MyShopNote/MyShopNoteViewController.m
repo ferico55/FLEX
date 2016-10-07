@@ -112,6 +112,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop Notes Setting Page"];
     if (_isnodata) {
         [self showNotesList];
     }
@@ -207,7 +208,7 @@
 }
 
 #pragma mark - View Action
-- (IBAction)tap:(id)sender {
+- (IBAction)tap:(UIBarButtonItem* )sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if ([sender tag] == 10) {
             [self.navigationController popViewControllerAnimated:YES];

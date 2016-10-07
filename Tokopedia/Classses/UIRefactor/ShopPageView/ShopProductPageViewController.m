@@ -9,7 +9,6 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopProductPageViewController.h"
 #import "MyShopNoteDetailViewController.h"
-#import "GeneralProductCell.h"
 
 #import "GeneralAction.h"
 #import "EtalaseList.h"
@@ -30,8 +29,6 @@
 #import "URLCacheController.h"
 #import "SortViewController.h"
 
-#import "GeneralSingleProductCell.h"
-#import "GeneralPhotoProductCell.h"
 #import "DetailProductViewController.h"
 
 #import "ProductCell.h"
@@ -73,9 +70,6 @@ LoadingViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 ShopPageHeaderDelegate,
 SortViewControllerDelegate,
-GeneralProductCellDelegate,
-GeneralSingleProductDelegate,
-GeneralPhotoProductDelegate,
 NoResultDelegate,
 RetryViewDelegate,
 EtalaseViewControllerDelegate
@@ -412,6 +406,7 @@ EtalaseViewControllerDelegate
         
         [(ProductCell*)cell setViewModel:list.viewModel];
         ((ProductCell*)cell).locationImage.hidden = YES;
+        ((ProductCell*)cell).badgesConstraint.constant = 15;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -449,7 +444,7 @@ EtalaseViewControllerDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if(_cellType == UITableViewCellTypeTwoColumn) {
         CGSize normalSize = [ProductCellSize sizeWithType:self.cellType];
-        return CGSizeMake(normalSize.width, normalSize.height - 30);
+        return CGSizeMake(normalSize.width, normalSize.height - 20);
     } else {
         return [ProductCellSize sizeWithType:self.cellType];
     }
@@ -635,6 +630,7 @@ EtalaseViewControllerDelegate
     vc.isEditable = NO;
     vc.showOtherEtalase = YES;
     vc.initialSelectedEtalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    vc.shopDomain = _shop.result.info.shop_domain;
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShopId:shopId];

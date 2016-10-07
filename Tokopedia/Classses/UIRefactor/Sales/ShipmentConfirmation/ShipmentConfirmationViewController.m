@@ -84,6 +84,7 @@
     [super viewDidLoad];
     
     self.title = @"Konfirmasi Pengiriman";
+    self.alertLabel.text = [self announcementString];
     
     [TPAnalytics trackScreenName:@"Sales - Shipping Confirmation"];
     
@@ -119,8 +120,6 @@
     [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
     
-    self.alertLabel.attributedText = self.alertAttributedString;
-    
     self.filterController = [FilterShipmentConfirmationViewController new];
     self.filterController.delegate = self;
     
@@ -154,22 +153,6 @@
                                                               target:self
                                                               action:@selector(tap:)];
     return button;
-}
-
-#pragma mark - Note view
-
-- (NSAttributedString *)alertAttributedString {
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"GothamBook" size:11],
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_alertLabel.text attributes:attributes];
-    return attributedString;
 }
 
 #pragma mark - Table view data source
@@ -262,7 +245,7 @@
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
     
-    if (transaction.order_shipment.shipment_id == 10) {
+    if (transaction.order_is_pickup == 1) {
         [cell.acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
         [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 2;
@@ -646,6 +629,10 @@
         _tableView.tableFooterView = noResultView;
         _tableView.sectionFooterHeight = noResultView.frame.size.height;
     }
+}
+
+- (NSString*)announcementString {
+    return @"Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon 4 hari kerja (Senin - Jumat) setelah order diverifikasi";
 }
 
 @end

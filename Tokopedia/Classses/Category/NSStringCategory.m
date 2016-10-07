@@ -86,10 +86,9 @@
 + (NSString*) timeLeftSinceDate:(NSDate *)dateT
 {
     NSString *timeLeft;
+    NSDate *today = [NSDate date];
     
-    NSDate *today10am =[NSDate date];
-    
-    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
+    NSInteger seconds = [today timeIntervalSinceDate:dateT];
     
     NSInteger days = (int) (floor(seconds / (3600 * 24)));
     if(days) seconds -= days * 3600 * 24;
@@ -120,7 +119,7 @@
     }
     else if(seconds)
     {
-        timeLeft = [NSString stringWithFormat: @"%lds detik yang lalu", (long)seconds];
+        timeLeft = [NSString stringWithFormat: @"%ld detik yang lalu", (long)seconds];
     }
     else
     {
@@ -176,6 +175,13 @@
     return replacedString;
 }
 
++ (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string {
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>" options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:nil];
+    
+    NSArray *array = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    
+    return array;
+}
 + (NSString *)joinStringsWithBullets:(NSArray *)strings {
     if (strings.count == 1) {
         return strings[0];
@@ -184,9 +190,38 @@
     return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
 }
 
++ (NSArray<NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string {
+    NSScanner *myScanner;
+    NSMutableArray<NSString *> *array = [NSMutableArray new];
+    NSString *text = nil;
+    myScanner = [NSScanner scannerWithString:string];
+    
+    while ([myScanner isAtEnd] == NO) {
+        
+        [myScanner scanUpToString:@"<" intoString:NULL] ;
+        
+        [myScanner scanUpToString:@">" intoString:&text] ;
+        
+        if ([text rangeOfString:@"a href="].location == NSNotFound) {
+            
+        } else {
+            text = [text stringByReplacingOccurrencesOfString:@"<a href="
+                                                   withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@" target=" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"_blank" withString:@""];
+            
+            if (text) {
+                [array addObject:text];
+            }
+        }
+    }
+    
+    return array;
+}
+
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
     NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
-    
     
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
     
@@ -205,5 +240,10 @@
     return encodedString;
 }
 
++ (NSString *)jsonStringArrayFromArray:(NSArray *)array {
+    NSString *elements = (array.count == 1)?array[0]:[array componentsJoinedByString:@"\', \'"];
+    
+    return [NSString stringWithFormat:@"[\'%@\']", elements];
+}
 
 @end

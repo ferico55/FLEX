@@ -256,6 +256,7 @@
 
 -(void)requestCertainShopEtalase{
     [etalaseRequest requestEtalaseFilterWithShopId:_shopId
+                                        shopDomain:_shopDomain
                                               page:page
                                          onSuccess:^(Etalase *etalase) {
                                              if(page == 1){
@@ -386,6 +387,7 @@
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
         NSString *userId = [auth getUserId]?:@"";
+        [TPAnalytics trackEtalaseAction:@"Click" label:@"Add"];
         [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
                                                  userId:userId
                                               onSuccess:^(ShopSettings *shopSettings) {

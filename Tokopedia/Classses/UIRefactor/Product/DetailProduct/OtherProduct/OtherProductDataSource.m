@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         return CGSizeMake(cellWidth, cellHeight);
     } else {
         CGSize normalSize = [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
-        return CGSizeMake(normalSize.width, normalSize.height - 30);
+        return CGSizeMake(normalSize.width, normalSize.height - 20);
     }
 }
 

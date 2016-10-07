@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DetailMyReviewReputationViewController.h"
 
 @class DetailReputationReview, MyReviewDetailViewController;
 

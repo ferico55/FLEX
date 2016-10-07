@@ -10,9 +10,11 @@
 #import "ResolutionAttachment.h"
 #import "AddressFormList.h"
 
+@class ProductTrouble;
+
 @interface ResolutionConversation : NSObject <TKPObjectMapping>
 
-@property (nonatomic) NSArray *attachment;
+@property (nonatomic) NSArray<ResolutionAttachment*> *attachment;
 @property (nonatomic, strong) NSString *remark;
 @property (nonatomic, strong) NSString *conversation_id;
 @property (nonatomic, strong) NSString *time_ago;
@@ -23,14 +25,15 @@
 @property (nonatomic, strong) NSString *create_time_wib;
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_img;
+@property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSNumber *solution;
 @property (nonatomic, strong) NSString *remark_str;
 @property (nonatomic, strong) NSString *input_resi;
 
 @property (nonatomic, strong) NSString *kurir_name;
 @property (nonatomic, strong) NSString *input_kurir;
-@property (nonatomic) NSInteger show_edit_resi_button;
-@property (nonatomic) NSInteger show_track_button;
+@property (nonatomic) NSInteger edit_resi;
+@property (nonatomic) NSInteger track_resi;
 
 @property (nonatomic, strong) NSNumber *trouble_type;
 @property (nonatomic, strong) NSString *refund_amt_idr;
@@ -38,11 +41,12 @@
 @property (nonatomic) NSInteger solution_flag;
 @property (nonatomic) NSInteger system_flag;
 @property (nonatomic, strong) NSString *address_edited;
-@property (nonatomic, strong) NSString *show_edit_addr_button;
+@property (nonatomic, strong) NSString *edit_address;
 @property (nonatomic, strong) NSString *left_count;
 @property (nonatomic) NSInteger view_more;
 
 @property (nonatomic, strong) AddressFormList *address;
+@property (nonatomic, strong) NSArray <ProductTrouble *> *product_trouble;
 
 @property (nonatomic) BOOL isAddedConversation;
 

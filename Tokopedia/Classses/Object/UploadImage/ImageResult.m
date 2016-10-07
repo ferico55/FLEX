@@ -23,7 +23,9 @@
                                                         @"is_success",
                                                         @"pic_id",
                                                         @"file_path",
-                                                        @"file_uploaded"]];
+                                                        @"file_uploaded",
+														@"file_th",
+                                                        ]];
     
     [imageResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:[UploadDataImage mapping]]];
 

@@ -16,10 +16,8 @@
 
 #import "TransactionCartFormMandiriClickPayViewController.h"
 #import "MainViewController.h"
-
+#import "TransactionBuyResult.h"
 #import "NotificationManager.h"
-
-#import "Localytics.h"
 #define normalWidth 320
 #define normalHeight 568
 
@@ -97,7 +95,7 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    [self initNotification];    
+    [self initNotification];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -397,6 +395,10 @@
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         }
         else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"trackSuccessTransaction"
+                                                                object:nil
+                                                              userInfo:nil];
+            [TPAnalytics trackPaymentEvent:@"clickBack" category:@"Payment" action:@"Abandon" label:@"Thank You Page"];
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
             [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
         }
@@ -491,7 +493,6 @@
                                              selector:@selector(popToCartRootViewController)
                                                  name:TKPDUserDidLoginNotification
                                                object:nil];
-
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(didReceiveDeeplinkUrl:)

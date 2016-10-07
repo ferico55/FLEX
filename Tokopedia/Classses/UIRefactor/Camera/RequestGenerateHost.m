@@ -13,11 +13,22 @@
 @implementation RequestGenerateHost
 {
     __weak RKObjectManager *_objectManagerGenerateHost;
-    __weak RKManagedObjectRequestOperation *_requestGenerateHost;
+    RKManagedObjectRequestOperation *_requestGenerateHost;
     
     NSOperationQueue *_operationQueue;
     GenerateHost *_generatehost;
     NSInteger _requestCount;
+}
+
+- (instancetype)init {
+    self = [super init];
+    
+    if(self != nil) {
+        [self configureRestkitGenerateHost];
+    }
+    
+    return self;
+    
 }
 
 #pragma mark Request Generate Host
@@ -68,7 +79,7 @@
 {
     if(_requestGenerateHost.isExecuting) return;
     
-    [self configureRestkitGenerateHost];
+    
 
     _requestCount ++;
     
@@ -197,7 +208,7 @@
                             @"upload_version"   : @"2"
                             };
     
-    [networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/generate-host/generate_host.pl"
                                 method:RKRequestMethodGET
                              parameter:param

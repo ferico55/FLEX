@@ -9,7 +9,6 @@
 #import "SalesNewOrderViewController.h"
 #import "SalesOrderCell.h"
 #import "FilterNewOrderViewController.h"
-#import "ChooseProductViewController.h"
 #import "OrderRejectExplanationViewController.h"
 #import "URLCacheController.h"
 #import "TKPDSecureStorage.h"
@@ -45,7 +44,6 @@
     UITableViewDelegate,
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
-    ChooseProductDelegate,
     FilterDelegate,
     ProductQuantityDelegate,
     OrderDetailDelegate
@@ -99,6 +97,7 @@
     [super viewDidLoad];
 
     self.title = @"Pesanan Baru";
+    self.alertLabel.text = [self announcementString];
 
     [TPAnalytics trackScreenName:@"Sales - New Order"];
 
@@ -213,7 +212,7 @@
     style.lineSpacing = 4.0;
     NSDictionary *attributes = @{
         NSForegroundColorAttributeName: [UIColor blackColor],
-        NSFontAttributeName: [UIFont fontWithName:@"GothamBook" size:11],
+        NSFontAttributeName: [UIFont microTheme],
         NSParagraphStyleAttributeName: style,
     };
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_alertLabel.text
@@ -311,10 +310,10 @@
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", order.order_payment.payment_process_due_date];
     
     // Reset button style
-    [cell.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.acceptButton.titleLabel setFont:[UIFont microTheme]];
     [cell.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     
-    [cell.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.rejectButton.titleLabel setFont:[UIFont microTheme]];
     [cell.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
 
     return cell;
@@ -396,21 +395,6 @@
     [navigationController.navigationBar setTranslucent:NO];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-#pragma mark - Choose product delegate
-
-- (void)didSelectProducts:(NSArray *)products {
-    _selectedProducts = products;
-    
-    [self requestActionType:@"reject"
-                     reason:@"Persediaan barang habis"
-                   products:products
-            productQuantity:nil];
-    
-    for (OrderProduct *product in products) {
-        [ProductRequest moveProductToWarehouse:product.product_id setCompletionBlockWithSuccess:nil failure:nil];
-    }
 }
 
 #pragma mark - Reject explanation delegate
@@ -516,17 +500,6 @@
     controller.products = order.order_products;
     controller.delegate = self;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)showChooseAcceptedProductPage {
-    ChooseProductViewController *controller = [[ChooseProductViewController alloc] init];
-    controller.delegate = self;
-    controller.products = _selectedOrder.order_products;
-
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
 
@@ -744,6 +717,10 @@
                    products:products
             productQuantity:productQuantity];
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:1];
+}
+
+- (NSString*)announcementString {
+    return @"Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon (2 hari) setelah order di verifikasi";
 }
 
 @end

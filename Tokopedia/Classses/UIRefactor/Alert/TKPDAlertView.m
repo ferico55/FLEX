@@ -35,7 +35,11 @@
 
 + (id)newview
 {
-	NSArray* views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil];
+    NSString *className = NSStringFromClass([self class]);
+    if ([className rangeOfString:@"."].location != NSNotFound) {
+        className = [[className componentsSeparatedByString:@"."] lastObject];
+    }
+    NSArray* views = [[NSBundle mainBundle] loadNibNamed:className owner:nil options:nil];
 	for (id view in views) {
 		if ([view isKindOfClass:[self class]]) {
 			[view createwindow];

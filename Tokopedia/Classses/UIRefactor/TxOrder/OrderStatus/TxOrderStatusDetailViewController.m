@@ -23,8 +23,10 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
-#import "RequestCancelResolution.h"
+#import "RequestResolutionData.h"
 #import "RequestOrderData.h"
+
+#import "ResolutionCenterCreateViewController.h"
 
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
@@ -33,7 +35,6 @@
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NavigateViewController *_navigate;
-    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
@@ -86,6 +87,11 @@
         [trackBarButtonItem setTintColor:[UIColor whiteColor]];
         self.navigationItem.rightBarButtonItem = trackBarButtonItem;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Purchase Detail Page"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -265,22 +271,20 @@
             return;
         }
         
-        InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-        vc.controllerTitle = @"Buka Komplain";
-        if (buttonIndex == 0) {
-            //Tidak Terima Barang
-            vc.isGotTheOrder = NO;
-        }
-        else if (buttonIndex ==1)
-        {
-            //Terima barang
-            vc.isGotTheOrder = YES;
-            
-        }
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
         vc.order = _order;
-        vc.isCanEditProblem = YES;
+        
+        if(buttonIndex == 0){
+            vc.product_is_received = NO;
+        }else if(buttonIndex == 1){
+            vc.product_is_received = YES;
+        }
+        
         vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
-        [self.navigationController pushViewController:vc animated:YES];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTranslucent:NO];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
     else if (alertView.tag == TAG_ALERT_CONFIRMATION)
     {
@@ -307,7 +311,8 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     
-    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution) {
+	[RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
+        
     } failure:^(NSError *error) {
         
     }];

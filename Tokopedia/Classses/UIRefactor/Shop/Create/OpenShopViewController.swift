@@ -68,7 +68,7 @@ import UIKit
         
         let requestHost: RequestGenerateHost = RequestGenerateHost()
         requestHost.delegate = self
-        requestHost.configureRestkitGenerateHost()
+//        requestHost.configureRestkitGenerateHost()
         requestHost.requestGenerateHost()
         
         checkDomainButton.layer.cornerRadius = 2
@@ -80,6 +80,11 @@ import UIKit
         tableView.registerNib(UINib(nibName: "OpenShopNameViewCell", bundle: nil), forCellReuseIdentifier: "OpenShopName")
         tableView.registerNib(UINib(nibName: "EditShopDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "shopDescription")
         tableView.registerNib(UINib(nibName: "ShopTagDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "ShopTagDescriptionViewCell")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        TPAnalytics.trackScreenName("Create Shop Page")
     }
     
     override func awakeFromNib() {
@@ -170,7 +175,7 @@ import UIKit
                     cell = nameCell
                 }
             } else if indexPath.row == 1 {
-                return 60
+                return 80
             } else if indexPath.row == 2 {
                 return 90
             }
@@ -234,7 +239,7 @@ import UIKit
             }
         }
         if shopName.length == 0 {
-            errorMessages.append("Nama Toko harus diisi")
+            errorMessages.append("Nama Toko harus diisi.")
         }
         if shopTagline.length == 0 {
             errorMessages.append("Slogan harus diisi.")

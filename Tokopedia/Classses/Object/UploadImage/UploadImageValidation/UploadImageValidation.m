@@ -25,6 +25,9 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
                                                                             toKeyPath:@"result"
                                                                           withMapping:[UploadImageValidationResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"data"
+                                                                          withMapping:[UploadImageValidationResult mapping]]];
     return mapping;
 }
 

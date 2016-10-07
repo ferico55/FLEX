@@ -15,7 +15,8 @@
 @property (nonatomic, strong) NSString *shipment_name;
 @property (nonatomic, strong) NSString *shipment_image;
 @property (nonatomic, strong) NSString *shipment_available;
-@property (nonatomic, strong) NSArray *shipment_package;
+@property  NSInteger shipment_is_pickup;
+@property (nonatomic, strong) NSArray<ShippingInfoShipmentPackage*> *shipment_package;
 
 @property (nonatomic, strong) NSString *shipment_package_id;
 @property (nonatomic, strong) NSString *shipment_package_name;

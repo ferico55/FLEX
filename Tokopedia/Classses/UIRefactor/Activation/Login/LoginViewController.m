@@ -25,8 +25,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
-
-#import "Localytics.h"
 #import "Tokopedia-Swift.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>
@@ -217,7 +215,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
-
+    
+    [TPAnalytics trackLoginCTAButton];
     NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
     NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
     NSMutableArray *messages = [NSMutableArray new];
@@ -227,18 +226,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         valid = YES;
     }
     if (!email||[email isEqualToString:@""]) {
+        [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
         message = @"Email harus diisi.";
         [messages addObject:message];
         valid = NO;
     }
     if (email) {
         if (![email isEmail]) {
+            [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
             message = @"Format email salah.";
             [messages addObject:message];
             valid = NO;
         }
     }
     if (!pass || [pass isEqualToString:@""]) {
+        [TPAnalytics trackErrorLoginWithFieldName:@"Kata Sandi"];
         message = @"Password harus diisi";
         [messages addObject:message];
         valid = NO;
@@ -268,6 +270,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)didTapRegisterButton {
+    [TPAnalytics trackRegisterThroughLogin];
     RegisterViewController *controller = [RegisterViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -282,10 +285,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 loginWithTokenString:token
                   fromViewController:self
                      successCallback:^(Login *login) {
+                         [TPAnalytics trackSuccessLoginWithChannel:@"Yahoo"];
                          [self onLoginSuccess:login];
                      }
                      failureCallback:^(NSError *error) {
-
+                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+                         [self showLoginUi];
                      }];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -300,6 +305,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                   password:pass
         fromViewController:self
            successCallback:^(Login *login) {
+               [TPAnalytics trackSuccessLoginWithChannel:@"Email"];
                _barbuttonsignin.enabled = YES;
                [self unsetLoggingInState];
 
@@ -404,16 +410,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [Localytics setValue:login.result.email forProfileAttribute:@"user_email"];
     [Localytics setCustomerId:login.result.user_id];
     [Localytics setCustomerFullName:login.result.full_name];
-
-    //add user login to GA
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:@"&uid" value:login.result.user_id];
-    // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
-                                                          action:@"User Sign In"  // Event action (required)
-                                                           label:nil              // Event label
-                                                           value:nil] build]];    // Event value
 
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
@@ -549,9 +545,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
+                                 [TPAnalytics trackSuccessLoginWithChannel:@"Facebook"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];
 
@@ -615,9 +613,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
+                                 [TPAnalytics trackSuccessLoginWithChannel:@"Google"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];
 }

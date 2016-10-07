@@ -143,12 +143,13 @@
     
     _table.delegate = self;
     _table.dataSource = self;
+    _table.estimatedRowHeight = 138.0;
+    _table.rowHeight = UITableViewAutomaticDimension;
     
     _filterDateButton.layer.cornerRadius = 3.0;
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
-    
     
     _page = 1;
     [self disableButtonWithdraw];
@@ -180,6 +181,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Deposit Summary Page"];
 }
 
 
@@ -213,7 +215,7 @@
             [((DepositSummaryCell*)cell).withdrawalTime setText:depositList.deposit_date_full];
             
             
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            UIFont *font = [UIFont smallTheme];
             
             NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
             style.lineSpacing = 6.0;
@@ -234,10 +236,6 @@
     }
     
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 150;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -313,6 +311,7 @@
     _useableSaldo = result.summary.summary_useable_deposit;
     _useableSaldoIDR = result.summary.summary_useable_deposit_idr;
     
+    _saldoLabel.text = _useableSaldoIDR;
     _totalSaldoTokopedia = result.summary.summary_total_deposit_idr;
     _holdDepositByCsIDR = result.summary.summary_deposit_hold_by_cs_idr;
     _holdDepositByTokopedia = result.summary.summary_deposit_hold_tx_1_day_idr;
@@ -572,6 +571,6 @@
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self loadData];
-    _saldoLabel.text = _useableSaldoIDR;
+    
 }
 @end

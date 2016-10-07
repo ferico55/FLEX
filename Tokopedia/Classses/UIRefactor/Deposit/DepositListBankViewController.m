@@ -42,8 +42,8 @@
     NSMutableArray *_list;
     NSIndexPath *_selectedIndexPath;
     
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectmanager;
+    RKManagedObjectRequestOperation *_request;
     
     NSOperationQueue *_operationQueue;
     
@@ -251,12 +251,16 @@
             }
                 
             case 11: {
+                if (_list.count == 0) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Silakan menambahkan akun bank untuk melakukan penarikan dana."] delegate:self];
+                    [alert show];
+                    break;
+                }
+                
                 NSIndexPath *indexpath = _selectedIndexPath;
                 DepositFormBankAccountList *list = _list[indexpath.row];
                 NSString *bankName = [NSString stringWithFormat:@"%@ a/n %@ - %@", list.bank_account_number, list.bank_account_name, list.bank_name];
                 
-                
-//                [_delegate DepositListBankViewController:self withData:data];
                 NSDictionary *userinfo;
                 userinfo = @{
                              @"indexpath" : indexpath,
@@ -282,6 +286,11 @@
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
             case 12 : {
+                if (_listBankAccount.count >= 10) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mohon maaf, maksimal 10 rekening bank yang dapat Anda masukkan.\nSilakan hapus terlebih dahulu rekening bank yang sudah tidak digunakan." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    return;
+                }
                 DepositFormAccountBankViewController *formAddAccount = [DepositFormAccountBankViewController new];
                 [self.navigationController pushViewController:formAddAccount animated:YES];
                 break;

@@ -158,22 +158,22 @@
         } else if (indexPath.row == 1) {
             cell.textLabel.text = @"Agen kurir";
             cell.detailTextLabel.text = _selectedCourier.shipment_name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 2) {
             cell.textLabel.text = @"Paket pengiriman";
             cell.detailTextLabel.text = _selectedCourierPackage.name;
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        cell.textLabel.font = [UIFont title2Theme];
     } else if (indexPath.section == 1) {
         UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
         textField.placeholder = @"Nomor resi";
         textField.tag = 1;
-        textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+        textField.font = [UIFont title2Theme];
         textField.text = _receiptNumber;
         [cell addSubview:textField];
         
@@ -202,19 +202,6 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        
-        NSDictionary *attributes = @{
-            NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-            NSParagraphStyleAttributeName  : style,
-            NSForegroundColorAttributeName : [UIColor grayColor],
-        };
-        
-        _footerTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerTextLabel.text
-                                                                          attributes:attributes];
-        
         return _footerView;
     } else {
         return nil;
@@ -411,10 +398,10 @@
                                      method:RKRequestMethodPOST
                                   parameter:parameters
                                     mapping:[ActionOrder mapping]
-                                  onSuccess:^(RKMappingResult *mappingResult,
-                                              RKObjectRequestOperation *operation) {
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                                       [self actionRequestSuccess:mappingResult];
                                   } onFailure:^(NSError *error) {
+                                      [TPLocalytics trackShipmentConfirmation:NO];
                                       [self actionRequestFailure:error];
                                   }];
 }
@@ -424,10 +411,10 @@
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        
-        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+        [TPLocalytics trackShipmentConfirmation:YES];        
+        NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
     
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
         [alert show];
 
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -437,6 +424,7 @@
         }
         
     } else if (actionOrder.message_error.count > 0){
+        [TPLocalytics trackShipmentConfirmation:NO];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                         message:actionOrder.message_error[0]
                                                        delegate:self
@@ -493,7 +481,7 @@
 }
 
 - (BOOL)isInstantCourier {
-    if (_order.order_shipment.shipment_id == 10) {
+    if (_order.order_is_pickup == 1) {
         return YES;
     } else {
         return NO;

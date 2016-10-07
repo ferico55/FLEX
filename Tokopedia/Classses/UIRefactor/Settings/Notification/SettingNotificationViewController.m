@@ -41,7 +41,7 @@
     
     self.listMenu = @[@"Buletin", @"Review", @"Diskusi Produk", @"Pesan Pribadi", @"Pesan Pribadi dari Admin"];
     self.listDescription = @[@"Setiap promosi, tips & tricks, informasi update seputar Tokopedia",
-                             @"Setiap Review dan  Komentar yang saya terima",
+                             @"Setiap Review dan Komentar yang saya terima",
                              @"Setiap Diskusi Produk dan Komentar yang saya terima",
                              @"Setiap pesan pribadi yang saya terima",
                              @"Setiap pesan pribadi dari admin yang saya terima"];
@@ -54,6 +54,11 @@
     self.networkManager = [TokopediaNetworkManager new];
     self.networkManager.isUsingHmac = YES;
     [self request];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Setting Notification Page"];
 }
 
 #pragma mark - Bar button item
@@ -79,7 +84,7 @@
     NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
     style.lineSpacing = 4.0;
     NSDictionary *attributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+        NSFontAttributeName            : [UIFont microTheme],
         NSParagraphStyleAttributeName  : style,
         NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1],
     };

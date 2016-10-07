@@ -44,6 +44,10 @@ Important Tools to download :
 Inspiration : https://github.com/vsouza/awesome-ios
 
 #Code Guideline 
+What will be reviewed when you submit your code to be merged : 
+- It’s not adviced to use secureStorage directly
+- Initialization dictionary should be clean, it must not contain nil value
+- If using method `objectAtIndex`, please be sure to check if array is not nil
 
 #API Docs 
 https://wiki.tokopedia.net/Tokopedia_Web_Service_v4_Documentation

@@ -159,10 +159,10 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     externalBorder.borderWidth = 1.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     paragraphStyle.lineSpacing              = 5.0f;
-    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamBook" size:12.0f];    
+    UIFont *font = [UIFont smallTheme];
     NSMutableAttributedString *attribString = [[NSMutableAttributedString alloc]initWithString:_explanationLabel.text];
     [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_explanationLabel.text length])];
-    [attribString addAttribute:NSFontAttributeName value:gothamTwelve range:NSMakeRange(0, [_explanationLabel.text length])];
+    [attribString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, [_explanationLabel.text length])];
     
     _explanationLabel.attributedText = attribString;
     _explanationLabel.numberOfLines = 0;
@@ -762,11 +762,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     paragraphStyle.lineSpacing              = 5.0f;
     
     joinedString = [NSString convertHTML:joinedString];
-    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamMedium" size:13.0f];
+    UIFont *font = [UIFont largeThemeMedium];
     
     NSMutableAttributedString *attribString = [[NSMutableAttributedString alloc]initWithString:joinedString];
     [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [joinedString length])];
-    [attribString addAttribute:NSFontAttributeName value:gothamTwelve range:NSMakeRange(0, [joinedString length])];
+    [attribString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, [joinedString length])];
     
     _failLabel.attributedText = attribString;
     _failLabel.numberOfLines = 0;

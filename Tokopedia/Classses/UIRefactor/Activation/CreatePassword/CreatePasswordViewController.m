@@ -20,13 +20,16 @@
 #import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 #import "Tokopedia-Swift.h"
+#import "TTTAttributedLabel.h"
+#import "MMNumberKeyboard.h"
 
 @interface CreatePasswordViewController ()
 <
     UIScrollViewDelegate,
     FBSDKLoginButtonDelegate,
     UITextFieldDelegate,
-    TKPDAlertViewDelegate
+    TKPDAlertViewDelegate,
+    MMNumberKeyboardDelegate
 >
 {
     ActivationRequest *_activationRequest;
@@ -49,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *agreementLabel;
 
 @end
 
@@ -71,21 +75,10 @@
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-
-    NSMutableParagraphStyle *descriptionStyle = [[NSMutableParagraphStyle alloc] init];
-    descriptionStyle.lineSpacing = 4.0;
-    descriptionStyle.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *descriptionAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
-        NSParagraphStyleAttributeName  : descriptionStyle,
-        NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1],
-    };
-
-    _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:_descriptionLabel.text
-                                                                       attributes:descriptionAttributes];
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = false;
+    keyboard.delegate = self;
+    _phoneNumberTextField.inputView = keyboard;
     
     _fullNameTextField.isTopRoundCorner = YES;
     _phoneNumberTextField.isBottomRoundCorner = YES;
@@ -121,7 +114,43 @@
              object:nil];
     
     _activationRequest = [ActivationRequest new];
+    
+    [self setupTermsAndConditionLabel];
 }
+
+- (void)setupTermsAndConditionLabel {
+    _agreementLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    
+    _agreementLabel.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName: [UIColor colorWithRed:10.0/255
+                                                                                            green:126.0/255
+                                                                                             blue:7.0/255
+                                                                                            alpha:1],
+                                       NSFontAttributeName: [UIFont smallThemeMedium],
+                                       NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)
+                                       };
+    
+    TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                                withRange:NSMakeRange(32, 20)];
+    
+    agreementLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Syarat & Ketentuan";
+        webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+    
+    TTTAttributedLabelLink *privacyLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                              withRange:NSMakeRange(59, 17)];
+    
+    privacyLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Kebijakan Privasi";
+        webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+}
+
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
     _userProfile = [CreatePasswordUserProfile fromFacebook:facebookUserData];
@@ -134,6 +163,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateFormViewAppearance];
+    [TPAnalytics trackScreenName:@"Create Password Page"];
 }
 
 - (void)updateFormViewAppearance {
@@ -240,40 +270,51 @@
             }
         } else if (button.tag == 2) {
             
+            [TPAnalytics trackClickRegisterOnPage:@"Create Password Page"];
+            
             NSMutableArray *errorMessages = [NSMutableArray new];
 
             NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
             if ([_fullNameTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap - Create Password Page"];
             } else if (![test evaluateWithObject:_fullNameTextField.text]) {
                 [errorMessages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap - Create Password Page"];
             }
             
             if ([_passwordTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Kata Sandi harus diisi"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi Baru"];
             } else if (_passwordTextField.text.length < 6) {
                 [errorMessages addObject:@"Kata Sandi terlalu pendek, minimum 6 karakter"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi Baru"];
             }
             
             if ([_confirmPasswordTextfield.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi harus diisi"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
             } else if (_confirmPasswordTextfield.text.length < 6) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi terlalu pendek, minimum 6 karakter"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
             }
             
             if ([_phoneNumberTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Nomor HP harus diisi"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP - Create Password Page"];
             }
             
             if (_passwordTextField.text.length >= 6 &&
                 _confirmPasswordTextfield.text.length >= 6) {
                 if (![_passwordTextField.text isEqualToString:_confirmPasswordTextfield.text]) {
                     [errorMessages addObject:@"Ulangi Kata Sandi tidak sama dengan Kata Sandi"];
+                    [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi - Create Password Page"];
                 }
             }
             
             if (!_agreementButton.selected) {
                 [errorMessages addObject:@"Anda harus menyetujui Syarat dan Ketentuan dari Tokopedia"];
+                [TPAnalytics trackErrorRegisterWithFieldName:@"Syarat dan Ketentuan - Create Password Page"];
             }
             
             if (errorMessages.count > 0) {
@@ -292,20 +333,6 @@
             _agreementButton.selected = YES;
         }
     }
-}
-
-- (IBAction)tapTerms:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Syarat & Ketentuan";
-    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (IBAction)tapPrivacy:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Kebijakan Privasi";
-    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Restkit
@@ -423,11 +450,14 @@
 - (void)trackRegistration {
     
     NSString* eventType = @"Facebook Registration";
+    NSString *channel = @"Facebook";
     
     if ([_userProfile.provider isEqualToString:@"2"]) {
         eventType = @"Google Registration";
+        channel = @"Google";
     } else if ([_userProfile.provider isEqualToString:@"4"]) {
         eventType = @"Yahoo Registration";
+        channel = @"Yahoo";
     }
     
     NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : eventType};
@@ -435,6 +465,7 @@
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
     
     [TPLocalytics trackRegistrationWithProvider:_userProfile.provider success:YES];
+    [TPAnalytics trackSuccessRegisterWithChannel:channel];
 }
 
 #pragma mark - Keyboard Notification
@@ -480,6 +511,8 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == _dateOfBirthTextField) {
+        [self.view endEditing:YES];
+        
         AlertDatePickerView *datePicker = [AlertDatePickerView newview];
         datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
         datePicker.isSetMinimumDate = YES;

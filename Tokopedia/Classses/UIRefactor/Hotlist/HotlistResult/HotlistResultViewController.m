@@ -23,7 +23,6 @@
 #import "FilterViewController.h"
 #import "SortViewController.h"
 
-#import "GeneralProductCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -37,8 +36,6 @@
 #import "ProductCell.h"
 #import "ProductThumbCell.h"
 
-#import "GeneralSingleProductCell.h"
-#import "GeneralPhotoProductCell.h"
 #import "NavigateViewController.h"
 
 #import "PromoCollectionReusableView.h"
@@ -48,11 +45,10 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
-#import "Localytics.h"
-
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"
+#import "UIFont+Theme.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -548,18 +544,10 @@ static NSString const *rows = @"12";
     }
     
     if (_bannerResult.info.hotlist_description) {
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 5.0;
-        style.alignment = NSTextAlignmentJustified;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : IS_IPAD ? [UIColor blackColor] : [UIColor whiteColor],
-                                     };
-        
-        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""] attributes:attributes];
-        _hotlistDescription.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""] attributes:attributes];
+        _descriptionlabel.font = [UIFont smallTheme];
+        _descriptionlabel.text = _bannerResult.info.hotlist_description?:@"";
+        _hotlistDescription.font = [UIFont smallTheme];
+        _hotlistDescription.text = _bannerResult.info.hotlist_description?:@"";
     }
 }
 
@@ -574,14 +562,14 @@ static NSString const *rows = @"12";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:10];
+        button.titleLabel.font = [UIFont microTheme];
         button.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
         button.layer.borderWidth = 1;
         button.layer.cornerRadius = 3;
         
         [button addTarget:self action:@selector(didTapOnHashtag:) forControlEvents:UIControlEventTouchUpInside];
         
-        CGSize stringSize = [button.titleLabel.text sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
+        CGSize stringSize = [button.titleLabel.text sizeWithFont:[UIFont smallTheme]];
         stringSize.width += 30;
         button.frame = CGRectMake(totalWidth, 5, stringSize.width, 30);
         
@@ -812,6 +800,7 @@ static NSString const *rows = @"12";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	List *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:list];
+    [TPAnalytics trackClickHotlistProductWithName:list.product_name];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
@@ -820,10 +809,10 @@ static NSString const *rows = @"12";
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
+    if(_bannerResult.query.hot_id && (_page % 2 == 1 || _page == 1)){
         NSString *departmentId = [self selectedCategoryIDsString];
 
-        [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
+        [_promoRequest requestForProductHotlist:_bannerResult.query.hot_id
                                      department:departmentId
                                            page:_page / 2
                                 filterParameter:_selectedFilterParam
@@ -895,6 +884,7 @@ static NSString const *rows = @"12";
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
     _bannerResult = bannerResult;
+    
     [self setHeaderData];
     
     _pagecontrol.hidden = NO;

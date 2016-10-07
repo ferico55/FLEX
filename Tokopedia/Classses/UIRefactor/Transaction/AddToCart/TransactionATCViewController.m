@@ -16,10 +16,10 @@
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
-#import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
 #import "TPLocalytics.h"
+#import "MMNumberKeyboard.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -63,7 +63,8 @@ typedef enum
     UITableViewDelegate,
     UITextViewDelegate,
     UITextFieldDelegate,
-    UIAlertViewDelegate
+    UIAlertViewDelegate,
+    MMNumberKeyboardDelegate
 >
 {
     BOOL _isnodata;
@@ -166,6 +167,11 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
+    keyboard.allowsDecimalPoint = NO;
+    keyboard.delegate = self;
+    _productQuantityTextField.inputView = keyboard;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -218,7 +224,7 @@ typedef enum
 
 - (IBAction)tapPinLocationButton:(id)sender {
     AddressFormList *address = _selectedAddress;
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
 #pragma mark - Picker Place Delegate
@@ -236,6 +242,7 @@ typedef enum
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
+                            userPassword:@""
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      [self successEditAddress:address longitude:longitude latitude:latitude result:data];
@@ -268,6 +275,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
+    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }
@@ -460,7 +468,7 @@ typedef enum
     qty += (int)sender.value;
     
     //limit quantity min and max value
-    qty = fmin(999, qty);
+    qty = fmin([ProductDetail maximumPurchaseQuantity], qty);
     _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
     [self alertAndResetIfQtyTextFieldBelowMin];
@@ -679,7 +687,7 @@ typedef enum
                 return 243-50+_addressLabel.frame.size.height;
             }
             if ([cell isEqual:_pinLocationCell]) {
-                if ([_selectedShipment.shipper_id integerValue] == 10) {
+                if (_selectedShipmentPackage.is_show_map == 1) {
                     return 70;
                 }
                 return 0;
@@ -735,7 +743,7 @@ typedef enum
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
@@ -847,11 +855,11 @@ typedef enum
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
-                                                                               AFEventParamContentId : _selectedProduct.product_id,
+                                                                               AFEventParamContentId : _selectedProduct.product_id?:@"",
                                                                                AFEventParamContentType : @"Product",
-                                                                               AFEventParamPrice : price,
+                                                                               AFEventParamPrice : price?:@"",
                                                                                AFEventParamCurrency : _selectedProduct.product_currency?:@"IDR",
-                                                                               AFEventParamQuantity : _productQuantityTextField.text}];
+                                                                               AFEventParamQuantity : _productQuantityTextField.text?:@""}];
 }
 
 -(void)failedActionATC:(NSError*)error{
@@ -978,7 +986,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -1001,26 +1009,18 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
     [self adjustViewIsLoading:NO];
 }
 
-#pragma mark - Textfield Delegate
-
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-}
-
-- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString*)string
-{
-    NSString* newText;
-
-    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-
+#pragma mark - MMNumberKeyboard Delegate
+- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
+    NSString *amount = _productQuantityTextField.text;
+    amount = [amount stringByAppendingString:text];
+    
     [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
         _isFinishRequesting = NO;
         [self alertAndResetIfQtyTextFieldBelowMin];
@@ -1028,7 +1028,20 @@ replacementString:(NSString*)string
         [self requestRate];
     }];
     
-    return [newText isNumber] && [newText integerValue] < 1000;
+    return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
+}
+
+- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard {
+    NSString *amount = _productQuantityTextField.text;
+    
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
+    return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
 }
 
 #pragma mark - Text View Delegate

@@ -14,7 +14,6 @@
 #import "PromoProduct.h"
 #import "TransactionCartList.h"
 #import "PromoResult.h"
-#import "Localytics.h"
 #import "NSURL+Dictionary.h"
 
 @interface TPAnalytics ()
@@ -299,10 +298,10 @@
     NSDictionary *data = @{
         @"event" : @"transaction",
         @"transactionId" : purchaseID?:@"",
-        @"transactionTotal" : revenueString,
-        @"transactionShipping" : shippingString,
+        @"transactionTotal" : revenueString?:@"",
+        @"transactionShipping" : shippingString?:@"",
         @"transactionCurrency" : @"IDR",
-        @"transactionProducts" : purchasedItems
+        @"transactionProducts" : purchasedItems?:@""
     };
     [analytics.dataLayer push:data];
     NSDictionary *purchaseData = @{
@@ -311,12 +310,12 @@
         @"ecommerce": @{
             @"purchase": @{
                 @"actionField": @{
-                    @"id": purchaseID,
-                    @"revenue": revenueString,
-                    @"shipping": shippingString,
+                    @"id": purchaseID?:@"",
+                    @"revenue": revenueString?:@"",
+                    @"shipping": shippingString?:@"",
                     @"coupon": coupon?:@"",
                 },
-                @"products" : purchasedItems
+                @"products" : purchasedItems?:@""
             }
         }
     };
@@ -350,7 +349,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
             @"event" : @"onBoardingClick",
-            @"buttonName" : buttonName,
+            @"buttonName" : buttonName?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -359,7 +358,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event" : @"snapSearchCategory",
-        @"categoryName" : categoryName,
+        @"categoryName" : categoryName?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -368,7 +367,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event": @"snapSearchAddToCart",
-        @"productId": product.product_id,
+        @"productId": product.product_id?:@"",
     };
     [analytics.dataLayer push:data];
 }
@@ -377,12 +376,12 @@
     TPAnalytics *analytics = [[self alloc] init];
     
     NSDictionary *data = @{@"event" : @"authenticated",
-                           @"contactInfo" : @{@"userSeller" : result.seller_status,
-                                              @"userFullName" : result.full_name,
+                           @"contactInfo" : @{@"userSeller" : result.seller_status?:@"",
+                                              @"userFullName" : result.full_name?:@"",
                                               @"userEmail" : result.email?:@"",
-                                              @"userId" : result.user_id,
-                                              @"userMSISNVerified" : result.msisdn_is_verified,
-                                              @"shopId" : result.shop_id
+                                              @"userId" : result.user_id?:@"",
+                                              @"userMSISNVerified" : result.msisdn_is_verified?:@"",
+                                              @"shopId" : result.shop_id?:@""
                                               }
                            };
     
@@ -441,9 +440,9 @@
 + (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label {
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
-        @"event": event,
-        @"eventCategory": category,
-        @"eventLabel": label
+        @"event": event?:@"",
+        @"eventCategory": category?:@"",
+        @"eventLabel": label?:@""
     };
     [analytics.dataLayer push:data];
 }
@@ -454,8 +453,524 @@
     NSDictionary *data = @{
                            @"event" : @"clickSearch",
                            @"eventCategory" : @"Search",
-                           @"eventAction" : action,
-                           @"eventLabel" : keyword
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : keyword?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickRegisterOnPage:(NSString *)page {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickRegister",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : page?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSuccessRegisterWithChannel:(NSString *)channel {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerSuccess",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Register Success",
+                           @"eventLabel" : channel?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackErrorRegisterWithFieldName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerError",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Register Error",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackAddToCartEvent:(NSString *)event action:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : event?:@"",
+                           @"eventCategory" : @"Add to Cart",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickCartLabel:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickCheckout",
+                           @"eventCategory" : @"Checkout",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickCategoryWithCategoryName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickCategory",
+                           @"eventCategory" : @"Homepage",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickBuyFromWishlist {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickWishlist",
+                           @"eventCategory" : @"Wishlist",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"Buy"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackViewProductFromWishlistWithProductName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickWishlist",
+                           @"eventCategory" : @"Wishlist",
+                           @"eventAction" : @"View",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackFilterWithSelectedFilters:(NSArray<NSString *> *)filters {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    for (NSString *filter in filters) {
+        NSDictionary *data = @{
+                               @"event" : @"clickFilter",
+                               @"eventCategory" : @"Filter",
+                               @"eventAction" : @"Click",
+                               @"eventLabel" : filter?:@""
+                               };
+        
+        [analytics.dataLayer push:data];
+    }
+}
+
++ (void)trackSortWithSortName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickSort",
+                           @"eventCategory" : @"Sort",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickProductOnProductFeedWithProductName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickFeed",
+                           @"eventCategory" : @"Feed",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickProductOnRecentlyViewedWithProductName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickRecent",
+                           @"eventCategory" : @"Recently Viewed",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickShopOnFavoriteShopWithShopName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickFavorite",
+                           @"eventCategory" : @"Favorite",
+                           @"eventAction" : @"View",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickSearchResultTabWithName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickSearchResult",
+                           @"eventCategory" : @"Search Result",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickHotlistProductWithName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickHotlist",
+                           @"eventCategory" : @"Hotlist",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackGoToHomepageTabWithIndex:(NSInteger)index {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSString *name = @"";
+    
+    switch (index) {
+        case 1:
+            name = @"Home";
+            break;
+        case 2:
+            name = @"Product Feed";
+            break;
+        case 3:
+            name = @"Wishlist";
+            break;
+        case 4:
+            name = @"Last Seen";
+            break;
+        case 5:
+            name = @"Favorite";
+            break;
+        default:
+            break;
+    }
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickHomepage",
+                           @"eventCategory" : @"Homepage",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickTabBarItemWithName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickTabBar",
+                           @"eventCategory" : @"Tab Bar",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickOnMorePageWithEventName:(NSString *)eventName eventLabel:(NSString *)eventLabel {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickMore",
+                           @"eventCategory" : @"Tab Bar",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : eventLabel?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickNotificationWithEventName:(NSString *)eventName eventLabel:(NSString *)eventLabel {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickTopedIcon",
+                           @"eventCategory" : @"Toped Icon",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : eventLabel?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackPaymentEvent:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : event?:@"",
+                           @"eventCategory" : category?:@"",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackProductDetailPageWithEvent:(NSString *)event action:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : event?:@"",
+                           @"eventCategory" : @"Product Detail Page",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackAbandonRegisterWithFieldName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerAbandon",
+                           @"eventCategory" : @"Register",
+                           @"eventAction" : @"Register Abandon",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackLoginCTAButton {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickLogin",
+                           @"eventCategory" : @"Login",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"CTA"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSuccessLoginWithChannel:(NSString *)channel {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"loginSuccess",
+                           @"eventCategory" : @"Login",
+                           @"eventAction" : @"Login Success",
+                           @"eventLabel" : channel?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackErrorLoginWithFieldName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"loginError",
+                           @"eventCategory" : @"Login",
+                           @"eventAction" : @"Login Error",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackAbandonLoginWithFieldName:(NSString *)name {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"loginAbandon",
+                           @"eventCategory" : @"Login",
+                           @"eventAction" : @"Login Abandon",
+                           @"eventLabel" : name?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackRegisterThroughLogin {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"registerLogin",
+                           @"eventCategory" : @"Login",
+                           @"eventAction" : @"Register",
+                           @"eventLabel" : @"Register"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSearchNoResultWithKeyword:(NSString *)keyword {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"noSearchResult",
+                           @"eventCategory" : @"No Search Result",
+                           @"eventAction" : @"No Result",
+                           @"eventLabel" : keyword?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
++ (void)trackAddToWishlist {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickWishlist",
+                           @"eventCategory" : @"Product Detail Page",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"Add to Wishlist"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackInboxMessageAction:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickMessage",
+                           @"eventCategory" : @"Message",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackInboxTalkAction:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickProductDiscussion",
+                           @"eventCategory" : @"Product Discussion",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackInboxReviewAction:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickReview",
+                           @"eventCategory" : @"Review",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackInboxResolutionAction:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickResolution",
+                           @"eventCategory" : @"Resolution",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackEtalaseAction:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickEtalase",
+                           @"eventCategory" : @"Etalase",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickCheckoutCTAButton {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickCheckout",
+                           @"eventCategory" : @"Checkout",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"Checkout"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackForgetPasswordEvent:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : event?:@"",
+                           @"eventCategory" : category?:@"",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSecurityQuestionEvent:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : event?:@"",
+                           @"eventCategory" : category?:@"",
+                           @"eventAction" : action?:@"",
+                           @"eventLabel" : label?:@""
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickCreateShop {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickCreateShop",
+                           @"eventCategory" : @"Create Shop",
+                           @"eventAction" : @"Click",
+                           @"eventLabel" : @"Create"
                            };
     
     [analytics.dataLayer push:data];

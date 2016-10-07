@@ -136,6 +136,7 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Inbox Message Detail Page"];
 }
 
 - (void)dealloc{
@@ -382,6 +383,7 @@
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:YES];
                     
+                    [TPAnalytics trackInboxMessageAction:@"Send" label:[_data objectForKey:@"nav"]?:@""];
                     [self doSendMessage:_textView.text];
                     
                     _textView.text = nil;
