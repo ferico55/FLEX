@@ -140,6 +140,21 @@
     _isShopDescriptionExpanded = NO;
 }
 
+- (void)setTopLabelLayoutWidth {
+    CGRect frame = _topCell.frame;
+    frame.size.width = self.view.bounds.size.width;
+    _topCell.frame = frame;
+    [_topCell layoutIfNeeded];
+    
+    _labelshoptagline.preferredMaxLayoutWidth = _labelshoptagline.frame.size.width;
+    _labelshopdescription.preferredMaxLayoutWidth = _labelshopdescription.frame.size.width;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setTopLabelLayoutWidth];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -582,26 +597,18 @@
 
 -(void) expandShopDescription {
     [UIView animateWithDuration:0.2 animations:^{
-        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
-        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
-        CGRect topCellFrame = _topCell.frame;
-        topCellFrame.size.height = topCellFrame.size.height + _diffOldAndExpandedHeightDescription;
-        _topCell.frame = topCellFrame;
-        
         self.expandShopDescriptionButton.transform = CGAffineTransformMakeRotation((180.0 * (CGFloat)M_PI) / 180.0);
     }];
+    _labelshopdescription.numberOfLines = 0;
     _isShopDescriptionExpanded = YES;
 }
 
 -(void) shrinkShopDescription {
     [UIView animateWithDuration:0.2 animations:^{
-        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
-        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
-        CGRect topCellFrame = _topCell.frame;
-        topCellFrame.size.height = topCellFrame.size.height - _diffOldAndExpandedHeightDescription;
-        _topCell.frame = topCellFrame;
         self.expandShopDescriptionButton.transform = CGAffineTransformIdentity;
     }];
+    
+    _labelshopdescription.numberOfLines = 1;
     _isShopDescriptionExpanded = NO;
 }
 
@@ -626,6 +633,12 @@
     }
 }
 
+- (void)resizeTopCell {
+    CGFloat height = [_topCell systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect frame = _topCell.frame;
+    frame.size.height = height;
+    _topCell.frame = frame;
+}
 
 
 #pragma mark - Method
@@ -641,6 +654,9 @@
     } else {
         [self shrinkShopDescription];
     }
+    
+    [self resizeTopCell];
+    
     [_tableView beginUpdates];
     [_tableView endUpdates];
 }
