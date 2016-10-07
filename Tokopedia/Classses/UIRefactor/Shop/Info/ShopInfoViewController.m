@@ -554,9 +554,7 @@
     //request.URL = url;
     
     UIImageView *thumb = _thumb;
-    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     //[((ShopInfoPaymentCell*)cell).act startAnimating];
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -575,11 +573,7 @@
     //request.URL = url;
     
     thumb = _thumbowner;
-    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    //[((ShopInfoPaymentCell*)cell).act startAnimating];
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
