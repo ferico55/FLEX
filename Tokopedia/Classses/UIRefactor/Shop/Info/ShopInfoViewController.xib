@@ -34,6 +34,7 @@
                 <outlet property="soldAmountView" destination="9Nc-wY-W15" id="m2O-BE-EXf"/>
                 <outlet property="statisticCell" destination="1GS-1r-iYJ" id="s9L-8h-uUN"/>
                 <outlet property="successTransactionHeightConstraint" destination="kzf-xB-2Yl" id="gF7-78-7hB"/>
+                <outlet property="successTransactionView" destination="r1j-01-dcU" id="Sbx-6d-OkS"/>
                 <outlet property="tableView" destination="v79-wA-DCx" id="Sei-4i-lDI"/>
                 <outlet property="thumb" destination="DuP-Hu-qmN" id="tCj-y0-Cte"/>
                 <outlet property="thumbowner" destination="hb4-in-ahI" id="jRL-lN-GiN"/>
