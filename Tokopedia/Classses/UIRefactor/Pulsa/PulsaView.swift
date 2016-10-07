@@ -40,7 +40,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var didSuccessPressBuy: (NSURL -> Void)?
     
     let WIDGET_LEFT_MARGIN: CGFloat = 20
-    let WIDGET_RIGHT_MARGIN: CGFloat = -10
+    let WIDGET_RIGHT_MARGIN: CGFloat = -20
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -87,7 +87,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
         self.addArrangedSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
-            make.height.equalTo()(30)
+            make.height.equalTo()(44)
+            make.left.equalTo()(self.pulsaCategoryControl.superview?.mas_left).with().offset()(self.WIDGET_LEFT_MARGIN)
+            make.right.equalTo()(self.pulsaCategoryControl.superview?.mas_right).with().offset()(self.WIDGET_RIGHT_MARGIN)
         }
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
@@ -111,9 +113,10 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func buildAllView(category: PulsaCategory) {
-        self.subviews.enumerate().forEach { index, subview in
+        
+        self.arrangedSubviews.enumerate().forEach { index, subview in
             if(index > 0) {
-                subview.removeFromSuperview()
+                self.removeArrangedSubview(subview)
             }
         }
         
@@ -180,13 +183,13 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.left.equalTo()(self.saldoLabel.mas_right).offset()(10)
             make.right.equalTo()(self.saldoButtonPlaceholder.mas_right).offset()(self.WIDGET_RIGHT_MARGIN)
         }
-
     }
     
     func buildFields(category: PulsaCategory) {
         fieldPlaceholder = UIView(frame: CGRectZero)
           self.addArrangedSubview(fieldPlaceholder)
         fieldPlaceholder.mas_makeConstraints { make in
+            make.width.mas_equalTo()(self.mas_width)
             make.height.mas_equalTo()(44)
         }
         
@@ -210,7 +213,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -44 : 0)
+            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : self.WIDGET_RIGHT_MARGIN)
         }
         
         if(category.attributes.use_phonebook) {
