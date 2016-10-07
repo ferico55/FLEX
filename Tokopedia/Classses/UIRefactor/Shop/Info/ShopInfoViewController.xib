@@ -77,7 +77,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="562"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O8k-9z-wNJ" id="qmY-Z1-c5R">
-                <frame key="frameInset" width="320" height="561"/>
+                <frame key="frameInset" width="320" height="561.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v0r-pH-7rW">
@@ -589,7 +589,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1GS-1r-iYJ" id="jSC-Zo-CmP">
-                <frame key="frameInset" width="320" height="249"/>
+                <frame key="frameInset" width="320" height="249.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RoU-tk-78B" userLabel="Transaction ">
@@ -634,6 +634,7 @@
                                     <constraint firstItem="qeE-QP-dEz" firstAttribute="leading" secondItem="TiR-Ts-jnQ" secondAttribute="trailing" id="Tk8-nZ-I9j"/>
                                     <constraint firstItem="qeE-QP-dEz" firstAttribute="top" secondItem="r1j-01-dcU" secondAttribute="top" id="UYk-Wi-gcH"/>
                                     <constraint firstItem="TiR-Ts-jnQ" firstAttribute="top" secondItem="r1j-01-dcU" secondAttribute="top" constant="-1" id="i0D-ac-aHV"/>
+                                    <constraint firstAttribute="height" constant="44" id="kzf-xB-2Yl"/>
                                     <constraint firstAttribute="bottom" secondItem="TiR-Ts-jnQ" secondAttribute="bottom" id="wvP-sL-8rd"/>
                                 </constraints>
                             </view>
@@ -740,7 +741,6 @@
                             <constraint firstItem="r1j-01-dcU" firstAttribute="top" secondItem="A3B-Cc-duj" secondAttribute="bottom" id="gHb-Og-fA8"/>
                             <constraint firstItem="n1B-d8-dJ3" firstAttribute="top" secondItem="r1j-01-dcU" secondAttribute="bottom" id="hx2-sZ-YRB"/>
                             <constraint firstItem="ivz-ZJ-iwM" firstAttribute="leading" secondItem="bJV-pq-fOB" secondAttribute="leading" id="i0P-Cz-wsM"/>
-                            <constraint firstItem="n1B-d8-dJ3" firstAttribute="top" secondItem="A3B-Cc-duj" secondAttribute="bottom" constant="43" id="isG-4F-Gdw"/>
                             <constraint firstItem="uPj-Rv-XdE" firstAttribute="top" secondItem="n1B-d8-dJ3" secondAttribute="bottom" constant="42" id="mWe-oj-1PM"/>
                             <constraint firstItem="ivz-ZJ-iwM" firstAttribute="top" secondItem="RoU-tk-78B" secondAttribute="top" constant="125" id="nep-ig-dKg"/>
                             <constraint firstItem="uPj-Rv-XdE" firstAttribute="leading" secondItem="sx0-ra-I6r" secondAttribute="leading" id="qOc-Qb-LlA"/>
@@ -782,7 +782,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oon-1E-soq" id="NDi-g2-NWl">
-                <frame key="frameInset" width="320" height="137"/>
+                <frame key="frameInset" width="320" height="137.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mbx-QP-Mtw" userLabel="Shop Owner">
@@ -870,7 +870,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qil-eh-Nc0" id="6FW-lG-2B8">
-                <frame key="frameInset" width="320" height="39"/>
+                <frame key="frameInset" width="320" height="39.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M07-hw-DnY" userLabel="Header">
