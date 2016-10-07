@@ -91,7 +91,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     func initOuterStackView() {
         self.outerStackView = OAStackView()
-        setStackViewAttribute(self.outerStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        setStackViewAttribute(self.outerStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 5.0)
         self.homePageScrollView.addSubview(self.outerStackView)
         setupOuterStackViewConstraint()
     }
@@ -127,12 +127,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.miniSliderPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder = OAStackView()
-        self.setStackViewAttribute(self.pulsaPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
         self.categoryPlaceholder = OAStackView()
         self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 24.0)
-        
-        self.outerStackView.addArrangedSubview(self.tickerPlaceholder)
-        
         
         // init slider
         self.sliderPlaceholder.mas_makeConstraints { make in
@@ -215,7 +211,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                         
                         for layout_row in layout_section.layout_rows {
                             let iconStackView = OAStackView()
-                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Center, distribution: .Fill, spacing: 0.0)
+                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
                             
                             let url = NSURL(string: layout_row.image_url)
                             let imageData: NSData? = NSData(contentsOfURL: url!)
@@ -355,9 +351,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.mappingPrefixFromOperators(operators)
         
         self.pulsaView.addActionNumberField();
-        self.pulsaView.refreshContainerSize = {
-            self.refreshPulsaWidgetHeight()
-        }
         
         self.pulsaView.didPrefixEntered = { operatorId, categoryId in
             self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
@@ -470,12 +463,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
             
             self.pulsaView = PulsaView(categories: sortedCategories)
-            self.pulsaView.mas_makeConstraints({ (make) in
-                make.height.mas_equalTo()(100)
-            })
             
             self.pulsaPlaceholder.removeAllSubviews()
             self.pulsaPlaceholder.addArrangedSubview(self.pulsaView)
+            self.pulsaView.mas_makeConstraints({ (make) in
+                make.top.left().right().bottom().equalTo()(self.pulsaPlaceholder)
+            })
             
             self.navigator = PulsaNavigator()
             self.navigator.pulsaView = self.pulsaView
@@ -530,19 +523,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     make.top.bottom().equalTo()(self.tickerPlaceholder)
                 }
                 
+                self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
+                
                 self.tickerPlaceholder.addSubview(self.tickerView)
             }
             
         }) { (error) in
             
         }
-    }
-    
-    func refreshPulsaWidgetHeight() {
-        self.pulsaView.mas_updateConstraints { (make) in
-            make.height.mas_equalTo()(220)
-        }
-        super.updateViewConstraints()
     }
     
     // MARK: Method

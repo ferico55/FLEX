@@ -8,9 +8,10 @@
 
 import UIKit
 import Foundation
+import OAStackView
 
 @objc
-class PulsaView: UIView, MMNumberKeyboardDelegate {
+class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     
     var pulsaCategoryControl: UISegmentedControl!
     var numberField: UITextField!
@@ -36,9 +37,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
     var didShowAlertPermission: (Void -> Void)?
-    var refreshContainerSize: (Void -> Void)?
     var didSuccessPressBuy: (NSURL -> Void)?
     
+    let WIDGET_LEFT_MARGIN: CGFloat = 20
+    let WIDGET_RIGHT_MARGIN: CGFloat = -10
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -52,12 +54,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         static let Listrik = "3"
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     init(categories: [PulsaCategory]) {
-        super.init(frame: CGRectZero)
+        super.init(arrangedSubviews: [])
+        
+        setupStackViewFormat()
         
         NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomePage", object: nil)
         NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomeTab", object: nil)
@@ -85,26 +85,25 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             }
 
         }
-        
-        self.addSubview(pulsaCategoryControl)
+        self.addArrangedSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
-            make.height.equalTo()(44)
-            make.top.equalTo()(0)
-            make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
+            make.height.equalTo()(30)
         }
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
             self.selectedCategory = categories[control.selectedSegmentIndex]
             self.buildAllView(self.selectedCategory)
             self.addActionNumberField()
-            self.refreshContainerSize!()
         }, forControlEvents: .ValueChanged)
         
         self.buildAllView(categories[0])
         self.pulsaCategoryControl.selectedSegmentIndex = 0
         self.pulsaCategoryControl.backgroundColor = UIColor.whiteColor()
         self.selectedCategory = categories[0]
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
@@ -118,20 +117,17 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             }
         }
         
-        
         self.buildFields(category)
         self.buildButtons()
         self.buildUseSaldoView()
-
-        self.recalibrateView()
     }
     
     func buildUseSaldoView() {
         saldoButtonPlaceholder = UIView(frame: CGRectZero)
-        self.addSubview(saldoButtonPlaceholder)
+        self.addArrangedSubview(saldoButtonPlaceholder)
         saldoButtonPlaceholder.mas_makeConstraints { make in
             make.top.equalTo()(self.buttonErrorLabel.mas_bottom)
-            make.left.equalTo()(self.mas_left)
+            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
             make.right.equalTo()(self.mas_right)
             make.height.equalTo()(0)
         }
@@ -182,19 +178,16 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             make.height.equalTo()(0)
             make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
             make.left.equalTo()(self.saldoLabel.mas_right).offset()(10)
-            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
+            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right).offset()(self.WIDGET_RIGHT_MARGIN)
         }
 
     }
     
     func buildFields(category: PulsaCategory) {
         fieldPlaceholder = UIView(frame: CGRectZero)
-        self.addSubview(fieldPlaceholder)
-        
+          self.addArrangedSubview(fieldPlaceholder)
         fieldPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.pulsaCategoryControl.mas_bottom).offset()(10)
-            make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
+            make.height.mas_equalTo()(44)
         }
         
         numberField = UITextField(frame: CGRectZero)
@@ -214,9 +207,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         
         fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
-            make.height.equalTo()(44)
+            make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
-            make.left.equalTo()(self.mas_left)
+            make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
             make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -44 : 0)
         }
         
@@ -229,7 +222,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
                 make.height.equalTo()(32)
                 make.width.equalTo()(32)
                 make.left.equalTo()(self.numberField.mas_right).offset()(5)
-                make.top.equalTo()(self.fieldPlaceholder.mas_top).offset()(5)
+                make.centerY.equalTo()(self.numberField.mas_centerY)
             }
             
             phoneBook.bk_whenTapped { [unowned self] in
@@ -242,13 +235,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         numberErrorLabel.textColor = UIColor.redColor()
         numberErrorLabel.font = UIFont.systemFontOfSize(12)
         
-        self.addSubview(numberErrorLabel)
+        self.addArrangedSubview(numberErrorLabel)
         
         numberErrorLabel.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-            make.top.equalTo()(self.fieldPlaceholder.mas_bottom).offset()(3)
-            make.left.equalTo()(self.mas_left)
+            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
             make.right.equalTo()(self.mas_right)
+            make.height.equalTo()(0)
         }
        
     }
@@ -385,17 +377,14 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             let newLength = text.characters.count + string.characters.count - range.length
             return newLength <= self.selectedOperator.attributes.maximum_length
         }
-       
     }
 
     func buildButtons() {
         buttonsPlaceholder = UIView(frame: CGRectZero)
-        self.addSubview(buttonsPlaceholder)
+        self.addArrangedSubview(buttonsPlaceholder)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.numberErrorLabel.mas_bottom).offset()(5)
-            make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
+            make.height.equalTo()(0)
         }
         
         productButton = UIButton(frame: CGRectZero)
@@ -413,26 +402,23 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         buttonsPlaceholder.addSubview(productButton)
         
         productButton.mas_makeConstraints { make in
-            make.height.equalTo()(0)
             make.top.equalTo()(self.buttonsPlaceholder.mas_top)
-            make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
+            make.left.equalTo()(self.mas_left).with().offset()(self.WIDGET_LEFT_MARGIN)
+            make.right.equalTo()(self.mas_right).with().offset()(self.WIDGET_RIGHT_MARGIN)
             make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
         }
-        
         
         buttonErrorLabel = UILabel(frame: CGRectZero)
         buttonErrorLabel.textColor = UIColor.redColor()
         buttonErrorLabel.font = UIFont.systemFontOfSize(12)
-        self.addSubview(buttonErrorLabel)
+        self.addArrangedSubview(buttonErrorLabel)
         
         buttonErrorLabel.mas_makeConstraints { make in
             make.height.equalTo()(0)
             make.top.equalTo()(self.buttonsPlaceholder.mas_bottom).offset()(3)
-            make.left.equalTo()(self.mas_left)
+            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
             make.right.equalTo()(self.mas_right)
         }
-        
     }
     
     func isValidNumber(number: String) -> Bool{
@@ -457,6 +443,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     }
     
     func showBuyButton(products: [PulsaProduct]) {
+        self.buttonsPlaceholder.mas_updateConstraints { make in
+            make.height.equalTo()(44)
+        }
         productButton.mas_updateConstraints { make in
             make.height.equalTo()(44)
         }
@@ -491,13 +480,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         
         productButton.setImage(UIImage(named: "icon_arrow_down.png"), forState: .Normal)
         productButton.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 30, 0, 0)
-        
-        self.refreshContainerSize!()
     }
     
     func didPressBuyButton() {
-        self.refreshContainerSize!()
-        
         if(!self.isValidNumber(self.numberField.text!)) {
             self.numberErrorLabel.mas_updateConstraints { make in
                 make.height.equalTo()(22)
@@ -507,7 +492,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
                 make.height.equalTo()(0)
             }
         }
-        
         
         if(self.productButton.hidden == false && !self.isValidNominal()) {
             self.buttonErrorLabel.mas_updateConstraints { make in
@@ -544,6 +528,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     }
     
     func hideBuyButtons() {
+        buttonsPlaceholder.mas_updateConstraints { (make) in
+            make.height.equalTo()(0)
+        }
+        
         productButton.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
@@ -560,26 +548,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         self.saldoLabel.hidden = true
         productButton.hidden = true
         buyButton.hidden = true
-        
-        self.refreshContainerSize!()
     }
-    
-    func recalibrateView() {
-        self.subviews.enumerate().forEach { index, subview in
-            subview.mas_makeConstraints { make in
-                if(index == 0) {
-                    make.top.equalTo()(subview.superview!).with().offset()(0)
-                } else {
-                    make.top.equalTo()(self.subviews[index-1].mas_bottom).offset()(10)
-                }
-            }
-        }
-        
-        self.subviews.last?.mas_makeConstraints { make in
-            make.bottom.equalTo()(self.mas_bottom)
-        }
-    }
-    
     
     func attachToView(container: UIView) {
         container.addSubview(self)
@@ -594,6 +563,13 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     func didSwipeHomePage() {
         self.numberField.resignFirstResponder()
+    }
+    
+    func setupStackViewFormat() {
+        self.axis = .Vertical
+        self.distribution = .Fill
+        self.alignment = .Center
+        self.spacing = 5.0
     }
     
 }
