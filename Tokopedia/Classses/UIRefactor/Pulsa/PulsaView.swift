@@ -317,7 +317,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             
             if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
                 if(inputtedText.characters.count >= 2) {
-                    let firstTwoCharacters = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(2)))
+                    let firstTwoCharacters = inputtedText.substringWithRange(inputtedText.startIndex.advancedBy(0) ..< inputtedText.startIndex.advancedBy(2))
                     if(firstTwoCharacters == "62") {
                         inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
                     }
@@ -325,7 +325,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             }
             
             if(inputtedText.characters.count == 4) {
-                let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
+                let prefix = inputtedText.substringWithRange(inputtedText.startIndex.advancedBy(0) ..< inputtedText.startIndex.advancedBy(4))
                 
                 self.setRightViewNumberField(prefix)
                 self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)

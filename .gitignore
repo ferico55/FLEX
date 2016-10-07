@@ -214,3 +214,7 @@ xcuserdata
 # Rollout.io cache
 Pods/Rollout.io/.cache/
 Rollout-ios-SDK/auto_generated_code/
+
+# Fastlane build
+Tokopedia.ipa
+Tokopedia.app.dSYM.zip
