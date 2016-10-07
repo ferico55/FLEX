@@ -41,5 +41,6 @@
 
 @property (nonatomic) NSArray *shop_pay_gateway;
 @property (nonatomic, strong) NSString *lucky_merchant;
+@property (nonatomic, getter=isOfficial) BOOL official;
 
 @end

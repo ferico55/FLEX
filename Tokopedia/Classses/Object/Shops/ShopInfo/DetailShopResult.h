@@ -34,7 +34,6 @@
 @property (nonatomic, strong) Rating *ratings;
 @property (nonatomic, strong) ShopTransactionStats *shop_tx_stats;
 @property (nonatomic, strong) NSNumber *is_open;
-@property (nonatomic) BOOL isOfficial;
 
 +(RKObjectMapping*)mapping;
 

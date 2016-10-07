@@ -145,7 +145,7 @@
 }
 
 - (void)adjustStatisticCellHeight {
-    if (_shop.result.isOfficial) {
+    if (_shop.result.info.official) {
         _successTransactionHeightConstraint.constant = 0;
         _successTransactionView.hidden = YES;
     }
@@ -506,7 +506,7 @@
 
 -(void)setShopInfoData
 {
-    _soldAmountView.hidden = _shop.result.isOfficial;
+    _soldAmountView.hidden = _shop.result.info.official;
     
     _labelshopname.text = _shop.result.info.shop_name;
     _labelshoptagline.text = _shop.result.info.shop_tagline;
