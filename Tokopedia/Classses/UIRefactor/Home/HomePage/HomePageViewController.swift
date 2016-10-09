@@ -38,6 +38,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     @IBOutlet var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
     private lazy var layoutRows: [HomePageCategoryLayoutRow] = [HomePageCategoryLayoutRow]()
+    private lazy var categoryVerticalView: OAStackView = OAStackView()
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -119,7 +120,136 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         }
     }
     
-    // MARK: Init Layout
+    func setCategoryTitleLabel(title: String) {
+        let categoryTitlelabel: UILabel = UILabel()
+        categoryTitlelabel.text = title
+        categoryTitlelabel.font = UIFont.largeTheme()
+        categoryTitlelabel.textColor = UIColor(red: 75.0/255, green: 75.0/255, blue: 75.0/255, alpha: 1.0)
+        categoryTitlelabel.mas_makeConstraints({ (make) in
+            make.height.equalTo()(38)
+        })
+        categoryVerticalView.addArrangedSubview(categoryTitlelabel)
+    }
+    
+    func setHorizontalCategoryLayoutWithLayoutSections(layoutRows: [HomePageCategoryLayoutRow]) {
+        let horizontalScrollView = UIScrollView()
+        horizontalScrollView.showsHorizontalScrollIndicator = false
+        
+        let horizontalStackView = OAStackView()
+        self.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 15.0)
+        horizontalScrollView.addSubview(horizontalStackView)
+        horizontalStackView.mas_makeConstraints({ (make) in
+            make.top.mas_equalTo()(horizontalScrollView.mas_top)
+            make.bottom.mas_equalTo()(horizontalScrollView.mas_bottom)
+            make.left.mas_equalTo()(horizontalScrollView.mas_left)
+            make.right.mas_equalTo()(horizontalScrollView.mas_right)
+            make.height.mas_equalTo()(horizontalScrollView.mas_height)
+        })
+        
+        for layout_row in layoutRows {
+            let iconStackView = OAStackView()
+            self.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+            
+            let url = NSURL(string: layout_row.image_url)
+            let imageData: NSData? = NSData(contentsOfURL: url!)
+            var iconImageView: UIImageView = UIImageView()
+            if let imageData = imageData {
+                iconImageView = UIImageView(image: UIImage(data: imageData))
+            }
+            let imageViewContainer = UIView()
+            imageViewContainer.addSubview(iconImageView)
+            iconImageView.mas_makeConstraints({ (make) in
+                make.center.equalTo()(imageViewContainer)
+                make.height.mas_equalTo()(25)
+                make.width.mas_equalTo()(25)
+            })
+            iconImageView.contentMode = .ScaleAspectFit
+            iconStackView.addArrangedSubview(imageViewContainer)
+            imageViewContainer.mas_makeConstraints({ (make) in
+                make.height.mas_equalTo()(50)
+            })
+            let categoryNameContainer = UIView()
+            categoryNameContainer.mas_makeConstraints({ (make) in
+                make.height.mas_equalTo()(30)
+            })
+            let categoryNameLabel = UILabel()
+            categoryNameLabel.text = layout_row.name
+            categoryNameLabel.font = UIFont.microTheme()
+            categoryNameLabel.textColor = UIColor(red: 153.0/255, green: 153.0/255, blue: 153.0/255, alpha: 1.0)
+            categoryNameLabel.textAlignment = .Center
+            categoryNameLabel.numberOfLines = 0
+            categoryNameContainer.addSubview(categoryNameLabel)
+            categoryNameLabel.mas_makeConstraints({ (make) in
+                make.top.mas_equalTo()(0)
+                make.centerX.mas_equalTo()(categoryNameContainer)
+                make.width.mas_equalTo()(self.categoryColumnWidth)
+            })
+            
+            iconStackView.addArrangedSubview(categoryNameContainer)
+            iconStackView.mas_makeConstraints({ (make) in
+                make.width.mas_equalTo()(self.categoryColumnWidth)
+            })
+            horizontalStackView.addArrangedSubview(iconStackView)
+            
+            // didSelectIconStackView
+            
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomePageViewController.didTapCategory(_:)))
+            
+            iconStackView.addGestureRecognizer(tapGestureRecognizer)
+            iconStackView.tag = Int(layout_row.id)!
+            self.layoutRows.append(layout_row)
+        }
+        
+        categoryVerticalView.addArrangedSubview(horizontalScrollView)
+    }
+    
+    func setCategoryUpperSeparator() {
+        let upperSeparatorView = UIView()
+        upperSeparatorView.mas_makeConstraints({ (make) in
+            make.height.mas_equalTo()(2)
+        })
+        let tinyOrangeView = UIView()
+        tinyOrangeView.backgroundColor = UIColor(red: 255.0/255, green: 87.0/255, blue: 34.0/255, alpha: 1.0)
+        tinyOrangeView.frame = CGRect(x: 0, y: 0, width: 20, height: 2)
+        upperSeparatorView.addSubview(tinyOrangeView)
+        categoryVerticalView.addArrangedSubview(upperSeparatorView)
+        let topEmptyView = UIView()
+        topEmptyView.mas_makeConstraints({ (make) in
+            make.height.mas_equalTo()(25)
+        })
+        categoryVerticalView.addArrangedSubview(topEmptyView)
+    }
+    
+    func setBottomSeparatorView() {
+        let bottomEmptyView = UIView()
+        bottomEmptyView.mas_makeConstraints({ (make) in
+            make.height.mas_equalTo()(18)
+        })
+        categoryVerticalView.addArrangedSubview(bottomEmptyView)
+        
+        let bottomSeparatorView = UIView()
+        bottomSeparatorView.mas_makeConstraints({ (make) in
+            make.height.mas_equalTo()(1)
+        })
+        bottomSeparatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
+        categoryVerticalView.addArrangedSubview(bottomSeparatorView)
+        self.categoryPlaceholder.addArrangedSubview(categoryVerticalView)
+    }
+    
+    func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
+        for layout_section in homePageCategoryData.layout_sections {
+            categoryVerticalView = OAStackView()
+            self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+            
+            setCategoryTitleLabel(layout_section.title)
+            
+            setCategoryUpperSeparator()
+            
+            setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
+            
+            setBottomSeparatorView()
+        }
+    }
     
     func initViewLayout() {
         self.sliderPlaceholder = UIView(frame: CGRectZero)
@@ -144,7 +274,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.categoryPlaceholder.mas_makeConstraints { (make) in
             make.left.mas_equalTo()(self.outerStackView.mas_left).with().offset()(20)
         }
-        
     }
     
     // MARK: Keyboard Manager
@@ -160,128 +289,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { (mappingResult, operation) in
-            dispatch_async(dispatch_get_main_queue(), { [weak self] in
-                if let weakSelf = self {
-                    let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
-                    let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
-                    let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
-                    
-                    for layout_section in homePageCategoryData.layout_sections {
-                        let verticalStackView = OAStackView()
-                        let categoryTitlelabel: UILabel = UILabel()
-                        categoryTitlelabel.text = layout_section.title
-                        categoryTitlelabel.font = UIFont.largeTheme()
-                        categoryTitlelabel.textColor = UIColor(red: 75.0/255, green: 75.0/255, blue: 75.0/255, alpha: 1.0)
-                        categoryTitlelabel.mas_makeConstraints({ (make) in
-                            make.height.equalTo()(38)
-                        })
-                        
-                        
-                        weakSelf.setStackViewAttribute(verticalStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
-                        verticalStackView.addArrangedSubview(categoryTitlelabel)
-                        
-                        let horizontalScrollView = UIScrollView()
-                        horizontalScrollView.showsHorizontalScrollIndicator = false
-                        
-                        let horizontalStackView = OAStackView()
-                        weakSelf.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 15.0)
-                        horizontalScrollView.addSubview(horizontalStackView)
-                        horizontalStackView.mas_makeConstraints({ (make) in
-                            make.top.mas_equalTo()(horizontalScrollView.mas_top)
-                            make.bottom.mas_equalTo()(horizontalScrollView.mas_bottom)
-                            make.left.mas_equalTo()(horizontalScrollView.mas_left)
-                            make.right.mas_equalTo()(horizontalScrollView.mas_right)
-                            make.height.mas_equalTo()(horizontalScrollView.mas_height)
-                        })
-                        
-                        let upperSeparatorView = UIView()
-                        upperSeparatorView.mas_makeConstraints({ (make) in
-                            make.height.mas_equalTo()(2)
-                        })
-                        let tinyOrangeView = UIView()
-                        tinyOrangeView.backgroundColor = UIColor(red: 255.0/255, green: 87.0/255, blue: 34.0/255, alpha: 1.0)
-                        tinyOrangeView.frame = CGRect(x: 0, y: 0, width: 20, height: 2)
-                        upperSeparatorView.addSubview(tinyOrangeView)
-                        verticalStackView.addArrangedSubview(upperSeparatorView)
-                        let topEmptyView = UIView()
-                        topEmptyView.mas_makeConstraints({ (make) in
-                            make.height.mas_equalTo()(25)
-                        })
-                        verticalStackView.addArrangedSubview(topEmptyView)
-                        
-                        for layout_row in layout_section.layout_rows {
-                            let iconStackView = OAStackView()
-                            weakSelf.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
-                            
-                            let url = NSURL(string: layout_row.image_url)
-                            let imageData: NSData? = NSData(contentsOfURL: url!)
-                            var iconImageView: UIImageView = UIImageView()
-                            if let imageData = imageData {
-                                iconImageView = UIImageView(image: UIImage(data: imageData))
-                            }
-                            let imageViewContainer = UIView()
-                            imageViewContainer.addSubview(iconImageView)
-                            iconImageView.mas_makeConstraints({ (make) in
-                                make.center.equalTo()(imageViewContainer)
-                                make.height.mas_equalTo()(25)
-                                make.width.mas_equalTo()(25)
-                            })
-                            iconImageView.contentMode = .ScaleAspectFit
-                            iconStackView.addArrangedSubview(imageViewContainer)
-                            imageViewContainer.mas_makeConstraints({ (make) in
-                                make.height.mas_equalTo()(50)
-                            })
-                            let categoryNameContainer = UIView()
-                            categoryNameContainer.mas_makeConstraints({ (make) in
-                                make.height.mas_equalTo()(30)
-                            })
-                            let categoryNameLabel = UILabel()
-                            categoryNameLabel.text = layout_row.name
-                            categoryNameLabel.font = UIFont.microTheme()
-                            categoryNameLabel.textColor = UIColor(red: 153.0/255, green: 153.0/255, blue: 153.0/255, alpha: 1.0)
-                            categoryNameLabel.textAlignment = .Center
-                            categoryNameLabel.numberOfLines = 0
-                            categoryNameContainer.addSubview(categoryNameLabel)
-                            categoryNameLabel.mas_makeConstraints({ (make) in
-                                make.top.mas_equalTo()(0)
-                                make.centerX.mas_equalTo()(categoryNameContainer)
-                                make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
-                            })
-                            
-                            iconStackView.addArrangedSubview(categoryNameContainer)
-                            iconStackView.mas_makeConstraints({ (make) in
-                                make.width.mas_equalTo()(weakSelf.categoryColumnWidth)
-                            })
-                            horizontalStackView.addArrangedSubview(iconStackView)
-                            
-                            // didSelectIconStackView 
-                            
-                            let tapGestureRecognizer = UITapGestureRecognizer(target: weakSelf, action: #selector(HomePageViewController.didTapCategory(_:)))
-                            
-                            iconStackView.addGestureRecognizer(tapGestureRecognizer)
-                            iconStackView.tag = Int(layout_row.id)!
-                            weakSelf.layoutRows.append(layout_row)
-                        }
-                        
-                        verticalStackView.addArrangedSubview(horizontalScrollView)
-                        
-                        let bottomEmptyView = UIView()
-                        bottomEmptyView.mas_makeConstraints({ (make) in
-                            make.height.mas_equalTo()(18)
-                        })
-                        verticalStackView.addArrangedSubview(bottomEmptyView)
-                        
-                        let bottomSeparatorView = UIView()
-                        bottomSeparatorView.mas_makeConstraints({ (make) in
-                            make.height.mas_equalTo()(1)
-                        })
-                        bottomSeparatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
-                        verticalStackView.addArrangedSubview(bottomSeparatorView)
-                        weakSelf.categoryPlaceholder.addArrangedSubview(verticalStackView)
-                    }
-                }
+            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+                let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
+                let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
+                self.setupOuterStackCategoryWithData(homePageCategoryData)
                 })
-            
             }) { (error) in
                 let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
                 stickyAlertView.show()
@@ -523,6 +536,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     make.top.bottom().equalTo()(self.tickerPlaceholder)
                 }
                 
+                // init ticker
                 self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
                 
                 self.tickerPlaceholder.addSubview(self.tickerView)
