@@ -1272,6 +1272,8 @@ ImageSearchRequestDelegate
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+            
+            [TPAnalytics trackSearchNoResultWithKeyword:[_data objectForKey:@"search"]?:@""];
 
             if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];

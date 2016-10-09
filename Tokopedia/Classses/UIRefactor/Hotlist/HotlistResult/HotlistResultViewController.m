@@ -800,6 +800,7 @@ static NSString const *rows = @"12";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	List *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:list];
+    [TPAnalytics trackClickHotlistProductWithName:list.product_name];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
@@ -808,10 +809,10 @@ static NSString const *rows = @"12";
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
+    if(_bannerResult.query.hot_id && (_page % 2 == 1 || _page == 1)){
         NSString *departmentId = [self selectedCategoryIDsString];
 
-        [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
+        [_promoRequest requestForProductHotlist:_bannerResult.query.hot_id
                                      department:departmentId
                                            page:_page / 2
                                 filterParameter:_selectedFilterParam
@@ -883,6 +884,7 @@ static NSString const *rows = @"12";
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
     _bannerResult = bannerResult;
+    
     [self setHeaderData];
     
     _pagecontrol.hidden = NO;

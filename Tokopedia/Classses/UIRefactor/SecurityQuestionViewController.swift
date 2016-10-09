@@ -39,7 +39,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: Selector("didTapBackButton:"))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didTapBackButton(_:)))
         
         _networkManager = TokopediaNetworkManager()
         _networkManager.isUsingHmac = true
@@ -55,6 +55,11 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didKeyboardShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didKeyboardHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        TPAnalytics.trackScreenName("Security Question Page")
     }
     
     func dismissKeyboard() {
@@ -138,7 +143,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 self.setLabelSpacing(questionTitle)
                 answerField.placeholder = securityQuestion.data.example
                 
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didTapSavePhoneButton"))
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didTapSavePhoneButton))
                 
             } else if(questionType1 == "0"){
                 //set OTP view
@@ -147,7 +152,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 questionViewType2.HVD_fillInSuperViewWithInsets(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
                 requestOTPButton .setTitle(buttonTitle, forState: .Normal)
                 
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didSubmitOTP"))
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: #selector(SecurityQuestionViewController.didSubmitOTP))
             }
         }
     }
@@ -195,6 +200,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         }
         
         if(answer.data.allow_login == "1") {
+            TPAnalytics.trackSecurityQuestionEvent("OTPSuccess", category: "Security Question", action: "OTP Success", label: "Confirm OTP")
             self.successAnswerCallback(answer)
             self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
         }

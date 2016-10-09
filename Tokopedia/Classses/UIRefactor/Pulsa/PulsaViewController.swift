@@ -14,8 +14,8 @@ import Foundation
 class PulsaViewController: UIViewController, LoginViewDelegate {
     var prefixes = Dictionary<String, Dictionary<String, String>>()
 
-    var pulsaView = PulsaView!()
-    var requestManager = PulsaRequest!()
+    var pulsaView: PulsaView!
+    var requestManager: PulsaRequest!
 
     @IBOutlet weak var view2: UIView!
     @IBOutlet weak var container: UIView!
@@ -84,7 +84,7 @@ class PulsaViewController: UIViewController, LoginViewDelegate {
         //mapping operator by prefix
         // {0812 : {"image" : "simpati.png", "id" : "1"}}
         for op in operators {
-            for var prefix in op.attributes.prefix {
+            for prefix in op.attributes.prefix {
                 var prefixDictionary = Dictionary<String, String>()
                 prefixDictionary["image"] = op.attributes.image
                 prefixDictionary["id"] = op.id
@@ -128,7 +128,7 @@ class PulsaViewController: UIViewController, LoginViewDelegate {
                 self.pulsaView.numberField.text = phoneNumber
                 
                 if(phoneNumber.characters.count >= 4) {
-                    let prefix = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(4)))
+                    let prefix = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0) ..< phoneNumber.startIndex.advancedBy(4))
                     
                     self.pulsaView.setRightViewNumberField(prefix)
                 }

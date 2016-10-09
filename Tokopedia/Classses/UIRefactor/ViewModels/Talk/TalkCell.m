@@ -23,6 +23,8 @@
 #import "detail.h"
 #import "string_inbox_talk.h"
 
+@import BlocksKit;
+
 typedef NS_ENUM(NSInteger, TalkRequestType) {
     RequestList,
     RequestFollowTalk,
@@ -199,25 +201,39 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (IBAction)tapToMoreMenu:(id)sender {
-    NSMutableArray *titles = [[NSMutableArray alloc] init];
-    
     UserAuthentificationManager *manager = [UserAuthentificationManager new];
     _myShopID = manager.getShopId;
     _myUserID = manager.getUserId;
     
-    if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
-        [titles addObject:@"Hapus"];
+    UIActionSheet *actionSheet = [self actionSheetForUserId:_myUserID];
+    
+    [actionSheet showInView:self.contentView];
+}
+
+- (UIActionSheet *)actionSheetForUserId:(NSString *)userId {
+    __weak typeof(self) weakSelf = self;
+    
+    UIActionSheet *actionSheet = [UIActionSheet bk_actionSheetWithTitle:nil];
+    [actionSheet bk_setCancelButtonWithTitle:@"Batal" handler:nil];
+    
+    if([userId isEqualToString:_selectedTalkUserID]) {
+        [actionSheet bk_setDestructiveButtonWithTitle:@"Hapus" handler: ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:PROMPT_DELETE_TALK
+                                                            message:PROMPT_DELETE_TALK_MESSAGE
+                                                           delegate:weakSelf
+                                                  cancelButtonTitle:BUTTON_CANCEL
+                                                  otherButtonTitles:nil];
+            
+            [alert addButtonWithTitle:BUTTON_OK];
+            [alert show];
+        }];
     } else {
-        [titles addObject:@"Lapor"];
+        [actionSheet bk_addButtonWithTitle:@"Lapor" handler: ^{
+            [weakSelf tapToReport];
+        }];
     }
     
-    NSString *joinTitles = [titles componentsJoinedByString:@","];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Batal"
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:joinTitles, nil];
-    [actionSheet showInView:self.contentView];
+    return actionSheet;
 }
 
 - (void)tapToProduct {
@@ -250,26 +266,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
-}
-
-#pragma mark - Action Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSInteger cancelButtonIndex = actionSheet.cancelButtonIndex;
-    
-    if (buttonIndex == 0) {
-        if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:PROMPT_DELETE_TALK message:PROMPT_DELETE_TALK_MESSAGE delegate:self cancelButtonTitle:BUTTON_CANCEL otherButtonTitles:nil];
-            
-            [alert addButtonWithTitle:BUTTON_OK];
-            [alert show];
-        } else {
-            [self tapToReport];
-        }
-    }
-
-    else if (buttonIndex != cancelButtonIndex) {
-        [self tapToReport];
-    }
 }
 
 #pragma mark - Smiley Delegate

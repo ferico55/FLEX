@@ -68,7 +68,7 @@ import UIKit
         
         let requestHost: RequestGenerateHost = RequestGenerateHost()
         requestHost.delegate = self
-        requestHost.configureRestkitGenerateHost()
+//        requestHost.configureRestkitGenerateHost()
         requestHost.requestGenerateHost()
         
         checkDomainButton.layer.cornerRadius = 2
@@ -80,6 +80,11 @@ import UIKit
         tableView.registerNib(UINib(nibName: "OpenShopNameViewCell", bundle: nil), forCellReuseIdentifier: "OpenShopName")
         tableView.registerNib(UINib(nibName: "EditShopDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "shopDescription")
         tableView.registerNib(UINib(nibName: "ShopTagDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "ShopTagDescriptionViewCell")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        TPAnalytics.trackScreenName("Create Shop Page")
     }
     
     override func awakeFromNib() {

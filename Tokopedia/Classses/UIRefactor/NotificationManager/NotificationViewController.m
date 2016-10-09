@@ -258,7 +258,7 @@
         }
     } else if(section == 2) {
         if([_notification.result.purchase.purchase_reorder integerValue] == 0 &&
-           [_notification.result.purchase.purchase_payment_conf integerValue] == 0 &&
+           [_notification.result.purchase.purchase_payment_confirm integerValue] == 0 &&
            [_notification.result.purchase.purchase_order_status integerValue] == 0 &&
            [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0
            ) {
@@ -310,6 +310,7 @@
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
+                [TPAnalytics trackClickNotificationWithEventName:@"clickMessage" eventLabel:@"Message"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxRootViewController *controller = [InboxRootViewController new];
                     [self.delegate pushViewController:controller];
@@ -338,6 +339,7 @@
                 break;
             }
             case 1 : {
+                [TPAnalytics trackClickNotificationWithEventName:@"clickProductDiscussion" eventLabel:@"Product Discussion"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
                     [self.delegate pushViewController:controller];
@@ -386,6 +388,7 @@
             }
                 
             case 2 : {
+                [TPAnalytics trackClickNotificationWithEventName:@"clickReview" eventLabel:@"Review"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     splitViewController = [UISplitViewController new];
                     
@@ -404,6 +407,7 @@
             }
             case 3:
             {
+                [TPAnalytics trackClickNotificationWithEventName:@"clickHelp" eventLabel:@"Help"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                     
@@ -434,6 +438,7 @@
             }
                 
             case 4 : {
+                [TPAnalytics trackClickNotificationWithEventName:@"clickResoCenter" eventLabel:@"Resolution Center"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
@@ -454,16 +459,19 @@
     
     if([indexPath section] == 1) {
         if([indexPath row] == 0) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickNewOrder" eventLabel:@"New Order"];
             SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 1) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickDeliveryConfirmation" eventLabel:@"Delivery Confirmation"];
             ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 2) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickDeliveryStatus" eventLabel:@"Delivery Status"];
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
@@ -472,6 +480,7 @@
     
     if([indexPath section] == 2) {
         if([indexPath row] == 0) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickCancelledOrder" eventLabel:@"Cancelled Order"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.action = @"get_tx_order_list";
             vc.isCanceledPayment = YES;
@@ -479,16 +488,19 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickOrderStatus" eventLabel:@"Order Status"];
             TxOrderTabViewController *vc = [TxOrderTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickOrderStatus" eventLabel:@"Order Status"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_status";
             vc.viewControllerTitle = @"Status Pemesanan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 3) {
+            [TPAnalytics trackClickNotificationWithEventName:@"clickRecieveConfirm" eventLabel:@"Receive Confirmation"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_deliver";

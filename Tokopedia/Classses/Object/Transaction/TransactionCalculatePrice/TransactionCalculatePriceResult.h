@@ -15,8 +15,8 @@
 @interface TransactionCalculatePriceResult : NSObject <TKPObjectMapping>
 
 @property(nonatomic,strong) ProductDetail *product;
-@property(nonatomic,strong) NSArray *shipment;
+@property(nonatomic,strong) NSArray<ShippingInfoShipments*> *shipment;
 @property(nonatomic,strong) RPX *rpx;
-@property(nonatomic,strong) NSArray *auto_resi;
+@property(nonatomic,strong) NSArray<NSString*> *auto_resi;
 
 @end

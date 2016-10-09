@@ -242,6 +242,7 @@ typedef enum
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
+                            userPassword:@""
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      [self successEditAddress:address longitude:longitude latitude:latitude result:data];
@@ -274,6 +275,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
+    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }
@@ -685,7 +687,7 @@ typedef enum
                 return 243-50+_addressLabel.frame.size.height;
             }
             if ([cell isEqual:_pinLocationCell]) {
-                if ([_selectedShipment.shipper_id integerValue] == 10) {
+                if (_selectedShipmentPackage.is_show_map == 1) {
                     return 70;
                 }
                 return 0;
@@ -984,7 +986,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -1007,7 +1009,7 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+    [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{

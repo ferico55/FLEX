@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *ut;
 @property (nonatomic, strong) NSString *check_sum;
 @property (nonatomic, strong) NSString *formatted_price;
+@property NSInteger is_show_map;
 
 @end

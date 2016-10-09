@@ -601,7 +601,7 @@
 -(void)setDataDropshipperCartSummary{
     for (TransactionCartList *cart in _cartSummary.carts) {
         NSInteger shopID = [cart.cart_shop.shop_id integerValue];
-        NSInteger addressID =cart.cart_destination.address_id;
+        NSInteger addressID =[cart.cart_destination.address_id integerValue];
         NSInteger shipmentID =[cart.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [cart.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -668,6 +668,7 @@
                 }
                     break;
                 default:
+                    [TPAnalytics trackClickCartLabel:@"Checkout"];
                     if([self isValidInput]) {
 						_saldoErrorIcon.hidden = YES;
                         if([self isHandlePaymentWithNative]) {
@@ -681,6 +682,7 @@
         }
         if(_indexPage==1)
         {
+            [TPAnalytics trackPaymentEvent:@"clickPayment" category:@"Payment" action:@"Click" label:@"Pay Now"];
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
@@ -690,42 +692,7 @@
                         [self doRequestBuy];
                     }
                     break;
-                case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        NSDictionary *data = @{DATA_KEY:_dataInput,
-                                               DATA_CART_SUMMARY_KEY: _cartSummary
-                                               };
-                        [_delegate pushVC:self toMandiriClickPayVCwithData:data];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_BCA_CLICK_PAY:
-                {
-                    if ([self isValidInput]) {
-                        [TransactionCartWebViewViewController pushBCAKlikPayFrom:self cartDetail:_cartSummary];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_MANDIRI_E_CASH:
-                {
-                    if ([self isValidInput]) {
-                        [self doRequestBuy];
-                    }
-                }
-                    break;
-                case TYPE_GATEWAY_CC:
-                case TYPE_GATEWAY_INSTALLMENT:
-                {
-                    [self pushToCCInformation];
-                }
-                    break;
-                case TYPE_GATEWAY_BRI_EPAY:
-                {
-                    [TransactionCartWebViewViewController pushBRIEPayFrom:self cartDetail:_cartSummary];
-                }
-                    break;
-                default:
+                 default:
                     break;
             }
         }
@@ -1125,7 +1092,7 @@
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
+        NSInteger addressID =[list.cart_destination.address_id integerValue];
         NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipperNameKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_NAME_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -1161,7 +1128,7 @@
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
+        NSInteger addressID =[list.cart_destination.address_id integerValue];
         //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
@@ -1428,7 +1395,7 @@
             NSInteger index = [[((AlertPickerView*)alertView).data objectForKey:DATA_INDEX_KEY] integerValue];
             TransactionCartList *list = _list[partialSection];
             NSInteger shopID = [list.cart_shop.shop_id integerValue];
-            NSInteger addressID =list.cart_destination.address_id;
+            NSInteger addressID =[list.cart_destination.address_id integerValue];
             //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
             NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
             
@@ -1706,10 +1673,10 @@
     }];
 }
 
--(void)shouldDoRequestTopPayThxCode:(NSString *)code
+-(void)shouldDoRequestTopPayThxCode:(NSString *)code toppayParam:(NSDictionary *)param
 {
-    [self isLoading:YES];
-    [self requestCartData];
+    [self isLoading:NO];
+    [self requestThanksPayment:param paymentID:code];
 }
 
 #pragma mark - Methods
@@ -2354,6 +2321,54 @@
 
 #pragma mark - Request
 
+- (void)requestThanksPayment:(NSDictionary *)param paymentID:(NSString *)paymentID {
+    NSArray *products = param[@"items"];
+    NSMutableArray *productIDs = [NSMutableArray new];
+    NSInteger quantity = 0;
+    
+    for (NSDictionary *product in products) {
+        [productIDs addObject:product[@"id"]];
+        quantity = quantity + [product[@"quantity"] integerValue];
+    }
+    [TPAnalytics trackPaymentEvent:@"clickBack" category:@"Payment" action:@"Abandon" label:@"Thank You Page"];
+    [RequestCart fetchToppayThanksCode:paymentID
+                               success:^(TransactionActionResult *data) {
+                                   if (data.is_success == 1) {
+                                       NSDictionary *parameter = data.parameter;
+                                       NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
+                                       NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
+                                       
+                                       [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
+                                       
+                                       [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
+                                                                                                                 AFEventParamContentType : @"Product",
+                                                                                                                 AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
+                                                                                                                 AFEventParamQuantity : [@(quantity) stringValue]?:@"",
+                                                                                                                 AFEventParamCurrency : param[@"currency"]?:@"",
+                                                                                                                 AFEventOrderId : paymentID}];
+                                       
+                                       [Localytics tagEvent:@"Event : Finished Transaction"
+                                                 attributes:@{
+                                                              @"Payment Method" : paymentMethod,
+                                                              @"Total Transaction" : [revenue stringValue]?:@"",
+                                                              @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                                              @"Total Shipping Fee" : @""
+                                                              }
+                                      customerValueIncrease:revenue];
+                                       
+                                       [Localytics incrementValueBy:0
+                                                forProfileAttribute:@"Profile : Total Transaction"
+                                                          withScope:LLProfileScopeApplication];
+                                   }
+                                   [self requestCartData];
+                               } error:^(NSError *error) {
+                                [self requestCartData];
+                                     
+                                 }];
+    
+
+}
+
 -(void)requestCartData{
     
     if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
@@ -2417,7 +2432,7 @@
         for (TransactionCartList *newCart in newCarts) {
             
             if ([newCart.cart_shop.shop_id integerValue] == [cart.cart_shop.shop_id integerValue] &&
-                newCart.cart_destination.address_id == cart.cart_destination.address_id &&
+                [newCart.cart_destination.address_id integerValue] == [cart.cart_destination.address_id integerValue] &&
                 [newCart.cart_shipments.shipment_id integerValue] == [cart.cart_shipments.shipment_id integerValue] &&
                 [newCart.cart_shipments.shipment_package_id integerValue] == [cart.cart_shipments.shipment_package_id integerValue]
                 ) {
@@ -2484,7 +2499,7 @@
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *voucher) {
         
-        _voucherData = voucher.result.data_voucher;
+        _voucherData = voucher.data.data_voucher;
         
         _voucherCodeButton.hidden = YES;
         _voucherAmountLabel.hidden = NO;
@@ -2492,6 +2507,9 @@
         NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        if (![_voucherData.voucher_promo_desc isEqualToString:@""]){
+            voucherString = _voucherData.voucher_promo_desc;
+        }
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont microTheme];
         
@@ -2655,25 +2673,12 @@
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
                       _cartBuy = data;
-                      switch ([_cartSummary.gateway integerValue]) {
-                          case TYPE_GATEWAY_MANDIRI_E_CASH:
-                          {
-                              [TransactionCartWebViewViewController pushMandiriECashFrom:self
-                                                                              cartDetail:summary
-                                                                             LinkMandiri:data.link_mandiri?:@""];
-                          }
-                              break;
-                          default:
-                          {
-                              NSDictionary *userInfo = @{
-                                                         DATA_CART_RESULT_KEY:data,
-                                                         API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
-                                                         };
-                              [self.delegate didFinishRequestBuyData:userInfo];
-                              [_dataInput removeAllObjects];
-                          }
-                              break;
-                      }
+                      NSDictionary *userInfo = @{
+                                                 DATA_CART_RESULT_KEY:data,
+                                                 API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                                 };
+                      [self.delegate didFinishRequestBuyData:userInfo];
+                      [_dataInput removeAllObjects];
                       [self isLoading:NO];
                   } error:^(NSError *error) {
                       if (error) {

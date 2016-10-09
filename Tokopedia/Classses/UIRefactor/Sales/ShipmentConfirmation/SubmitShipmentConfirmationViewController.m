@@ -398,10 +398,10 @@
                                      method:RKRequestMethodPOST
                                   parameter:parameters
                                     mapping:[ActionOrder mapping]
-                                  onSuccess:^(RKMappingResult *mappingResult,
-                                              RKObjectRequestOperation *operation) {
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                                       [self actionRequestSuccess:mappingResult];
                                   } onFailure:^(NSError *error) {
+                                      [TPLocalytics trackShipmentConfirmation:NO];
                                       [self actionRequestFailure:error];
                                   }];
 }
@@ -411,10 +411,10 @@
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        
-        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+        [TPLocalytics trackShipmentConfirmation:YES];        
+        NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
     
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
         [alert show];
 
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -424,6 +424,7 @@
         }
         
     } else if (actionOrder.message_error.count > 0){
+        [TPLocalytics trackShipmentConfirmation:NO];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                         message:actionOrder.message_error[0]
                                                        delegate:self
@@ -480,7 +481,7 @@
 }
 
 - (BOOL)isInstantCourier {
-    if (_order.order_shipment.shipment_id == 10) {
+    if (_order.order_is_pickup == 1) {
         return YES;
     } else {
         return NO;

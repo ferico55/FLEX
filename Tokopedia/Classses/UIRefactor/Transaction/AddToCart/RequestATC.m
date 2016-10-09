@@ -50,25 +50,25 @@
     NSString *shippingID = shipment.shipper_id;
     NSString *shippingProduct = shipmentPackage.shipper_product_id;
     
-    NSInteger addressID = (address.address_id==0)?-1:address.address_id;
-    NSNumber *districtID = address.district_id?:@(0);
+    NSString *addressID = address.address_id?:@"";
+    NSString *districtID = address.district_id?:@"";
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
-    NSNumber *provinceID = address.province_id?:@(0);
-    NSNumber *cityID = address.city_id?:@(0);
+    NSString *provinceID = address.province_id?:@"";
+    NSString *cityID = address.city_id?:@"";
     NSInteger postalCode = [address.postal_code integerValue];
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
     
     NSDictionary* param = @{
                             @"product_id":@(productID),
-                            @"address_id" : @(addressID),
+                            @"address_id" : addressID,
                             @"quantity":qty,
                             @"insurance":@(insuranceID),
                             @"shipping_id":shippingID,
                             @"shipping_product":shippingProduct,
                             @"notes":remark?:@"",
-                            @"address_id" : @(addressID),
+                            @"address_id" : addressID,
                             @"address_name": addressName,
                             @"address_street" : addressStreet,
                             @"address_province":provinceID,
@@ -114,8 +114,8 @@
     NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
-    NSInteger addressID = (address.address_id==0)?-1:address.address_id?:0;
-    NSNumber *districtID = address.district_id?:@(0);
+    NSString *addressID = address.address_id?:@"";
+    NSString *districtID = address.district_id?:@"0";
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
     NSString *provinceName = address.province_name?:@"";
@@ -128,7 +128,7 @@
     NSDictionary* param = @{
                             @"product_id":productID,
                             @"district_id": districtID,
-                            @"address_id" : @(addressID),
+                            @"address_id" : addressID,
                             @"address_name": addressName,
                             @"address_street" : addressStreet,
                             @"address_province":provinceName,

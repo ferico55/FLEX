@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (nonatomic) BOOL enableDeepNavigation;
 @property (nonatomic) BOOL fetchDataAtBeginning;
+@property (strong, nonatomic) NSString *inboxTalkType;
 
 -(void)replaceDataSelected:(NSDictionary *)data;
 -(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead;

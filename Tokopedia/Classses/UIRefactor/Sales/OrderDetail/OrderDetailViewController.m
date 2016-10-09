@@ -275,7 +275,7 @@ typedef enum TagRequest {
 
 - (void)setPickupData {
     // GO-KILAT
-    if (_transaction.order_shipment.shipment_id == 10) {
+    if (_transaction.order_is_pickup == 1) {
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 6.0;
@@ -392,7 +392,7 @@ typedef enum TagRequest {
     
     [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
 
-    if (_transaction.order_shipment.shipment_id == 10) {
+    if (_transaction.order_is_pickup == 1) {
         [_acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
     } else if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
         [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];

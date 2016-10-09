@@ -302,6 +302,9 @@ TokopediaNetworkManagerDelegate
                                                                    token:_token
                                                                     host:_generatedHost.upload_host
                                                                onSuccess:^(SubmitReviewResult *result) {
+                                                                   [TPLocalytics trackGiveReview:YES
+                                                                                        accuracy:_accuracyRate
+                                                                                         quality:_qualityRate];
                                                                    [TPAnalytics trackSuccessSubmitReview:1];
                                                                    NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                                                                    
@@ -319,6 +322,9 @@ TokopediaNetworkManagerDelegate
                                                                    }
                                                                }
                                                                onFailure:^(NSError *error) {
+                                                                   [TPLocalytics trackGiveReview:NO
+                                                                                        accuracy:_accuracyRate
+                                                                                         quality:_qualityRate];
                                                                    [TPAnalytics trackSuccessSubmitReview:0];
                                                                    [self sendButtonIsLoading:NO];
                                                                }];

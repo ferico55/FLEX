@@ -73,6 +73,7 @@
             }
         } else {
             if([action.data.is_success isEqualToString:@"1"]) {
+                [TPAnalytics trackForgetPasswordEvent:@"passwordForget" category:@"Forgot Password" action:@"Reset Success" label:@"Reset Password"];
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[errorMessage] delegate:self];
                 [alert show];

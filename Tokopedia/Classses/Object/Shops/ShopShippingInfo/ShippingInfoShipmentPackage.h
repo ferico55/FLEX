@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSString *active;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *sp_id;
+@property (nonatomic, strong) NSString *package_available;
 
 @end
