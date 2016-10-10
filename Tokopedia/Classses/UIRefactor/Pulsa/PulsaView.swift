@@ -64,6 +64,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
+        
         categories.enumerate().forEach { index, category in
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
         }
@@ -83,8 +84,8 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                     label.numberOfLines = 0
                 }
             }
-
         }
+        
         self.addArrangedSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
             make.height.equalTo()(44)
@@ -533,6 +534,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     func hideBuyButtons() {
         buttonsPlaceholder.mas_updateConstraints { (make) in
             make.height.equalTo()(0)
+            make.width.equalTo()(self.productButton.mas_width)
         }
         
         productButton.mas_updateConstraints { make in

@@ -59,10 +59,10 @@ class PulsaNavigator: NSObject {
         })
         
         controller.products = activeProducts
+        (self.controller as! HomePageViewController).isNeedRefreshPulsaView = false
         controller.didSelectProduct = { [unowned self] product in
             self.pulsaView.selectedProduct = product
             self.pulsaView.hideErrors()
-            (self.controller as! HomePageViewController).isNeedRefreshPulsaView = false
             self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
         }
         
