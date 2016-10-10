@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import OAStackView
-import Localytics
 
 @IBDesignable
 @objc
@@ -22,10 +21,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     var tickerRequest: AnnouncementTickerRequest!
     var tickerView: AnnouncementTickerView!
     
-    var pulsaView = PulsaView!()
+    var pulsaView: PulsaView!
     var prefixes = Dictionary<String, Dictionary<String, String>>()
-    var requestManager = PulsaRequest!()
-    var navigator = PulsaNavigator!()
+    var requestManager: PulsaRequest!
+    var navigator: PulsaNavigator!
     
     var sliderPlaceholder: UIView!
     var pulsaPlaceholder: OAStackView!
@@ -44,7 +43,38 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     private let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
-    private let categoryColumnWidth: CGFloat = 70.0;
+    private var categoryColumnWidth: CGFloat {
+        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+            return 83
+        } else {
+            // if iPhone
+            return 70
+        }
+    }
+    private var imageCategoryWidth: CGFloat {
+        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+            return 50
+        } else {
+            // if iPhone
+            return 25
+        }
+    }
+    private var categorySpacing: CGFloat {
+        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+            return 34
+        } else {
+            // if iPhone
+            return 15
+        }
+    }
+    private var imageViewContainerHeight: CGFloat {
+        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+            return 83
+        } else {
+            // if iPhone
+            return 40
+        }
+    }
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -69,8 +99,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestTicker()
         self.requestMiniSlider()
         self.requestPulsaWidget()
-        
-        TPAnalytics.trackScreenName("Top Category")
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -136,7 +164,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         horizontalScrollView.showsHorizontalScrollIndicator = false
         
         let horizontalStackView = OAStackView()
-        self.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 15.0)
+        self.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: self.categorySpacing)
         horizontalScrollView.addSubview(horizontalStackView)
         horizontalStackView.mas_makeConstraints({ (make) in
             make.top.mas_equalTo()(horizontalScrollView.mas_top)
@@ -160,13 +188,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             imageViewContainer.addSubview(iconImageView)
             iconImageView.mas_makeConstraints({ (make) in
                 make.center.equalTo()(imageViewContainer)
-                make.height.mas_equalTo()(25)
-                make.width.mas_equalTo()(25)
+                make.height.mas_equalTo()(self.imageCategoryWidth)
+                make.width.mas_equalTo()(self.imageCategoryWidth)
             })
             iconImageView.contentMode = .ScaleAspectFit
             iconStackView.addArrangedSubview(imageViewContainer)
             imageViewContainer.mas_makeConstraints({ (make) in
-                make.height.mas_equalTo()(50)
+                make.height.mas_equalTo()(self.imageViewContainerHeight)
             })
             let categoryNameContainer = UIView()
             categoryNameContainer.mas_makeConstraints({ (make) in
@@ -295,9 +323,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
                 self.setupOuterStackCategoryWithData(homePageCategoryData)
                 })
-            }) { (error) in
-                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-                stickyAlertView.show()
+        }) { (error) in
+            let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+            stickyAlertView.show()
         }
     }
     
@@ -558,8 +586,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     let categoryName = layoutRow.name
                     let categoryId = layoutRow.category_id
                     
-                    TPAnalytics.trackClickCategoryWithCategoryName(categoryName)
-                    Localytics.tagEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName])
                     
                     let searchResultProductViewController = SearchResultViewController()
                     searchResultProductViewController.hidesBottomBarWhenPushed = true
