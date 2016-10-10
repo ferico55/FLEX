@@ -249,6 +249,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
 
 @end
 
@@ -1856,7 +1857,7 @@ TTTAttributedLabelDelegate
         [btnReport removeFromSuperview];
     } else {
         // hanya geser saja btn report ke luar layar, untuk menjaga bentuk share button tetap persegi
-        _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
+        _btnReportLeadingConstraint.constant = -(_btnReportWidthConstraint.constant) - 2 ;
     }
 }
 
