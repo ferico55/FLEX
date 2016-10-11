@@ -197,7 +197,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
             let categoryNameContainer = UIView()
             categoryNameContainer.mas_makeConstraints({ (make) in
-                make.height.mas_equalTo()(30)
+                make.height.mas_equalTo()(40)
             })
             let categoryNameLabel = UILabel()
             categoryNameLabel.text = layout_row.name
@@ -250,7 +250,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     func setBottomSeparatorView() {
         let bottomEmptyView = UIView()
         bottomEmptyView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(18)
+            make.height.mas_equalTo()(8)
         })
         categoryVerticalView.addArrangedSubview(bottomEmptyView)
         

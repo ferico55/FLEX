@@ -32,6 +32,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var selectedProduct = PulsaProduct()
     var userManager = UserAuthentificationManager()
     var prefixView: UIView?
+    var inputtedNumber: String?
     
     var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
@@ -125,6 +126,14 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         self.buildFields(category)
         self.buildButtons()
         self.buildUseSaldoView()
+        
+        // jika user sudah input angka kemudian berganti category widget, maka angka tersebut tidak akan tereset
+        if let inputtedNumber = self.inputtedNumber {
+            if !inputtedNumber.isEmpty {
+                numberField.text = inputtedNumber
+                self.checkInputtedNumber()
+            }
+        }
     }
     
     func buildUseSaldoView() {
@@ -195,6 +204,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.height.mas_equalTo()(44)
         }
         
+        if numberField != nil {
+            self.inputtedNumber = numberField.text!
+        }
         numberField = UITextField(frame: CGRectZero)
         
         numberField.placeholder = category.attributes.client_number.placeholder
@@ -202,6 +214,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
         numberField.clearButtonMode = .WhileEditing
+        
+
+        
         
         let keyboard =  MMNumberKeyboard(frame: CGRectZero)
         keyboard.allowsDecimalPoint = false
@@ -255,7 +270,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.right.equalTo()(self.mas_right)
             make.height.equalTo()(0)
         }
-       
     }
     
     func activateContactPermission() {
@@ -314,35 +328,38 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
-            self.hideErrors()
-            //operator must exists first
-            //fix this to prevent crash using serial dispatch
-            var inputtedText = self.numberField.text!
-            
-            if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
-                if(inputtedText.characters.count >= 2) {
-                    let firstTwoCharacters = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(2)))
-                    if(firstTwoCharacters == "62") {
-                        inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
-                    }
-                }
-            }
-            
-            if(inputtedText.characters.count == 4) {
-                let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
-                
-                self.setRightViewNumberField(prefix)
-                self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
-            }
-            
-            if(inputtedText.characters.count < 4) {
-                if let prefixView = self.prefixView {
-                    prefixView.hidden = true
-                }
-                self.hideBuyButtons()
-            }
-            
+            self.checkInputtedNumber()
             }, forControlEvents: .EditingChanged)
+    }
+    
+    func checkInputtedNumber() {
+        self.hideErrors()
+        //operator must exists first
+        //fix this to prevent crash using serial dispatch
+        var inputtedText = self.numberField.text!
+        
+        if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
+            if(inputtedText.characters.count >= 2) {
+                let firstTwoCharacters = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(2)))
+                if(firstTwoCharacters == "62") {
+                    inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
+                }
+            }
+        }
+        
+        if(inputtedText.characters.count >= 4) {
+            let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
+            
+            self.setRightViewNumberField(prefix)
+            self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
+        }
+        
+        if(inputtedText.characters.count < 4) {
+            if let prefixView = self.prefixView {
+                prefixView.hidden = true
+            }
+            self.hideBuyButtons()
+        }
     }
     
     func hideErrors() {
@@ -398,9 +415,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         buttonsPlaceholder = UIView(frame: CGRectZero)
         self.addArrangedSubview(buttonsPlaceholder)
         
-        buttonsPlaceholder.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-        }
         
         productButton = UIButton(frame: CGRectZero)
         productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
@@ -415,6 +429,11 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0)
         
         buttonsPlaceholder.addSubview(productButton)
+        
+        buttonsPlaceholder.mas_makeConstraints { make in
+            make.height.equalTo()(0)
+            make.width.equalTo()(self.productButton.mas_width)
+        }
         
         productButton.mas_makeConstraints { make in
             make.top.equalTo()(self.buttonsPlaceholder.mas_top)
@@ -437,11 +456,16 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func isValidNumber(number: String) -> Bool{
-        if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
-            self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
-            return false
-        } else if(number.characters.count > self.selectedOperator.attributes.maximum_length) {
-            self.numberErrorLabel.text = "Nomor terlalu panjang, maksimal "+String(self.selectedOperator.attributes.maximum_length)+" karakter"
+        if self.selectedOperator.attributes.maximum_length > 0 {
+            if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
+                self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
+                return false
+            } else if(number.characters.count > self.selectedOperator.attributes.maximum_length) {
+                self.numberErrorLabel.text = "Nomor terlalu panjang, maksimal "+String(self.selectedOperator.attributes.maximum_length)+" karakter"
+                return false
+            }
+        } else {
+            self.numberErrorLabel.text = "Nomor tidak valid"
             return false
         }
         
@@ -545,7 +569,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     func hideBuyButtons() {
         buttonsPlaceholder.mas_updateConstraints { (make) in
             make.height.equalTo()(0)
-            make.width.equalTo()(self.productButton.mas_width)
         }
         
         productButton.mas_updateConstraints { make in
