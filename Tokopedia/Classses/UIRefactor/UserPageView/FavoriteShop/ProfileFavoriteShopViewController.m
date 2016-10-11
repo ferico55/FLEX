@@ -292,8 +292,7 @@
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
-                       kTKPD_AUTHKEY:[_data objectForKey:@"auth"]?:@{}};
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
     [self.navigationController pushViewController:container animated:YES];
     
 }
@@ -304,8 +303,7 @@
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
-                       kTKPD_AUTHKEY:[_data objectForKey:@"auth"]?:@{}};
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
     [self.navigationController pushViewController:container animated:YES];
 
 }
