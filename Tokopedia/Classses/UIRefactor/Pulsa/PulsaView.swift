@@ -362,6 +362,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                 self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
                 
                 let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
+                prefixView?.removeAllSubviews()
                 prefixView!.addSubview(prefixImage)
                 prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
                 self.prefixView!.hidden = false

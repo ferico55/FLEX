@@ -32,7 +32,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     var miniSliderPlaceholder: UIView!
     var categoryPlaceholder: OAStackView!
     var keyboardManager: PulsaKeyboardManager!
-    var isNeedRefreshPulsaView: Bool = true
     
     @IBOutlet var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
@@ -89,16 +88,16 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.initKeyboardManager()
         self.initOuterStackView()
         self.initViewLayout()
+        self.requestTicker()
         self.requestCategory()
+        self.requestPulsaWidget()
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.requestBanner()
-        self.requestTicker()
-        self.requestMiniSlider()
-        self.requestPulsaWidget()
+       // self.requestMiniSlider()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -484,10 +483,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     func requestPulsaWidget() {
-        guard self.isNeedRefreshPulsaView == true else {
-            self.isNeedRefreshPulsaView = true
-            return
-        }
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
