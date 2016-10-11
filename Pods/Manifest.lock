@@ -95,6 +95,9 @@ PODS:
   - JLPermissions/Notification (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
@@ -149,6 +152,7 @@ DEPENDENCIES:
   - GoogleTagManager
   - JLPermissions/Contacts
   - JLPermissions/Notification
+  - JSQMessagesViewController
   - Masonry
   - NJKWebViewProgress
   - OAStackView (~> 1.0.1)
@@ -180,7 +184,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: 974598e8ed618c74ead33541d9caffbc3d144266
-  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
+  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
   GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
@@ -190,6 +194,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
@@ -204,4 +210,4 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
 
-COCOAPODS: 0.39.0
+COCOAPODS: 0.38.2

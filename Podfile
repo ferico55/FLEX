@@ -33,6 +33,8 @@ def common_pods
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
+    pod 'JSQMessagesViewController'
+
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
