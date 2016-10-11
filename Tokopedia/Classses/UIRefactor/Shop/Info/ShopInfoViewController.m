@@ -70,7 +70,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *expandShopDescriptionButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelShopDescriptionHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightConstraint;
-@property (nonatomic) float diffOldAndExpandedHeightDescription;
 @property (nonatomic) Boolean isShopDescriptionExpanded;
 @property (strong, nonatomic) IBOutlet UIView *soldAmountView;
 @property (strong, nonatomic) IBOutlet UIView *successTransactionView;
@@ -529,7 +528,6 @@
         
         if (unboundedHeightLabelShopDescription > _labelShopDescriptionHeightConstraint.constant) {
             _expandShopDescriptionButton.hidden = NO;
-            _diffOldAndExpandedHeightDescription = unboundedHeightLabelShopDescription - _labelShopDescriptionHeightConstraint.constant;
         }
     }
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
