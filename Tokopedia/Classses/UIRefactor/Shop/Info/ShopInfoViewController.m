@@ -73,8 +73,8 @@
 @property (nonatomic) float diffOldAndExpandedHeightDescription;
 @property (nonatomic) Boolean isShopDescriptionExpanded;
 @property (strong, nonatomic) IBOutlet UIView *soldAmountView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *successTransactionHeightConstraint;
 @property (strong, nonatomic) IBOutlet UIView *successTransactionView;
+@property (strong, nonatomic) IBOutlet UIView *soldAmountStatisticView;
 
 - (IBAction)gesture:(id)sender;
 
@@ -146,7 +146,7 @@
 
 - (void)adjustStatisticCellHeight {
     if (_shop.result.info.official) {
-        _successTransactionHeightConstraint.constant = 0;
+        _soldAmountStatisticView.hidden = YES;
         _successTransactionView.hidden = YES;
     }
     CGRect statisticCellFrame = _statisticCell.frame;
