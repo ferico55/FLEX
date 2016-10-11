@@ -10,7 +10,7 @@ import UIKit
 
 @objc class ProfileFavoriteRequest: NSObject {
     
-    class func fetchListFavoriteShop(page:NSInteger, onSuccess: ((FavoriteShopResult) -> Void), onFailure:(()->Void)) {
+    class func fetchListFavoriteShop(page:NSInteger, profileUserID:String, onSuccess: ((FavoriteShopResult) -> Void), onFailure:(()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -20,7 +20,8 @@ import UIKit
         let param : [String: String] = [
             "page":"\(page)",
             "per_page":"5",
-            "user_id" : auth.getUserId()
+            "user_id" : auth.getUserId(),
+            "profile_user_id" : profileUserID
         ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),

@@ -237,7 +237,7 @@
 #pragma mark - Request and Mapping
 - (void)loadData {
     
-    [ProfileFavoriteRequest fetchListFavoriteShop:_page onSuccess:^(FavoriteShopResult * data) {
+    [ProfileFavoriteRequest fetchListFavoriteShop:_page profileUserID:_profileUserID?:@"" onSuccess:^(FavoriteShopResult * data) {
 
         [_act stopAnimating];
         _table.hidden = NO;
