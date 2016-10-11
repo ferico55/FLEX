@@ -92,7 +92,6 @@
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
         [self configureAppIndexing];
-        [self configureGoogleAnalytics];
         
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -154,15 +153,6 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
-}
-
-- (void)configureGoogleAnalytics {
-    //Google Analytics init
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-    [GAI sharedInstance].dispatchInterval = 60;
-    [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
-    [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
 }
 
 - (void)configureAppsflyer {
