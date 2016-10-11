@@ -15,7 +15,6 @@
 #import "TKPDSecureStorage.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
-#import <Google/Analytics.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>

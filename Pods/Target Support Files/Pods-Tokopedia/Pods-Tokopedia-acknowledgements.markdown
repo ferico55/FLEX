@@ -347,10 +347,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## Google
-
-Copyright 2015 Google Inc.
-
 ## GoogleAnalytics
 
 Copyright 2015 Google Inc.
@@ -361,13 +357,9 @@ Copyright 2015 Google Inc.
 
 ## GoogleAppUtilities
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## GoogleAuthUtilities
-
-Copyright 2015 Google Inc.
-
-## GoogleInterchangeUtilities
 
 Copyright 2015 Google Inc.
 
@@ -384,7 +376,7 @@ You can get the attribution text by making a call to
 
 ## GoogleNetworkingUtilities
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## GoogleSignIn
 
@@ -392,7 +384,7 @@ Copyright 2015 Google Inc. All Rights Reserved.
 
 ## GoogleSymbolUtilities
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## GoogleTagManager
 
@@ -400,7 +392,7 @@ Copyright 2015 Google Inc.
 
 ## GoogleUtilities
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## ISO8601DateFormatterValueTransformer
 
