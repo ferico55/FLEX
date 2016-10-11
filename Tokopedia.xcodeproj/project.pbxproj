@@ -1629,7 +1629,6 @@
 		459EB3E31D98DB770071EBF6 /* TransactionShipmentATCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459EA9291D98DB730071EBF6 /* TransactionShipmentATCViewController.m */; };
 		459EB3E41D98DB770071EBF6 /* TransactionShipmentATCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459EA92A1D98DB730071EBF6 /* TransactionShipmentATCViewController.xib */; };
 		459EB3E51D98DB770071EBF6 /* CartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459EA92E1D98DB730071EBF6 /* CartCell.m */; };
-		459EB3E61D98DB770071EBF6 /* CartGAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 459EA9301D98DB730071EBF6 /* CartGAHandler.m */; };
 		459EB3E71D98DB770071EBF6 /* CartValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 459EA9321D98DB730071EBF6 /* CartValidation.m */; };
 		459EB3E81D98DB770071EBF6 /* CCReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459EA9331D98DB730071EBF6 /* CCReaderViewController.swift */; };
 		459EB3E91D98DB770071EBF6 /* CCReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459EA9341D98DB730071EBF6 /* CCReaderViewController.xib */; };
@@ -5379,8 +5378,6 @@
 		459EA92A1D98DB730071EBF6 /* TransactionShipmentATCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentATCViewController.xib; sourceTree = "<group>"; };
 		459EA92D1D98DB730071EBF6 /* CartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartCell.h; sourceTree = "<group>"; };
 		459EA92E1D98DB730071EBF6 /* CartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartCell.m; sourceTree = "<group>"; };
-		459EA92F1D98DB730071EBF6 /* CartGAHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartGAHandler.h; sourceTree = "<group>"; };
-		459EA9301D98DB730071EBF6 /* CartGAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartGAHandler.m; sourceTree = "<group>"; };
 		459EA9311D98DB730071EBF6 /* CartValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartValidation.h; sourceTree = "<group>"; };
 		459EA9321D98DB730071EBF6 /* CartValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartValidation.m; sourceTree = "<group>"; };
 		459EA9331D98DB730071EBF6 /* CCReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCReaderViewController.swift; sourceTree = "<group>"; };
@@ -11574,8 +11571,6 @@
 			children = (
 				459EA92D1D98DB730071EBF6 /* CartCell.h */,
 				459EA92E1D98DB730071EBF6 /* CartCell.m */,
-				459EA92F1D98DB730071EBF6 /* CartGAHandler.h */,
-				459EA9301D98DB730071EBF6 /* CartGAHandler.m */,
 				459EA9311D98DB730071EBF6 /* CartValidation.h */,
 				459EA9321D98DB730071EBF6 /* CartValidation.m */,
 				459EA9331D98DB730071EBF6 /* CCReaderViewController.swift */,
@@ -14623,7 +14618,6 @@
 				459EAE351D98DB760071EBF6 /* ShopStats.m in Sources */,
 				459EB2211D98DB760071EBF6 /* CourierProductViewCell.m in Sources */,
 				459EB1C41D98DB760071EBF6 /* InboxResolutionCenterComplainCell.m in Sources */,
-				459EB3E61D98DB770071EBF6 /* CartGAHandler.m in Sources */,
 				459EB01A1D98DB760071EBF6 /* SynchronizedSubscribeType.swift in Sources */,
 				459EB44D1D98DB770071EBF6 /* CartModelView.m in Sources */,
 				459EB43F1D98DB770071EBF6 /* GoldShopView.m in Sources */,
