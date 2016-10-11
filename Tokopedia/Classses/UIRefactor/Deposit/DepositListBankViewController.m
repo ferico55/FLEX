@@ -42,8 +42,8 @@
     NSMutableArray *_list;
     NSIndexPath *_selectedIndexPath;
     
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectmanager;
+    RKManagedObjectRequestOperation *_request;
     
     NSOperationQueue *_operationQueue;
     

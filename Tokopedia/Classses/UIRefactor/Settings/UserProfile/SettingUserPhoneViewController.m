@@ -17,8 +17,8 @@
     NSInteger _requestcount;
     NSTimer *_timer;
     
-    __weak RKObjectManager *_objectmanagerAction;
-    __weak RKManagedObjectRequestOperation *_requestAction;
+    RKObjectManager *_objectmanagerAction;
+    RKManagedObjectRequestOperation *_requestAction;
     
     NSOperationQueue *_operationQueue;
     

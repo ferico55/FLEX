@@ -34,8 +34,8 @@ class ProductWishlistCell : UICollectionViewCell {
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(viewModel : ProductModelView) {
-        let url = NSURL.init(string: viewModel.productThumbUrl)!
-        let luckyBadgeUrl = NSURL.init(string: viewModel.luckyMerchantImageURL)!
+        let url = NSURL(string: viewModel.productThumbUrl)!
+        let luckyBadgeUrl = NSURL(string: viewModel.luckyMerchantImageURL)!
         productName.text = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop
@@ -74,7 +74,7 @@ class ProductWishlistCell : UICollectionViewCell {
         self.badgesView.orientation = .RightToLeft;
         
         
-        var urls = NSMutableArray()
+        let urls = NSMutableArray()
         viewModel.badges.enumerate().map { index, badge in
             urls.addObject(badge.image_url)
         }
