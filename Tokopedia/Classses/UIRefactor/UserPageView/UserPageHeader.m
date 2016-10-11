@@ -54,8 +54,6 @@
 
 @implementation UserPageHeader
 
-@synthesize data = _data;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
