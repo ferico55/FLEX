@@ -31,6 +31,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var selectedCategory = PulsaCategory()
     var selectedProduct = PulsaProduct()
     var userManager = UserAuthentificationManager()
+    var prefixView: UIView?
     
     var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
@@ -200,6 +201,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         numberField.borderStyle = .RoundedRect
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
+        numberField.clearButtonMode = .WhileEditing
         
         let keyboard =  MMNumberKeyboard(frame: CGRectZero)
         keyboard.allowsDecimalPoint = false
@@ -216,6 +218,13 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
             make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : self.WIDGET_RIGHT_MARGIN)
         }
+        
+        self.prefixView = UIView()
+        self.numberField.addSubview(self.prefixView!)
+        self.prefixView!.mas_makeConstraints({ (make) in
+            make.right.mas_equalTo()(self.numberField.mas_right).with().offset()(-90)
+            make.centerY.mas_equalTo()(self.numberField.mas_centerY).with().offset()(-15)
+        })
         
         if(category.attributes.use_phonebook) {
             phoneBook = UIImageView(image: UIImage(named: "icon_phonebook@3x.png"))
@@ -327,7 +336,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             }
             
             if(inputtedText.characters.count < 4) {
-                self.numberField.rightView = nil
+                if let prefixView = self.prefixView {
+                    prefixView.hidden = true
+                }
                 self.hideBuyButtons()
             }
             
@@ -351,14 +362,13 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                 self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
                 
                 let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
-                let prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
-                prefixView .addSubview(prefixImage)
-               
+                prefixView!.addSubview(prefixImage)
                 prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                self.numberField.rightView = prefixView
+                self.prefixView!.hidden = false
+
                 self.numberField.rightViewMode = .Always
             } else {
-                self.numberField.rightView = nil
+                self.prefixView!.hidden = true
                 self.hideBuyButtons()
             }
         } else if(self.selectedCategory.id == CategoryConstant.Listrik) {
@@ -366,8 +376,8 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             
             
             let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
-            let prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
-            prefixView .addSubview(prefixImage)
+            self.prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
+            self.prefixView!.addSubview(prefixImage)
             
             prefixImage.contentMode = .ScaleAspectFill
             prefixImage.setImageWithURL((NSURL.init(string: self.selectedOperator.attributes.image)))

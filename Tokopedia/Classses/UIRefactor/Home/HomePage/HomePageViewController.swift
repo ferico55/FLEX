@@ -553,20 +553,19 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     self!.navigator.navigateToWebTicker(url)
                 }
                 
+                // init ticker
+                self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
+                
                 self.tickerPlaceholder.mas_makeConstraints { make in
                     //                    make.top.equalTo()(self.collectionView.mas_top)
                     make.left.right().equalTo()(self.view)
                 }
                 
-                
                 self.tickerView.mas_makeConstraints { make in
                     make.left.right().equalTo()(self.view)
                     make.top.bottom().equalTo()(self.tickerPlaceholder)
                 }
-                
-                // init ticker
-                self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
-                
+            
                 self.tickerPlaceholder.addSubview(self.tickerView)
             }
             
