@@ -414,9 +414,9 @@
         } else if ([[data objectForKey:@"st"] isEqualToString:@"shop"]) {
             
             [tabController setSelectedIndex:2];
-            [tabController setSelectedViewController:searchCatalogController animated:YES];
+            [tabController setSelectedViewController:searchShopController animated:YES];
             
-            NSDictionary *userInfo = @{@"count": @(2),  @"selectedIndex": @(1), @"hasCatalog": @(NO)};
+            NSDictionary *userInfo = @{@"count": @(3),  @"selectedIndex": @(2), @"hasCatalog": @(NO)};
             [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
         }
         
