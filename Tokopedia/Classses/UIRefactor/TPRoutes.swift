@@ -15,6 +15,17 @@ class TPRoutes: NSObject {
         
         let navigator = NavigateViewController()
         
+        //create shop
+        JLRoutes.globalRoutes().addRoute("/buka-toko-online-gratis") { (params: [String : AnyObject]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            if(userManager.isLogin && userManager.getShopId() == "0") {
+                let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
+                UIApplication.topViewController()?.navigationController!.pushViewController(controller, animated: true)
+            }
+            
+            return true
+        }
+        
         //kereta
         JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
             NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
@@ -69,16 +80,6 @@ class TPRoutes: NSObject {
         //catalog detail
         JLRoutes.globalRoutes().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String : AnyObject]!) -> Bool in
             navigator.navigateToCatalogFromViewController(UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
-            return true
-        }
-        
-        //create shop
-        JLRoutes.globalRoutes().addRoute("/buka-toko-online-gratis") { (params: [String : AnyObject]!) -> Bool in
-            let userManager = UserAuthentificationManager()
-            if(userManager.getShopId() != "") {
-                navigator.navigateToCatalogFromViewController(UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
-            }
-            
             return true
         }
         
