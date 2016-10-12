@@ -17,6 +17,7 @@
                       @"shipment_available",
                       @"shipment_package_id",
                       @"shipment_package_name",
+                      @"shipment_is_pickup",
                       @"auto_resi_image"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];

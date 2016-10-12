@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We use camera, mainly for seller to upload their product directly through their camera. We also could find listed product through camera. </string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We use bluetooth for third party library and send their data through bluetooth</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We use photo library, mainly for seller to upload their product directly through their photo gallery. </string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -17,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.89</string>
+	<string>1.90</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -81,7 +87,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>201609291804</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -93,6 +99,15 @@
 				<dict/>
 				<key>KitName</key>
 				<string>Crashlytics</string>
+			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>apikey</key>
+					<string>f2c02b28ccd54635a7c73eb9dac5038f</string>
+				</dict>
+				<key>KitName</key>
+				<string>Appsee</string>
 			</dict>
 		</array>
 	</dict>

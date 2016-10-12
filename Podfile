@@ -32,6 +32,7 @@ def common_pods
     pod 'Masonry'
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
+    pod 'Appsee'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -44,4 +45,17 @@ end
 
 target "TokopediaTests" do
     common_pods
+end
+
+post_install do |installer|
+    
+    installer.pods_project.targets.each do |target|
+        installer.pods_project.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end   
+        
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end
+    end
 end

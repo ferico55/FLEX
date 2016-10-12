@@ -217,7 +217,7 @@ import GoogleMaps
     func adustBehaviorType(type: Int){
         switch type {
         case TypePlacePicker.TypeEditPlace.rawValue :
-            let doneBarButton = UIBarButtonItem(title: "Selesai", style: .Plain, target: self, action: "tapDone:")
+            let doneBarButton = UIBarButtonItem(title: "Selesai", style: .Plain, target: self, action: #selector(TKPPlacePickerViewController.tapDone(_:)))
             doneBarButton.tintColor = UIColor.whiteColor()
             self.navigationItem.rightBarButtonItem = doneBarButton
             self.title = "Pilih Lokasi"

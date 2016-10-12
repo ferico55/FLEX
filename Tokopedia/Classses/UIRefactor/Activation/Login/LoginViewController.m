@@ -215,7 +215,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
-
+    
+    [TPAnalytics trackLoginCTAButton];
     NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
     NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
     NSMutableArray *messages = [NSMutableArray new];
@@ -225,18 +226,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         valid = YES;
     }
     if (!email||[email isEqualToString:@""]) {
+        [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
         message = @"Email harus diisi.";
         [messages addObject:message];
         valid = NO;
     }
     if (email) {
         if (![email isEmail]) {
+            [TPAnalytics trackErrorLoginWithFieldName:@"Email"];
             message = @"Format email salah.";
             [messages addObject:message];
             valid = NO;
         }
     }
     if (!pass || [pass isEqualToString:@""]) {
+        [TPAnalytics trackErrorLoginWithFieldName:@"Kata Sandi"];
         message = @"Password harus diisi";
         [messages addObject:message];
         valid = NO;
@@ -266,6 +270,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)didTapRegisterButton {
+    [TPAnalytics trackRegisterThroughLogin];
     RegisterViewController *controller = [RegisterViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -280,6 +285,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 loginWithTokenString:token
                   fromViewController:self
                      successCallback:^(Login *login) {
+                         [TPAnalytics trackSuccessLoginWithChannel:@"Yahoo"];
                          [self onLoginSuccess:login];
                      }
                      failureCallback:^(NSError *error) {
@@ -299,6 +305,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                   password:pass
         fromViewController:self
            successCallback:^(Login *login) {
+               [TPAnalytics trackSuccessLoginWithChannel:@"Email"];
                _barbuttonsignin.enabled = YES;
                [self unsetLoggingInState];
 
@@ -538,6 +545,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
+                                 [TPAnalytics trackSuccessLoginWithChannel:@"Facebook"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
@@ -605,6 +613,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
+                                 [TPAnalytics trackSuccessLoginWithChannel:@"Google"];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {

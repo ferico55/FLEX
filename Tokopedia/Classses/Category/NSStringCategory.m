@@ -211,7 +211,9 @@
             text = [text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
             text = [text stringByReplacingOccurrencesOfString:@"_blank" withString:@""];
             
-            [array addObject:text];
+            if (text) {
+                [array addObject:text];
+            }
         }
     }
     

@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSString *voucher_expired_time;
 @property (nonatomic, strong) NSString *voucher_minimal_amount;
 @property (nonatomic, strong) NSString *voucher_no_other_promotion;
+@property (nonatomic, strong) NSString *voucher_promo_desc;
 
 @end

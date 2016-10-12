@@ -562,6 +562,8 @@
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
         
+        [TPAnalytics trackInboxReviewAction:@"View" label:self.strNav];
+        
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:vc];
         }
