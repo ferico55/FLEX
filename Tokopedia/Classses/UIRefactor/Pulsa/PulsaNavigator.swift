@@ -38,7 +38,7 @@ class PulsaNavigator: NSObject {
             if(phoneNumber.characters.count >= 4) {
                 let prefix = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(4)))
                 
-                self.pulsaView.setRightViewNumberField(prefix)
+                self.pulsaView.checkInputtedNumber()
             }
         }
         
