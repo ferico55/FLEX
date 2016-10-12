@@ -215,9 +215,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         numberField.keyboardType = .NumberPad
         numberField.clearButtonMode = .WhileEditing
         
-
-        
-        
         let keyboard =  MMNumberKeyboard(frame: CGRectZero)
         keyboard.allowsDecimalPoint = false
         keyboard.delegate = self
@@ -358,8 +355,14 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             if let prefixView = self.prefixView {
                 prefixView.hidden = true
             }
+            
+            resetPulsaOperator()
             self.hideBuyButtons()
         }
+    }
+    
+    func resetPulsaOperator() {
+        selectedOperator = PulsaOperator()
     }
     
     func hideErrors() {
@@ -582,7 +585,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         saldoButtonPlaceholder.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
-        
+
         self.saldoSwitch.hidden = true
         self.saldoLabel.hidden = true
         productButton.hidden = true

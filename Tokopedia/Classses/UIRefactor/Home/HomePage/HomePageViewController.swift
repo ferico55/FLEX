@@ -431,6 +431,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.pulsaView.didTapProduct = { [unowned self] products in
                 self.navigator.navigateToPulsaProduct(products)
             }
+        } else {
+            self.pulsaView.prefixView?.hidden = true
         }
     }
     
