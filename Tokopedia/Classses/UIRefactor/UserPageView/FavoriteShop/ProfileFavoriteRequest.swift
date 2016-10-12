@@ -15,12 +15,9 @@ import UIKit
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        let auth = UserAuthentificationManager()
-        
         let param : [String: String] = [
             "page":"\(page)",
             "per_page":"5",
-            "user_id" : auth.getUserId(),
             "profile_user_id" : profileUserID
         ]
         
