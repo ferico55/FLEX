@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We use camera, mainly for seller to upload their product directly through their camera. We also could find listed product through camera. </string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We use bluetooth for third party library and send their data through bluetooth</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We use photo library, mainly for seller to upload their product directly through their photo gallery. </string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
