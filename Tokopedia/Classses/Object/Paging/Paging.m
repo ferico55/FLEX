@@ -38,6 +38,15 @@
     return [NSURL URLWithString:_uri_previous];
 }
 
+- (BOOL)isShowNext {
+    if([_uri_next isEqualToString:@"0"] || !_uri_next) {
+        return false;
+    }
+    
+    return true;
+}
+
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"uri_next",

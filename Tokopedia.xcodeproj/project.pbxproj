@@ -2632,6 +2632,9 @@
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AC0D6CA1DADEDB800236190 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0D6C81DADEDB800236190 /* MessageViewController.swift */; };
+		7AC0D6CB1DADEDB800236190 /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AC0D6C91DADEDB800236190 /* MessageViewController.xib */; };
+		7AC0D6CD1DADF06600236190 /* JSQMessagesViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AC0D6CC1DADF06600236190 /* JSQMessagesViewController.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -2655,9 +2658,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
-		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
-		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -6476,6 +6477,9 @@
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AC0D6C81DADEDB800236190 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		7AC0D6C91DADEDB800236190 /* MessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageViewController.xib; sourceTree = "<group>"; };
+		7AC0D6CC1DADF06600236190 /* JSQMessagesViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSQMessagesViewController.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Tokopedia-fzfztdkvdqmwrchdzfmrenyvnayh/Build/Products/Debug-iphoneos/JSQMessagesViewController.framework"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -6524,6 +6528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AC0D6CD1DADF06600236190 /* JSQMessagesViewController.framework in Frameworks */,
 				6270659C1D7EB80600BDE9F8 /* Localytics.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
@@ -6557,8 +6562,6 @@
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
-				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
-				DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10136,6 +10139,8 @@
 				459EA58A1D98DB720071EBF6 /* InboxRootViewController.m */,
 				459EA58B1D98DB720071EBF6 /* InboxRootViewController.xib */,
 				459EA58C1D98DB720071EBF6 /* string_inbox_message.h */,
+				7AC0D6C81DADEDB800236190 /* MessageViewController.swift */,
+				7AC0D6C91DADEDB800236190 /* MessageViewController.xib */,
 			);
 			path = InboxMessage;
 			sourceTree = "<group>";
@@ -13070,6 +13075,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7AC0D6CC1DADF06600236190 /* JSQMessagesViewController.framework */,
 				6270659B1D7EB80600BDE9F8 /* Localytics.framework */,
 				627065971D7EAFC900BDE9F8 /* libz.tbd */,
 				627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */,
@@ -14030,6 +14036,7 @@
 				459EB1F31D98DB760071EBF6 /* InboxTicketDetailViewController.xib in Resources */,
 				459EB2571D98DB760071EBF6 /* ProductEditWholesaleCell.xib in Resources */,
 				459EB50F1D98DB770071EBF6 /* icon_category@3x.png in Resources */,
+				7AC0D6CB1DADEDB800236190 /* MessageViewController.xib in Resources */,
 				459EB6CB1D98DB770071EBF6 /* icon_truck.png in Resources */,
 				459EB4841D98DB770071EBF6 /* icon_10.png in Resources */,
 				459EB74D1D98DB770071EBF6 /* product-feed@3x.png in Resources */,
@@ -15848,6 +15855,7 @@
 				459EB28B1D98DB760071EBF6 /* ReviewRequest.m in Sources */,
 				34790E051D87A15400A3324E /* AppDelegate.m in Sources */,
 				459EAF451D98DB760071EBF6 /* AddShop.m in Sources */,
+				7AC0D6CA1DADEDB800236190 /* MessageViewController.swift in Sources */,
 				459EB4371D98DB770071EBF6 /* RequestOrderAction.m in Sources */,
 				459EB22E1D98DB760071EBF6 /* NotificationBarButton.m in Sources */,
 				459EAE441D98DB760071EBF6 /* ListFavorited.m in Sources */,

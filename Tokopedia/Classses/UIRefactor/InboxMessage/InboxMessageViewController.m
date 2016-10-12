@@ -353,31 +353,35 @@
 }
 
 - (void)showMessageDetailForIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath) {
+//    if (indexPath) {
         InboxMessageList *list = _messages[indexPath.row];
         list.message_read_status = @"1";
-    }
+//    }
 
-    __weak typeof(self) weakSelf = self;
-
-    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-    vc.onMessagePosted = ^(NSString *replyMessage) {
-        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
-    };
-
-    vc.data = [self dataForIndexPath:indexPath];
+//    __weak typeof(self) weakSelf = self;
+//
+//    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+//    vc.onMessagePosted = ^(NSString *replyMessage) {
+//        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+//    };
+//
+//    vc.data = [self dataForIndexPath:indexPath];
+    MessageViewController *vc = [[MessageViewController alloc] init];
+    vc.senderId = _userManager.getUserId;
+    vc.senderDisplayName = @"Tonito";
+    vc.messageTitle = list.message_title;
+    vc.messageId = list.message_id;
+    
     
     [TPAnalytics trackInboxMessageAction:@"View" label:[_data objectForKey:@"nav"]?:@""];
 
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
         navigationController.navigationBar.translucent = NO;
 
         [self.splitViewController replaceDetailViewController:navigationController];
     }
-    else
-    {
+    else {
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

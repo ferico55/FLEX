@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSURL *uriPrevious;
+@property (nonatomic) BOOL isShowNext;
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;
