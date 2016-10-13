@@ -141,15 +141,15 @@
 
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
-                                                              action:@selector(tap:)];
+                                                              action:nil];
     return button;
 }
 
 - (UIBarButtonItem *)filterBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(tap:)];
     return button;

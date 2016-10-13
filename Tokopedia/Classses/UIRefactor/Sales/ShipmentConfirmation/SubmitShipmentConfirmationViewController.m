@@ -82,7 +82,7 @@
 
 - (void)setBackButton {
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -90,7 +90,7 @@
 
 - (void)setCancelButton {
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
