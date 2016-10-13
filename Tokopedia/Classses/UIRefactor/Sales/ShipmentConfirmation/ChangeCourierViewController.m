@@ -14,6 +14,7 @@
 #import "Order.h"
 #import "OrderTransaction.h"
 #import "string_order.h"
+#import "Tokopedia-Swift.h"
 
 @interface ChangeCourierViewController ()
 <
@@ -287,94 +288,26 @@ BarCodeDelegate
 
 #pragma mark - Resktit methods for actions
 
-- (void)configureActionReskit
-{
-    _actionObjectManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                        method:RKRequestMethodPOST
-                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
-                                                                                                       keyPath:@""
-                                                                                                   statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
-}
-
-- (void)request
-{
-    [self configureActionReskit];
-    
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userId = auth.getUserId;
+-(ProceedShippingObjectRequest*)proceedShippingObjectRequest{
     
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     UITextField *textField = (UITextField *)[cell viewWithTag:1];
+
+    ProceedShippingObjectRequest *object = [ProceedShippingObjectRequest new];
+    object.type = ProceedTypeConfirm;
+    object.orderID = _order.order_detail.detail_order_id;
+    object.shipmentID = _selectedCourier.shipment_id;
+    object.shipmentName = _selectedCourier.shipment_name;
+    object.shipmentPackageID = _selectedCourierPackage.sp_id;
+    object.shippingRef = textField.text;
     
-    NSDictionary *param = @{
-                  API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
-                  API_ACTION_TYPE_KEY         : @"confirm",
-                  API_USER_ID_KEY             : userId,
-                  API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
-                  API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
-                  API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,
-                  API_SHIPMENT_PACKAGE_ID_KEY : _selectedCourierPackage.sp_id ?: _order.order_shipment.shipment_package_id,
-                  API_SHIPMENT_REF_KEY        : textField.text ?: @"",
-                  };
-    
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                method:RKRequestMethodPOST
-                                                                                  path:API_NEW_ORDER_ACTION_PATH
-                                                                            parameters:[param encrypt]];
-    [_operationQueue addOperation:_actionRequest];
-    
-    NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(timeout:)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self actionRequestSuccess:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [TPLocalytics trackShipmentConfirmation:NO];
-        [self actionRequestFailure:error orderId:self.order.order_detail.detail_order_id];
-        [timer invalidate];
-    }];
+    return object;
 }
 
-- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult *)object).dictionary;
-    
-    ActionOrder *actionOrder = [result objectForKey:@""];
-    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status && [actionOrder.result.is_success boolValue]) {
-        [TPLocalytics trackShipmentConfirmation:YES];
-        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+- (void)request{
+    [ShipmentRequest fetchProceedShipping:[self proceedShippingObjectRequest] onSuccess:^{
         
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
-        [alert show];
+        [TPLocalytics trackShipmentConfirmation:YES];
         
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
@@ -382,28 +315,12 @@ BarCodeDelegate
             [self.delegate successConfirmOrder:self.order];
         }
         
-    } else {
+    } onFailure:^{
+        
         [TPLocalytics trackShipmentConfirmation:NO];
-        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
-                                                                       delegate:self];
-        [alert show];
-    }
+        
+    }];
 }
-
-- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
-{
-    NSLog(@"\n\nRequest error : %@\n\n", object);
-    NSString *error = [object localizedDescription];
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error]
-                                                                   delegate:self];
-    [alert show];
-}
-
-- (void)timeout:(NSTimer *)timer
-{
-}
-
 
 #pragma mark - BarCode Delegate
 - (void)didFinishScan:(NSString *)strResult
