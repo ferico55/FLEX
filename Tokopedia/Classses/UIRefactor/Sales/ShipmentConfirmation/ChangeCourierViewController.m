@@ -23,19 +23,10 @@ GeneralTableViewControllerDelegate,
 BarCodeDelegate
 >
 {
-    BOOL _changeCourier;
-    NSString *_receiptNumber;
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
     
     NSString *strNoResi;
-    BOOL _shouldReloadData;
-    
-    RKObjectManager *_actionObjectManager;
-    RKManagedObjectRequestOperation *_actionRequest;
-    RKResponseDescriptor *_responseActionDescriptorStatus;
-    
-    NSOperationQueue *_operationQueue;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -72,8 +63,6 @@ BarCodeDelegate
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
     
-    _changeCourier = YES;
-    
     for (ShipmentCourier *courier in _shipmentCouriers) {
         if ([courier.shipment_name isEqualToString:_order.order_shipment.shipment_name]) {
             _selectedCourier = courier;
@@ -83,10 +72,6 @@ BarCodeDelegate
     for (ShipmentCourierPackage *package in _selectedCourier.shipment_package) {
         _selectedCourierPackage = package;
     }
-    
-    _shouldReloadData = NO;
-    
-    _operationQueue = [NSOperationQueue new];
     
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
