@@ -26,6 +26,17 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //contact us
+        JLRoutes.globalRoutes().addRoute("/contact-us.pl") { (params: [String : AnyObject]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            if(userManager.isLogin) {
+                let dependencies = TPContactUsDependencies()
+                dependencies.pushContactUsViewControllerFromNavigation(UIApplication.topViewController()?.navigationController!)
+            }
+            
+            return true
+        }
+        
         //kereta
         JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
             NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
