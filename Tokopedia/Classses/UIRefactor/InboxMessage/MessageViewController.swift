@@ -10,10 +10,13 @@ import UIKit
 import JSQMessagesViewController
 
 class MessageViewController: JSQMessagesViewController {
+    
     var messageTitle = ""
     var messageId: String!
     
     private var messages = [JSQMessage]()
+    private var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    
     private var outgoingBubbleImageView: JSQMessagesBubbleImage!
     private var incomingBubbleImageView: JSQMessagesBubbleImage!
     private var nextPage: String?
@@ -26,6 +29,8 @@ class MessageViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
@@ -70,11 +75,28 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        let message = messages[indexPath.item]
+        
+        return avatars[message.senderId]
     }
+    
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
         self.fetchMessages(self.nextPage)
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return 20
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        if(indexPath.item % 3 == 0) {
+            let message = messages[indexPath.item]
+            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
+        }
+        
+        return nil
+        
     }
     
     //MARK: Bubble Setup
@@ -109,18 +131,29 @@ class MessageViewController: JSQMessagesViewController {
     private func didReceiveMessages(messages: [InboxMessageDetailList]) {
         messages.forEach({ (message) in
             let message = message
+
+            let dateString = message.message_reply_time.formatted            
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
+            
+            let dateObj = dateFormatter.dateFromString(dateString)!
+            
             if(message.user_id == self.senderId) {
-                self.addMessage(self.senderId, text: message.message_reply)
+                self.addMessage(self.senderId, text: message.message_reply, senderName: "",date: dateObj)
             } else {
-                self.addMessage(message.user_id, text: message.message_reply)
+                self.addMessage(message.user_id, text: message.message_reply, senderName: message.user_name, date: dateObj)
+                let image = UIImage(data: NSData(contentsOfURL: NSURL(string: message.user_image)!)!)
+                
+                avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
+                
             }
         })
         
         self.finishReceivingMessage()
     }
     
-    func addMessage(id: String, text: String) {
-        let message = JSQMessage(senderId: id, displayName: "", text: text)
+    func addMessage(id: String, text: String, senderName: String, date: NSDate) {
+        let message = JSQMessage(senderId: id, senderDisplayName: senderName, date: date, text: text)
         messages.insert(message, atIndex: 0)
     }
 
