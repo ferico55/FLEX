@@ -42,6 +42,7 @@
 #import "PromoRequest.h"
 #import "AlertLuckyView.h"
 #import "LuckyDealWord.h"
+#import "Tokopedia-Swift.h"
 
 #import "GalleryViewController.h"
 
