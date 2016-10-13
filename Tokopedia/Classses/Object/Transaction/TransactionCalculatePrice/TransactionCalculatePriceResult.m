@@ -10,6 +10,10 @@
 
 @implementation TransactionCalculatePriceResult
 
+-(NSArray<ShippingInfoShipments *> *)shipment{
+    return _shipment?:@[];
+}
+
 -(NSArray<NSString *> *)auto_resi{
     return _auto_resi?:@[];
 }

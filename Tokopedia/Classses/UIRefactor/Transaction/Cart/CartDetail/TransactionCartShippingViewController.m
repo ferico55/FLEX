@@ -387,7 +387,10 @@
     address.address_country = address.country_name?address.country_name:address.address_country;
     address.address_district_id = address.district_id;
     address.address_postal = address.postal_code;
+    address.address_city_id = address.city_id;
+    address.address_province_id = address.province_id;
     address.address_city = address.city_name;
+    address.address_district = address.district_name;
     address.address_province = address.province_name;
     _selectedAddress = address;
     

@@ -5,11 +5,13 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "F898FE5F692C563213A7FCDAC5240BD9E0D12068" : 0,
+    "8B123162C394A0A0A138779108E4C59DD771865A" : 0,
     "6A950CF6333E4E0A56294754E1B1864CD5D1F658" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A15A684C-752F-46F5-8668-7DA42788221A",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "F898FE5F692C563213A7FCDAC5240BD9E0D12068" : "ios-tokopedia\/",
+    "8B123162C394A0A0A138779108E4C59DD771865A" : "Tokopedia\/Tokopedia\/Classses\/Third%20Party\/RxSwift\/",
     "6A950CF6333E4E0A56294754E1B1864CD5D1F658" : "learnings\/ios\/Tweaks\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Tokopedia",
@@ -20,6 +22,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/facebook\/Tweaks.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6A950CF6333E4E0A56294754E1B1864CD5D1F658"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ReactiveX\/RxSwift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8B123162C394A0A0A138779108E4C59DD771865A"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/tokopedia\/ios-tokopedia.git",
