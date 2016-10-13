@@ -33,7 +33,7 @@
                                            mapping:[ProfileEdit mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                              ProfileEdit *result = [successResult.dictionary objectForKey:@""];
-                                             successCallback(result.result.data_user.user_phone);
+                                             successCallback(result.data.data_user.user_phone);
                                          } onFailure:^(NSError *errorResult) {
                                              errorCallback(errorResult);
                                          }];
