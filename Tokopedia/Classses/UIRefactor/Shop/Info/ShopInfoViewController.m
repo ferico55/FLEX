@@ -70,8 +70,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *expandShopDescriptionButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelShopDescriptionHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightConstraint;
-@property (nonatomic) float diffOldAndExpandedHeightDescription;
 @property (nonatomic) Boolean isShopDescriptionExpanded;
+@property (strong, nonatomic) IBOutlet UIView *soldAmountView;
+@property (strong, nonatomic) IBOutlet UIView *successTransactionView;
+@property (strong, nonatomic) IBOutlet UIView *soldAmountStatisticView;
 
 - (IBAction)gesture:(id)sender;
 
@@ -137,6 +139,34 @@
     [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
     
     _isShopDescriptionExpanded = NO;
+    
+    [self adjustStatisticCellHeight];
+}
+
+- (void)adjustStatisticCellHeight {
+    if (_shop.result.info.official) {
+        _soldAmountStatisticView.hidden = YES;
+        _successTransactionView.hidden = YES;
+    }
+    CGRect statisticCellFrame = _statisticCell.frame;
+    statisticCellFrame.size.height = [_statisticCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    _statisticCell.frame = statisticCellFrame;
+    [_statisticCell layoutIfNeeded];
+}
+
+- (void)setTopLabelLayoutWidth {
+    CGRect frame = _topCell.frame;
+    frame.size.width = self.view.bounds.size.width;
+    _topCell.frame = frame;
+    [_topCell layoutIfNeeded];
+    
+    _labelshoptagline.preferredMaxLayoutWidth = _labelshoptagline.frame.size.width;
+    _labelshopdescription.preferredMaxLayoutWidth = _labelshopdescription.frame.size.width;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setTopLabelLayoutWidth];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -338,7 +368,6 @@
     else if (indexPath.row == _shop.result.address.count+1)
     {
         cell = _statisticCell;
-
     }
     else if (indexPath.row<=_shipments.count+_shop.result.address.count+1)
     {
@@ -476,6 +505,8 @@
 
 -(void)setShopInfoData
 {
+    _soldAmountView.hidden = _shop.result.info.official;
+    
     _labelshopname.text = _shop.result.info.shop_name;
     _labelshoptagline.text = _shop.result.info.shop_tagline;
 
@@ -497,7 +528,6 @@
         
         if (unboundedHeightLabelShopDescription > _labelShopDescriptionHeightConstraint.constant) {
             _expandShopDescriptionButton.hidden = NO;
-            _diffOldAndExpandedHeightDescription = unboundedHeightLabelShopDescription - _labelShopDescriptionHeightConstraint.constant;
         }
     }
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
@@ -522,9 +552,7 @@
     //request.URL = url;
     
     UIImageView *thumb = _thumb;
-    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     //[((ShopInfoPaymentCell*)cell).act startAnimating];
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -543,11 +571,7 @@
     //request.URL = url;
     
     thumb = _thumbowner;
-    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    //[((ShopInfoPaymentCell*)cell).act startAnimating];
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -579,26 +603,18 @@
 
 -(void) expandShopDescription {
     [UIView animateWithDuration:0.2 animations:^{
-        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
-        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
-        CGRect topCellFrame = _topCell.frame;
-        topCellFrame.size.height = topCellFrame.size.height + _diffOldAndExpandedHeightDescription;
-        _topCell.frame = topCellFrame;
-        
         self.expandShopDescriptionButton.transform = CGAffineTransformMakeRotation((180.0 * (CGFloat)M_PI) / 180.0);
     }];
+    _labelshopdescription.numberOfLines = 0;
     _isShopDescriptionExpanded = YES;
 }
 
 -(void) shrinkShopDescription {
     [UIView animateWithDuration:0.2 animations:^{
-        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
-        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
-        CGRect topCellFrame = _topCell.frame;
-        topCellFrame.size.height = topCellFrame.size.height - _diffOldAndExpandedHeightDescription;
-        _topCell.frame = topCellFrame;
         self.expandShopDescriptionButton.transform = CGAffineTransformIdentity;
     }];
+    
+    _labelshopdescription.numberOfLines = 1;
     _isShopDescriptionExpanded = NO;
 }
 
@@ -623,6 +639,12 @@
     }
 }
 
+- (void)resizeTopCell {
+    CGFloat height = [_topCell systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect frame = _topCell.frame;
+    frame.size.height = height;
+    _topCell.frame = frame;
+}
 
 
 #pragma mark - Method
@@ -638,6 +660,9 @@
     } else {
         [self shrinkShopDescription];
     }
+    
+    [self resizeTopCell];
+    
     [_tableView beginUpdates];
     [_tableView endUpdates];
 }

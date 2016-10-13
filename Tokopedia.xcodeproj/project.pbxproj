@@ -2656,6 +2656,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		929B1F131DACF045009AFDEF /* V4Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 929B1F121DACF045009AFDEF /* V4Response.m */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6502,6 +6503,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		929B1F111DACF045009AFDEF /* V4Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V4Response.h; sourceTree = "<group>"; };
+		929B1F121DACF045009AFDEF /* V4Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V4Response.m; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6855,6 +6858,8 @@
 				459EA2731D98DB710071EBF6 /* untitled folder */,
 				459EA2741D98DB710071EBF6 /* UploadImage */,
 				459EA2991D98DB710071EBF6 /* WishList */,
+				929B1F111DACF045009AFDEF /* V4Response.h */,
+				929B1F121DACF045009AFDEF /* V4Response.m */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -15738,6 +15743,7 @@
 				459EAE061D98DB760071EBF6 /* ContactUsActionResponse.m in Sources */,
 				459EB08A1D98DB760071EBF6 /* ConcurrentMainScheduler.swift in Sources */,
 				459EB05F1D98DB760071EBF6 /* ShareReplay1WhileConnected.swift in Sources */,
+				929B1F131DACF045009AFDEF /* V4Response.m in Sources */,
 				459EB2811D98DB760071EBF6 /* ProductDetailReputationCell.m in Sources */,
 				459EAFBE1D98DB760071EBF6 /* TransactionVoucherData.m in Sources */,
 				459EADF61D98DB760071EBF6 /* AnnouncementTicker.swift in Sources */,
