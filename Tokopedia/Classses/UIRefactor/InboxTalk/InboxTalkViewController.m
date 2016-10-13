@@ -114,6 +114,8 @@
     // GTM
     [self configureGTM];
     
+    [self initNoResultView];
+    
     //load data
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -122,7 +124,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self initNoResultView];
+    _noResultView.frame = self.view.bounds;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
