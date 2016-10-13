@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ListFavorited : NSObject
+@interface ListFavorited : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger user_id;
 @property (nonatomic, strong) NSString *user_image;

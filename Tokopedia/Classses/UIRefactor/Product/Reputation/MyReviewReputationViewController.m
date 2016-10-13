@@ -613,10 +613,7 @@
             
             if(tempObj.reviewee_uri!=nil && tempObj.reviewee_uri.length>0) {
                 NSArray *arrUri = [tempObj.reviewee_uri componentsSeparatedByString:@"/"];
-                container.data = @{
-                                   @"user_id" : [arrUri lastObject],
-                                   @"auth" : auth?:[NSNull null]
-                                   };
+                container.profileUserID = [arrUri lastObject];
                 
                 if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                     [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:container];

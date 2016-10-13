@@ -42,7 +42,6 @@
     
     _userHeader = [UserPageHeader new];
     _userHeader.delegate = self;
-    _userHeader.data = _data;
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSDictionary *tempDict = [authManager getUserLoginData];
@@ -54,10 +53,10 @@
         if([tempDict objectForKey:@"user_id"])
             strUserID = [NSString stringWithFormat:@"%d", [[tempDict objectForKey:@"user_id"] intValue]];
 
-        if(strUserID==nil || strUserID.length==0 || _data==nil || _data.count==0 || ![_data objectForKey:@"user_id"]) {
+        if(strUserID==nil || strUserID.length==0 || !_profileUserID) {
             isNotMyBiodata = YES;
         }
-        else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%d", [[_data objectForKey:@"user_id"] intValue]]]) {
+        else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%d", [_profileUserID intValue]]]) {
             isNotMyBiodata = YES;
         }
     }

@@ -390,13 +390,7 @@
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
-        container.data = @{
-                           @"user_id" : _detailReputationReview.review_user_id,
-                           @"auth" : auth?:[NSNull null]
-                           };
+        container.profileUserID = _detailReputationReview.review_user_id;
         [self.navigationController pushViewController:container animated:YES];
     }
 }
@@ -775,13 +769,7 @@
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
-        container.data = @{
-                           @"user_id" : _detailReputationReview.review_user_id,
-                           @"auth" : auth?:[NSNull null]
-                           };
+        container.profileUserID = _detailReputationReview.review_user_id;
         [self.navigationController pushViewController:container animated:YES];
     }
 }

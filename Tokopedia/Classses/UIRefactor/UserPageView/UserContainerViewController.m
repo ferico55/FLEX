@@ -99,8 +99,6 @@
 
 @implementation UserContainerViewController
 
-@synthesize data = _data;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -125,7 +123,7 @@
                                                                       action:@selector(tap:)];
     
     if([_userManager isLogin]) {
-        if([_userManager isMyUser:[_data objectForKey:@"user_id"]]) {
+        if([_userManager isMyUser:_profileUserID]) {
             //button config
             UIImage *infoImage = [UIImage imageNamed:@"icon_shop_setting@2x.png"];
             
@@ -190,11 +188,10 @@
     _pageController.delegate = self;
     
     _biodataController = [UserProfileBiodataViewController new];
-    _biodataController.data = _data;
+    _biodataController.profileUserID = _profileUserID;
     
     _favoriteShopController = [ProfileFavoriteShopViewController new];
-    _favoriteShopController.data = _data;
-    
+    _favoriteShopController.profileUserID = _profileUserID?:@"";
 
     NSArray *viewControllers = [NSArray arrayWithObject:_biodataController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
@@ -326,7 +323,7 @@
 
 - (void)showNavigationShopTitle:(NSNotification *)notification {
     [UIView animateWithDuration:0.2 animations:^(void) {
-        self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        self.title = _profile.result.user_info.user_name;
     } completion:^(BOOL finished) {
         
     }];
@@ -412,7 +409,7 @@
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/people/get_people_info.pl"
                                  method:RKRequestMethodGET
-                              parameter:@{@"profile_user_id" : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY] integerValue])}
+                              parameter:@{@"profile_user_id" : _profileUserID}
                                 mapping:[ProfileInfo mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   _profile = [successResult.dictionary objectForKey:@""];
@@ -451,7 +448,7 @@
             if(_profile != nil) {
                 SendMessageViewController *messageController = [SendMessageViewController new];
                 messageController.data = @{
-                                       kTKPDSHOPEDIT_APIUSERIDKEY:[_data objectForKey:kTKPDSHOPEDIT_APIUSERIDKEY]?:@"",
+                                       kTKPDSHOPEDIT_APIUSERIDKEY:_profileUserID?:@"",
                                        kTKPDDETAIL_APISHOPNAMEKEY:_profile.result.user_info.user_name
                                        };
                 [self.navigationController pushViewController:messageController animated:YES];
@@ -462,9 +459,7 @@
         case 16 : {
             ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             
-            NSDictionary *auth = [_data objectForKey:@"auth"];
-            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_profile.result.shop_info.shop_id?:@"0",
-                               kTKPD_AUTHKEY:auth?:@{}};
+            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_profile.result.shop_info.shop_id?:@"0"};
             [self.navigationController pushViewController:container animated:YES];
         }
             

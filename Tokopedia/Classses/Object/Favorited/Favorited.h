@@ -10,11 +10,11 @@
 
 #import "FavoritedResult.h"
 
-@interface Favorited : NSObject
+@interface Favorited : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) FavoritedResult *result;
+@property (nonatomic, strong) FavoritedResult *data;
 
 @end

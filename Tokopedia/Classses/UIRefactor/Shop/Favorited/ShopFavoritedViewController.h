@@ -10,6 +10,6 @@
 
 @interface ShopFavoritedViewController : UIViewController
 
-@property (strong, nonatomic) NSDictionary *data;
+@property (strong, nonatomic) NSString *shopID;
 
 @end
