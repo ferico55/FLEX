@@ -416,7 +416,7 @@
             [tabController setSelectedIndex:2];
             [tabController setSelectedViewController:searchShopController animated:YES];
             
-            NSDictionary *userInfo = @{@"count": @(3),  @"selectedIndex": @(2), @"hasCatalog": @(NO)};
+            NSDictionary *userInfo = @{@"count": @(3),  @"selectedIndex": @(2)};
             [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
         }
         
