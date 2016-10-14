@@ -165,7 +165,7 @@ class FormProductValidation: NSObject {
         }
         
         if currency == PriceCurrencyType.IDR.rawValue {
-            guard Int(price!) >= 100 && Int(price!) <= 50000000 else {
+            guard Float(price!) >= 100 && Float(price!) <= 50000000 else {
                 throw Errors.errorMessage("Rentang Harga 100 - 50000000")
             }
         }
@@ -283,7 +283,7 @@ class FormProductValidation: NSObject {
             throw Errors.errorMessage("Harga harus diisi")
         }
         
-        guard Int(price!) < Int(product.product_price) else {
+        guard Float(price!) < Float(product.product_price) else {
             throw Errors.errorMessage("Harga grosir harus lebih murah dari harga pas")
         }
         
