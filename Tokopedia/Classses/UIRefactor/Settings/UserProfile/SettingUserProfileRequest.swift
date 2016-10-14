@@ -96,22 +96,21 @@ class SettingUserProfileRequest: NSObject {
         
         var generatedHost : GeneratedHost = GeneratedHost()
         var imageURLString : String = ""
-        let disposeBag = DisposeBag()
         
-        GenerateHostObservable.getGeneratedHost()
+        _ = GenerateHostObservable.getGeneratedHost()
             .flatMap { (host) -> Observable<ImageResult> in
                 generatedHost = host
-                return getPictObj(image, generatedHost: host).doOnError({ (error) in
-                    onFailure()
-                })
+                return getPictObj(image, generatedHost: host)
+                
             }.flatMap { (imageResult) -> Observable<String> in
                 imageURLString = imageResult.file_th
-                return submitProfilePicture(imageResult.pic_obj, generatedHost: generatedHost).doOnError({ (error) in
+                return submitProfilePicture(imageResult.pic_obj, generatedHost: generatedHost)
+                
+            }.subscribe(onNext: { (isSuccess) in
+                    onSuccess(imageURLString: imageURLString)
+                }, onError: { (errorType) in
                     onFailure()
-                })
-            }.subscribeNext { (isSuccess) in
-                onSuccess(imageURLString: imageURLString)
-            }.addDisposableTo(disposeBag)
+            })
     }
     
     private class func getPictObj(image: UIImage, generatedHost:GeneratedHost) -> Observable<ImageResult>{
