@@ -337,16 +337,15 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
             if(inputtedText.characters.count >= 2) {
-                let firstTwoCharacters = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(2)))
-                if(firstTwoCharacters == "62") {
+                let countryCode = inputtedText.substringWithRange(inputtedText.startIndex.advancedBy(0)..<inputtedText.startIndex.advancedBy(2))
+                if(countryCode == "62") {
                     inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
                 }
             }
         }
         
         if(inputtedText.characters.count >= 4) {
-            let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
-            
+            let prefix = inputtedText.substringWithRange(Range<String.Index>(inputtedText.startIndex.advancedBy(0) ..< inputtedText.startIndex.advancedBy(4)))
             self.setRightViewNumberField(prefix)
             self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
         }
