@@ -96,8 +96,6 @@
     
     BOOL _popFromToppay;
     
-    NSInteger _indexSelectedShipment;
-    
     UIAlertView *_alertLoading;
     
     LoadingView *_loadingView;
@@ -407,13 +405,7 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
-            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya administrasi.";
-            }
-            else
-            {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya layanan.";
-            }
+            _ccFeeCell.textLabel.text = selectedGateway.gateway_desc;
         }
         else
         {
@@ -559,7 +551,7 @@
 {
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     if ([cell.textLabel.text isEqualToString:@"Detail Pengiriman"]) {
-        [self pushShipmentIndex:indexPath.section];
+        [self pushShipmentCart:_list[indexPath.section]];
     }
     if ([cell.textLabel.text isEqualToString:@"Stock Tersedia Sebagian"])
     {
@@ -572,27 +564,10 @@
     }
 }
 
--(void)pushShipmentIndex:(NSInteger)index
+-(void)pushShipmentCart:(TransactionCartList*)cart
 {
-    NSString *dropshipName = @"";
-    NSString *dropshipPhone = @"";
-    NSString *partial = @"";
-    TransactionCartList *list = _list[index];
-    if (_indexPage == 1) {
-        dropshipName = _list[index].cart_dropship_name?:@"";
-        dropshipPhone = _list[index].cart_dropship_phone?:@"";
-        partial = ([list.cart_is_partial integerValue]==1)?@"Ya":@"Tidak";
-    }
-
     TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
-    shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
-                                    DATA_DROPSHIPPER_NAME_KEY: dropshipName,
-                                    DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
-                                    DATA_PARTIAL_LIST_KEY :partial,
-                                    DATA_INDEX_KEY : @(index)
-                                    };
-    [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-    _indexSelectedShipment = index;
+    shipmentViewController.cart = cart;
     shipmentViewController.indexPage = _indexPage;
     shipmentViewController.delegate = self;
     [self.navigationController pushViewController:shipmentViewController animated:YES];
@@ -601,7 +576,7 @@
 -(void)setDataDropshipperCartSummary{
     for (TransactionCartList *cart in _cartSummary.carts) {
         NSInteger shopID = [cart.cart_shop.shop_id integerValue];
-        NSInteger addressID =[cart.cart_destination.address_id integerValue];
+        NSInteger addressID = [cart.cart_destination.address_id integerValue];
         NSInteger shipmentID =[cart.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [cart.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -760,19 +735,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
--(void)pushToCCInformation
-{
-    TransactionCCViewController *vc = [TransactionCCViewController new];
-    vc.cartSummary = _cartSummary;
-    vc.delegate = self;
-    vc.selectedBank = _selectedInstallmentBank?:[InstallmentBank new];
-    vc.selectedTerm = _selectedInstallmentDuration?:[InstallmentTerm new];
-    vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
-    vc.data = [_dataInput copy];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)changeSwitchSaldo:(UISwitch *)switchSaldo
 {
     _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
@@ -856,29 +818,12 @@
 
 
 #pragma mark - Delegate
--(void)TransactionCartShippingViewController:(TransactionCartShippingViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+-(void)TransactionCartShipping:(TransactionCartList *)cart
 {
-    [_dataInput addEntriesFromDictionary:userInfo];
     if (_indexPage == 0) {
-        
-        NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
-        [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         [self isLoading:YES];
         [self requestCartData];
         
-    }
-}
-
--(void)editInsuranceUserInfo:(NSDictionary *)userInfo
-{
-    [_dataInput addEntriesFromDictionary:userInfo];
-    if (_indexPage == 0) {
-        
-        NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
-        [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
-        [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
-        [self isLoading:YES];
-        [self requestCartData];
     }
 }
 
@@ -2132,15 +2077,6 @@
             return 0;
         }
     }
-    else
-    {
-        if (indexPath.row == 1) {
-            if ([selectedGateway.gateway integerValue] != TYPE_GATEWAY_CC &&
-                [selectedGateway.gateway integerValue] != TYPE_GATEWAY_INDOMARET) {
-                return 0;
-            }
-        }
-    }
     
     return DEFAULT_ROW_HEIGHT;
 }
@@ -2402,17 +2338,6 @@
         [self adjustAfterUpdateList];
         
         [self isLoading:NO];
-        
-        if (list.count > 0) {
-            if (list[_indexSelectedShipment].errors.count > 0) {
-                Errors *error = list[_indexSelectedShipment].errors[0];
-                if ([error.name isEqualToString:@"courier-cannot-reach"]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowErrorMessageOnShippingPage"
-                                                                        object:nil
-                                                                      userInfo:@{@"errors":error}];
-                }
-            }
-        }
         [TPLocalytics trackCartView:_cart];
         
     } error:^(NSError *error) {
