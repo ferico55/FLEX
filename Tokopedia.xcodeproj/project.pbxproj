@@ -1146,7 +1146,6 @@
 		4502148F1DB0D59000C1B15E /* ActivatePushInstructionViewController7.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4502087E1DB0D58600C1B15E /* ActivatePushInstructionViewController7.xib */; };
 		450214901DB0D59000C1B15E /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 450208811DB0D58600C1B15E /* MoreNavigationViewController.m */; };
 		450214911DB0D59000C1B15E /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 450208831DB0D58600C1B15E /* MoreViewController.m */; };
-		450214921DB0D59000C1B15E /* MoreViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 450208841DB0D58600C1B15E /* MoreViewController.m.orig */; };
 		450214931DB0D59100C1B15E /* PurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 450208861DB0D58600C1B15E /* PurchaseViewController.m */; };
 		450214941DB0D59100C1B15E /* SalesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 450208881DB0D58600C1B15E /* SalesViewController.m */; };
 		450214951DB0D59100C1B15E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502088B1DB0D58600C1B15E /* WebViewController.m */; };
@@ -1480,7 +1479,6 @@
 		450215DD1DB0D59300C1B15E /* SettingAddressExpandedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020AAE1DB0D58700C1B15E /* SettingAddressExpandedCell.m */; };
 		450215DE1DB0D59300C1B15E /* SettingAddressExpandedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45020AAF1DB0D58700C1B15E /* SettingAddressExpandedCell.xib */; };
 		450215DF1DB0D59300C1B15E /* SettingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020AB11DB0D58700C1B15E /* SettingAddressViewController.m */; };
-		450215E01DB0D59300C1B15E /* SettingAddressViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 45020AB21DB0D58700C1B15E /* SettingAddressViewController.m.orig */; };
 		450215E11DB0D59300C1B15E /* SettingAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45020AB31DB0D58700C1B15E /* SettingAddressViewController.xib */; };
 		450215E21DB0D59300C1B15E /* BankAccountRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020AB61DB0D58700C1B15E /* BankAccountRequest.m */; };
 		450215E31DB0D59300C1B15E /* SettingBankNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020AB91DB0D58700C1B15E /* SettingBankNameCell.m */; };
@@ -1650,7 +1648,6 @@
 		450216871DB0D59400C1B15E /* TransactionCartShippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020BD31DB0D58700C1B15E /* TransactionCartShippingViewController.m */; };
 		450216881DB0D59400C1B15E /* TransactionCartShippingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45020BD41DB0D58700C1B15E /* TransactionCartShippingViewController.xib */; };
 		450216891DB0D59400C1B15E /* TransactionCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020BD61DB0D58700C1B15E /* TransactionCartViewController.m */; };
-		4502168A1DB0D59400C1B15E /* TransactionCartViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 45020BD71DB0D58700C1B15E /* TransactionCartViewController.m.orig */; };
 		4502168B1DB0D59400C1B15E /* TransactionCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45020BD81DB0D58700C1B15E /* TransactionCartViewController.xib */; };
 		4502168C1DB0D59400C1B15E /* TransactionCartWebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45020BDA1DB0D58700C1B15E /* TransactionCartWebViewViewController.m */; };
 		4502168D1DB0D59400C1B15E /* TransactionCartWebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45020BDB1DB0D58700C1B15E /* TransactionCartWebViewViewController.xib */; };
@@ -4633,7 +4630,6 @@
 		450208811DB0D58600C1B15E /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreNavigationViewController.m; sourceTree = "<group>"; };
 		450208821DB0D58600C1B15E /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		450208831DB0D58600C1B15E /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
-		450208841DB0D58600C1B15E /* MoreViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MoreViewController.m.orig; sourceTree = "<group>"; };
 		450208851DB0D58600C1B15E /* PurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseViewController.h; sourceTree = "<group>"; };
 		450208861DB0D58600C1B15E /* PurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseViewController.m; sourceTree = "<group>"; };
 		450208871DB0D58600C1B15E /* SalesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesViewController.h; sourceTree = "<group>"; };
@@ -5153,7 +5149,6 @@
 		45020AAF1DB0D58700C1B15E /* SettingAddressExpandedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressExpandedCell.xib; sourceTree = "<group>"; };
 		45020AB01DB0D58700C1B15E /* SettingAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressViewController.h; sourceTree = "<group>"; };
 		45020AB11DB0D58700C1B15E /* SettingAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressViewController.m; sourceTree = "<group>"; };
-		45020AB21DB0D58700C1B15E /* SettingAddressViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SettingAddressViewController.m.orig; sourceTree = "<group>"; };
 		45020AB31DB0D58700C1B15E /* SettingAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressViewController.xib; sourceTree = "<group>"; };
 		45020AB51DB0D58700C1B15E /* BankAccountRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountRequest.h; sourceTree = "<group>"; };
 		45020AB61DB0D58700C1B15E /* BankAccountRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountRequest.m; sourceTree = "<group>"; };
@@ -5416,7 +5411,6 @@
 		45020BD41DB0D58700C1B15E /* TransactionCartShippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartShippingViewController.xib; sourceTree = "<group>"; };
 		45020BD51DB0D58700C1B15E /* TransactionCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartViewController.h; sourceTree = "<group>"; };
 		45020BD61DB0D58700C1B15E /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartViewController.m; sourceTree = "<group>"; };
-		45020BD71DB0D58700C1B15E /* TransactionCartViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TransactionCartViewController.m.orig; sourceTree = "<group>"; };
 		45020BD81DB0D58700C1B15E /* TransactionCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartViewController.xib; sourceTree = "<group>"; };
 		45020BD91DB0D58700C1B15E /* TransactionCartWebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartWebViewViewController.h; sourceTree = "<group>"; };
 		45020BDA1DB0D58700C1B15E /* TransactionCartWebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartWebViewViewController.m; sourceTree = "<group>"; };
@@ -10304,7 +10298,6 @@
 				450208811DB0D58600C1B15E /* MoreNavigationViewController.m */,
 				450208821DB0D58600C1B15E /* MoreViewController.h */,
 				450208831DB0D58600C1B15E /* MoreViewController.m */,
-				450208841DB0D58600C1B15E /* MoreViewController.m.orig */,
 				450208851DB0D58600C1B15E /* PurchaseViewController.h */,
 				450208861DB0D58600C1B15E /* PurchaseViewController.m */,
 				450208871DB0D58600C1B15E /* SalesViewController.h */,
@@ -11116,7 +11109,6 @@
 				45020AAF1DB0D58700C1B15E /* SettingAddressExpandedCell.xib */,
 				45020AB01DB0D58700C1B15E /* SettingAddressViewController.h */,
 				45020AB11DB0D58700C1B15E /* SettingAddressViewController.m */,
-				45020AB21DB0D58700C1B15E /* SettingAddressViewController.m.orig */,
 				45020AB31DB0D58700C1B15E /* SettingAddressViewController.xib */,
 			);
 			path = Address;
@@ -11614,7 +11606,6 @@
 				45020BD41DB0D58700C1B15E /* TransactionCartShippingViewController.xib */,
 				45020BD51DB0D58700C1B15E /* TransactionCartViewController.h */,
 				45020BD61DB0D58700C1B15E /* TransactionCartViewController.m */,
-				45020BD71DB0D58700C1B15E /* TransactionCartViewController.m.orig */,
 				45020BD81DB0D58700C1B15E /* TransactionCartViewController.xib */,
 				45020BD91DB0D58700C1B15E /* TransactionCartWebViewViewController.h */,
 				45020BDA1DB0D58700C1B15E /* TransactionCartWebViewViewController.m */,
@@ -13532,7 +13523,6 @@
 				450219521DB0D59A00C1B15E /* icon_toped_loading_grey-01.png in Resources */,
 				450218DC1DB0D59900C1B15E /* icon_sad20.png in Resources */,
 				4502195F1DB0D59A00C1B15E /* icon_triangle_up_white@2x.png in Resources */,
-				450214921DB0D59000C1B15E /* MoreViewController.m.orig in Resources */,
 				450216541DB0D59400C1B15E /* FilterViewController.xib in Resources */,
 				450219201DB0D59A00C1B15E /* icon_sold.png in Resources */,
 				4502182B1DB0D59800C1B15E /* icon_info_grey.png in Resources */,
@@ -13880,7 +13870,6 @@
 				450218681DB0D59800C1B15E /* icon_more@2x.png in Resources */,
 				4502136D1DB0D58F00C1B15E /* AlertPickerView.xib in Resources */,
 				450213C41DB0D58F00C1B15E /* ContactUsFormCategoryCell.xib in Resources */,
-				450215E01DB0D59300C1B15E /* SettingAddressViewController.m.orig in Resources */,
 				450219561DB0D59A00C1B15E /* icon_toped_loading_grey@2x.png in Resources */,
 				450217B21DB0D59700C1B15E /* icon_21@3x.png in Resources */,
 				4502199E1DB0D59A00C1B15E /* loyalMerchant@2x.png in Resources */,
@@ -14248,7 +14237,6 @@
 				4502168B1DB0D59400C1B15E /* TransactionCartViewController.xib in Resources */,
 				450214A51DB0D59100C1B15E /* MyShopNoteViewController.xib in Resources */,
 				450219631DB0D59A00C1B15E /* icon_uncheck_gray@1x.png in Resources */,
-				4502168A1DB0D59400C1B15E /* TransactionCartViewController.m.orig in Resources */,
 				347914871D87A15500A3324E /* Images.xcassets in Resources */,
 				450218001DB0D59700C1B15E /* icon_diskusi_unfollow_grey@2x.png in Resources */,
 				450218EE1DB0D59900C1B15E /* icon_search_active (deleted 9049b8eae695cf9632f6f1691fc7f40b).png in Resources */,
