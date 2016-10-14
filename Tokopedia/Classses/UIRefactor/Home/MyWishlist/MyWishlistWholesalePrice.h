@@ -1,5 +1,5 @@
 //
-//  MyWishlistMojitoWholeSalePrice.h
+//  MyWishlistWholesalePrice.h
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MyWishlistMojitoWholesalePrice : NSObject <TKPObjectMapping>
+@interface MyWishlistWholesalePrice : NSObject <TKPObjectMapping>
 @property (nonatomic) NSInteger minimum;
 @property (nonatomic) NSInteger maximum;
 @property (nonatomic) CGFloat price;

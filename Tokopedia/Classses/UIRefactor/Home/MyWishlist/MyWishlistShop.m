@@ -1,18 +1,18 @@
 //
-//  MyWishlistMojitoWholeSalePrice.m
+//  MyWhishlistMojitoShop.m
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "MyWishlistMojitoWholesalePrice.h"
+#import "MyWishlistShop.h"
 
-@implementation MyWishlistMojitoWholesalePrice
+@implementation MyWishlistShop
 
     +(NSDictionary *)attributeMappingDictionary
     {
-        NSArray *keys = @[@"maximum",@"minimum", @"price"];
+        NSArray *keys = @[@"id",@"name", @"url", @"reputation", @"gold_merchant", @"lucky_merchant", @"location", @"status", @"available", @"status", @"preorder"];
         ;
         return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
     }
@@ -23,4 +23,5 @@
         [mapping addAttributeMappingsFromDictionary: [self attributeMappingDictionary]];
         return mapping;
     }
+
 @end

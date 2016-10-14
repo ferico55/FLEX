@@ -2965,21 +2965,6 @@ TTTAttributedLabelDelegate
     [self bk_performBlock:^(id obj) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
     } afterDelay:2.0];
-
-    //    else
-//    {
-//        //wishlist max is 1000, set custom error message. If other error happened, use default error message.
-//        if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
-//            alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
-//        }else{
-//            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
-//        }
-//        
-//        
-//        [self setBackgroundWishlist:NO];
-//        btnWishList.tag = 1;
-//        [self setRequestingAction:btnWishList isLoading:NO];
-//    }
 }
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {
@@ -3002,7 +2987,7 @@ TTTAttributedLabelDelegate
 
 
 -(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
-    return [[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString:@"/wishlist"];
+    return [NSString stringWithFormat:@"/v1/products/%@/wishlist", productId];
 }
 
 @end

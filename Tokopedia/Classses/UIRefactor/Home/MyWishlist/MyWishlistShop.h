@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MyWishlistMojitoShopReputation.h"
+#import "MyWishlistShopReputation.h"
 
-@interface MyWishlistMojitoShop : NSObject <TKPObjectMapping>
+@interface MyWishlistShop : NSObject <TKPObjectMapping>
     @property (nonatomic, strong) NSString *id;
     @property (nonatomic, strong) NSString *name;
     @property (nonatomic, strong) NSString *url;
-    @property (nonatomic, strong) MyWishlistMojitoShopReputation *reputation;
+    @property (nonatomic, strong) MyWishlistShopReputation *reputation;
     @property (nonatomic) BOOL gold_merchant;
     @property (nonatomic, strong) NSString *lucky_merchant;
     @property (nonatomic, strong) NSString *location;

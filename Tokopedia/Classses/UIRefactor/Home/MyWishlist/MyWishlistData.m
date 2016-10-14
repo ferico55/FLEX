@@ -1,18 +1,18 @@
 //
-//  MyWishlistMojitoData.m
+//  MyWishlistData.m
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "MyWishlistMojitoData.h"
-#import "MyWishlistMojitoWholesalePrice.h"
-#import "MyWishlistMojitoShop.h"
-#import "MyWishlistMojitoBadge.h"
+#import "MyWishlistData.h"
+#import "MyWishlistWholesalePrice.h"
+#import "MyWishlistShop.h"
+#import "MyWishlistBadge.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-@implementation MyWishlistMojitoData
+@implementation MyWishlistData
 
 +(NSDictionary *)attributeMappingDictionary
 {
@@ -24,9 +24,9 @@
 +(RKObjectMapping*)mapping
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price" toKeyPath:@"wholesale_price" withMapping:[MyWishlistMojitoWholesalePrice mapping]]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop" toKeyPath:@"shop" withMapping:[MyWishlistMojitoShop mapping]]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[MyWishlistMojitoBadge mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price" toKeyPath:@"wholesale_price" withMapping:[MyWishlistWholesalePrice mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop" toKeyPath:@"shop" withMapping:[MyWishlistShop mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[MyWishlistBadge mapping]]];
     [mapping addAttributeMappingsFromDictionary: [self attributeMappingDictionary]];
     return mapping;
 }
@@ -42,7 +42,7 @@
         [viewModel setIsProductBuyAble:self.available];
         
         NSString *luckyMerchantImageURL = @"";
-        for (MyWishlistMojitoBadge *badge in self.badges) {
+        for (MyWishlistBadge *badge in self.badges) {
             if ([badge.title  isEqual: @"Lucky Merchant"]) {
                 luckyMerchantImageURL = badge.image_url;
             }

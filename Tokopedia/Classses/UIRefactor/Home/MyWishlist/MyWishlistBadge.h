@@ -1,5 +1,5 @@
 //
-//  MyWishlistMojitoBadge.h
+//  MyWishlistBadge.h
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MyWishlistMojitoBadge : NSObject <TKPObjectMapping>
+@interface MyWishlistBadge : NSObject <TKPObjectMapping>
     @property (nonatomic, strong) NSString *title;
     @property (nonatomic, strong) NSString *image_url;
 @end

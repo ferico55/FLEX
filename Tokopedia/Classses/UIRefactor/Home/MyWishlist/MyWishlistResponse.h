@@ -1,5 +1,5 @@
 //
-//  MyWishlistMojitoResponse.h
+//  MyWishlistResponse.h
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Paging.h"
+#import "MyWishlistData.h"
 
-@interface MyWishlistMojitoResponse : NSObject <TKPObjectMapping>
-    @property (nonatomic, strong) NSArray *data;
+@interface MyWishlistResponse : NSObject <TKPObjectMapping>
+    @property (nonatomic, strong) NSArray<MyWishlistData *> *data;
     @property (nonatomic, strong) Paging *pagination;
 @end

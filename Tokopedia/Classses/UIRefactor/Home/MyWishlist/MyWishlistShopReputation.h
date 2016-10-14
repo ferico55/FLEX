@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MyWishlistMojitoShopReputation : NSObject <TKPObjectMapping>
+@interface MyWishlistShopReputation : NSObject <TKPObjectMapping>
 
     @property (nonatomic) CGFloat score;
     @property (nonatomic, strong) NSString *set;

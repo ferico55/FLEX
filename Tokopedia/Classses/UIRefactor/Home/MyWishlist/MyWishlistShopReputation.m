@@ -6,9 +6,9 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "MyWishlistMojitoShopReputation.h"
+#import "MyWishlistShopReputation.h"
 
-@implementation MyWishlistMojitoShopReputation
+@implementation MyWishlistShopReputation
 
     +(NSDictionary *)attributeMappingDictionary
     {

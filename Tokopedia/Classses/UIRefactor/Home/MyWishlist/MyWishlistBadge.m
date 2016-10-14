@@ -1,14 +1,14 @@
 //
-//  MyWishlistMojitoBadge.m
+//  MyWishlistBadge.m
 //  Tokopedia
 //
 //  Created by Billion Goenawan on 9/23/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "MyWishlistMojitoBadge.h"
+#import "MyWishlistBadge.h"
 
-@implementation MyWishlistMojitoBadge
+@implementation MyWishlistBadge
 
 
 +(NSDictionary *)attributeMappingDictionary
