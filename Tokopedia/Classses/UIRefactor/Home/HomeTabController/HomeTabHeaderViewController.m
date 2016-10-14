@@ -167,7 +167,7 @@
 
 
 - (void)tap:(int)page {
-
+    [self.view layoutIfNeeded];
     switch (page) {
         case 1 :{
             NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:0] convertPoint:CGPointZero toView:_scrollView].x;
