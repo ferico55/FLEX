@@ -187,7 +187,6 @@
 		4594694F1DAF909100061272 /* TheOtherProductResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 459459F41DAF908400061272 /* TheOtherProductResult.m */; };
 		459469501DAF909100061272 /* WholesalePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 459459F61DAF908400061272 /* WholesalePrice.m */; };
 		459469511DAF909100061272 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 459459F91DAF908400061272 /* Errors.m */; };
-		459469521DAF909100061272 /* Favorited.m in Sources */ = {isa = PBXBuildFile; fileRef = 459459FC1DAF908400061272 /* Favorited.m */; };
 		459469531DAF909100061272 /* FavoritedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 459459FE1DAF908400061272 /* FavoritedResult.m */; };
 		459469541DAF909100061272 /* ListFavorited.m in Sources */ = {isa = PBXBuildFile; fileRef = 45945A001DAF908400061272 /* ListFavorited.m */; };
 		459469551DAF909100061272 /* FavoritedShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 45945A031DAF908400061272 /* FavoritedShop.m */; };
@@ -3025,8 +3024,6 @@
 		459459F61DAF908400061272 /* WholesalePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WholesalePrice.m; sourceTree = "<group>"; };
 		459459F81DAF908400061272 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
 		459459F91DAF908400061272 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
-		459459FB1DAF908400061272 /* Favorited.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorited.h; sourceTree = "<group>"; };
-		459459FC1DAF908400061272 /* Favorited.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorited.m; sourceTree = "<group>"; };
 		459459FD1DAF908400061272 /* FavoritedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedResult.h; sourceTree = "<group>"; };
 		459459FE1DAF908400061272 /* FavoritedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedResult.m; sourceTree = "<group>"; };
 		459459FF1DAF908400061272 /* ListFavorited.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListFavorited.h; sourceTree = "<group>"; };
@@ -7243,8 +7240,6 @@
 		459459FA1DAF908400061272 /* Favorited */ = {
 			isa = PBXGroup;
 			children = (
-				459459FB1DAF908400061272 /* Favorited.h */,
-				459459FC1DAF908400061272 /* Favorited.m */,
 				459459FD1DAF908400061272 /* FavoritedResult.h */,
 				459459FE1DAF908400061272 /* FavoritedResult.m */,
 				459459FF1DAF908400061272 /* ListFavorited.h */,
@@ -14731,7 +14726,6 @@
 				45946A051DAF909200061272 /* BankAccountGetDefaultFormResult.m in Sources */,
 				45946A511DAF909200061272 /* ShipmentResponse.m in Sources */,
 				45946DC81DAF909900061272 /* PulsaProductViewController.swift in Sources */,
-				459469521DAF909100061272 /* Favorited.m in Sources */,
 				45946B031DAF909300061272 /* TPSpotlight.m in Sources */,
 				45946DAB1DAF909900061272 /* ProfileContactViewController.m in Sources */,
 				45946F331DAF909D00061272 /* TxOrderConfirmationProductCell.m in Sources */,

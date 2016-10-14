@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "Favorited.h"
-
 #import "detail.h"
 #import "ShopFavoritedViewController.h"
 #import "ShopFavoritedCell.h"

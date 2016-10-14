@@ -15,25 +15,26 @@ class ShopRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        let param : [String : String] =
-            ["page":"\(page)",
-             "shop_id":shopID]
+        let param : [String : String] = [
+            "page":"\(page)",
+            "shop_id":shopID
+        ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
                                           path: "/v4/shop/get_people_who_favorite_myshop.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: Favorited.mapping(),
+                                          mapping: V4Response.mappingWithData(FavoritedResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : Favorited = result[""] as! Favorited
+                                            let response : V4Response = result[""] as! V4Response
                                             
                                             if response.message_error.count > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {
-                                                onSuccess(response.data)
+                                                onSuccess(response.data as! FavoritedResult)
                                             }
                                             
         }) { (error) in
