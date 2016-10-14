@@ -11,7 +11,6 @@ import UIKit
 @objc class AddressRequest: NSObject {
     
     class func fetchListAddressPage(page:(NSInteger), query:(String), onSuccess: ((AddressFormResult) -> Void), onFailure:(()->Void)){
-        let auth = UserAuthentificationManager()
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -22,7 +21,6 @@ import UIKit
             "page"      : addressPage,
             "query"     : query,
             "per_page"  : "5",
-            "user_id"   : auth.getUserId()
         ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
@@ -52,15 +50,12 @@ import UIKit
     }
     
   class func fetchSetDefaultAddressID(addressID:String, onSuccess: ((ProfileSettingsResult) -> Void), onFailure:(()->Void)) {
-        
-        let auth = UserAuthentificationManager()
-        
+    
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
         let param : [String: String] = [
             "address_id":addressID,
-            "user_id"   :auth.getUserId()
         ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
@@ -90,14 +85,11 @@ import UIKit
     
     class func fetchDeleteAddressID(addressID:String, onSuccess: ((ProfileSettingsResult) -> Void), onFailure:(()->Void)) {
         
-        let auth = UserAuthentificationManager()
-        
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
         let param : [String: String] = [
             "address_id":addressID,
-            "user_id"   :auth.getUserId()
         ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
