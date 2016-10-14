@@ -15,7 +15,7 @@
 #import "TransactionCartList.h"
 #import "PromoResult.h"
 #import "NSURL+Dictionary.h"
-#import "MyWishlistMojitoData.h"
+#import "Tokopedia-Swift.h"
 
 @interface TPAnalytics ()
 
@@ -86,7 +86,7 @@
         list = @"Search Results";
     } else if ([product isKindOfClass:[ProductFeedList class]]) {
         list = @"Product Feed";
-    } else if ([product isKindOfClass:[MyWishlistMojitoData class]]) {
+    } else if ([product isKindOfClass:[MyWishlistData class]]) {
         list = @"Wish List";
     } else if ([product isKindOfClass:[List class]]) {
         list = @"Shop Product";
