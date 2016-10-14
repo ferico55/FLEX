@@ -31,7 +31,7 @@
 -(void)configureRestkitUploadPhoto;
 - (void)requestActionUploadPhoto;
 
-@property GenerateHost *generateHost;
+@property GeneratedHost *generateHost;
 @property id imageObject;
 @property NSString *action;
 @property NSString *fieldName;

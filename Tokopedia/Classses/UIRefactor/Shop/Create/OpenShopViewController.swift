@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate, GenerateHostDelegate {
+@objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate {
     
     var imagePicker: TKPDPhotoPicker!
     
@@ -19,7 +19,7 @@ import UIKit
     var shopTagline: NSString!
     var shopDescription: NSString!
     
-    var generatedHost: GenerateHost!
+    var generatedHost: GeneratedHost!
     var uploadImageRequest: RequestUploadImage!
     var imageObject: Dictionary<String, Dictionary<String, AnyObject?>>!
     var uploadImageResponse: ImageResult!
@@ -66,10 +66,18 @@ import UIKit
         enableChangePhotoButton = false
         pushToShipment = false
         
-        let requestHost: RequestGenerateHost = RequestGenerateHost()
-        requestHost.delegate = self
-//        requestHost.configureRestkitGenerateHost()
-        requestHost.requestGenerateHost()
+        GenerateHostObservable.getGeneratedHost()
+            .subscribeNext { (host) in
+                
+                self.generatedHost = host
+                
+                self.requestObject = RequestObjectUploadImage()
+                self.requestObject.server_id = host.server_id
+                self.requestObject.user_id = UserAuthentificationManager().getUserId();
+                
+                self.enableChangePhotoButton = true
+                self.tableView.reloadData()
+        }
         
         checkDomainButton.layer.cornerRadius = 2
         
@@ -261,7 +269,7 @@ import UIKit
         controller.shopLogo = shopImageURL
         controller.shopTagline = shopTagline as String
         controller.shopShortDescription = shopDescription as String
-        controller.generatedHost = generatedHost.result.generated_host
+        controller.generatedHost = generatedHost
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -346,10 +354,10 @@ import UIKit
         
         let name = photoDictionary["cameraimagename"] as! String
         
-        let uploadHost = NSString(format: "https://%@", generatedHost.result.generated_host.upload_host) as String
+        let uploadHost = NSString(format: "https://%@", generatedHost.upload_host) as String
         
         let requestObject: RequestObjectUploadImage = RequestObjectUploadImage()
-        requestObject.server_id = generatedHost.result.generated_host.server_id
+        requestObject.server_id = generatedHost.server_id
         requestObject.user_id = UserAuthentificationManager().getUserId();
         requestObject.add_new = "1"
         
@@ -373,21 +381,4 @@ import UIKit
             self.tableView.reloadData()
         }
     }
-
-    func successGenerateHost(generateHostResponse: GenerateHost!) {
-        generatedHost = generateHostResponse
-        
-        requestObject = RequestObjectUploadImage()
-        requestObject.server_id = generatedHost.result.generated_host.server_id
-        requestObject.user_id = UserAuthentificationManager().getUserId();
-
-        enableChangePhotoButton = true
-        tableView.reloadData()
-    }
-    
-    func failedGenerateHost(errorMessages: [AnyObject]!) {
-        let alert: StickyAlertView = StickyAlertView.init(errorMessages: errorMessages, delegate: self)
-        alert.show()
-    }
-    
 }

@@ -18,7 +18,6 @@
 #import "AlertListView.h"
 #import "AlertPickerView.h"
 #import "RequestUploadImage.h"
-#import "RequestGenerateHost.h"
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"
@@ -417,6 +416,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [SettingUserProfileRequest fetchUploadProfilePicture:image onSuccess:^(NSString * imageURLString) {
         
         self.profileImageView.alpha = 1;
+        [self.profileImageView setImage:image];
         [self showSaveButton];
         [self notifySuccessEditProfileImageWithURLString:imageURLString];
         [self.profileImageView setImage:image];

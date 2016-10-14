@@ -16,7 +16,7 @@
 
 + (void)requestWithParameters:(NSDictionary *)parameters
                   pathPattern:(NSString *)pathPattern
-                         host:(GenerateHost *)host
+                         host:(GeneratedHost *)host
            responseDescriptor:(RKResponseDescriptor *)responseDescriptor
                    completion:(void (^)(id))completionBlock;
 

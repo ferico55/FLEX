@@ -14,7 +14,7 @@
 #import "ReplyInboxTicket.h"
 
 #import "GenerateHost.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 
 #import "camera.h"
 #import "CameraAlbumListViewController.h"
@@ -35,7 +35,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     TokopediaNetworkManagerDelegate,
     CameraAlbumListDelegate,
     CameraCollectionViewControllerDelegate,
-    GenerateHostDelegate,
     RequestUploadImageDelegate,
     UITextViewDelegate,
     UIScrollViewDelegate,
@@ -46,7 +45,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     TokopediaNetworkManager *_firstStepNetworkManager;
     TokopediaNetworkManager *_secondStepNetworkManager;
     TokopediaNetworkManager *_thirdStepNetworkManager;
-    GenerateHost *_generateHost;
+    GeneratedHost *_generateHost;
     
     NSString *_serverID;
     NSString *_postKey;
@@ -67,8 +66,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     RKObjectManager *_objectManager;
     
     UIBarButtonItem *_doneButton;
-    
-    RequestGenerateHost *_requestHost;
 }
 
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *imageTapRecognizer;
@@ -158,12 +155,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
 
     _cameraButtonClicked = NO;
     
-    _generateHost = [GenerateHost new];
-    
-    _requestHost = [RequestGenerateHost new];
-    _requestHost.delegate = self;
-//    [_requestHost configureRestkitGenerateHost];
-    [_requestHost requestGenerateHost];
+    [self requestHost];
     
     self.photosImageView = [NSArray sortViewsWithTagInArray:_photosImageView];
     self.removePhotoButton = [NSArray sortViewsWithTagInArray:_removePhotoButton];
@@ -172,6 +164,21 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
                                              selector:@selector(dismissViewController)
                                                  name:TKPDInboxTicketReceiveData
                                                object:nil];
+}
+
+-(void)requestHost {
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        
+        _generateHost = host;
+        _serverID = _generateHost.server_id;
+        
+        for (NSDictionary *photo in _selectedImagesCameraController) {
+            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
+        }
+        
+    } onFailure:^{
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -430,7 +437,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
 - (id)getObjectManager:(int)tag {
     
     if (tag == 2) {
-        NSString *path = [NSString stringWithFormat:@"http://%@/ws", _generateHost.result.generated_host.upload_host];
+        NSString *path = [NSString stringWithFormat:@"http://%@/ws", _generateHost.upload_host];
         _objectManager = [RKObjectManager sharedClient:path];
     } else {
         _objectManager = [RKObjectManager sharedClient];
@@ -598,7 +605,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
             [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
         }
     } else {
-        [_requestHost requestGenerateHost];
+        [self requestHost];
     }
 
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -749,24 +756,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     if (_uploadedPhotos.count == 0) {
         self.scrollViewContentView.hidden = YES;
     }
-}
-
-#pragma mark Request Generate Host
-
-- (void)successGenerateHost:(GenerateHost *)generateHost
-{
-    _generateHost = generateHost;
-    _serverID = _generateHost.result.generated_host.server_id;
-    
-    for (NSDictionary *photo in _selectedImagesCameraController) {
-        [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
-    }
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages
-                                                                  delegate:self];
-    [alert show];
 }
 
 #pragma mark - Alert delegate

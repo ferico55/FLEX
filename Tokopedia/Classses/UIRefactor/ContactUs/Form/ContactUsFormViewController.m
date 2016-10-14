@@ -8,7 +8,7 @@
 
 #import "ContactUsFormViewController.h"
 #import "GenerateHost.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 #import "TokopediaNetworkManager.h"
 #import "ContactUsFormMainCategoryCell.h"
 #import "ContactUsFormCategoryCell.h"
