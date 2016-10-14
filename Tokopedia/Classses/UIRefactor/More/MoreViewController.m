@@ -256,7 +256,7 @@
     [self updateSaldoTokopedia:nil];
     
     // Universal Analytics
-    [TPAnalytics trackScreenName:@"More Navigation Page"];
+    [AnalyticsManager trackScreenName:@"More Navigation Page"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -613,7 +613,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
             [wrapperController.navigationController pushViewController:depositController animated:YES];
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickSaldo" eventLabel:@"Saldo"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Saldo"];
         }
     }
     if (indexPath.section == 0 && indexPath.row == 1) {
@@ -627,28 +630,39 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;
         webViewController.strTitle = @"TopPoints";
-        [TPAnalytics trackScreenName:@"Top Points Page"];
-        [TPAnalytics trackClickOnMorePageWithEventName:@"clickTopPoints" eventLabel:@"TopPoints"];
+        [AnalyticsManager trackScreenName:@"Top Points Page"];
+        [AnalyticsManager trackEventName:@"clickMore"
+                                category:GA_EVENT_CATEGORY_MORE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"TopPoints"];
         [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
-        [TPAnalytics trackClickOnMorePageWithEventName:@"clickProfile" eventLabel:@"Profile"];
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        [navigateController navigateToProfileFromViewController:wrapperController withUserID:[auth getUserId]];
+        [AnalyticsManager trackEventName:@"clickMore"
+                                category:GA_EVENT_CATEGORY_MORE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Profile"];
+        [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
-        [TPAnalytics trackClickOnMorePageWithEventName:@"clickBuy" eventLabel:@"Buy"];
+        [AnalyticsManager trackEventName:@"clickMore"
+                                category:GA_EVENT_CATEGORY_MORE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Buy"];
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
     else if(indexPath.section==1 && indexPath.row==2) {
-        [TPAnalytics trackClickOnMorePageWithEventName:@"clickWishlist" eventLabel:@"Wishlist"];
+        [AnalyticsManager trackEventName:@"clickMore"
+                                category:GA_EVENT_CATEGORY_MORE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Wishlist"];
         UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
         [wrapperController.tabBarController setSelectedIndex:0];
@@ -657,7 +671,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 2) {
         if(indexPath.row == 0) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickShop" eventLabel:@"Shop"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Shop"];
             ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
                                MORE_AUTH : _auth,
@@ -665,20 +682,29 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickSales" eventLabel:@"Sales"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Sales"];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickProductList" eventLabel:@"Product List"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Product List"];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickEtalase" eventLabel:@"Etalase"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Etalase"];
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
             vc.isEditable = YES;
@@ -696,13 +722,22 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickMessage" eventLabel:@"Message"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Message"];
             [_navigate navigateToInboxMessageFromViewController:wrapperController];
         } else if(indexPath.row == 1) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickProductDiscussion" eventLabel:@"Product Discussion"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Product Discussion"];
             [_navigate navigateToInboxTalkFromViewController:wrapperController];
         } else if (indexPath.row == 2) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickReview" eventLabel:@"Review"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Review"];
             if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 splitViewController = [UISplitViewController new];
                 
@@ -718,7 +753,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
         } else if (indexPath.row == 3) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickHelp" eventLabel:@"Help"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Help"];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                 
@@ -746,7 +784,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
         } else if (indexPath.row == 4) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickResoCenter" eventLabel:@"Resolution Center"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Resolution Center"];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
@@ -762,20 +803,29 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickContactUs" eventLabel:@"Contact Us"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Contact Us"];
             ContactUsWebViewController *controller = [ContactUsWebViewController new];
             controller.title = @"Hubungi Kami";
             controller.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:controller animated:YES];
             
         } else if(indexPath.row == 1) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickAppSuggestion" eventLabel:@"App Suggestion"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"App Suggestion"];
             [self pushIOSFeedback];
             
         } else if(indexPath.row == 2) {
             // UA
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickPrivacy" eventLabel:@"Privacy"];
-            [TPAnalytics trackScreenName:@"Privacy Policy"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Privacy"];
+            [AnalyticsManager trackScreenName:@"Privacy Policy"];
 
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
@@ -783,8 +833,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [wrapperController.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 3) {
             // UA
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickShareApp" eventLabel:@"Share Application"];
-            [TPAnalytics trackScreenName:@"Share App"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Share Application"];
+            [AnalyticsManager trackScreenName:@"Share App"];
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
@@ -797,13 +850,19 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 6) {
-        [TPAnalytics trackClickOnMorePageWithEventName:@"clickPushNotif" eventLabel:@"Push Notification"];
+        [AnalyticsManager trackEventName:@"clickMore"
+                                category:GA_EVENT_CATEGORY_MORE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Push Notification"];
         [self activatePushNotification];
     }
     
     else if (indexPath.section == 7) {
         if(indexPath.row == 0) {
-            [TPAnalytics trackClickOnMorePageWithEventName:@"clickSignOut" eventLabel:@"Sign Out"];
+            [AnalyticsManager trackEventName:@"clickMore"
+                                    category:GA_EVENT_CATEGORY_MORE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Sign Out"];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                                 object:nil
@@ -823,14 +882,14 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (permissionStatus == JLPermissionNotDetermined) {
         permission.extraAlertEnabled = false;
         [permission authorize: ^(NSString *deviceId, NSError *error) {
-            [TPAnalytics trackPushNotificationAccepted: deviceId != nil];
+            [AnalyticsManager trackPushNotificationAccepted:deviceId != nil];
             [self togglePushNotificationCellVisibility];
         }];
     } else {
         ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
         
         viewController.viewControllerDidClosed = ^{
-            [TPAnalytics trackOpenPushNotificationSetting];
+            [AnalyticsManager trackOpenPushNotificationSetting];
             [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
         };
         [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
@@ -838,8 +897,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 -(void)pushIOSFeedback {
-    
-    [TPAnalytics trackScreenName:@"iOS Feedback"];
+    [AnalyticsManager trackScreenName:@"iOS Feedback"];
     
     //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
     //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
@@ -966,7 +1024,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - GTM
 - (void)configureGTM {
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

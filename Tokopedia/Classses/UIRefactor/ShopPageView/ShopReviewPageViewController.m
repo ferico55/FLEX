@@ -299,8 +299,7 @@
 {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Shop - Review List"];
-    self.screenName = @"Shop - Review List";
+    [AnalyticsManager trackScreenName:@"Shop - Review List"];
     
     if (!_isRefreshView) {
         _table.tableFooterView = _footer;

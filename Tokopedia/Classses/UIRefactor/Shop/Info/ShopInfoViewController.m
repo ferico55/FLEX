@@ -172,7 +172,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Info Page"];
+    [AnalyticsManager trackScreenName:@"Shop Info Page"];
     self.navigationController.navigationBarHidden = NO;
 }
 

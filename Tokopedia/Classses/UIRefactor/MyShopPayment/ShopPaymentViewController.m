@@ -62,7 +62,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Payment Setting Page"];
+    [AnalyticsManager trackScreenName:@"Shop Payment Setting Page"];
     if (self.openShop) {
         self.navigationItem.rightBarButtonItem = self.saveButton;
         for (Payment *payment in self.paymentOptions) {
@@ -208,7 +208,7 @@
 }
 
 - (void)validateShop {
-    [TPAnalytics trackClickCreateShop];
+    [AnalyticsManager trackEventName:@"clickCreateShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_CLICK label:@"Create"];
     self.navigationItem.rightBarButtonItem = self.loadingBarButton;
     // WS asked if longitude and latitude is 0.000000 then change it to empty string
     if ([[_parameters objectForKey:@"longitude"]  isEqual: @"0.000000"] && [[_parameters objectForKey:@"latitude"]  isEqual: @"0.000000"]) {

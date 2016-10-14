@@ -78,7 +78,7 @@
 - (BOOL)shouldOpenWebViewURL:(NSURL *)url {
     BOOL shouldOpen = NO;
     
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
@@ -106,7 +106,7 @@
 
 - (void)redirectToViewControllerWithURL:(NSURL *)url {
     
-    [TPAnalytics trackCampaign:url];
+    [AnalyticsManager trackCampaign:url];
     
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     

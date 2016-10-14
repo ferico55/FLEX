@@ -112,17 +112,17 @@ FilterCategoryViewDelegate
         case TYPE_ADD_EDIT_PRODUCT_ADD:
             self.title =  @"Tambah Produk";
             [self setDefaultForm];
-            [TPAnalytics trackScreenName:@"Add Product Page"];
+            [AnalyticsManager trackScreenName:@"Add Product Page"];
             break;
         case TYPE_ADD_EDIT_PRODUCT_EDIT:
             self.title = @"Ubah Produk";
             [self fetchFormEditProductID:_productID];
-            [TPAnalytics trackScreenName:@"Edit Product Page"];
+            [AnalyticsManager trackScreenName:@"Edit Product Page"];
             break;
         case TYPE_ADD_EDIT_PRODUCT_COPY:
             self.title = @"Salin Produk";
             [self fetchFormEditProductID:_productID];
-            [TPAnalytics trackScreenName:@"Copy Product Page"];
+            [AnalyticsManager trackScreenName:@"Copy Product Page"];
             break;
         default:
             break;

@@ -130,7 +130,7 @@ TKPDAlertViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(didSelectPromoProduct:)]) {
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
-        [TPAnalytics trackPromoClick:promoResult];
+        [AnalyticsManager trackPromoClick:promoResult];
         [self.delegate didSelectPromoProduct:promoResult];
     }
 }

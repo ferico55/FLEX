@@ -52,9 +52,6 @@
 
 #import "UITableView+FDTemplateLayoutCell.h"
 
-#import "TPAnalytics.h"
-#import "TPLocalytics.h"
-
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -278,8 +275,7 @@
     [super viewWillAppear:animated];
     
     if (_indexPage == 0) {
-        [TPAnalytics trackScreenName:@"Shopping Cart"];
-        self.screenName = @"Shopping Cart";
+        [AnalyticsManager trackScreenName:@"Shopping Cart"];
         
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
@@ -294,8 +290,7 @@
         _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 40)];
         
     } else {
-        [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
-        self.screenName = @"Shopping Cart Summary";
+        [AnalyticsManager trackScreenName:@"Shopping Cart Summary"];
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
         if (_list.count>0) {
@@ -643,7 +638,7 @@
                 }
                     break;
                 default:
-                    [TPAnalytics trackClickCartLabel:@"Checkout"];
+                    [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout"];
                     if([self isValidInput]) {
 						_saldoErrorIcon.hidden = YES;
                         if([self isHandlePaymentWithNative]) {
@@ -657,7 +652,7 @@
         }
         if(_indexPage==1)
         {
-            [TPAnalytics trackPaymentEvent:@"clickPayment" category:@"Payment" action:@"Click" label:@"Pay Now"];
+            [AnalyticsManager trackEventName:@"clickPayment" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_CLICK label:@"Pay Now"];
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
@@ -745,11 +740,11 @@
     [_tableView reloadData];
 
     if (switchSaldo.isOn) {
-        [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Use Deposit"];
+        [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Use Deposit"];
     }
 }
 - (IBAction)tapChoosePayment:(id)sender {
-    [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Payment Method"];
+    [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Payment Method"];
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
     
@@ -1126,7 +1121,7 @@
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
 {
     if (cell.settingSwitch.isOn) {
-        [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Dropshipper"];
+        [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Dropshipper"];
     }
     _list[indexPath.section].cart_is_dropshipper = [NSString stringWithFormat:@"%zd",cell.settingSwitch.on];
     [_tableView reloadData];
@@ -1138,7 +1133,7 @@
     if (!_isLoadingRequest) {
         TransactionCartList *list = _list[section];
         
-        [TPAnalytics trackRemoveProductsFromCart:_list];
+        [AnalyticsManager trackRemoveProductsFromCart:_list];
         
         NSString *message = [NSString stringWithFormat:FORMAT_CANCEL_CART,list.cart_shop.shop_name, list.cart_total_amount_idr];
         UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
@@ -1170,7 +1165,7 @@
     NSArray *products = list.cart_products;
     ProductDetail *product = products[indexPathCancelProduct.row];
     
-    [TPAnalytics trackRemoveProductFromCart:product];
+    [AnalyticsManager trackRemoveProductFromCart:product];
     
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
@@ -2266,7 +2261,7 @@
         [productIDs addObject:product[@"id"]];
         quantity = quantity + [product[@"quantity"] integerValue];
     }
-    [TPAnalytics trackPaymentEvent:@"clickBack" category:@"Payment" action:@"Abandon" label:@"Thank You Page"];
+    [AnalyticsManager trackEventName:@"clickBack" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_ABANDON label:@"Thank You Page"];
     [RequestCart fetchToppayThanksCode:paymentID
                                success:^(TransactionActionResult *data) {
                                    if (data.is_success == 1) {
@@ -2274,7 +2269,7 @@
                                        NSString *paymentMethod = [parameter objectForKey:@"gateway_name"]?:@"";
                                        NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
                                        
-                                       [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
+                                       [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
                                        
                                        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
                                                                                                                  AFEventParamContentType : @"Product",
@@ -2283,18 +2278,18 @@
                                                                                                                  AFEventParamCurrency : param[@"currency"]?:@"",
                                                                                                                  AFEventOrderId : paymentID}];
                                        
-                                       [Localytics tagEvent:@"Event : Finished Transaction"
-                                                 attributes:@{
-                                                              @"Payment Method" : paymentMethod,
-                                                              @"Total Transaction" : [revenue stringValue]?:@"",
-                                                              @"Total Quantity" : [@(quantity) stringValue]?:@"",
-                                                              @"Total Shipping Fee" : @""
-                                                              }
-                                      customerValueIncrease:revenue];
+                                       [AnalyticsManager localyticsEvent:@"Event : Finished Transaction"
+                                                              attributes:@{
+                                                                           @"Payment Method" : paymentMethod,
+                                                                           @"Total Transaction" : [revenue stringValue]?:@"",
+                                                                           @"Total Quantity" : [@(quantity) stringValue]?:@"",
+                                                                           @"Total Shipping Fee" : @""
+                                                                           }
+                                                   customerValueIncrease:revenue];
                                        
-                                       [Localytics incrementValueBy:0
-                                                forProfileAttribute:@"Profile : Total Transaction"
-                                                          withScope:LLProfileScopeApplication];
+                                       [AnalyticsManager localyticsIncrementValue:[revenue integerValue]
+                                                                 profileAttribute:@"Profile : Total Transaction"
+                                                                            scope:LLProfileScopeApplication];
                                    }
                                    [self requestCartData];
                                } error:^(NSError *error) {
@@ -2338,7 +2333,7 @@
         [self adjustAfterUpdateList];
         
         [self isLoading:NO];
-        [TPLocalytics trackCartView:_cart];
+        [AnalyticsManager localyticsTrackCartView:_cart];
         
     } error:^(NSError *error) {
         [_noResultView removeFromSuperview];
@@ -2482,7 +2477,7 @@
                             success:^(TransactionSummaryResult *data) {
                                 
                                 _cartSummary = data.transaction;
-                                [TPAnalytics trackCheckout:_cartSummary.carts step:1 option:_cartSummary.gateway_name];
+                                [AnalyticsManager trackCheckout:_cartSummary.carts step:1 option:_cartSummary.gateway_name];
                                 [self setDataDropshipperCartSummary];
                                 
                                 TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
@@ -2595,7 +2590,7 @@
                                                                                                 AFEventOrderId : data.transaction.payment_id?:@""}];
                       
                       TransactionSummaryDetail *summary = data.transaction;
-                      [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
+                      [AnalyticsManager trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       
                       _cartBuy = data;
                       NSDictionary *userInfo = @{

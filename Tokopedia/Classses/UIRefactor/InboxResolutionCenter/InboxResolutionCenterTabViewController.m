@@ -145,8 +145,7 @@
 
     self.title = @"Pusat Resolusi";
     
-    self.screenName = @"Inbox Resolution";
-    [TPAnalytics trackScreenName:@"Inbox Resolution"];
+    [AnalyticsManager trackScreenName:@"Inbox Resolution"];
     
     self.hidesBottomBarWhenPushed = YES;
 }

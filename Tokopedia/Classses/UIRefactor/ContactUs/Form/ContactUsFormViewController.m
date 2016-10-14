@@ -379,8 +379,8 @@
 }
 
 - (void)redirectToInboxTicketDetail {
-    NSString *title = @"Pesanan sudah berhasil terkirim";
-    NSString *message = @"Customer Care Tokopedia akan membalas pesan tersebut ke email kamu. Silakan cek email secara berkala.";
+    NSString *title = @"Pesan sudah berhasil terkirim";
+    NSString *message = @"Customer Care Tokopedia akan membalas pesan tersebut. Silakan cek Layanan Pengguna secara berkala.";
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     alert.delegate = self;
     [alert show];

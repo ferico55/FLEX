@@ -91,7 +91,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Purchase Detail Page"];
+    [AnalyticsManager trackScreenName:@"Purchase Detail Page"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
