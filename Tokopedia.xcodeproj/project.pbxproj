@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		346FB4801D95049D00DE8901 /* MyWishlistResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 346FB47F1D95049D00DE8901 /* MyWishlistResponse.m */; };
-		346FB4831D9505B500DE8901 /* MyWishlistData.m in Sources */ = {isa = PBXBuildFile; fileRef = 346FB4821D9505B500DE8901 /* MyWishlistData.m */; };
-		347252401D95145A00F7225A /* MyWishlistShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 3472523F1D95145A00F7225A /* MyWishlistShop.m */; };
-		347252431D95189D00F7225A /* MyWishlistShopReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 347252421D95189D00F7225A /* MyWishlistShopReputation.m */; };
-		347252471D951AFC00F7225A /* MyWishlistWholesalePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 347252461D951AFC00F7225A /* MyWishlistWholesalePrice.m */; };
-		3472524A1D95225900F7225A /* MyWishlistBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 347252491D95225900F7225A /* MyWishlistBadge.m */; };
+		3403417E1DB0DF60006C846E /* MyWishlistResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3403417D1DB0DF60006C846E /* MyWishlistResponse.swift */; };
+		340341801DB0DFDF006C846E /* MyWishlistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3403417F1DB0DFDF006C846E /* MyWishlistData.swift */; };
+		340341821DB0E930006C846E /* MyWishlistShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340341811DB0E930006C846E /* MyWishlistShop.swift */; };
+		340341841DB0EA72006C846E /* MyWishlistWholesalePrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340341831DB0EA72006C846E /* MyWishlistWholesalePrice.swift */; };
+		340341861DB0EB20006C846E /* MyWishlistShopReputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340341851DB0EB20006C846E /* MyWishlistShopReputation.swift */; };
+		340341881DB0EBE2006C846E /* MyWishlistBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340341871DB0EBE2006C846E /* MyWishlistBadge.swift */; };
 		34790E051D87A15400A3324E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3479FE761D87A14800A3324E /* AppDelegate.m */; };
 		347914841D87A15500A3324E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34790A5F1D87A14F00A3324E /* InfoPlist.strings */; };
 		347914851D87A15500A3324E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34790A611D87A14F00A3324E /* GoogleService-Info.plist */; };
@@ -2680,18 +2680,12 @@
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
-		346FB47E1D95049D00DE8901 /* MyWishlistResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistResponse.h; sourceTree = "<group>"; };
-		346FB47F1D95049D00DE8901 /* MyWishlistResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistResponse.m; sourceTree = "<group>"; };
-		346FB4811D9505B500DE8901 /* MyWishlistData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistData.h; sourceTree = "<group>"; };
-		346FB4821D9505B500DE8901 /* MyWishlistData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistData.m; sourceTree = "<group>"; };
-		3472523E1D95145A00F7225A /* MyWishlistShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistShop.h; sourceTree = "<group>"; };
-		3472523F1D95145A00F7225A /* MyWishlistShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistShop.m; sourceTree = "<group>"; };
-		347252411D95189D00F7225A /* MyWishlistShopReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistShopReputation.h; sourceTree = "<group>"; };
-		347252421D95189D00F7225A /* MyWishlistShopReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistShopReputation.m; sourceTree = "<group>"; };
-		347252451D951AFC00F7225A /* MyWishlistWholesalePrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistWholesalePrice.h; sourceTree = "<group>"; };
-		347252461D951AFC00F7225A /* MyWishlistWholesalePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistWholesalePrice.m; sourceTree = "<group>"; };
-		347252481D95225900F7225A /* MyWishlistBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistBadge.h; sourceTree = "<group>"; };
-		347252491D95225900F7225A /* MyWishlistBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistBadge.m; sourceTree = "<group>"; };
+		3403417D1DB0DF60006C846E /* MyWishlistResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistResponse.swift; sourceTree = "<group>"; };
+		3403417F1DB0DFDF006C846E /* MyWishlistData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistData.swift; sourceTree = "<group>"; };
+		340341811DB0E930006C846E /* MyWishlistShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistShop.swift; sourceTree = "<group>"; };
+		340341831DB0EA72006C846E /* MyWishlistWholesalePrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistWholesalePrice.swift; sourceTree = "<group>"; };
+		340341851DB0EB20006C846E /* MyWishlistShopReputation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistShopReputation.swift; sourceTree = "<group>"; };
+		340341871DB0EBE2006C846E /* MyWishlistBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistBadge.swift; sourceTree = "<group>"; };
 		34790A601D87A14F00A3324E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		34790A611D87A14F00A3324E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		34790A621D87A14F00A3324E /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
@@ -6582,21 +6576,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		347252441D951A1700F7225A /* MyWishlistObject */ = {
+		3403417C1DB0DF49006C846E /* MyWishlistObject */ = {
 			isa = PBXGroup;
 			children = (
-				346FB47E1D95049D00DE8901 /* MyWishlistResponse.h */,
-				346FB47F1D95049D00DE8901 /* MyWishlistResponse.m */,
-				346FB4811D9505B500DE8901 /* MyWishlistData.h */,
-				346FB4821D9505B500DE8901 /* MyWishlistData.m */,
-				347252451D951AFC00F7225A /* MyWishlistWholesalePrice.h */,
-				347252461D951AFC00F7225A /* MyWishlistWholesalePrice.m */,
-				3472523E1D95145A00F7225A /* MyWishlistShop.h */,
-				3472523F1D95145A00F7225A /* MyWishlistShop.m */,
-				347252411D95189D00F7225A /* MyWishlistShopReputation.h */,
-				347252421D95189D00F7225A /* MyWishlistShopReputation.m */,
-				347252481D95225900F7225A /* MyWishlistBadge.h */,
-				347252491D95225900F7225A /* MyWishlistBadge.m */,
+				3403417D1DB0DF60006C846E /* MyWishlistResponse.swift */,
+				3403417F1DB0DFDF006C846E /* MyWishlistData.swift */,
+				340341831DB0EA72006C846E /* MyWishlistWholesalePrice.swift */,
+				340341811DB0E930006C846E /* MyWishlistShop.swift */,
+				340341851DB0EB20006C846E /* MyWishlistShopReputation.swift */,
+				340341871DB0EBE2006C846E /* MyWishlistBadge.swift */,
 			);
 			name = MyWishlistObject;
 			sourceTree = "<group>";
@@ -9898,7 +9886,7 @@
 		45B820001D87EEAF00458EB9 /* MyWishlist */ = {
 			isa = PBXGroup;
 			children = (
-				347252441D951A1700F7225A /* MyWishlistObject */,
+				3403417C1DB0DF49006C846E /* MyWishlistObject */,
 				45B820011D87EEAF00458EB9 /* MyWishlistViewController.h */,
 				45B820021D87EEAF00458EB9 /* MyWishlistViewController.m */,
 				45B820031D87EEAF00458EB9 /* MyWishlistViewController.xib */,
@@ -14664,7 +14652,6 @@
 				45B8287A1D87EEB300458EB9 /* TextMenu.m in Sources */,
 				45B82CA51D87EEB300458EB9 /* MoreViewController.m in Sources */,
 				45B828FD1D87EEB300458EB9 /* SimpleFavoritedShopResult.m in Sources */,
-				347252471D951AFC00F7225A /* MyWishlistWholesalePrice.m in Sources */,
 				45B82F061D87EEB300458EB9 /* VTToken.m in Sources */,
 				45B82DCA1D87EEB300458EB9 /* FilterShipmentStatusViewController.m in Sources */,
 				45B82ABD1D87EEB300458EB9 /* SynchronizedOnType.swift in Sources */,
@@ -14714,8 +14701,10 @@
 				45B828711D87EEB300458EB9 /* LabelMenu.m in Sources */,
 				45B829AE1D87EEB300458EB9 /* PrivacyFormPrivacy.m in Sources */,
 				45B82E8A1D87EEB300458EB9 /* CartGAHandler.m in Sources */,
+				340341821DB0E930006C846E /* MyWishlistShop.swift in Sources */,
 				45B82B161D87EEB300458EB9 /* WithLatestFrom.swift in Sources */,
 				45B82BA71D87EEB300458EB9 /* RequestUploadImageValidation.m in Sources */,
+				340341861DB0EB20006C846E /* MyWishlistShopReputation.swift in Sources */,
 				45B82AA01D87EEB300458EB9 /* WishListObject.m in Sources */,
 				45B828961D87EEB300458EB9 /* Logout.m in Sources */,
 				45B82B101D87EEB300458EB9 /* Throttle.swift in Sources */,
@@ -15344,6 +15333,7 @@
 				45B828B41D87EEB300458EB9 /* CategoryData.swift in Sources */,
 				45B82A381D87EEB300458EB9 /* TrackOrderDetail.m in Sources */,
 				45B829FC1D87EEB300458EB9 /* OpenShopPictureResult.m in Sources */,
+				340341881DB0EBE2006C846E /* MyWishlistBadge.swift in Sources */,
 				45B82B421D87EEB300458EB9 /* PublishSubject.swift in Sources */,
 				45B828541D87EEB300458EB9 /* URLCacheController.m in Sources */,
 				45B82A681D87EEB300458EB9 /* InstallmentTerm.m in Sources */,
@@ -15401,6 +15391,7 @@
 				45B82ACE1D87EEB300458EB9 /* NopDisposable.swift in Sources */,
 				45B82A261D87EEB300458EB9 /* City.m in Sources */,
 				45B82B041D87EEB300458EB9 /* SingleAsync.swift in Sources */,
+				340341841DB0EA72006C846E /* MyWishlistWholesalePrice.swift in Sources */,
 				45B828F71D87EEB300458EB9 /* FavoritedResult.m in Sources */,
 				45B82E7E1D87EEB300458EB9 /* RequestEditAddress.m in Sources */,
 				45B82A701D87EEB300458EB9 /* TransactionVoucherResult.m in Sources */,
@@ -15449,6 +15440,7 @@
 				45B82A9F1D87EEB300458EB9 /* UploadImageValidationResult.m in Sources */,
 				45B82BE61D87EEB300458EB9 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				45B82D1D1D87EEB300458EB9 /* MyReviewDetailDataManager.mm in Sources */,
+				3403417E1DB0DF60006C846E /* MyWishlistResponse.swift in Sources */,
 				45B8297C1D87EEB300458EB9 /* NotificationPurchase.m in Sources */,
 				45B8287C1D87EEB300458EB9 /* TKPDStackView.m in Sources */,
 				45B82CBB1D87EEB300458EB9 /* ShopPaymentViewController.m in Sources */,
@@ -15495,7 +15487,6 @@
 				45B829AC1D87EEB300458EB9 /* NotificationFormResult.m in Sources */,
 				45B82DCC1D87EEB300458EB9 /* ShipmentStatusCell.m in Sources */,
 				45B829A11D87EEB300458EB9 /* AddressForm.m in Sources */,
-				346FB4831D9505B500DE8901 /* MyWishlistData.m in Sources */,
 				45B82EAE1D87EEB300458EB9 /* MappingLDExtension.m in Sources */,
 				45B828821D87EEB300458EB9 /* UISplitViewControllerCategory.swift in Sources */,
 				45B82C791D87EEB300458EB9 /* RequestResolution.swift in Sources */,
@@ -15806,7 +15797,6 @@
 				45B828AF1D87EEB300458EB9 /* CatalogList.m in Sources */,
 				45B828721D87EEB300458EB9 /* NSDateHelper.swift in Sources */,
 				45B82B501D87EEB300458EB9 /* UIViewController+TKPAdditions.m in Sources */,
-				347252431D95189D00F7225A /* MyWishlistShopReputation.m in Sources */,
 				45B82C2E1D87EEB300458EB9 /* RequestNotifyLBLM.m in Sources */,
 				45B82A7E1D87EEB300458EB9 /* TxOrderConfirmedDetailResult.m in Sources */,
 				45B829981D87EEB300458EB9 /* ProfileEditResult.m in Sources */,
@@ -15845,11 +15835,9 @@
 				45B82B431D87EEB300458EB9 /* ReplaySubject.swift in Sources */,
 				45B828691D87EEB300458EB9 /* UITextView+UITextView_Placeholder.m in Sources */,
 				45B82A861D87EEB300458EB9 /* TxOrderPaymentEditBankAccount.m in Sources */,
-				347252401D95145A00F7225A /* MyWishlistShop.m in Sources */,
 				45B828741D87EEB300458EB9 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				45B828ED1D87EEB300458EB9 /* TalkCommentList.m in Sources */,
 				45B828D61D87EEB300458EB9 /* SpecChilds.m in Sources */,
-				346FB4801D95049D00DE8901 /* MyWishlistResponse.m in Sources */,
 				45B82B591D87EEB300458EB9 /* PhoneVerifViewController.m in Sources */,
 				45B828591D87EEB300458EB9 /* NSDictionaryCategory.m in Sources */,
 				45B829771D87EEB300458EB9 /* SubmitReview.m in Sources */,
@@ -15867,7 +15855,6 @@
 				45B82D971D87EEB300458EB9 /* RejectReasonData.m in Sources */,
 				45B82BC81D87EEB300458EB9 /* ContactUsCategoryCell.m in Sources */,
 				45B828E71D87EEB300458EB9 /* ReviewResult.m in Sources */,
-				3472524A1D95225900F7225A /* MyWishlistBadge.m in Sources */,
 				45B82EA21D87EEB300458EB9 /* TransactionCartResultCell.m in Sources */,
 				45B82EB51D87EEB300458EB9 /* TxOrderTransactionDetailViewController.m in Sources */,
 				45B829E71D87EEB300458EB9 /* SearchItem.m in Sources */,
@@ -15901,6 +15888,7 @@
 				45B82D811D87EEB300458EB9 /* ResolutionProductData.m in Sources */,
 				45B82AEC1D87EEB300458EB9 /* Do.swift in Sources */,
 				45B82C7D1D87EEB300458EB9 /* InboxResolutionCenterTabViewController.m in Sources */,
+				340341801DB0DFDF006C846E /* MyWishlistData.swift in Sources */,
 				45B82A201D87EEB300458EB9 /* SettingLocation.m in Sources */,
 				45B82EA01D87EEB300458EB9 /* TransactionCCViewController.m in Sources */,
 			);

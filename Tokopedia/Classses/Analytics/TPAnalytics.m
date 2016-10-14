@@ -15,7 +15,7 @@
 #import "TransactionCartList.h"
 #import "PromoResult.h"
 #import "NSURL+Dictionary.h"
-#import "MyWishlistData.h"
+#import "Tokopedia-Swift.h"
 
 @interface TPAnalytics ()
 

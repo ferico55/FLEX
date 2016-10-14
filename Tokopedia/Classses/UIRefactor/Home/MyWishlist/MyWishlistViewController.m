@@ -26,8 +26,6 @@
 #import "Tokopedia-Swift.h"
 #import "UIAlertView+BlocksKit.h"
 #import "TransactionATCViewController.h"
-#import "MyWishlistData.h"
-#import "MyWishlistResponse.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -46,7 +44,7 @@ RetryViewDelegate
 >
 
 
-@property (nonatomic, strong) NSMutableArray *product;
+@property (nonatomic, strong) NSMutableArray<MyWishlistData *> *product;
 @property (nonatomic, assign) CGFloat lastContentOffset;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -174,7 +172,7 @@ typedef enum TagRequest {
 
 -(NSString *) getWishlistPath {
     NSString *userId = [_userManager getUserId];
-    return [NSString stringWithFormat:@"/v.1.0.1/users/%@/wishlist/products", userId];
+    return [NSString stringWithFormat:@"/v1.0.1/users/%@/wishlist/products", userId];
 }
 
 -(void)viewWillAppear:(BOOL)animated
