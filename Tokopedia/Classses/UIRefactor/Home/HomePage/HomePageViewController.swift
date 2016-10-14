@@ -42,38 +42,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     private let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
-    private var categoryColumnWidth: CGFloat {
-        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-            return 83
-        } else {
-            // if iPhone
-            return 70
-        }
-    }
-    private var imageCategoryWidth: CGFloat {
-        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-            return 50
-        } else {
-            // if iPhone
-            return 25
-        }
-    }
-    private var categorySpacing: CGFloat {
-        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-            return 34
-        } else {
-            // if iPhone
-            return 15
-        }
-    }
-    private var imageViewContainerHeight: CGFloat {
-        if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-            return 83
-        } else {
-            // if iPhone
-            return 40
-        }
-    }
+    private let categoryColumnWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 83 : 70
+    private let imageCategoryWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 50 : 25
+    private let categorySpacing: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 34 : 15
+    private let imageViewContainerHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 83 : 40
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -136,14 +108,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     func setupOuterStackViewConstraint() {
-        self.outerStackView.mas_makeConstraints { [weak self] (make) in
-            if let weakSelf = self {
-                make.top.mas_equalTo()(weakSelf.homePageScrollView.mas_top)
-                make.bottom.mas_equalTo()(weakSelf.homePageScrollView.mas_bottom)
-                make.left.mas_equalTo()(weakSelf.homePageScrollView.mas_left)
-                make.right.mas_equalTo()(weakSelf.homePageScrollView.mas_right)
-                make.width.mas_equalTo()(weakSelf.view.mas_width)
-            }
+        self.outerStackView.mas_makeConstraints { (make) in
+            make.top.mas_equalTo()(self.homePageScrollView.mas_top)
+            make.bottom.mas_equalTo()(self.homePageScrollView.mas_bottom)
+            make.left.mas_equalTo()(self.homePageScrollView.mas_left)
+            make.right.mas_equalTo()(self.homePageScrollView.mas_right)
+            make.width.mas_equalTo()(self.view.mas_width)
         }
     }
     
@@ -173,11 +143,11 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             make.height.mas_equalTo()(horizontalScrollView.mas_height)
         })
         
-        for layout_row in layoutRows {
+        for layoutRow in layoutRows {
             let iconStackView = OAStackView()
             self.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
             
-            let url = NSURL(string: layout_row.image_url)
+            let url = NSURL(string: layoutRow.image_url)
             let imageData: NSData? = NSData(contentsOfURL: url!)
             var iconImageView: UIImageView = UIImageView()
             if let imageData = imageData {
@@ -200,7 +170,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 make.height.mas_equalTo()(40)
             })
             let categoryNameLabel = UILabel()
-            categoryNameLabel.text = layout_row.name
+            categoryNameLabel.text = layoutRow.name
             categoryNameLabel.font = UIFont.microTheme()
             categoryNameLabel.textColor = UIColor(red: 153.0/255, green: 153.0/255, blue: 153.0/255, alpha: 1.0)
             categoryNameLabel.textAlignment = .Center
@@ -220,11 +190,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             
             // didSelectIconStackView
             
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomePageViewController.didTapCategory(_:)))
+            let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizerWithHandler({ (recognizer, state, point) in
+                self.didTapCategory(recognizer as! UITapGestureRecognizer)
+            }) as! UITapGestureRecognizer
             
             iconStackView.addGestureRecognizer(tapGestureRecognizer)
-            iconStackView.tag = Int(layout_row.id)!
-            self.layoutRows.append(layout_row)
+            iconStackView.tag = Int(layoutRow.id)!
+            self.layoutRows.append(layoutRow)
         }
         
         categoryVerticalView.addArrangedSubview(horizontalScrollView)
@@ -554,7 +526,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
                 
                 self.tickerPlaceholder.mas_makeConstraints { make in
-                    //                    make.top.equalTo()(self.collectionView.mas_top)
                     make.left.right().equalTo()(self.view)
                 }
                 
