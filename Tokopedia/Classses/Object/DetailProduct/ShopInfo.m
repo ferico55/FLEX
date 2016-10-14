@@ -8,6 +8,10 @@
 
 #import "ShopInfo.h"
 
+@interface ShopInfo()
+@property (nonatomic) NSString *shop_is_official;
+@end
+
 @implementation ShopInfo
 
 - (NSString*) shop_description {
@@ -20,6 +24,10 @@
 
 - (NSString*) shop_tagline {
     return [_shop_tagline kv_decodeHTMLCharacterEntities];
+}
+
+- (void)setShop_is_official:(NSString *)shop_is_official {
+    _official = [shop_is_official isEqualToString:@"1"];
 }
 
 +(NSDictionary *)attributeMappingDictionary
@@ -46,7 +54,8 @@
                       @"shop_is_closed_note",
                       @"shop_is_closed_reason",
                       @"shop_is_closed_until",
-                      @"lucky_merchant"
+                      @"lucky_merchant",
+                      @"shop_is_official"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
