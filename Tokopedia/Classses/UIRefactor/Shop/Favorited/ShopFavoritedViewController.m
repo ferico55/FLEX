@@ -123,13 +123,12 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (_list.count > _page && _page < _totalPage) {
+        if ([self hasMoreData]) {
             _page++;
             [self requestFavoritedShopID:_shopID];
         }
 	}
 }
-
 
 #pragma mark - Memory Management
 - (void)dealloc{
@@ -166,6 +165,11 @@
 
 
 #pragma mark - Methods
+
+-(BOOL)hasMoreData{
+    return _list.count > _page && _page < _totalPage;
+}
+
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {

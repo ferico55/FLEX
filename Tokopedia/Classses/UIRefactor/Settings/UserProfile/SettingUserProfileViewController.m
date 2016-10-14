@@ -192,19 +192,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     [SettingUserProfileRequest fetchEditUserProfile:_userData onSuccess:^{
         
-        // Notify other controller that edit profile is success
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
-                                                            object:nil
-                                                          userInfo:nil];
-        
-        // Notify delegate controller that edit profile is success
-        if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
-            [_delegate successEditUserProfile];
-        }
-        
-        // Reset password field
-        self.passwordTextField.text = @"";
-        
+        [self notifySuccessEditProfile];
+        [self removePassword];
         [self showSaveButton];
         
     } onFailure:^{
@@ -212,6 +201,23 @@ typedef NS_ENUM(NSInteger, PickerView) {
     }];
 }
 
+-(void)removePassword{
+    // Reset password field
+    self.passwordTextField.text = @"";
+}
+
+- (void)notifySuccessEditProfile{
+    
+    // Notify other controller that edit profile is success
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
+                                                        object:nil
+                                                      userInfo:nil];
+    
+    // Notify delegate controller that edit profile is success
+    if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
+        [_delegate successEditUserProfile];
+    }
+}
 
 - (void)showUserData:(DataUser *)userData {
     _userData = userData;
@@ -412,23 +418,25 @@ typedef NS_ENUM(NSInteger, PickerView) {
         
         self.profileImageView.alpha = 1;
         [self showSaveButton];
-        
-        // Notify other controller that upload image is success
-        NSDictionary *userInfo = @{
-                                   kTKPDPROFILE_APIPROFILEPHOTOKEY : _profileImageView.image,
-                                   @"file_th": imageURLString?:@""
-                                   };
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
-                                                            object:nil
-                                                          userInfo:userInfo];
+        [self notifySuccessEditProfileImageWithURLString:imageURLString];
         [self.profileImageView setImage:image];
-        
         
     } onFailure:^{
         // Show user profile image
         [self setUserProfilePicture];
         [self showSaveButton];
     }];
+}
+
+-(void)notifySuccessEditProfileImageWithURLString:(NSString*)imageURLString{
+    // Notify other controller that upload image is success
+    NSDictionary *userInfo = @{
+                               kTKPDPROFILE_APIPROFILEPHOTOKEY : _profileImageView.image,
+                               @"file_th": imageURLString?:@""
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 @end
