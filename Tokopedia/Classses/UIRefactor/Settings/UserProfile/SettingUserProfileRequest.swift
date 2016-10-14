@@ -96,6 +96,7 @@ class SettingUserProfileRequest: NSObject {
         
         var generatedHost : GeneratedHost = GeneratedHost()
         var imageURLString : String = ""
+        let disposeBag = DisposeBag()
         
         GenerateHostObservable.getGeneratedHost()
             .flatMap { (host) -> Observable<ImageResult> in
@@ -110,7 +111,7 @@ class SettingUserProfileRequest: NSObject {
                 })
             }.subscribeNext { (isSuccess) in
                 onSuccess(imageURLString: imageURLString)
-        }
+            }.addDisposableTo(disposeBag)
     }
     
     private class func getPictObj(image: UIImage, generatedHost:GeneratedHost) -> Observable<ImageResult>{
