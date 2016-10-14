@@ -20,6 +20,7 @@
 #import "NoResultReusableView.h"
 #import "NavigationHelper.h"
 #import "Tokopedia-Swift.h"
+#import "V4Response.h"
 
 @interface InboxMessageViewController ()
 <
@@ -175,7 +176,7 @@
                                                path:@"/v1/message"
                                              method:RKRequestMethodGET
                                           parameter:param
-                                            mapping:[InboxMessage mapping]
+                                            mapping:[V4Response mappingWithData:[InboxMessageResult mapping]]
                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                               [self onReceiveMessages:successResult.dictionary[@""]];
                                           }
@@ -753,11 +754,11 @@
     return indexPaths;
 }
 
-- (void)onReceiveMessages:(InboxMessage *)message {
-    _urinext =  message.result.paging.uri_next;
+- (void)onReceiveMessages:(V4Response<InboxMessageResult*> *)message {
+    _urinext =  message.data.paging.uri_next;
     _page = [[_getInboxListNetworkManager splitUriToPage:_urinext] integerValue];
 
-    [self addMessages:message.result.list];
+    [self addMessages:message.data.list];
 
     if (_messages.count >0) {
         [_noResultView removeFromSuperview];
