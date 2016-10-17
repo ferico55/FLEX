@@ -212,20 +212,20 @@ TKPDAlertViewDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSString* topadsSource;
-        if([_delegate topadsSource] == TopadsSourceFeed) {
-            topadsSource = @"fav_product";
-        } else if([_delegate topadsSource] == TopadsSourceSearch) {
-            topadsSource = @"search";
-        } else if([_delegate topadsSource] == TopadsSourceHotlist) {
-            topadsSource = @"hotlist";
-        } else if([_delegate topadsSource] == TopadsSourceDirectory) {
-            topadsSource = @"directory";
-        }
-        
-        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium=ios", topadsSource];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium=ios", [self topadsUrlFromSource:[_delegate topadsSource]]];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
+}
+
+- (NSString*)topadsUrlFromSource:(TopadsSource)source {
+    NSDictionary* sources = @{
+                              @(TopadsSourceFeed) : @"fav_product",
+                              @(TopadsSourceSearch) : @"search",
+                              @(TopadsSourceHotlist) : @"hotlist",
+                              @(TopadsSourceDirectory) : @"directory"
+                              };
+    
+    return [sources objectForKey:@(source)];
 }
 
 - (CGFloat)collectionHeightConstraint {
