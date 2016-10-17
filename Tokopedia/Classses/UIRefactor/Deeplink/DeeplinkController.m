@@ -23,6 +23,7 @@
 #import "PhoneVerifViewController.h"
 #import "NSURL+Dictionary.h"
 
+#import "Tokopedia-Swift.h"
 #import "string_product.h"
 
 @interface DeeplinkController ()
