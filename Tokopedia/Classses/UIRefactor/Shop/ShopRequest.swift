@@ -28,13 +28,13 @@ class ShopRequest: NSObject {
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response<FavoritedResult>
+                                            let response = result[""] as! V4Response
                                             
                                             if response.message_error.count > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {
-                                                onSuccess(response.data)
+                                                onSuccess(response.data as! FavoritedResult)
                                             }
                                             
         }) { (error) in
