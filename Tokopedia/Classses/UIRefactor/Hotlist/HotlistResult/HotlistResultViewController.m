@@ -845,6 +845,9 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Promo collection delegate
+- (TopadsSource)topadsSource {
+    return TopadsSourceHotlist;
+}
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
@@ -1115,4 +1118,5 @@ static NSString const *rows = @"12";
     
     return param;
 }
+
 @end

@@ -366,6 +366,9 @@ FavoriteShopRequestDelegate
 }
 
 #pragma mark - Promo collection delegate
+- (TopadsSource)topadsSource {
+    return TopadsSourceFeed;
+}
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];

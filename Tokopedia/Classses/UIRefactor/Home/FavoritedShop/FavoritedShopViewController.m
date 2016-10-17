@@ -488,7 +488,7 @@ FavoriteShopRequestDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan?campaign=topads&source=fav_shop&medium=ios"]];
     }
 }
 
