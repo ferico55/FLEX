@@ -417,7 +417,7 @@
     [data setObject:@"search_shop" forKey:@"type"];
     searchShopController.data = [data copy];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         NSArray *viewControllers = @[searchProductController, searchCatalogController, searchShopController];
         
         TKPDTabNavigationController *tabController = [[TKPDTabNavigationController alloc] init];
@@ -444,6 +444,7 @@
         tabController.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:tabController animated:YES];
     });
+    
 
 }
 

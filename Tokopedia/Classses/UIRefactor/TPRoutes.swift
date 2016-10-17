@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JLRoutes
 
 class TPRoutes: NSObject {
     
