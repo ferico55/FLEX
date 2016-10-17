@@ -114,7 +114,7 @@ class RequestResolution: NSObject {
         } else {
             
             
-            self.getGeneratedHost().doOnError({ (error) in
+            GenerateHostObservable.getGeneratedHost().doOnError({ (error) in
                 onFailure()
             })
             .flatMap({ (host) -> Observable<[ImageResult]> in
@@ -187,20 +187,6 @@ class RequestResolution: NSObject {
     }
     
     //MARK: - Replay Conversation
-    private class func getGeneratedHost() -> Observable<GeneratedHost> {
-        return Observable.create({ (observer) -> Disposable in
-            RequestGenerateHost .fetchGenerateHostSuccess({ (generatedHost) in
-                observer.onNext(generatedHost)
-                observer.onCompleted()
-            }) { (error) in
-                observer.onError(RequestError.networkError)
-                StickyAlertView.showErrorMessage(["Gagal generate host"])
-            }
-            
-            return NopDisposable.instance
-        })
-    }
-    
     private class func getUploadedImages(postData:ReplayConversationPostData) -> Observable<[ImageResult]> {
         
         return postData.selectedAssets

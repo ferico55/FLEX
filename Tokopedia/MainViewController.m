@@ -225,8 +225,8 @@ typedef enum TagRequest {
     
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [Localytics setCustomerId:[_userManager getUserId]];
-        [Localytics setValue:[_userManager getUserId] forProfileAttribute:@"user_id"];
+        [AnalyticsManager localyticsSetCustomerID:[_userManager getUserId]];
+        [AnalyticsManager localyticsValue:[_userManager getUserId] profileAttribute:@"user_id"];
     });
     
 }
@@ -604,7 +604,7 @@ typedef enum TagRequest {
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
-    [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
+    [AnalyticsManager localyticsValue:@"No" profileAttribute:@"Is Login"];
     
     [self reinitCartTabBar];
 }
@@ -627,7 +627,10 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [TPAnalytics trackClickTabBarItemWithName:tabBarController.tabBar.selectedItem.title];
+    [AnalyticsManager trackEventName:@"clickTabBar"
+                            category:GA_EVENT_CATEGORY_TAB_BAR
+                              action:GA_EVENT_ACTION_CLICK
+                               label:tabBarController.tabBar.selectedItem.title];
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];

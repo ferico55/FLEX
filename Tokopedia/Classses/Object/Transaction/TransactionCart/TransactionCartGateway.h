@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSNumber *gateway;
 @property (nonatomic, strong) NSString *gateway_name;
 @property (nonatomic, strong) NSString *toppay_flag;
+@property (nonatomic, strong) NSString *gateway_desc;
 
 @end

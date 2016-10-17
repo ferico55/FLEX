@@ -136,7 +136,7 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Inbox Message Detail Page"];
+    [AnalyticsManager trackScreenName:@"Inbox Message Detail Page"];
 }
 
 - (void)dealloc{
@@ -383,7 +383,11 @@
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:YES];
                     
-                    [TPAnalytics trackInboxMessageAction:@"Send" label:[_data objectForKey:@"nav"]?:@""];
+                    [AnalyticsManager trackEventName:@"clickMessage"
+                                            category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                              action:GA_EVENT_ACTION_SEND
+                                               label:[_data objectForKey:@"nav"]?:@""];
+                    
                     [self doSendMessage:_textView.text];
                     
                     _textView.text = nil;

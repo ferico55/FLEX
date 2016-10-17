@@ -128,7 +128,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Setting Bank Account Page"];
+    [AnalyticsManager trackScreenName:@"Setting Bank Account Page"];
 }
 
 -(void)viewDidDisappear:(BOOL)animated

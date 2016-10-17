@@ -65,9 +65,6 @@
     NSOperationQueue *operationQueueLikeDislike;
     CMPopTipView *popTipView;
     
-    TAGContainer *_gtmContainer;
-    NSString *baseActionUrl;
-    NSString *postActionUrl;
     NSInteger _count;
     NavigateViewController *_TKPDNavigator;
     
@@ -83,7 +80,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureGTM];
     [self initTable];
     [self initNavigation];
     
@@ -162,7 +158,7 @@
     heightScreenView = self.view.bounds.size.height;
     constHeightViewContent.constant = heightScreenView;
     
-    [TPAnalytics trackScreenName:@"Product Review Detail Page"];
+    [AnalyticsManager trackScreenName:@"Product Review Detail Page"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -390,13 +386,7 @@
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
-        container.data = @{
-                           @"user_id" : _detailReputationReview.review_user_id,
-                           @"auth" : auth?:[NSNull null]
-                           };
+        container.profileUserID = _detailReputationReview.review_user_id;
         [self.navigationController pushViewController:container animated:YES];
     }
 }
@@ -775,13 +765,7 @@
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
-        container.data = @{
-                           @"user_id" : _detailReputationReview.review_user_id,
-                           @"auth" : auth?:[NSNull null]
-                           };
+        container.profileUserID = _detailReputationReview.review_user_id;
         [self.navigationController pushViewController:container animated:YES];
     }
 }
@@ -1016,23 +1000,6 @@
             [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
         }
     }
-}
-
-#pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController {
-    
-}
-
-
-#pragma mark - GTM
-- (void)configureGTM {
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
-    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 
 #pragma mark - Swipe Delegate

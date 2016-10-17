@@ -41,7 +41,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [_tableView reloadData];
-    [TPAnalytics trackScreenName:@"Reject Reason Wrong Price Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Wrong Price Page"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

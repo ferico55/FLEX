@@ -43,7 +43,6 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
-#import "TPLocalytics.h"
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
 #import "SpellCheckRequest.h"
@@ -220,16 +219,13 @@ ImageSearchRequestDelegate
     
     if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if(self.isFromAutoComplete) {
-            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
-            self.screenName = @"Product Search Results (From Auto Complete Search)";
+            [AnalyticsManager trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
         } else {
-            [TPAnalytics trackScreenName:@"Product Search Results" gridType:self.cellType];
-            self.screenName = @"Product Search Results";
+            [AnalyticsManager trackScreenName:@"Product Search Results" gridType:self.cellType];
         }
     }
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        [TPAnalytics trackScreenName:@"Catalog Search Results"];
-        self.screenName = @"Catalog Search Results";
+        [AnalyticsManager trackScreenName:@"Catalog Search Results"];
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
@@ -599,7 +595,7 @@ ImageSearchRequestDelegate
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [TPAnalytics trackProductClick:product];
+        [AnalyticsManager trackProductClick:product];
         if (_isFromImageSearch) {
             [navigateController navigateToProductFromViewController:self withProduct:product];
         } else {
@@ -1191,9 +1187,9 @@ ImageSearchRequestDelegate
 
     if (_start == 0) {
         if (search.data.products.count > 0) {
-            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
+            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
         } else {
-            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
+            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
         }
     }
     
@@ -1230,7 +1226,7 @@ ImageSearchRequestDelegate
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
             if(search.data.products.count > 0) {
                 [_product addObject: search.data.products];
-                [TPAnalytics trackProductImpressions:search.data.products];
+                [AnalyticsManager trackProductImpressions:search.data.products];
             }
             
         } else {
@@ -1273,7 +1269,7 @@ ImageSearchRequestDelegate
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
-            [TPAnalytics trackSearchNoResultWithKeyword:[_data objectForKey:@"search"]?:@""];
+            [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:GA_EVENT_ACTION_NO_RESULT label:[_data objectForKey:@"search"]?:@""];
 
             if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
@@ -1415,7 +1411,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - Other Method
 - (void)configureGTM {
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

@@ -9,7 +9,7 @@
 #import "RequestResolutionAction.h"
 #import "RequestObject.h"
 #import "ImageResult.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 #import "RequestUploadImage.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UploadImageHelper.h"
@@ -60,7 +60,8 @@ static failedCompletionBlock failedRequest;
 +(void)fetchResolutionUploadImages:(NSArray<DKAsset*>*)imageObjects
                                  success:(void(^)(NSArray<ImageResult *>*datas, GeneratedHost *host))success {
     
-    [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        
         NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",host.upload_host];
         
         NSMutableArray *uploadedDatas =[NSMutableArray new];
@@ -92,9 +93,8 @@ static failedCompletionBlock failedRequest;
                                          }];
         }
 
-        
-    } failure:^(NSError *error) {
-        failedRequest(error);
+    } onFailure:^{
+        failedRequest(nil);
     }];
 }
 

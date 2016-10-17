@@ -174,14 +174,11 @@
     self.title = _viewControllerTitle?:@" ";
     
     if ([_action isEqualToString:@"get_tx_order_status"]) {
-        [TPAnalytics trackScreenName:@"Purchase - Order Status"];
-        self.screenName = @"Purchase - Order Status";
+        [AnalyticsManager trackScreenName:@"Purchase - Order Status"];
     } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
-        [TPAnalytics trackScreenName:@"Purchase - Received Confirmation"];
-        self.screenName = @"Purchase - Received Confirmation";
+        [AnalyticsManager trackScreenName:@"Purchase - Received Confirmation"];
     } else {
-        [TPAnalytics trackScreenName:@"Purchase - Transaction List"];
-        self.screenName = @"Purchase - Transaction List";
+        [AnalyticsManager trackScreenName:@"Purchase - Transaction List"];
     }
 }
 
@@ -600,7 +597,7 @@
 
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
-        [TPLocalytics trackReceiveConfirmation:YES];
+        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
@@ -613,14 +610,14 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [TPLocalytics trackReceiveConfirmation:NO];
+        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
         [self failedConfirmDelivery:order];
     }];
 }
 
 -(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
-        [TPLocalytics trackReceiveConfirmation:YES];
+        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
@@ -633,7 +630,7 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [TPLocalytics trackReceiveConfirmation:NO];
+        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
         [self failedConfirmDelivery:order];
     }];
 }

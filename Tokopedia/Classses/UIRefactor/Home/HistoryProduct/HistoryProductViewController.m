@@ -115,8 +115,7 @@ RetryViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - History Product";
-    [TPAnalytics trackScreenName:@"Home - History Product"];
+    [AnalyticsManager trackScreenName:@"Home - History Product"];
 }
 
 #pragma mark - Collection Delegate
@@ -153,7 +152,10 @@ RetryViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     HistoryProductList *product = [_product objectAtIndex:indexPath.row];
-    [TPAnalytics trackClickProductOnRecentlyViewedWithProductName:product.product_name];
+    [AnalyticsManager trackEventName:@"clickRecent"
+                            category:GA_EVENT_CATEGORY_RECENTLY_VIEWED
+                              action:GA_EVENT_ACTION_CLICK
+                               label:product.product_name];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {

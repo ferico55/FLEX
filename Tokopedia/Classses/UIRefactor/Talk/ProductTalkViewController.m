@@ -122,10 +122,7 @@
     [super viewWillAppear:animated];
     
     // UA
-    [TPAnalytics trackScreenName:@"Product - Talk List"];
-    
-    // GA
-    self.screenName = @"Product - Talk List";
+    [AnalyticsManager trackScreenName:@"Product - Talk List"];
 }
 
 - (void)setRightBarButton {

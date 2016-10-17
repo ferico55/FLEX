@@ -107,7 +107,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Insert Price Alert Page"];
+    [AnalyticsManager trackScreenName:@"Insert Price Alert Page"];
 }
 
 /*
@@ -183,19 +183,11 @@
                                                      StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPrice] delegate:self];
                                                      [stickyAlertView show];
                                                      [weakSelf.navigationController popViewControllerAnimated:YES];
-                                                     
-                                                     [TPLocalytics trackAddProductPriceAlert:_productDetail
-                                                                                       price:[weakSelf getPriceAlert]
-                                                                                     success:YES];
                                                  }
                                                  onFailure:^(NSError *error) {
                                                      StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddPriceAlert] delegate:self];
                                                      [stickyAlertView show];
                                                      [weakSelf setLoadingDoingAction:NO];
-                                                     
-                                                     [TPLocalytics trackAddProductPriceAlert:_productDetail
-                                                                                       price:[weakSelf getPriceAlert]
-                                                                                     success:NO];
                                                  }];
     } else if(_detailPriceAlert != nil) {
         [_request requestEditInboxPriceAlertWithPriceAlertID:_detailPriceAlert.pricealert_id
