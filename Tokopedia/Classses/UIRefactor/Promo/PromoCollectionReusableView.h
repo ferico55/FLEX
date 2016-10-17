@@ -15,10 +15,18 @@ typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
     PromoCollectionViewCellTypeNormal,
 };
 
+typedef NS_ENUM(NSInteger, TopadsSource) {
+    TopadsSourceHotlist,
+    TopadsSourceFeed,
+    TopadsSourceSearch,
+    TopadsSourceDirectory
+};
+
 @protocol PromoCollectionViewDelegate <NSObject>
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath;
 - (void)didSelectPromoProduct:(PromoProduct *)product;
+- (TopadsSource)topadsSource;
 
 @end
 
