@@ -31,9 +31,9 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
 
 - (NSDictionary *)parameters {
     NSDictionary *parameters = @{
-                                 @"st"  :   _type,
-                                 @"q"   :   _query,
-                                 @"sc"  :   _category,
+                                 @"st"  :   _type?:@"",
+                                 @"q"   :   _query?:@"",
+                                 @"sc"  :   _category?:@"",
                                  @"device": @"ios"
                                  };
     return parameters;
