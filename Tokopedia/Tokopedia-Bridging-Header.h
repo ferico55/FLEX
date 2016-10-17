@@ -121,6 +121,7 @@
 #import "V4Response.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "BankAccountFormResult.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
