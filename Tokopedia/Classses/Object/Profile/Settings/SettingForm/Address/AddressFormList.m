@@ -10,8 +10,6 @@
 
 @implementation AddressFormList
 
-static NSString *noAddress = @"-1";
-
 -(NSString *)postal_code{
     return _postal_code?:_address_postal;
 }

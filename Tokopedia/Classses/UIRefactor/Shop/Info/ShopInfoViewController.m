@@ -172,7 +172,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Info Page"];
+    [AnalyticsManager trackScreenName:@"Shop Info Page"];
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -241,8 +241,7 @@
             {
                 //favorited button action
                 ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.result.info.shop_id?:@"",
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:[NSNull null]};
+                vc.shopID =  _shop.result.info.shop_id?:@"";
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

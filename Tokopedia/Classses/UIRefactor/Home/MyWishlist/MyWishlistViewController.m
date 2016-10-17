@@ -178,8 +178,7 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Wish List";
-    [TPAnalytics trackScreenName:@"Home - Wish List"];
+    [AnalyticsManager trackScreenName:@"Home - Wish List"];
 }
 
 - (void)registerNib {
@@ -210,7 +209,10 @@ typedef enum TagRequest {
     
     __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
-        [TPAnalytics trackClickBuyFromWishlist];
+        [AnalyticsManager trackEventName:@"clickWishlist"
+                                category:GA_EVENT_CATEGORY_WISHLIST
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Buy"];
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
         transactionVC.productID = list.id;
         transactionVC.hidesBottomBarWhenPushed = YES;
@@ -282,7 +284,11 @@ typedef enum TagRequest {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     MyWishlistData *product = [_product objectAtIndex:indexPath.row];
-    [TPAnalytics trackProductClick:product];
+    [AnalyticsManager trackProductClick:product];
+    [AnalyticsManager trackEventName:@"clickWishlist"
+                            category:GA_EVENT_CATEGORY_WISHLIST
+                              action:GA_EVENT_ACTION_VIEW
+                               label:product.name];
     [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[[NSNumberFormatter IDRFormatter] stringFromNumber:product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
 }
 

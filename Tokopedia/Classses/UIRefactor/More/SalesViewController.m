@@ -51,8 +51,7 @@
 {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Sales Page"];
-    self.screenName = @"Sales Page";
+    [AnalyticsManager trackScreenName:@"Sales Page"];
     
     self.hidesBottomBarWhenPushed = YES;    
 }

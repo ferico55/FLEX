@@ -99,7 +99,7 @@
     self.title = @"Pesanan Baru";
     self.alertLabel.text = [self announcementString];
 
-    [TPAnalytics trackScreenName:@"Sales - New Order"];
+    [AnalyticsManager trackScreenName:@"Sales - New Order"];
 
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;

@@ -15,7 +15,8 @@
                       @"gateway_image",
                       @"gateway",
                       @"gateway_name",
-                      @"toppay_flag"
+                      @"toppay_flag",
+                      @"gateway_desc"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -213,7 +213,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Product Talk Detail Page"];
+    [AnalyticsManager trackScreenName:@"Product Talk Detail Page"];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -515,7 +515,10 @@
 }
 
 - (IBAction)btnSendTapped {
-    [TPAnalytics trackInboxTalkAction:@"Send" label:_inboxTalkType];
+    [AnalyticsManager trackEventName:@"clickProductDiscussion"
+                            category:GA_EVENT_CATEGORY_INBOX_TALK
+                              action:GA_EVENT_ACTION_SEND
+                               label:_inboxTalkType];
     [self submitTalk];
 }
 

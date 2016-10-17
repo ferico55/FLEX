@@ -12,8 +12,7 @@
 #pragma mark - Transaction Cart Shipment Delegate
 @protocol TransactionCartShippingViewControllerDelegate <NSObject>
 @required
-- (void)TransactionCartShippingViewController:(TransactionCartShippingViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
-- (void)editInsuranceUserInfo:(NSDictionary*)userInfo;
+- (void)TransactionCartShipping:(TransactionCartList*)cart;
 
 @end
 
@@ -24,6 +23,6 @@
 
 
 @property (nonatomic) NSInteger indexPage;
-@property (strong,nonatomic)NSDictionary *data;
+@property (nonatomic, strong) TransactionCartList *cart;
 
 @end

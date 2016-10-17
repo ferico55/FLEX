@@ -104,7 +104,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureGTM];
     
     _isRefreshView = NO;
     _getDataFromMasterInServer = @"0";
@@ -220,21 +219,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Inbox Review Detail Page"];
-}
-
-#pragma mark - GTM
-- (void)configureGTM {
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    _baseURL = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
-    _postURL = [_gtmContainer stringForKey:GTMKeyInboxReputationPost];
-    
-    _baseActionURL = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
-    _postActionURL = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
+    [AnalyticsManager trackScreenName:@"Inbox Review Detail Page"];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout

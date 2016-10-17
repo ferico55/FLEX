@@ -233,7 +233,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Inbox Ticket Detail Page"];
+    [AnalyticsManager trackScreenName:@"Inbox Ticket Detail Page"];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -79,13 +79,12 @@ import UIKit
         self.adjustAlertProgressAppearance()
         self.setAppearanceLoadingView()
 
-        reasonTextView.placeholder = "Tulis alasan anda disini"
+        reasonTextView.placeholder = "Tulis alasan Anda disini"
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Solution Page")
+        AnalyticsManager.trackScreenName("Resolution Center Buyer Edit Solution Page")
     }
     
     deinit {

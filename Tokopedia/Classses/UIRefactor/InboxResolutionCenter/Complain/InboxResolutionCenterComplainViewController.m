@@ -171,13 +171,13 @@
     
     switch (_typeComplaint) {
         case TypeComplaintAll:
-            [TPAnalytics trackScreenName:@"Resolution Center List All"];
+            [AnalyticsManager trackScreenName:@"Resolution Center List All"];
             break;
         case TypeComplaintMine:
-            [TPAnalytics trackScreenName:@"Resolution Center List Mine"];
+            [AnalyticsManager trackScreenName:@"Resolution Center List Mine"];
             break;
         case TypeComplaintBuyer:
-            [TPAnalytics trackScreenName:@"Resolution Center List Buyer"];
+            [AnalyticsManager trackScreenName:@"Resolution Center List Buyer"];
             break;
         default:
             break;
@@ -379,7 +379,11 @@
         type = @"inbox-resolution-buyer-complaints";
     }
     
-    [TPAnalytics trackInboxResolutionAction:@"View" label:type];
+    [AnalyticsManager trackEventName:@"clickResolution"
+                            category:GA_EVENT_CATEGORY_INBOX_RESOLUTION
+                              action:GA_EVENT_ACTION_VIEW
+                               label:type];
+    
     _selectedDetailIndexPath = indexPath;
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];

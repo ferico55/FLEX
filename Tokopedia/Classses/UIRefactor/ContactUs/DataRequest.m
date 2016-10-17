@@ -13,7 +13,7 @@
 
 + (void)requestWithParameters:(NSDictionary *)parameters
                   pathPattern:(NSString *)pathPattern
-                         host:(GenerateHost *)host
+                         host:(GeneratedHost *)host
            responseDescriptor:(RKResponseDescriptor *)responseDescriptor
                    completion:(void (^)(id))completionBlock {
     
@@ -26,7 +26,7 @@
         [parameters setValue:[auth getMyDeviceToken] forKey:@"device_id"];
         [parameters setValue:@"2" forKey:@"os_type"];
         
-        NSString *path = [NSString stringWithFormat:@"http://%@/ws", host.result.generated_host.upload_host];
+        NSString *path = [NSString stringWithFormat:@"http://%@/ws", host.upload_host];
         objectManager = [RKObjectManager sharedClient:path];
     } else {
         parameters = [parameters encrypt];

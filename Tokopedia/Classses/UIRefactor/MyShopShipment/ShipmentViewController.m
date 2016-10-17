@@ -95,7 +95,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Shipment Setting Page"];
+    [AnalyticsManager trackScreenName:@"Shop Shipment Setting Page"];
 }
 
 - (void)registerNibs {

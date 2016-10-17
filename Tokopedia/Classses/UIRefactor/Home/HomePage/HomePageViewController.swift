@@ -69,7 +69,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.requestBanner()
-       // self.requestMiniSlider()
+        AnalyticsManager.trackScreenName("Top Category")
     }
     
     override func viewDidDisappear(animated: Bool) {

@@ -22,4 +22,7 @@
 @property (nonatomic, strong) NSString *shipment_package_name;
 
 @property (nonatomic, strong) NSString *auto_resi_image;
+
+@property (nonatomic, strong)ShippingInfoShipmentPackage *selected_shipment_package;
+
 @end

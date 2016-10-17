@@ -107,8 +107,7 @@ NSInteger const bannerHeight = 115;
     [self initNotificationManager];
     [self loadBanners];
     
-    self.screenName = @"Top Category";
-    [TPAnalytics trackScreenName:@"Top Category"];
+    [AnalyticsManager trackScreenName:@"Top Category"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

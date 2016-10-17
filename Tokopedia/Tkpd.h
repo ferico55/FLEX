@@ -205,8 +205,6 @@ typedef enum {
 #define HelpshiftDomain @"tokopedia.helpshift.com"
 #define HelpshiftAppid @"tokopedia_platform_20150407082530564-f41c14c841c644e"
 
-#define GATrackingId @"UA-9801603-10"
-
 #define TokopediaNotificationRedirect @"redirectNotification"
 #define TokopediaNotificationReload @"reloadNotification"
 

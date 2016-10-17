@@ -8,7 +8,7 @@
 
 #import "EditShopViewController.h"
 #import "TKPDPhotoPicker.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 #import "RequestUploadImage.h"
 
 #import "EditShopTypeViewCell.h"
@@ -34,7 +34,6 @@
 <
     EditShopDelegate,
     TKPDPhotoPickerDelegate,
-    GenerateHostDelegate,
     CloseShopDelegate
 >
 
@@ -93,7 +92,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Info Setting Page"];
+    [AnalyticsManager trackScreenName:@"Shop Info Setting Page"];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -125,10 +124,11 @@
 }
 
 - (void)generateHost {
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        _generatedHost = host;
+    } onFailure:^{
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Navigation items
@@ -343,18 +343,6 @@
 
 -(NSString*)goldMerchantURL{
     return @"https://gold.tokopedia.com";
-}
-
-#pragma mark - Generate Host
-
--(void)successGenerateHost:(GenerateHost *)generateHost {
-    _generatedHost = generateHost.result.generated_host;
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
-    [self.tableView reloadData];
 }
 
 #pragma mark - Edit status delegate

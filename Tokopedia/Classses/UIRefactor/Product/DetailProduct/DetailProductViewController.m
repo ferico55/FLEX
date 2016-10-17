@@ -84,8 +84,6 @@
 
 #import "PriceAlertRequest.h"
 
-#import "TPLocalytics.h"
-
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -307,9 +305,6 @@ TTTAttributedLabelDelegate
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
-    // GTM
-    [self configureGTM];
-    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
@@ -436,8 +431,7 @@ TTTAttributedLabelDelegate
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Product Information";
-    [TPAnalytics trackScreenName:@"Product Information"];
+    [AnalyticsManager trackScreenName:@"Product Information"];
     
     _promoteNetworkManager.delegate = self;
     
@@ -561,7 +555,10 @@ TTTAttributedLabelDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Review"];
+                    [AnalyticsManager trackEventName:@"clickPDP"
+                                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                              action:GA_EVENT_ACTION_CLICK
+                                               label:@"Review"];
                 }
                 break;
             }
@@ -588,7 +585,10 @@ TTTAttributedLabelDelegate
                 vc.data = data;
 
                 [self.navigationController pushViewController:vc animated:YES];
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Talk"];
+                [AnalyticsManager trackEventName:@"clickPDP"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Talk"];
                 break;
             }
             case 15:
@@ -609,7 +609,10 @@ TTTAttributedLabelDelegate
             case 16:
             {
                 //Buy
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickBuy" action:@"Click" label:@"Buy"];
+                [AnalyticsManager trackEventName:@"clickBuy"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Buy"];
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
                     transactionVC.wholeSales = _product.data.wholesale_price;
@@ -635,7 +638,10 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
+                [AnalyticsManager trackEventName:@"clickFavoriteShop"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -657,7 +663,10 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 18 : {
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
+                [AnalyticsManager trackEventName:@"clickFavoriteShop"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
@@ -1206,7 +1215,6 @@ TTTAttributedLabelDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagOtherProduct)
-        //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
         return @"/search/v2.3/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
@@ -1697,7 +1705,7 @@ TTTAttributedLabelDelegate
         //save response data to plist
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
-        [self trackProduct];
+        [AnalyticsManager trackProductView:_product];
         [self requestprocess:object];
     }
 }
@@ -1897,22 +1905,6 @@ TTTAttributedLabelDelegate
         }
     }
 }
-
-- (void)trackProduct {
-    [TPAnalytics trackProductView:_product.data.info];
-    [TPLocalytics trackProductView:_product];
-    
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
-    
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
-                                                                                 AFEventParamPrice : price?:@"",
-                                                                                 AFEventParamContentId : _product.data.info.product_id?:@"",
-                                                                                 AFEventParamCurrency : @"IDR",
-                                                                                 AFEventParamContentType : @"Product"
-                                                                                 }];
-
-}
-
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
@@ -2161,7 +2153,10 @@ TTTAttributedLabelDelegate
 
 - (void)expand:(CustomButtonExpandDesc *)sender
 {
-    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Product Description"];
+    [AnalyticsManager trackEventName:@"clickPDP"
+                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Product Description"];
     isExpandDesc = !isExpandDesc;
     [_table reloadData];
 }
@@ -2178,7 +2173,10 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
-            [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Share"];
+            [AnalyticsManager trackEventName:@"clickPDP"
+                                    category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Share"];
         }];
         
     }
@@ -2238,7 +2236,10 @@ TTTAttributedLabelDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
-        [TPAnalytics trackProductDetailPageWithEvent:@"clickReport" action:@"Click" label:@"Report"];
+        [AnalyticsManager trackEventName:@"clickReport"
+                                category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Report"];
         [self goToReportProductViewController];
     } else {
         LoginViewController *loginVC = [LoginViewController new];
@@ -2621,7 +2622,10 @@ TTTAttributedLabelDelegate
 
 - (void)setWishList
 {
-    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
+    [AnalyticsManager trackEventName:@"clickWishlist"
+                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
         
@@ -2659,12 +2663,10 @@ TTTAttributedLabelDelegate
                                      @"Product Category" : productCategory
                                      };
         
-        [Localytics tagEvent:@"Event : Add To Wishlist" attributes:attributes];
+        [AnalyticsManager localyticsEvent:@"Event : Add To Wishlist" attributes:attributes];
         
-        [Localytics incrementValueBy:1
-                 forProfileAttribute:@"Profile : Has Wishlist"
-                           withScope:LLProfileScopeApplication];
-    
+        [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
+                
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -2885,18 +2887,6 @@ TTTAttributedLabelDelegate
     [UIPasteboard generalPasteboard].string = _descriptionLabel.text;
 }
 
-#pragma mark - Other Method
-
-- (void)configureGTM {
-    //    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
-    _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
-}
-
 - (void)addImpressionClick {
     _promoRequest = [[PromoRequest alloc] init];
     [_promoRequest requestForClickURL:[_data objectForKey:PromoClickURL]
@@ -2930,7 +2920,7 @@ TTTAttributedLabelDelegate
 #pragma mark - Push other product
 
 - (void)didSelectOtherProduct:(SearchAWSProduct *)product {
-    [TPAnalytics trackProductClick:product];
+    [AnalyticsManager trackProductClick:product];
     NavigateViewController *navigateController = [NavigateViewController new];
     [navigateController navigateToProductFromViewController:self
                                                    withName:product.product_name

@@ -33,11 +33,8 @@
 
 #import "ShipmentViewController.h"
 
-#import "TPAnalytics.h"
-
 #import "AddShop.h"
 #import "RequestUploadImage.h"
-#import "RequestGenerateHost.h"
 #import "UserAuthentificationManager.h"
 
 #import "ProductAddEditViewController.h"
@@ -46,7 +43,6 @@
 
 #import <GoogleMaps/GoogleMaps.h>
 
-#import "TPAnalytics.h"
 #import "EtalaseList.h"
 #import "MHVerticalTabBarController.h"
 #import "EtalaseViewController.h"
@@ -114,7 +110,17 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
-
+#import "AnalyticsManager.h"
+#import "AnalyticsString.h"
+#import "ProfileEdit.h"
+#import "ProfileEditForm.h"
+#import "ProfileSettings.h"
+#import "AddressForm.h"
+#import "FavoriteShop.h"
+#import "FavoritedResult.h"
+#import "V4Response.h"
+#import "TransactionCalculatePrice.h"
+#import "TransactionAction.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
