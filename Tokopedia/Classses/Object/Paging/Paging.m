@@ -54,7 +54,7 @@
 
 +(NSDictionary *)attributeMappingDictionaryForWishlist
 {
-    return @{@"uri_next" : @"next_url"};
+    return @{@"next_url" : @"uri_next"};
 }
 
 + (RKObjectMapping*)mappingForWishlist {

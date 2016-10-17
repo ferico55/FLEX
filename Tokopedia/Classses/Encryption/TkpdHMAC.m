@@ -62,7 +62,7 @@
                                     };
     
     NSString *output;
-    NSString *secret = secretsByUrls[url];
+    NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
     
     //set request method
     [self setRequestMethod:method];
