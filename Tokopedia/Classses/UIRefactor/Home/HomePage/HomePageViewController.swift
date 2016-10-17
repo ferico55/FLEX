@@ -157,8 +157,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             imageViewContainer.addSubview(iconImageView)
             iconImageView.mas_makeConstraints({ (make) in
                 make.center.equalTo()(imageViewContainer)
-                make.height.mas_equalTo()(self.imageCategoryWidth)
-                make.width.mas_equalTo()(self.imageCategoryWidth)
+                make.height.width().mas_equalTo()(self.imageCategoryWidth)
             })
             iconImageView.contentMode = .ScaleAspectFit
             iconStackView.addArrangedSubview(imageViewContainer)
@@ -553,30 +552,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     let categoryName = layoutRow.name
                     let categoryId = layoutRow.category_id
                     
-                    
-                    let searchResultProductViewController = SearchResultViewController()
-                    searchResultProductViewController.hidesBottomBarWhenPushed = true
-                    searchResultProductViewController.isFromDirectory = true
-                    searchResultProductViewController.data = ["sc" : categoryId, "department_name": categoryName, "type" : "search_product"]
-                    
-                    let searchResultCatalogViewController = SearchResultViewController()
-                    searchResultCatalogViewController.hidesBottomBarWhenPushed = true
-                    searchResultCatalogViewController.isFromDirectory = true
-                    searchResultCatalogViewController.data = ["sc" : categoryId, "department_name": categoryName, "type" : "search_catalog"]
-                    
-                    let subViewControllers = [searchResultProductViewController, searchResultCatalogViewController]
-                    
-                    let tkpdTabNavigationController = TKPDTabNavigationController()
-                    searchResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController
-                    let data = ["type": 1, "department_id" : categoryId] as NSMutableDictionary
-                    tkpdTabNavigationController.data = data
-                    tkpdTabNavigationController.navigationTitle = categoryName ?? ""
-                    tkpdTabNavigationController.selectedIndex = 0
-                    tkpdTabNavigationController.viewControllers = subViewControllers
-                    tkpdTabNavigationController.hidesBottomBarWhenPushed = true
-                    
-                    self.navigationController?.pushViewController(tkpdTabNavigationController, animated: true)
-                    
+                    let navigateViewController = NavigateViewController()
+                    navigateViewController.navigateToCategoryFromViewController(self, withCategoryId: categoryId, categoryName: categoryName)
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
                     let webViewController = WebViewController()
@@ -593,7 +570,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                         }
                     }
                     self.navigationController?.pushViewController(webViewController, animated: true)
-                    
+                    break
                 }
             }
         }

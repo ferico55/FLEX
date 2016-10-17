@@ -349,6 +349,31 @@
     [viewController.navigationController pushViewController:catalogViewController animated:YES];
 }
 
+- (void)navigateToCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName{
+    SearchResultViewController *searchResultProductViewController = [SearchResultViewController new];
+    searchResultProductViewController.hidesBottomBarWhenPushed = YES;
+    searchResultProductViewController.isFromDirectory = YES;
+    searchResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
+    
+    SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
+    searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
+    searchResultCatalogViewController.isFromDirectory = YES;
+    searchResultCatalogViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_catalog"};
+    
+    NSArray *subViewControllers = @[searchResultProductViewController, searchResultCatalogViewController];
+    
+    TKPDTabNavigationController *tkpdTabNavigationController = [TKPDTabNavigationController new];
+    searchResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController;
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": @1, @"department_id" : categoryId}];
+    tkpdTabNavigationController.data = data;
+    tkpdTabNavigationController.navigationTitle = categoryName ?: @"";
+    tkpdTabNavigationController.selectedIndex = 0;
+    tkpdTabNavigationController.viewControllers = subViewControllers;
+    tkpdTabNavigationController.hidesBottomBarWhenPushed = true;
+    
+    [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
+}
+
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
