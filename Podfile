@@ -59,4 +59,12 @@ post_install do |installer|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
         end
     end
+
+    # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
+    clear_component_kit_umbrella_header
+end
+
+def clear_component_kit_umbrella_header
+    file = File.open('./Pods/Target Support Files/ComponentKit/ComponentKit-umbrella.h', 'w')
+    file.close
 end
