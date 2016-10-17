@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelbranch;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
@@ -53,10 +52,6 @@
                                                                      action:@selector(tap:)];
     editBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = editBarButton;
-
-    [self.scrollView addSubview:_contentView];
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
-                                             self.view.frame.size.height-63);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEditBankAccount:)
