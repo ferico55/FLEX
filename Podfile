@@ -33,6 +33,7 @@ def common_pods
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'Localytics'
+    pod 'JLRoutes'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -58,4 +59,12 @@ post_install do |installer|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
         end
     end
+
+    # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
+    clear_component_kit_umbrella_header
+end
+
+def clear_component_kit_umbrella_header
+    file = File.open('./Pods/Target Support Files/ComponentKit/ComponentKit-umbrella.h', 'w')
+    file.close
 end
