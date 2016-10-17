@@ -140,8 +140,7 @@ static NSString const *rows = @"12";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Shop Search Result"];
-    self.screenName = @"Shop Search Result";
+    [AnalyticsManager trackScreenName:@"Shop Search Result"];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }

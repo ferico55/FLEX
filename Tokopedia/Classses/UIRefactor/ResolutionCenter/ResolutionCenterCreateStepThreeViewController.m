@@ -67,7 +67,7 @@
                                                                         
                                                                     }];
     
-    [TPAnalytics trackScreenName:@"Resolution Center Create Solution Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Create Solution Page"];
 }
 
 - (void)didReceiveMemoryWarning {

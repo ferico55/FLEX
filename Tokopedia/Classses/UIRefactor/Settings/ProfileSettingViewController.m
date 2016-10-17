@@ -59,7 +59,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Profile Settings Page"];
+    [AnalyticsManager trackScreenName:@"Profile Settings Page"];
 }
 
 - (void)didReceiveMemoryWarning

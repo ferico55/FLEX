@@ -10,10 +10,10 @@
 
 #import "ListFavorited.h"
 
-@interface FavoritedResult : NSObject
+@interface FavoritedResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger total_page;
 @property (nonatomic, strong) NSNumber *page;
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray <ListFavorited*>*list;
 
 @end

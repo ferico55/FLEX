@@ -18,7 +18,6 @@
 #define kTKPDHOMEPRODUCTFEEDACT @"get_product_feed"
 #define kTKPDGET_WISH_LIST @"get_wishlist"
 #define kTKPDHOMEHISTORYPRODUCTACT @"get_recent_view_product"
-#define kTKPDHOMEFAVORITESHOPACT @"get_favorite_shop"
 
 #define kTKPDHOMEHOTLIST_LIMITPAGE 10
 #define kTKPDHOMEHOTLISTRESULT_LIMITPAGE 12

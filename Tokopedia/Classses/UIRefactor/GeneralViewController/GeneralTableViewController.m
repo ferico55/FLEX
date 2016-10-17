@@ -96,7 +96,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"General Table Page"];
+    [AnalyticsManager trackScreenName:@"General Table Page"];
 }
 
 - (void)didReceiveMemoryWarning {

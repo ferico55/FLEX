@@ -73,7 +73,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Reject Reason Close Shop Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Close Shop Page"];
 }
 
 - (void)registerForKeyboardNotifications

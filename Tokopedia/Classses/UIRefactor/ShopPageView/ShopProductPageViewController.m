@@ -335,8 +335,7 @@ EtalaseViewControllerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop - Product List"];
-    self.screenName = @"Shop - Product List";
+    [AnalyticsManager trackScreenName:@"Shop - Product List"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -431,7 +430,7 @@ EtalaseViewControllerDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
     
-    [TPAnalytics trackProductClick:product];
+    [AnalyticsManager trackProductClick:product];
     
     NSString *shopName = product.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
@@ -777,7 +776,7 @@ EtalaseViewControllerDelegate
                                                                [_product addObjectsFromArray:result.list];
                                                            }
                                                            
-                                                           [TPAnalytics trackProductImpressions:result.list];
+                                                           [AnalyticsManager trackProductImpressions:result.list];
                                                            
                                                            if (_product.count >0) {
                                                                _isNoData = NO;

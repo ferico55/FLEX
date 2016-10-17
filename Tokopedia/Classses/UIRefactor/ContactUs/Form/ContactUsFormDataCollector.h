@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic, strong) NSString *invoice;
 @property (nonatomic, strong) TicketCategory *ticketCategory;
-@property (nonatomic, strong) GenerateHost *generateHost;
+@property (nonatomic, strong) GeneratedHost *generateHost;
 
 - (NSArray *)getPhotosFromPhotoPickerData:(NSDictionary *)data;
 - (void)addUploadedPhoto:(UIImage *)photo photoURL:(NSString *)url;

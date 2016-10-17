@@ -58,7 +58,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Setting Notification Page"];
+    [AnalyticsManager trackScreenName:@"Setting Notification Page"];
 }
 
 #pragma mark - Bar button item

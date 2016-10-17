@@ -10,7 +10,6 @@ def common_pods
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
     pod 'GoogleAppIndexing'
-    pod 'Google/Analytics'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
@@ -23,7 +22,7 @@ def common_pods
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
     pod "JLPermissions/Contacts"
-    pod 'Google/SignIn'
+    pod 'GoogleSignIn', '~> 2.4.0'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
     pod 'CardIO'
@@ -33,8 +32,8 @@ def common_pods
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
-    pod 'JLRoutes'   
- 
+    pod 'Localytics'
+    
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
     pod 'AFNetworking', '~> 3.1.0'

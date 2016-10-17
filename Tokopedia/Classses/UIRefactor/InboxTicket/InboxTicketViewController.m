@@ -79,7 +79,7 @@ NoResultDelegate
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Inbox Ticket Page"];
+    [AnalyticsManager trackScreenName:@"Inbox Ticket Page"];
 }
 
 - (void)didReceiveMemoryWarning {

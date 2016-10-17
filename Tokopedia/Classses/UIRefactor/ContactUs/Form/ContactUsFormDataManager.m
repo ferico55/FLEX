@@ -61,7 +61,7 @@
 }
 
 - (void)replyTicketPictureWithQuery:(ContactUsQuery *)query
-                               host:(GenerateHost *)host
+                               host:(GeneratedHost *)host
                            response:(void (^)(ReplyInboxTicket *))response
                       errorMessages:(void (^)(NSArray *))errorMessages {
     NSDictionary *parameters = query.parameters;
