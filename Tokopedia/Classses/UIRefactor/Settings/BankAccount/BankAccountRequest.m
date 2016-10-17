@@ -7,8 +7,9 @@
 //
 
 #import "BankAccountRequest.h"
-#import "BankAccountForm.h"
-#import "BankAccountGetDefaultForm.h"
+#import "BankAccountGetDefaultFormResult.h"
+#import "V4Response.h"
+#import "BankAccountFormResult.h"
 
 @interface BankAccountRequest()
 
@@ -38,10 +39,15 @@
                                    path:@"/v4/people/get_bank_account.pl"
                                  method:RKRequestMethodGET
                               parameter:@{}
-                                mapping:[BankAccountForm mapping]
+                                mapping:[V4Response mappingWithData:[BankAccountFormResult mapping]]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  BankAccountForm *obj = [successResult.dictionary objectForKey:@""];
-                                  successCallback(obj.result);
+                                  V4Response *obj = [successResult.dictionary objectForKey:@""];
+                                  if (obj.message_error.count>0){
+                                      [StickyAlertView showErrorMessage:obj.message_error];
+                                      errorCallback(nil);
+                                  } else {
+                                      successCallback(obj.data);
+                                  }
                               }
                               onFailure:^(NSError *errorResult) {
                                   errorCallback(errorResult);
@@ -57,11 +63,11 @@
                                    path:@"/v4/people/get_default_bank_account.pl"
                                  method:RKRequestMethodGET
                               parameter:@{@"account_id" : accountID}
-                                mapping:[BankAccountGetDefaultForm mapping]
+                                mapping:[V4Response mappingWithData:[BankAccountGetDefaultFormResult mapping]]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  BankAccountGetDefaultForm *obj = [successResult.dictionary objectForKey:@""];
+                                  V4Response<BankAccountGetDefaultFormResult*> *obj = [successResult.dictionary objectForKey:@""];
                                   [self editDefaultBankAccountWithAccountID:accountID
-                                                                    ownerID:obj.result.default_bank.bank_owner_id];
+                                                                    ownerID:obj.data.default_bank.bank_owner_id];
                                   _successCompletionBlock = successCallback;
                                   _errorCompletionBlock = errorCallback;
                               }

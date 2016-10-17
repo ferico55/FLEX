@@ -7,7 +7,6 @@
 //
 
 #import "profile.h"
-#import "BankAccountGetDefaultForm.h"
 #import "ProfileSettings.h"
 #import "GeneralList1GestureCell.h"
 #import "GeneralCheckmarkCell.h"
