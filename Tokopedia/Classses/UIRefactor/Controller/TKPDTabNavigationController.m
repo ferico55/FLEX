@@ -12,6 +12,7 @@
 #import "FilterCategoryViewController.h"
 #import "SearchResultShopViewController.h"
 #import "SearchResultViewController.h"
+#import "Tokopedia-Swift.h"
 
 #import "DBManager.h"
 
