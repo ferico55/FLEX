@@ -27,6 +27,8 @@
 #import "UIAlertView+BlocksKit.h"
 #import "TransactionATCViewController.h"
 
+#import "NSNumberFormatter+IDRFormater.h"
+
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
@@ -42,7 +44,7 @@ RetryViewDelegate
 >
 
 
-@property (nonatomic, strong) NSMutableArray *product;
+@property (nonatomic, strong) NSMutableArray<MyWishlistData *> *product;
 @property (nonatomic, assign) CGFloat lastContentOffset;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -155,16 +157,22 @@ typedef enum TagRequest {
 - (void)loadProduct {
     TokopediaNetworkManager* network = [TokopediaNetworkManager new];
     network.isUsingHmac = YES;
-    [network requestWithBaseUrl:[NSString v4Url]
-                           path:@"/v4/home/get_wishlist.pl"
+    __weak typeof(self) weakSelf = self;
+    [network requestWithBaseUrl:[NSString mojitoUrl]
+                           path:[self getWishlistPath]
                          method:RKRequestMethodGET
-                      parameter:@{@"page" : @(_page), @"limit" : @"10"}
-                        mapping:[self mapping]
+                      parameter:@{@"page" : @(_page), @"count" : @"10"}
+                        mapping:[MyWishlistResponse mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                          [self didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+                          [weakSelf didReceiveProduct:[successResult.dictionary objectForKey:@""]];
                       } onFailure:^(NSError *errorResult) {
                           _isFailRequest = NO;
                       }];
+}
+
+-(NSString *) getWishlistPath {
+    NSString *userId = [_userManager getUserId];
+    return [NSString stringWithFormat:@"/v1.0.1/users/%@/wishlist/products", userId];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -194,7 +202,9 @@ typedef enum TagRequest {
     
     ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
     
-    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
+    
+    
+    MyWishlistData *list = ((MyWishlistData *)[_product objectAtIndex:indexPath.row]);
     [cell setViewModel:list.viewModel];
     
     __weak typeof(self) weakSelf = self;
@@ -204,14 +214,14 @@ typedef enum TagRequest {
                                   action:GA_EVENT_ACTION_CLICK
                                    label:@"Buy"];
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
-        transactionVC.productID = list.product_id;
+        transactionVC.productID = list.id;
         transactionVC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:transactionVC animated:YES];
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
         [UIAlertView bk_showAlertViewWithTitle:@"Hapus Wishlist"
-                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.product_name]
+                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.name]
                              cancelButtonTitle:@"Tidak"
                              otherButtonTitles:@[@"Yakin"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -233,14 +243,11 @@ typedef enum TagRequest {
     return cell;
 }
 
-- (void)requestRemoveWishlist:(WishListObjectList*)list withIndexPath:(NSIndexPath*)indexPath {
+- (void)requestRemoveWishlist:(MyWishlistData*)list withIndexPath:(NSIndexPath*)indexPath {
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
-    [removeWishlistRequest requestWithBaseUrl:[NSString v4Url]
-                                         path:@"/v4/action/wishlist/remove_wishlist_product.pl"
-                                       method:RKRequestMethodGET
-                                    parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
-                                      mapping:[self actionRemoveWishlistMapping]
+    NSString *productId = list.id;
+    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : [_userManager getUserId]} parameter:nil mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         [_collectionView performBatchUpdates:^ {
                                             [_product removeObjectAtIndex:indexPath.row];
@@ -276,13 +283,13 @@ typedef enum TagRequest {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    WishListObjectList *product = [_product objectAtIndex:indexPath.row];
+    MyWishlistData *product = [_product objectAtIndex:indexPath.row];
     [AnalyticsManager trackProductClick:product];
     [AnalyticsManager trackEventName:@"clickWishlist"
                             category:GA_EVENT_CATEGORY_WISHLIST
                               action:GA_EVENT_ACTION_VIEW
-                               label:product.product_name];
-    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
+                               label:product.name];
+    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[[NSNumberFormatter IDRFormatter] stringFromNumber:product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
 }
 
 #pragma mark - Memory Management
@@ -350,19 +357,19 @@ typedef enum TagRequest {
     return statusMapping;
 }
 
-- (void)didReceiveProduct:(WishListObject*)productStore {
+- (void)didReceiveProduct:(MyWishlistResponse*)productStore {
     if(_page == 1) {
-        _product = [productStore.data.list mutableCopy];
+        _product = [productStore.data mutableCopy];
     } else {
-        [_product addObjectsFromArray: productStore.data.list];
+        [_product addObjectsFromArray: productStore.data];
     }
     
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
-        _nextPageUri =  productStore.data.paging.uri_next;
+        _nextPageUri =  productStore.pagination.uri_next;
         _page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
-        
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -410,8 +417,8 @@ typedef enum TagRequest {
     NSString *productId = [notification object];
     
     for (int i = 0; i < _product.count; i++) {
-        WishListObjectList* wish = _product[i];
-        if ([wish.product_id isEqualToString:productId]) {
+        MyWishlistData* wish = _product[i];
+        if ([wish.id isEqualToString:productId]) {
             [_product removeObjectAtIndex:i];
             i--;
         }

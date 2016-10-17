@@ -51,8 +51,6 @@
 #import "ImageSearchResponse.h"
 #import "ImageSearchRequest.h"
 
-#import "Tokopedia-Swift.h"
-
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {

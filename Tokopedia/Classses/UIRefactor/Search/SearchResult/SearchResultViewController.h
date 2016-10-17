@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Tokopedia-Swift.h"
 #import "TKPDTabNavigationController.h"
 
 @protocol SearchResultDelegate <NSObject>
