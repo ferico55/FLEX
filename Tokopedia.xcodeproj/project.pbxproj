@@ -2666,6 +2666,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		92F895FA1DB4D847008839AF /* ProductTalkDetailHeaderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92F895F91DB4D847008839AF /* ProductTalkDetailHeaderView.mm */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6519,6 +6520,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		92F895F81DB4D847008839AF /* ProductTalkDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkDetailHeaderView.h; sourceTree = "<group>"; };
+		92F895F91DB4D847008839AF /* ProductTalkDetailHeaderView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProductTalkDetailHeaderView.mm; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -11490,6 +11493,8 @@
 		453FC98B1DB4B92700125AD5 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
+				92F895F81DB4D847008839AF /* ProductTalkDetailHeaderView.h */,
+				92F895F91DB4D847008839AF /* ProductTalkDetailHeaderView.mm */,
 				453FC98C1DB4B92700125AD5 /* ProductTalkDetailViewController.h */,
 				453FC98D1DB4B92700125AD5 /* ProductTalkDetailViewController.m */,
 				453FC98E1DB4B92700125AD5 /* ProductTalkFormViewController.h */,
@@ -15361,6 +15366,7 @@
 				453FD3A31DB4B93900125AD5 /* RejectReasonViewController.m in Sources */,
 				453FD1821DB4B93400125AD5 /* TKPDAlert.m in Sources */,
 				453FD3691DB4B93800125AD5 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
+				92F895FA1DB4D847008839AF /* ProductTalkDetailHeaderView.mm in Sources */,
 				453FCE671DB4B92F00125AD5 /* DelayedActionManager.swift in Sources */,
 				453FCF791DB4B93000125AD5 /* ProfileEditFormResult.m in Sources */,
 				453FD32C1DB4B93700125AD5 /* RatingComponent.mm in Sources */,
