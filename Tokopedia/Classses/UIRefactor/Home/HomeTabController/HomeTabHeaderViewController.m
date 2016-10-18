@@ -13,6 +13,8 @@
 #import "OAStackView.h"
 #import "Masonry.h"
 
+#define STACKVIEW_LEFTRIGHT_MARGIN 20
+
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
     NSInteger _viewControllerIndex;
@@ -61,6 +63,14 @@
     _stackView.axis = UILayoutConstraintAxisHorizontal;
     _stackView.alignment = OAStackViewAlignmentFill;
     [_scrollView addSubview:_stackView];
+
+}
+
+#pragma mark - Lifecycle
+- (void)viewDidLayoutSubviews {
+    CGRect newFrame = _scrollView.frame;
+    newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
+    _scrollView.frame = newFrame;
     if(IS_IPAD) {
         [_scrollView setScrollEnabled:NO];
         _stackView.distribution = OAStackViewDistributionFillEqually;
@@ -73,21 +83,15 @@
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
-    }
-}
+        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(_scrollView);
+            make.left.mas_equalTo(_scrollView).with.offset(STACKVIEW_LEFTRIGHT_MARGIN);
+            make.right.mas_equalTo(_scrollView).with.offset(-STACKVIEW_LEFTRIGHT_MARGIN);
+            make.height.mas_equalTo(_scrollView);
+        }];
 
-#pragma mark - Lifecycle
-- (void)viewDidLayoutSubviews {
-    CGRect newFrame = _scrollView.frame;
-    newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
-    _scrollView.frame = newFrame;
-    [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.mas_equalTo(_scrollView);
-        make.left.mas_equalTo(_scrollView).with.offset([self calculateLeadingNeededToMakeButtonCentered:0]);
-        make.right.mas_equalTo(_scrollView).with.offset((-[[UIScreen mainScreen]bounds].size.width / 2) + [_stackView.arrangedSubviews lastObject].frame.size.width / 2);
-        make.height.mas_equalTo(_scrollView);
-    }];
-}
+    }
+    }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -168,41 +172,41 @@
 
 - (void)tap:(int)page {
     [self.view layoutIfNeeded];
+    NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:page-1] convertPoint:CGPointZero toView:_scrollView].x;
     switch (page) {
         case 1 :{
-            NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:0] convertPoint:CGPointZero toView:_scrollView].x;
-            _totalOffset = xInScrollView - [self calculateLeadingNeededToMakeButtonCentered:0];
+            _totalOffset = 0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
             break;
         }
             
         case 2 : {
-            NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:1] convertPoint:CGPointZero toView:_scrollView].x;
-            _totalOffset = xInScrollView - [self calculateLeadingNeededToMakeButtonCentered:1];
+            _totalOffset = xInScrollView / 2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
             break;
         }
             
         case 3 : {
-            NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:2] convertPoint:CGPointZero toView:_scrollView].x;
-            _totalOffset = xInScrollView - [self calculateLeadingNeededToMakeButtonCentered:2];            [self tapButtonAnimate:_totalOffset];
+            xInScrollView = xInScrollView / 2;
+            _totalOffset = xInScrollView;
+            [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
             break;
         }
             
         case 4 : {
-            NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:3] convertPoint:CGPointZero toView:_scrollView].x;
-            _totalOffset = xInScrollView - [self calculateLeadingNeededToMakeButtonCentered:3];
+            xInScrollView = xInScrollView / 2;
+            _totalOffset = xInScrollView;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
             break;
         }
             
         case 5 : {
-            NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:4] convertPoint:CGPointZero toView:_scrollView].x;
-            _totalOffset = xInScrollView - [self calculateLeadingNeededToMakeButtonCentered:4];
+             xInScrollView = xInScrollView - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:page-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
+            _totalOffset = xInScrollView;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
             break;
