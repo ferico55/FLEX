@@ -644,7 +644,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                 category:GA_EVENT_CATEGORY_MORE
                                   action:GA_EVENT_ACTION_CLICK
                                    label:@"Profile"];
-        [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
