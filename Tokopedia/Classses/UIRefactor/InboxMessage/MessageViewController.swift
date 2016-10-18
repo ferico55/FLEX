@@ -104,15 +104,19 @@ class MessageViewController: JSQMessagesViewController {
     //MARK: TextView Delegate
     override func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         var urlString : String!
-        if(URL.host == "www.tokopedia.com") {
-            urlString = URL.absoluteString!
-        } else {
-            urlString = "https://tkp.me/r?url=\(URL.absoluteString!.stringByReplacingOccurrencesOfString("*", withString: "."))"
+        if(URL.scheme == "http" || URL.scheme == "https") {
+            if(URL.host == "www.tokopedia.com") {
+                urlString = URL.absoluteString!
+            } else {
+                urlString = "https://tkp.me/r?url=\(URL.absoluteString!.stringByReplacingOccurrencesOfString("*", withString: "."))"
+            }
+            
+            self.openWebViewWithUrl(urlString)
+            
+            return false
         }
         
-        self.openWebViewWithUrl(urlString)
-        
-        return false
+        return true
     }
     
     //MARK: Bubble Setup
@@ -134,7 +138,7 @@ class MessageViewController: JSQMessagesViewController {
                 onSuccess: { [unowned self] (result, operation) in
                     
                     let result = result.dictionary()[""] as! InboxMessageDetail
-                    if(result.message_error.count == 0) {
+                    if((result.message_error == nil)) {
                         self.didReceiveMessages(result.result.list as! [InboxMessageDetailList])
                         
                         self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
