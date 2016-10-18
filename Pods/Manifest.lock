@@ -82,7 +82,7 @@ PODS:
   - JLPermissions/Notification (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
-  - JLRoutes (2.0)
+  - JLRoutes (1.6.4)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
@@ -137,7 +137,7 @@ DEPENDENCIES:
   - GoogleTagManager
   - JLPermissions/Contacts
   - JLPermissions/Notification
-  - JLRoutes
+  - JLRoutes (~> 1.6.2)
   - Localytics
   - Masonry
   - NJKWebViewProgress
@@ -178,7 +178,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 8bbc733218aad26306f9d4a253823986110e3358
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
-  JLRoutes: 0bead23690bafa726e1528aa6459a56c9b81cb5e
+  JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
