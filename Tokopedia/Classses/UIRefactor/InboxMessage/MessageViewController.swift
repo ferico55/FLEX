@@ -71,6 +71,8 @@ class MessageViewController: JSQMessagesViewController {
             cell.textView!.textColor = UIColor.blackColor()
         }
         
+        cell.textView!.delegate = self
+        
         return cell
     }
     
@@ -99,6 +101,20 @@ class MessageViewController: JSQMessagesViewController {
         
     }
     
+    //MARK: TextView Delegate
+    override func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        var urlString : String!
+        if(URL.host == "www.tokopedia.com") {
+            urlString = URL.absoluteString!
+        } else {
+            urlString = "https://tkp.me/r?url=\(URL.absoluteString!.stringByReplacingOccurrencesOfString("*", withString: "."))"
+        }
+        
+        self.openWebViewWithUrl(urlString)
+        
+        return false
+    }
+    
     //MARK: Bubble Setup
     private func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
@@ -116,11 +132,15 @@ class MessageViewController: JSQMessagesViewController {
                 parameter: ["message_id" : messageId, "page" : page, "per_page" : "10"],
                 mapping: InboxMessageDetail.mapping(),
                 onSuccess: { [unowned self] (result, operation) in
-                    let result = result.dictionary()[""] as! InboxMessageDetail
-                    self.didReceiveMessages(result.result.list as! [InboxMessageDetailList])
                     
-                    self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
-                    self.nextPage = result.result.paging.uriNext.valueForKey("page")
+                    let result = result.dictionary()[""] as! InboxMessageDetail
+                    if(result.message_error.count == 0) {
+                        self.didReceiveMessages(result.result.list as! [InboxMessageDetailList])
+                        
+                        self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
+                        self.nextPage = result.result.paging.uriNext.valueForKey("page")
+                    }
+                    
                 },
                 onFailure: { (error) in
             
@@ -137,11 +157,12 @@ class MessageViewController: JSQMessagesViewController {
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
             
             let dateObj = dateFormatter.dateFromString(dateString)!
+            let messageReply = NSString.extracTKPMEUrl(message.message_reply)
             
             if(message.user_id == self.senderId) {
-                self.addMessage(self.senderId, text: message.message_reply, senderName: "",date: dateObj)
+                self.addMessage(self.senderId, text: messageReply , senderName: "",date: dateObj)
             } else {
-                self.addMessage(message.user_id, text: message.message_reply, senderName: message.user_name, date: dateObj)
+                self.addMessage(message.user_id, text: messageReply, senderName: message.user_name, date: dateObj)
                 let image = UIImage(data: NSData(contentsOfURL: NSURL(string: message.user_image)!)!)
                 
                 avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
@@ -155,6 +176,19 @@ class MessageViewController: JSQMessagesViewController {
     func addMessage(id: String, text: String, senderName: String, date: NSDate) {
         let message = JSQMessage(senderId: id, senderDisplayName: senderName, date: date, text: text)
         messages.insert(message, atIndex: 0)
+    }
+    
+    private func openWebViewWithUrl(url: String) {
+        let controller = WebViewController()
+        controller.strURL = url
+        controller.strTitle = url
+        controller.onTapLinkWithUrl = {[unowned self] tappedUrl in
+            if(tappedUrl.absoluteString == "https://www.tokopedia.com/") {
+                self.navigationController!.popViewControllerAnimated(true)
+            }
+        }
+        
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
