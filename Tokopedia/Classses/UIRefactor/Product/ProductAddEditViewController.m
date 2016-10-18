@@ -628,6 +628,8 @@ FilterCategoryViewDelegate
     _productPriceTextField.text = price;
     _productWeightTextField.text = product.product_weight?:@"";
     _form.product.product_returnable = ([_form.info.product_returnable integerValue]==3)?@"0":_form.info.product_returnable;
+    
+    _form.product.product_catalog = _form.catalog;
 }
 
 -(void)setProductForm:(ProductEditResult*)form{
@@ -866,24 +868,17 @@ FilterCategoryViewDelegate
             // Parse final integer value
             NSInteger centAmount = cleanCentString.integerValue;
             // Check the user input
-            if (string.length > 0)
-            {
+            if (string.length > 0){
                 // Digit added
                 centAmount = centAmount * 10 + string.integerValue;
-            }
-            else
-            {
+            } else {
                 // Digit deleted
                 centAmount = centAmount / 10;
             }
             // Update call amount value
             NSNumber *amount = [[NSNumber alloc] initWithFloat:(float)centAmount / 100.0f];
             // Write amount with currency symbols to the textfield
-            NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
-            [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-            [currencyFormatter setCurrencyCode:@"USD"];
-            [currencyFormatter setNegativeFormat:@"-¤#,##0.00"];
-            textField.text = [currencyFormatter stringFromNumber:amount];
+            textField.text = [[NSNumberFormatter USDFormatter] stringFromNumber:amount];
             return NO;
         }
     }

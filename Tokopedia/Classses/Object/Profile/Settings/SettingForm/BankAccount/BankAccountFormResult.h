@@ -13,7 +13,7 @@
 @interface BankAccountFormResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray<BankAccountFormList*> *list;
 
 + (RKObjectMapping *)mapping;
 

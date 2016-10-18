@@ -107,6 +107,8 @@
 #import "LoadingView.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "DeeplinkController.h"
+#import "TPContactUsDependencies.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
@@ -121,6 +123,7 @@
 #import "V4Response.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "BankAccountFormResult.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

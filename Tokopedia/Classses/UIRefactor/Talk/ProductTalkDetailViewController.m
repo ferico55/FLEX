@@ -29,6 +29,7 @@
 
 @import UITableView_FDTemplateLayoutCell;
 #import "Tokopedia-Swift.h"
+#import "ProductTalkDetailHeaderView.h"
 
 @interface ProductTalkDetailViewController ()
 <
@@ -73,17 +74,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UILabel *talkmessagelabel;
-@property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
-@property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
-@property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
-@property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
-@property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
 @property (strong, nonatomic) NSDictionary *data;
 
@@ -183,12 +175,6 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-
-    [_talkProductImage setUserInteractionEnabled: _enableDeepNavigation];
-
-
-    _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
-    _talkuserimage.layer.masksToBounds = YES;
     
     //islogin
     if([_userManager isLogin]) {
@@ -209,6 +195,25 @@
     if([self shouldFetchDataAtBeginning]){
         [self fetchTalkComments];
     }
+    
+    [self setupInputView];
+}
+
+- (void)setupInputView {
+    if(!_data || !_data.count) {
+        [_talkInputView setHidden:YES];
+    } else {
+        if([_userManager isLogin]) {
+            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+               ) {
+                [_talkInputView setHidden:NO];
+            }
+            [self adjustSendButtonAvailability];
+        } else {
+            [_talkInputView setHidden:YES];
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -219,13 +224,25 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
 
-    [self setHeaderData:_data];
+    __weak typeof(self) weakSelf = self;
+    
+    ProductTalkDetailHeaderView *headerView = [[ProductTalkDetailHeaderView alloc] initWithTalk:_talk];
+    
+    CGRect headerFrame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
+    headerView.frame = headerFrame;
+    [headerView sizeToFit];
 
-    //called to prevent error on iOS 7, haven't found explanation why
-    //if called on iOS 8 or above, this will mess up the layout
-    if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        [self.view layoutIfNeeded];
+    if (_enableDeepNavigation) {
+        headerView.onTapUser = ^(TalkList *talk){
+            [weakSelf tapUser];
+        };
+        
+        headerView.onTapProduct = ^(TalkList *talk) {
+            [weakSelf tapProduct];
+        };
     }
+    
+    _table.tableHeaderView = headerView;
 }
 
 - (NSDictionary *)generateData {
@@ -357,72 +374,6 @@
     
     UIButton *button = (UIButton *)sender;
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
-}
-
-- (void)resizeHeaderHeightToFitContent {
-    [_header layoutIfNeeded];
-    _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
-    
-    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    CGRect headerFrame = _header.frame;
-    headerFrame.size.height = height;
-    _header.frame = headerFrame;
-}
-
--(void)setHeaderData:(NSDictionary*)data
-{
-    if(!data || !data.count) {
-        [_talkInputView setHidden:YES];
-        [_header setHidden:YES];
-        return;
-    } else {
-        [_header setHidden:NO];
-        if([_userManager isLogin]) {
-            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
-               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
-               ) {
-                [_talkInputView setHidden:NO];
-            }
-            [self adjustSendButtonAvailability];
-        } else {
-            [_talkInputView setHidden:YES];
-        }
-    }
-
-    self.table.tableHeaderView = self.header;
-    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
-    
-    [self resizeHeaderHeightToFitContent];
-
-    _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
-    
-    [_userButton setLabelBackground:[data objectForKey:TKPD_TALK_USER_LABEL]];
-    [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
-    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallThemeMedium]];
-
-    [_userButton setUserInteractionEnabled:_enableDeepNavigation];
-
-    [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
-    
-    if([data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {
-        if(((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation!=nil && [((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation isEqualToString:@"1"]) {
-            [btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [btnReputation setTitle:@"" forState:UIControlStateNormal];
-        }
-        else {
-            [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", ((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive_percentage] forState:UIControlStateNormal];
-        }
-    }
-
-    NSURL *userImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
-    [_talkuserimage setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
-    _talkuserimage.userInteractionEnabled = _enableDeepNavigation;
-
-    NSURL *productImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]];
-    [_talkProductImage setImageWithURL:productImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
-
-    _productNameLabel.text = [_data objectForKey:TKPD_TALK_PRODUCT_NAME];
-    _productNameLabel.userInteractionEnabled = _enableDeepNavigation;
 }
 
 #pragma mark - Request and Mapping
@@ -611,7 +562,6 @@
         [alert show];
     } else {
         NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
-        [_talkCommentButtonLarge setTitle:totalcomment forState:UIControlStateNormal];
 
         TalkCommentList *comment = _list[_list.count-1];
         comment.is_just_sent = NO;
@@ -884,10 +834,6 @@
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
         [stickyAlertView show];
 
-        NSString *title = [NSString stringWithFormat:@"%d Komentar", (int) _list.count?:0];
-        [_talkCommentButtonLarge setTitle:title
-                                 forState:UIControlStateNormal];
-
         NSDictionary *userinfo = @{
                 TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
                 kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
@@ -904,7 +850,6 @@
 {
     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-    [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%lu Komentar",(unsigned long)[_list count]] forState:UIControlStateNormal];
     [_table reloadData];
 }
 
@@ -996,7 +941,6 @@
         [_table reloadData];
 
         [self fetchTalkComments];
-        [self setHeaderData:data];
     }
 }
 
