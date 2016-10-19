@@ -550,7 +550,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             if Int(layoutRow.id) == selectedIconStackView.tag {
                 let categoryName = layoutRow.name
                
-                AnalyticsManager.trackEventName("clickCategory", category: "Homepage", action: "Click", label: categoryName)
+                AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
                 AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName])
                 
                 if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
