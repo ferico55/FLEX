@@ -346,6 +346,10 @@
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
+    [AnalyticsManager trackEventName:@"clickNewOrder"
+                            category:GA_EVENT_CATEGORY_NEW_ORDER
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Accept Order"];
     if ([self isOrderNotExpired]) {
         if ([self isBuyerAcceptPartial]) {
             [self showAlertViewAcceptPartialConfirmation];
@@ -361,6 +365,11 @@
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
+    [AnalyticsManager trackEventName:@"clickNewOrder"
+                            category:GA_EVENT_CATEGORY_NEW_ORDER
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Reject Order"];
+    
     if ([self isBuyerAcceptPartial]) {
         [self showAlertViewRejectPartialConfirmation];
     } else {
@@ -372,6 +381,10 @@
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
 
+    [AnalyticsManager trackEventName:@"clickNewOrder"
+                            category:GA_EVENT_CATEGORY_NEW_ORDER
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Order Detail"];
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
     controller.transaction = [_orders objectAtIndex:indexPath.row];
     controller.delegate = self;

@@ -56,6 +56,12 @@
 #define GA_EVENT_CATEGORY_SECURITY_QUESTION @"Security Question"
 #define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
 #define GA_EVENT_CATEGORY_SEARCH_RESULT @"Search Result"
+#define GA_EVENT_CATEGORY_SALES @"Sales"
+#define GA_EVENT_CATEGORY_NEW_ORDER @"New Order"
+#define GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION @"Shipping"
+#define GA_EVENT_CATEGORY_SHIPMENT_STATUS @"Status"
+#define GA_EVENT_CATEGORY_TRANSACTION_LIST @"Transaction"
+#define GA_EVENT_CATEGORY_RECEIVED @"Received"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
