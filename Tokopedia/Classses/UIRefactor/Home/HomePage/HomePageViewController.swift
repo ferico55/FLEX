@@ -548,11 +548,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         for layoutRow in layoutRows {
             if Int(layoutRow.id) == selectedIconStackView.tag {
+                let categoryName = layoutRow.name
+               
+                AnalyticsManager.trackEventName("clickCategory", category: "Homepage", action: "Click", label: categoryName)
+                AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName])
+                
                 if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
-                    let categoryName = layoutRow.name
-                    let categoryId = layoutRow.category_id
-                    
                     let navigateViewController = NavigateViewController()
+                    let categoryId = layoutRow.category_id
                     navigateViewController.navigateToCategoryFromViewController(self, withCategoryId: categoryId, categoryName: categoryName)
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
