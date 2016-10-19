@@ -34,6 +34,7 @@
 #import "ShopPageRequest.h"
 #import "FavoriteShopRequest.h"
 #import "PromoRequest.h"
+#import "Tokopedia-Swift.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
@@ -59,6 +60,8 @@
 @property (strong, nonatomic) ShopTalkPageViewController *shopTalkViewController;
 @property (strong, nonatomic) ShopReviewPageViewController *shopReviewViewController;
 @property (strong, nonatomic) ShopNotesPageViewController *shopNotesViewController;
+@property (strong, nonatomic) ShopHomeViewController *shopHomeViewController;
+
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;
@@ -162,8 +165,9 @@
     _shopNotesViewController = [ShopNotesPageViewController new];
     _shopNotesViewController.data = _data;
     
+    _shopHomeViewController = [ShopHomeViewController new];
     
-    NSArray *viewControllers = [NSArray arrayWithObject:_shopProductViewController];
+    NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
