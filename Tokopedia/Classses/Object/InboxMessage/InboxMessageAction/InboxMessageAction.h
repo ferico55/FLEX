@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) InboxMessageActionResult *result;
+@property (nonatomic, strong) InboxMessageActionResult *data;
 
 + (RKObjectMapping *)mapping;
 @end

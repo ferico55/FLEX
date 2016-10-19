@@ -358,7 +358,7 @@
         list.message_read_status = @"1";
 //    }
 
-//    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
 //
 //    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
 //    vc.onMessagePosted = ^(NSString *replyMessage) {
@@ -371,6 +371,9 @@
     vc.senderDisplayName = @"Tonito";
     vc.messageTitle = list.message_title;
     vc.messageId = list.message_id;
+    vc.onMessagePosted = ^(NSString* replyMessage) {
+        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+    };
     
     
     [TPAnalytics trackInboxMessageAction:@"View" label:[_data objectForKey:@"nav"]?:@""];

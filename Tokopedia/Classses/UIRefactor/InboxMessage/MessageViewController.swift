@@ -13,9 +13,18 @@ class MessageViewController: JSQMessagesViewController {
     
     var messageTitle = ""
     var messageId: String!
+    var onMessagePosted: ((String) -> Void)!
+    var labelColorsCollection = [
+        "1" : UIColor(red: 248.0/255.0, green: 148.0/255.0, blue: 6.0/255.0, alpha: 1.0), //admin
+        "2" : UIColor(red: 70.0/255.0, green: 136.0/255.0, blue: 71.0/255.0, alpha: 1.0), //pengguna
+        "3" : UIColor(red: 185.0/255.0, green: 74.0/255.0, blue: 72.0/255.0, alpha: 1.0), //penjual
+        "4" : UIColor(red: 42.0/255.0, green: 180.0/255.0, blue: 194.0/255.0, alpha: 1.0), //pembeli
+        "5" : UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0) // system
+    ]
     
     private var messages = [JSQMessage]()
     private var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    private var userLabelColors = Dictionary<String, UIColor>()
     
     private var outgoingBubbleImageView: JSQMessagesBubbleImage!
     private var incomingBubbleImageView: JSQMessagesBubbleImage!
@@ -23,6 +32,12 @@ class MessageViewController: JSQMessagesViewController {
     
     lazy var fetchMessageManager : TokopediaNetworkManager = {
        var manager = TokopediaNetworkManager()
+        manager.isUsingHmac = true
+        return manager
+    }()
+    
+    lazy var sendMessageManager : TokopediaNetworkManager = {
+        var manager = TokopediaNetworkManager()
         manager.isUsingHmac = true
         return manager
     }()
@@ -60,6 +75,21 @@ class MessageViewController: JSQMessagesViewController {
             return incomingBubbleImageView
         }
     }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        let message = messages[indexPath.item]
+        
+        if(message.senderId != self.senderId) {
+            return NSAttributedString(string: message.senderDisplayName, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
+        }
+        
+        return nil
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return 20
+    }
+   
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
@@ -106,7 +136,43 @@ class MessageViewController: JSQMessagesViewController {
         }
         
         return nil
+    }
+    
+    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
         
+        let message = JSQMessage(senderId: self.senderId, senderDisplayName: senderDisplayName, date: date, text: text)
+        self.messages.append(message)
+        
+        self.finishSendingMessageAnimated(true)
+        
+        sendMessageManager .
+            requestWithBaseUrl(NSString.kunyitUrl(),
+                               path: "/v1/message/reply",
+                               method: .POST,
+                               parameter: ["reply_message" : text, "message_id" : self.messageId],
+                               mapping: InboxMessageAction.mapping(),
+                               onSuccess: { [unowned self] (result, operation) in
+                                
+                                    let result = result.dictionary()[""] as! InboxMessageAction
+                                    if(result.data.is_success == "1") {
+                                        self.onMessagePosted(text)
+                                    } else {
+                                        self.receiveErrorSendMessage(result.message_error)
+                                    }
+                               },
+                               onFailure: { (error) in
+                                    self.receiveErrorSendMessage(["Mohon maaf terjadi kesalahan pada saat mengirim pesan. Silakan ulangi beberapa saat kemudian."])
+                               }
+                
+        )
+    }
+    
+    private func receiveErrorSendMessage(errors: [AnyObject]) {
+        let stickyAlert = StickyAlertView(errorMessages: errors, delegate: self)
+        stickyAlert .show()
+        self.messages.removeLast()
+        self.finishSendingMessageAnimated(true)
     }
     
     //MARK: TextView Delegate
@@ -174,10 +240,11 @@ class MessageViewController: JSQMessagesViewController {
             if(message.user_id == self.senderId) {
                 self.addMessage(self.senderId, text: messageReply , senderName: "",date: dateObj)
             } else {
-                self.addMessage(message.user_id, text: messageReply, senderName: message.user_name, date: dateObj)
+                self.addMessage(message.user_id, text: messageReply, senderName: "\(message.user_label) - \(message.user_name)", date: dateObj)
                 let image = UIImage(data: NSData(contentsOfURL: NSURL(string: message.user_image)!)!)
                 
                 avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
+                userLabelColors[message.user_id] = labelColorsCollection[message.user_label_id]
                 
             }
         })
