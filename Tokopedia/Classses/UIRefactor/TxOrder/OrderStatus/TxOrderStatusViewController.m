@@ -226,7 +226,7 @@
     _detailViewController = viewController;
 }
 
--(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath
+-(void)confirmDelivery:(TxOrderStatusList *)order
 {
     [_list removeObject:order];
     [_tableView reloadData];
@@ -962,7 +962,11 @@
         
         confirmationAlert.didOK = ^{
             [confirmationAlert dismiss];
-          // do nothing if user tap OK when order is Free Returns
+            [self confirmDelivery:order];
+        };
+        
+        confirmationAlert.didCancel = ^{
+            [confirmationAlert dismiss];
         };
         
         [confirmationAlert show];
@@ -971,8 +975,7 @@
         NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
         NSString *selesaiString = @"Selesai";
         void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
-            NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-            [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+            [self confirmDelivery:order];
         };
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];

@@ -14,6 +14,9 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
     var didOK: () -> Void = {() in}
     
+    var didCancel: () -> Void = {() in}
+    
+    @IBOutlet var alertDescription: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,7 +24,6 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.cornerRadius = 5
         self.frame.size.width = 300
     }
     
@@ -35,6 +37,10 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
     @IBAction func didTapComplainButton(sender: UIButton) {
         self.didComplain()
+    }
+    
+    @IBAction func didCancel(sender: UIButton) {
+        self.didCancel()
     }
     
     func dismiss() {
