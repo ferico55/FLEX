@@ -2255,7 +2255,7 @@ TTTAttributedLabelDelegate
 
 - (void) goToReportProductViewController {
     ReportProductViewController *reportProductVC = [ReportProductViewController new];
-    reportProductVC.productId = [_loadedData objectForKey:@"product_id"];
+    reportProductVC.productId = _product.data.info.product_id;
     [self.navigationController pushViewController:reportProductVC animated:YES];
 }
 
