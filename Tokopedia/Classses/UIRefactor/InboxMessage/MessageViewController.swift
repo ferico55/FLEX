@@ -72,8 +72,16 @@ class MessageViewController: JSQMessagesViewController {
         }
         
         cell.textView!.delegate = self
+        cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName : UIColor.blueColor(), NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue]
         
         return cell
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapAvatarImageView avatarImageView: UIImageView!, atIndexPath indexPath: NSIndexPath!) {
+        let message = messages[indexPath.item]
+        
+        let controller = NavigateViewController()
+        controller.navigateToProfileFromViewController(self, withUserID: message.senderId)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
