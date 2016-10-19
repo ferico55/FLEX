@@ -611,33 +611,38 @@
         switch (btn.tag) {
             case 10:
             {
-                [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopTalkViewController];
                 break;
             }
             case 11:
             {
-                [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopReviewViewController];
                 break;
             }
             case 12:
             {                
-                [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopNotesViewController];
                 break;
             }
                 
             case 13:
             {
-                [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopProductViewController];
                 break;
             }
             default:
                 break;
         }
     }
+}
+
+- (void)displayViewController:(UIViewController *)viewController {
+    [_pageController setViewControllers:@[viewController]
+                              direction:UIPageViewControllerNavigationDirectionReverse
+                               animated:NO
+                             completion:nil];
+    
+    [self updateHeaderShopPage];
 }
 
 #pragma mark - LoginView Delegate
