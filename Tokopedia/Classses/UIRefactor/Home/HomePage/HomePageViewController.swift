@@ -42,9 +42,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     private let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
-    private let categoryColumnWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 83 : 70
-    private let imageCategoryWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 50 : 25
-    private let categorySpacing: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 34 : 15
+    private let categoryColumnWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 83 : UIScreen.mainScreen().bounds.size.width * 0.225
+    private let imageCategoryWidth: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 50 : 30
+    private let categorySpacing: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 34 : UIScreen.mainScreen().bounds.size.width * 0.05
     private let imageViewContainerHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 83 : 40
     
     init() {
