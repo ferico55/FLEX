@@ -162,15 +162,13 @@ NoResultDelegate>
     _table.delegate = self;
     _table.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabDiscussion];
     _shopPageHeader.data = _data;
     _shopPageHeader.delegate = self;
     _header = _shopPageHeader.view;
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
     
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;

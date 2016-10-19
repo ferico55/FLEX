@@ -226,16 +226,13 @@ EtalaseViewControllerDelegate
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabProduct];
     _shopPageHeader.delegate = self;
     _shopPageHeader.data = _data;
     _navigationBarIsAnimating = NO;
     
     _header = _shopPageHeader.view;
     
-    
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:19];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     UIView *searchView = _shopPageHeader.searchView;

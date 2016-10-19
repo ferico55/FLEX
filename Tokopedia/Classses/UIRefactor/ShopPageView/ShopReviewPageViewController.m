@@ -191,7 +191,7 @@
     _table.dataSource = self;
     _table.allowsSelection = YES;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabReview];
     _shopPageHeader.delegate = self;
     _shopPageHeader.data = _data;
     
@@ -201,8 +201,6 @@
     newFrame.size.height += 5;
     _header.frame = newFrame;
     
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:21];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;

@@ -11,9 +11,13 @@
                 <outlet property="constraintGoldBadgeWidth" destination="jMB-mG-Tvv" id="jWH-XU-qk9"/>
                 <outlet property="coverImageView" destination="Ds4-4z-ewW" id="y0p-sJ-c4j"/>
                 <outlet property="goldBadgeView" destination="O6E-Mc-A4O" id="rvB-63-SSG"/>
+                <outlet property="homeMarker" destination="OvN-0T-y9f" id="nim-GZ-4Vc"/>
                 <outlet property="luckyBadgeView" destination="zYx-f8-V3N" id="whC-pl-iId"/>
                 <outlet property="manipulatedView" destination="nZg-u9-ck3" id="fyU-4C-jGb"/>
+                <outlet property="noteMarker" destination="1Mv-1L-FYT" id="5Ot-iy-NWj"/>
                 <outlet property="pageControl" destination="I7q-OB-Pdg" id="EqG-Iq-sek"/>
+                <outlet property="productMarker" destination="eer-od-Wff" id="16Z-aN-wQe"/>
+                <outlet property="reviewMarker" destination="uAC-iv-7S0" id="3tS-It-z6E"/>
                 <outlet property="scrollView" destination="kC0-PI-J9V" id="fnd-6o-RT7"/>
                 <outlet property="searchBar" destination="kam-AH-hOM" id="Bqb-IU-fA4"/>
                 <outlet property="searchView" destination="fny-I5-RVS" id="hvr-82-BhS"/>
@@ -21,6 +25,7 @@
                 <outlet property="shopClosedUntil" destination="6bh-rl-WEh" id="Wx5-AR-CzJ"/>
                 <outlet property="shopClosedView" destination="fs6-Rf-uOW" id="bcd-ir-Wy2"/>
                 <outlet property="shopImageView" destination="JiC-f4-WZ6" id="ehC-wI-vnK"/>
+                <outlet property="talkMarker" destination="B7W-qM-GHw" id="n0r-HD-wzr"/>
                 <outlet property="view" destination="bKn-su-j17" id="F90-Db-R1U"/>
             </connections>
         </placeholder>
@@ -81,7 +86,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pob-bm-tP2">
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zW-hE-lni" userLabel="ProductButton">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zW-hE-lni" userLabel="Home Button">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="ABb-Gh-Gg8"/>
                                                     </constraints>

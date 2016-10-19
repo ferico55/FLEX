@@ -136,7 +136,7 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabNote];
     _shopPageHeader.delegate = self;
     _shopPageHeader.data = _data;
     
@@ -144,8 +144,6 @@
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
     
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:22];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;

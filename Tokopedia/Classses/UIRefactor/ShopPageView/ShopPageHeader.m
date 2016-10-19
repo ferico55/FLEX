@@ -37,6 +37,7 @@
     
     
     NSDictionary *_auth;
+    ShopPageTab _selectedTab;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -56,6 +57,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedReason;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedUntil;
 
+@property (strong, nonatomic) IBOutlet UIView *homeMarker;
+@property (strong, nonatomic) IBOutlet UIView *productMarker;
+@property (strong, nonatomic) IBOutlet UIView *talkMarker;
+@property (strong, nonatomic) IBOutlet UIView *reviewMarker;
+@property (strong, nonatomic) IBOutlet UIView *noteMarker;
 
 
 @end
@@ -67,12 +73,22 @@
 
 @synthesize data = _data;
 
+- (instancetype)initWithSelectedTab:(ShopPageTab)tab {
+    self = [self initWithNibName:nil bundle:nil];
+    
+    if (self) {
+        _selectedTab = tab;
+    }
+    
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     self.hidesBottomBarWhenPushed = YES;
     if (self) {
-        // Custom initialization
+        _selectedTab = ShopPageTabUnknown;
     }
     return self;
 }
@@ -117,6 +133,13 @@
     }
 }
 
+- (void)showSelectedTabMarker {
+    if (_selectedTab != ShopPageTabUnknown) {
+        NSArray<UIView *> *markers = @[_homeMarker, _productMarker, _talkMarker, _reviewMarker, _noteMarker];
+        markers[_selectedTab].hidden = NO;
+    }
+}
+
 - (void)viewDidLoad
 {
     [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
@@ -125,6 +148,8 @@
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
     [self initButton];
+    
+    [self showSelectedTabMarker];
     
     _descriptionView = [ShopDescriptionView newView];
     _descriptionView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
