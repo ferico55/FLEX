@@ -15,8 +15,8 @@ class ShopHomeViewController: UIViewController {
 
     let router: JLRoutes = {
         let router = JLRoutes()
-        router.addRoute("m.tokopedia.com/ramayana/etalase/:etalaseId") { dictionary in
-            print("hahaha")
+        router.addRoute("/shop/:shopDomain/etalase/:etalaseId") { dictionary in
+            print("link result = \(dictionary)")
             return true
         }
         return router
@@ -44,7 +44,7 @@ class ShopHomeViewController: UIViewController {
 extension ShopHomeViewController: WKNavigationDelegate {
     func webView(webView: WKWebView,
                  decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                 decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                 decisionHandler: (WKNavigationActionPolicy) -> Void) {        
         if router.routeURL(navigationAction.request.URL!) {
             decisionHandler(.Cancel)
         }
