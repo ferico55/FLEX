@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LogoutResult : NSObject
+@interface LogoutResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *is_delete_device;
 @property (nonatomic, strong) NSString *is_logout;
