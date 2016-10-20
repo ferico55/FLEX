@@ -27,6 +27,10 @@
     return _last_trouble_string?:@"";
 }
 
+-(NSString *)last_show_button_string_text{
+    return [_last_show_button_string_text kv_decodeHTMLCharacterEntities];
+}
+
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"last_resolution_id",
                       @"last_show_input_addr_button",
@@ -51,7 +55,8 @@
                       @"last_create_time_wib",
                       @"last_category_trouble_type",
                       @"last_category_trouble_string",
-                      @"last_solution_remark"];
+                      @"last_solution_remark",
+                      @"last_show_button_string_text"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

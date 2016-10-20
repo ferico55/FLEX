@@ -382,7 +382,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 -(void)didTapButton:(UIButton*)sender Conversation:(ResolutionConversation*)conversation
 {
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
-        UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:@"Konfirmasi Pembatalan Komplain" message:@"Apakah Anda yakin ingin membatalkan komplain ini?\nTransaksi akan dinyatakan selesai dan seluruh dana pembayaran akan diteruskan kepada penjual." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
+        UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:BUTTON_TITLE_CANCEL_COMPLAIN message:_resolutionDetail.resolution_button.button_cancel_text delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
         cancelComplainAlert.tag = TAG_ALERT_CANCEL_COMPLAIN;
         [cancelComplainAlert show];
     }
@@ -426,7 +426,15 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
-        [self doRequestAcceptAdminSolutionResolution];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doRequestAcceptAdminSolutionResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
@@ -439,11 +447,28 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         [self.navigationController pushViewController:addressViewController animated:YES];
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
-        [self doRequestAcceptResolution];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doRequestAcceptResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
-        [self doRequestFinishReturResolution];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_FINISH_COMPLAIN message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doRequestFinishReturResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
         BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
