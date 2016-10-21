@@ -634,6 +634,9 @@
                 [self displayViewController:_shopProductViewController];
                 break;
             }
+            case 14:
+                [self displayViewController:_shopHomeViewController];
+                break;
             default:
                 break;
         }
