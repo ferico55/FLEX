@@ -13,6 +13,6 @@
 @interface AddressFormResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray<AddressFormList*> *list;
 
 @end

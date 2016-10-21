@@ -13,7 +13,7 @@
 @interface Shipment : NSObject
 
 @property (nonatomic, strong) NSString *shipment_id;
-@property (nonatomic, strong) NSArray *shipment_package;
+@property (nonatomic, strong) NSArray<ShipmentPackage*> *shipment_package;
 @property (nonatomic, strong) NSString *shipment_image;
 @property (nonatomic, strong) NSString *shipment_name;
 

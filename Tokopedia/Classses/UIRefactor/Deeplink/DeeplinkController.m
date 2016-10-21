@@ -23,6 +23,7 @@
 #import "PhoneVerifViewController.h"
 #import "NSURL+Dictionary.h"
 
+#import "Tokopedia-Swift.h"
 #import "string_product.h"
 
 @interface DeeplinkController ()
@@ -75,10 +76,10 @@
     return [self topViewController:presentedViewController];
 }
 
-- (BOOL)shouldOpenWebViewURL:(NSURL *)url {
++ (BOOL)shouldOpenWebViewURL:(NSURL *)url {
     BOOL shouldOpen = NO;
     
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
@@ -106,7 +107,7 @@
 
 - (void)redirectToViewControllerWithURL:(NSURL *)url {
     
-    [TPAnalytics trackCampaign:url];
+    [AnalyticsManager trackCampaign:url];
     
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     
@@ -384,7 +385,7 @@
         NSURL *url = [GSDDeepLink handleDeepLink:deeplinkURL];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            if ([deeplinkController shouldOpenWebViewURL:url]) {
+            if ([DeeplinkController shouldOpenWebViewURL:url]) {
                 [deeplinkController activeController:deeplinkController.activeController showWebViewURL:url];
             } else {
                 [deeplinkController redirectToViewControllerWithURL:url];

@@ -255,11 +255,11 @@ static NSString const *rows = @"12";
 //    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     if(self.isFromAutoComplete) {
-        self.screenName = @"Hot List Detail (From Auto Complete Search)";
-        [TPAnalytics trackScreenName:@"Hot List Detail (From Auto Complete Search)" gridType:self.cellType];
+        [AnalyticsManager trackScreenName:@"Hot List Detail (From Auto Complete Search)"
+                                 gridType:self.cellType];
     } else {
-        self.screenName = @"Hot List Detail";
-        [TPAnalytics trackScreenName:@"Hot List Detail" gridType:self.cellType];
+        [AnalyticsManager trackScreenName:@"Hot List Detail"
+                                 gridType:self.cellType];
     }
 }
 
@@ -274,7 +274,7 @@ static NSString const *rows = @"12";
                                                 [self didReceiveBannerHotlist:data];
                                                 
                                             } onFailure:^(NSError *error) {
-                                                NSArray *errorMessage = @[@"Maaf, permintaan anda gagal"];
+                                                NSArray *errorMessage = @[@"Maaf, permintaan Anda gagal"];
                                                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
                                                 [alert show];
                                             }];
@@ -799,8 +799,11 @@ static NSString const *rows = @"12";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	List *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    [TPAnalytics trackProductClick:list];
-    [TPAnalytics trackClickHotlistProductWithName:list.product_name];
+    [AnalyticsManager trackProductClick:list];
+    [AnalyticsManager trackEventName:@"clickHotlist"
+                            category:GA_EVENT_CATEGORY_HOTLIST
+                              action:GA_EVENT_ACTION_CLICK
+                               label:list.product_name];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
@@ -842,6 +845,9 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Promo collection delegate
+- (TopadsSource)topadsSource {
+    return TopadsSourceHotlist;
+}
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
@@ -1006,7 +1012,7 @@ static NSString const *rows = @"12";
     
     [_collectionView reloadData];
     
-    [TPAnalytics trackProductImpressions:searchResult.data.products];
+    [AnalyticsManager trackProductImpressions:searchResult.data.products];
 }
 
 - (NSDictionary*)parameters {
@@ -1112,4 +1118,5 @@ static NSString const *rows = @"12";
     
     return param;
 }
+
 @end

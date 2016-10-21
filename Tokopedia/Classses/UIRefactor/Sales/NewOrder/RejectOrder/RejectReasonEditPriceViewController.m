@@ -107,7 +107,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Reject Reason Edit Price Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Edit Price Page"];
 }
 
 #pragma mark - Table View

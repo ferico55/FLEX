@@ -206,8 +206,7 @@ NoResultDelegate>
     
     _userManager = [UserAuthentificationManager new];
 
-    [TPAnalytics trackScreenName:@"Shop - Talk List"];
-    self.screenName = @"Shop - Talk List";
+    [AnalyticsManager trackScreenName:@"Shop - Talk List"];
 }
 
 - (void)viewDidAppear:(BOOL)animated

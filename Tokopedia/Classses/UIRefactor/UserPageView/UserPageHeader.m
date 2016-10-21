@@ -25,14 +25,6 @@
     ShopStatView *_statView;
     UserAuthentificationManager *_userManager;
     
-    NSInteger _requestCount;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
-    NSTimer *_timer;
-    
-    NSDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -53,8 +45,6 @@
 
 
 @implementation UserPageHeader
-
-@synthesize data = _data;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -105,7 +95,6 @@
  
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
-    _operationQueue = [NSOperationQueue new];
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
     

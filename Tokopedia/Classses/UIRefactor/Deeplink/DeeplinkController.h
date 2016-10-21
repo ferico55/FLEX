@@ -11,5 +11,7 @@
 @interface DeeplinkController : NSObject
 
 + (BOOL)handleURL:(NSURL *)url;
++ (BOOL)shouldOpenWebViewURL:(NSURL *)url;
+
 
 @end

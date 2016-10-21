@@ -9,7 +9,6 @@
 #import "HomeTabHeaderViewController.h"
 #import "UserAuthentificationManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "TPAnalytics.h"
 
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
@@ -133,7 +132,33 @@
 
 - (void)tapButton:(UIButton*)button {
     [self tap:button.tag];
-    [TPAnalytics trackGoToHomepageTabWithIndex:button.tag];
+    
+    NSString *name = @"";
+    
+    switch (button.tag) {
+        case 1:
+            name = @"Home";
+            break;
+        case 2:
+            name = @"Product Feed";
+            break;
+        case 3:
+            name = @"Wishlist";
+            break;
+        case 4:
+            name = @"Last Seen";
+            break;
+        case 5:
+            name = @"Favorite";
+            break;
+        default:
+            break;
+    }
+    
+    [AnalyticsManager trackEventName:@"clickHomepage"
+                            category:GA_EVENT_CATEGORY_HOMEPAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:name];
     NSDictionary *userInfo = @{@"page" : @(button.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];

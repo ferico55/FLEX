@@ -130,7 +130,7 @@ TKPDAlertViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(didSelectPromoProduct:)]) {
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
-        [TPAnalytics trackPromoClick:promoResult];
+        [AnalyticsManager trackPromoClick:promoResult];
         [self.delegate didSelectPromoProduct:promoResult];
     }
 }
@@ -212,8 +212,20 @@ TKPDAlertViewDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan"]];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium=ios", [self topadsUrlFromSource:[_delegate topadsSource]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
+}
+
+- (NSString*)topadsUrlFromSource:(TopadsSource)source {
+    NSDictionary* sources = @{
+                              @(TopadsSourceFeed) : @"fav_product",
+                              @(TopadsSourceSearch) : @"search",
+                              @(TopadsSourceHotlist) : @"hotlist",
+                              @(TopadsSourceDirectory) : @"directory"
+                              };
+    
+    return [sources objectForKey:@(source)];
 }
 
 - (CGFloat)collectionHeightConstraint {

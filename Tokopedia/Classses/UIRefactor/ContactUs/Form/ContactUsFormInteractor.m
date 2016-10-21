@@ -11,16 +11,14 @@
 #import "ContactUsQuery.h"
 
 #import "GenerateHost.h"
-#import "RequestGenerateHost.h"
-
 #import "RequestUploadImage.h"
+#import "GenerateHostRequest.h"
 
 #import "camera.h"
 
-@interface ContactUsFormInteractor () <GenerateHostDelegate, RequestUploadImageDelegate>
+@interface ContactUsFormInteractor () <RequestUploadImageDelegate>
 
 @property (nonatomic, strong) ContactUsFormDataManager *dataManager;
-@property (nonatomic, strong) RequestGenerateHost *requestHost;
 
 @end
 
@@ -30,8 +28,6 @@
     self = [super init];
     if (self) {
         self.dataManager = [ContactUsFormDataManager new];
-        self.requestHost = [RequestGenerateHost new];
-        self.requestHost.delegate = self;
     }
     return self;
 }
@@ -57,7 +53,7 @@
     query.messageBody = self.dataCollector.message;
     query.attachmentString = self.dataCollector.attachmentString;
     query.invNumber = self.dataCollector.invoice;
-    query.serverId = self.dataCollector.generateHost.result.generated_host.server_id;
+    query.serverId = self.dataCollector.generateHost.server_id;
     [self.dataManager requestTicketValidationWithQuery:query
                                               response:^(ContactUsActionResponse *response) {
         BOOL isSuccess = [response.result.is_success boolValue];
@@ -85,8 +81,8 @@
     query.messageBody = self.dataCollector.message;
     query.attachmentString = self.dataCollector.attachmentString;
     query.invNumber = self.dataCollector.invoice;
-    query.serverId = self.dataCollector.generateHost.result.generated_host.server_id;
-    GenerateHost *host = self.dataCollector.generateHost;
+    query.serverId = self.dataCollector.generateHost.server_id;
+    GeneratedHost *host = self.dataCollector.generateHost;
     [self.dataManager replyTicketPictureWithQuery:query
                                              host:host
                                          response:^(ReplyInboxTicket *response) {
@@ -129,30 +125,28 @@
             [self uploadImage:@{DATA_SELECTED_PHOTO_KEY : photoData} host:self.dataCollector.generateHost];
         }
     } else {
-        [self.requestHost requestGenerateHost];
+        [self requestHost];
     }
 }
 
-#pragma mark Request Generate Host
-
-- (void)successGenerateHost:(GenerateHost *)generateHost
-{
-    self.dataCollector.generateHost = generateHost;
-    for (NSDictionary *photoData in self.dataCollector.selectedImagesCameraController) {
-        [self uploadImage:@{DATA_SELECTED_PHOTO_KEY : photoData} host:generateHost];
-    }
+-(void)requestHost{
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        self.dataCollector.generateHost = host;
+        for (NSDictionary *photoData in self.dataCollector.selectedImagesCameraController) {
+            [self uploadImage:@{DATA_SELECTED_PHOTO_KEY : photoData} host:host];
+        }
+        
+    } onFailure:^{
+    }];
 }
 
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    [self.output didReceiveCreateTicketError:errorMessages];
-}
 
 #pragma mark - Upload image delegate
 
-- (void)uploadImage:(NSDictionary *)imageData host:(GenerateHost *)host {
+- (void)uploadImage:(NSDictionary *)imageData host:(GeneratedHost *)host {
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     [uploadImage requestActionUploadObject:imageData
-                             generatedHost:host.result.generated_host
+                             generatedHost:host
                                     action:@"upload_contact_image"
                                     newAdd:1
                                  productID:@""

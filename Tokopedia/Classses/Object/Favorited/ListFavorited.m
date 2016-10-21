@@ -9,5 +9,19 @@
 #import "ListFavorited.h"
 
 @implementation ListFavorited
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"user_id",
+                      @"user_image",
+                      @"user_name"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

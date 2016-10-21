@@ -82,9 +82,7 @@
     
     self.title = @"Daftar Transaksi";
     
-    [TPAnalytics trackScreenName:@"Sales - Transaction List"];
-    
-    self.screenName = @"Sales - Transaction List";
+    [AnalyticsManager trackScreenName:@"Sales - Transaction List"];
 
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;

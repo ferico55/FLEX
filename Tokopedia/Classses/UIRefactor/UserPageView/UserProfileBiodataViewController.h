@@ -12,6 +12,6 @@
 {
     IBOutlet NSLayoutConstraint *constraintHeightTableView;
 }
-@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSString *profileUserID;
 
 @end

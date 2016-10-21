@@ -34,19 +34,6 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     NSString *_adSemKey;
     NSString *_adR;
     NSInteger _source;
-    
-    TAGContainer *_gtmContainer;
-    NSString *_promoBaseURL;
-    NSString *_promoPostURL;
-    NSString *_promoFullURL;
-    NSString *_promoActionBaseURL;
-    NSString *_promoActionPostURL;
-    NSString *_promoActionFullURL;
-    
-    BOOL _cancelRequestProductFeed;
-    BOOL _cancelRequestHotlist;
-    BOOL _cancelRequestShopFeed;
-    BOOL _cancelRequestSearch;
 }
 
 @end
@@ -176,47 +163,6 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
                                                           errorCallback(error);
                                                       }
                                                   }];
-}
-
-#pragma mark - GTM
-
-- (void)configureGTM {    
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-
-//#ifdef DEBUG
-//    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-//    
-//    _promoBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
-//    _promoPostURL = @"promo.pl";
-//    _promoFullURL = @"";
-//    
-//    NSString *promoActionBaseURL = [NSString stringWithFormat:@"%@/action/",
-//                                    [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"]];
-//    _promoActionBaseURL = promoActionBaseURL;
-//    _promoActionPostURL = @"promo.pl";
-//    _promoActionFullURL = @"";
-//    
-//    _cancelRequestHotlist = NO;
-//    _cancelRequestProductFeed = NO;
-//    _cancelRequestSearch = NO;
-//    _cancelRequestShopFeed = NO;
-//#else
-    _promoBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBase];
-    _promoPostURL = [_gtmContainer stringForKey:GTMKeyPromoPost];
-    _promoFullURL = [_gtmContainer stringForKey:GTMKeyPromoFull];
-    
-    _promoActionBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBaseAction];
-    _promoActionPostURL = [_gtmContainer stringForKey:GTMKeyPromoPostAction];
-    _promoActionFullURL = [_gtmContainer stringForKey:GTMKeyPromoFullAction];
-    
-    _cancelRequestHotlist = [[_gtmContainer stringForKey:GTMKeyCancelPromoHotlist] boolValue];
-    _cancelRequestProductFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoProductFeed] boolValue];
-    _cancelRequestSearch = [[_gtmContainer stringForKey:GTMKeyCancelPromoSearch] boolValue];
-    _cancelRequestShopFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoShopFeed] boolValue];
-//#endif
 }
 
 @end

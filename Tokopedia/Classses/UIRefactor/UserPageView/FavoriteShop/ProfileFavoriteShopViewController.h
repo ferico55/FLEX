@@ -11,5 +11,6 @@
 @interface ProfileFavoriteShopViewController : GAITrackedViewController
 
 @property (strong, nonatomic) NSDictionary *data;
+@property (nonatomic) NSString *profileUserID;
 
 @end
