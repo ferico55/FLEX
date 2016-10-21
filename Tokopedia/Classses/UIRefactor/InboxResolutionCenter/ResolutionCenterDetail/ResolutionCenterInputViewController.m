@@ -284,8 +284,8 @@
 -(void)didTapReportButton
 {
     __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Konfirmasi Bantuan" message:@"Apakah Anda yakin ingin meminta bantuan Tokopedia untuk memutuskan resolusinya?" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Konfirmasi Bantuan" message:_resolution.resolution_button.button_report_text preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Konfirmasi" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [weakSelf doRequestReport];
     }];
     [alert addAction: changeSolution];
