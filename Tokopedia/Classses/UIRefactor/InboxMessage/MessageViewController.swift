@@ -230,9 +230,10 @@ class MessageViewController: JSQMessagesViewController {
         messages.forEach({ (message) in
             let message = message
 
-            let dateString = message.message_reply_time.formatted            
+            let dateString = message.message_reply_time.formatted
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
+            dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
             
             let dateObj = dateFormatter.dateFromString(dateString)!
             let messageReply = NSString.extracTKPMEUrl(message.message_reply)
