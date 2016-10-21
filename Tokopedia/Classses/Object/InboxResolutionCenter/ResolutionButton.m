@@ -30,10 +30,11 @@
 }
 
 - (NSString*)button_cancel_text {
-    return [_button_cancel_text kv_decodeHTMLCharacterEntities];
+    
+    return [[_button_cancel_text kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
 }
 
 - (NSString*)button_report_text {
-    return [_button_report_text kv_decodeHTMLCharacterEntities];
+    return [[_button_report_text kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
 }
 @end

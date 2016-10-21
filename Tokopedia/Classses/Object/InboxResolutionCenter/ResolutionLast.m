@@ -28,7 +28,7 @@
 }
 
 -(NSString *)last_show_button_string_text{
-    return [_last_show_button_string_text kv_decodeHTMLCharacterEntities];
+    return [[_last_show_button_string_text kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
 }
 
 + (NSDictionary *)attributeMappingDictionary {

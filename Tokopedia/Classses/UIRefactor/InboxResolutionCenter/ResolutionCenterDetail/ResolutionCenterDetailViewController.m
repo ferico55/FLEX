@@ -380,11 +380,12 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
 #pragma mark - Cell Delegate
 -(void)didTapButton:(UIButton*)sender Conversation:(ResolutionConversation*)conversation
-{
+{    
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
         UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:BUTTON_TITLE_CANCEL_COMPLAIN message:_resolutionDetail.resolution_button.button_cancel_text delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
         cancelComplainAlert.tag = TAG_ALERT_CANCEL_COMPLAIN;
         [cancelComplainAlert show];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_TRACK]) {
@@ -394,6 +395,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.shippingRef = conversation.input_resi;
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_RESI]) {
@@ -405,6 +407,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.conversationID = conversation.conversation_id;
         vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_RESI]) {
@@ -413,6 +416,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.isInputResi = YES;
         vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
@@ -423,6 +427,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
                                        @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
@@ -435,6 +440,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:YES completion:nil];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
@@ -445,6 +451,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
                                        @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
+        return;
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
@@ -456,6 +463,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:YES completion:nil];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
@@ -468,6 +476,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         [alertController addAction:cancelAction];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:YES completion:nil];
+        return;
         
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
@@ -482,6 +491,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
         }];
         [self.navigationController pushViewController:controller animated:YES];
+        return;
     }
 }
 

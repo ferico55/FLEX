@@ -954,7 +954,10 @@
     OrderDeliveredConfirmationAlertView *confirmationAlert = [OrderDeliveredConfirmationAlertView newview];
     if ([self isOrderFreeReturn:order]) {
         confirmationAlert.alertTitleLabel.text = @"Sudah Diterima";
-        confirmationAlert.alertMessageLabel.text = order.order_detail.detail_free_return_msg;
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[order.order_detail.detail_free_return_msg dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding]} documentAttributes:nil error:nil];
+        confirmationAlert.alertMessageLabel.attributedText = attributedString;
+        confirmationAlert.alertMessageLabel.font = [UIFont systemFontOfSize:14.0];
+        confirmationAlert.alertMessageLabel.textAlignment = NSTextAlignmentCenter;
         confirmationAlert.freeReturnsInfoHeightConstraint.constant = 50;
         [confirmationAlert setHeight:300];
     } else {
