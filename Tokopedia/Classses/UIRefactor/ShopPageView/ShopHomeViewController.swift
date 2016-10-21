@@ -25,23 +25,34 @@ class ShopHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let header = ShopPageHeader(selectedTab: .Home)
+        self.addChildViewController(header)
+        self.view.addSubview(header.view)
+        header.didMoveToParentViewController(self)
+        
+        header.view.mas_makeConstraints { make in
+            make.top.equalTo()(self.view.mas_top)
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.height.equalTo()(245)
+        }
+
         let webView = WKWebView()
         
         self.view.addSubview(webView)
         
         webView.mas_makeConstraints { make in
-            make.edges.equalTo()(self.view)
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.bottom.equalTo()(self.view.mas_bottom)
+
+            make.top.equalTo()(self.view.mas_top).offset()(245)
         }
         
         webView.loadRequest(NSURLRequest(URL: NSURL(string: "http://ecs7.tokopedia.net/brand-store/ramayana/_apps/top.html")!))
         
         webView.navigationDelegate = self
         
-        
-        let header = ShopPageHeader(selectedTab: .Home)
-        self.addChildViewController(header)
-        self.view.addSubview(header.view)
-        header.didMoveToParentViewController(self)
     }
 
 }
