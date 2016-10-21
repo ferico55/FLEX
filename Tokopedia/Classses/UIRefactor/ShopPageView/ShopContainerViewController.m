@@ -129,6 +129,8 @@
 
 - (void)viewDidLoad
 {
+    __weak typeof(self) weakSelf = self;
+    
     [super viewDidLoad];
     
     [self initNotificationCenter];
@@ -167,7 +169,7 @@
     
     _shopHomeViewController = [ShopHomeViewController new];
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
-        
+        [weakSelf openEtalaseWithShopDomain:shopDomain etalaseId:etalaseId];
     };
     
     NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
@@ -194,6 +196,10 @@
     [self setScrollEnabled:NO forPageViewController:_pageController];
     [self initBarButton];
     [self disableAllButtons];
+}
+
+- (void)openEtalaseWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
+    [self displayViewController:_shopProductViewController];
 }
 
 -(void)disableAllButtons{
