@@ -951,49 +951,35 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-
+    OrderDeliveredConfirmationAlertView *confirmationAlert = [OrderDeliveredConfirmationAlertView newview];
     if ([self isOrderFreeReturn:order]) {
-        FreeReturnsConfirmationAlertView *confirmationAlert = [FreeReturnsConfirmationAlertView newview];
-        
-        confirmationAlert.alertDescriptionLabel.text = order.order_detail.detail_free_return_msg;
-        
-        confirmationAlert.didComplain = ^{
-            [confirmationAlert dismiss];
-            [self showAlertViewOpenComplain];
-        };
-        
-        confirmationAlert.didOK = ^{
-            [confirmationAlert dismiss];
-            [self confirmDelivery:order];
-        };
-        
-        confirmationAlert.didCancel = ^{
-            [confirmationAlert dismiss];
-        };
-        
-        [confirmationAlert show];
+        confirmationAlert.alertTitleLabel.text = @"Sudah Diterima";
+        confirmationAlert.alertMessageLabel.text = order.order_detail.detail_free_return_msg;
+        confirmationAlert.freeReturnsInfoHeightConstraint.constant = 50;
+        [confirmationAlert setHeight:300];
     } else {
-        NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
-        NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-        NSString *selesaiString = @"Selesai";
-        void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
-            [self confirmDelivery:order];
-        };
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
-        [alertController addAction:cancelAction];
-        UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
-        UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self showAlertViewOpenComplain];
-        }];
-        
-        [alertController addAction:OKAction];
-        [alertController addAction:complainAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
+        confirmationAlert.alertTitleLabel.text = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        confirmationAlert.alertMessageLabel.text = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        confirmationAlert.freeReturnsInfoView.hidden = YES;
+        confirmationAlert.freeReturnsInfoHeightConstraint.constant = 0;
+        [confirmationAlert setHeight:250];
     }
     
-
+    confirmationAlert.didComplain = ^{
+        [confirmationAlert dismiss];
+        [self showAlertViewOpenComplain];
+    };
+    
+    confirmationAlert.didOK = ^{
+        [confirmationAlert dismiss];
+        [self confirmDelivery:order];
+    };
+    
+    confirmationAlert.didCancel = ^{
+        [confirmationAlert dismiss];
+    };
+    
+    [confirmationAlert show];
 }
 
 -(void)showAlertReorder

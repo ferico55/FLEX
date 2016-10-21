@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FreeReturnsConfirmationAlertView: TKPDAlertView {
+class OrderDeliveredConfirmationAlertView: TKPDAlertView {
     
     var didComplain: (() -> Void)?
     
@@ -16,7 +16,10 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
     var didCancel: (() -> Void)?
     
-    @IBOutlet var alertDescriptionLabel: UILabel!
+    @IBOutlet var alertTitleLabel: UILabel!
+    @IBOutlet var alertMessageLabel: UILabel!
+    @IBOutlet var freeReturnsInfoView: UIView!
+    @IBOutlet var freeReturnsInfoHeightConstraint: NSLayoutConstraint!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,5 +54,9 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
     func dismiss() {
         self.dismissWithClickedButtonIndex(0, animated: true)
+    }
+    
+    func setHeight(height: CGFloat) {
+        self.frame.size.height = height
     }
 }
