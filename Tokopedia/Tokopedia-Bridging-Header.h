@@ -136,6 +136,7 @@
 #import "PromoteResult.h"
 #import "SearchAWSResult.h"
 #import "LoyaltyPointResult.h"
+#import "ShopPageHeader.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

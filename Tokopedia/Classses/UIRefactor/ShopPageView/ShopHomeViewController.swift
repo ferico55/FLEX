@@ -37,6 +37,11 @@ class ShopHomeViewController: UIViewController {
         
         webView.navigationDelegate = self
         
+        
+        let header = ShopPageHeader(selectedTab: .Home)
+        self.addChildViewController(header)
+        self.view.addSubview(header.view)
+        header.didMoveToParentViewController(self)
     }
 
 }
