@@ -9,6 +9,11 @@
 #import "OrderDetail.h"
 
 @implementation OrderDetail
+
+-(NSString *)detail_free_return_msg {
+    return [_detail_free_return_msg kv_decodeHTMLCharacterEntities];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[
@@ -41,7 +46,8 @@
                       @"detail_order_status",
                       @"detail_dropship_name",
                       @"detail_dropship_telp",
-                      @"detail_free_return"
+                      @"detail_free_return",
+                      @"detail_free_return_msg"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

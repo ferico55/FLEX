@@ -955,6 +955,8 @@
     if ([self isOrderFreeReturn:order]) {
         FreeReturnsConfirmationAlertView *confirmationAlert = [FreeReturnsConfirmationAlertView newview];
         
+        confirmationAlert.alertDescriptionLabel.text = order.order_detail.detail_free_return_msg;
+        
         confirmationAlert.didComplain = ^{
             [confirmationAlert dismiss];
             [self showAlertViewOpenComplain];

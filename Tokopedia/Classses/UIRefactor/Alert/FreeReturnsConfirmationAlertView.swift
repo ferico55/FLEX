@@ -10,13 +10,13 @@ import UIKit
 
 class FreeReturnsConfirmationAlertView: TKPDAlertView {
     
-    var didComplain: () -> Void = {() in }
+    var didComplain: (() -> Void)?
     
-    var didOK: () -> Void = {() in}
+    var didOK: (() -> Void)?
     
-    var didCancel: () -> Void = {() in}
+    var didCancel: (() -> Void)?
     
-    @IBOutlet var alertDescription: UILabel!
+    @IBOutlet var alertDescriptionLabel: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,15 +32,21 @@ class FreeReturnsConfirmationAlertView: TKPDAlertView {
     }
 
     @IBAction func didTapOKButton(sender: UIButton) {
-        self.didOK()
+        if let didOK = didOK {
+            didOK()
+        }
     }
     
     @IBAction func didTapComplainButton(sender: UIButton) {
-        self.didComplain()
+        if let didComplain = didComplain {
+            didComplain()
+        }
     }
     
     @IBAction func didCancel(sender: UIButton) {
-        self.didCancel()
+        if let didCancel = didCancel {
+            didCancel()
+        }
     }
     
     func dismiss() {

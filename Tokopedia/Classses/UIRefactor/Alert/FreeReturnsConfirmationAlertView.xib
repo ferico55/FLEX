@@ -133,7 +133,7 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="alertDescription" destination="m8o-ak-FY2" id="LEs-5m-Etp"/>
+                <outlet property="alertDescriptionLabel" destination="m8o-ak-FY2" id="DZT-7W-5g4"/>
                 <outletCollection property="buttons" destination="BfC-sS-pZx" id="gPn-LI-LdE"/>
                 <outletCollection property="buttons" destination="jRb-vB-bcZ" id="VVa-Ah-oD6"/>
             </connections>
