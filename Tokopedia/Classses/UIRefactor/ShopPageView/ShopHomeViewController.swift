@@ -13,14 +13,25 @@ import JLRoutes
 
 class ShopHomeViewController: UIViewController {
 
-    let router: JLRoutes = {
-        let router = JLRoutes()
-        router.addRoute("/shop/:shopDomain/etalase/:etalaseId") { dictionary in
-            print("link result = \(dictionary)")
+    var onEtalaseSelected: ((String, String) -> Void)?
+    
+    private let router = JLRoutes()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        
+        router.addRoute("/shop/:shopDomain/etalase/:etalaseId") { [unowned self] dictionary in
+            let shopDomain = dictionary["shopDomain"] as! String
+            let etalaseId = dictionary["etalaseId"] as! String
+            
+            self.onEtalaseSelected?(shopDomain, etalaseId)
             return true
         }
-        return router
-    }()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +60,7 @@ class ShopHomeViewController: UIViewController {
             make.top.equalTo()(self.view.mas_top).offset()(245)
         }
         
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "http://ecs7.tokopedia.net/brand-store/ramayana/_apps/top.html")!))
+        webView.loadRequest(NSURLRequest(URL: NSURL(string: "file:///Users/se/Desktop/ramayana.htm")!))
         
         webView.navigationDelegate = self
         

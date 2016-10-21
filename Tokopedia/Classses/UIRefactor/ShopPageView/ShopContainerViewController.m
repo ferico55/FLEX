@@ -166,6 +166,9 @@
     _shopNotesViewController.data = _data;
     
     _shopHomeViewController = [ShopHomeViewController new];
+    _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
+        
+    };
     
     NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
