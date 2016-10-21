@@ -57,6 +57,7 @@
 #define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
 #define GA_EVENT_CATEGORY_SEARCH_RESULT @"Search Result"
 #define GA_EVENT_CATEGORY_SHOP_HOME @"Shop Home"
+#define GA_EVENT_CATEGORY_MANAGE_SHOP @"Manage Shop"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
