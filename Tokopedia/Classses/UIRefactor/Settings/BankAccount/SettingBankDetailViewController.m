@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelbranch;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
@@ -42,7 +41,7 @@
     [self setDefaultData:_data];
 
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -53,10 +52,6 @@
                                                                      action:@selector(tap:)];
     editBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = editBarButton;
-
-    [self.scrollView addSubview:_contentView];
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
-                                             self.view.frame.size.height-63);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEditBankAccount:)
@@ -68,9 +63,8 @@
 {
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 

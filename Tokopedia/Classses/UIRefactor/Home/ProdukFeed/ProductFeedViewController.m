@@ -179,10 +179,7 @@ FavoriteShopRequestDelegate
     [super viewWillAppear:animated];
     
     // UA
-    [TPAnalytics trackScreenName:@"Home - Product Feed"];
-    
-    // GA
-    self.screenName = @"Home - Product Feed";
+    [AnalyticsManager trackScreenName:@"Home - Product Feed"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomeTab:)
@@ -199,8 +196,11 @@ FavoriteShopRequestDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
-    [TPAnalytics trackProductClick:product];
-    [TPAnalytics trackClickProductOnProductFeedWithProductName:product.product_name];
+    [AnalyticsManager trackProductClick:product];
+    [AnalyticsManager trackEventName:@"clickFeed"
+                            category:GA_EVENT_CATEGORY_FEED
+                              action:GA_EVENT_ACTION_CLICK
+                               label:product.product_name];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -321,8 +321,6 @@ FavoriteShopRequestDelegate
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             size = CGSizeMake(self.view.frame.size.width, 45);
         }
-    } else if ([_productDataSource isProductFeedEmpty]) {
-        size = CGSizeMake(self.view.frame.size.width, 45);
     }
     return size;
 }
@@ -366,6 +364,9 @@ FavoriteShopRequestDelegate
 }
 
 #pragma mark - Promo collection delegate
+- (TopadsSource)topadsSource {
+    return TopadsSourceFeed;
+}
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
@@ -410,9 +411,12 @@ FavoriteShopRequestDelegate
         return ;
     }
     
-    if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
-        [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
-        [_favoriteShopRequest requestProductFeedWithFavoriteShopString:_favoritedShopString withPage:_page];
+    if (!_isRequestingProductFeed) {
+        if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
+            [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
+            [_favoriteShopRequest requestProductFeedWithFavoriteShopString:_favoritedShopString withPage:_page];
+            _isRequestingProductFeed = YES;
+        }
     }
 }
 
@@ -456,8 +460,8 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         }else{
             [_productDataSource addProducts: feed.data.products];
         }
-        
-        [TPAnalytics trackProductImpressions:feed.data.products];
+
+        [AnalyticsManager trackProductImpressions:feed.data.products];
         
         _nextPageUri =  feed.data.paging.uri_next;
         _page++;

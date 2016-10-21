@@ -15,9 +15,7 @@
 #import "TKPDSecureStorage.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
-#import <Google/Analytics.h>
 #import "NavigateViewController.h"
-#import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
@@ -25,6 +23,7 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "Tokopedia-Swift.h"
 #import <Appsee/Appsee.h>
+#import "JLRoutes.h"
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -60,9 +59,8 @@
         [MainViewController new];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    TPRoutes *routes = [[TPRoutes alloc] init];
     [self startAppsee];
     [self hideTitleBackButton];
     
@@ -92,7 +90,6 @@
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
         [self configureAppIndexing];
-        [self configureGoogleAnalytics];
         
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -112,7 +109,7 @@
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
-            [DeeplinkController handleURL:url];
+            [JLRoutes routeURL:url];
         } else {
             //universal search link, only available in iOS 9
             if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
@@ -122,7 +119,7 @@
                         if ([obj isKindOfClass:[NSUserActivity class]]) {
                             NSUserActivity *userActivity = obj;
                             NSURL *url = userActivity.webpageURL;
-                            [DeeplinkController handleURL:url];
+                            [JLRoutes routeURL:url];
                         }
                     }];
                 }
@@ -156,15 +153,6 @@
     }
 }
 
-- (void)configureGoogleAnalytics {
-    //Google Analytics init
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-    [GAI sharedInstance].dispatchInterval = 60;
-    [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
-    [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
-}
-
 - (void)configureAppsflyer {
     //appsflyer init
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
@@ -183,7 +171,6 @@
     NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     if(url != nil) {
         [_tagManager previewWithUrl:url];
-        [DeeplinkController handleURL:url];
     }
     
     [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
@@ -247,15 +234,15 @@
     if ([userInfo objectForKey:@"Localytics Campaign"]) {
         NSString *campaign = [userInfo objectForKey:@"Localytics Campaign"];
         NSDictionary *attributes = @{@"Campaign" : campaign};
-        [Localytics tagEvent:@"Event : App Launch" attributes:attributes];
+        [AnalyticsManager localyticsEvent:@"Event : App Launch" attributes:attributes];
     }
     if ([userInfo objectForKey:@"Localytics Deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
-        [DeeplinkController handleURL:url];
+        [JLRoutes routeURL:url];
     }
     if ([userInfo objectForKey:@"url_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
-        [DeeplinkController handleURL:url];
+        [JLRoutes routeURL:url];
     }
 }
 
@@ -267,6 +254,7 @@
                                                                         openURL:url
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
+    
     if (shouldOpenURL) {
         return YES;
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
@@ -275,9 +263,10 @@
         return YES;
     } else if ([Localytics handleTestModeURL:url]) {
         return YES;
-    } else if ([DeeplinkController handleURL:url]) {
+    } else if([JLRoutes routeURL: url]) {
         return YES;
     }
+    
     return NO;
 }
 
@@ -291,7 +280,8 @@
         url = userActivity.webpageURL;
     }
     if (url) {
-        [DeeplinkController handleURL:url];
+        [JLRoutes routeURL: url];
+        [JLRoutes setVerboseLoggingEnabled:true];
         shouldContinue = YES;
     }
     return shouldContinue;

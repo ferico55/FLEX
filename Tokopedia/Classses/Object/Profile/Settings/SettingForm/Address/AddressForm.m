@@ -10,6 +10,14 @@
 
 @implementation AddressForm
 
+-(NSArray *)message_error{
+    return _message_error?:@[];
+}
+
+-(NSArray *)message_status{
+    return _message_status?:@[];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"message_error",

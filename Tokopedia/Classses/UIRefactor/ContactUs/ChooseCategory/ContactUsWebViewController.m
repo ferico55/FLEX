@@ -60,7 +60,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setToolbarHidden:NO animated:YES];
     
-    [TPAnalytics trackScreenName:@"Contact Us Page"];
+    [AnalyticsManager trackScreenName:@"Contact Us Page"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

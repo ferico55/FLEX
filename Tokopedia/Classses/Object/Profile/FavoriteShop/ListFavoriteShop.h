@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ListFavoriteShop : NSObject
+@interface ListFavoriteShop : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger shop_total_etalase;
 @property (nonatomic, strong) NSString *shop_image;

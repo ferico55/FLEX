@@ -73,7 +73,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="GV8-Uy-DB4"/>
+                                <action selector="tapAddBarButtonItem:" destination="-1" eventType="touchUpInside" id="EZh-yq-Oza"/>
                             </connections>
                         </button>
                     </subviews>

@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) NSString *is_success;
 
++(RKObjectMapping*)mapping;
+
 @end

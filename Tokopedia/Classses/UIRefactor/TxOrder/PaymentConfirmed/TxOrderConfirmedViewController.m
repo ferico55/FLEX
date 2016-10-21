@@ -9,7 +9,6 @@
 #import "TxOrderConfirmedViewController.h"
 
 #import "NoResult.h"
-#import "requestGenerateHost.h"
 #import "RequestUploadImage.h"
 
 #import "TxOrderConfirmedDetail.h"

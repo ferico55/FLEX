@@ -70,7 +70,7 @@
     
     [mutableRequest addValue:[hmac getRequestMethod] forHTTPHeaderField:@"Request-Method"];
     [mutableRequest addValue:[hmac getParameterMD5] forHTTPHeaderField:@"Content-MD5"];
-    [mutableRequest addValue:[hmac getContentType] forHTTPHeaderField:@"Content-Type"];
+    [mutableRequest addValue:[hmac getContentTypeWithBaseUrl:@""] forHTTPHeaderField:@"Content-Type"];
     [mutableRequest addValue:[hmac getDate] forHTTPHeaderField:@"Date"];
     [mutableRequest addValue:[hmac getTkpdPath] forHTTPHeaderField:@"X-Tkpd-Path"];
     [mutableRequest addValue:[hmac getRequestMethod] forHTTPHeaderField:@"X-Method"];

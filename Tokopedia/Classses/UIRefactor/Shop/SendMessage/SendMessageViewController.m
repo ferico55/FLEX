@@ -181,7 +181,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop - Send Message Page"];
+    [AnalyticsManager trackScreenName:@"Shop - Send Message Page"];
 }
 
 - (void)didReceiveMemoryWarning {

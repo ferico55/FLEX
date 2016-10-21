@@ -42,7 +42,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Reject Reason Empty Stock Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Empty Stock Page"];
 }
 
 

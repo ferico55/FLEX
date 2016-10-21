@@ -398,7 +398,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"trackSuccessTransaction"
                                                                 object:nil
                                                               userInfo:nil];
-            [TPAnalytics trackPaymentEvent:@"clickBack" category:@"Payment" action:@"Abandon" label:@"Thank You Page"];
+            [AnalyticsManager trackEventName:@"clickBack" category:GA_EVENT_CATEGORY_PAYMENT action:GA_EVENT_ACTION_ABANDON label:@"Thank You Page"];
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
             [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
         }

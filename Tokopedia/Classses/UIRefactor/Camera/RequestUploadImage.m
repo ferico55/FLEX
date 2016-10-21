@@ -30,7 +30,7 @@
     _operationQueue = [NSOperationQueue new];
     _requestActionUploadPhoto = [NSMutableURLRequest new];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://%@",_generateHost.result.generated_host.upload_host];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@",_generateHost.upload_host];
     
     _objectManagerUploadPhoto = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -159,7 +159,7 @@
 {
     NSInteger newAdd = _isNotUsingNewAdd?0:1;
     
-    [self requestActionUploadObject:_imageObject generatedHost:_generateHost.result.generated_host action:_action newAdd:newAdd productID:_productID paymentID:_paymentID fieldName:_fieldName success:^(id imageObject, UploadImage *image) {
+    [self requestActionUploadObject:_imageObject generatedHost:_generateHost action:_action newAdd:newAdd productID:_productID paymentID:_paymentID fieldName:_fieldName success:^(id imageObject, UploadImage *image) {
         [_delegate successUploadObject:imageObject withMappingResult:image];
     } failure:^(id imageObject, NSError *error) {
         [_delegate failedUploadObject:imageObject];

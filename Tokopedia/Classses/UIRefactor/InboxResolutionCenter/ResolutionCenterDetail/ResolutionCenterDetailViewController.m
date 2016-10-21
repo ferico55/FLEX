@@ -156,7 +156,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Resolution Center Detail Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Detail Page"];
     self.title = @"Pusat Resolusi";
 }
 

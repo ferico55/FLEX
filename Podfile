@@ -10,7 +10,6 @@ def common_pods
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
     pod 'GoogleAppIndexing'
-    pod 'Google/Analytics'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
@@ -23,7 +22,7 @@ def common_pods
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
     pod "JLPermissions/Contacts"
-    pod 'Google/SignIn'
+    pod 'GoogleSignIn', '~> 2.4.0'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
     pod 'CardIO'
@@ -35,6 +34,8 @@ def common_pods
     pod 'Appsee'
     pod 'JSQMessagesViewController'
 
+    pod 'Localytics'
+    pod 'JLRoutes', '~> 1.6.2'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -60,4 +61,12 @@ post_install do |installer|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
         end
     end
+
+    # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
+    clear_component_kit_umbrella_header
+end
+
+def clear_component_kit_umbrella_header
+    file = File.open('./Pods/Target Support Files/ComponentKit/ComponentKit-umbrella.h', 'w')
+    file.close
 end

@@ -133,7 +133,7 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 -(void)trackerFailAddProduct{
-    [TPAnalytics trackScreenName:@"Add Product - Fail"];
+    [AnalyticsManager trackScreenName:@"Add Product - Fail"];
 }
 
 -(void)fetchEditProduct{
@@ -160,7 +160,7 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)successAddProduct{
     
     // UA
-    [TPAnalytics trackScreenName:@"Add Product - Success"];
+    [AnalyticsManager trackScreenName:@"Add Product - Success"];
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
@@ -416,7 +416,7 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     // UA
-    [TPAnalytics trackScreenName:@"Add Product - Fail"];
+    [AnalyticsManager trackScreenName:@"Add Product - Fail"];
 }
 
 #pragma mark - TextView Delegate

@@ -107,8 +107,7 @@
 
     [self reloadNotification];
     
-    [TPAnalytics trackScreenName:@"Purchase - Payment Confirmation"];
-    self.screenName = @"Purchase - Payment Confirmation";
+    [AnalyticsManager trackScreenName:@"Purchase - Payment Confirmation"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

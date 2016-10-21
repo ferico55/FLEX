@@ -236,7 +236,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
@@ -607,7 +607,7 @@
 -(void) goToCCReaderViewController {
     CCReaderViewController *ccReaderVC = [CCReaderViewController new];
     ccReaderVC.delegate = self;
-    [TPAnalytics trackClickEvent:@"clickCardIOScan" category:@"Card IO Scan" label:@"Click Camera Icon"];
+    [AnalyticsManager trackEventName:@"clickCardIOScan" category:GA_EVENT_CATEGORY_CARDIO_SCAN action:GA_EVENT_ACTION_CLICK label:@"Click Camera Icon"];
     [self.navigationController presentViewController:ccReaderVC animated:YES completion:nil];
 }
 

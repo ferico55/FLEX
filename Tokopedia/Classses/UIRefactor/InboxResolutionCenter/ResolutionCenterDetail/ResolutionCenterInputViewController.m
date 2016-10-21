@@ -16,7 +16,6 @@
 #import "CameraController.h"
 #import "detail.h"
 #import "GenerateHost.h"
-#import "requestGenerateHost.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
 #import "RequestUploadImage.h"
@@ -103,7 +102,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Resolution Center Input Replay Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Input Replay Page"];
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     [_messageTextView becomeFirstResponder];

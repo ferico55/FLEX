@@ -18,7 +18,6 @@
 #import "TransactionShipmentATCTableViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "TPLocalytics.h"
 #import "MMNumberKeyboard.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
@@ -218,8 +217,7 @@ typedef enum
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    [TPAnalytics trackScreenName:@"Add to Cart"];
-    self.screenName = @"Add to Cart";
+    [AnalyticsManager trackScreenName:@"Add to Cart"];
 }
 
 - (IBAction)tapPinLocationButton:(id)sender {
@@ -275,7 +273,7 @@ typedef enum
 
 #pragma mark - View Action
 - (IBAction)tapBuy:(id)sender {
-    [TPAnalytics trackAddToCartEvent:@"clickATC" action:@"Click" label:@"Buy"];
+    [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Buy"];
     if ([self isValidInput]) {
         [self requestATC];
     }
@@ -308,10 +306,7 @@ typedef enum
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
     [self doCalculate];
-    
-    if (_ATCForm.form.destination.address_id != 0) {
-        [self requestRate];
-    }
+    [self requestRate];
     
     [self adjustViewIsLoading:NO];
     
@@ -395,7 +390,7 @@ typedef enum
 }
 
 -(void)failedFetchShipmentFee:(NSError*)error{
-    if (_selectedAddress.address_id != 0) {
+    if (_shipments.count == 0) {
         [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
         _tableView.tableHeaderView = _messageZeroShipmentView;
     } else{
@@ -843,13 +838,10 @@ typedef enum
     alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
     [alertView show];
     
-    [self pushLocalyticsData];
-    
-    [TPAnalytics trackAddToCart:_selectedProduct];
-    [TPLocalytics trackAddToCart:_selectedProduct];
+    [AnalyticsManager trackProductAddToCart:_selectedProduct];
     
     if (self.isSnapSearchProduct) {
-        [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+        [AnalyticsManager trackSnapSearchAddToCart:_selectedProduct];
     }
     
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
@@ -981,7 +973,7 @@ typedef enum
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
-    if (address.address_id <= 0) {
+    if ([address.address_id isEqualToString: noAddress]) {
         [self requestAddAddress:address];
         return;
     }
@@ -1194,17 +1186,6 @@ typedef enum
     }
     
     return insurance;
-}
-
-- (void)pushLocalyticsData {
-    ProductDetail *product = _selectedProduct;
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
-    NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
-    product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
-    product.product_quantity =_productQuantityTextField.text;
-
-    [TPAnalytics trackAddToCart:product];
 }
 
 -(void)alertAndResetIfQtyTextFieldBelowMin

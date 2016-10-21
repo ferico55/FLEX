@@ -246,7 +246,7 @@
                                                                   
                                                                   if (!action.message_error) {
                                                                       if ([action.data.is_success isEqualToString:@"1"]) {
-                                                                          [TPLocalytics trackDepositWithdraw:YES];
+                                                                          [AnalyticsManager localyticsTrackWithdraw:YES];
                                                                           [self.navigationController popViewControllerAnimated:YES];
                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
                                                                           
@@ -263,14 +263,14 @@
                                                                       [stickyAlertView show];
                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                                                                   } else if(action.message_error) {
-                                                                      [TPLocalytics trackDepositWithdraw:NO];
+                                                                      [AnalyticsManager localyticsTrackWithdraw:NO];
                                                                       NSArray *array = action.message_error;
                                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                                                                       [alert show];
                                                                   }
                                                               }
                                                               onFailure:^(NSError *errorResult) {
-                                                                  [TPLocalytics trackDepositWithdraw:NO];
+                                                                  [AnalyticsManager localyticsTrackWithdraw:NO];
                                                                   [self enableButton];
                                                               }];
                 }
@@ -425,7 +425,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Deposit Form Page"];
+    [AnalyticsManager trackScreenName:@"Deposit Form Page"];
     [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", [UIScreen mainScreen].bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
     CGFloat contentSizeWidth = [UIScreen mainScreen].bounds.size.width;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
