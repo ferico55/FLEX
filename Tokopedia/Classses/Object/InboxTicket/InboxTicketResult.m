@@ -9,5 +9,13 @@
 #import "InboxTicketResult.h"
 
 @implementation InboxTicketResult
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[InboxTicketList mapping]];
+    [mapping addPropertyMapping:relMapping];
+    return mapping;
+}
 
 @end

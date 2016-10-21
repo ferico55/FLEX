@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "InboxTicketUserInvolve.h"
 
-@interface InboxTicketList : NSObject
+@interface InboxTicketList : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *ticket_create_time_fmt2;
 @property (strong, nonatomic) NSString *ticket_first_message_name;
@@ -28,7 +29,7 @@
 @property (strong, nonatomic) NSString *ticket_respond_status;
 @property (strong, nonatomic) NSString *ticket_is_replied;
 @property (strong, nonatomic) NSString *ticket_url_detail;
-@property (strong, nonatomic) NSArray *ticket_user_involve;
+@property (strong, nonatomic) NSArray<InboxTicketUserInvolve*> *ticket_user_involve;
 @property (strong, nonatomic) NSString *ticket_update_by_id;
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;

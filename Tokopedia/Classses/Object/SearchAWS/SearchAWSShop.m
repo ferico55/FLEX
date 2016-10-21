@@ -7,6 +7,7 @@
 //
 
 #import "SearchAWSShop.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SearchAWSShop
 
