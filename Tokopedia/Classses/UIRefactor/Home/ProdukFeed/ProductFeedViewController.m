@@ -321,8 +321,6 @@ FavoriteShopRequestDelegate
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             size = CGSizeMake(self.view.frame.size.width, 45);
         }
-    } else if ([_productDataSource isProductFeedEmpty]) {
-        size = CGSizeMake(self.view.frame.size.width, 45);
     }
     return size;
 }
@@ -413,9 +411,12 @@ FavoriteShopRequestDelegate
         return ;
     }
     
-    if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
-        [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
-        [_favoriteShopRequest requestProductFeedWithFavoriteShopString:_favoritedShopString withPage:_page];
+    if (!_isRequestingProductFeed) {
+        if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
+            [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
+            [_favoriteShopRequest requestProductFeedWithFavoriteShopString:_favoritedShopString withPage:_page];
+            _isRequestingProductFeed = YES;
+        }
     }
 }
 
@@ -459,7 +460,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         }else{
             [_productDataSource addProducts: feed.data.products];
         }
-        
+
         [AnalyticsManager trackProductImpressions:feed.data.products];
         
         _nextPageUri =  feed.data.paging.uri_next;
