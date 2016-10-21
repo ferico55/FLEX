@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 class PulsaCache: NSObject {
-    let cacheIdentifier: String = "com.tokopedia.pulsa"
+    let cacheIdentifier: String = "com.tokopedia.pulsa-\(UIApplication.getAppVersionStringWithoutDot())"
     var cache: SPTPersistentCache!
     
     override init()  {

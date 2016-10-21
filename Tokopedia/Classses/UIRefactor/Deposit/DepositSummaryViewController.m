@@ -314,9 +314,9 @@
     _saldoLabel.text = _useableSaldoIDR;
     _totalSaldoTokopedia = result.summary.summary_total_deposit_idr;
     _holdDepositByCsIDR = result.summary.summary_deposit_hold_by_cs_idr;
-    _holdDepositByTokopedia = result.summary.summary_deposit_hold_tx_1_day_idr;
+    _holdDepositByTokopedia = result.summary.summary_hold_deposit_idr;
     
-    if([result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
+    if([result.summary.summary_hold_deposit integerValue] > 0) {
         _infoReviewSaldo.tag = 121;
         
         if(! [_withdrawalButton viewWithTag:121]) {
@@ -472,11 +472,7 @@
                 NSMutableString *infoSaldo = [NSMutableString stringWithFormat:@"\n -%@ %@", @" Total Saldo Tokopedia Anda adalah", _totalSaldoTokopedia];
                 
                 if (![_holdDepositByTokopedia isEqualToString:@"Rp 0"]) {
-                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@\n%@", @" Saldo Tokopedia Anda yang sedang kami review sebesar", _holdDepositByTokopedia, @" Saldo ini sedang kami review dan akan dikembalikan ke Akun Tokopedia Anda dalam 3 x 24 jam"]];
-                }
-                
-                if (![_holdDepositByCsIDR isEqualToString:@"Rp 0"]) {
-                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia Anda yang sedang ditahan oleh Tokopedia sebesar", _holdDepositByCsIDR]];
+                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@\n%@\n%@", @" Saldo Tokopedia Anda sejumlah",_holdDepositByTokopedia, @"sedang kami review.\nJika review melebihi 1x24 jam, silakan hubungi Customer Service kami untuk penjelasan lebih lanjut. Terima kasih."]];
                 }
                 
                 [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia yang dapat Anda tarik sebesar", _useableSaldoIDR]];
