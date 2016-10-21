@@ -732,7 +732,7 @@
 
 - (void)changeSwitchSaldo:(UISwitch *)switchSaldo
 {
-    _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
+    _isUsingSaldoTokopedia = switchSaldo.on;
     if (!_isUsingSaldoTokopedia) {
         _saldoTokopediaAmountTextField.text = @"";
         [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
