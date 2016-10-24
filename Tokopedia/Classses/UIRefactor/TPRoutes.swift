@@ -11,9 +11,7 @@ import JLRoutes
 
 class TPRoutes: NSObject {
     
-    override init() {
-        super.init()
-        
+    static func configureRoutes() {
         let navigator = NavigateViewController()
         
         //create shop
@@ -47,14 +45,14 @@ class TPRoutes: NSObject {
         
         //kereta
         JLRoutes.globalRoutes().addRoute("/kereta-api") { (params: [String : AnyObject]!) -> Bool in
-            self.openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
+            openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
             
             return true
         }
         
         //pulsa
         JLRoutes.globalRoutes().addRoute("/pulsa") { (params: [String : AnyObject]!) -> Bool in
-            self.openWebView(NSURL(string: "https://pulsa.tokopedia.com?utm_source=ios")!)
+            openWebView(NSURL(string: "https://pulsa.tokopedia.com?utm_source=ios")!)
             
             return true
         }
@@ -99,8 +97,8 @@ class TPRoutes: NSObject {
         JLRoutes.globalRoutes().addRoute("/:shopName") { (params: [String : AnyObject]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let shopName = params["shopName"] as! String
-            if(DeeplinkController.shouldOpenWebViewURL(url) || self.isContainPerlPostFix(shopName)) {
-                self.openWebView(url)
+            if(DeeplinkController.shouldOpenWebViewURL(url) || isContainPerlPostFix(shopName)) {
+                openWebView(url)
             } else {
                 navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: shopName)
             }
@@ -114,8 +112,8 @@ class TPRoutes: NSObject {
             let productName = params["productName"] as! String
             let shopName = params["shopName"] as! String
             
-            if(DeeplinkController.shouldOpenWebViewURL(url) || self.isContainPerlPostFix(productName)) {
-                self.openWebView(url)
+            if(DeeplinkController.shouldOpenWebViewURL(url) || isContainPerlPostFix(productName)) {
+                openWebView(url)
             } else {
                 let data = [
                     "product_key" : productName,
@@ -130,7 +128,7 @@ class TPRoutes: NSObject {
     
     
     
-    private func openWebView(url: NSURL) {
+    static func openWebView(url: NSURL) {
         let controller = WebViewController()
         let userManager = UserAuthentificationManager()
         
@@ -144,7 +142,7 @@ class TPRoutes: NSObject {
         visibleController?.navigationController?.pushViewController(controller, animated: true)
     }
     
-    private func isContainPerlPostFix(urlPath: String) -> Bool {
+    static func isContainPerlPostFix(urlPath: String) -> Bool {
         return (urlPath.rangeOfString(".pl") != nil)
     }
     
