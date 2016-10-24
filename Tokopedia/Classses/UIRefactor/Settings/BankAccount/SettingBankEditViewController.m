@@ -324,7 +324,7 @@
 - (void)successAddBankWithResult:(ProfileSettings *)result {
     _barbuttonsave.enabled = YES;
     
-    if (result.message_error) {
+    if (result.message_error.count > 0) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                        delegate:self];
         [alert show];
@@ -380,7 +380,7 @@
 - (void)successEditBankWithResult:(ProfileSettings *)result {
     _barbuttonsave.enabled = YES;
     
-    if (result.message_error) {
+    if (result.message_error.count > 0) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                        delegate:self];
         [alert show];
