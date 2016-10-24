@@ -13,6 +13,12 @@
 
 @interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
 
+@property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
+@property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
+@property (strong, nonatomic) IBOutlet UIButton *tambahEtalaseButton;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+
 @end
 
 @implementation EtalaseViewController{
