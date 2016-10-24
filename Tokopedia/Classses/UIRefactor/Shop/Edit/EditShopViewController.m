@@ -188,6 +188,10 @@
 - (void)didReceiveMappingResultForUploadImage:(RKMappingResult *)mappingResult {
     ShopSettings *settings = [mappingResult.dictionary objectForKey:@""];
     if (settings.result.is_success == 1) {
+        [AnalyticsManager trackEventName:@"clickShopInfo"
+                                category:GA_EVENT_CATEGORY_SHOP_INFO
+                                  action:GA_EVENT_ACTION_EDIT
+                                   label:@"Picture"];
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengubah gambar toko"] delegate:self];
         [alert show];
         NSDictionary *userinfo = @{
