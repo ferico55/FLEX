@@ -25,6 +25,8 @@
 
 #import "UITableView+IndexPath.h"
 
+#import "Tokopedia-Swift.h"
+
 @interface ShipmentStatusViewController ()
 <
     UITableViewDataSource,
@@ -206,14 +208,21 @@
 
     cell.invoiceDateLabel.text = order.order_payment.payment_verify_date;
     
-    if ((order.order_detail.detail_order_status == ORDER_DELIVERED ||
-         order.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE) &&
-         order.order_deadline.deadline_finish_day_left) {
+    if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
+         (order.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE &&
+         order.order_deadline.deadline_finish_day_left)) {
         cell.dateFinishLabel.hidden = NO;
         cell.dateFinishLabel.text = @"Selesai Otomatis";
         cell.dateFinishLabel.font = [UIFont microTheme];
         cell.finishLabel.hidden = NO;
-        cell.finishLabel.text = order.order_deadline.deadline_finish_date;        
+             
+         NSString *dateFinishString = order.order_deadline.deadline_finish_date;
+         NSString *todayString = [NSDate getStringDate:[NSDate date] withFormat:@"dd-MM-yyyy"];
+         if ([dateFinishString isEqual:todayString]) {
+             dateFinishString = @"Hari ini";
+         }
+     
+        cell.finishLabel.text = dateFinishString;
     }
     
     NSLog(@"%@  -  %ld", order.order_detail.detail_invoice,
