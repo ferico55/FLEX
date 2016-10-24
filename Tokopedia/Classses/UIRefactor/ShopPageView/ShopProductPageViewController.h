@@ -20,6 +20,6 @@
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 @property (nonatomic, strong) EtalaseList *initialEtalase;
 
-- (void)openEtalaseWithId:(NSString *)etalaseId;
+- (void)showProductsWithEtalaseId:(NSString *)etalaseId;
 
 @end

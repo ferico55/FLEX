@@ -169,7 +169,7 @@
     
     _shopHomeViewController = [ShopHomeViewController new];
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
-        [weakSelf openEtalaseWithShopDomain:shopDomain etalaseId:etalaseId];
+        [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
     };
     
     NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
@@ -198,11 +198,11 @@
     [self disableAllButtons];
 }
 
-- (void)openEtalaseWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
+- (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
     [self displayViewController:_shopProductViewController];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_shopProductViewController openEtalaseWithId:etalaseId];
+        [_shopProductViewController showProductsWithEtalaseId:etalaseId];
     });
 }
 

@@ -646,6 +646,10 @@ EtalaseViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showProductsWithEtalaseId:(NSString *)etalaseId {
+    [self didSelectEtalase:[self etalaseWithId:etalaseId]];
+}
+
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
     _page = 1;
     [_detailfilter setObject:selectedEtalase forKey:DATA_ETALASE_KEY];
