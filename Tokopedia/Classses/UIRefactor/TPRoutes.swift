@@ -128,6 +128,8 @@ class TPRoutes: NSObject {
         }
     }
     
+    
+    
     private func openWebView(url: NSURL) {
         let controller = WebViewController()
         let userManager = UserAuthentificationManager()
@@ -144,6 +146,11 @@ class TPRoutes: NSObject {
     
     private func isContainPerlPostFix(urlPath: String) -> Bool {
         return (urlPath.rangeOfString(".pl") != nil)
+    }
+    
+    static func routeURL(url: NSURL) -> Bool {
+        AnalyticsManager.trackCampaign(url)
+        return JLRoutes.routeURL(url)
     }
     
 }
