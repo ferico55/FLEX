@@ -228,7 +228,7 @@
             }
             else
             {
-                NSArray *errorMessages = @[@"Anda hanya bisa menambahkan 3 catatan dan 1 Kebiajakan Pengembalian Produk"];
+                NSArray *errorMessages = @[@"Anda hanya bisa menambahkan 3 catatan dan 1 Kebijakan Pengembalian Produk"];
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                 [alert show];
             }
@@ -370,6 +370,7 @@
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
+    [AnalyticsManager trackEventName:@"clickNotes" category:GA_EVENT_CATEGORY_SHOP_NOTES action:GA_EVENT_ACTION_CLICK label:@"Delete"];
     NotesList *list = _list[indexpath.row];
     [_list removeObjectAtIndex:indexpath.row];
     [_table beginUpdates];

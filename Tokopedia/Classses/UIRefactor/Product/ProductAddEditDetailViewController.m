@@ -92,9 +92,16 @@ NSString * const ProductStatusWarehouse = @"3";
     [[self.tableView superview] endEditing:YES];
     if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
         if ([self isValidInput]) {
+            if (_type == TYPE_ADD_EDIT_PRODUCT_ADD) {
+                [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Add"];
+            } else {
+                [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_COPY label:@"Product"];
+            }
+            
             [self fetchAddProduct];
         }
     } else {
+        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_EDIT label:@"Product"];
         [self fetchEditProduct];
     }
 }
