@@ -13,7 +13,7 @@
 +(RKObjectMapping*)mapping
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"page" toKeyPath:@"page" withMapping:[Paging mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
     RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[ListFavoriteShop mapping]];
     [mapping addPropertyMapping:relMapping];
     return mapping;
