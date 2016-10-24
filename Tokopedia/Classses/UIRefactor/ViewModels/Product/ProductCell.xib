@@ -69,10 +69,10 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preorder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gS-9i-9D3">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gS-9i-9D3">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6Kt-2D-DWq"/>
-                                    <constraint firstAttribute="width" constant="60" id="no7-lF-yKf"/>
+                                    <constraint firstAttribute="width" constant="20" id="no7-lF-yKf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,6 +86,30 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                         <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cashback 20%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFN-jp-CGn">
+                                <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="T20-IB-iC1"/>
+                                    <constraint firstAttribute="height" constant="18" id="ifJ-MB-Tw8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                        <color key="value" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
@@ -129,6 +153,7 @@
                             <constraint firstAttribute="bottom" secondItem="18h-Q2-lJK" secondAttribute="bottom" constant="4" id="F6V-lo-mKE"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="top" secondItem="Tn9-gR-GHT" secondAttribute="bottom" constant="3" id="HYw-Lv-7kj"/>
                             <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="2" id="JCX-u5-eZ0"/>
+                            <constraint firstItem="rFN-jp-CGn" firstAttribute="centerY" secondItem="1gS-9i-9D3" secondAttribute="centerY" id="KBw-FD-AGK"/>
                             <constraint firstItem="bHE-Jb-fd8" firstAttribute="top" secondItem="mlD-8n-5Cw" secondAttribute="bottom" id="M9C-lR-KfD"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="7" id="NrL-m6-jdr"/>
                             <constraint firstItem="zSL-Us-50U" firstAttribute="top" secondItem="mlD-8n-5Cw" secondAttribute="bottom" id="O3A-0d-y0x"/>
@@ -139,6 +164,7 @@
                             <constraint firstItem="Ywu-mc-7Di" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="6" id="cfq-gf-Hxu"/>
                             <constraint firstAttribute="trailing" secondItem="Uc5-k1-Ud2" secondAttribute="trailing" constant="7" id="cty-xJ-hUI"/>
                             <constraint firstAttribute="trailing" secondItem="Tn9-gR-GHT" secondAttribute="trailing" constant="7" id="dP3-7b-8nr"/>
+                            <constraint firstAttribute="trailing" secondItem="rFN-jp-CGn" secondAttribute="trailing" constant="7" id="gBN-m4-8Wh"/>
                             <constraint firstItem="18h-Q2-lJK" firstAttribute="top" secondItem="Uc5-k1-Ud2" secondAttribute="bottom" id="j06-NA-Leg"/>
                             <constraint firstItem="Tn9-gR-GHT" firstAttribute="top" secondItem="Ymv-Zs-D1n" secondAttribute="top" constant="7" id="lyf-He-toy"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="7" id="mnY-pY-8ML"/>
