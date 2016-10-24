@@ -620,12 +620,25 @@ EtalaseViewControllerDelegate
 }
 
 - (IBAction)tapToEtalase:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
+    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    [self openEtalaseWithId:etalase.etalase_id];
+}
+
+- (EtalaseList *)etalaseWithId:(NSString *)etalaseId {
+    if (!etalaseId) return nil;
+    
+    EtalaseList *etalase = [EtalaseList new];
+    etalase.etalase_id = etalaseId;
+    
+    return etalase;
+}
+
+- (void)openEtalaseWithId:(NSString *)etalaseId {
     EtalaseViewController *vc = [EtalaseViewController new];
     vc.delegate = self;
     vc.isEditable = NO;
     vc.showOtherEtalase = YES;
-    vc.initialSelectedEtalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    vc.initialSelectedEtalase = [self etalaseWithId:etalaseId];
     vc.shopDomain = _shop.result.info.shop_domain;
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];

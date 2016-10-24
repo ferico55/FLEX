@@ -200,6 +200,10 @@
 
 - (void)openEtalaseWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
     [self displayViewController:_shopProductViewController];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_shopProductViewController openEtalaseWithId:etalaseId];
+    });
 }
 
 -(void)disableAllButtons{
