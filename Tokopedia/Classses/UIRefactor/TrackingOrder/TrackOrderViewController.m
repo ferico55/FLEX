@@ -79,6 +79,11 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [AnalyticsManager trackScreenName:@"Shipment Tracking Order Page"];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
