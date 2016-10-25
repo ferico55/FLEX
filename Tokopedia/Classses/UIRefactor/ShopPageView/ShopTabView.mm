@@ -117,12 +117,16 @@
 + (CKComponent *)componentForModel:(ShopTabComponentModel *)model
                            context:(id<NSObject>)context {
     std::vector<CKComponent *> tabItems = {
-        [self tabWithTitle:@"Home" forSection:ShopPageTabHome withModel:model],
+        (model.showHomeTab?[self tabWithTitle:@"Home" forSection:ShopPageTabHome withModel:model]:nil),
         [self tabWithTitle:@"Produk" forSection:ShopPageTabProduct withModel:model],
         [self tabWithTitle:@"Diskusi" forSection:ShopPageTabDiscussion withModel:model],
         [self tabWithTitle:@"Ulasan" forSection:ShopPageTabReview withModel:model],
         [self tabWithTitle:@"Catatan" forSection:ShopPageTabNote withModel:model]
     };
+    
+    tabItems = CK::filter(tabItems, [](CKComponent *component) {
+        return component != nil;
+    });
     
     std::vector<CKStackLayoutComponentChild> stackLayoutChildren;
     
