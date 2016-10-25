@@ -60,7 +60,8 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    TPRoutes *routes = [[TPRoutes alloc] init];
+    [TPRoutes configureRoutes];
+    
     [self startAppsee];
     [self hideTitleBackButton];
     
@@ -109,7 +110,7 @@
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
-            [JLRoutes routeURL:url];
+            [TPRoutes routeURL:url];
         } else {
             //universal search link, only available in iOS 9
             if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
@@ -119,7 +120,7 @@
                         if ([obj isKindOfClass:[NSUserActivity class]]) {
                             NSUserActivity *userActivity = obj;
                             NSURL *url = userActivity.webpageURL;
-                            [JLRoutes routeURL:url];
+                            [TPRoutes routeURL:url];
                         }
                     }];
                 }
@@ -238,11 +239,11 @@
     }
     if ([userInfo objectForKey:@"Localytics Deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
-        [JLRoutes routeURL:url];
+        [TPRoutes routeURL:url];
     }
     if ([userInfo objectForKey:@"url_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
-        [JLRoutes routeURL:url];
+        [TPRoutes routeURL:url];
     }
 }
 
@@ -263,7 +264,7 @@
         return YES;
     } else if ([Localytics handleTestModeURL:url]) {
         return YES;
-    } else if([JLRoutes routeURL: url]) {
+    } else if([TPRoutes routeURL: url]) {
         return YES;
     }
     
@@ -280,8 +281,7 @@
         url = userActivity.webpageURL;
     }
     if (url) {
-        [JLRoutes routeURL: url];
-        [JLRoutes setVerboseLoggingEnabled:true];
+        [TPRoutes routeURL: url];
         shouldContinue = YES;
     }
     return shouldContinue;
