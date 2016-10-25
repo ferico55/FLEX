@@ -50,47 +50,44 @@
 
 }
 
-+ (CKComponent *)tabWithTitle:(NSString *)title marked:(BOOL)marked {
-    CKComponent *tabItem = [CKButtonComponent
-                            newWithTitles:{
-                                {UIControlStateNormal, title}
-                            }
-                            titleColors:{
-                                {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                            }
-                            images:{}
-                            backgroundImages:{}
-                            titleFont:[UIFont largeTheme]
-                            selected:{}
-                            enabled:YES
-                            action:{}
-                            size:{}
-                            attributes:{}
-                            accessibilityConfiguration:{}];
-    
-    if (!marked) return tabItem;
-    
-    return [CKOverlayLayoutComponent
-            newWithComponent:tabItem
-            overlay:
-            [CKStackLayoutComponent
-             newWithView:{}
-             size:{}
-             style:{
-                 .direction = CKStackLayoutDirectionVertical,
-                 .justifyContent = CKStackLayoutJustifyContentEnd,
-                 .alignItems = CKStackLayoutAlignItemsStretch
-             }
-             children:{
-                 {
-                     [CKComponent
-                      newWithView:{
-                          [UIView class],
-                          {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
-                      }
-                      size:{.height = 3}]
-                 }
-             }]];
++ (CKComponent *)tabWithTitle:(NSString *)title marked:(BOOL)marked {    
+    return [CKStackLayoutComponent
+            newWithView:{}
+            size:{}
+            style:{
+                .direction = CKStackLayoutDirectionVertical,
+                .alignItems = CKStackLayoutAlignItemsStretch
+            }
+            children:{
+                {
+                    [CKButtonComponent
+                     newWithTitles:{
+                         {UIControlStateNormal, title}
+                     }
+                     titleColors:{
+                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
+                     }
+                     images:{}
+                     backgroundImages:{}
+                     titleFont:[UIFont largeTheme]
+                     selected:{}
+                     enabled:YES
+                     action:{}
+                     size:{}
+                     attributes:{}
+                     accessibilityConfiguration:{}],
+                    .flexGrow = YES
+                },
+                {
+                    (!marked?nil:
+                    [CKComponent
+                     newWithView:{
+                         [UIView class],
+                         {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
+                     }
+                     size:{.height = 3}])
+                }
+            }];
 }
 
 + (CKComponent *)componentForModel:(ShopTabComponentModel *)model
