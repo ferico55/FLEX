@@ -83,7 +83,7 @@ EtalaseViewControllerDelegate
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
+@property (strong, nonatomic) UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 
@@ -269,11 +269,6 @@ EtalaseViewControllerDelegate
         _isNoData = NO;
     }
     
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
-    
     [self initNotification];
     
     
@@ -331,8 +326,20 @@ EtalaseViewControllerDelegate
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
     ShopTabView *shopTabView = [[ShopTabView alloc] init];
-    shopTabView.frame = CGRectMake(0, 300, self.view.bounds.size.width, 40);
     [self.view addSubview:shopTabView];
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
 -(void)viewWillAppear:(BOOL)animated {

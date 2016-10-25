@@ -53,22 +53,44 @@
             }
             children:{
                 {
-                    [CKButtonComponent
-                     newWithTitles:{
-                         {UIControlStateNormal, @"Home"}
-                     }
-                     titleColors:{
-                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                     }
-                     images:{}
-                     backgroundImages:{}
-                     titleFont:[UIFont largeTheme]
-                     selected:{}
-                     enabled:YES
-                     action:{}
-                     size:{}
-                     attributes:{}
-                     accessibilityConfiguration:{}],
+                    [CKOverlayLayoutComponent
+                     newWithComponent:
+                     [CKButtonComponent
+                      newWithTitles:{
+                          {UIControlStateNormal, @"Home"}
+                      }
+                      titleColors:{
+                          {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
+                      }
+                      images:{}
+                      backgroundImages:{}
+                      titleFont:[UIFont largeTheme]
+                      selected:{}
+                      enabled:YES
+                      action:{}
+                      size:{}
+                      attributes:{}
+                      accessibilityConfiguration:{}]
+                     
+                     overlay:
+                     [CKStackLayoutComponent
+                      newWithView:{}
+                      size:{}
+                      style:{
+                          .direction = CKStackLayoutDirectionVertical,
+                          .justifyContent = CKStackLayoutJustifyContentEnd,
+                          .alignItems = CKStackLayoutAlignItemsStretch
+                      }
+                      children:{
+                          {
+                              [CKComponent
+                               newWithView:{
+                                   [UIView class],
+                                   {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
+                               }
+                               size:{.height = 3}]
+                          }
+                      }]],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
