@@ -47,6 +47,7 @@
 #import "ShopProductPageResult.h"
 #import "ShopProductPageList.h"
 #import "ShopPageRequest.h"
+#import "ShopTabView.h"
 
 #import "EtalaseViewController.h"
 
@@ -328,6 +329,10 @@ EtalaseViewControllerDelegate
     
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] init];
+    shopTabView.frame = CGRectMake(0, 300, self.view.bounds.size.width, 40);
+    [self.view addSubview:shopTabView];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
