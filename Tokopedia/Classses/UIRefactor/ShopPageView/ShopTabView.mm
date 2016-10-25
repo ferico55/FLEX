@@ -10,17 +10,28 @@
 
 #import <ComponentKit/ComponentKit.h>
 
+@interface ShopTabComponentModel : NSObject
+@property ShopPageTab tab;
+@end
+
+@implementation ShopTabComponentModel
+@end
+
 @interface ShopTabView() <CKComponentProvider>
 @end
 
 @implementation ShopTabView
 
-- (instancetype)init {
+- (instancetype)initWithTab:(ShopPageTab)tab {
     id<CKComponentSizeRangeProviding> sizeRangeProvider =
         [CKComponentFlexibleSizeRangeProvider providerWithFlexibility:CKComponentSizeRangeFlexibilityNone];
     if (self = [super initWithComponentProvider:[self class]
                               sizeRangeProvider:sizeRangeProvider]) {
         
+        ShopTabComponentModel *model = [ShopTabComponentModel new];
+        model.tab = tab;
+        
+        [self updateModel:model mode:CKUpdateModeSynchronous];
     }
     
     return self;
@@ -39,7 +50,50 @@
 
 }
 
-+ (CKComponent *)componentForModel:(id<NSObject>)model
++ (CKComponent *)tabWithTitle:(NSString *)title marked:(BOOL)marked {
+    CKComponent *tabItem = [CKButtonComponent
+                            newWithTitles:{
+                                {UIControlStateNormal, title}
+                            }
+                            titleColors:{
+                                {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
+                            }
+                            images:{}
+                            backgroundImages:{}
+                            titleFont:[UIFont largeTheme]
+                            selected:{}
+                            enabled:YES
+                            action:{}
+                            size:{}
+                            attributes:{}
+                            accessibilityConfiguration:{}];
+    
+    if (!marked) return tabItem;
+    
+    return [CKOverlayLayoutComponent
+            newWithComponent:tabItem
+            overlay:
+            [CKStackLayoutComponent
+             newWithView:{}
+             size:{}
+             style:{
+                 .direction = CKStackLayoutDirectionVertical,
+                 .justifyContent = CKStackLayoutJustifyContentEnd,
+                 .alignItems = CKStackLayoutAlignItemsStretch
+             }
+             children:{
+                 {
+                     [CKComponent
+                      newWithView:{
+                          [UIView class],
+                          {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
+                      }
+                      size:{.height = 3}]
+                 }
+             }]];
+}
+
++ (CKComponent *)componentForModel:(ShopTabComponentModel *)model
                            context:(id<NSObject>)context {
     return [CKStackLayoutComponent
             newWithView:{
@@ -53,44 +107,7 @@
             }
             children:{
                 {
-                    [CKOverlayLayoutComponent
-                     newWithComponent:
-                     [CKButtonComponent
-                      newWithTitles:{
-                          {UIControlStateNormal, @"Home"}
-                      }
-                      titleColors:{
-                          {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                      }
-                      images:{}
-                      backgroundImages:{}
-                      titleFont:[UIFont largeTheme]
-                      selected:{}
-                      enabled:YES
-                      action:{}
-                      size:{}
-                      attributes:{}
-                      accessibilityConfiguration:{}]
-                     
-                     overlay:
-                     [CKStackLayoutComponent
-                      newWithView:{}
-                      size:{}
-                      style:{
-                          .direction = CKStackLayoutDirectionVertical,
-                          .justifyContent = CKStackLayoutJustifyContentEnd,
-                          .alignItems = CKStackLayoutAlignItemsStretch
-                      }
-                      children:{
-                          {
-                              [CKComponent
-                               newWithView:{
-                                   [UIView class],
-                                   {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
-                               }
-                               size:{.height = 3}]
-                          }
-                      }]],
+                    [self tabWithTitle:@"Home" marked:model.tab == ShopPageTabHome],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -98,22 +115,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [CKButtonComponent
-                     newWithTitles:{
-                         {UIControlStateNormal, @"Produk"}
-                     }
-                     titleColors:{
-                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                     }
-                     images:{}
-                     backgroundImages:{}
-                     titleFont:[UIFont largeTheme]
-                     selected:{}
-                     enabled:YES
-                     action:{}
-                     size:{}
-                     attributes:{}
-                     accessibilityConfiguration:{}],
+                    [self tabWithTitle:@"Produk" marked:model.tab == ShopPageTabProduct],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -121,22 +123,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [CKButtonComponent
-                     newWithTitles:{
-                         {UIControlStateNormal, @"Diskusi"}
-                     }
-                     titleColors:{
-                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                     }
-                     images:{}
-                     backgroundImages:{}
-                     titleFont:[UIFont largeTheme]
-                     selected:{}
-                     enabled:YES
-                     action:{}
-                     size:{}
-                     attributes:{}
-                     accessibilityConfiguration:{}],
+                    [self tabWithTitle:@"Diskusi" marked:model.tab == ShopPageTabDiscussion],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -144,22 +131,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [CKButtonComponent
-                     newWithTitles:{
-                         {UIControlStateNormal, @"Ulasan"}
-                     }
-                     titleColors:{
-                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                     }
-                     images:{}
-                     backgroundImages:{}
-                     titleFont:[UIFont largeTheme]
-                     selected:{}
-                     enabled:YES
-                     action:{}
-                     size:{}
-                     attributes:{}
-                     accessibilityConfiguration:{}],
+                    [self tabWithTitle:@"Ulasan" marked:model.tab == ShopPageTabReview],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -167,22 +139,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [CKButtonComponent
-                     newWithTitles:{
-                         {UIControlStateNormal, @"Catatan"}
-                     }
-                     titleColors:{
-                         {UIControlStateNormal, [UIColor colorWithRed:0.259 green:0.259 blue:0.259 alpha:1.00]}
-                     }
-                     images:{}
-                     backgroundImages:{}
-                     titleFont:[UIFont largeTheme]
-                     selected:{}
-                     enabled:YES
-                     action:{}
-                     size:{}
-                     attributes:{}
-                     accessibilityConfiguration:{}],
+                    [self tabWithTitle:@"Catatan" marked:model.tab == ShopPageTabNote],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },

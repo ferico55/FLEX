@@ -325,7 +325,7 @@ EtalaseViewControllerDelegate
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
-    ShopTabView *shopTabView = [[ShopTabView alloc] init];
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
     [self.view addSubview:shopTabView];
     
     [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {

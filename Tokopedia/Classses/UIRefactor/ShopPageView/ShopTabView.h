@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <ComponentKit/CKComponentHostingView.h>
+#import "CKComponentHostingView.h"
+#import "ShopPageHeader.h"
 
 @interface ShopTabView : CKComponentHostingView
 
-- (instancetype)init;
+- (instancetype)initWithTab:(ShopPageTab)tab;
 
 @end
