@@ -29,6 +29,7 @@
 @property (strong, nonatomic) NSString *productNotes;
 @property (strong, nonatomic) NSString *productErrorMessage;
 @property (strong, nonatomic) NSArray *badges;
+@property (strong, nonatomic) NSArray *labels;
 
 @property (strong, nonatomic) NSArray<Errors *> *productErrors;
 @property (strong, nonatomic) NSArray<Errors *> *cartErrors;

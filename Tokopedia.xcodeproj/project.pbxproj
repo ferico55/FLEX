@@ -2646,6 +2646,7 @@
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AE855A51DBE011A002F2F9C /* ProductLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE855A41DBE0119002F2F9C /* ProductLabel.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -6499,6 +6500,8 @@
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AE855A31DBE0119002F2F9C /* ProductLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductLabel.h; sourceTree = "<group>"; };
+		7AE855A41DBE0119002F2F9C /* ProductLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductLabel.m; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -11103,6 +11106,8 @@
 				453FC8AB1DB4B92600125AD5 /* SpellCheckResponse.m */,
 				453FC8AC1DB4B92600125AD5 /* SpellCheckResult.h */,
 				453FC8AD1DB4B92600125AD5 /* SpellCheckResult.m */,
+				7AE855A31DBE0119002F2F9C /* ProductLabel.h */,
+				7AE855A41DBE0119002F2F9C /* ProductLabel.m */,
 			);
 			path = SearchResult;
 			sourceTree = "<group>";
@@ -15476,6 +15481,7 @@
 				453FD3281DB4B93700125AD5 /* ProductReputationCell.m in Sources */,
 				453FD4E41DB4B93D00125AD5 /* ProfileFavoriteRequest.swift in Sources */,
 				453FD2071DB4B93500125AD5 /* FilterSortViewController.swift in Sources */,
+				7AE855A51DBE011A002F2F9C /* ProductLabel.m in Sources */,
 				453FD0111DB4B93100125AD5 /* ShippingInfoResult.m in Sources */,
 				453FCE921DB4B92F00125AD5 /* CatalogAddProduct.m in Sources */,
 				453FCEE91DB4B92F00125AD5 /* GoogleDistanceMatrixElements.m in Sources */,
