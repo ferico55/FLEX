@@ -131,7 +131,6 @@
 #import "InboxTicketViewController.h"
 #import "ReplyInboxTicketResult.h"
 #import "InboxTicketResultDetail.h"
-#import "RatingResult.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

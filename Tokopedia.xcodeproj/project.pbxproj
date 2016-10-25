@@ -279,8 +279,6 @@
 		451F37B31DBDB04400D47122 /* InboxTicketResultDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28C01DBDB03700D47122 /* InboxTicketResultDetail.m */; };
 		451F37B41DBDB04400D47122 /* InboxTicketTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28C21DBDB03700D47122 /* InboxTicketTicket.m */; };
 		451F37B51DBDB04400D47122 /* InboxTicketUserInvolve.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28C41DBDB03700D47122 /* InboxTicketUserInvolve.m */; };
-		451F37B61DBDB04400D47122 /* RatingResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28C61DBDB03700D47122 /* RatingResponse.m */; };
-		451F37B71DBDB04400D47122 /* RatingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28C81DBDB03700D47122 /* RatingResult.m */; };
 		451F37B81DBDB04400D47122 /* ReplyInboxTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28CA1DBDB03700D47122 /* ReplyInboxTicket.m */; };
 		451F37B91DBDB04400D47122 /* ReplyInboxTicketResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28CC1DBDB03700D47122 /* ReplyInboxTicketResult.m */; };
 		451F37BA1DBDB04400D47122 /* DetailTotalLikeDislike.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F28CF1DBDB03700D47122 /* DetailTotalLikeDislike.m */; };
@@ -3214,10 +3212,6 @@
 		451F28C21DBDB03700D47122 /* InboxTicketTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTicketTicket.m; sourceTree = "<group>"; };
 		451F28C31DBDB03700D47122 /* InboxTicketUserInvolve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTicketUserInvolve.h; sourceTree = "<group>"; };
 		451F28C41DBDB03700D47122 /* InboxTicketUserInvolve.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTicketUserInvolve.m; sourceTree = "<group>"; };
-		451F28C51DBDB03700D47122 /* RatingResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Rating\bResponse.h"; sourceTree = "<group>"; };
-		451F28C61DBDB03700D47122 /* RatingResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Rating\bResponse.m"; sourceTree = "<group>"; };
-		451F28C71DBDB03700D47122 /* RatingResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatingResult.h; sourceTree = "<group>"; };
-		451F28C81DBDB03700D47122 /* RatingResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatingResult.m; sourceTree = "<group>"; };
 		451F28C91DBDB03700D47122 /* ReplyInboxTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyInboxTicket.h; sourceTree = "<group>"; };
 		451F28CA1DBDB03700D47122 /* ReplyInboxTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyInboxTicket.m; sourceTree = "<group>"; };
 		451F28CB1DBDB03700D47122 /* ReplyInboxTicketResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyInboxTicketResult.h; sourceTree = "<group>"; };
@@ -7577,10 +7571,6 @@
 				451F28C21DBDB03700D47122 /* InboxTicketTicket.m */,
 				451F28C31DBDB03700D47122 /* InboxTicketUserInvolve.h */,
 				451F28C41DBDB03700D47122 /* InboxTicketUserInvolve.m */,
-				451F28C51DBDB03700D47122 /* RatingResponse.h */,
-				451F28C61DBDB03700D47122 /* RatingResponse.m */,
-				451F28C71DBDB03700D47122 /* RatingResult.h */,
-				451F28C81DBDB03700D47122 /* RatingResult.m */,
 				451F28C91DBDB03700D47122 /* ReplyInboxTicket.h */,
 				451F28CA1DBDB03700D47122 /* ReplyInboxTicket.m */,
 				451F28CB1DBDB03700D47122 /* ReplyInboxTicketResult.h */,
@@ -14948,7 +14938,6 @@
 				451F373C1DBDB04400D47122 /* OtherProduct.m in Sources */,
 				451F38291DBDB04500D47122 /* OrderDetail.m in Sources */,
 				451F36EF1DBDB04400D47122 /* CreatePasswordResult.m in Sources */,
-				451F37B61DBDB04400D47122 /* RatingResponse.m in Sources */,
 				451F39841DBDB04700D47122 /* Window.swift in Sources */,
 				451F36FB1DBDB04400D47122 /* VerifyOTP.m in Sources */,
 				451F3A361DBDB04800D47122 /* CategoryDataSource.m in Sources */,
@@ -16039,7 +16028,6 @@
 				451F3B351DBDB04A00D47122 /* MyShopNoteViewController.m in Sources */,
 				451F39441DBDB04700D47122 /* Errors.swift in Sources */,
 				451F37A51DBDB04400D47122 /* InboxReviewResponse.m in Sources */,
-				451F37B71DBDB04400D47122 /* RatingResult.m in Sources */,
 				451F37281DBDB04400D47122 /* DepositSummary.m in Sources */,
 				451F38061DBDB04500D47122 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				451F3A5D1DBDB04900D47122 /* BackgroundLayer.m in Sources */,

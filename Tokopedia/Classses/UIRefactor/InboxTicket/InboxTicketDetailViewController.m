@@ -15,7 +15,6 @@
 #import "ResolutionCenterDetailCell.h"
 #import "string_inbox_ticket.h"
 #import "InboxTicketReplyViewController.h"
-#import "RatingResponse.h"
 #import "InboxTicketDetailAttachment.h"
 #import "GalleryViewController.h"
 #import "UserContainerViewController.h"
@@ -34,8 +33,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     NSString *_nextPageUri;
     UIRefreshControl *_refreshControl;
     NoResultView *_noResult;
-    
-    BOOL _rating;
     
     NSMutableArray<NSMutableArray *> *_messages;
     NSInteger _page;
@@ -56,45 +53,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 @property (strong, nonatomic) IBOutlet UIView *tableFooterView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 
-@property (strong, nonatomic) IBOutlet UIView *ratingView;
-@property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
-@property (strong, nonatomic) IBOutlet UIView *ratingResultView;
-@property (weak, nonatomic) IBOutlet UILabel *ratingResultTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *ratingResultLabel;
-@property (weak, nonatomic) IBOutlet UIButton *yesButton;
-@property (weak, nonatomic) IBOutlet UIButton *noButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *replyButton;
-@property (weak, nonatomic) IBOutlet UIButton *closeTicketButton;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *ratingActivityIndicator;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ratingFormBottomConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ratingResultBottomConstraint;
-
 @property (weak, nonatomic) IBOutlet UIView *ticketClosedView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ticketClosedBottomConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *reopenTicketView;
-@property (weak, nonatomic) IBOutlet UILabel *reopenTicketLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *ticketClosedLabel;
-
-@property (weak, nonatomic) IBOutlet UIButton *lastReplyButton;
-@property (weak, nonatomic) IBOutlet UIButton *lastCloseButton;
-
-@property (strong, nonatomic) IBOutlet UIView *reopenTicketAfterReplyView;
-@property (weak, nonatomic) IBOutlet UILabel *reopenTicketAfterReplyTitle;
-@property (weak, nonatomic) IBOutlet UIButton *yesCloseButton;
-@property (weak, nonatomic) IBOutlet UIButton *replyAfterCSButton;
-@property (weak, nonatomic) IBOutlet UIButton *cloesAfterCSButton;
-
-@property (strong, nonatomic) IBOutlet UIView *automaticCloseView;
-@property (weak, nonatomic) IBOutlet UILabel *automaticCloseTitleLabel;
-@property (weak, nonatomic) IBOutlet UIButton *automaticCloseRatingNoButton;
-@property (weak, nonatomic) IBOutlet UIButton *automaticCloseRatingYesButton;
-@property (weak, nonatomic) IBOutlet UIButton *automaticCloseReopenButton;
 
 @property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
@@ -126,53 +88,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if (self.inboxTicket || self.inboxTicketId) {
         [self requestDetailTicket];
     }
-
-    self.ratingActivityIndicator.hidden = YES;
-    self.ratingActivityIndicator.hidesWhenStopped = YES;
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentCenter;
-    
-    UIFont *normalTextFont = [UIFont smallTheme];
-    UIFont *mediumTextFont = [UIFont smallThemeMedium];
-    
-    NSDictionary *ratingAttributes = @{
-        NSFontAttributeName             : normalTextFont,
-        NSParagraphStyleAttributeName   : style
-    };
-    
-    self.ratingLabel.attributedText = [[NSAttributedString alloc] initWithString:self.ratingLabel.text?:@""
-                                                                      attributes:ratingAttributes];
-    
-    NSDictionary *ratingTitleAttributes = @{
-        NSFontAttributeName            : mediumTextFont,
-        NSParagraphStyleAttributeName  : style,
-    };
-
-    self.ratingResultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.ratingResultTitleLabel.text attributes:ratingTitleAttributes];
-    
-    self.reopenTicketLabel.attributedText = [[NSAttributedString alloc] initWithString:self.reopenTicketLabel.text attributes:ratingTitleAttributes];
-
-    self.ticketClosedLabel.attributedText = [[NSAttributedString alloc] initWithString:self.ticketClosedLabel.text attributes:ratingTitleAttributes];
-    
-    self.reopenTicketAfterReplyTitle.attributedText = [[NSAttributedString alloc] initWithString:self.reopenTicketAfterReplyTitle.text attributes:ratingTitleAttributes];
-
-    self.automaticCloseTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.automaticCloseTitleLabel.text attributes:ratingTitleAttributes];
     
     self.replyButton.layer.cornerRadius = 2;
-    self.closeTicketButton.layer.cornerRadius = 2;
-    self.yesButton.layer.cornerRadius = 2;
-    self.noButton.layer.cornerRadius = 2;
     self.loadMoreButton.layer.cornerRadius = 2;
-    self.lastCloseButton.layer.cornerRadius = 2;
-    self.lastReplyButton.layer.cornerRadius = 2;
-    self.yesCloseButton.layer.cornerRadius = 2;
-    self.replyAfterCSButton.layer.cornerRadius = 2;
-    self.cloesAfterCSButton.layer.cornerRadius = 2;
-    self.automaticCloseRatingNoButton.layer.cornerRadius = 2;
-    self.automaticCloseRatingYesButton.layer.cornerRadius = 2;
-    self.automaticCloseReopenButton.layer.cornerRadius = 2;
     
     _canLoadMore = NO;
     
@@ -185,6 +103,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                              selector:@selector(appendTicketFromNotification:)
                                                  name:TKPDInboxAddNewTicket
                                                object:nil];
+    
+    _tableView.estimatedRowHeight = 100.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 -(void)requestDetailTicket{
@@ -356,36 +277,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height;
-    CGFloat cellRowHeight = 90;
-    CGFloat photoHeight = 74;
-    
-    InboxTicketDetail *ticket;
-    if (self.inboxTicket.ticket_show_more_messages) {
-        ticket = [[_messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    } else {
-        ticket = _messages[indexPath.row];
-    }
-
-    NSString *message = ticket.ticket_detail_message;
-    if ([ticket.ticket_detail_new_rating isEqualToString:@"1"]) {
-        message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Membantu", ticket.ticket_detail_message];
-    } else if ([ticket.ticket_detail_new_rating isEqualToString:@"2"]) {
-        message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Tidak Membantu", ticket.ticket_detail_message];
-    }
-    
-    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18]} context:nil];
-
-    height = cellRowHeight + paragraphRect.size.height;
-    
-    if (ticket.ticket_detail_attachment.count > 0) {
-        height += photoHeight;
-    }
-    
-    return height;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ResolutionCenterDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -439,65 +330,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 }
 
--(void)requestGiveRating{
-    
-    [InboxTicketRequest fetchTicketRate:_inboxTicket.ticket_id isRating:_rating newTicketStatus:[self newTicketStatus] onSuccess:^(RatingResult * data) {
-        
-        [self didSuccessGiveRating];
-        
-    } onFailure:^{
-        
-        [self requestFailed];
-        
-    }];
-}
-
--(NSString*)newTicketStatus{
-    if ([_ticketInformation.ticket_status isEqualToString:@"1"] &&
-        ![_ticketInformation.ticket_respond_status isEqualToString:@"0"] &&
-        [_ticketInformation.ticket_is_replied boolValue]) {
-        return @"1";
-    }
-    return @"";
-}
-
-
-- (void)didSuccessGiveRating{
-    
-    NSString *rating = _rating?@"Membantu":@"Tidak Membantu";
-    NSString *text = [NSString stringWithFormat:@"Penilaian Anda : %@", rating];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.alignment = NSTextAlignmentCenter;
-
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-    UIFont *font = [UIFont microThemeMedium];
-    [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
-    
-    self.ratingResultLabel.attributedText = attributedString;
-
-    self.ratingResultBottomConstraint.constant = -self.ratingResultView.frame.size.height;
-    self.tableBottomConstraint.constant = self.ratingResultView.frame.size.height;
-    [self.tableView reloadData];
-    [self.tableView layoutIfNeeded];
-
-    [self showView:_ratingResultView];
-
-    [_ratingActivityIndicator stopAnimating];
-
-    [UIView animateWithDuration:0.2 animations:^{
-        self.ratingFormBottomConstraint.constant = -self.ratingView.frame.size.height;
-    } completion:^(BOOL finished) {
-        self.ratingView.hidden = YES;
-        [UIView animateWithDuration:0.2 animations:^{
-            self.ratingResultBottomConstraint.constant = 0;
-        }];
-    }];
-    
-    self.tableView.hidden = NO;
-}
-
 - (void)loadTicketsData:(InboxTicketResultDetail *)data {
     if (!_ticketInformation) {
         _ticketInformation = data.ticket;
@@ -549,14 +381,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if ([_ticketInformation.ticket_status isEqualToString:@"1"]) {
         if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
             [self showView:_buttonsView];
-        } else {
-            if ([_ticketInformation.ticket_is_replied boolValue]) {
-                // Right now disable all open ticket
-                 [self showView:_reopenTicketAfterReplyView];
-            } else {
-                // Show reopen ticket
-                 [self showView:_reopenTicketView];
-            }
         }
     }
     
@@ -569,55 +393,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             // Ticket closed, replied, not yet rate the ticket
             if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
                 
-                if (IS_INBOX_TICKET_USE_VISIBLE_RATING)
-                {
-                    if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                        // Show automatic closed ticket information
-                        [self showView:_automaticCloseView];
-                    } else {
-                        // Show rating view
-                        [self showView:_ratingView];
-                    }
-                }
-                else
-                {
-                    [self hideAllView];
-                }
-                
+                [self hideAllView];
             }
-            
-            // Ticket closed, replied, rated the ticket
-            else if ([_ticketInformation.ticket_respond_status isEqualToString:@"1"] ||
-                     [_ticketInformation.ticket_respond_status isEqualToString:@"2"]) {
-                
-                // Ticket closed, rated the ticket, but still can open ticket
-                if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    
-                    // Show reopen ticket
-                    [self showView:_reopenTicketView];
-
-                } else {
-                    [self showTicketRating:_ticketInformation];
-                }
-            }
-            
         } else {
-            
-            // Ticket closed, replied, rated the ticket
-            if ([_ticketInformation.ticket_respond_status isEqualToString:@"1"] ||
-                [_ticketInformation.ticket_respond_status isEqualToString:@"2"]) {
-                
-                if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    // Show reopen ticket
-                    [self showView:_reopenTicketView];
-                } else {
-                    [self showTicketRating:_ticketInformation];
-                }
-            } else {
-                // Ticket closed without cs reply the ticket
-                [self showView:_ticketClosedView];
-            }
-            
+            // Ticket closed without cs reply the ticket
+            [self showView:_ticketClosedView];
         }
 
     }
@@ -651,55 +431,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         }
     }
     
-    if (!IS_INBOX_TICKET_CAN_CLOSE_CASE)
-    {
-        _lastCloseButton.hidden = YES;
-        _closeTicketButton.hidden = YES;
-        _cloesAfterCSButton.hidden = YES;
-    }
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    NSString *errorMessage = @"Maaf, terjadi kendala pada server";
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
-    [alert show];
-    
-    if (_page > 0)
-    {
-        _page = _page - 1;
-    }
-    
-    [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
-}
-
-- (void)showTicketRating:(InboxTicketTicket *)ticket {
-
-    [self showView:_ratingResultView];
-    
-    NSString *rating;
-    // rating 1 == good, 2 == bad
-    if ([ticket.ticket_respond_status isEqualToString:@"1"]) {
-        rating = @"Membantu";
-    } else if ([ticket.ticket_respond_status isEqualToString:@"2"]) {
-        rating = @"Tidak Membantu";
-    }
-    NSString *text = [NSString stringWithFormat:@"Penilaian Anda : %@", rating];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.alignment = NSTextAlignmentCenter;
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-    UIFont *font = [UIFont microThemeMedium];
-    [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
-    
-    self.ratingResultLabel.attributedText = attributedString;
 }
 
 #pragma mark - Cell delegate
@@ -735,61 +467,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                           completion:nil];
 }
 
-- (IBAction)didTouchUpCloseButton:(UIButton *)sender {
-    InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    InboxTicketList *newTicket = [InboxTicketList new];
-    newTicket.ticket_id = _ticketInformation.ticket_id;
-    newTicket.ticket_status = _ticketInformation.ticket_status;
-    controller.inboxTicket = self.inboxTicket?:newTicket;
-    controller.isCloseTicketForm = YES;
-    
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:navigation
-                                            animated:YES
-                                          completion:nil];
-}
-
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
     _page++;
     [self requestDetailTicket];
-}
-
-- (IBAction)didTouchUpRatingYesButton:(UIButton *)sender {
-    _rating = YES;
-    _yesButton.hidden = YES;
-    _noButton.hidden = YES;
-    _ratingActivityIndicator.hidden = NO;
-    [_ratingActivityIndicator startAnimating];
-    [self requestGiveRating];
-}
-
-- (IBAction)didTouchUpRatingNoButton:(UIButton *)sender {
-    _rating = NO;
-    _yesButton.hidden = YES;
-    _noButton.hidden = YES;
-    _ratingActivityIndicator.hidden = NO;
-    [_ratingActivityIndicator startAnimating];
-    [self requestGiveRating];
-}
-
-- (IBAction)didTouchLastCloseButton:(UIButton *)sender {
-    InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    controller.inboxTicket = self.inboxTicket;
-    controller.isCloseTicketForm = YES;
-    controller.rating = @"2";
-    
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:navigation
-                                            animated:YES
-                                          completion:nil];
-}
-- (IBAction)didTouchReopenButton:(UIButton *)sender {
-    [self showView:_buttonsView];
 }
 
 #pragma mark - GalleryPhoto Delegate
@@ -832,12 +513,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)hideAllView {
     // Hide all buttons
     self.buttonsView.hidden = YES;
-    self.ratingView.hidden = YES;
     self.ticketClosedView.hidden = YES;
-    self.reopenTicketView.hidden = YES;
-    self.reopenTicketAfterReplyView.hidden = YES;
-    self.ratingResultView.hidden = YES;
-    self.automaticCloseView.hidden = YES;
 }
 
 - (void)refreshView {
