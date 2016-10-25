@@ -10,8 +10,11 @@
 
 #import <ComponentKit/ComponentKit.h>
 
+#import <vector>
+
 @interface ShopTabComponentModel : NSObject
 @property ShopPageTab tab;
+@property BOOL showHomeTab;
 @end
 
 @implementation ShopTabComponentModel
@@ -20,7 +23,9 @@
 @interface ShopTabView() <CKComponentProvider>
 @end
 
-@implementation ShopTabView
+@implementation ShopTabView {
+    ShopTabComponentModel *_model;
+}
 
 - (instancetype)initWithTab:(ShopPageTab)tab {
     id<CKComponentSizeRangeProviding> sizeRangeProvider =
@@ -28,13 +33,21 @@
     if (self = [super initWithComponentProvider:[self class]
                               sizeRangeProvider:sizeRangeProvider]) {
         
-        ShopTabComponentModel *model = [ShopTabComponentModel new];
-        model.tab = tab;
+        _model = [ShopTabComponentModel new];
+        _model.tab = tab;
+        _model.showHomeTab = NO;
         
-        [self updateModel:model mode:CKUpdateModeSynchronous];
+        [self updateModel:_model mode:CKUpdateModeSynchronous];
     }
     
     return self;
+}
+
+- (void)setShowHomeTab:(BOOL)showHomeTab {
+    _showHomeTab = showHomeTab;
+    _model.showHomeTab = showHomeTab;
+    
+    [self updateModel:_model mode:CKUpdateModeSynchronous];
 }
 
 - (void)didSelectTab:(CKComponent *)component {
@@ -103,6 +116,30 @@
 
 + (CKComponent *)componentForModel:(ShopTabComponentModel *)model
                            context:(id<NSObject>)context {
+    std::vector<CKComponent *> tabItems = {
+        [self tabWithTitle:@"Home" forSection:ShopPageTabHome withModel:model],
+        [self tabWithTitle:@"Produk" forSection:ShopPageTabProduct withModel:model],
+        [self tabWithTitle:@"Diskusi" forSection:ShopPageTabDiscussion withModel:model],
+        [self tabWithTitle:@"Ulasan" forSection:ShopPageTabReview withModel:model],
+        [self tabWithTitle:@"Catatan" forSection:ShopPageTabNote withModel:model]
+    };
+    
+    std::vector<CKStackLayoutComponentChild> stackLayoutChildren;
+    
+    CKRelativeDimension flexBasis = CKRelativeDimension::Percent(1.0 / tabItems.size());
+    
+    for (int index = 0; index < tabItems.size(); index++) {
+        stackLayoutChildren.push_back({
+            tabItems[index],
+            .flexShrink = YES,
+            .flexBasis = flexBasis
+        });
+        
+        if (index != tabItems.size() - 1) {
+            stackLayoutChildren.push_back({[self verticalSeparator]});
+        }
+    }
+    
     return [CKStackLayoutComponent
             newWithView:{
                 [UIView class],
@@ -113,45 +150,7 @@
                 .direction = CKStackLayoutDirectionHorizontal,
                 .alignItems = CKStackLayoutAlignItemsStretch
             }
-            children:{
-                {
-                    [self tabWithTitle:@"Home" forSection:ShopPageTabHome withModel:model],
-                    .flexBasis = CKRelativeDimension::Percent(0.2),
-                    .flexShrink = YES
-                },
-                {
-                    [self verticalSeparator]
-                },
-                {
-                    [self tabWithTitle:@"Produk" forSection:ShopPageTabProduct withModel:model],
-                    .flexBasis = CKRelativeDimension::Percent(0.2),
-                    .flexShrink = YES
-                },
-                {
-                    [self verticalSeparator]
-                },
-                {
-                    [self tabWithTitle:@"Diskusi" forSection:ShopPageTabDiscussion withModel:model],
-                    .flexBasis = CKRelativeDimension::Percent(0.2),
-                    .flexShrink = YES
-                },
-                {
-                    [self verticalSeparator]
-                },
-                {
-                    [self tabWithTitle:@"Ulasan" forSection:ShopPageTabReview withModel:model],
-                    .flexBasis = CKRelativeDimension::Percent(0.2),
-                    .flexShrink = YES
-                },
-                {
-                    [self verticalSeparator]
-                },
-                {
-                    [self tabWithTitle:@"Catatan" forSection:ShopPageTabNote withModel:model],
-                    .flexBasis = CKRelativeDimension::Percent(0.2),
-                    .flexShrink = YES
-                },
-            }];
+            children:stackLayoutChildren];
 }
 
 @end

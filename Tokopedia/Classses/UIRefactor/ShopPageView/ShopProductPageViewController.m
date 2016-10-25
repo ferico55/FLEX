@@ -326,7 +326,9 @@ EtalaseViewControllerDelegate
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
     ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
+    shopTabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
     [self.view addSubview:shopTabView];
+    
     
     shopTabView.onTabSelected = self.onTabSelected;
     
