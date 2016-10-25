@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RatingResult : NSObject
+@interface RatingResult : NSObject  <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_success;
 

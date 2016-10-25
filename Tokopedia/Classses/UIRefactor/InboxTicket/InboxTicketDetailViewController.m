@@ -19,6 +19,7 @@
 #import "InboxTicketDetailAttachment.h"
 #import "GalleryViewController.h"
 #import "UserContainerViewController.h"
+#import "Tokopedia-Swift.h"
 
 NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
@@ -26,7 +27,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    TokopediaNetworkManagerDelegate,
     ResolutionCenterDetailCellDelegate,
     GalleryViewControllerDelegate
 >
@@ -35,12 +35,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     UIRefreshControl *_refreshControl;
     NoResultView *_noResult;
     
-    
-    RKObjectManager *_objectManager;
-    TokopediaNetworkManager *_networkManager;
-    
-    RKObjectManager *_ratingObjectManager;
-    TokopediaNetworkManager *_ratingNetworkManager;
     BOOL _rating;
     
     NSMutableArray<NSMutableArray *> *_messages;
@@ -129,18 +123,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _messages = [NSMutableArray new];
     _page = 0;
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = 1;
-
     if (self.inboxTicket || self.inboxTicketId) {
-        [_networkManager doRequest];
+        [self requestDetailTicket];
     }
 
-    _ratingNetworkManager = [TokopediaNetworkManager new];
-    _ratingNetworkManager.delegate = self;
-    _ratingNetworkManager.tagRequest = 2;
-    
     self.ratingActivityIndicator.hidden = YES;
     self.ratingActivityIndicator.hidesWhenStopped = YES;
     
@@ -201,6 +187,33 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                object:nil];
 }
 
+-(void)requestDetailTicket{
+    
+    if (_messages.count == 0) {
+        self.tableView.tableFooterView = _tableFooterView;
+        [_indicatorView startAnimating];
+    }
+    
+    [InboxTicketRequest fetchDetailTicket:[self inboxTicketId] isLoadMore:_canLoadMore page:_page onSuccess:^(InboxTicketResultDetail * data) {
+        
+        [self loadTicketsData:data];
+        [self setTitleView];
+        [self setCategoryView];
+        self.tableView.hidden = NO;
+        
+    } onFailure:^{
+        [self requestFailed];
+    }];
+}
+
+-(void)requestFailed{
+    if (_page > 0) {
+        _page = _page - 1;
+    }
+    
+    [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
+}
+
 - (void)showRefreshControl {
     [_refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
@@ -223,7 +236,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         
         [self showRefreshControl];
         
-        [_networkManager doRequest];
+        [self requestDetailTicket];
     }
     else {
         self.navigationItem.titleView = nil;
@@ -418,230 +431,76 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 }
 
-#pragma mark - Network manager delegate
-
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *dictionary;
-    if (tag == 1) {
-        if (_canLoadMore) {
-            dictionary = @{
-                           API_ACTION_KEY             : API_GET_INBOX_TICKET_VIEW_MORE,
-                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId,
-                           @"page"                    : [[NSNumber numberWithInteger:_page] stringValue]
-                           };
-        } else {
-            dictionary = @{
-                           API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
-                           API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
-                           };
-        }
+-(NSString *)inboxTicketId{
+    if (_canLoadMore){
+        return _inboxTicket.ticket_id?:_inboxTicketId;
     } else {
-        
-        if ([_ticketInformation.ticket_status isEqualToString:@"1"] &&
-            ![_ticketInformation.ticket_respond_status isEqualToString:@"0"] &&
-            [_ticketInformation.ticket_is_replied boolValue]) {
-            dictionary = @{
-                           API_ACTION_KEY           : API_ACTION_GIVE_RATING,
-                           API_LIST_TICKET_ID_KEY   : _inboxTicket.ticket_id,
-                           API_RATE_KEY             : _rating?@"1":@"0",
-                           API_NEW_TICKET_STATUS_KEY    : @"1",
-                           };
-        } else {
-            dictionary = @{
-                           API_ACTION_KEY           : API_ACTION_GIVE_RATING,
-                           API_LIST_TICKET_ID_KEY   : _inboxTicket.ticket_id,
-                           API_RATE_KEY             : _rating?@"1":@"0",
-                           };
-        }
-        
-    }
-    return dictionary;
-}
-
-- (NSString *)getPath:(int)tag {
-    NSString *path;
-    if (tag == 1) {
-        path = API_PATH;
-    } else {
-        path = API_PATH_ACTION;
-    }
-    return path;
-}
-
-- (id)getObjectManager:(int)tag {
-    if (tag == 1) {
-        _objectManager = [RKObjectManager sharedClient];
-        
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[DetailInboxTicket class]];
-        [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY,
-                                                       kTKPD_APISERVERPROCESSTIMEKEY]];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxTicketResultDetail class]];
-        
-        RKObjectMapping *replyMapping = [RKObjectMapping mappingForClass:[InboxTicketReply class]];
-        [replyMapping addAttributeMappingsFromArray:@[API_TICKET_REPLY_TOTAL_DATA_KEY,
-                                                      API_TICKET_REPLY_TOTAL_PAGE_KEY]];
-        
-        RKObjectMapping *replyDataMapping = [RKObjectMapping mappingForClass:[InboxTicketDetail class]];
-        [replyDataMapping addAttributeMappingsFromArray:@[API_TICKET_DETAIL_ID_KEY,
-                                                          API_TICKET_DETAIL_CREATE_TIME_KEY,
-                                                          API_TICKET_DETAIL_CREATE_TIME_FMT_KEY,
-                                                          API_TICKET_DETAIL_USER_NAME_KEY,
-                                                          API_TICKET_DETAIL_NEW_RATING_KEY,
-                                                          API_TICKET_DETAIL_IS_CS_KEY,
-                                                          API_TICKET_DETAIL_USER_URL_KEY,
-                                                          API_TICKET_DETAIL_USER_LABEL_ID_KEY,
-                                                          API_TICKET_DETAIL_USER_LABEL_KEY,
-                                                          API_TICKET_DETAIL_USER_IMAGE_KEY,
-                                                          API_TICKET_DETAIL_USER_ID_KEY,
-                                                          API_TICKET_DETAIL_NEW_STATUS_KEY,
-                                                          API_TICKET_DETAIL_MESSAGE_KEY]];
-        
-        RKObjectMapping *attachmentMapping = [RKObjectMapping mappingForClass:[InboxTicketDetailAttachment class]];
-        [attachmentMapping addAttributeMappingsFromArray:@[
-                                                           API_TICKET_DETAIL_IMG_LINK_KEY,
-                                                           API_TICKET_DETAIL_IMG_SRC_KEY
-                                                           ]];
-        
-        RKObjectMapping *ticketMapping = [RKObjectMapping mappingForClass:[InboxTicketTicket class]];
-        [ticketMapping addAttributeMappingsFromArray:@[API_LIST_TICKET_FIRST_MESSAGE_NAME_KEY,
-                                                       API_LIST_TICKET_CREATE_TIME_KEY,
-                                                       API_LIST_TICKET_CREATE_TIME_FMT_KEY,
-                                                       API_LIST_TICKET_UPDATE_TIME_FMT_KEY,
-                                                       API_TICKET_FIRST_MESSAGE_KEY,
-                                                       API_TICKET_SHOW_REOPEN_BTN_KEY,
-                                                       API_LIST_TICKET_STATUS_KEY,
-                                                       API_LIST_TICKET_READ_STATUS_KEY,
-                                                       API_TICKET_USER_LABEL_ID_KEY,
-                                                       API_LIST_TICKET_UPDATE_IS_CS_KEY,
-                                                       API_LIST_TICKET_INBOX_ID_KEY,
-                                                       API_TICKET_USER_LABEL_KEY,
-                                                       API_LIST_TICKET_UPDATE_BY_URL_KEY,
-                                                       API_LIST_TICKET_CATEGORY_KEY,
-                                                       API_LIST_TICKET_TITLE_KEY,
-                                                       API_LIST_TICKET_RESPOND_STATUS_KEY,
-                                                       API_LIST_TICKET_IS_REPLIED_KEY,
-                                                       API_TICKET_FIRST_MESSAGE_IMAGE_KEY,
-                                                       API_LIST_TICKET_URL_DETAIL_KEY,
-                                                       API_LIST_TICKET_UPDATE_BY_ID_KEY,
-                                                       API_LIST_TICKET_ID_KEY,
-                                                       API_LIST_TICKET_UPDATE_BY_NAME_KEY,
-                                                       API_LIST_TICKET_TOTAL_MESSAGE_KEY,
-                                                       API_LIST_TICKET_INVOICE_REF_NUM_KEY]];
-        
-        [statusMapping addRelationshipMappingWithSourceKeyPath:kTKPD_APIRESULTKEY mapping:resultMapping];
-        
-        [resultMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_REPLY_KEY mapping:replyMapping];
-        [resultMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_KEY mapping:ticketMapping];
-        [ticketMapping addRelationshipMappingWithSourceKeyPath:API_LIST_TICKET_ATTACHMENT_KEY mapping:attachmentMapping];
-        
-        [replyMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_REPLY_DATA_KEY mapping:replyDataMapping];
-        [replyDataMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_DETAIL_ATTACHMENT_KEY mapping:attachmentMapping];
-
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:API_PATH
-                                                                                               keyPath:@""
-                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectManager addResponseDescriptor:responseDescriptor];
-        
-        return _objectManager;
-    } else {
-        _ratingObjectManager = [RKObjectManager sharedClient];
-        
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[RatingResponse class]];
-        [statusMapping addAttributeMappingsFromArray:@[
-                                                       kTKPD_APISTATUSMESSAGEKEY,
-                                                       kTKPD_APIERRORMESSAGEKEY,
-                                                       kTKPD_APISTATUSKEY,
-                                                       kTKPD_APISERVERPROCESSTIMEKEY,
-                                                       ]];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[RatingResult class]];
-        [resultMapping addAttributeMappingsFromArray:@[API_TICKET_REPLY_IS_SUCCESS_KEY]];
-        
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping]];
-        
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:API_PATH_ACTION
-                                                                                               keyPath:@""
-                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_ratingObjectManager addResponseDescriptor:responseDescriptor];
-        
-        return _ratingObjectManager;
+        return _inboxTicket.ticket_inbox_id?:_inboxTicketId;
     }
 }
 
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
-    return response.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    if (tag == 1) {
-        if (_messages.count == 0) {
-            self.tableView.tableFooterView = _tableFooterView;
-            [_indicatorView startAnimating];
-        }
-    }
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+-(void)requestGiveRating{
     
-    // action after request ticket detail
-    if (tag == 1) {
-        [self loadTicketsData:mappingResult];
-        [self setTitleView];
-        [self setCategoryView];
+    [InboxTicketRequest fetchTicketRate:_inboxTicket.ticket_id isRating:_rating newTicketStatus:[self newTicketStatus] onSuccess:^(RatingResult * data) {
+        
+        [self didSuccessGiveRating];
+        
+    } onFailure:^{
+        
+        [self requestFailed];
+        
+    }];
+}
+
+-(NSString*)newTicketStatus{
+    if ([_ticketInformation.ticket_status isEqualToString:@"1"] &&
+        ![_ticketInformation.ticket_respond_status isEqualToString:@"0"] &&
+        [_ticketInformation.ticket_is_replied boolValue]) {
+        return @"1";
     }
+    return @"";
+}
+
+
+- (void)didSuccessGiveRating{
     
-    // action after request give rating
-    else if (tag == 2) {
-        NSString *rating = _rating?@"Membantu":@"Tidak Membantu";
-        NSString *text = [NSString stringWithFormat:@"Penilaian Anda : %@", rating];
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.alignment = NSTextAlignmentCenter;
+    NSString *rating = _rating?@"Membantu":@"Tidak Membantu";
+    NSString *text = [NSString stringWithFormat:@"Penilaian Anda : %@", rating];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.alignment = NSTextAlignmentCenter;
 
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-        UIFont *font = [UIFont microThemeMedium];
-        [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
-        [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
-        
-        self.ratingResultLabel.attributedText = attributedString;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
+    UIFont *font = [UIFont microThemeMedium];
+    [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+    
+    self.ratingResultLabel.attributedText = attributedString;
 
-        self.ratingResultBottomConstraint.constant = -self.ratingResultView.frame.size.height;
-        self.tableBottomConstraint.constant = self.ratingResultView.frame.size.height;
-        [self.tableView reloadData];
-        [self.tableView layoutIfNeeded];
+    self.ratingResultBottomConstraint.constant = -self.ratingResultView.frame.size.height;
+    self.tableBottomConstraint.constant = self.ratingResultView.frame.size.height;
+    [self.tableView reloadData];
+    [self.tableView layoutIfNeeded];
 
-        [self showView:_ratingResultView];
+    [self showView:_ratingResultView];
 
-        [_ratingActivityIndicator stopAnimating];
+    [_ratingActivityIndicator stopAnimating];
 
+    [UIView animateWithDuration:0.2 animations:^{
+        self.ratingFormBottomConstraint.constant = -self.ratingView.frame.size.height;
+    } completion:^(BOOL finished) {
+        self.ratingView.hidden = YES;
         [UIView animateWithDuration:0.2 animations:^{
-            self.ratingFormBottomConstraint.constant = -self.ratingView.frame.size.height;
-        } completion:^(BOOL finished) {
-            self.ratingView.hidden = YES;
-            [UIView animateWithDuration:0.2 animations:^{
-                self.ratingResultBottomConstraint.constant = 0;
-            }];
+            self.ratingResultBottomConstraint.constant = 0;
         }];
-    }
+    }];
     
     self.tableView.hidden = NO;
 }
 
-- (void)loadTicketsData:(RKMappingResult *)mappingResult {
-    DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
-    
+- (void)loadTicketsData:(InboxTicketResultDetail *)data {
     if (!_ticketInformation) {
-        _ticketInformation = response.result.ticket;
+        _ticketInformation = data.ticket;
     }
     
     self.inboxTicket.ticket_show_more_messages = YES;
@@ -669,7 +528,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
     
     NSMutableArray *tickets = [NSMutableArray new];
-    for (InboxTicketDetail *message in response.result.ticket_reply.ticket_reply_data) {
+    for (InboxTicketDetail *message in data.ticket_reply.ticket_reply_data) {
         [tickets addObject:message];
     }
     
@@ -781,11 +640,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 
     if (_page == 0) {
-        if (((NSMutableArray *)_messages[1]).count < [response.result.ticket_reply.ticket_reply_total_data integerValue]){
+        if (((NSMutableArray *)_messages[1]).count < [data.ticket_reply.ticket_reply_total_data integerValue]){
             _canLoadMore = YES;
         }
     } else {
-        if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
+        if (_page < [data.ticket_reply.ticket_reply_total_page integerValue]){
             _canLoadMore = YES;
         } else {
             _canLoadMore = NO;
@@ -895,7 +754,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
     _page++;
-    [_networkManager doRequest];
+    [self requestDetailTicket];
 }
 
 - (IBAction)didTouchUpRatingYesButton:(UIButton *)sender {
@@ -904,7 +763,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _noButton.hidden = YES;
     _ratingActivityIndicator.hidden = NO;
     [_ratingActivityIndicator startAnimating];
-    [_ratingNetworkManager doRequest];
+    [self requestGiveRating];
 }
 
 - (IBAction)didTouchUpRatingNoButton:(UIButton *)sender {
@@ -913,7 +772,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _noButton.hidden = YES;
     _ratingActivityIndicator.hidden = NO;
     [_ratingActivityIndicator startAnimating];
-    [_ratingNetworkManager doRequest];
+    [self requestGiveRating];
 }
 
 - (IBAction)didTouchLastCloseButton:(UIButton *)sender {
@@ -985,7 +844,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _canLoadMore = NO;
     _ticketInformation = nil;
     _page = 0;
-    [_networkManager doRequest];
+    [self requestDetailTicket];
 }
 
 - (void)configureRefreshControl {

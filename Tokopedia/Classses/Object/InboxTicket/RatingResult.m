@@ -9,5 +9,11 @@
 #import "RatingResult.h"
 
 @implementation RatingResult
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"is_success"]];
+    return mapping;
+}
 
 @end

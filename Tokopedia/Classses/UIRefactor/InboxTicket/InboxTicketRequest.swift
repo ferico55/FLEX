@@ -82,6 +82,85 @@ class InboxTicketRequest: NSObject {
         }
     }
     
+    class func fetchDetailTicket(ticketID: String, isLoadMore: Bool, page: NSInteger, onSuccess: ((InboxTicketResultDetail) -> Void), onFailure: (() -> Void)) {
+        
+        var param : [String : String] = [:]
+        var path = ""
+
+        if isLoadMore {
+            param.update([
+                "ticket_id"  : ticketID,
+                "page"       : "\(page)"
+                ])
+            path =  "/v4/inbox-ticket/get_inbox_ticket_view_more.pl"
+        } else {
+            param.update(["ticket_inbox_id"  : ticketID])
+            path = "/v4/inbox-ticket/get_inbox_ticket_detail.pl"
+        }
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: path,
+                                          method: .GET,
+                                          parameter: param,
+                                          mapping: V4Response.mappingWithData(InboxTicketResultDetail.mapping()),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response = result[""] as! V4Response
+                                            let data = response.data as! InboxTicketResultDetail
+                                            
+                                            if response.message_error.count > 0{
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure()
+                                            } else {
+                                                onSuccess(data)
+                                            }
+        }) { (error) in
+            onFailure()
+        }
+    }
+    
+    class func fetchTicketRate(ticketID: String, isRating: Bool, newTicketStatus: String, onSuccess: ((RatingResult) -> Void), onFailure: (() -> Void)) {
+        
+        var rating = ""
+        if isRating{
+            rating = "1"
+        } else {
+            rating = "0"
+        }
+        
+        let param : [String : String] = [
+            "ticket_id" : ticketID,
+            "rate"      : rating,
+            "new_ticket_status" : newTicketStatus
+        ]
+
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/action/ticket/give_rating.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: V4Response.mappingWithData(RatingResult.mapping()),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response = result[""] as! V4Response
+                                            let data = response.data as! RatingResult
+                                            
+                                            if response.message_error.count > 0{
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure()
+                                            } else {
+                                                onSuccess(data)
+                                            }
+        }) { (error) in
+            onFailure()
+        }
+    }
+    
     class func fetchReplayTicket(objectRequest: ReplayTicketRequestObject, onSuccess: (() -> Void), onFailure: (() -> Void)) {
         
         var host : GeneratedHost?

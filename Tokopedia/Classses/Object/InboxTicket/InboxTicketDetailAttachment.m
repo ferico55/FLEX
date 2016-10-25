@@ -10,4 +10,13 @@
 
 @implementation InboxTicketDetailAttachment
 
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"img_src",
+                                             @"img_link"]
+     ];
+    return mapping;
+}
+
 @end
