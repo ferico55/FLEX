@@ -152,6 +152,7 @@
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         
         } else if (button.tag == 3) {
+            [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_VIEW label:@"Invoice"];
             [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
         }
     }

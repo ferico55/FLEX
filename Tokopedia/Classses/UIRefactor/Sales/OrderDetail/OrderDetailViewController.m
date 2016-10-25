@@ -629,6 +629,7 @@ typedef enum TagRequest {
             [self shipmentConfirmationActionButton:button];
         }
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
+        [AnalyticsManager trackEventName:@"clickNewOrder" category:GA_EVENT_CATEGORY_SHIPPING action:GA_EVENT_ACTION_VIEW label:@"Invoice"];
         [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_transaction.order_detail.detail_pdf_uri];
     } else if ([[sender view] isKindOfClass:[UIView class]]) {
         NavigateViewController *controller = [NavigateViewController new];

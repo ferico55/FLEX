@@ -67,7 +67,7 @@
         } else if (button.tag == 2) {
             if (_textField.text.length >=7 && _textField.text.length <=17) {
                 if ([self.delegate respondsToSelector:@selector(changeReceiptNumber:orderHistory:)]) {
-                    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_EDIT label:@"Tracking Number"];
+                    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_TRACKING action:GA_EVENT_ACTION_EDIT label:@"Receipt Number"];
                     NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
                                                  self.order.order_detail.detail_ship_ref_num,
                                                  _textField.text];

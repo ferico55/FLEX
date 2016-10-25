@@ -62,6 +62,7 @@
 #define GA_EVENT_CATEGORY_SHIPMENT_STATUS @"Status"
 #define GA_EVENT_CATEGORY_TRANSACTION_LIST @"Transaction"
 #define GA_EVENT_CATEGORY_RECEIVED @"Received"
+#define GA_EVENT_CATEGORY_TRACKING @"Tracking"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
