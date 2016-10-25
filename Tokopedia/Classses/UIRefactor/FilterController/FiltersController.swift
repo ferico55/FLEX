@@ -150,7 +150,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
             self.selectedSort = selectedSort
             if selectedSort.name != "" {
-                TPAnalytics.trackSortWithSortName(selectedSort.name)
+                AnalyticsManager.trackEventName("clickSort", category: GA_EVENT_CATEGORY_SORT, action: GA_EVENT_ACTION_CLICK, label: selectedSort.name)
             }
             self.completionHandlerSort(self.selectedSort, paramSort)
         }) { (response) in
@@ -290,8 +290,11 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         if selectedCategories.count > 0 {
             labels.append("category")
         }
+        
+        for filter in labels {
+            AnalyticsManager.trackEventName("clickFilter", category: GA_EVENT_CATEGORY_FILTER, action: GA_EVENT_ACTION_CLICK, label: filter)
+        }
 
-        TPAnalytics.trackFilterWithSelectedFilters(labels)
         completionHandlerFilter(selectedCategories, selectedFilters, params)
     }
     

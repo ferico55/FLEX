@@ -16,6 +16,7 @@ class ProductEditResult: NSObject {
     var shop_is_gold: String = ""
     var wholesale_price: [WholesalePrice] = []
     var breadcrumb: [Breadcrumb] = []
+    var catalog = CatalogList()
     
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
@@ -29,6 +30,7 @@ class ProductEditResult: NSObject {
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "product", toKeyPath: "product", withMapping: ProductEditDetail.mapping()))
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "wholesale_price", toKeyPath: "wholesale_price", withMapping: WholesalePrice.mapping()))
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "breadcrumb", toKeyPath: "breadcrumb", withMapping: Breadcrumb.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "catalog", toKeyPath: "catalog", withMapping: CatalogList.mapping()))
         
         return mapping
     }

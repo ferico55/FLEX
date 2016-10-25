@@ -88,7 +88,7 @@
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-cart/add_to_cart.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -148,7 +148,7 @@
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/tx-cart/calculate_cart.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionCalculatePrice mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

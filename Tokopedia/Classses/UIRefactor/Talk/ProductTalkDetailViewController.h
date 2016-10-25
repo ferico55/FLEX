@@ -24,7 +24,6 @@
 @property (nonatomic) BOOL fetchDataAtBeginning;
 @property (strong, nonatomic) NSString *inboxTalkType;
 
--(void)replaceDataSelected:(NSDictionary *)data;
 -(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead;
 
 @end

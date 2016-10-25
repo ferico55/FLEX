@@ -27,7 +27,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [_tableView reloadData];
-    [TPAnalytics trackScreenName:@"Reject Reason Empty Variant Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Empty Variant Page"];
 
 }
 

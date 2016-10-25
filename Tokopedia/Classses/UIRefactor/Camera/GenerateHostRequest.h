@@ -11,8 +11,7 @@
 
 @interface GenerateHostRequest : NSObject
 
-- (void)requestGenerateHostWithNewAdd:(NSString*)newAdd
-                            onSuccess:(void(^)(GenerateHostResult* result))successCallback
-                            onFailure:(void(^)(NSError* errorResult))errorCallback;
++ (void)fetchGenerateHostOnSuccess:(void(^)(GeneratedHost* host))successCallback
+                            onFailure:(void(^)())errorCallback;
 
 @end

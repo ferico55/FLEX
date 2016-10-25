@@ -49,7 +49,7 @@ ResolutionCenterChooseProblemDelegate
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Resolution Center Create Problem Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Create Problem Page"];
 }
 
 - (void)didReceiveMemoryWarning {

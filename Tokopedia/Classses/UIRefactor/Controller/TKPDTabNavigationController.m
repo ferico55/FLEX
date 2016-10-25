@@ -12,6 +12,7 @@
 #import "FilterCategoryViewController.h"
 #import "SearchResultShopViewController.h"
 #import "SearchResultViewController.h"
+#import "Tokopedia-Swift.h"
 
 #import "DBManager.h"
 
@@ -461,9 +462,9 @@
             [self setSelectedIndex:index animated:NO];
             
             if (index == 1) {
-                [TPAnalytics trackClickSearchResultTabWithName:@"Catalog"];
+                [AnalyticsManager trackEventName:@"clickSearchResult" category:GA_EVENT_CATEGORY_SEARCH_RESULT action:GA_EVENT_ACTION_CLICK label:@"Catalog"];
             } else if (index == 2) {
-                [TPAnalytics trackClickSearchResultTabWithName:@"Shop"];
+                [AnalyticsManager trackEventName:@"clickSearchResult" category:GA_EVENT_CATEGORY_SEARCH_RESULT action:GA_EVENT_ACTION_CLICK label:@"Shop"];
             }
             
             if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {

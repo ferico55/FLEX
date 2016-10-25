@@ -58,7 +58,7 @@
 
 @interface UIViewController (TKPDTabNavigationController)
 
-@property (nonatomic, readonly, strong) TKPDTabNavigationController *TKPDTabNavigationController;
+@property (nonatomic, readonly, strong) TKPDTabNavigationController *tkpdTabNavigationController;
 @property (nonatomic, readwrite, strong) TKPDTabNavigationItemInNavVC *TKPDTabNavigationItem;
 
 @end

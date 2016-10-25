@@ -87,7 +87,7 @@
     self.title = @"Konfirmasi Pengiriman";
     self.alertLabel.text = [self announcementString];
     
-    [TPAnalytics trackScreenName:@"Sales - Shipping Confirmation"];
+    [AnalyticsManager trackScreenName:@"Sales - Shipping Confirmation"];
     
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;

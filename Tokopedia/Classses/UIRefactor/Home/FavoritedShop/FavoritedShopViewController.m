@@ -134,8 +134,7 @@ FavoriteShopRequestDelegate
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Home - Favorited Shop";
-    [TPAnalytics trackScreenName:@"Home - Favorited Shop"];
+    [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
 
     [self refreshView:nil];
 }
@@ -411,7 +410,10 @@ FavoriteShopRequestDelegate
         id shopTemp = [_shops objectAtIndex:indexpath.row];
         FavoritedShopList* favShop;
         favShop = (FavoritedShopList*)shopTemp;
-        [TPAnalytics trackClickShopOnFavoriteShopWithShopName:favShop.shop_name];
+        [AnalyticsManager trackEventName:@"clickFavorite"
+                                category:GA_EVENT_CATEGORY_FAVORITE
+                                  action:GA_EVENT_ACTION_VIEW
+                                   label:favShop.shop_name];
         container.data = @{
                            kTKPDDETAIL_APISHOPIDKEY:favShop.shop_id?:@0,
                            kTKPDDETAIL_APISHOPNAMEKEY:favShop.shop_name?:@"",
@@ -486,7 +488,7 @@ FavoriteShopRequestDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan?campaign=topads&source=fav_shop&medium=ios"]];
     }
 }
 

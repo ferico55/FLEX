@@ -41,6 +41,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
 @property (weak, nonatomic) IBOutlet TKPMapView *mapview;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *mapViewHeight;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actDelete;
 
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
@@ -49,6 +51,12 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+typedef void (^SuccessSetDefaultAddress)(AddressFormList* address);
+@property (copy, nonatomic) SuccessSetDefaultAddress successSetDefaultAddress;
+
+typedef void (^SuccessDeleteAddress)(AddressFormList* address);
+@property (copy, nonatomic) SuccessDeleteAddress successDeleteAddress;
 
 @end
 
@@ -72,7 +80,8 @@
     _tableView.estimatedRowHeight = 44;
     
     _section2Cells = [NSArray sortViewsWithTagInArray:_section2Cells];
-    [self setDefaultData:_data];
+    
+    [self setAddress:_address];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStylePlain
@@ -83,13 +92,15 @@
     UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
-                                                                     action:@selector(tap:)];
+                                                                     action:@selector(tapEditAddress:)];
     
     editBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = editBarButton;
     
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [self setDetailAddress:_address];
 
 }
 
@@ -111,100 +122,169 @@
     [_mapview updateIsShowMarker:YES];
     [_mapview updateCameraPosition:_mapview.selectedMarker.position];
     [_mapview showButtonCurrentLocation:NO];
-    
-    //(latitude = -6.1859237834858769, longitude = 106.799499168992)
-    
-//    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 11:
-            {   //Edit
-                SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : _address,
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                            kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
-                            kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
-                            };
-                vc.delegate = self;
-                AddressFormList *address = _address;
-                //TODO:: Uncomment for showing map address
-                if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
-                    vc.imageMap = [UIImage imageNamed:@"map_gokil.png"];
-                    vc.longitude = address.longitude;
-                    vc.latitude = address.latitude;
-                }
-                //
-                
-                vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                nav.navigationBar.translucent = NO;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case 12:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            default:
-                break;
-        }
+-(void)tapEditAddress:(UIBarButtonItem*)sender{
+    SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+    vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : _address,
+                kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
+                };
+    vc.delegate = self;
+    AddressFormList *address = _address;
+    if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
+        vc.imageMap = [UIImage imageNamed:@"map_gokil.png"];
+        vc.longitude = address.longitude;
+        vc.latitude = address.latitude;
     }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                //set as default
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Ganti Alamat Utama"
-                                                                    message:@"Apakah Anda yakin ingin menggunakan alamat ini sebagai alamat utama Anda?"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Tidak"
-                                                          otherButtonTitles:@"Ya", nil];
-                alertView.tag = 1;
-                alertView.delegate = self;
-                [alertView show];
-                break;
-            }
-            case 11:
-            {
-                [_delegate DidTapButton:btn withdata:_data];
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
+- (IBAction)tapSetDefaultAddress:(UIButton*)sender {
+    
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Ganti Alamat Utama"
+                                  message:@"Apakah Anda yakin ingin menggunakan alamat ini sebagai alamat utama Anda?"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) wself = self;
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"Ya"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [wself requestSetDefaultAddress:_address button:(UIButton*)sender];
+                             
+                         }];
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Tidak"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [alert addAction:ok];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
+}
+
+- (IBAction)tapDeleteAddress:(UIButton*)sender {
+    
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Hapus Alamat"
+                                  message:@"Apakah Anda yakin ingin menghapus alamat ini?"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) wself = self;
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"Ya"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [wself requestDeleteAddress:_address button:sender];
+                             
+                         }];
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Tidak"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [alert addAction:ok];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+-(void)requestSetDefaultAddress:(AddressFormList*)address button:(UIButton*)sender{
+    
+    sender.enabled = NO;
+    
+    _act.hidden = NO;
+    [_act startAnimating];
+    _viewdefault.hidden = YES;
+    _viewsetasdefault.hidden = YES;
+    
+    [AddressRequest fetchSetDefaultAddressID:address.address_id onSuccess:^(ProfileSettingsResult * data) {
+        
+        _viewdefault.hidden = NO;
+        _viewsetasdefault.hidden = YES;
+        sender.enabled = YES;
+        
+        if( self.successSetDefaultAddress ){
+            self.successSetDefaultAddress(address);
+        }
+        
+    } onFailure:^{
+        
+        _viewdefault.hidden = YES;
+        _viewsetasdefault.hidden = NO;
+        sender.enabled = YES;
+        [_act stopAnimating];
+        
+    }];
+}
+
+-(void)requestDeleteAddress:(AddressFormList*)address button:(UIButton*)sender{
+    
+    sender.enabled = NO;
+    
+    _actDelete.hidden = NO;
+    [_actDelete startAnimating];
+    
+    [AddressRequest fetchDeleteAddressID:address.address_id onSuccess:^(ProfileSettingsResult * data) {
+        
+        sender.enabled = YES;
+        [_actDelete stopAnimating];
+        if (self.successDeleteAddress){
+            self.successDeleteAddress(address);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    } onFailure:^{
+        
+        sender.enabled = YES;
+        [_actDelete stopAnimating];
+
+    }];
+}
+
+
 #pragma mark - Methods
--(void)setDefaultData:(NSDictionary*)data
+-(void)setDetailAddress:(AddressFormList*)address
 {
-    _data = data;
-    if (data) {
-        AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-        _address = list;
-        self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
-        _labelreceivername.text = list.receiver_name?:@"";
-        _labeladdressname.text = list.address_name?:@"";
-        [_labeladdress setCustomAttributedText:[NSString convertHTML:list.address_street]];
+    if (address) {
+        self.title = address.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
+        _labelreceivername.text = address.receiver_name?:@"";
+        _labeladdressname.text = address.address_name?:@"";
+        [_labeladdress setCustomAttributedText:[NSString convertHTML:address.address_street]];
         
-        NSString *postalcode = list.postal_code?list.postal_code:@"";
+        NSString *postalcode = address.postal_code?address.postal_code:@"";
         _labelpostcode.text = postalcode;
-        _labelcity.text = list.city_name?:@"";
-        _labelprovince.text = list.province_name?:@"";
-        _labeldistrict.text = list.district_name?:@"";
-        _labelphonenumber.text = list.receiver_phone?:@"";
-        BOOL isdefault = [[_data objectForKey:kTKPDPROFILE_DATAISDEFAULTKEY]boolValue];
-        _viewdefault.hidden = !isdefault;
-        _viewsetasdefault.hidden = isdefault;
+        _labelcity.text = address.city_name?:@"";
+        _labelprovince.text = address.province_name?:@"";
+        _labeldistrict.text = address.district_name?:@"";
+        _labelphonenumber.text = address.receiver_phone?:@"";
+        _viewdefault.hidden = !address.isDefaultAddress;
+        _viewsetasdefault.hidden = address.isDefaultAddress;
         
-        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
+        if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
             [self mapPosition];
         }
     }
@@ -279,23 +359,14 @@
     return UITableViewAutomaticDimension;
 }
 
-//TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
     [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 infoAddress:_address.viewModel fromViewController:self];
 }
-//
 
 #pragma mark - Edit address delegate
 
 - (void)successEditAddress:(AddressFormList *)address
 {
-//    address = [AddressFormList new];
-//    address.address_name = @"Alamat Kantor";
-//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
-//    address.receiver_name = @"Orang Keren";
-//    address.receiver_phone = @"0812345678";
-//    address.latitude = @"-6.211544";
-//    address.longitude = @"106.845172";
     
     self.labeladdressname.text = address.address_name;
     self.labelreceivername.text = address.receiver_name;
@@ -308,27 +379,20 @@
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
     
-    //TODO:: Uncomment for showing map address
     if (!([address.longitude integerValue] == 0 && [address.latitude integerValue] == 0)) {
             [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
     }
-    
     
     _address = address;
     [_tableView reloadData];
 }
 
+-(void)getSuccessSetDefaultAddress:(void (^)(AddressFormList *))onSuccess{
+    _successSetDefaultAddress = onSuccess;
+}
 
-#pragma mark - Alert delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        //default address
-        _viewdefault.hidden = NO;
-        _viewsetasdefault.hidden = YES;
-        [_delegate setDefaultAddressData:_data];
-    }
+-(void)getSuccessDeleteAddress:(void (^)(AddressFormList *))onSuccess{
+    _successDeleteAddress = onSuccess;
 }
 
 @end

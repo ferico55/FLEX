@@ -22,7 +22,7 @@
 
 +(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut shipmentAvailable:(NSArray*)shipmentAvailable isShowOKE:(NSString*)isShowOKE onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
     
-    [TPAnalytics trackUserId];
+    [AnalyticsManager trackUserInformation];
     
     NSString *baseuUrl = [RequestRates baseURL];
     NSString *pathUrl = [RequestRates pathURL];

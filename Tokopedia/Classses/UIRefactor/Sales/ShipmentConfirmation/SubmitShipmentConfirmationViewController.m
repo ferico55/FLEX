@@ -387,7 +387,7 @@
 - (void)request {
     [ShipmentRequest fetchProceedShipping:[self proceedShippingObjectRequest] onSuccess:^{
         
-        [TPLocalytics trackShipmentConfirmation:YES];
+        [AnalyticsManager localyticsTrackShipmentConfirmation:YES];
         
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
@@ -397,7 +397,7 @@
         
     } onFailure:^{
         
-        [TPLocalytics trackShipmentConfirmation:NO];
+        [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
         
     }];
 }

@@ -10,8 +10,6 @@
 #define CTagTokopediaNetworkManager 2
 #define CTagOtherProduct 3
 #define CTagFavorite 4
-#define CTagWishList 5
-#define CTagUnWishList 6
 #define CTagNoteCanReture 7
 #define CTagPriceAlert 8
 
@@ -85,8 +83,6 @@
 #import "OtherProductDataSource.h"
 
 #import "PriceAlertRequest.h"
-
-#import "TPLocalytics.h"
 
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
@@ -249,6 +245,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
 
 @end
 
@@ -308,9 +305,6 @@ TTTAttributedLabelDelegate
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
-    // GTM
-    [self configureGTM];
-    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
@@ -331,8 +325,6 @@ TTTAttributedLabelDelegate
     tokopediaOtherProduct.isUsingHmac = NO;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
-    tokopediaNetworkManagerWishList.delegate = self;
-    tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
     
     _request = [PriceAlertRequest new];
     
@@ -439,8 +431,7 @@ TTTAttributedLabelDelegate
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Product Information";
-    [TPAnalytics trackScreenName:@"Product Information"];
+    [AnalyticsManager trackScreenName:@"Product Information"];
     
     _promoteNetworkManager.delegate = self;
     
@@ -564,7 +555,10 @@ TTTAttributedLabelDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Review"];
+                    [AnalyticsManager trackEventName:@"clickPDP"
+                                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                              action:GA_EVENT_ACTION_CLICK
+                                               label:@"Review"];
                 }
                 break;
             }
@@ -591,7 +585,10 @@ TTTAttributedLabelDelegate
                 vc.data = data;
 
                 [self.navigationController pushViewController:vc animated:YES];
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Talk"];
+                [AnalyticsManager trackEventName:@"clickPDP"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Talk"];
                 break;
             }
             case 15:
@@ -612,7 +609,10 @@ TTTAttributedLabelDelegate
             case 16:
             {
                 //Buy
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickBuy" action:@"Click" label:@"Buy"];
+                [AnalyticsManager trackEventName:@"clickBuy"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Buy"];
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
                     transactionVC.wholeSales = _product.data.wholesale_price;
@@ -638,7 +638,10 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 17 : {
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
+                [AnalyticsManager trackEventName:@"clickFavoriteShop"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
@@ -660,7 +663,10 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 18 : {
-                [TPAnalytics trackProductDetailPageWithEvent:@"clickFavoriteShop" action:@"Click" label:@"Favorite Shop"];
+                [AnalyticsManager trackEventName:@"clickFavoriteShop"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Favorite Shop"];
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
@@ -1175,12 +1181,6 @@ TTTAttributedLabelDelegate
         tempShopID = nil;
         return @{kTKPDDETAIL_ACTIONKEY:@"fav_shop", @"shop_id":strShopID};
     }
-    else if(tag == CTagUnWishList)
-        return @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : productID};
-    else if(tag == CTagWishList)
-        return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : productID};
     else if(tag == CTagNoteCanReture)
         return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
                  kTKPDNOTES_APINOTEIDKEY:_product.data.shop_info.shop_has_terms?:@"0",
@@ -1201,10 +1201,6 @@ TTTAttributedLabelDelegate
         return RKRequestMethodGET;
     else if(tag == CTagFavorite)
         return RKRequestMethodPOST;
-    else if(tag == CTagUnWishList)
-        return RKRequestMethodPOST;
-    else if(tag == CTagWishList)
-        return RKRequestMethodPOST;
     else if(tag == CTagNoteCanReture)
         return RKRequestMethodPOST;
     else if(tag == CTagPriceAlert)
@@ -1219,14 +1215,9 @@ TTTAttributedLabelDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagOtherProduct)
-        //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
         return @"/search/v2.3/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
-    else if(tag == CTagUnWishList)
-        return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
-    else if(tag == CTagWishList)
-        return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
     else if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
     else if(tag == CTagPriceAlert)
@@ -1317,33 +1308,7 @@ TTTAttributedLabelDelegate
         
         [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
         return _objectFavoriteManager;
-    }
-    else if(tag==CTagUnWishList || tag==CTagWishList)
-    {
-        _objectWishListManager =  [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[GeneralAction mapping] method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectWishListManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectWishListManager;
-    }
-    else if(tag == CTagNoteCanReture) {
+    } else if(tag == CTagNoteCanReture) {
         _objectNoteCanReture = [RKObjectManager sharedClient];
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
@@ -1430,16 +1395,6 @@ TTTAttributedLabelDelegate
         FavoriteShopAction *favoriteShopAction = stat;
         return favoriteShopAction.status;
     }
-    else if(tag == CTagUnWishList)
-    {
-        GeneralAction *wishlistAction = stat;
-        return wishlistAction.status;
-    }
-    else if(tag == CTagWishList)
-    {
-        GeneralAction *wishlistAction = stat;
-        return wishlistAction.status;
-    }
     else if(tag == CTagNoteCanReture) {
         Notes *notes = stat;
         return notes.status;
@@ -1523,72 +1478,6 @@ TTTAttributedLabelDelegate
         actFav = nil;
         _favButton.hidden = NO;
     }
-    else if(tag == CTagUnWishList)
-    {
-        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
-        WishListObject *wishListObject = [result objectForKey:@""];
-        BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        StickyAlertView *alert;
-        
-        if(status && [wishListObject.result.is_success isEqualToString:@"1"])
-        {
-            alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_REMOVE_WISHLIST] delegate:self];
-            [self setBackgroundWishlist:NO];
-            btnWishList.tag = 1;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            [self setRequestingAction:btnWishList isLoading:NO];
-        }
-        else
-        {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
-            [self setBackgroundWishlist:YES];
-            btnWishList.tag = 0;
-            [self setRequestingAction:btnWishList isLoading:NO];
-        }
-        [alert show];
-    }
-    else if(tag == CTagWishList)
-    {
-        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
-        WishListObject *wishListObject = [result objectForKey:@""];
-        BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        StickyAlertView *alert;
-        
-        if(status && [wishListObject.result.is_success isEqualToString:@"1"])
-        {
-            alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
-            [self setBackgroundWishlist:YES];
-            btnWishList.tag = 0;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            [self setRequestingAction:btnWishList isLoading:NO];
-            
-            NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
-            
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
-                                                                                           AFEventParamPrice : price?:@"",
-                                                                                           AFEventParamContentType : @"Product",
-                                                                                           AFEventParamContentId : _product.data.info.product_id?:@"",
-                                                                                           AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
-                                                                                           AFEventParamQuantity : @(1)
-                                                                                           }];
-        }
-        else
-        {
-            //wishlist max is 1000, set custom error message. If other error happened, use default error message.
-            if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
-                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
-            }else{
-                alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
-            }
-            
-            
-            [self setBackgroundWishlist:NO];
-            btnWishList.tag = 1;
-            [self setRequestingAction:btnWishList isLoading:NO];
-        }
-        
-        [alert show];
-    }
     else if(tag == CTagNoteCanReture) {
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
         Notes *tempNotes = [result objectForKey:@""];
@@ -1622,26 +1511,6 @@ TTTAttributedLabelDelegate
         [self requestFailureOtherProduct:errorResult];
     else if(tag == CTagFavorite)
         [self requestFavoriteError:errorResult];
-    else if(tag == CTagUnWishList)
-    {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
-        [alert show];
-        [self setBackgroundWishlist:YES];
-        btnWishList.tag = 0;
-        
-        [self setRequestingAction:btnWishList isLoading:NO];
-    }
-    else if(tag == CTagWishList)
-    {
-        NSDictionary *result = ((RKMappingResult*) errorResult).dictionary;
-        NSString *errorMessage = [result objectForKey:kTKPD_APIERRORMESSAGEKEY];
-        
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
-        [alert show];
-        [self setBackgroundWishlist:NO];
-        btnWishList.tag = 1;
-        [self setRequestingAction:btnWishList isLoading:NO];
-    }
     else if(tag == CTagNoteCanReture) {
         
     }
@@ -1668,10 +1537,6 @@ TTTAttributedLabelDelegate
         
     }
     else if(tag == CTagFavorite)
-    {}
-    else if(tag == CTagUnWishList)
-    {}
-    else if(tag == CTagWishList)
     {}
     else if(tag == CTagPriceAlert) {
         
@@ -1700,10 +1565,6 @@ TTTAttributedLabelDelegate
         actFav = nil;
         _favButton.hidden = NO;
     }
-    else if(tag == CTagUnWishList)
-    {}
-    else if(tag == CTagWishList)
-    {}
     else if(tag == CTagPriceAlert)
     {}
 }
@@ -1714,7 +1575,6 @@ TTTAttributedLabelDelegate
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     _promoteNetworkManager.delegate = nil;
     
-    tokopediaNetworkManagerWishList.delegate = nil;
     [tokopediaNetworkManagerWishList requestCancel];
     
     _promoteNetworkManager.delegate = nil;
@@ -1845,7 +1705,7 @@ TTTAttributedLabelDelegate
         //save response data to plist
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
-        [self trackProduct];
+        [AnalyticsManager trackProductView:_product];
         [self requestprocess:object];
     }
 }
@@ -1856,7 +1716,7 @@ TTTAttributedLabelDelegate
         [btnReport removeFromSuperview];
     } else {
         // hanya geser saja btn report ke luar layar, untuk menjaga bentuk share button tetap persegi
-        _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
+        _btnReportLeadingConstraint.constant = -(_btnReportWidthConstraint.constant) - 2 ;
     }
 }
 
@@ -2045,22 +1905,6 @@ TTTAttributedLabelDelegate
         }
     }
 }
-
-- (void)trackProduct {
-    [TPAnalytics trackProductView:_product.data.info];
-    [TPLocalytics trackProductView:_product];
-    
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
-    
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
-                                                                                 AFEventParamPrice : price?:@"",
-                                                                                 AFEventParamContentId : _product.data.info.product_id?:@"",
-                                                                                 AFEventParamCurrency : @"IDR",
-                                                                                 AFEventParamContentType : @"Product"
-                                                                                 }];
-
-}
-
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
@@ -2309,7 +2153,10 @@ TTTAttributedLabelDelegate
 
 - (void)expand:(CustomButtonExpandDesc *)sender
 {
-    [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Product Description"];
+    [AnalyticsManager trackEventName:@"clickPDP"
+                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Product Description"];
     isExpandDesc = !isExpandDesc;
     [_table reloadData];
 }
@@ -2326,7 +2173,10 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
-            [TPAnalytics trackProductDetailPageWithEvent:@"clickPDP" action:@"Click" label:@"Share"];
+            [AnalyticsManager trackEventName:@"clickPDP"
+                                    category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Share"];
         }];
         
     }
@@ -2386,7 +2236,10 @@ TTTAttributedLabelDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
-        [TPAnalytics trackProductDetailPageWithEvent:@"clickReport" action:@"Click" label:@"Report"];
+        [AnalyticsManager trackEventName:@"clickReport"
+                                category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Report"];
         [self goToReportProductViewController];
     } else {
         LoginViewController *loginVC = [LoginViewController new];
@@ -2402,7 +2255,7 @@ TTTAttributedLabelDelegate
 
 - (void) goToReportProductViewController {
     ReportProductViewController *reportProductVC = [ReportProductViewController new];
-    reportProductVC.productId = [_loadedData objectForKey:@"product_id"];
+    reportProductVC.productId = _product.data.info.product_id;
     [self.navigationController pushViewController:reportProductVC animated:YES];
 }
 
@@ -2741,9 +2594,14 @@ TTTAttributedLabelDelegate
 {
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
-        tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
-        [tokopediaNetworkManagerWishList doRequest];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.data.info.product_id];
+        __weak __typeof(self) weakSelf = self;
+        NSString *productId = _product.data.info.product_id?:@"";
+        tokopediaNetworkManagerWishList.isUsingHmac = YES;
+        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodDELETE header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
+        } onFailure:^(NSError *errorResult) {
+            [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
+        }];
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -2762,17 +2620,34 @@ TTTAttributedLabelDelegate
     }
 }
 
-
 - (void)setWishList
 {
-    [TPAnalytics trackProductDetailPageWithEvent:@"clickWishlist" action:@"Click" label:@"Add to Wishlist"];
+    [AnalyticsManager trackEventName:@"clickWishlist"
+                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Add to Wishlist"];
     if(_auth) {
         [self setRequestingAction:btnWishList isLoading:YES];
-        tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
-        [tokopediaNetworkManagerWishList doRequest];
         
         NSString *productId = _product.data.info.product_id?:@"";
-        NSString *productName = _product.data.info.product_name?:@"";
+        __weak __typeof(self) weakSelf = self;
+        tokopediaNetworkManagerWishList.isUsingHmac = YES;
+       
+        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodPOST header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
+        } onFailure:^(NSError *errorResult) {
+            [weakSelf didFailedAddWishListWithErrorResult:errorResult];
+        }];
+        
+        NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+        
+        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
+                                                                                       AFEventParamPrice : price?:@"",
+                                                                                       AFEventParamContentType : @"Product",
+                                                                                       AFEventParamContentId : _product.data.info.product_id?:@"",
+                                                                                       AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
+                                                                                       AFEventParamQuantity : @(1)
+                                                                                       }];
         
         NSArray *categories = _product.data.breadcrumb;
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
@@ -2782,21 +2657,17 @@ TTTAttributedLabelDelegate
         NSString *productPrice = [[_product.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
         
         NSDictionary *attributes = @{
-                                     @"Product Id" : productId,
-                                     @"Product Name" : productName,
+                                     @"Product Id" : _product.data.info.product_id,
+                                     @"Product Name" : _product.data.info.product_name,
                                      @"Product Price" : productPrice,
                                      @"Product Category" : productCategory
                                      };
         
-        [Localytics tagEvent:@"Event : Add To Wishlist" attributes:attributes];
+        [AnalyticsManager localyticsEvent:@"Event : Add To Wishlist" attributes:attributes];
         
-        [Localytics incrementValueBy:1
-                 forProfileAttribute:@"Profile : Has Wishlist"
-                           withScope:LLProfileScopeApplication];
-        
-        
+        [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
+                
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
-        
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3016,18 +2887,6 @@ TTTAttributedLabelDelegate
     [UIPasteboard generalPasteboard].string = _descriptionLabel.text;
 }
 
-#pragma mark - Other Method
-
-- (void)configureGTM {
-    //    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
-    _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
-}
-
 - (void)addImpressionClick {
     _promoRequest = [[PromoRequest alloc] init];
     [_promoRequest requestForClickURL:[_data objectForKey:PromoClickURL]
@@ -3061,7 +2920,7 @@ TTTAttributedLabelDelegate
 #pragma mark - Push other product
 
 - (void)didSelectOtherProduct:(SearchAWSProduct *)product {
-    [TPAnalytics trackProductClick:product];
+    [AnalyticsManager trackProductClick:product];
     NavigateViewController *navigateController = [NavigateViewController new];
     [navigateController navigateToProductFromViewController:self
                                                    withName:product.product_name
@@ -3077,6 +2936,55 @@ TTTAttributedLabelDelegate
     }
     
     return YES;
+}
+
+#pragma mark - WishList method
+
+-(void) didSuccessRemoveWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation{
+    StickyAlertView *alert;
+ 
+    alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_REMOVE_WISHLIST] delegate:self];
+    [self setBackgroundWishlist:NO];
+    btnWishList.tag = 1;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.data.info.product_id];
+
+    [self setRequestingAction:btnWishList isLoading:NO];
+    [alert show];
+}
+
+-(void) didSuccessAddWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation {
+    StickyAlertView *alert;
+
+    alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
+    [self setBackgroundWishlist:YES];
+    btnWishList.tag = 0;
+    [self setRequestingAction:btnWishList isLoading:NO];
+    [alert show];
+    [self bk_performBlock:^(id obj) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+    } afterDelay:2.0];
+}
+
+-(void) didFailedAddWishListWithErrorResult: (NSError *) error {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+    [alert show];
+    [self setBackgroundWishlist:NO];
+    btnWishList.tag = 1;
+    [self setRequestingAction:btnWishList isLoading:NO];
+}
+
+-(void) didFailedRemoveWishListWithErrorResult: (NSError *) error {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
+    [self setBackgroundWishlist:YES];
+    [alert show];
+    btnWishList.tag = 0;
+    [self setRequestingAction:btnWishList isLoading:NO];
+}
+
+
+-(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
+    return [NSString stringWithFormat:@"/v1/products/%@/wishlist", productId];
 }
 
 @end

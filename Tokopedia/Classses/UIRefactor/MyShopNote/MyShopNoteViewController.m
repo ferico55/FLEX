@@ -112,7 +112,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [TPAnalytics trackScreenName:@"Shop Notes Setting Page"];
+    [AnalyticsManager trackScreenName:@"Shop Notes Setting Page"];
     if (_isnodata) {
         [self showNotesList];
     }

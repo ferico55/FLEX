@@ -8,18 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#pragma mark - Setting Address Detail View Controller Delegate
-@protocol SettingAddressDetailViewControllerDelegate <NSObject>
-@required
--(void)DidTapButton:(UIButton*)button withdata:(NSDictionary*)data;
--(void)setDefaultAddressData:(NSDictionary*)data;
-@end
-
 @interface SettingAddressDetailViewController : UIViewController
 
+@property (nonatomic, strong) AddressFormList *address;
 
-@property (nonatomic, weak) IBOutlet id<SettingAddressDetailViewControllerDelegate> delegate;
-
-@property (nonatomic, strong) NSDictionary *data;
+- (void)getSuccessSetDefaultAddress:(void (^)(AddressFormList* address))onSuccess;
+- (void)getSuccessDeleteAddress:(void (^)(AddressFormList* address))onSuccess;
 
 @end

@@ -42,6 +42,48 @@
     return output;
 }
 
+- (NSString*)signatureWithBaseUrl:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                        parameter:(NSDictionary*)parameter
+                             date:(NSString*)date {
+    
+    NSDictionary *secretsByUrls = @{
+                                    [NSString v4Url]: @"web_service_v4",
+                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString basicUrl]: @"web_service_v4",
+                                    [NSString aceUrl]: @"web_service_v4",
+                                    [NSString keroUrl]: @"web_service_v4",
+                                    [NSString hadesUrl]: @"web_service_v4",
+                                    [NSString pulsaUrl ]: @"web_service_v4",
+                                    [NSString kunyitUrl]: @"web_service_v4",
+                                    [NSString accountsUrl]: @"web_service_v4",
+                                    [NSString topAdsUrl]: @"web_service_v4",
+                                    };
+    
+    NSString *output;
+    NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
+    
+    //set request method
+    [self setRequestMethod:method];
+    [self setParameterMD5:parameter];
+    [self setTkpdPath:path];
+    [self setSecret:secret];
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
+                              date, [self getTkpdPath]];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    return output;
+}
+
 - (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date {
     NSString *output;
     NSString *secret = @"web_service_v4";
@@ -52,7 +94,7 @@
     [self setTkpdPath:path];
     [self setSecret:secret];
     
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:@""],
                               date, [self getTkpdPath]];
     //    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
     
@@ -118,8 +160,8 @@
     _date = date;
 }
 
-- (NSString*)getContentType {
-    return [self.getRequestMethod isEqualToString:@"GET"] ? @"" : @"application/x-www-form-urlencoded; charset=utf-8";
+- (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl {
+    return [self.getRequestMethod isEqualToString:@"GET"] ? @"" : [baseUrl isEqual: [NSString mojitoUrl]] ? @"application/json" : @"application/x-www-form-urlencoded; charset=utf-8";
 }
 
 - (void)setContentType:(NSString*)contentType {

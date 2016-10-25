@@ -121,7 +121,7 @@
     [super viewWillAppear:animated];
     self.title = _isEdit ? @"Ubah Ulasan" : @"Tulis Ulasan";
     
-    [TPAnalytics trackScreenName:@"Give Review Detail Page"];
+    [AnalyticsManager trackScreenName:@"Give Review Detail Page"];
 }
 
 - (void)setAttachedPictures {
