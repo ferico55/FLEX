@@ -12,6 +12,8 @@
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
 #import "ProductBadge.h"
+#import "ProductLabel.h"
+#import "Tokopedia-Swift.h"
 #import "QueueImageDownloader.h"
 
 
@@ -40,14 +42,45 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
+    [self setBadges:viewModel.badges];
+    [self setLabels:viewModel.labels];
+}
+
+- (void)setLabels:(NSArray<ProductLabel*>*) labels {
+    for(UIView* subview in _labelsView.arrangedSubviews) {
+        [_labelsView removeArrangedSubview:subview];
+    }
+    
+    _labelsView.alignment = OAStackViewAlignmentFill;
+    _labelsView.spacing = 5;
+    _labelsView.axis = UILayoutConstraintAxisHorizontal;
+    _labelsView.distribution = OAStackViewDistributionEqualSpacing;
+    
+    for(ProductLabel* productLabel in labels) {
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.text = [NSString stringWithFormat:@" %@  ", productLabel.title];
+        label.backgroundColor  = [UIColor fromHexString:productLabel.color];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.layer.cornerRadius = 3;
+        label.layer.masksToBounds = YES;
+        label.layer.borderWidth = 1.0;
+        label.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        label.font = [UIFont smallTheme];
+        label.textColor = [UIColor lightGrayColor];
+        [label sizeToFit];
+        
+        [_labelsView addArrangedSubview:label];
+    }
+}
+
+- (void)setBadges:(NSArray<ProductBadge*>*)badges {
     //all of this is just for badges, dynamic badges
     [_badgesView removeAllPushedView];
     CGSize badgeSize = CGSizeMake(_badgesView.frame.size.height, _badgesView.frame.size.height);
     [_badgesView setOrientation:TKPDStackViewOrientationRightToLeft];
     
-    
     NSMutableArray *urls = [NSMutableArray new];
-    for(ProductBadge* badge in viewModel.badges){
+    for(ProductBadge* badge in badges){
         [urls addObject:badge.image_url];
     }
     

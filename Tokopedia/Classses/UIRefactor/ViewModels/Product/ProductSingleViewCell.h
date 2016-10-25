@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <OAStackView/OAStackView.h>
 #import "TKPDStackView.h"
 @class ProductModelView;
 @class CatalogModelView;
@@ -28,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceWidthConstraint;
 
 @property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *labelsView;
 
 - (void)setViewModel:(ProductModelView*)viewModel;
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
