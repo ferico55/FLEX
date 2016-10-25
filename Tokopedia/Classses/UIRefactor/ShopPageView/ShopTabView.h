@@ -12,6 +12,8 @@
 
 @interface ShopTabView : CKComponentHostingView
 
+@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+
 - (instancetype)initWithTab:(ShopPageTab)tab;
 
 @end

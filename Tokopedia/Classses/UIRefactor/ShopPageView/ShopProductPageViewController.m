@@ -328,6 +328,8 @@ EtalaseViewControllerDelegate
     ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
     [self.view addSubview:shopTabView];
     
+    shopTabView.onTabSelected = self.onTabSelected;
+    
     [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.equalTo(@40);

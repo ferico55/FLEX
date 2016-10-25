@@ -37,6 +37,14 @@
     return self;
 }
 
+- (void)didSelectTab:(CKComponent *)component {
+    ShopPageTab tab = (ShopPageTab)component.viewContext.view.tag;
+    
+    if (self.onTabSelected) {
+        self.onTabSelected(tab);
+    }
+}
+
 + (CKComponent *)verticalSeparator {
     return [CKInsetComponent
             newWithInsets:UIEdgeInsetsMake(10, 0, 10, 0)
@@ -50,7 +58,7 @@
 
 }
 
-+ (CKComponent *)tabWithTitle:(NSString *)title marked:(BOOL)marked {    
++ (CKComponent *)tabWithTitle:(NSString *)title forSection:(ShopPageTab)tab withModel:(ShopTabComponentModel *)model {
     return [CKStackLayoutComponent
             newWithView:{}
             size:{}
@@ -72,14 +80,17 @@
                      titleFont:[UIFont largeTheme]
                      selected:{}
                      enabled:YES
-                     action:{}
+                     action:CKComponentAction(@selector(didSelectTab:))
                      size:{}
-                     attributes:{}
+                     attributes:{
+                         //associate button with tab using tag
+                         {@selector(setTag:), tab}
+                     }
                      accessibilityConfiguration:{}],
                     .flexGrow = YES
                 },
                 {
-                    (!marked?nil:
+                    (!(model.tab == tab)?nil:
                     [CKComponent
                      newWithView:{
                          [UIView class],
@@ -104,7 +115,7 @@
             }
             children:{
                 {
-                    [self tabWithTitle:@"Home" marked:model.tab == ShopPageTabHome],
+                    [self tabWithTitle:@"Home" forSection:ShopPageTabHome withModel:model],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -112,7 +123,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [self tabWithTitle:@"Produk" marked:model.tab == ShopPageTabProduct],
+                    [self tabWithTitle:@"Produk" forSection:ShopPageTabProduct withModel:model],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -120,7 +131,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [self tabWithTitle:@"Diskusi" marked:model.tab == ShopPageTabDiscussion],
+                    [self tabWithTitle:@"Diskusi" forSection:ShopPageTabDiscussion withModel:model],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -128,7 +139,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [self tabWithTitle:@"Ulasan" marked:model.tab == ShopPageTabReview],
+                    [self tabWithTitle:@"Ulasan" forSection:ShopPageTabReview withModel:model],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },
@@ -136,7 +147,7 @@
                     [self verticalSeparator]
                 },
                 {
-                    [self tabWithTitle:@"Catatan" marked:model.tab == ShopPageTabNote],
+                    [self tabWithTitle:@"Catatan" forSection:ShopPageTabNote withModel:model],
                     .flexBasis = CKRelativeDimension::Percent(0.2),
                     .flexShrink = YES
                 },

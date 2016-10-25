@@ -158,6 +158,10 @@
         _shopProductViewController.initialEtalase = _initialEtalase;
     }
     
+    _shopProductViewController.onTabSelected = ^(ShopPageTab tab) {
+        [weakSelf navigateToTab:tab];
+    };
+    
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
     
@@ -595,6 +599,19 @@
     nav.navigationBar.translucent = NO;
     
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)navigateToTab:(ShopPageTab)tab {
+    NSDictionary<NSNumber *, UIViewController *> *controllerForTab =
+    @{
+      @(ShopPageTabHome): _shopHomeViewController,
+      @(ShopPageTabProduct): _shopProductViewController,
+      @(ShopPageTabDiscussion): _shopTalkViewController,
+      @(ShopPageTabReview): _shopReviewViewController,
+      @(ShopPageTabNote): _shopNotesViewController
+    };
+    
+    [self displayViewController:controllerForTab[@(tab)]];
 }
 
 - (IBAction)tap:(id)sender {
