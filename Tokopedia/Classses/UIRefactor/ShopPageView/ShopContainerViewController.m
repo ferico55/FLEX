@@ -158,12 +158,16 @@
         _shopProductViewController.initialEtalase = _initialEtalase;
     }
     
-    _shopProductViewController.onTabSelected = ^(ShopPageTab tab) {
+    void (^onTabSelected)(ShopPageTab) = ^(ShopPageTab tab) {
         [weakSelf navigateToTab:tab];
     };
+
+    
+    _shopProductViewController.onTabSelected = onTabSelected;
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
+    _shopTalkViewController.onTabSelected = onTabSelected;
     
     _shopReviewViewController = [ShopReviewPageViewController new];
     _shopReviewViewController.data = _data;
