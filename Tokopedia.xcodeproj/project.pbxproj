@@ -1720,7 +1720,6 @@
 		453FD4D71DB4B93D00125AD5 /* TxOrderPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCA431DB4B92700125AD5 /* TxOrderPaymentViewController.xib */; };
 		453FD4D81DB4B93D00125AD5 /* WebViewInvoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FCA451DB4B92700125AD5 /* WebViewInvoiceViewController.m */; };
 		453FD4D91DB4B93D00125AD5 /* WebViewInvoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCA461DB4B92700125AD5 /* WebViewInvoiceViewController.xib */; };
-		453FD4DA1DB4B93D00125AD5 /* RequestLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FCA481DB4B92700125AD5 /* RequestLDExtension.m */; };
 		453FD4DB1DB4B93D00125AD5 /* RequestOrderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FCA4A1DB4B92700125AD5 /* RequestOrderAction.m */; };
 		453FD4DC1DB4B93D00125AD5 /* RequestOrderData.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FCA4C1DB4B92700125AD5 /* RequestOrderData.m */; };
 		453FD4DD1DB4B93D00125AD5 /* TxOrderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FCA4F1DB4B92700125AD5 /* TxOrderTabViewController.m */; };
@@ -5526,8 +5525,6 @@
 		453FCA441DB4B92700125AD5 /* WebViewInvoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewInvoiceViewController.h; sourceTree = "<group>"; };
 		453FCA451DB4B92700125AD5 /* WebViewInvoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewInvoiceViewController.m; sourceTree = "<group>"; };
 		453FCA461DB4B92700125AD5 /* WebViewInvoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewInvoiceViewController.xib; sourceTree = "<group>"; };
-		453FCA471DB4B92700125AD5 /* RequestLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestLDExtension.h; sourceTree = "<group>"; };
-		453FCA481DB4B92700125AD5 /* RequestLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestLDExtension.m; sourceTree = "<group>"; };
 		453FCA491DB4B92700125AD5 /* RequestOrderAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOrderAction.h; sourceTree = "<group>"; };
 		453FCA4A1DB4B92700125AD5 /* RequestOrderAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestOrderAction.m; sourceTree = "<group>"; };
 		453FCA4B1DB4B92700125AD5 /* RequestOrderData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOrderData.h; sourceTree = "<group>"; };
@@ -11675,8 +11672,6 @@
 				453FCA051DB4B92700125AD5 /* OrderStatus */,
 				453FCA121DB4B92700125AD5 /* PaymentConfirmation */,
 				453FCA2C1DB4B92700125AD5 /* PaymentConfirmed */,
-				453FCA471DB4B92700125AD5 /* RequestLDExtension.h */,
-				453FCA481DB4B92700125AD5 /* RequestLDExtension.m */,
 				453FCA491DB4B92700125AD5 /* RequestOrderAction.h */,
 				453FCA4A1DB4B92700125AD5 /* RequestOrderAction.m */,
 				453FCA4B1DB4B92700125AD5 /* RequestOrderData.h */,
@@ -14698,7 +14693,6 @@
 				453FD1611DB4B93300125AD5 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				453FD4C41DB4B93D00125AD5 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				453FD1BE1DB4B93400125AD5 /* ContactUsDataManager.m in Sources */,
-				453FD4DA1DB4B93D00125AD5 /* RequestLDExtension.m in Sources */,
 				453FD2D11DB4B93700125AD5 /* NotificationBarButton.m in Sources */,
 				453FCF3E1DB4B93000125AD5 /* LikeDislike.m in Sources */,
 				453FD37A1DB4B93800125AD5 /* ResolutionCenterCreateViewController.m in Sources */,
