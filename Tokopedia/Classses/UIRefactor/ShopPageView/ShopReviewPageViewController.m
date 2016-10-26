@@ -42,6 +42,7 @@
 #import "ProductReputationSimpleCell.h"
 #import "ShopPageRequest.h"
 #import "NSString+TPBaseUrl.h"
+#import "ShopTabView.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
@@ -213,11 +214,6 @@
         _isNoData = NO;
     }
     
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
-    
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
@@ -290,6 +286,25 @@
                               }];
     
     [self initNotification];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabReview];
+    shopTabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
+    [self.view addSubview:shopTabView];
+    
+    shopTabView.onTabSelected = self.onTabSelected;
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
 

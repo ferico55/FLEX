@@ -171,6 +171,7 @@
     
     _shopReviewViewController = [ShopReviewPageViewController new];
     _shopReviewViewController.data = _data;
+    _shopReviewViewController.onTabSelected = onTabSelected;
     
     _shopNotesViewController = [ShopNotesPageViewController new];
     _shopNotesViewController.data = _data;
