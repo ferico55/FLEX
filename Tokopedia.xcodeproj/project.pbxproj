@@ -19,6 +19,7 @@
 		34918EF01DB48D1E00CE7868 /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349184751DB48D1000CE7868 /* MoreWrapperViewController.m */; };
 		349192541DB48D2200CE7868 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3491880C1DB48D1600CE7868 /* Tokopedia-Info.plist */; };
 		349192551DB48D2200CE7868 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 3491880F1DB48D1600CE7868 /* Tokopedia.xcworkspace */; };
+		4524D9381DBF5300009C3E5E /* TopPointRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4524D9371DBF5300009C3E5E /* TopPointRequest.swift */; };
 		453FCE351DB4B92F00125AD5 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FBE321DB4B92000125AD5 /* AnalyticsManager.m */; };
 		453FCE361DB4B92F00125AD5 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FBE361DB4B92000125AD5 /* URLCacheAlert.m */; };
 		453FCE371DB4B92F00125AD5 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FBE381DB4B92000125AD5 /* URLCacheConnection.m */; };
@@ -2721,6 +2722,7 @@
 		3491880D1DB48D1600CE7868 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		3491880E1DB48D1600CE7868 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		3491880F1DB48D1600CE7868 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		4524D9371DBF5300009C3E5E /* TopPointRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPointRequest.swift; sourceTree = "<group>"; };
 		453FBE311DB4B92000125AD5 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		453FBE321DB4B92000125AD5 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		453FBE331DB4B92000125AD5 /* AnalyticsString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsString.h; sourceTree = "<group>"; };
@@ -10335,6 +10337,7 @@
 				453FC6951DB4B92500125AD5 /* WebViewController.h */,
 				453FC6961DB4B92500125AD5 /* WebViewController.m */,
 				453FC6971DB4B92500125AD5 /* WebViewController.xib */,
+				4524D9371DBF5300009C3E5E /* TopPointRequest.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -14896,6 +14899,7 @@
 				453FD1201DB4B93300125AD5 /* ConcurrentMainScheduler.swift in Sources */,
 				453FCFAF1DB4B93000125AD5 /* OrderOrder.m in Sources */,
 				453FCE991DB4B92F00125AD5 /* CategoryDetail.swift in Sources */,
+				4524D9381DBF5300009C3E5E /* TopPointRequest.swift in Sources */,
 				453FCE6D1DB4B92F00125AD5 /* RSA.m in Sources */,
 				453FCFFE1DB4B93100125AD5 /* AddProductSubmitResult.m in Sources */,
 				453FD4AF1DB4B93C00125AD5 /* MappingLDExtension.m in Sources */,

@@ -47,7 +47,6 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
-#import "TokopediaNetworkManager.h"
 
 #import "NavigateViewController.h"
 #import "LoyaltyPoint.h"
@@ -65,28 +64,20 @@
 
 #import "Tokopedia-Swift.h"
 
-#define CTagProfileInfo 12
-#define CTagLP 13
-
-@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
     NSOperationQueue *_operationQueue;
     
     RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_depositObjectManager;
-    __weak RKManagedObjectRequestOperation *_depositRequest;
-    NSInteger _depositRequestCount;
     BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     NSTimer *_requestTimer;
     
     UISplitViewController *splitViewController;
     NavigateViewController *_navigate;
     
-    TokopediaNetworkManager *_LPNetworkManager;
     LoyaltyPointResult *_LPResult;
     TAGContainer *_gtmContainer;
     
@@ -169,10 +160,6 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    _LPNetworkManager = [TokopediaNetworkManager new];
-    _LPNetworkManager.delegate = self;
-    _LPNetworkManager.tagRequest = CTagLP;
-    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
@@ -180,7 +167,6 @@
     _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
-    _depositRequestCount = 0;
     
     _operationQueue = [[NSOperationQueue alloc] init];
     
@@ -272,166 +258,12 @@
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
-    [_LPNetworkManager requestCancel];
 }
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        return @{
-                 kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
-                 kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
-                 };
-    }
-    if (tag == CTagLP) {
-        return @{@"action":@"get_lp"
-                 };
-    }
-    return nil;
-}
-
-- (NSString*)getPath:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        return kTKPDPROFILE_PEOPLEAPIPATH;
-    }
-    if (tag == CTagLP) {
-        return @"lp.pl";
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileInfo class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileInfoResult class]];
-        
-        RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-        [shopinfoMapping addAttributeMappingsFromDictionary:@{
-                                                              kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY
-                                                              }];
-        // Relationship Mapping
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping]];
-        
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
-                                                                                      toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
-                                                                                    withMapping:shopinfoMapping]];
-        
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:kTKPDPROFILE_PEOPLEAPIPATH
-                                                                                               keyPath:@""
-                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptor];
-        
-        return _objectmanager;
-    }
-    if (tag == CTagLP) {
-        return [self objectManagerLP];
-    }
-    
-    return nil;
-}
-
--(RKObjectManager*)objectManagerLP
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LoyaltyPoint mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:@"lp.pl"
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
-
-    return objectManager;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        ProfileInfo *profileInfo = [((RKMappingResult *) result).dictionary objectForKey:@""];
-        return profileInfo.status;
-    }
-    if (tag == CTagLP) {
-        LoyaltyPoint *lp = [((RKMappingResult *) result).dictionary objectForKey:@""];
-        return lp.status;
-    }
-    return nil;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        ProfileInfo *profileInfo = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            if(secureStorage != nil) {
-                
-                if(profileInfo.result.shop_info.shop_avatar != nil) {
-                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
-                }
-                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
-                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-                [_shopImageView setImageWithURLRequest:request
-                                      placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                                   //NSLOG(@"thumb: %@", thumb);
-                                                   [_shopImageView setImage:image];
-#pragma clang diagnostic pop
-                                               } failure: nil];
-            }
-        }
-    }
-    
-    if (tag == CTagLP) {
-        LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        _LPResult = lp.result;
-        _LPointLabel.text = lp.result.loyalty_point.amount;
-        [[self tableView]reloadData];
-    }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-}
-
-- (void)actionBeforeRequest:(int)tag
-{
-}
-
-
-- (void)actionRequestAsync:(int)tag
-{
-    
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    
-}
-
 
 #pragma mark - Method
 -(void)updateShopPicture:(NSNotification*)notif
@@ -497,26 +329,6 @@
         }
     }
     [self.tableView reloadData];
-}
-
-
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag
-{
-    if(tag == CTagProfileInfo) {
-        if(tokopediaNetworkManager == nil) {
-            tokopediaNetworkManager = [TokopediaNetworkManager new];
-            tokopediaNetworkManager.tagRequest = CTagProfileInfo;
-            tokopediaNetworkManager.delegate = self;
-        }
-        
-        return tokopediaNetworkManager;
-    }
-    
-    return nil;
-}
-
-- (void)updateImageURL {
-    [[self getNetworkManager:CTagProfileInfo] doRequest];
 }
 
 #pragma mark - Table view data source
@@ -977,7 +789,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_LPNetworkManager requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -997,9 +808,19 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [_loadingSaldo stopAnimating];
         _isNoDataDeposit = NO;
         
-        [_LPNetworkManager doRequest];
+        [self requestTopPoint];
     } onFailure:^(NSError *errorResult) {
         
+        
+    }];
+}
+
+-(void)requestTopPoint{
+    [TopPointRequest fetchTopPoint:^(LoyaltyPointResult * data) {
+        
+        _LPResult = data;
+        _LPointLabel.text = data.loyalty_point.amount;
+        [[self tableView]reloadData];
         
     }];
 }
