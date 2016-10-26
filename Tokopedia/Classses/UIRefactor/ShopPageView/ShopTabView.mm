@@ -72,6 +72,8 @@
 }
 
 + (CKComponent *)tabWithTitle:(NSString *)title forSection:(ShopPageTab)tab withModel:(ShopTabComponentModel *)model {
+    UIColor *highlightColor = model.tab == tab? [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]: [UIColor clearColor];
+    
     return [CKStackLayoutComponent
             newWithView:{}
             size:{}
@@ -103,13 +105,12 @@
                     .flexGrow = YES
                 },
                 {
-                    (!(model.tab == tab)?nil:
                     [CKComponent
                      newWithView:{
                          [UIView class],
-                         {{@selector(setBackgroundColor:), [UIColor colorWithRed:0.071 green:0.780 blue:0.000 alpha:1.00]}}
+                         {{@selector(setBackgroundColor:), highlightColor}}
                      }
-                     size:{.height = 3}])
+                     size:{.height = 3}]
                 }
             }];
 }
