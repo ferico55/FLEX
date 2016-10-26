@@ -21,8 +21,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *productShop;
 @property (strong, nonatomic) IBOutlet UILabel *productName;
 @property (weak, nonatomic) IBOutlet UILabel* shopLocation;
-@property (weak, nonatomic) IBOutlet UILabel* grosirLabel;
-@property (weak, nonatomic) IBOutlet UILabel* preorderLabel;
 @property (weak, nonatomic) IBOutlet UIImageView* locationIcon;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* grosirPosition;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoContraint;

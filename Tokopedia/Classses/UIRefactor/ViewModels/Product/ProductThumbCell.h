@@ -19,8 +19,6 @@
 
 @property(nonatomic, weak) IBOutlet UILabel* productName;
 @property(nonatomic, weak) IBOutlet UILabel* productPrice;
-@property(nonatomic, weak) IBOutlet UILabel* grosirLabel;
-@property(nonatomic, weak) IBOutlet UILabel* preorderLabel;
 @property(nonatomic, weak) IBOutlet UILabel* shopName;
 @property(nonatomic, weak) IBOutlet UILabel* shopLocation;
 @property(nonatomic, weak) IBOutlet UILabel* catalogPriceLabel;

@@ -29,15 +29,10 @@
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
     [self.shopLocation setText:viewModel.shopLocation];
-    self.grosirLabel.layer.masksToBounds = YES;
-    self.preorderLabel.layer.masksToBounds = YES;
-    
+
     if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
         [self.productShop setHidden:YES];
     }
-    
-    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
-    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     
     self.preorderPosition.constant = !viewModel.isWholesale ? -42 : 3;
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
@@ -65,9 +60,10 @@
         label.layer.cornerRadius = 3;
         label.layer.masksToBounds = YES;
         label.layer.borderWidth = 1.0;
-        label.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
+        label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
         label.font = [UIFont smallTheme];
-        label.textColor = [UIColor lightGrayColor];
+        
         [label sizeToFit];
         
         [_labelsView addArrangedSubview:label];
@@ -114,8 +110,6 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeCenter];
     
-    self.preorderLabel.hidden = YES;
-    self.grosirLabel.hidden = YES;
     self.locationImage.hidden = YES;
     self.shopLocation.text = nil;
     

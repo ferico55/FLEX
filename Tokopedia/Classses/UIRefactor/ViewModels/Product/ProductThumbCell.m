@@ -28,14 +28,10 @@
     self.productPrice.text = viewModel.productPrice;
     self.shopName.text = viewModel.productShop;
     self.shopLocation.text = viewModel.shopLocation;
-    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
-    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.grosirIconLocation.constant = viewModel.isProductPreorder ? 7 : -50;
     self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 7 : -19;
     [_productName setLineBreakMode:NSLineBreakByTruncatingTail];
-    
-    self.grosirLabel.layer.masksToBounds = YES;
-    self.preorderLabel.layer.masksToBounds = YES;
+
 
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
@@ -62,9 +58,9 @@
         label.layer.cornerRadius = 3;
         label.layer.masksToBounds = YES;
         label.layer.borderWidth = 1.0;
-        label.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
+        label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
         label.font = [UIFont smallTheme];
-        label.textColor = [UIColor lightGrayColor];
         [label sizeToFit];
         
         [_labelsView addArrangedSubview:label];
@@ -99,8 +95,6 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
     
-    self.preorderLabel.hidden = YES;
-    self.grosirLabel.hidden = YES;
     self.locationIcon.hidden = YES;
     self.shopLocation.text = nil;
 

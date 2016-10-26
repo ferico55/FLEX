@@ -31,10 +31,6 @@
     [self.productShop setText:viewModel.productShop];
     
     self.shopLocation.text = viewModel.shopLocation;
-    self.grosirLabel.layer.masksToBounds = YES;
-    self.preorderLabel.layer.masksToBounds = YES;
-    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
-    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.grosirPosition.constant = viewModel.isProductPreorder ? 10 : -64;
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
@@ -64,9 +60,10 @@
         label.layer.cornerRadius = 3;
         label.layer.masksToBounds = YES;
         label.layer.borderWidth = 1.0;
-        label.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
+        label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
         label.font = [UIFont smallTheme];
-        label.textColor = [UIColor lightGrayColor];
+        
         [label sizeToFit];
         
         [_labelsView addArrangedSubview:label];
@@ -112,8 +109,6 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
-    self.preorderLabel.hidden = YES;
-    self.grosirLabel.hidden = YES;
     self.locationIcon.hidden = YES;
     self.shopLocation.text = nil;
     self.productInfoLabel.hidden = YES;
