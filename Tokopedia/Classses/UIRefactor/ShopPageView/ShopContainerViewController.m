@@ -175,6 +175,7 @@
     
     _shopNotesViewController = [ShopNotesPageViewController new];
     _shopNotesViewController.data = _data;
+    _shopNotesViewController.onTabSelected = onTabSelected;
     
     _shopHomeViewController = [ShopHomeViewController new];
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
