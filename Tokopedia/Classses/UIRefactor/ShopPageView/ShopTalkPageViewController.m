@@ -166,6 +166,7 @@ NoResultDelegate>
     _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabDiscussion];
     _shopPageHeader.data = _data;
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _header = _shopPageHeader.view;
     
     _shopPageRequest = [[ShopPageRequest alloc]init];

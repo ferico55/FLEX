@@ -139,6 +139,7 @@
     
     _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabNote];
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
     
     _header = _shopPageHeader.view;

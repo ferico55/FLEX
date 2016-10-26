@@ -135,13 +135,6 @@
     }
 }
 
-- (void)showSelectedTabMarker {
-    if (_selectedTab != ShopPageTabUnknown) {
-        NSArray<UIView *> *markers = @[_homeMarker, _productMarker, _talkMarker, _reviewMarker, _noteMarker];
-        markers[_selectedTab].hidden = NO;
-    }
-}
-
 - (void)viewDidLoad
 {
     [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
@@ -150,8 +143,6 @@
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
     [self initButton];
-    
-    [self showSelectedTabMarker];
     
     _descriptionView = [ShopDescriptionView newView];
     _descriptionView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);

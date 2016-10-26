@@ -229,6 +229,7 @@ EtalaseViewControllerDelegate
     
     _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabProduct];
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
     _navigationBarIsAnimating = NO;
     
