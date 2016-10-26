@@ -13,7 +13,7 @@
 #pragma mark - Transaction Status Detail Delegate
 @protocol TxOrderStatusDetailViewControllerDelegate <NSObject>
 @required
--(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath;
+-(void)confirmDeliveryAtIndexPath:(NSIndexPath *)indexPath;
 -(void)delegateViewController:(UIViewController*)viewController;
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath;
 -(void)complainOrder:(TxOrderStatusList *)order;

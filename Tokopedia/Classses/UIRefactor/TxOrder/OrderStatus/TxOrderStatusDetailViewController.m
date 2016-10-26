@@ -206,10 +206,7 @@
     else{
         UIButton *button = (UIButton *)sender;
         if (button.tag == 10) {
-            //Confirm Delivery
-            UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,_order.order_shop.shop_name] message:@"Klik Selesai untuk menyelesaikan transaksi dan meneruskan dana ke penjual.\nKlik Komplain jika pesanan yang diterima berkendala (kurang/rusak/ lain-lain)." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Selesai",@"Komplain", nil];
-            alertConfirmation.tag = TAG_ALERT_CONFIRMATION;
-            [alertConfirmation show];
+            [_delegate confirmDeliveryAtIndexPath:_indexPath];
         }
         else if (button.tag == 11)
         {
@@ -263,45 +260,6 @@
         if (buttonIndex == 1) {
             [_delegate reOrder:_order atIndexPath:_indexPath];
             [_delegate delegateViewController:self];
-        }
-    }
-    else if (alertView.tag == TAG_ALERT_COMPLAIN)
-    {
-        if (buttonIndex == 2) {
-            return;
-        }
-        
-        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-        vc.order = _order;
-        
-        if(buttonIndex == 0){
-            vc.product_is_received = NO;
-        }else if(buttonIndex == 1){
-            vc.product_is_received = YES;
-        }
-        
-        vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTranslucent:NO];
-        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    }
-    else if (alertView.tag == TAG_ALERT_CONFIRMATION)
-    {
-        switch (buttonIndex) {
-            case 1://Selesai
-            {
-                [_delegate confirmDelivery:_order atIndexPath:_indexPath];
-                [_delegate delegateViewController:self];
-            }
-                break;
-            case 2://Complain
-            {
-                [self showAlertViewOpenComplain];
-            }
-                break;
-            default:
-                break;
         }
     }
 }
