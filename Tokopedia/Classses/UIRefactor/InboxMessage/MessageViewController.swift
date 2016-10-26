@@ -12,6 +12,7 @@ import JSQMessagesViewController
 class MessageViewController: JSQMessagesViewController {
     
     var messageTitle = ""
+    var messageSubtitle = ""
     var messageId: String!
     var onMessagePosted: ((String) -> Void)!
     var labelColorsCollection = [
@@ -50,6 +51,7 @@ class MessageViewController: JSQMessagesViewController {
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
+        setupTitle()
         fetchMessages("1")
     }
     
@@ -238,6 +240,36 @@ class MessageViewController: JSQMessagesViewController {
         incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
     }
     
+    private func setupTitle() {
+        let titleView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width - 120, 44))
+        
+        let titleLabel = UILabel(frame: CGRectZero)
+        let betweenLabel = UILabel(frame: CGRectZero)
+        
+        titleView.addSubview(titleLabel)
+        titleView.addSubview(betweenLabel)
+        
+        titleLabel.text = messageTitle
+        titleLabel.font = UIFont.largeThemeMedium()
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.textAlignment = .Center
+        titleLabel.mas_makeConstraints { (make) in
+            make.top.left().right().equalTo()(titleView)
+        }
+        
+        
+        betweenLabel.text = messageSubtitle
+        betweenLabel.font = UIFont.smallTheme()
+        betweenLabel.textAlignment = .Center
+        betweenLabel.textColor = UIColor.whiteColor()
+        betweenLabel.mas_makeConstraints { (make) in
+            make.top.equalTo()(titleLabel.mas_bottom)
+            make.left.right().equalTo()(titleView)
+        }
+        
+        self.navigationItem.titleView = titleView
+    }
+    
     //MARK: Network
     private func fetchMessages(page: String!) {
         fetchMessageManager .
@@ -252,6 +284,12 @@ class MessageViewController: JSQMessagesViewController {
                     let result = result.dictionary()[""] as! InboxMessageDetail
                     if((result.message_error == nil)) {
                         self.didReceiveMessages(result.result.list as! [InboxMessageDetailList])
+                        
+                        let messageUsers = result.result.conversation_between.map({"\($0.user_name)"}).joinWithSeparator(", ")
+                        if(messageUsers != "") {
+                            self.messageSubtitle = "Antara : \(messageUsers)"
+                        }
+                        self.setupTitle()
                         
                         self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
                         self.nextPage = result.result.paging.uriNext.valueForKey("page")

@@ -353,43 +353,47 @@
 }
 
 - (void)showMessageDetailForIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath) {
+    if (indexPath) {
         InboxMessageList *list = _messages[indexPath.row];
         list.message_read_status = @"1";
-//    }
+        
+        __weak typeof(self) weakSelf = self;
+        //
+        //    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+        //    vc.onMessagePosted = ^(NSString *replyMessage) {
+        //        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+        //    };
+        //
+        //    vc.data = [self dataForIndexPath:indexPath];
+        MessageViewController *vc = [[MessageViewController alloc] init];
+        vc.senderId = _userManager.getUserId;
+        vc.senderDisplayName = @"Tonito";
+        vc.messageTitle = list.message_title;
+        vc.messageId = list.message_id;
+        vc.onMessagePosted = ^(NSString* replyMessage) {
+            [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+        };
+        
+        [AnalyticsManager trackEventName:@"clickMessage"
+                                category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                  action:GA_EVENT_ACTION_VIEW
+                                   label:[_data objectForKey:@"nav"]?:@""];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+            navigationController.navigationBar.translucent = NO;
+            
+            [self.splitViewController replaceDetailViewController:navigationController];
+        }
+        else {
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 
-    __weak typeof(self) weakSelf = self;
-//
-//    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-//    vc.onMessagePosted = ^(NSString *replyMessage) {
-//        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
-//    };
-//
-//    vc.data = [self dataForIndexPath:indexPath];
-    MessageViewController *vc = [[MessageViewController alloc] init];
-    vc.senderId = _userManager.getUserId;
-    vc.senderDisplayName = @"Tonito";
-    vc.messageTitle = list.message_title;
-    vc.messageId = list.message_id;
-    vc.onMessagePosted = ^(NSString* replyMessage) {
-        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
-    };
     
     
-    [AnalyticsManager trackEventName:@"clickMessage"
-                            category:GA_EVENT_CATEGORY_INBOX_MESSAGE
-                              action:GA_EVENT_ACTION_VIEW
-                               label:[_data objectForKey:@"nav"]?:@""];
-
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        navigationController.navigationBar.translucent = NO;
-
-        [self.splitViewController replaceDetailViewController:navigationController];
-    }
-    else {
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+    
+    
 }
 
 - (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {
