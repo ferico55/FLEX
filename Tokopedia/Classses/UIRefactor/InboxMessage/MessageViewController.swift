@@ -87,8 +87,15 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        return 20
+        let message = messages[indexPath.item]
+        
+        if message.senderId == senderId {
+            return 0
+        } else {
+            return 20
+        }
     }
+    
    
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -126,16 +133,47 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        
+        if(indexPath.item == 0) {
+            return 20
+        }
+        
+        if(indexPath.item - 1 > 0) {
+            let message = messages[indexPath.item]
+            let previousMessage = self.messages[indexPath.item - 1]
+            if(message.date.timeIntervalSinceDate(previousMessage.date) / (24 * 60 * 60) > 1) {
+                return 20
+            }
+        }
+        
+        return 0
+    }
+    
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        let message = messages[indexPath.item]
+        
+        if(indexPath.item == 0) {
+            return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+        }
+        
+        if(indexPath.item - 1 > 0) {
+            let previousMessage = self.messages[indexPath.item - 1]
+            if(message.date.timeIntervalSinceDate(previousMessage.date) / (24 * 60 * 60) > 1) {
+                return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            }
+        }
+        return nil
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         return 20
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-        if(indexPath.item % 3 == 0) {
-            let message = messages[indexPath.item]
-            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
-        }
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        let message = messages[indexPath.item]
         
-        return nil
+        return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().timeForDate(message.date))
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
