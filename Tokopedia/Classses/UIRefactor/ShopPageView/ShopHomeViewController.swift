@@ -16,7 +16,10 @@ class ShopHomeViewController: UIViewController {
     var onEtalaseSelected: ((String, String) -> Void)?
     var onTabSelected: ((ShopPageTab) -> Void)?
     
+    private let webView = WKWebView()
+    
     private let router = JLRoutes()
+    private let headerHeight: CGFloat = 245
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -36,37 +39,34 @@ class ShopHomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let header = ShopPageHeader(selectedTab: .Home)
-        header.onTabSelected = self.onTabSelected
-        
-        self.addChildViewController(header)
-        self.view.addSubview(header.view)
-        header.didMoveToParentViewController(self)
-        
-        header.view.mas_makeConstraints { make in
-            make.top.equalTo()(self.view.mas_top)
-            make.left.equalTo()(self.view.mas_left)
-            make.right.equalTo()(self.view.mas_right)
-            make.height.equalTo()(245)
-        }
 
-        let webView = WKWebView()
-        
         self.view.addSubview(webView)
         
         webView.mas_makeConstraints { make in
-            make.left.equalTo()(self.view.mas_left)
-            make.right.equalTo()(self.view.mas_right)
-            make.bottom.equalTo()(self.view.mas_bottom)
-
-            make.top.equalTo()(self.view.mas_top).offset()(245)
+            make.edges.equalTo()(self.view)
         }
         
         webView.loadRequest(NSURLRequest(URL: NSURL(string: "https://s3-ap-southeast-1.amazonaws.com/tokopedia-upload-test/brand-store/ramayana/_apps/top")!))
         
         webView.navigationDelegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
+        webView.scrollView.contentInset.top = headerHeight
+        
+        let header = ShopPageHeader(selectedTab: .Home)
+        header.onTabSelected = self.onTabSelected
+        
+        header.view.frame.size.height = headerHeight
+        header.view.frame.size.width = self.view.bounds.size.width
+        header.view.frame.origin.y = -headerHeight
+        
+        self.addChildViewController(header)
+        webView.scrollView.addSubview(header.view)
+        
+        header.didMoveToParentViewController(self)
     }
 
 }
