@@ -103,6 +103,7 @@
     BOOL _isSaldoError;
     BOOL _isDropshipperError;
     BOOL _shouldDisplayButtonOnErrorAlert;
+    BOOL _hasDisplayedPaymentError;
     
     TransactionVoucherData *_voucherData;
 
@@ -638,7 +639,11 @@
                 }
                     break;
                 default:
-                    [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout"];
+                    if (_hasDisplayedPaymentError) {
+                        [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout after error"];
+                    } else {
+                        [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout"];
+                    }
                     if([self isValidInput]) {
 						_saldoErrorIcon.hidden = YES;
                         if([self isHandlePaymentWithNative]) {
@@ -912,6 +917,7 @@
         if (gateway == -1) {
             isValid = NO;
             [_errorMessages addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
+            _hasDisplayedPaymentError = YES;
             [self tapChoosePayment:self];
         }
         if (gateway == TYPE_GATEWAY_CC) {
@@ -1196,6 +1202,7 @@
 {
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         if ([gateway.gateway_name isEqualToString:object]) {
+            [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:gateway.gateway_name];
             [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
             [_dataInput setObject:gateway.gateway forKey:API_GATEWAY_LIST_ID_KEY];
             [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:gateway.gateway_name];

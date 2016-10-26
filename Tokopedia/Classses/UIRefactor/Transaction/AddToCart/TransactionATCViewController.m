@@ -952,7 +952,7 @@ typedef enum
             }
             else
             {
-                
+                [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Add to Cart"];
                 UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
                 UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
