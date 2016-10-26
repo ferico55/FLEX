@@ -975,6 +975,7 @@
     
     confirmationAlert.didOK = ^{
         [confirmationAlert dismiss];
+        [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
         [self confirmDelivery:order];
     };
     
