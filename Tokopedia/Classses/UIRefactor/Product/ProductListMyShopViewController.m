@@ -179,11 +179,7 @@ NoResultDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // UA
-    [TPAnalytics trackScreenName:@"Shop - Manage Product"];
-    
-    // GA
-    self.screenName = @"Shop - Manage Product";
+    [AnalyticsManager trackScreenName:@"Shop - Manage Product"];
 }
 
 

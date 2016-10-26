@@ -71,9 +71,7 @@
     
     self.title = @"Status Pengiriman";
     
-    [TPAnalytics trackScreenName:@"Sales - Shipping Status"];
-    
-    self.screenName = @"Sales - Shipping Status";
+    [AnalyticsManager trackScreenName:@"Sales - Shipping Status"];
 
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;

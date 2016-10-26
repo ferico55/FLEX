@@ -12,7 +12,7 @@
 @interface UserContainerViewController : UIViewController<UIPageViewControllerDataSource>
 
 @property (strong, nonatomic) UIPageViewController *pageController;
-@property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;
 @property (strong, nonatomic) ProfileInfo *profile;
+@property (strong, nonatomic) NSString *profileUserID;
 @end

@@ -27,18 +27,18 @@ class PulsaNavigator: NSObject {
             
             //replace 2 first characters if 62 with 0
             if(phoneNumber.characters.count >= 2) {
-                let firstTwoCharacter = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(2)))
+                let firstTwoCharacter = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0) ..< phoneNumber.startIndex.advancedBy(2))
                 if(firstTwoCharacter == "62") {
-                    phoneNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex..<phoneNumber.startIndex.advancedBy(2), withString: "0")
+                    phoneNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex ..< phoneNumber.startIndex.advancedBy(2), withString: "0")
                 }
             }
             
             self.pulsaView.numberField.text = phoneNumber
             
             if(phoneNumber.characters.count >= 4) {
-                let prefix = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(4)))
+                let prefix = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0) ..< phoneNumber.startIndex.advancedBy(4))
                 
-                self.pulsaView.setRightViewNumberField(prefix)
+                self.pulsaView.checkInputtedNumber()
             }
         }
         

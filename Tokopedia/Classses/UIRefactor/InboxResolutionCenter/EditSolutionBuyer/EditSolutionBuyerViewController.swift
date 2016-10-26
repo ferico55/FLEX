@@ -78,7 +78,7 @@ import UIKit
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        TPAnalytics.trackScreenName("Resolution Center Buyer Edit Problem Page")
+        AnalyticsManager.trackScreenName("Resolution Center Buyer Edit Problem Page")
     }
     
     deinit {

@@ -129,49 +129,16 @@ typedef enum TagRequest {
 
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    [center addObserver:self
-               selector:@selector(applicationLogin:)
-                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(forceLogout)
-                   name:TkpdNotificationForcedLogout
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(applicationlogout:)
-                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(redirectNotification:)
-                   name:@"redirectNotification"
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(updateTabBarMore:)
-                   name:UPDATE_TABBAR object:nil];
-
-    [center addObserver:self
-               selector:@selector(didReceiveShowRatingNotification:)
-                   name:kTKPD_SHOW_RATING_ALERT
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(redirectToHomeViewController)
-                   name:kTKPD_REDIRECT_TO_HOME
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(navigateToPageInTabBar:)
-                   name:@"navigateToPageInTabBar"
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(redirectToSearch)
-                   name:@"redirectToSearch"
-                 object:nil];
+    [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
+    [center addObserver:self selector:@selector(forceLogout) name:TkpdNotificationForcedLogout object:nil];
+    [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+    [center addObserver:self selector:@selector(redirectNotification:) name:@"redirectNotification" object:nil];
+    [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
+    [center addObserver:self selector:@selector(didReceiveShowRatingNotification:) name:kTKPD_SHOW_RATING_ALERT object:nil];
+    [center addObserver:self selector:@selector(redirectToHomeViewController) name:kTKPD_REDIRECT_TO_HOME object:nil];
+    [center addObserver:self selector:@selector(navigateToPageInTabBar:) name:@"navigateToPageInTabBar" object:nil];
+    [center addObserver:self selector:@selector(redirectToSearch) name:@"redirectToSearch"object:nil];
+    [center addObserver:self selector:@selector(redirectToHotlist) name:@"redirectToHotlist"object:nil];
     
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
@@ -225,8 +192,8 @@ typedef enum TagRequest {
     
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [Localytics setCustomerId:[_userManager getUserId]];
-        [Localytics setValue:[_userManager getUserId] forProfileAttribute:@"user_id"];
+        [AnalyticsManager localyticsSetCustomerID:[_userManager getUserId]];
+        [AnalyticsManager localyticsValue:[_userManager getUserId] profileAttribute:@"user_id"];
     });
     
 }
@@ -604,7 +571,7 @@ typedef enum TagRequest {
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
-    [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
+    [AnalyticsManager localyticsValue:@"No" profileAttribute:@"Is Login"];
     
     [self reinitCartTabBar];
 }
@@ -627,7 +594,10 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [TPAnalytics trackClickTabBarItemWithName:tabBarController.tabBar.selectedItem.title];
+    [AnalyticsManager trackEventName:@"clickTabBar"
+                            category:GA_EVENT_CATEGORY_TAB_BAR
+                              action:GA_EVENT_ACTION_CLICK
+                               label:tabBarController.tabBar.selectedItem.title];
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];
@@ -646,6 +616,10 @@ typedef enum TagRequest {
 
 - (void)redirectToSearch {
     _tabBarController.selectedIndex = 2;
+}
+
+- (void)redirectToHotlist {
+    _tabBarController.selectedIndex = 1;
 }
 
 #pragma mark - Logout Controller

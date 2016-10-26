@@ -232,8 +232,7 @@ MMNumberKeyboardDelegate
     
     self.title = kTKPDREGISTER_NEW_TITLE;
     
-    [TPAnalytics trackScreenName:@"Register Page"];
-    self.screenName = @"Register Page";
+    [AnalyticsManager trackScreenName:@"Register Page"];
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;
@@ -308,8 +307,7 @@ MMNumberKeyboardDelegate
                 break;
             }
             case 13 : {
-                
-                [TPAnalytics trackClickRegisterOnPage:@"Step 1"];
+                [AnalyticsManager trackEventName:@"clickRegister" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_CLICK label:@"Step 1"];
                 
                 NSMutableArray *messages = [NSMutableArray new];
                 
@@ -340,55 +338,55 @@ MMNumberKeyboardDelegate
                     
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nama Lengkap"];
                     } else if (![test evaluateWithObject:fullname]) {
                         [messages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nama Lengkap"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nama Lengkap"];
                     }
                     
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
                     } else if (phone.length < 6) {
                         [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Nomor HP"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
                     }
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
                     }
                     else
                     {
                         if (![email isEmail]) {
                             [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
-                            [TPAnalytics trackErrorRegisterWithFieldName:@"Alamat Email"];
+                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
                         }
                     }
                     if (!pass || [pass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi"];
                     }
                     else
                     {
                         if (pass.length < 6) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_COUNT];
-                            [TPAnalytics trackErrorRegisterWithFieldName:@"Kata Sandi"];
+                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi"];
                         }
                     }
                     if (!confirmpass || [confirmpass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_CONFIRM_PASSWORD];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi"];
                     }
                     else
                     {
                         if (![pass isEqualToString:confirmpass]) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD];
-                            [TPAnalytics trackErrorRegisterWithFieldName:@"Ulangi Kata Sandi"];
+                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi"];
                         }
                     }
                     if (!isagree) {
                         [messages addObject:ERRORMESSAGE_NULL_AGREMENT];
-                        [TPAnalytics trackErrorRegisterWithFieldName:@"Syarat dan Ketentuan"];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Syarat dan Ketentuan"];
                     }
                 }
                 
@@ -490,14 +488,15 @@ MMNumberKeyboardDelegate
                                                                                delegate:self];
             [alertView show];
             
-            [TPLocalytics trackRegistrationWithProvider:@"0" success:NO];
+            [AnalyticsManager localyticsTrackRegistration:@"0" success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
-            [TPLocalytics trackRegistrationWithProvider:@"0" success:YES];
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-            [TPAnalytics trackSuccessRegisterWithChannel:@"Email"];
+            
+            [AnalyticsManager localyticsTrackRegistration:@"0" success:YES];
+            [AnalyticsManager localyticsValue:@"Yes" profileAttribute:@"Is Login"];
+            [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
             
             TKPDAlert *alert = [TKPDAlert newview];
             NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
@@ -876,7 +875,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+    [AnalyticsManager trackLogin:login];
 }
 
 @end

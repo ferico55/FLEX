@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AddressViewModel.h"
 
+static NSString *noAddress = @"-1";
+
 @interface AddressFormList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *country_name;
@@ -41,5 +43,7 @@
 @property (nonatomic, strong) NSString *address_city_id;
 
 @property (nonatomic, strong) AddressViewModel *viewModel;
+
+@property (nonatomic) BOOL isDefaultAddress;
 
 @end

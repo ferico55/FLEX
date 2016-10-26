@@ -69,7 +69,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Reject Reason Change Product Description Page"];
+    [AnalyticsManager trackScreenName:@"Reject Reason Change Product Description Page"];
 }
 
 -(IBAction)doneButtonClicked:(id)sender{

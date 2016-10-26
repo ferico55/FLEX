@@ -56,7 +56,6 @@
 
     NSIndexPath *_selectedIndexPath;
     NoResultReusableView *_noResultView;
-    TAGContainer *_gtmContainer;
     UserAuthentificationManager *_userManager;
 
     NSInteger _currentTabMenuIndex;
@@ -111,8 +110,8 @@
     
     _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     
-    // GTM
-    [self configureGTM];
+    
+    [self initNoResultView];
     
     //load data
     _networkManager = [TokopediaNetworkManager new];
@@ -122,13 +121,12 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self initNoResultView];
+    _noResultView.frame = self.view.bounds;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Inbox Talk";
-    [TPAnalytics trackScreenName:@"Inbox Talk"];
+    [AnalyticsManager trackScreenName:@"Inbox Talk"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -177,7 +175,10 @@
         type = NAV_TALK_MYPRODUCT;
     }
     
-    [TPAnalytics trackInboxTalkAction:@"View" label:type];
+    [AnalyticsManager trackEventName:@"clickProductDiscussion"
+                            category:GA_EVENT_CATEGORY_INBOX_TALK
+                              action:GA_EVENT_ACTION_VIEW
+                               label:type];
 
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
 
@@ -298,16 +299,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
-#pragma mark - GTM
-- (void)configureGTM {
-    [TPAnalytics trackUserId];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
-    [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
-}
 
 - (NSDictionary *)requestParameter {
     NSString *nav;

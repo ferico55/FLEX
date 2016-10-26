@@ -42,6 +42,8 @@
 #import "PromoRequest.h"
 #import "AlertLuckyView.h"
 #import "LuckyDealWord.h"
+#import "RequestUtils.h"
+#import "Tokopedia-Swift.h"
 
 #import "GalleryViewController.h"
 
@@ -87,12 +89,7 @@
 {
     
     UserContainerViewController *container = [UserContainerViewController new];
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    container.data = @{
-                       @"user_id" : userID?:@"",
-                       @"auth" : [auth getUserLoginData]?:@""
-                       };
-    
+    container.profileUserID = userID;
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -348,6 +345,31 @@
     [viewController.navigationController pushViewController:catalogViewController animated:YES];
 }
 
+- (void)navigateToCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName{
+    SearchResultViewController *searchResultProductViewController = [SearchResultViewController new];
+    searchResultProductViewController.hidesBottomBarWhenPushed = YES;
+    searchResultProductViewController.isFromDirectory = YES;
+    searchResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
+    
+    SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
+    searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
+    searchResultCatalogViewController.isFromDirectory = YES;
+    searchResultCatalogViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_catalog"};
+    
+    NSArray *subViewControllers = @[searchResultProductViewController, searchResultCatalogViewController];
+    
+    TKPDTabNavigationController *tkpdTabNavigationController = [TKPDTabNavigationController new];
+    searchResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController;
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": @1, @"department_id" : categoryId}];
+    tkpdTabNavigationController.data = data;
+    tkpdTabNavigationController.navigationTitle = categoryName ?: @"";
+    tkpdTabNavigationController.selectedIndex = 0;
+    tkpdTabNavigationController.viewControllers = subViewControllers;
+    tkpdTabNavigationController.hidesBottomBarWhenPushed = true;
+    
+    [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
+}
+
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
@@ -376,6 +398,54 @@
         vc.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url {
+    NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableDictionary *data = [[urlString URLQueryParametersWithOptions:URLQueryOptionDefault] mutableCopy];
+    [data setObject:url.parameters[@"q"] forKey:@"search"];
+    
+    SearchResultViewController *searchProductController = [[SearchResultViewController alloc] init];
+    [data setObject:@"search_product" forKey:@"type"];
+    searchProductController.data = [data copy];
+    
+    SearchResultViewController *searchCatalogController = [[SearchResultViewController alloc] init];
+    [data setObject:@"search_catalog" forKey:@"type"];
+    searchCatalogController.data = [data copy];
+    
+    SearchResultShopViewController *searchShopController = [[SearchResultShopViewController alloc] init];
+    [data setObject:@"search_shop" forKey:@"type"];
+    searchShopController.data = [data copy];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *viewControllers = @[searchProductController, searchCatalogController, searchShopController];
+        
+        TKPDTabNavigationController *tabController = [[TKPDTabNavigationController alloc] init];
+        [tabController setNavigationTitle:[data objectForKey:@"q"]];
+        [tabController setViewControllers:viewControllers];
+        
+        if ([[data objectForKey:@"st"] isEqualToString:@"catalog"]) {
+            
+            [tabController setSelectedIndex:1];
+            [tabController setSelectedViewController:searchProductController animated:YES];
+            
+            NSDictionary *userInfo = @{@"count": @(3), @"selectedIndex": @(1)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
+            
+        } else if ([[data objectForKey:@"st"] isEqualToString:@"shop"]) {
+            
+            [tabController setSelectedIndex:2];
+            [tabController setSelectedViewController:searchShopController animated:YES];
+            
+            NSDictionary *userInfo = @{@"count": @(3),  @"selectedIndex": @(2)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
+        }
+        
+        tabController.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:tabController animated:YES];
+    });
+    
+
 }
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {

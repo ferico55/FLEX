@@ -118,7 +118,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Give Review Attachments Caption Page"];
+    [AnalyticsManager trackScreenName:@"Give Review Attachments Caption Page"];
 }
 
 - (void)setDataWithImageTag:(NSInteger)imageTag {

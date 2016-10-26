@@ -8,18 +8,16 @@
 
 #import "ImageSearchRequest.h"
 #import "RequestUploadImage.h"
-#import "RequestGenerateHost.h"
+#import "GenerateHostRequest.h"
 
 @interface ImageSearchRequest()<
 RequestUploadImageDelegate,
-GenerateHostDelegate,
 TokopediaNetworkManagerDelegate
 >
 @end
 
 @implementation ImageSearchRequest{
     GeneratedHost *generatedHost;
-    RequestGenerateHost *requestGenerateHost;
     RequestUploadImage *requestUploadImage;
     NSString *uploadedImageURL;
     NSDictionary* imageQueryInfo;
@@ -29,10 +27,6 @@ TokopediaNetworkManagerDelegate
 -(instancetype)init{
     self = [super init];
     if(self){
-        requestGenerateHost = [RequestGenerateHost new];
-        [requestGenerateHost configureRestkitGenerateHost];
-        requestGenerateHost.delegate = self;
-        
         requestUploadImage = [RequestUploadImage new];
         requestUploadImage.delegate = self;
         
@@ -44,51 +38,52 @@ TokopediaNetworkManagerDelegate
     return self;
 }
 
+-(void)requestHost{
+    [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
+        generatedHost = host;
+        
+        UIImage *chosenImage = imageQueryInfo[UIImagePickerControllerEditedImage];
+        NSString *mediaType = imageQueryInfo[UIImagePickerControllerMediaType];
+        NSData *imageData = UIImagePNGRepresentation(chosenImage);
+        
+        NSDictionary *data = @{
+                               @"data_selected_photo" : @{
+                                       @"photo" : @{
+                                               @"cameraimagedata" : imageData,
+                                               @"cameraimagename" : @"image.png",
+                                               @"mediatype" : mediaType,
+                                               @"photo" : chosenImage,
+                                               @"source_type" : @"1",
+                                               },
+                                       },
+                               };
+        
+        [requestUploadImage requestActionUploadObject:data
+                                        generatedHost:generatedHost
+                                               action:@"upload_product_image"
+                                               newAdd:1
+                                            productID:@""
+                                            paymentID:@""
+                                            fieldName:@"fileToUpload"
+                                              success:^(id imageObject, UploadImage *image) {
+                                                  [self successUploadObject:imageObject withMappingResult:image];
+                                              } failure:^(id imageObject, NSError *error) {
+                                                  [self failedUploadObject:imageObject];
+                                              }];
+        
+    } onFailure:^{
+        [_delegate failToReceiveImageSearchResult:@"Gagal tersambung ke server. Mohon periksa koneksi internet Anda atau coba kembali"];
+
+    }];
+}
+
 #pragma mark - Public Method
 
 -(void)requestSearchbyImage:(NSDictionary *)imageInfo{
-    [requestGenerateHost requestGenerateHost];
+    [self requestHost];
     imageQueryInfo = imageInfo;
 }
 
-#pragma mark - RequestGenerateHost Delegate
--(void)successGenerateHost:(GenerateHost *)generateHost {
-    generatedHost = generateHost.result.generated_host;
-    
-    UIImage *chosenImage = imageQueryInfo[UIImagePickerControllerEditedImage];
-    NSString *mediaType = imageQueryInfo[UIImagePickerControllerMediaType];
-    NSData *imageData = UIImagePNGRepresentation(chosenImage);
-    
-    NSDictionary *data = @{
-                           @"data_selected_photo" : @{
-                                   @"photo" : @{
-                                           @"cameraimagedata" : imageData,
-                                           @"cameraimagename" : @"image.png",
-                                           @"mediatype" : mediaType,
-                                           @"photo" : chosenImage,
-                                           @"source_type" : @"1",
-                                           },
-                                   },
-                           };
-    
-    [requestUploadImage requestActionUploadObject:data
-                             generatedHost:generatedHost
-                                    action:@"upload_product_image"
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:imageObject withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:imageObject];
-                                   }];
-    
-}
-
--(void)failedGenerateHost:(NSArray *)errorMessages{
-    [_delegate failToReceiveImageSearchResult:@"Gagal tersambung ke server. Mohon periksa koneksi internet Anda atau coba kembali"];
-}
 
 #pragma mark - RequestUploadImage delegate
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage{

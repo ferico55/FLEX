@@ -10,38 +10,28 @@
 #import "GenerateHost.h"
 #import "NSString+TPBaseUrl.h"
 
-@implementation GenerateHostRequest {
-    TokopediaNetworkManager *_generateHostNetworkManager;
-}
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        _generateHostNetworkManager = [TokopediaNetworkManager new];
-    }
-    
-    return self;
-}
+@implementation GenerateHostRequest
 
 #pragma mark - Public Function
-- (void)requestGenerateHostWithNewAdd:(NSString *)newAdd
-                            onSuccess:(void (^)(GenerateHostResult *))successCallback
-                            onFailure:(void (^)(NSError *))errorCallback {
-    _generateHostNetworkManager.isParameterNotEncrypted = NO;
-    _generateHostNetworkManager.isUsingHmac = YES;
++ (void)fetchGenerateHostOnSuccess:(void (^)(GeneratedHost *))successCallback
+                            onFailure:(void (^)())errorCallback {
     
-    [_generateHostNetworkManager requestWithBaseUrl:[NSString v4Url]
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = NO;
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                                path:@"/v4/action/generate-host/generate_host.pl"
                                              method:RKRequestMethodGET
-                                          parameter:@{@"new_add" : newAdd}
+                                          parameter:@{@"new_add" : @"1"}
                                             mapping:[GenerateHost mapping]
                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                               NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                               GenerateHost *generateHost = [result objectForKey:@""];
-                                              successCallback(generateHost.data);
+                                              successCallback(generateHost.data.generated_host);
                                           }
                                           onFailure:^(NSError *errorResult) {
-                                              errorCallback(errorResult);
+                                              errorCallback();
                                           }];
 }
 

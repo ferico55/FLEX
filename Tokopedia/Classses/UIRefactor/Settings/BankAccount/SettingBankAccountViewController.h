@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BankAccountForm.h"
-
+@class BankAccountFormList;
 
 #pragma mark - Setting Bank Account Delegate
 @protocol SettingBankAccountViewControllerDelegate <NSObject>

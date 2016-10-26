@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [TPAnalytics trackScreenName:@"Close Shop Page"];
+    [AnalyticsManager trackScreenName:@"Close Shop Page"];
 }
 
 -(void)initializeView{

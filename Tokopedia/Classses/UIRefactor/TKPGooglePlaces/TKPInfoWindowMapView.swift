@@ -23,7 +23,7 @@ class TKPInfoWindowMapView: UIView {
     }
     
     func newView()-> AnyObject! {
-        let views:Array = NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: nil, options: nil)
+        let views:Array = NSBundle.mainBundle().loadNibNamed("TKPInfoWindowMapView", owner: nil, options: nil)!
         for view:AnyObject in views{
             return view;
         }

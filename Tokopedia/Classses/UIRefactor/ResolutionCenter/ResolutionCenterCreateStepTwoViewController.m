@@ -53,7 +53,7 @@ UIPickerViewDelegate
         [self copyProductToJSONObject];
     }
     
-    [TPAnalytics trackScreenName:@"Resolution Center Create Detail Problem Page"];
+    [AnalyticsManager trackScreenName:@"Resolution Center Create Detail Problem Page"];
 
 }
 
