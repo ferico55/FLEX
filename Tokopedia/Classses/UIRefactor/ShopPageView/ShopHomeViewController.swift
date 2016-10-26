@@ -14,6 +14,7 @@ import JLRoutes
 class ShopHomeViewController: UIViewController {
 
     var onEtalaseSelected: ((String, String) -> Void)?
+    var onTabSelected: ((ShopPageTab) -> Void)?
     
     private let router = JLRoutes()
     
@@ -37,6 +38,8 @@ class ShopHomeViewController: UIViewController {
         super.viewDidLoad()
         
         let header = ShopPageHeader(selectedTab: .Home)
+        header.onTabSelected = self.onTabSelected
+        
         self.addChildViewController(header)
         self.view.addSubview(header.view)
         header.didMoveToParentViewController(self)

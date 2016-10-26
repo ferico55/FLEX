@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopPageHeader">
             <connections>
+                <outlet property="_tabContainer" destination="x2A-bO-C2I" id="72p-t3-BXn"/>
                 <outlet property="constraintGoldBadgeWidth" destination="jMB-mG-Tvv" id="jWH-XU-qk9"/>
                 <outlet property="coverImageView" destination="Ds4-4z-ewW" id="y0p-sJ-c4j"/>
                 <outlet property="goldBadgeView" destination="O6E-Mc-A4O" id="rvB-63-SSG"/>
@@ -84,7 +85,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="e1t-I3-tHO"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pob-bm-tP2">
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pob-bm-tP2">
                                             <subviews>
                                                 <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zW-hE-lni" userLabel="Home Button">
                                                     <constraints>
@@ -123,7 +124,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="9zW-hE-lni" secondAttribute="trailing" id="zLL-CA-oZa"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-eI-HBf" userLabel="Product">
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-eI-HBf" userLabel="Product">
                                             <subviews>
                                                 <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLb-0H-vcy" userLabel="ProductButton">
                                                     <constraints>
@@ -162,7 +163,7 @@
                                                 <constraint firstItem="eer-od-Wff" firstAttribute="leading" secondItem="Dn7-eI-HBf" secondAttribute="leading" id="x4a-fD-X4Z"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeB-fD-ZxZ">
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeB-fD-ZxZ">
                                             <subviews>
                                                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZE-Jm-b9m" userLabel="TalkButton">
                                                     <constraints>
@@ -201,7 +202,7 @@
                                                 <constraint firstItem="PWd-0q-hUi" firstAttribute="trailing" secondItem="nZE-Jm-b9m" secondAttribute="trailing" id="x8v-y2-5UE"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ys4-Fh-0og">
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ys4-Fh-0og">
                                             <subviews>
                                                 <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJa-MD-gMb" userLabel="Review">
                                                     <constraints>
@@ -240,7 +241,7 @@
                                                 <constraint firstItem="uAC-iv-7S0" firstAttribute="leading" secondItem="Ys4-Fh-0og" secondAttribute="leading" id="gAL-jT-uhT"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJO-0u-9b8">
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJO-0u-9b8">
                                             <subviews>
                                                 <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hmC-ep-OyD" userLabel="NoteButton">
                                                     <constraints>
@@ -288,6 +289,7 @@
                                         <constraint firstAttribute="bottom" secondItem="Dn7-eI-HBf" secondAttribute="bottom" constant="-1" id="abe-yn-0ZA"/>
                                         <constraint firstItem="pob-bm-tP2" firstAttribute="bottom" secondItem="Dn7-eI-HBf" secondAttribute="bottom" id="c3Q-gE-A7t"/>
                                         <constraint firstItem="Dn7-eI-HBf" firstAttribute="width" secondItem="OJO-0u-9b8" secondAttribute="width" id="chd-hQ-Kjw"/>
+                                        <constraint firstAttribute="height" constant="40" id="d9A-1I-SuV"/>
                                         <constraint firstAttribute="trailing" secondItem="OJO-0u-9b8" secondAttribute="trailing" id="dYz-T7-Dgm"/>
                                         <constraint firstItem="Dn7-eI-HBf" firstAttribute="bottom" secondItem="jeB-fD-ZxZ" secondAttribute="bottom" id="pUo-Lv-gE3"/>
                                         <constraint firstItem="Dn7-eI-HBf" firstAttribute="top" secondItem="Qbl-bf-ass" secondAttribute="bottom" id="qO1-Vz-ebw"/>

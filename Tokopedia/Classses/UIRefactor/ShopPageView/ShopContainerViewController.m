@@ -181,6 +181,7 @@
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
         [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
     };
+    _shopHomeViewController.onTabSelected = onTabSelected;
     
     NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward

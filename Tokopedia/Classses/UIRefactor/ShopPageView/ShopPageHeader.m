@@ -20,8 +20,9 @@
 #import "ProductAddEditViewController.h"
 #import "string_more.h"
 #import "LoginViewController.h"
+#import "ShopTabView.h"
 
-
+@import Masonry;
 
 @interface ShopPageHeader () <UIScrollViewDelegate, UISearchBarDelegate, LoginViewDelegate> {
     ShopDescriptionView *_descriptionView;
@@ -38,6 +39,7 @@
     
     NSDictionary *_auth;
     ShopPageTab _selectedTab;
+    IBOutlet UIView *_tabContainer;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -175,6 +177,17 @@
     [_navigationTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_navigationTab.layer setShadowRadius:1];
     [_navigationTab.layer setShadowOpacity:0.3];
+    
+    ShopTabView *tabView = [[ShopTabView alloc] initWithTab:_selectedTab];
+    [_tabContainer addSubview:tabView];
+    
+    tabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
+    
+    [tabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_tabContainer);
+    }];
+    
+    tabView.onTabSelected = self.onTabSelected;
 }
 
 - (void)showPopUp:(id)sender {

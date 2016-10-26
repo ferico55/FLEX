@@ -39,6 +39,8 @@ typedef NS_ENUM(NSUInteger, ShopPageTab) {
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
 
+@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+
 - (instancetype)initWithSelectedTab:(ShopPageTab)tab;
 - (void)setHeaderShopPage:(Shop *)userInfo;
 @end
