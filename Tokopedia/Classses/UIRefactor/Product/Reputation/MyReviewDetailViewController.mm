@@ -289,6 +289,15 @@
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
+        NSString *type = @"";
+        if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            type = @"Smiley Buyer";
+        } else {
+            type = @"Smiley Seller";
+        }
+        
+        [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_CLICK label:type];
+        
         [_reviewRequest requestInsertReputationWithReputationID:_detailMyInboxReputation.reputation_id
                                                            role:_detailMyInboxReputation.role
                                                           score:_score
