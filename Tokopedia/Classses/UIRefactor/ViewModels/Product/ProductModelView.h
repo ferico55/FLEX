@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Errors.h"
 #import "ProductBadge.h"
+#import "ProductLabel.h"
 
 @interface ProductModelView : NSObject
 
