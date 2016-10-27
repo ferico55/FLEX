@@ -320,9 +320,6 @@
 		453FCF5F1DB4B93000125AD5 /* NotificationPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0A01DB4B92200125AD5 /* NotificationPurchase.m */; };
 		453FCF601DB4B93000125AD5 /* NotificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0A21DB4B92200125AD5 /* NotificationResult.m */; };
 		453FCF611DB4B93000125AD5 /* NotificationSales.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0A41DB4B92200125AD5 /* NotificationSales.m */; };
-		453FCF621DB4B93000125AD5 /* NotifyAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0A81DB4B92200125AD5 /* NotifyAttributes.m */; };
-		453FCF631DB4B93000125AD5 /* NotifyData.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0AA1DB4B92200125AD5 /* NotifyData.m */; };
-		453FCF641DB4B93000125AD5 /* NotifyLBLM.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0AC1DB4B92200125AD5 /* NotifyLBLM.m */; };
 		453FCF651DB4B93000125AD5 /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0AF1DB4B92200125AD5 /* Paging.m */; };
 		453FCF661DB4B93000125AD5 /* DetailPriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0B21DB4B92200125AD5 /* DetailPriceAlert.m */; };
 		453FCF671DB4B93000125AD5 /* PriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC0B41DB4B92200125AD5 /* PriceAlert.m */; };
@@ -1024,7 +1021,6 @@
 		453FD21F1DB4B93500125AD5 /* GeneralTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FC5A71DB4B92400125AD5 /* GeneralTextFieldCell.xib */; };
 		453FD2201DB4B93500125AD5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC5AA1DB4B92400125AD5 /* ReportViewController.m */; };
 		453FD2211DB4B93500125AD5 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FC5AB1DB4B92400125AD5 /* ReportViewController.xib */; };
-		453FD2221DB4B93500125AD5 /* RequestNotifyLBLM.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC5AE1DB4B92400125AD5 /* RequestNotifyLBLM.m */; };
 		453FD2231DB4B93500125AD5 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC5B11DB4B92400125AD5 /* GeneralTableViewController.m */; };
 		453FD2241DB4B93500125AD5 /* GeneralTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FC5B21DB4B92400125AD5 /* GeneralTableViewController.xib */; };
 		453FD2251DB4B93500125AD5 /* ResizeableImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453FC5B41DB4B92400125AD5 /* ResizeableImageCell.m */; };
@@ -3294,12 +3290,6 @@
 		453FC0A31DB4B92200125AD5 /* NotificationSales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSales.h; sourceTree = "<group>"; };
 		453FC0A41DB4B92200125AD5 /* NotificationSales.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSales.m; sourceTree = "<group>"; };
 		453FC0A51DB4B92200125AD5 /* string_notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_notification.h; sourceTree = "<group>"; };
-		453FC0A71DB4B92200125AD5 /* NotifyAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyAttributes.h; sourceTree = "<group>"; };
-		453FC0A81DB4B92200125AD5 /* NotifyAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyAttributes.m; sourceTree = "<group>"; };
-		453FC0A91DB4B92200125AD5 /* NotifyData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyData.h; sourceTree = "<group>"; };
-		453FC0AA1DB4B92200125AD5 /* NotifyData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyData.m; sourceTree = "<group>"; };
-		453FC0AB1DB4B92200125AD5 /* NotifyLBLM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyLBLM.h; sourceTree = "<group>"; };
-		453FC0AC1DB4B92200125AD5 /* NotifyLBLM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyLBLM.m; sourceTree = "<group>"; };
 		453FC0AE1DB4B92200125AD5 /* Paging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paging.h; sourceTree = "<group>"; };
 		453FC0AF1DB4B92200125AD5 /* Paging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paging.m; sourceTree = "<group>"; };
 		453FC0B11DB4B92200125AD5 /* DetailPriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlert.h; sourceTree = "<group>"; };
@@ -4446,8 +4436,6 @@
 		453FC5A91DB4B92400125AD5 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		453FC5AA1DB4B92400125AD5 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		453FC5AB1DB4B92400125AD5 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
-		453FC5AD1DB4B92400125AD5 /* RequestNotifyLBLM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestNotifyLBLM.h; sourceTree = "<group>"; };
-		453FC5AE1DB4B92400125AD5 /* RequestNotifyLBLM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestNotifyLBLM.m; sourceTree = "<group>"; };
 		453FC5B01DB4B92400125AD5 /* GeneralTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTableViewController.h; sourceTree = "<group>"; };
 		453FC5B11DB4B92400125AD5 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		453FC5B21DB4B92400125AD5 /* GeneralTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTableViewController.xib; sourceTree = "<group>"; };
@@ -6835,7 +6823,6 @@
 				453FC0761DB4B92100125AD5 /* MyReviewReputation */,
 				453FC0971DB4B92200125AD5 /* Note */,
 				453FC09A1DB4B92200125AD5 /* Notification */,
-				453FC0A61DB4B92200125AD5 /* NotifyLBLM */,
 				453FC0AD1DB4B92200125AD5 /* Paging */,
 				453FC0B01DB4B92200125AD5 /* PriceAlert */,
 				453FC0B71DB4B92200125AD5 /* ProductEdit.swift */,
@@ -7697,19 +7684,6 @@
 				453FC0A51DB4B92200125AD5 /* string_notification.h */,
 			);
 			path = Notification;
-			sourceTree = "<group>";
-		};
-		453FC0A61DB4B92200125AD5 /* NotifyLBLM */ = {
-			isa = PBXGroup;
-			children = (
-				453FC0A71DB4B92200125AD5 /* NotifyAttributes.h */,
-				453FC0A81DB4B92200125AD5 /* NotifyAttributes.m */,
-				453FC0A91DB4B92200125AD5 /* NotifyData.h */,
-				453FC0AA1DB4B92200125AD5 /* NotifyData.m */,
-				453FC0AB1DB4B92200125AD5 /* NotifyLBLM.h */,
-				453FC0AC1DB4B92200125AD5 /* NotifyLBLM.m */,
-			);
-			path = NotifyLBLM;
 			sourceTree = "<group>";
 		};
 		453FC0AD1DB4B92200125AD5 /* Paging */ = {
@@ -9936,8 +9910,6 @@
 		453FC5AC1DB4B92400125AD5 /* GeneralRequest */ = {
 			isa = PBXGroup;
 			children = (
-				453FC5AD1DB4B92400125AD5 /* RequestNotifyLBLM.h */,
-				453FC5AE1DB4B92400125AD5 /* RequestNotifyLBLM.m */,
 			);
 			path = GeneralRequest;
 			sourceTree = "<group>";
@@ -14718,7 +14690,6 @@
 				453FD0BB1DB4B93200125AD5 /* CompositeDisposable.swift in Sources */,
 				453FCEA51DB4B92F00125AD5 /* TicketCategory.m in Sources */,
 				453FD3CF1DB4B93900125AD5 /* ImagePickerCategoryController.m in Sources */,
-				453FD2221DB4B93500125AD5 /* RequestNotifyLBLM.m in Sources */,
 				453FD1131DB4B93300125AD5 /* Observable+Single.swift in Sources */,
 				453FD13B1DB4B93300125AD5 /* UIImageView%2BAFNetworking.swift in Sources */,
 				453FD35F1DB4B93800125AD5 /* PulsaViewController.swift in Sources */,
@@ -15192,7 +15163,6 @@
 				453FD0791DB4B93200125AD5 /* UploadDataImage.m in Sources */,
 				453FD38E1DB4B93900125AD5 /* ProductQuantityCell.m in Sources */,
 				453FCF1C1DB4B93000125AD5 /* ResolutionConversation.m in Sources */,
-				453FCF641DB4B93000125AD5 /* NotifyLBLM.m in Sources */,
 				453FCE9D1DB4B92F00125AD5 /* CategoryResult.swift in Sources */,
 				453FCFDA1DB4B93100125AD5 /* AddShop.m in Sources */,
 				453FD4CE1DB4B93D00125AD5 /* TxOrderConfirmedButtonCell.m in Sources */,
@@ -15671,7 +15641,6 @@
 				453FCE981DB4B92F00125AD5 /* CategoryData.swift in Sources */,
 				453FD3DC1DB4B93A00125AD5 /* ImageSearchRequest.m in Sources */,
 				453FD2081DB4B93500125AD5 /* FiltersTableViewController.swift in Sources */,
-				453FCF621DB4B93000125AD5 /* NotifyAttributes.m in Sources */,
 				453FCFB51DB4B93100125AD5 /* OrderTransaction.m in Sources */,
 				453FD14E1DB4B93300125AD5 /* VerifiedStatusMSISDN.m in Sources */,
 				453FD0661DB4B93200125AD5 /* TxOrderConfirmPaymentForm.m in Sources */,
@@ -15824,7 +15793,6 @@
 				453FCE541DB4B92F00125AD5 /* ImageDownloader.m in Sources */,
 				453FD4CA1DB4B93D00125AD5 /* TxOrderConfirmedBankCell.m in Sources */,
 				453FCEDD1DB4B92F00125AD5 /* FavoritedShopList.m in Sources */,
-				453FCF631DB4B93000125AD5 /* NotifyData.m in Sources */,
 				453FD11C1DB4B93300125AD5 /* Platform.Linux.swift in Sources */,
 				453FD3BD1DB4B93900125AD5 /* FilterShipmentConfirmationViewController.m in Sources */,
 				453FCF7A1DB4B93000125AD5 /* ProfileEdit.m in Sources */,
