@@ -54,11 +54,16 @@
                                         <outlet property="delegate" destination="-1" id="Xw1-hy-OE6"/>
                                     </connections>
                                 </scrollView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JiC-f4-WZ6">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JiC-f4-WZ6">
                                     <constraints>
                                         <constraint firstAttribute="width" constant="90" id="PSX-uD-bnT"/>
                                         <constraint firstAttribute="height" constant="90" id="qkP-Ws-srv"/>
                                     </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="45"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                 </imageView>
                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="O6E-Mc-A4O">
                                     <constraints>

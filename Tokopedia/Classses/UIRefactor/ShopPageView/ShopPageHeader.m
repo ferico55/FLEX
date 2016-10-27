@@ -137,9 +137,6 @@
 
 - (void)viewDidLoad
 {
-    [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
-    [_shopImageView.layer setMasksToBounds:YES];
-    
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
     [self initButton];
@@ -275,26 +272,9 @@
         _luckyBadgeView.hidden = NO;
 #pragma clang diagnostic pop
     } failure:nil];
-
     
-    
-    //set shop image
-    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_avatarIndicator startAnimating];
-    [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        _shopImageView.image = image;
-        _shopImageView.hidden = NO;
-        
-        _shopImageView.layer.cornerRadius = _shopImageView.frame.size.height /2;
-        _shopImageView.layer.masksToBounds = YES;
-        _shopImageView.layer.borderWidth = 0;
-#pragma clang diagnostic pop
-    } failure:nil];
+    [_shopImageView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
+                   placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
     
 }
 
