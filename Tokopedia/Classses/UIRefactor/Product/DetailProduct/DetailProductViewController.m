@@ -9,12 +9,10 @@
 #define CTagTokopediaNetworkManager 2
 #define CTagFavorite 4
 #define CTagNoteCanReture 7
-#define CTagPriceAlert 8
 
 #import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
-#import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -80,8 +78,6 @@
 
 #import "OtherProductDataSource.h"
 
-#import "PriceAlertRequest.h"
-
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -128,7 +124,7 @@ TTTAttributedLabelDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
-    BOOL isDoingWishList, isDoingFavorite, redirectToPriceAlert;
+    BOOL isDoingWishList, isDoingFavorite;
     
     NSInteger _requestcount;
     
@@ -156,9 +152,6 @@ TTTAttributedLabelDelegate
     
     __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
-    
-    TokopediaNetworkManager *tokopediaNetworkManagerPriceAlert;
-    RKObjectManager *objectPriceAlertManager;
     
     __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
@@ -251,8 +244,6 @@ TTTAttributedLabelDelegate
     NSArray *_constraint;
     EtalaseList *selectedEtalase;
     
-    PriceAlertRequest *_request;
-    
     NSString *afterLoginRedirectTo;
 }
 
@@ -296,18 +287,12 @@ TTTAttributedLabelDelegate
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
-    tokopediaNetworkManagerPriceAlert = [TokopediaNetworkManager new];
-    tokopediaNetworkManagerPriceAlert.tagRequest = CTagPriceAlert;
-    tokopediaNetworkManagerPriceAlert.delegate = self;
-    
     tokopediaNetworkManagerFavorite = [TokopediaNetworkManager new];
     tokopediaNetworkManagerFavorite.delegate = self;
     tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
     
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
-    
-    _request = [PriceAlertRequest new];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -1156,10 +1141,6 @@ TTTAttributedLabelDelegate
                  kTKPDNOTES_APINOTEIDKEY:_product.data.shop_info.shop_has_terms?:@"0",
                  NOTES_TERMS_FLAG_KEY:@(1),
                  kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id?:@"0"};
-    else if(tag == CTagPriceAlert) {
-        return @{kTKPDDETAIL_APIPRODUCTIDKEY:_product.data.info.product_id,
-                 kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_PRODUCT_PRICE_ALERT};
-    }
     
     return nil;
 }
@@ -1168,8 +1149,6 @@ TTTAttributedLabelDelegate
     if(tag == CTagFavorite)
         return RKRequestMethodPOST;
     else if(tag == CTagNoteCanReture)
-        return RKRequestMethodPOST;
-    else if(tag == CTagPriceAlert)
         return RKRequestMethodPOST;
     
     return RKRequestMethodPOST;;
@@ -1182,9 +1161,7 @@ TTTAttributedLabelDelegate
         return @"action/favorite-shop.pl";
     else if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
-    else if(tag == CTagPriceAlert)
-        return [NSString stringWithFormat:@"action/%@", CPriceAlertPL];
-    
+
     return nil;
 }
 
@@ -1253,29 +1230,6 @@ TTTAttributedLabelDelegate
         
         return _objectNoteCanReture;
     }
-    else if(tag == CTagPriceAlert) {
-        objectPriceAlertManager = [RKObjectManager sharedClient];
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        [objectPriceAlertManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return objectPriceAlertManager;
-    }
-    
     return nil;
 }
 
@@ -1299,11 +1253,7 @@ TTTAttributedLabelDelegate
         Notes *notes = stat;
         return notes.status;
     }
-    else if(tag == CTagPriceAlert) {
-        GeneralAction *generalAction = stat;
-        return generalAction.status;
-    }
-    
+
     return nil;
 }
 
@@ -1354,10 +1304,6 @@ TTTAttributedLabelDelegate
                 isDoingFavorite = !isDoingFavorite;
                 [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
-            else if(redirectToPriceAlert) {
-                redirectToPriceAlert = !redirectToPriceAlert;
-                [btnPriceAlert sendActionsForControlEvents:UIControlEventTouchUpInside];
-            }
         }
     }
     else if(tag == CTagFavorite)
@@ -1386,18 +1332,6 @@ TTTAttributedLabelDelegate
         Notes *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
     }
-    else if(tag == CTagPriceAlert) {
-        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
-        GeneralAction *generalAction = [result objectForKey:@""];
-        if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
-            [stickyAlertView show];
-            
-            _product.data.info.product_price_alert = @"0";
-            [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
-        }
-        [self setRequestingAction:btnPriceAlert isLoading:NO];
-    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.data];
 }
@@ -1411,9 +1345,6 @@ TTTAttributedLabelDelegate
     else if(tag == CTagNoteCanReture) {
         
     }
-    else if(tag == CTagPriceAlert) {
-        [self setRequestingAction:btnPriceAlert isLoading:NO];
-    }
 }
 
 - (void)actionBeforeRequest:(int)tag
@@ -1426,9 +1357,6 @@ TTTAttributedLabelDelegate
     }
     else if(tag == CTagFavorite)
     {}
-    else if(tag == CTagPriceAlert) {
-        
-    }
 }
 
 
@@ -1446,8 +1374,6 @@ TTTAttributedLabelDelegate
         actFav = nil;
         _favButton.hidden = NO;
     }
-    else if(tag == CTagPriceAlert)
-    {}
 }
 
 
@@ -1669,7 +1595,6 @@ TTTAttributedLabelDelegate
                 }
                 
                 [btnWishList removeFromSuperview];
-                [btnPriceAlert removeFromSuperview];
                 
                 [btnShare removeConstraint:_btnShareTrailingConstraint];
                 [btnShare removeConstraint:_btnShareLeadingConstraint];
@@ -1689,7 +1614,7 @@ TTTAttributedLabelDelegate
                 
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
-                btnWishList.hidden = btnPriceAlert.hidden = NO;
+                btnWishList.hidden = NO;
                 
                 //Set background wishlist
                 if([_product.data.info.product_already_wishlist isEqualToString:@"1"])
@@ -1703,9 +1628,6 @@ TTTAttributedLabelDelegate
                     btnWishList.tag = 1;
                 }
                 
-                
-                //Set background priceAlert
-                [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
             }
             
             if(_product.isDummyProduct) {
@@ -1900,20 +1822,6 @@ TTTAttributedLabelDelegate
     [self initPopUp:_product.data.shop_info.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
 }
 
-- (void)setBackgroundPriceAlert:(BOOL)isActive
-{
-    if(isActive) {
-        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_active.png"] forState:UIControlStateNormal];
-        btnPriceAlert.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
-        [btnPriceAlert setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
-    else {
-        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_nonactive.png"] forState:UIControlStateNormal];
-        btnPriceAlert.backgroundColor = [UIColor whiteColor];
-        [btnPriceAlert setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    }
-}
-
 
 - (void)setRequestingAction:(UIButton *)tempBtn isLoading:(BOOL)isLoading
 {
@@ -2064,49 +1972,6 @@ TTTAttributedLabelDelegate
         [self setUnWishList];
 }
 
-- (IBAction)actionPriceAlert:(id)sender
-{
-    if(_auth) {
-        if(btnPriceAlert.backgroundColor == [UIColor whiteColor]) { //Not price alert yet
-            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-            priceAlertViewController.productDetail = _product.data.info;
-            [self.navigationController pushViewController:priceAlertViewController animated:YES];
-        }
-        else {
-            [self setRequestingAction:btnPriceAlert isLoading:YES];
-//            [tokopediaNetworkManagerPriceAlert doRequest];
-            [_request requestRemoveProductPriceAlertWithProductID:_product.data.info.product_id
-                                                        onSuccess:^(GeneralAction *obj) {
-                                                            if([obj.data.is_success isEqualToString:@"1"]) {
-                                                                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
-                                                                [stickyAlertView show];
-                                                                
-                                                                _product.data.info.product_price_alert = @"0";
-                                                                [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
-                                                            }
-                                                            [self setRequestingAction:btnPriceAlert isLoading:NO];
-                                                        }
-                                                        onFailure:^(NSError *error) {
-                                                            [self setRequestingAction:btnPriceAlert isLoading:NO];
-                                                        }];
-        }
-    } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        isNeedLogin = YES;
-        redirectToPriceAlert = YES;
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    }
-}
 - (IBAction)actionReport:(UIButton *)sender {
     if ([_userManager isLogin]) {
         [AnalyticsManager trackEventName:@"clickReport"
