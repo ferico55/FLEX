@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 
-@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property (nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
 @end

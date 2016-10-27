@@ -167,6 +167,7 @@ NoResultDelegate>
     _shopPageHeader.data = _data;
     _shopPageHeader.delegate = self;
     _shopPageHeader.onTabSelected = self.onTabSelected;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
     _header = _shopPageHeader.view;
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
@@ -194,7 +195,7 @@ NoResultDelegate>
     [self requestTalk];
     
     ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabDiscussion];
-    shopTabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
+    shopTabView.showHomeTab = self.showHomeTab;
     [self.view addSubview:shopTabView];
     
     shopTabView.onTabSelected = self.onTabSelected;

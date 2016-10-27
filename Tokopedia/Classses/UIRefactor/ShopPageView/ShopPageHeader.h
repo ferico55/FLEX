@@ -40,6 +40,7 @@ typedef NS_ENUM(NSUInteger, ShopPageTab) {
 @property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
 
 @property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
 
 - (instancetype)initWithSelectedTab:(ShopPageTab)tab;
 - (void)setHeaderShopPage:(Shop *)userInfo;

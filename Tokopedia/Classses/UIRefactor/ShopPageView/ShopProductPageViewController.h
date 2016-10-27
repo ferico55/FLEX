@@ -21,6 +21,7 @@
 @property (nonatomic, strong) EtalaseList *initialEtalase;
 
 @property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
 
 - (void)showProductsWithEtalaseId:(NSString *)etalaseId;
 

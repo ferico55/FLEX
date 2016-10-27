@@ -231,6 +231,8 @@ EtalaseViewControllerDelegate
     _shopPageHeader.delegate = self;
     _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
+    
     _navigationBarIsAnimating = NO;
     
     _header = _shopPageHeader.view;
@@ -327,9 +329,8 @@ EtalaseViewControllerDelegate
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
     ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
-    shopTabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
+    shopTabView.showHomeTab = self.showHomeTab;
     [self.view addSubview:shopTabView];
-    
     
     shopTabView.onTabSelected = self.onTabSelected;
     

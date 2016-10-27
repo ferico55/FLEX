@@ -17,6 +17,7 @@ class ShopHomeViewController: UIViewController {
     var onTabSelected: ((ShopPageTab) -> Void)?
     var data: [NSObject: AnyObject]?
     var shopPageHeader: ShopPageHeader?
+    var showHomeTab: Bool = false
     
     private let webView = WKWebView()
     
@@ -61,6 +62,7 @@ class ShopHomeViewController: UIViewController {
         let header = ShopPageHeader(selectedTab: .Home)
         header.onTabSelected = self.onTabSelected
         header.data = data
+        header.showHomeTab = self.showHomeTab
         
         header.view.frame.size.height = headerHeight
         header.view.frame.size.width = self.view.bounds.size.width

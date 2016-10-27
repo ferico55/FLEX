@@ -163,30 +163,33 @@
     _pageController.dataSource = self;
     _pageController.delegate = self;
     
-    _shopProductViewController = [ShopProductPageViewController new];
-    _shopProductViewController.data = _data;
-    if(_initialEtalase){
-        _shopProductViewController.initialEtalase = _initialEtalase;
-    }
-    
     void (^onTabSelected)(ShopPageTab) = ^(ShopPageTab tab) {
         [weakSelf navigateToTab:tab];
     };
     
     
+    _shopProductViewController = [ShopProductPageViewController new];
+    _shopProductViewController.data = _data;
+    if(_initialEtalase){
+        _shopProductViewController.initialEtalase = _initialEtalase;
+    }
     _shopProductViewController.onTabSelected = onTabSelected;
+    _shopProductViewController.showHomeTab = _shop.result.info.official;
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
     _shopTalkViewController.onTabSelected = onTabSelected;
+    _shopTalkViewController.showHomeTab = _shop.result.info.official;
     
     _shopReviewViewController = [ShopReviewPageViewController new];
     _shopReviewViewController.data = _data;
     _shopReviewViewController.onTabSelected = onTabSelected;
+    _shopReviewViewController.showHomeTab = _shop.result.info.official;
     
     _shopNotesViewController = [ShopNotesPageViewController new];
     _shopNotesViewController.data = _data;
     _shopNotesViewController.onTabSelected = onTabSelected;
+    _shopNotesViewController.showHomeTab = _shop.result.info.official;
     
     _shopHomeViewController = [ShopHomeViewController new];
     _shopHomeViewController.data = _data;
@@ -194,6 +197,7 @@
         [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
     };
     _shopHomeViewController.onTabSelected = onTabSelected;
+    _shopHomeViewController.showHomeTab = _shop.result.info.official;
     
     
     UIViewController *firstViewController = _shop.result.info.official? _shopHomeViewController: _shopProductViewController;

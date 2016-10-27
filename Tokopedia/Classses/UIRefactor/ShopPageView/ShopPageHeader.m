@@ -169,7 +169,7 @@
     ShopTabView *tabView = [[ShopTabView alloc] initWithTab:_selectedTab];
     [_tabContainer addSubview:tabView];
     
-    tabView.showHomeTab = FBTweakValue(@"Shop", @"Tab", @"Show home", YES);
+    tabView.showHomeTab = self.showHomeTab;
     
     [tabView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_tabContainer);
