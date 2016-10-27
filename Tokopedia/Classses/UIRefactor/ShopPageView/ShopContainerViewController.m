@@ -195,7 +195,9 @@
     };
     _shopHomeViewController.onTabSelected = onTabSelected;
     
-    NSArray *viewControllers = [NSArray arrayWithObject:_shopHomeViewController];
+    
+    UIViewController *firstViewController = _shop.result.info.official? _shopHomeViewController: _shopProductViewController;
+    NSArray *viewControllers = [NSArray arrayWithObject:firstViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
