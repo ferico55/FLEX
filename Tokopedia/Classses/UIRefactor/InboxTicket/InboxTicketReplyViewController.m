@@ -216,7 +216,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
 -(NSArray<DKAsset*>*)getSelectedAssets{
     NSMutableArray *assets = [NSMutableArray new];
     for (AttachedImageObject *image in _selectedImages) {
-        [assets addObject:image];
+        [assets addObject:image.asset];
     }
     
     return assets;
