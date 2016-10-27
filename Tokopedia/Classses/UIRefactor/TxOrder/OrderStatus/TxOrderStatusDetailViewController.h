@@ -18,6 +18,7 @@
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath;
 -(void)complainOrder:(TxOrderStatusList *)order;
 - (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
+-(void)complainAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -25,7 +26,8 @@
 
 @property (nonatomic, weak) IBOutlet id<TxOrderStatusDetailViewControllerDelegate> delegate;
 @property (nonatomic , strong) TxOrderStatusList *order;
-
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *deliveredButton;
+@property (strong, nonatomic) IBOutlet UIButton *complainButton;
 @property (nonatomic) BOOL isComplain;
 @property (nonatomic) BOOL reOrder;
 @property (nonatomic) NSInteger buttonHeaderCount;

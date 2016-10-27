@@ -29,7 +29,6 @@
 #import "ResolutionCenterCreateViewController.h"
 
 #define TAG_ALERT_REORDER 10
-#define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
 
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
@@ -211,7 +210,7 @@
         else if (button.tag == 11)
         {
             //Complain
-            [self showAlertViewOpenComplain];
+            [_delegate complainAtIndexPath:_indexPath];
         }
         else if (button.tag == 12)
         {
@@ -247,12 +246,6 @@
     [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
 }
 
--(void)showAlertViewOpenComplain
-{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Buka Komplain" message:@"Apakah Anda sudah menerima barang yang dipesan?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Tidak Terima", @"Terima", @"Batal", nil];
-    alert.tag = TAG_ALERT_COMPLAIN;
-    [alert show];
-}
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

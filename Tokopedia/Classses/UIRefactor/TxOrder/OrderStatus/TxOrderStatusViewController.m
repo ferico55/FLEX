@@ -88,6 +88,7 @@
 @property (strong, nonatomic) IBOutlet UIView *twoButtonsView;
 @property (strong, nonatomic) IBOutlet UIView *oneButtonView;
 @property (strong, nonatomic) IBOutlet UIView *oneButtonReOrderView;
+@property (strong, nonatomic) TxOrderStatusDetailViewController *txOrderStatusDetailVc;
 
 @end
 
@@ -596,6 +597,7 @@
 }
 
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
+     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         if (data.ld.url) {
@@ -604,6 +606,7 @@
             _requestLD.delegate = self;
             [_requestLD doRequestMemberExtendURLString:data.ld.url];
         } else {
+            [weakSelf disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
             UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertSuccess show];
             alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
@@ -611,11 +614,12 @@
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
-        [self failedConfirmDelivery:order];
+        [weakSelf failedConfirmDelivery:order];
     }];
 }
 
 -(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
+    __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         if (data.ld.url) {
@@ -624,6 +628,7 @@
             _requestLD.delegate = self;
             [_requestLD doRequestMemberExtendURLString:data.ld.url];
         } else {
+            [weakSelf disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
             UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertSuccess show];
             alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
@@ -631,7 +636,7 @@
         }
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
-        [self failedConfirmDelivery:order];
+        [weakSelf failedConfirmDelivery:order];
     }];
 }
 
@@ -772,6 +777,7 @@
 }
 
 -(void)didFinishCreateComplain{
+    [self disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
     [self refreshRequest];
 }
 
@@ -917,9 +923,9 @@
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath
 {
-    TxOrderStatusDetailViewController *vc = [TxOrderStatusDetailViewController new];
+    _txOrderStatusDetailVc = [TxOrderStatusDetailViewController new];
     TxOrderStatusList *order = _list[indexPath.row];
-    vc.order = order;
+    _txOrderStatusDetailVc.order = order;
     int buttonCount = 0;
     if ([self isShowButtonConfirmOrder:order]) {
         buttonCount +=1;
@@ -928,15 +934,15 @@
         buttonCount +=1;
     }
     
-    vc.buttonHeaderCount = buttonCount;
+    _txOrderStatusDetailVc.buttonHeaderCount = buttonCount;
     
     if ([self isShowButtonSeeComplainOrder:order])
-        vc.isComplain = YES;
+        _txOrderStatusDetailVc.isComplain = YES;
     else if ([self isShowButtonReorder:order])
-        vc.reOrder = YES;
-    vc.indexPath = indexPath;
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+        _txOrderStatusDetailVc.reOrder = YES;
+    _txOrderStatusDetailVc.indexPath = indexPath;
+    _txOrderStatusDetailVc.delegate = self;
+    [self.navigationController pushViewController:_txOrderStatusDetailVc animated:YES];
 }
 
 -(void)shouldTrackOrder:(TxOrderStatusList*)order
@@ -1031,6 +1037,20 @@
     }
     
     return YES;
+}
+
+- (void) disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail {
+    if (_txOrderStatusDetailVc != nil){
+        for (UIButton* deliveredButton in _txOrderStatusDetailVc.deliveredButton) {
+            [deliveredButton bk_removeEventHandlersForControlEvents:UIControlEventAllEvents];
+            deliveredButton.hidden = YES;
+        }
+        
+        if (_txOrderStatusDetailVc.complainButton != nil) {
+            [_txOrderStatusDetailVc.complainButton bk_removeEventHandlersForControlEvents:UIControlEventAllEvents];
+            _txOrderStatusDetailVc.complainButton.hidden = YES;
+        }
+    }
 }
 
 @end
