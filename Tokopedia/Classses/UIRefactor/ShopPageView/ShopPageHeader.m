@@ -226,11 +226,6 @@
     [_statView.openStatusLabel setHidden:YES];
     [_statView.statLabel setHidden:YES];
     
-    // Set cover image
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
     if ([[_shop.result.is_open stringValue] isEqualToString:@"1"]) {
         _shopClosedView.hidden = YES;
     } else if ([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
@@ -248,30 +243,12 @@
     }
     
     if(_shop.result.info.shop_is_gold == 1) {
-        [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            _coverImageView.contentMode = UIViewContentModeScaleToFill;
-            _coverImageView.image = image;
-            _coverImageView.hidden = NO;
-#pragma clang diagnostic pop
-        } failure:nil];
+        [_coverImageView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]];
     } else {
         [_coverImageView setBackgroundColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     }
     
-    NSURLRequest *requestBadge =  [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_lucky?:@""]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_luckyBadgeView setImageWithURLRequest:requestBadge placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        _luckyBadgeView.contentMode = UIViewContentModeScaleToFill;
-        _luckyBadgeView.image = image;
-        _luckyBadgeView.hidden = NO;
-#pragma clang diagnostic pop
-    } failure:nil];
+    [_luckyBadgeView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_lucky?:@""]];
     
     [_shopImageView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
                    placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
