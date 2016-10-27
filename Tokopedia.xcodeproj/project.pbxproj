@@ -2642,6 +2642,7 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AC0D6DC1DB4D5FE00236190 /* TPRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0D6DB1DB4D5FE00236190 /* TPRoutes.swift */; };
+		7AC9A24B1DC1D615006DDF73 /* MyWishlistLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9A24A1DC1D615006DDF73 /* MyWishlistLabel.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -6496,6 +6497,7 @@
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7AC0D6DB1DB4D5FE00236190 /* TPRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPRoutes.swift; sourceTree = "<group>"; };
+		7AC9A24A1DC1D615006DDF73 /* MyWishlistLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWishlistLabel.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -10061,6 +10063,7 @@
 				453FC5E41DB4B92400125AD5 /* MyWishlistViewController.m */,
 				453FC5E51DB4B92400125AD5 /* MyWishlistViewController.xib */,
 				453FC5E61DB4B92400125AD5 /* MyWishlistWholesalePrice.swift */,
+				7AC9A24A1DC1D615006DDF73 /* MyWishlistLabel.swift */,
 			);
 			path = MyWishlist;
 			sourceTree = "<group>";
@@ -14669,6 +14672,7 @@
 				453FD0E81DB4B93200125AD5 /* Never.swift in Sources */,
 				453FD4181DB4B93A00125AD5 /* OpenShopSuccessViewController.swift in Sources */,
 				453FD36F1DB4B93800125AD5 /* ResolutionCenterCreateStepOneCell.m in Sources */,
+				7AC9A24B1DC1D615006DDF73 /* MyWishlistLabel.swift in Sources */,
 				453FD3EF1DB4B93A00125AD5 /* SettingAddressExpandedCell.m in Sources */,
 				453FD1031DB4B93300125AD5 /* Timeout.swift in Sources */,
 				453FD34D1DB4B93800125AD5 /* PulsaKeyboardManager.swift in Sources */,

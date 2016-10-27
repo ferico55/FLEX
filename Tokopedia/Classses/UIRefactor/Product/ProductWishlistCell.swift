@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OAStackView
 
 
 class ProductWishlistCell : UICollectionViewCell {
@@ -17,34 +18,24 @@ class ProductWishlistCell : UICollectionViewCell {
     @IBOutlet weak var productShopName: UILabel!
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var productName: UILabel!
-    @IBOutlet weak var preorderLabel: UILabel!
-    @IBOutlet weak var wholesaleLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var badgesView: TKPDStackView!
+    @IBOutlet weak var labelsView: OAStackView!
     
     var imageDownloader = QueueImageDownloader()
     
     
     @IBOutlet weak var preorderPositionConstraint: NSLayoutConstraint!
     
-
-//    @IBOutlet weak var goldBadgeHeightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var luckyBadgeTopConstraint: NSLayoutConstraint!
     var tappedBuyButton: ((ProductWishlistCell) -> Void)?
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(viewModel : ProductModelView) {
         let url = NSURL(string: viewModel.productThumbUrl)!
-        let luckyBadgeUrl = NSURL(string: viewModel.luckyMerchantImageURL)!
         productName.text = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop
         
-        preorderLabel.layer.masksToBounds = true
-        wholesaleLabel.layer.masksToBounds = true
-        preorderPositionConstraint.constant = !viewModel.isWholesale ? -42 : 3;
-        preorderLabel.hidden = viewModel.isProductPreorder ? false : true
-        wholesaleLabel.hidden = viewModel.isWholesale ? false : true
         locationLabel.text = viewModel.shopLocation
         
         productImage.setImageWithUrl(url, placeHolderImage: UIImage(named: "grey-bg.png"))
@@ -67,7 +58,11 @@ class ProductWishlistCell : UICollectionViewCell {
             productBuyButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             productBuyButton.userInteractionEnabled = false
         }
+        setBadges(viewModel.badges)
         
+    }
+    
+    internal func setBadges(badges: [AnyObject]) {
         //all of this is just for badges, dynamic badges
         self.badgesView .removeAllPushedView()
         let badgeSize = CGSizeMake(self.badgesView.frame.size.height, self.badgesView.frame.size.height);
@@ -75,7 +70,7 @@ class ProductWishlistCell : UICollectionViewCell {
         
         
         let urls = NSMutableArray()
-        viewModel.badges.enumerate().map { index, badge in
+        badges.enumerate().map { index, badge in
             urls.addObject(badge.image_url)
         }
         

@@ -202,8 +202,6 @@ typedef enum TagRequest {
     
     ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
     
-    
-    
     MyWishlistData *list = ((MyWishlistData *)[_product objectAtIndex:indexPath.row]);
     [cell setViewModel:list.viewModel];
     
