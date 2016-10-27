@@ -381,6 +381,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 #pragma mark - Cell Delegate
 -(void)didTapButton:(UIButton*)sender Conversation:(ResolutionConversation*)conversation
 {
+    [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_CLICK label:sender.titleLabel.text];
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
         UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:@"Konfirmasi Pembatalan Komplain" message:@"Apakah Anda yakin ingin membatalkan komplain ini?\nTransaksi akan dinyatakan selesai dan seluruh dana pembayaran akan diteruskan kepada penjual." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
         cancelComplainAlert.tag = TAG_ALERT_CANCEL_COMPLAIN;
