@@ -20,5 +20,6 @@
 + (NSString*)mojitoUrl;
 + (NSString*)pulsaUrl;
 + (NSString*)kunyitUrl;
++ (NSString*)pointUrl;
 
 @end

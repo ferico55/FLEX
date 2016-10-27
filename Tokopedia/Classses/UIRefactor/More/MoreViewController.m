@@ -342,10 +342,7 @@
 {
     switch (section) {
         case 0:{
-            if ([_LPResult.loyalty_point.has_lp integerValue] == 1) {
-                return 2;
-            }
-            else return 1;
+            return 2;
             break;
         }
         case 1:

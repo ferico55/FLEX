@@ -14,9 +14,9 @@ class TopPointRequest: NSObject {
 
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
-                                          path: "/v4/deposit/get_lp.pl",
-                                          method: .GET,
+        networkManager.requestWithBaseUrl(NSString .pointUrl(),
+                                          path: "/app/v4",
+                                          method: .POST,
                                           parameter: [:],
                                           mapping:  V4Response.mappingWithData(LoyaltyPointResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
