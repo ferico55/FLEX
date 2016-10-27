@@ -7,7 +7,6 @@
 //
 #define CgapTitleAndContentDesc 20
 #define CTagTokopediaNetworkManager 2
-#define CTagOtherProduct 3
 #define CTagFavorite 4
 #define CTagNoteCanReture 7
 #define CTagPriceAlert 8
@@ -140,11 +139,7 @@ TTTAttributedLabelDelegate
     BOOL is_dismissed;
     NSDictionary *_auth;
     
-    __weak RKObjectManager *_objectOtherProductManager;
-    TokopediaNetworkManager *tokopediaOtherProduct;
-    NSOperationQueue *_operationOtherProductQueue;
     OtherProduct *_otherProduct;
-    NSInteger _requestOtherProductCount;
     
     __weak RKObjectManager *_objectFavoriteManager;
     TokopediaNetworkManager *tokopediaNetworkManagerFavorite;
@@ -175,7 +170,6 @@ TTTAttributedLabelDelegate
     UserAuthentificationManager *_userManager;
     NSTimer *_timer;
     
-    __weak RKObjectManager  *_objectPromoteManager;
     TTTAttributedLabel* _descriptionLabel;
     
     BOOL isExpandDesc, isNeedLogin;
@@ -290,7 +284,6 @@ TTTAttributedLabelDelegate
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
-    _operationOtherProductQueue = [NSOperationQueue new];
     _operationFavoriteQueue = [NSOperationQueue new];
     operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
@@ -311,12 +304,6 @@ TTTAttributedLabelDelegate
     tokopediaNetworkManagerFavorite.delegate = self;
     tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
     
-    
-    tokopediaOtherProduct = [TokopediaNetworkManager new];
-    tokopediaOtherProduct.delegate = self;
-    tokopediaOtherProduct.tagRequest = CTagOtherProduct;
-    tokopediaOtherProduct.isParameterNotEncrypted = YES;
-    tokopediaOtherProduct.isUsingHmac = NO;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     
@@ -1158,13 +1145,7 @@ TTTAttributedLabelDelegate
 - (NSDictionary*)getParameter:(int)tag
 {
     NSString *productID = _product.data.info.product_id?:@"0";
-    if(tag == CTagOtherProduct)
-        return @{@"shop_id" : _product.data.shop_info.shop_id,
-                 @"device" : @"ios",
-                 @"-id" : _product.data.info.product_id,
-                 @"source":@"other_product"
-                 };
-    else if(tag == CTagFavorite)
+    if(tag == CTagFavorite)
     {
         NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
         tempShopID = nil;
@@ -1184,9 +1165,7 @@ TTTAttributedLabelDelegate
 }
 
 -(int)getRequestMethod:(int)tag{
-    if(tag == CTagOtherProduct)
-        return RKRequestMethodGET;
-    else if(tag == CTagFavorite)
+    if(tag == CTagFavorite)
         return RKRequestMethodPOST;
     else if(tag == CTagNoteCanReture)
         return RKRequestMethodPOST;
@@ -1199,9 +1178,7 @@ TTTAttributedLabelDelegate
 
 - (NSString*)getPath:(int)tag
 {
-    if(tag == CTagOtherProduct)
-        return @"/search/v2.3/product";
-    else if(tag == CTagFavorite)
+    if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
@@ -1213,26 +1190,7 @@ TTTAttributedLabelDelegate
 
 - (id)getObjectManager:(int)tag
 {
-    if(tag == CTagOtherProduct)
-    {
-        //_objectOtherProductManager = [RKObjectManager sharedClient];
-        _objectOtherProductManager = [RKObjectManager sharedClient:[NSString aceUrl]];
-        
-        
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[SearchAWS mapping]
-                                                                                                method:[self getRequestMethod:CTagOtherProduct]
-                                                                                           pathPattern:[self getPath:CTagOtherProduct]
-                                                                                               keyPath:@""
-                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        //add response description to object manager
-        [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
-        
-        return _objectOtherProductManager;
-        
-    }
-    else if(tag == CTagFavorite)
+    if(tag == CTagFavorite)
     {
         // initialize RestKit
         _objectFavoriteManager =  [RKObjectManager sharedClient];
@@ -1326,12 +1284,7 @@ TTTAttributedLabelDelegate
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
-    if (tag == CTagOtherProduct)
-    {
-        TheOtherProduct *theOtherProduct = stat;
-        return theOtherProduct.status;
-    }
-    else if(tag == CTagTokopediaNetworkManager)
+    if(tag == CTagTokopediaNetworkManager)
     {
         Product *product = stat;
         return product.status;
@@ -1365,6 +1318,22 @@ TTTAttributedLabelDelegate
     }];
 }
 
+-(void)requestOtherProduct{
+    
+    [_otherProductIndicator setHidden:NO];
+    [_otherProductIndicator startAnimating];
+    
+    [DetailProductRequest fetchOtherProduct:_product.data.info.product_id shopID:_product.data.shop_info.shop_id onSuccess:^(SearchAWSResult * data) {
+        
+        [_otherProductIndicator stopAnimating];
+        _otherProductObj = data.products;
+        [self setOtherProducts];
+        
+    } onFailure: ^{
+        [_otherProductIndicator stopAnimating];
+    }];
+}
+
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
     if(tag == CTagTokopediaNetworkManager)
@@ -1390,11 +1359,6 @@ TTTAttributedLabelDelegate
                 [btnPriceAlert sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
         }
-    }
-    else if(tag == CTagOtherProduct)
-    {
-        [_otherProductIndicator stopAnimating];
-        [self requestSuccessOtherProduct:successResult withOperation:operation];
     }
     else if(tag == CTagFavorite)
     {
@@ -1442,9 +1406,7 @@ TTTAttributedLabelDelegate
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
     
-    if(tag == CTagOtherProduct)
-        [self requestFailureOtherProduct:errorResult];
-    else if(tag == CTagFavorite)
+    if(tag == CTagFavorite)
         [self requestFavoriteError:errorResult];
     else if(tag == CTagNoteCanReture) {
         
@@ -1462,10 +1424,6 @@ TTTAttributedLabelDelegate
         [self unsetWarehouse];
         
     }
-    else if(tag == CTagOtherProduct)
-    {
-        
-    }
     else if(tag == CTagFavorite)
     {}
     else if(tag == CTagPriceAlert) {
@@ -1479,9 +1437,6 @@ TTTAttributedLabelDelegate
     if(tag == CTagTokopediaNetworkManager)
     {
         
-    }
-    else if(tag == CTagOtherProduct)
-    {
     }
     else if(tag == CTagFavorite)
     {
@@ -1504,10 +1459,6 @@ TTTAttributedLabelDelegate
     
     tokopediaNetworkManagerFavorite.delegate = nil;
     [tokopediaNetworkManagerFavorite requestCancel];
-    
-    tokopediaOtherProduct.delegate = nil;
-    [tokopediaOtherProduct requestCancel];
-    tokopediaOtherProduct = nil;
     
     tokopediaNoteCanReture.delegate = nil;
     [tokopediaNoteCanReture requestCancel];
@@ -2414,83 +2365,9 @@ TTTAttributedLabelDelegate
 }
 
 - (void)loadDataOtherProduct {
-    [_otherProductIndicator setHidden:NO];
-    [_otherProductIndicator startAnimating];
-    [tokopediaOtherProduct doRequest];
-}
 
-- (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    SearchAWS *otherProduct = [result objectForKey:@""];
-    
-    BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        [self requestProcessOtherProduct:object];
-    }
-    
+    [self requestOtherProduct];
 }
-
-- (void)requestFailureOtherProduct:(id)error {
-    if ([(NSError*)error code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-            //_table.tableFooterView = _footer;
-//            [_act startAnimating];
-            //                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        
-    }
-}
-
-- (void)requestProcessOtherProduct:(id)object {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            SearchAWS *otherProduct = [result objectForKey:@""];
-            BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            if (status) {
-                _otherProductObj = [NSArray arrayWithArray:otherProduct.data.products];
-                [self setOtherProducts];
-            }
-        }
-        else{
-            
-            [self cancelOtherProduct];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestOtherProductCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestOtherProductCount);
-                    
-                    [_otherProductIndicator startAnimating];
-                    [self performSelector:@selector(configureGetOtherProductRestkit)
-                               withObject:nil
-                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadDataOtherProduct)
-                               withObject:nil
-                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_otherProductIndicator stopAnimating];
-                }
-            }
-            else
-            {
-                [_otherProductIndicator stopAnimating];
-                NSError *error = object;
-                if (!([error code] == NSURLErrorCancelled)){
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
-            }
-            
-        }
-    }
-}
-
 - (void)requestTimeoutOtherProduct {
     
 }

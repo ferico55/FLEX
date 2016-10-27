@@ -39,4 +39,38 @@ class DetailProductRequest: NSObject {
         }) { (error) in
         }
     }
+    
+    class func fetchOtherProduct(productID:String, shopID:String, onSuccess: ((SearchAWSResult) -> Void),onFailure: (() -> Void)) {
+        
+        let param :[String:String] = [
+            "shop_id" : shopID,
+            "device" : "ios",
+            "-id" : productID,
+            "source":"other_product"
+        ]
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString .aceUrl(),
+                                          path: "/search/v2.3/product",
+                                          method: .GET,
+                                          parameter: param,
+                                          mapping: V4Response.mappingWithData(SearchAWSResult.mapping()),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : V4Response = result[""] as! V4Response
+                                            let data = response.data as! SearchAWSResult
+                                            
+                                            if response.message_error.count > 0 {
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure()
+                                            } else {
+                                                onSuccess(data)
+                                            }
+                                            
+        }) { (error) in
+            onFailure()
+        }
+    }
 }
