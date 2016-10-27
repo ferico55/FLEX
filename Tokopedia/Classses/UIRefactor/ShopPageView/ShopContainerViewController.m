@@ -134,6 +134,17 @@
     [super viewDidLoad];
     
     [self initNotificationCenter];
+    
+    [self initBarButton];
+    [self disableAllButtons];
+    
+    shopPageRequest = [ShopPageRequest new];
+    
+    favoriteShopRequest = [FavoriteShopRequest new];
+    favoriteShopRequest.delegate = self;
+    
+    [self requestShopInfo];
+    
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
     // Do any additional setup after loading the view from its nib.
@@ -141,13 +152,13 @@
     _isNoData = YES;
     _isRefreshView = NO;
     
-    shopPageRequest = [ShopPageRequest new];
-    favoriteShopRequest = [FavoriteShopRequest new];
-    favoriteShopRequest.delegate = self;
+    
     
     _userManager = [UserAuthentificationManager new];
     
-    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                        options:nil];
     
     _pageController.dataSource = self;
     _pageController.delegate = self;
@@ -203,11 +214,11 @@
     thisControl.hidden = true;
     self.pageController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
     
-    [self requestShopInfo];
+    
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-    [self initBarButton];
-    [self disableAllButtons];
+    
+    
 }
 
 - (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
