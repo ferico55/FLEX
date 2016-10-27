@@ -359,7 +359,7 @@ EtalaseViewControllerDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _header.frame.size.height);
+    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, 245);
     return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
 }
 
