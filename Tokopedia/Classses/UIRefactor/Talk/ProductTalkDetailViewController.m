@@ -449,6 +449,7 @@
                                              [_act stopAnimating];
                                          }
                                          onFailure:^(NSError *errorResult) {
+                                             [AnalyticsManager trackEventName:@"clickProductDiscussion" category:GA_EVENT_CATEGORY_INBOX_TALK action:GA_EVENT_ACTION_ERROR label:_inboxTalkType];
                                              _table.tableFooterView = nil;
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
