@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #define CgapTitleAndContentDesc 20
-#define CTagPromote 1
 #define CTagTokopediaNetworkManager 2
 #define CTagOtherProduct 3
 #define CTagFavorite 4
@@ -180,7 +179,6 @@ TTTAttributedLabelDelegate
     TTTAttributedLabel* _descriptionLabel;
     
     BOOL isExpandDesc, isNeedLogin;
-    TokopediaNetworkManager *_promoteNetworkManager;
     UIActivityIndicatorView *activityIndicator, *actFav;
     UIFont *fontDesc;
     
@@ -305,10 +303,6 @@ TTTAttributedLabelDelegate
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
-    _promoteNetworkManager = [TokopediaNetworkManager new];
-    _promoteNetworkManager.tagRequest = CTagPromote;
-    _promoteNetworkManager.delegate = self;
-    
     tokopediaNetworkManagerPriceAlert = [TokopediaNetworkManager new];
     tokopediaNetworkManagerPriceAlert.tagRequest = CTagPriceAlert;
     tokopediaNetworkManagerPriceAlert.delegate = self;
@@ -432,8 +426,6 @@ TTTAttributedLabelDelegate
     [super viewWillAppear:animated];
     
     [AnalyticsManager trackScreenName:@"Product Information"];
-    
-    _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
     UIEdgeInsets inset = _table.contentInset;
@@ -712,8 +704,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 21 : {
-                [_promoteNetworkManager resetRequestCount];
-                [_promoteNetworkManager doRequest];
+                [self requestPromote];
                 break;
             }
             default:
@@ -1167,9 +1158,7 @@ TTTAttributedLabelDelegate
 - (NSDictionary*)getParameter:(int)tag
 {
     NSString *productID = _product.data.info.product_id?:@"0";
-    if(tag == CTagPromote)
-        return @{@"action" : @"promote_product", @"product_id" : productID};
-    else if(tag == CTagOtherProduct)
+    if(tag == CTagOtherProduct)
         return @{@"shop_id" : _product.data.shop_info.shop_id,
                  @"device" : @"ios",
                  @"-id" : _product.data.info.product_id,
@@ -1195,9 +1184,7 @@ TTTAttributedLabelDelegate
 }
 
 -(int)getRequestMethod:(int)tag{
-    if(tag == CTagPromote)
-        return RKRequestMethodPOST;
-    else if(tag == CTagOtherProduct)
+    if(tag == CTagOtherProduct)
         return RKRequestMethodGET;
     else if(tag == CTagFavorite)
         return RKRequestMethodPOST;
@@ -1212,9 +1199,7 @@ TTTAttributedLabelDelegate
 
 - (NSString*)getPath:(int)tag
 {
-    if(tag == CTagPromote)
-        return @"action/product.pl";
-    else if(tag == CTagOtherProduct)
+    if(tag == CTagOtherProduct)
         return @"/search/v2.3/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
@@ -1228,39 +1213,7 @@ TTTAttributedLabelDelegate
 
 - (id)getObjectManager:(int)tag
 {
-    if(tag == CTagPromote)
-    {
-        _objectPromoteManager = [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Promote class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PromoteResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{@"is_dink":@"is_dink"}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectPromoteManager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectPromoteManager;
-    }
-   
-    else if(tag == CTagOtherProduct)
+    if(tag == CTagOtherProduct)
     {
         //_objectOtherProductManager = [RKObjectManager sharedClient];
         _objectOtherProductManager = [RKObjectManager sharedClient:[NSString aceUrl]];
@@ -1373,13 +1326,7 @@ TTTAttributedLabelDelegate
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
-    
-    if(tag == CTagPromote)
-    {
-        Promote *action = stat;
-        return action.status;
-    }
-    else if (tag == CTagOtherProduct)
+    if (tag == CTagOtherProduct)
     {
         TheOtherProduct *theOtherProduct = stat;
         return theOtherProduct.status;
@@ -1407,28 +1354,20 @@ TTTAttributedLabelDelegate
     return nil;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    if(tag == CTagPromote)
-    {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        Promote* promoteObject = [result objectForKey:@""];
-        
-        if([promoteObject.result.is_dink isEqualToString:@"1"]) {
-            NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _formattedProductTitle];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[successMessage]
-                                                                             delegate:self];
-            [alert show];
-        } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."]
-                                                                           delegate:self];
-            [alert show];
-        }
+-(void)requestPromote{
+    NSString *productID = _product.data.info.product_id?:@"0";
+
+    [DetailProductRequest fetchPromoteProduct:productID onSuccess:^(PromoteResult * data) {
         
         [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
         [_dinkButton setEnabled:YES];
-    }
-    else if(tag == CTagTokopediaNetworkManager)
+        
+    }];
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagTokopediaNetworkManager)
     {
         
         _buyButton.enabled = YES;
@@ -1503,11 +1442,7 @@ TTTAttributedLabelDelegate
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
     
-    if(tag == CTagPromote)
-    {
-        
-    }
-    else if(tag == CTagOtherProduct)
+    if(tag == CTagOtherProduct)
         [self requestFailureOtherProduct:errorResult];
     else if(tag == CTagFavorite)
         [self requestFavoriteError:errorResult];
@@ -1521,12 +1456,7 @@ TTTAttributedLabelDelegate
 
 - (void)actionBeforeRequest:(int)tag
 {
-    if(tag == CTagPromote)
-    {
-        [_dinkButton setTitle:@"Sedang Mempromosikan.." forState:UIControlStateNormal];
-        [_dinkButton setEnabled:NO];
-    }
-    else if(tag == CTagTokopediaNetworkManager)
+    if(tag == CTagTokopediaNetworkManager)
     {
 
         [self unsetWarehouse];
@@ -1546,11 +1476,7 @@ TTTAttributedLabelDelegate
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if(tag == CTagPromote)
-    {
-        
-    }
-    else if(tag == CTagTokopediaNetworkManager)
+    if(tag == CTagTokopediaNetworkManager)
     {
         
     }
@@ -1573,12 +1499,8 @@ TTTAttributedLabelDelegate
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    _promoteNetworkManager.delegate = nil;
     
     [tokopediaNetworkManagerWishList requestCancel];
-    
-    _promoteNetworkManager.delegate = nil;
-    [_promoteNetworkManager requestCancel];
     
     tokopediaNetworkManagerFavorite.delegate = nil;
     [tokopediaNetworkManagerFavorite requestCancel];
