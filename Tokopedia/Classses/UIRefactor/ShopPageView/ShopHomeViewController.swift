@@ -15,6 +15,8 @@ class ShopHomeViewController: UIViewController {
 
     var onEtalaseSelected: ((String, String) -> Void)?
     var onTabSelected: ((ShopPageTab) -> Void)?
+    var data: [NSObject: AnyObject]?
+    var shopPageHeader: ShopPageHeader?
     
     private let webView = WKWebView()
     
@@ -58,10 +60,13 @@ class ShopHomeViewController: UIViewController {
         
         let header = ShopPageHeader(selectedTab: .Home)
         header.onTabSelected = self.onTabSelected
+        header.data = data
         
         header.view.frame.size.height = headerHeight
         header.view.frame.size.width = self.view.bounds.size.width
         header.view.frame.origin.y = -headerHeight
+        
+        self.shopPageHeader = header
         
         self.addChildViewController(header)
         webView.scrollView.addSubview(header.view)

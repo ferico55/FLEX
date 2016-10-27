@@ -178,6 +178,7 @@
     _shopNotesViewController.onTabSelected = onTabSelected;
     
     _shopHomeViewController = [ShopHomeViewController new];
+    _shopHomeViewController.data = _data;
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
         [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
     };
@@ -298,6 +299,7 @@
     [_shopProductViewController.shopPageHeader setHeaderShopPage:_shop];
     [_shopReviewViewController.shopPageHeader setHeaderShopPage:_shop];
     [_shopTalkViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopHomeViewController.shopPageHeader setHeaderShopPage:_shop];
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
