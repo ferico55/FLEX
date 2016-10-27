@@ -129,8 +129,6 @@
 
 - (void)viewDidLoad
 {
-    __weak typeof(self) weakSelf = self;
-    
     [super viewDidLoad];
     
     [self initNotificationCenter];
@@ -152,9 +150,11 @@
     _isNoData = YES;
     _isRefreshView = NO;
     
-    
-    
     _userManager = [UserAuthentificationManager new];
+}
+
+- (void)showUi {
+    __weak typeof(self) weakSelf = self;
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                                                           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
@@ -172,7 +172,7 @@
     void (^onTabSelected)(ShopPageTab) = ^(ShopPageTab tab) {
         [weakSelf navigateToTab:tab];
     };
-
+    
     
     _shopProductViewController.onTabSelected = onTabSelected;
     
@@ -217,8 +217,6 @@
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-    
-    
 }
 
 - (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
@@ -329,6 +327,13 @@
     NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
         _shop = shop;
+        
+        //TODO: do it only once
+        [self showUi];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateHeaderShopPage];
+        });
+        
         if ([_userManager isMyShopWithShopId:_shop.result.info.shop_id]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
             _addProductBarButton.enabled = YES;
@@ -371,8 +376,6 @@
         [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
         [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
         _isNoData = NO;
-        [self updateHeaderShopPage];
-        
     } onFailure:^(NSError *error) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
         [alert show];
