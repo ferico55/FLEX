@@ -139,11 +139,14 @@ class MessageViewController: JSQMessagesViewController {
         if(indexPath.item == 0) {
             return 20
         }
-        
+
         if(indexPath.item - 1 > 0) {
             let message = messages[indexPath.item]
             let previousMessage = self.messages[indexPath.item - 1]
-            if(message.date.timeIntervalSinceDate(previousMessage.date) / (24 * 60 * 60) > 1) {
+            let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            let previousDateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+            
+            if(dateString != previousDateString) {
                 return 20
             }
         }
@@ -159,9 +162,12 @@ class MessageViewController: JSQMessagesViewController {
             return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
         }
         
-        if(indexPath.item - 1 > 0) {
+        if(indexPath.item > 0) {
             let previousMessage = self.messages[indexPath.item - 1]
-            if(message.date.timeIntervalSinceDate(previousMessage.date) / (24 * 60 * 60) > 1) {
+            let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            let previousDateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+
+            if(dateString != previousDateString) {
                 return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
             }
         }
