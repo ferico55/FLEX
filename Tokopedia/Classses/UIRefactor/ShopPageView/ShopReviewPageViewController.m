@@ -200,10 +200,6 @@
     
     _header = _shopPageHeader.view;
     
-    CGRect newFrame = _header.frame;
-    newFrame.size.height += 5;
-    _header.frame = newFrame;
-    
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
@@ -307,6 +303,21 @@
     [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_fakeStickyTab.layer setShadowRadius:1];
     [_fakeStickyTab.layer setShadowOpacity:0.3];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _header.frame = CGRectMake(0,
+                               -_header.frame.size.height,
+                               self.view.bounds.size.width,
+                               _header.frame.size.height);
+    
+    [_header layoutIfNeeded];
+    
+    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    [_table addSubview:_header];
 }
 
 
@@ -549,37 +560,12 @@
 
 
 #pragma mark - TableView Source
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _header;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return _header.frame.size.height;
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isNoData ? 0 : _list.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*
-    ReviewList *reputationDetail = _list[indexPath.row];
-    UILabel *messageLabel = [[UILabel alloc] init];
-    
-    [messageLabel setText:reputationDetail.review_message];
-    [messageLabel sizeToFit];
-    
-    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                           context:nil];
-    messageLabel.frame = sizeOfMessage;
-    
-    CGFloat height = 150 + messageLabel.frame.size.height ;
-    return height;
-     */
     DetailReputationReview *review = _list[indexPath.row];
     if (review.review_image_attachment.count == 0) {
         return 200;
@@ -742,7 +728,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
