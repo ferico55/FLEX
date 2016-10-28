@@ -759,12 +759,12 @@ NoResultDelegate
 
 -(void)showDeleteAlertForProductAtIndexPath:(NSIndexPath *)indexPath {
     __weak typeof(self) weakSelf = self;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hapus Produk" message:[NSString stringWithFormat:@"Apakah Anda yakin ingin menghapus %@", _products[indexPath.row].product_name] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *yakinAction = [UIAlertAction actionWithTitle:@"Yakin" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hapus Produk" message:[NSString stringWithFormat:@"Apakah Anda yakin ingin menghapus %@?", _products[indexPath.row].product_name] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yaAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf deleteListAtIndexPath:indexPath];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:yakinAction];
+    [alertController addAction:yaAction];
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
