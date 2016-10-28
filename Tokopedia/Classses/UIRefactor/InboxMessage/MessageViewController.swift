@@ -202,7 +202,7 @@ class MessageViewController: JSQMessagesViewController {
                                     }
                                },
                                onFailure: { (error) in
-                                    self.receiveErrorSendMessage(["Mohon maaf terjadi kesalahan pada saat mengirim pesan. Silakan ulangi beberapa saat kemudian."])
+                                    self.receiveErrorSendMessage([])
                                }
                 
         )
@@ -211,8 +211,11 @@ class MessageViewController: JSQMessagesViewController {
     private func receiveErrorSendMessage(errors: [AnyObject]) {
         let stickyAlert = StickyAlertView(errorMessages: errors, delegate: self)
         stickyAlert .show()
+        let lastMessage = self.messages.last?.text
         self.messages.removeLast()
+        
         self.finishSendingMessageAnimated(true)
+        self.inputToolbar.contentView.textView.text = lastMessage
     }
     
     //MARK: TextView Delegate
