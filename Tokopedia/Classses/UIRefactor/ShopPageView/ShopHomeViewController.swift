@@ -22,7 +22,6 @@ class ShopHomeViewController: UIViewController {
     private let webView = WKWebView()
     
     private let router = JLRoutes()
-    private let headerHeight: CGFloat = 245
     
     private var fakeTab: ShopTabView!
     
@@ -76,18 +75,22 @@ class ShopHomeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        webView.scrollView.contentInset.top = headerHeight
-        
         let header = ShopPageHeader(selectedTab: .Home)
         header.onTabSelected = self.onTabSelected
         header.data = data
         header.showHomeTab = self.showHomeTab
         
-        header.view.frame.size.height = headerHeight
-        header.view.frame.size.width = self.view.bounds.size.width
-        header.view.frame.origin.y = -headerHeight
+        
+        header.view.frame = CGRect(x: 0,
+                                   y: -header.view.frame.height,
+                                   width: self.view.bounds.width,
+                                   height: header.view.frame.height)
+        
+        header.view.layoutIfNeeded()
         
         self.shopPageHeader = header
+        
+        webView.scrollView.contentInset.top = header.view.frame.size.height
         
         self.addChildViewController(header)
         webView.scrollView.addSubview(header.view)
@@ -102,7 +105,7 @@ class ShopHomeViewController: UIViewController {
     }
 
     private func notifyScrolling() {
-        let userInfo = ["y_position": webView.scrollView.contentOffset.y + 245]
+        let userInfo = ["y_position": webView.scrollView.contentOffset.y]
         
         NSNotificationCenter.defaultCenter().postNotificationName("updateProductHeaderPosition", object: self, userInfo: userInfo)
         NSNotificationCenter.defaultCenter().postNotificationName("updateTalkHeaderPosition", object: self, userInfo: userInfo)
