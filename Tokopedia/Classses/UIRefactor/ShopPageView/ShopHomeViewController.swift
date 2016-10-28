@@ -96,14 +96,19 @@ class ShopHomeViewController: UIViewController {
         webView.scrollView.bk_addObserverForKeyPath("contentOffset") { [unowned self] view in
             let scrollView = view as! UIScrollView
             
-            if scrollView.contentOffset.y > -40 {
-                self.fakeTab.hidden = false
-            } else {
-                self.fakeTab.hidden = true
-            }
+            self.fakeTab.hidden = !(scrollView.contentOffset.y > -self.fakeTab.frame.height)
+            self.notifyScrolling()
         }
     }
 
+    private func notifyScrolling() {
+        let userInfo = ["y_position": webView.scrollView.contentOffset.y + 245]
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("updateProductHeaderPosition", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotificationName("updateTalkHeaderPosition", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotificationName("updateNotesHeaderPosition", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotificationName("updateReviewHeaderPosition", object: self, userInfo: userInfo)
+    }
 }
 
 extension ShopHomeViewController: WKNavigationDelegate {
