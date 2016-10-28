@@ -7,7 +7,6 @@
 //
 #define CgapTitleAndContentDesc 20
 #define CTagTokopediaNetworkManager 2
-#define CTagFavorite 4
 #define CTagNoteCanReture 7
 
 #import "ProductReputationViewController.h"
@@ -80,6 +79,7 @@
 
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "FavoriteShopRequest.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -136,12 +136,6 @@ TTTAttributedLabelDelegate
     NSDictionary *_auth;
     
     OtherProduct *_otherProduct;
-    
-    __weak RKObjectManager *_objectFavoriteManager;
-    TokopediaNetworkManager *tokopediaNetworkManagerFavorite;
-    NSOperationQueue *_operationFavoriteQueue;
-    NSInteger _requestFavoriteCount;
-    NSString *tempShopID;
     
     __weak RKObjectManager *_objectWishListManager;
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
@@ -275,7 +269,6 @@ TTTAttributedLabelDelegate
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
-    _operationFavoriteQueue = [NSOperationQueue new];
     operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -287,9 +280,6 @@ TTTAttributedLabelDelegate
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
-    tokopediaNetworkManagerFavorite = [TokopediaNetworkManager new];
-    tokopediaNetworkManagerFavorite.delegate = self;
-    tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
     
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
@@ -606,7 +596,7 @@ TTTAttributedLabelDelegate
                                         category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
-                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
+
                 if(_auth) {
                     [self favoriteShop:_product.data.shop_info.shop_id];
                 } else {
@@ -631,7 +621,6 @@ TTTAttributedLabelDelegate
                                         category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
-                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
                     [self configureFavoriteRestkit];
@@ -1130,13 +1119,7 @@ TTTAttributedLabelDelegate
 - (NSDictionary*)getParameter:(int)tag
 {
     NSString *productID = _product.data.info.product_id?:@"0";
-    if(tag == CTagFavorite)
-    {
-        NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
-        tempShopID = nil;
-        return @{kTKPDDETAIL_ACTIONKEY:@"fav_shop", @"shop_id":strShopID};
-    }
-    else if(tag == CTagNoteCanReture)
+    if(tag == CTagNoteCanReture)
         return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
                  kTKPDNOTES_APINOTEIDKEY:_product.data.shop_info.shop_has_terms?:@"0",
                  NOTES_TERMS_FLAG_KEY:@(1),
@@ -1146,9 +1129,8 @@ TTTAttributedLabelDelegate
 }
 
 -(int)getRequestMethod:(int)tag{
-    if(tag == CTagFavorite)
-        return RKRequestMethodPOST;
-    else if(tag == CTagNoteCanReture)
+
+    if(tag == CTagNoteCanReture)
         return RKRequestMethodPOST;
     
     return RKRequestMethodPOST;;
@@ -1157,9 +1139,7 @@ TTTAttributedLabelDelegate
 
 - (NSString*)getPath:(int)tag
 {
-    if(tag == CTagFavorite)
-        return @"action/favorite-shop.pl";
-    else if(tag == CTagNoteCanReture)
+    if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
 
     return nil;
@@ -1167,36 +1147,7 @@ TTTAttributedLabelDelegate
 
 - (id)getObjectManager:(int)tag
 {
-    if(tag == CTagFavorite)
-    {
-        // initialize RestKit
-        _objectFavoriteManager =  [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                            @"is_success":@"is_success"}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
-        return _objectFavoriteManager;
-    } else if(tag == CTagNoteCanReture) {
+    if(tag == CTagNoteCanReture) {
         _objectNoteCanReture = [RKObjectManager sharedClient];
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
@@ -1243,13 +1194,7 @@ TTTAttributedLabelDelegate
         Product *product = stat;
         return product.status;
     }
-    else if(tag == CTagFavorite)
-    {
-        tempShopID = nil;
-        FavoriteShopAction *favoriteShopAction = stat;
-        return favoriteShopAction.status;
-    }
-    else if(tag == CTagNoteCanReture) {
+    if(tag == CTagNoteCanReture) {
         Notes *notes = stat;
         return notes.status;
     }
@@ -1284,6 +1229,39 @@ TTTAttributedLabelDelegate
     }];
 }
 
+-(void)requestFavoriteShopID:(NSString *)shopID{
+    [FavoriteShopRequest requestActionButtonFavoriteShop:shopID withAdKey:@"" onSuccess:^(FavoriteShopActionResult *data) {
+        
+        StickyAlertView *stickyAlertView;
+        if(_favButton.tag == 17) {//Favorite
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
+        }else {
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.data.shop_info.shop_url];
+        
+        [stickyAlertView show];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
+        [self setButtonFav];
+        
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
+        
+    } onFailure:^{
+        
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
+        
+    }];
+}
+
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
     if(tag == CTagTokopediaNetworkManager)
@@ -1306,28 +1284,7 @@ TTTAttributedLabelDelegate
             }
         }
     }
-    else if(tag == CTagFavorite)
-    {
-        StickyAlertView *stickyAlertView;
-        if(_favButton.tag == 17) {//Favorite
-            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
-        }else {
-            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
-        }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.data.shop_info.shop_url];
-        
-        [stickyAlertView show];
-        [self requestFavoriteResult:successResult withOperation:operation];
-        [self setButtonFav];
-        
-        //Change this block to method (Any in branch f_bug_fixing)
-        [actFav stopAnimating];
-        [actFav removeFromSuperview];
-        actFav = nil;
-        _favButton.hidden = NO;
-    }
-    else if(tag == CTagNoteCanReture) {
+    if(tag == CTagNoteCanReture) {
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
         Notes *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
@@ -1340,9 +1297,7 @@ TTTAttributedLabelDelegate
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
     
-    if(tag == CTagFavorite)
-        [self requestFavoriteError:errorResult];
-    else if(tag == CTagNoteCanReture) {
+    if(tag == CTagNoteCanReture) {
         
     }
 }
@@ -1355,8 +1310,7 @@ TTTAttributedLabelDelegate
         [self unsetWarehouse];
         
     }
-    else if(tag == CTagFavorite)
-    {}
+
 }
 
 
@@ -1366,14 +1320,6 @@ TTTAttributedLabelDelegate
     {
         
     }
-    else if(tag == CTagFavorite)
-    {
-        //Change this block to method (Any in branch f_bug_fixing)
-        [actFav stopAnimating];
-        [actFav removeFromSuperview];
-        actFav = nil;
-        _favButton.hidden = NO;
-    }
 }
 
 
@@ -1382,10 +1328,7 @@ TTTAttributedLabelDelegate
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     
     [tokopediaNetworkManagerWishList requestCancel];
-    
-    tokopediaNetworkManagerFavorite.delegate = nil;
-    [tokopediaNetworkManagerFavorite requestCancel];
-    
+        
     tokopediaNoteCanReture.delegate = nil;
     [tokopediaNoteCanReture requestCancel];
     tokopediaNoteCanReture = nil;
@@ -2362,8 +2305,7 @@ TTTAttributedLabelDelegate
     [_favButton.superview addSubview:actFav];
     _favButton.hidden = YES;
     
-    tempShopID = shop_id;
-    [tokopediaNetworkManagerFavorite doRequest];
+    [self requestFavoriteShopID:shop_id];
 }
 
 -(void)requestFavoriteResult:(id)mappingResult withOperation:(RKObjectRequestOperation *)operation {

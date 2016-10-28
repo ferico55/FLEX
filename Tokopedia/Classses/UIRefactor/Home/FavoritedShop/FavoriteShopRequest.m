@@ -8,6 +8,7 @@
 
 #import "FavoriteShopRequest.h"
 #import "TokopediaNetworkManager.h"
+#import "V4Response.h"
 
 #define PER_PAGE 12
 
@@ -67,23 +68,34 @@
                              }];
 }
 
--(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey{
++(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey onSuccess:(void(^)(FavoriteShopActionResult* data))onSuccess onFailure:(void(^)())onFailure{
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
+    
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"shop_id":shopId}];
+    
+    if (adKey && ![adKey isEqualToString:@""]){
+        [parameter addEntriesFromDictionary: @{@"ad_key":adKey}];
+    }
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/favorite-shop/fav_shop.pl"
                                 method:RKRequestMethodPOST
-                             parameter:@{@"shop_id":shopId,
-                                         @"ad_key":adKey}
-                               mapping:[FavoriteShopAction mapping]
+                             parameter:parameter
+                               mapping:[V4Response mappingWithData:[FavoriteShopActionResult mapping]]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                 id temp = [result objectForKey:@""];
-                                 FavoriteShopAction* favShopAction = (FavoriteShopAction*)temp;
-                                 [_delegate didReceiveActionButtonFavoriteShopConfirmation:favShopAction];
+                                 V4Response<FavoriteShopActionResult *>* response = [result objectForKey:@""];
+                                 
+                                 if ([response.data.is_success integerValue] == 1) {
+                                     onSuccess(response.data);
+                                 } else {
+                                    onFailure();
+                                 }
                              }
                              onFailure:^(NSError *errorResult) {
-                                 [_delegate failToRequestActionButtonFavoriteShopConfirmation];
+                                 onFailure();
                              }];
 }
 
