@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #define CgapTitleAndContentDesc 20
-#define CTagTokopediaNetworkManager 2
 #define CTagNoteCanReture 7
 
 #import "ProductReputationViewController.h"
@@ -100,7 +99,6 @@ UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
 LoginViewDelegate,
-TokopediaNetworkManagerDelegate,
 EtalaseViewControllerDelegate,
 UIAlertViewDelegate,
 CMPopTipViewDelegate,
@@ -137,18 +135,8 @@ TTTAttributedLabelDelegate
     
     OtherProduct *_otherProduct;
     
-    __weak RKObjectManager *_objectWishListManager;
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     NSOperationQueue *operationWishList;
-    
-    __weak RKObjectManager *_objectNoteCanReture;
-    TokopediaNetworkManager *tokopediaNoteCanReture;
-    
-    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
-    
-    __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -1115,93 +1103,7 @@ TTTAttributedLabelDelegate
     cell.etalasebutton.hidden = NO;
 }
 
-#pragma mark - TokopediaNetwork Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    NSString *productID = _product.data.info.product_id?:@"0";
-    if(tag == CTagNoteCanReture)
-        return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
-                 kTKPDNOTES_APINOTEIDKEY:_product.data.shop_info.shop_has_terms?:@"0",
-                 NOTES_TERMS_FLAG_KEY:@(1),
-                 kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id?:@"0"};
-    
-    return nil;
-}
-
--(int)getRequestMethod:(int)tag{
-
-    if(tag == CTagNoteCanReture)
-        return RKRequestMethodPOST;
-    
-    return RKRequestMethodPOST;;
-    
-}
-
-- (NSString*)getPath:(int)tag
-{
-    if(tag == CTagNoteCanReture)
-        return kTKPDDETAILNOTES_APIPATH;
-
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagNoteCanReture) {
-        _objectNoteCanReture = [RKObjectManager sharedClient];
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
-        RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
-        [noteDetailMapping addAttributeMappingsFromDictionary:@{
-                                                                @"notes_position" : @"notes_position",
-                                                                @"notes_status" : @"notes_status",
-                                                                @"notes_create_time" : @"notes_create_time",
-                                                                @"notes_id" : @"notes_id",
-                                                                @"notes_title" : @"notes_title",
-                                                                @"notes_active" : @"notes_active",
-                                                                @"notes_update_time" : @"notes_update_time",
-                                                                @"notes_content" : @"notes_content"
-                                                                }];
-        
-        //Relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"detail" toKeyPath:@"detail" withMapping:noteDetailMapping];
-        [resultMapping addPropertyMapping:detailRel];
-        
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        [_objectNoteCanReture addResponseDescriptor:responseDescriptor];
-        
-        return _objectNoteCanReture;
-    }
-    return nil;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagTokopediaNetworkManager)
-    {
-        Product *product = stat;
-        return product.status;
-    }
-    if(tag == CTagNoteCanReture) {
-        Notes *notes = stat;
-        return notes.status;
-    }
-
-    return nil;
-}
-
+#pragma mark - Request
 -(void)requestPromote{
     NSString *productID = _product.data.info.product_id?:@"0";
 
@@ -1264,33 +1166,8 @@ TTTAttributedLabelDelegate
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
-    if(tag == CTagTokopediaNetworkManager)
-    {
-        
-        _buyButton.enabled = YES;
-        [self configureGetOtherProductRestkit];
-        
-        [self requestsuccess:successResult withOperation:operation];
-        
-        if(isNeedLogin) {
-            isNeedLogin = !isNeedLogin;
-            if(isDoingWishList) {
-                isDoingWishList = !isDoingWishList;
-                [btnWishList sendActionsForControlEvents:UIControlEventTouchUpInside];
-            }
-            else if(isDoingFavorite) {
-                isDoingFavorite = !isDoingFavorite;
-                [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-            }
-        }
-    }
-    if(tag == CTagNoteCanReture) {
-        NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
-        Notes *tempNotes = [result objectForKey:@""];
-        notesDetail = tempNotes.result.detail;
-    }
+
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.data];
 }
 
 
@@ -1302,36 +1179,12 @@ TTTAttributedLabelDelegate
     }
 }
 
-- (void)actionBeforeRequest:(int)tag
-{
-    if(tag == CTagTokopediaNetworkManager)
-    {
-
-        [self unsetWarehouse];
-        
-    }
-
-}
-
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if(tag == CTagTokopediaNetworkManager)
-    {
-        
-    }
-}
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     
     [tokopediaNetworkManagerWishList requestCancel];
-        
-    tokopediaNoteCanReture.delegate = nil;
-    [tokopediaNoteCanReture requestCancel];
-    tokopediaNoteCanReture = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -1356,7 +1209,7 @@ TTTAttributedLabelDelegate
                                mapping:[Product mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  [self requestsuccess:successResult withOperation:operation];
-                                 
+                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.data];
                              } onFailure:^(NSError *errorResult) {
                                  
                              }];
@@ -1470,10 +1323,6 @@ TTTAttributedLabelDelegate
     viewContentWarehouse.hidden = YES;
     _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
     _table.tableHeaderView = _header;
-    
-}
-
-- (void)requestfailure:(id)object {
     
 }
 
@@ -2366,8 +2215,6 @@ TTTAttributedLabelDelegate
 }
 
 -(void)refreshRequest:(NSNotification*)notification {
-//    tokopediaNetworkManager.delegate = self;
-//    [tokopediaNetworkManager doRequest];
     [self loadData];
 }
 
