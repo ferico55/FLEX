@@ -239,25 +239,6 @@ EtalaseViewControllerDelegate
     
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
-    UIView *searchView = _shopPageHeader.searchView;
-    [searchView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, searchView.frame.size.height)];
-    UISearchBar *searchBar = _shopPageHeader.searchBar;
-    searchBar.delegate = self;
-    
-    CGRect newHeaderPosition = searchView.frame;
-    newHeaderPosition.origin.y = _header.frame.size.height;
-    searchView.frame = newHeaderPosition;
-    searchView.backgroundColor = [UIColor clearColor];
-    
-    CGRect newFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _header.frame.size.height + searchView.frame.size.height);
-    _header.frame = newFrame;
-    [_header addSubview:searchView];
-    
-    [_header setClipsToBounds:YES];
-    [_header.layer setMasksToBounds:YES];
-    UIView *header = [[UIView alloc] initWithFrame:_header.frame];
-    [header setBackgroundColor:[UIColor whiteColor]];
-    [header addSubview:_header];
     [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -348,6 +329,17 @@ EtalaseViewControllerDelegate
     [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _collectionView.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    _header.frame = CGRectMake(0, -_header.frame.size.height,
+                               self.view.bounds.size.width, _header.frame.size.height);
+    [_header layoutIfNeeded];
+    [_collectionView addSubview:_header];
+}
+
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Shop - Product List"];
@@ -360,8 +352,7 @@ EtalaseViewControllerDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, 245);
-    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+    return CGSizeMake(self.view.bounds.size.width, _shopPageHeader.searchView.frame.size.height);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
@@ -391,8 +382,9 @@ EtalaseViewControllerDelegate
     }
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
-        [_header removeFromSuperview];
-        [reusableView addSubview:_header];
+    
+        [_shopPageHeader.searchView removeFromSuperview];
+        [reusableView addSubview:_shopPageHeader.searchView];
     }
     
     return reusableView;
@@ -490,7 +482,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height - _shopPageHeader.searchView.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
