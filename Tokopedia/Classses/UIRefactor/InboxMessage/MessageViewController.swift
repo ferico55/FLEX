@@ -45,7 +45,7 @@ class MessageViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        AnalyticsManager.trackScreenName("Inbox Message Detail Page")
         collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         
         inputToolbar.contentView.leftBarButtonItem = nil
@@ -180,7 +180,7 @@ class MessageViewController: JSQMessagesViewController {
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
-        
+        AnalyticsManager.trackEventName("clickMessage", category: GA_EVENT_CATEGORY_INBOX_MESSAGE, action: GA_EVENT_ACTION_SEND, label: "Message")
         let message = JSQMessage(senderId: self.senderId, senderDisplayName: senderDisplayName, date: date, text: text)
         self.messages.append(message)
         
@@ -209,6 +209,7 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     private func receiveErrorSendMessage(errors: [AnyObject]) {
+        AnalyticsManager.trackEventName("clickMessage", category: GA_EVENT_CATEGORY_INBOX_MESSAGE, action: GA_EVENT_ACTION_ERROR, label: "Message")
         let stickyAlert = StickyAlertView(errorMessages: errors, delegate: self)
         stickyAlert .show()
         let lastMessage = self.messages.last?.text
