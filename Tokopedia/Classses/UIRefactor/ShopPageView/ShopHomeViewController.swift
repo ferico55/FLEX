@@ -24,6 +24,8 @@ class ShopHomeViewController: UIViewController {
     private let router = JLRoutes()
     private let headerHeight: CGFloat = 245
     
+    private var fakeTab: ShopTabView!
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         
@@ -49,9 +51,26 @@ class ShopHomeViewController: UIViewController {
             make.edges.equalTo()(self.view)
         }
         
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "https://s3-ap-southeast-1.amazonaws.com/tokopedia-upload-test/brand-store/ramayana/_apps/top")!))
+        webView.loadRequest(NSURLRequest(URL: NSURL(string: "file:///Users/se/Desktop/ramayana.htm")!))
         
         webView.navigationDelegate = self
+        
+        fakeTab = ShopTabView(tab: .Home)
+        self.view.addSubview(fakeTab)
+        
+        fakeTab.mas_makeConstraints { make in
+            make.top.right().left().equalTo()(self.view)
+            make.height.equalTo()(40)
+        }
+        
+        fakeTab.showHomeTab = self.showHomeTab
+        fakeTab.onTabSelected = self.onTabSelected
+        fakeTab.hidden = true
+        
+        fakeTab.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        fakeTab.layer.shadowColor = UIColor.blackColor().CGColor
+        fakeTab.layer.shadowRadius = 1
+        fakeTab.layer.shadowOpacity = 3
     }
     
     override func viewDidLayoutSubviews() {
@@ -72,8 +91,17 @@ class ShopHomeViewController: UIViewController {
         
         self.addChildViewController(header)
         webView.scrollView.addSubview(header.view)
-        
         header.didMoveToParentViewController(self)
+        
+        webView.scrollView.bk_addObserverForKeyPath("contentOffset") { [unowned self] view in
+            let scrollView = view as! UIScrollView
+            
+            if scrollView.contentOffset.y > -40 {
+                self.fakeTab.hidden = false
+            } else {
+                self.fakeTab.hidden = true
+            }
+        }
     }
 
 }

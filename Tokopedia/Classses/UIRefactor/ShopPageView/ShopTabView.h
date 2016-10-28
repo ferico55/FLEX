@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CKComponentHostingView.h"
+#import <ComponentKit/CKComponentHostingView.h>
 #import "ShopPageHeader.h"
 
 @interface ShopTabView : CKComponentHostingView
