@@ -48,6 +48,9 @@ class MessageViewController: JSQMessagesViewController {
         
         collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         
+        //set margin between bubble, thus the bubble will adjust how it appear on iPad
+        collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
+        
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
