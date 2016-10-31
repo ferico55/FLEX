@@ -204,7 +204,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
      allowMultipleSelect:YES
      showCancel:YES
      showCamera:YES
-     maxSelected: maxCountSelectImage - _selectedImages.count
+     maxSelected: 5
      selectedAssets:[self getSelectedAssets]
      completion:^(NSArray<DKAsset *> * assets) {
          
