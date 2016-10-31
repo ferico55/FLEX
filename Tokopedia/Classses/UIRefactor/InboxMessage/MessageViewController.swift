@@ -85,7 +85,12 @@ class MessageViewController: JSQMessagesViewController {
         let message = messages[indexPath.item]
         
         if(message.senderId != self.senderId) {
-            return NSAttributedString(string: message.senderDisplayName, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
+            var senderName = message.senderDisplayName
+            if(senderName.characters.count > 50) {
+                senderName = "\(senderName[senderName.startIndex.advancedBy(0)...senderName.startIndex.advancedBy(50)])..."
+            }
+            
+            return NSAttributedString(string: senderName, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
         }
         
         return nil
@@ -120,10 +125,13 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, didTapAvatarImageView avatarImageView: UIImageView!, atIndexPath indexPath: NSIndexPath!) {
-        let message = messages[indexPath.item]
+        if(UIDevice.currentDevice().userInterfaceIdiom == .Phone) {
+            let message = messages[indexPath.item]
+            
+            let controller = NavigateViewController()
+            controller.navigateToProfileFromViewController(self, withUserID: message.senderId)
+        }
         
-        let controller = NavigateViewController()
-        controller.navigateToProfileFromViewController(self, withUserID: message.senderId)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
@@ -330,9 +338,10 @@ class MessageViewController: JSQMessagesViewController {
                 self.addMessage(self.senderId, text: messageReply , senderName: "",date: dateObj)
             } else {
                 self.addMessage(message.user_id, text: messageReply, senderName: "\(message.user_label) - \(message.user_name)", date: dateObj)
-                let image = UIImage(data: NSData(contentsOfURL: NSURL(string: message.user_image)!)!)
+                let imageView = UIImageView(frame: CGRectZero)
+                imageView.setImageWithURL(NSURL(string: message.user_image))
                 
-                avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
+                avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(imageView.image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
                 userLabelColors[message.user_id] = labelColorsCollection[message.user_label_id]
                 
             }
