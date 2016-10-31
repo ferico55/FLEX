@@ -50,7 +50,7 @@ class ShopHomeViewController: UIViewController {
             make.edges.equalTo()(self.view)
         }
         
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "file:///Users/se/Desktop/ramayana.htm")!))
+        webView.loadRequest(NSURLRequest(URL: NSURL(string: "https://s3-ap-southeast-1.amazonaws.com/tokopedia-upload-test/brand-store/ramayana/_apps/top.html")!))
         
         webView.navigationDelegate = self
         
