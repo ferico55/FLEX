@@ -915,7 +915,7 @@
         }
         controller.selectedObject = [NSString stringWithFormat:@"%@\n%@\na/n %@",bankAccount.bank_name,bankAccount.bank_account_number, bankAccount.bank_account_name];
         controller.noResultTitle = @"Anda Belum Memiliki Rekening Bank";
-        controller.noResultDescription = @"Mohon menambahkan rekening bank terlebih dahulu (profil saya - setting - akun bank)";
+        controller.noResultDescription = @"Mohon tambahkan rekening bank terlebih dahulu (profil saya - setting - akun bank)";
     }
     controller.objects = [controllerObjects copy];
     
