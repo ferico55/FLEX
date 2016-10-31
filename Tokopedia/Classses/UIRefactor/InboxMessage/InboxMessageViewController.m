@@ -370,6 +370,7 @@
         vc.senderDisplayName = @"Tonito";
         vc.messageTitle = list.message_title;
         vc.messageId = list.message_id;
+        vc.messageTabName = [_data objectForKey:@"nav"];
         vc.onMessagePosted = ^(NSString* replyMessage) {
             [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
         };

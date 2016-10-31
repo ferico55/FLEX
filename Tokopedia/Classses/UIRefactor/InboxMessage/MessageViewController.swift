@@ -14,6 +14,7 @@ class MessageViewController: JSQMessagesViewController {
     var messageTitle = ""
     var messageSubtitle = ""
     var messageId: String!
+    var messageTabName: String!
     var onMessagePosted: ((String) -> Void)!
     var labelColorsCollection = [
         "1" : UIColor(red: 248.0/255.0, green: 148.0/255.0, blue: 6.0/255.0, alpha: 1.0), //admin
@@ -301,7 +302,7 @@ class MessageViewController: JSQMessagesViewController {
                 NSString.kunyitUrl(),
                 path: "/v1/message/detail",
                 method: .GET,
-                parameter: ["message_id" : messageId, "page" : page, "per_page" : "10"],
+                parameter: ["message_id" : messageId, "page" : page, "per_page" : "10", "nav" : messageTabName],
                 mapping: InboxMessageDetail.mapping(),
                 onSuccess: { [unowned self] (result, operation) in
                     
