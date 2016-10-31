@@ -30,6 +30,7 @@ class MessageViewController: JSQMessagesViewController {
     private var outgoingBubbleImageView: JSQMessagesBubbleImage!
     private var incomingBubbleImageView: JSQMessagesBubbleImage!
     private var nextPage: String?
+    private var indicator = UIActivityIndicatorView()
     
     lazy var fetchMessageManager : TokopediaNetworkManager = {
        var manager = TokopediaNetworkManager()
@@ -50,6 +51,8 @@ class MessageViewController: JSQMessagesViewController {
         
         //set margin between bubble, thus the bubble will adjust how it appear on iPad
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
+        
+        self.topContentAdditionalInset = 30
         
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
@@ -292,6 +295,7 @@ class MessageViewController: JSQMessagesViewController {
     
     //MARK: Network
     private func fetchMessages(page: String!) {
+        showLoading()
         fetchMessageManager .
             requestWithBaseUrl(
                 NSString.kunyitUrl(),
@@ -314,12 +318,28 @@ class MessageViewController: JSQMessagesViewController {
                         self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
                         self.nextPage = result.result.paging.uriNext.valueForKey("page")
                     }
-                    
+                    self.hideLoading()
                 },
                 onFailure: { (error) in
-            
+                    self.hideLoading()
                 }
         )
+    }
+    
+    private func showLoading() {
+        indicator.startAnimating()
+        indicator.activityIndicatorViewStyle = .Gray
+        
+        self.view.addSubview(indicator)
+        indicator.mas_makeConstraints { (make) in
+            make.left.top().right().equalTo()(self.collectionView)
+            make.height.equalTo()(44)
+        }
+    }
+    
+    private func hideLoading() {
+        indicator.stopAnimating()
+        self.topContentAdditionalInset = 0
     }
     
     private func didReceiveMessages(messages: [InboxMessageDetailList]) {
@@ -339,7 +359,7 @@ class MessageViewController: JSQMessagesViewController {
             } else {
                 self.addMessage(message.user_id, text: messageReply, senderName: "\(message.user_label) - \(message.user_name)", date: dateObj)
                 let imageView = UIImageView(frame: CGRectZero)
-                imageView.setImageWithURL(NSURL(string: message.user_image))
+                imageView.setImageWithURL(NSURL(string: message.user_image), placeholderImage: UIImage(named: "default-boy.png"))
                 
                 avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(imageView.image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
                 userLabelColors[message.user_id] = labelColorsCollection[message.user_label_id]
