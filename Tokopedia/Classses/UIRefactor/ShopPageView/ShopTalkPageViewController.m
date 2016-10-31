@@ -214,6 +214,17 @@ NoResultDelegate>
     [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    _header.frame = CGRectMake(0, -_header.frame.size.height, self.view.bounds.size.width, _header.frame.size.height);
+    
+    [_header layoutIfNeeded];
+    [_table addSubview:_header];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -234,18 +245,6 @@ NoResultDelegate>
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark - TableView Delegate
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _header;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return _header.frame.size.height;
-}
-
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -401,13 +400,7 @@ NoResultDelegate>
 #pragma mark - Scroll view delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"Content offset container %f", scrollView.contentOffset.y);
-
-    
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
-    
-    NSLog(@"Sticky Tab %hhd", isFakeStickyVisible);
-    //    NSLog(@"Range : %f", (_header.frame.size.height - _stickyTab.frame.size.height));
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
