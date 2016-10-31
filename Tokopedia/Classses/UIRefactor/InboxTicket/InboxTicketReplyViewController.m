@@ -77,16 +77,17 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     self.textView.delegate = self;
     self.textView.scrollEnabled = NO;
     
-    self.photoScrollView.delegate = self;
-    self.photoScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 10);
-    [self.photoScrollView addSubview:_scrollViewContentView];
-    
-    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
-
     CGRect frame = _scrollViewContentView.frame;
     frame.origin = CGPointZero;
     frame.size.width = EACH_PHOTO_WITH_SPACING_WIDTH * MAX_PHOTO_COUNT;
     _scrollViewContentView.frame = frame;
+    
+    self.photoScrollView.delegate = self;
+    self.photoScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 10);
+    self.photoScrollView.contentSize = CGSizeMake(_scrollViewContentView.frame.size.width, 0);
+    [self.photoScrollView addSubview:_scrollViewContentView];
+    
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
 
     self.scrollViewContentView.hidden = YES;
     
@@ -137,12 +138,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     }
     
     self.photoScrollView.contentOffset = CGPointZero;
-    
-    if (_selectedImages.count > 0) {
-        NSInteger maxWidth = _selectedImages.count * EACH_PHOTO_WITH_SPACING_WIDTH;
-        maxWidth += 10; // add right margin
-        self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -264,6 +259,11 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
             ((UIImageView*)_photosImageView[i]).userInteractionEnabled = NO;
         }
     }
+    
+    if ( _selectedImages.count > 0 ){
+        self.photoScrollView.hidden = NO;
+    }
+    
     if (_selectedImages.count<_photosImageView.count) {
         UIImageView *addImageView = _photosImageView[_selectedImages.count];
         addImageView.hidden = NO;
