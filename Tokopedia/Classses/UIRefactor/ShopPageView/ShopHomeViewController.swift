@@ -24,6 +24,10 @@ class ShopHomeViewController: UIViewController {
     private let router = JLRoutes()
     
     private var fakeTab: ShopTabView!
+    private let progressView: UIProgressView = {
+        let progressView = UIProgressView(progressViewStyle: .Bar)
+        return progressView
+    }()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -102,6 +106,14 @@ class ShopHomeViewController: UIViewController {
             self.fakeTab.hidden = !(scrollView.contentOffset.y > -self.fakeTab.frame.height)
             self.notifyScrolling()
         }
+        
+        webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
+            let webView = view as! WKWebView
+            
+            self.progressView.progress = Float(webView.estimatedProgress)
+        }
+        
+        webView.addSubview(progressView);
     }
 
     private func notifyScrolling() {
@@ -111,6 +123,11 @@ class ShopHomeViewController: UIViewController {
         NSNotificationCenter.defaultCenter().postNotificationName("updateTalkHeaderPosition", object: self, userInfo: userInfo)
         NSNotificationCenter.defaultCenter().postNotificationName("updateNotesHeaderPosition", object: self, userInfo: userInfo)
         NSNotificationCenter.defaultCenter().postNotificationName("updateReviewHeaderPosition", object: self, userInfo: userInfo)
+    }
+    
+    deinit {
+        webView.bk_removeAllBlockObservers()
+        webView.scrollView.bk_removeAllBlockObservers()
     }
 }
 
@@ -131,10 +148,15 @@ extension ShopHomeViewController: WKNavigationDelegate {
     }
     
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        hideLoadingIndicators()
     }
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+        hideLoadingIndicators()
+    }
+    
+    private func hideLoadingIndicators() {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        progressView.hidden = true
     }
 }
