@@ -90,8 +90,8 @@ class MessageViewController: JSQMessagesViewController {
         
         if(message.senderId != self.senderId) {
             var senderName = message.senderDisplayName
-            if(senderName.characters.count > 50) {
-                senderName = "\(senderName[senderName.startIndex.advancedBy(0)...senderName.startIndex.advancedBy(50)])..."
+            if(senderName.characters.count > 30) {
+                senderName = "\(senderName[senderName.startIndex.advancedBy(0)...senderName.startIndex.advancedBy(30)])..."
             }
             
             return NSAttributedString(string: senderName, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
@@ -152,17 +152,17 @@ class MessageViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         
         if(indexPath.item == 0) {
-            return 20
+            return 30
         }
 
-        if(indexPath.item - 1 > 0) {
-            let message = messages[indexPath.item]
-            let previousMessage = self.messages[indexPath.item - 1]
+        if(indexPath.item > 0) {
+            let message = messages[indexPath.item - 1]
+            let previousMessage = self.messages[indexPath.item]
             let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
             let previousDateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
             
             if(dateString != previousDateString) {
-                return 20
+                return 30
             }
         }
         
