@@ -26,6 +26,7 @@ class ShopHomeViewController: UIViewController {
     private var fakeTab: ShopTabView!
     private let progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .Bar)
+        progressView.progressTintColor = UIColor(red:0.071, green:0.780, blue:0, alpha:1)
         return progressView
     }()
     
@@ -110,10 +111,11 @@ class ShopHomeViewController: UIViewController {
         webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
             let webView = view as! WKWebView
             
-            self.progressView.progress = Float(webView.estimatedProgress)
+            self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
         
-        webView.addSubview(progressView);
+        progressView.frame.size.width = self.view.bounds.size.width
+        webView.scrollView.addSubview(progressView);
     }
 
     private func notifyScrolling() {
@@ -152,6 +154,10 @@ extension ShopHomeViewController: WKNavigationDelegate {
     }
     
     func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+        hideLoadingIndicators()
+    }
+    
+    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
         hideLoadingIndicators()
     }
     
