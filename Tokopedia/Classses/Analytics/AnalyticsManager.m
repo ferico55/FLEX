@@ -582,7 +582,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     AnalyticsManager *manager = [[self alloc] init];
     
     NSDictionary *data = @{
-                           @"event" : @"openScreen",
+                           @"event" : @"openCampaign",
                            @"utmSource" : [url.parameters objectForKey:@"utm_source"]?:@"",
                            @"utmMedium" : [url.parameters objectForKey:@"utm_medium"]?:@"",
                            @"utmCampaign" : [url.parameters objectForKey:@"utm_campaign"]?:@"",
