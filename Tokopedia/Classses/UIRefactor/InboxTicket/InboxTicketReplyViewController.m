@@ -267,8 +267,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     if (_selectedImages.count<_photosImageView.count) {
         UIImageView *addImageView = _photosImageView[_selectedImages.count];
         addImageView.hidden = NO;
-        
-        _photoScrollView.contentSize = CGSizeMake(addImageView.frame.origin.x+addImageView.frame.size.width+30, 0);
     }
 }
 
@@ -279,9 +277,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     [self setImageViews];
     
     if (_selectedImages.count > 0) {
-        NSInteger maxWidth = _selectedImages.count * EACH_PHOTO_WITH_SPACING_WIDTH;
-        maxWidth += 10; // add right margin
-        self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
         self.photoScrollView.hidden = NO;
     } else {
         self.photoScrollView.hidden = YES;
