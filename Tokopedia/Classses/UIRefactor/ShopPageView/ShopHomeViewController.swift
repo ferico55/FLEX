@@ -125,4 +125,16 @@ extension ShopHomeViewController: WKNavigationDelegate {
             decisionHandler(.Allow)
         }
     }
+    
+    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    }
+    
+    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+    
+    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
 }
