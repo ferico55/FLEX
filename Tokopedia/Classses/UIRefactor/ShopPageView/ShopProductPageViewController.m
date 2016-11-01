@@ -82,7 +82,7 @@ EtalaseViewControllerDelegate
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
@@ -222,6 +222,9 @@ EtalaseViewControllerDelegate
     _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
     _shopPageHeader.showHomeTab = self.showHomeTab;
+    
+    _searchBar = [[UISearchBar alloc] init];
+    _searchBar.delegate = self;
     
     _navigationBarIsAnimating = NO;
     
@@ -373,10 +376,10 @@ EtalaseViewControllerDelegate
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
     
-        [_shopPageHeader.searchView removeFromSuperview];
-        [reusableView addSubview:_shopPageHeader.searchView];
+        [_searchBar removeFromSuperview];
+        [reusableView addSubview:_searchBar];
         
-        [_shopPageHeader.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(reusableView);
         }];
     }
