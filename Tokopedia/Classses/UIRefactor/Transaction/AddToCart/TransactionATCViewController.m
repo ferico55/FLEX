@@ -977,39 +977,11 @@ typedef enum
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
-    if ([address.address_id isEqualToString: noAddress]) {
-        [self requestAddAddress:address];
-        return;
-    }
     [self setAddress:address];
     [self requestFormWithAddressID:address.address_id?:@""];
 }
 
 -(void)successAddAddress:(AddressFormList *)address{
-    [self setAddress:address];
-    [self requestFormWithAddressID:address.address_id?:@""];
-}
-
--(void)requestAddAddress:(AddressFormList*)address{
-    
-    [self adjustViewIsLoading:YES];
-    
-    [RequestAddAddress fetchAddAddress:address
-                            isFromCart:@"1"
-                               success:^(ProfileSettingsResult *data, AddressFormList *address) {
-                                   
-                                   [self successAddAddress:address result:data];
-                                   
-                               } failure:^(NSError *error) {
-                                   
-                                   [self failedAddAddress:address error:error];
-                                   
-                               }];
-}
-
-
--(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
-    [self adjustViewIsLoading:NO];
     [self setAddress:address];
     [self requestFormWithAddressID:address.address_id?:@""];
 }
