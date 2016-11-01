@@ -233,9 +233,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
-        categoryVerticalView = OAStackView()
-        self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+
         for layout_section in homePageCategoryData.layout_sections {
+            categoryVerticalView = OAStackView()
+            self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
             setCategoryTitleLabel(layout_section.title)
             
             setCategoryUpperSeparator()
@@ -243,8 +244,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
             
             setBottomSeparatorView()
+            
+            self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
-            self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)        
     }
     
     func initViewLayout() {
@@ -266,10 +268,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
         
         // init category
+        self.categoryPlaceholder.layoutMarginsRelativeArrangement = true
+        self.categoryPlaceholder.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
-        self.categoryPlaceholder.mas_makeConstraints { (make) in
-            make.left.mas_equalTo()(self.outerStackView.mas_left).with().offset()(20)
-        }
     }
     
     // MARK: Keyboard Manager
