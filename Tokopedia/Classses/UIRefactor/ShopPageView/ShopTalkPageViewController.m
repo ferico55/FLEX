@@ -377,12 +377,8 @@ NoResultDelegate>
 - (void)updateTalkHeaderPosition:(NSNotification *)notification
 {
     id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    }
+    float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+    
     CGPoint cgpoint = CGPointMake(0, ypos);
     NSLog(@"Child Position %f",[[userinfo objectForKey:@"yposition"] floatValue]);
     
