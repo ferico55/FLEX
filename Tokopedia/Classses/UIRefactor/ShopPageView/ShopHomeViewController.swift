@@ -40,10 +40,22 @@ class ShopHomeViewController: UIViewController {
             self.onEtalaseSelected?(shopDomain, etalaseId)
             return true
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ShopHomeViewController.updateHeaderPosition), name: "updateHeaderPosition", object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc
+    private func updateHeaderPosition(notification: NSNotification) {
+        if notification.object! !== self {
+            let userInfo = notification.userInfo! 
+            let yPos: Double = userInfo["y_position"] as! Double
+            
+            webView.scrollView.contentOffset = CGPoint(x: 0, y: yPos)
+        }
     }
     
     override func viewDidLoad() {
@@ -130,6 +142,7 @@ class ShopHomeViewController: UIViewController {
     deinit {
         webView.bk_removeAllBlockObservers()
         webView.scrollView.bk_removeAllBlockObservers()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
 

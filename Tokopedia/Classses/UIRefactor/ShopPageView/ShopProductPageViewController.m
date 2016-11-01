@@ -505,18 +505,20 @@ EtalaseViewControllerDelegate
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTalkHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateReviewHeaderPosition" object:nil userInfo:userInfo];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition"
+                                                        object:self
+                                                      userInfo:userInfo];
 }
 
 - (void)updateProductHeaderPosition:(NSNotification *)notification {
     id userinfo = notification.userInfo;
-    float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
     
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _collectionView.contentOffset = cgpoint;
+    if (notification.object != self) {
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        _collectionView.contentOffset = cgpoint;
+    }
 }
 
 #pragma mark - SearchBar Delegate

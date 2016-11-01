@@ -121,7 +121,8 @@ NoResultDelegate>
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
-                                                 name:@"updateTalkHeaderPosition" object:nil];
+                                                 name:@"updateHeaderPosition"
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTotalComment:)
@@ -376,15 +377,14 @@ NoResultDelegate>
 
 - (void)updateTalkHeaderPosition:(NSNotification *)notification
 {
-    id userinfo = notification.userInfo;
-    float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    NSLog(@"Child Position %f",[[userinfo objectForKey:@"yposition"] floatValue]);
-    
-    //    if(ypos < _header.frame.size.height - _stickyTab.frame.size.height) {
-    _table.contentOffset = cgpoint;
-    //    }
+    if (notification.object != self) {
+        id userinfo = notification.userInfo;
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        
+        _table.contentOffset = cgpoint;
+    }
 }
 
 #pragma mark - Memory Management
@@ -410,10 +410,7 @@ NoResultDelegate>
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateReviewHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateProductHeaderPosition" object:nil userInfo:userInfo];
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
 }
 
 #pragma mark - Shop Header Delegate

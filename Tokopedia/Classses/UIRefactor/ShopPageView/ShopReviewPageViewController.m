@@ -743,21 +743,18 @@
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTalkHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateProductHeaderPosition" object:nil userInfo:userInfo];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
 }
 
 - (void)updateReviewHeaderPosition:(NSNotification *)notification
 {
-    id userinfo = notification.userInfo;
-    float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _table.contentOffset = cgpoint;
-    
-    
+    if (notification.object != self) {
+        id userinfo = notification.userInfo;
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        _table.contentOffset = cgpoint;
+    }
 }
 
 
