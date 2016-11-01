@@ -85,7 +85,7 @@
 #define GA_EVENT_ACTION_ATC_ABANDON @"Add to Cart Abandon"
 #define GA_EVENT_ACTION_ATC_ERROR @"Add to Cart Error"
 #define GA_EVENT_ACTION_REGISTER_SUCCESS @"Register Success"
-#define GA_EVENT_ACTION_REGISTER_ERROR @"Error"
+#define GA_EVENT_ACTION_REGISTER_ERROR @"Register Error"
 #define GA_EVENT_ACTION_REGISTER @"Register"
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"
 #define GA_EVENT_ACTION_LOGIN_ERROR @"Login Error"
