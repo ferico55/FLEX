@@ -188,16 +188,6 @@ EtalaseViewControllerDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateProductHeaderPosition:)
                                                  name:@"updateProductHeaderPosition" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 
@@ -352,7 +342,7 @@ EtalaseViewControllerDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(self.view.bounds.size.width, _shopPageHeader.searchView.frame.size.height);
+    return CGSizeMake(collectionView.bounds.size.width, _shopPageHeader.searchView.frame.size.height);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
@@ -385,6 +375,10 @@ EtalaseViewControllerDelegate
     
         [_shopPageHeader.searchView removeFromSuperview];
         [reusableView addSubview:_shopPageHeader.searchView];
+        
+        [_shopPageHeader.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(reusableView);
+        }];
     }
     
     return reusableView;
@@ -737,22 +731,7 @@ EtalaseViewControllerDelegate
     }
     
     [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:shopName];
-    }
-
-#pragma mark - Keyboard
-- (void)keyboardWillShow:(NSNotification *)info {
-    _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-    _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    NSDictionary* keyboardInfo = [info userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
-
-- (void)keyboardWillHide:(NSNotification *)info {
-    _collectionView.contentInset = UIEdgeInsetsZero;
-}
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton {

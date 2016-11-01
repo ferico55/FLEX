@@ -19,7 +19,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="56G-bC-GIm">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view tag="18" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7O-mI-2jh">
@@ -108,10 +108,10 @@
                             <variation key="heightClass=regular-widthClass=regular">
                                 <mask key="constraints">
                                     <include reference="9U6-2H-jbT"/>
+                                    <exclude reference="Ifd-gd-nhL"/>
                                     <include reference="FxK-LN-OYS"/>
                                     <exclude reference="Nbe-F5-zuC"/>
                                     <include reference="fZS-ng-9S8"/>
-                                    <exclude reference="Ifd-gd-nhL"/>
                                 </mask>
                             </variation>
                         </view>
@@ -270,10 +270,10 @@
                             <variation key="heightClass=regular-widthClass=regular">
                                 <mask key="constraints">
                                     <include reference="XTl-Ur-L66"/>
-                                    <exclude reference="oxN-ck-Evh"/>
                                     <exclude reference="WtI-hA-dSO"/>
                                     <include reference="Yb8-aA-pAH"/>
                                     <include reference="kDq-Gg-jEq"/>
+                                    <exclude reference="oxN-ck-Evh"/>
                                 </mask>
                             </variation>
                         </view>
@@ -386,7 +386,7 @@
                         </mask>
                     </variation>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5EI-FS-xn5">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5EI-FS-xn5" customClass="TPKeyboardAvoidingCollectionView">
                     <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="O0b-PL-j9s">
                         <size key="itemSize" width="50" height="50"/>
