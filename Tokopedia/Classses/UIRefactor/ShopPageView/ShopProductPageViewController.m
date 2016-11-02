@@ -650,7 +650,14 @@ EtalaseViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)clearSearchQuery {
+    _searchBar.text = @"";
+    [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+}
+
 - (void)showProductsWithEtalaseId:(NSString *)etalaseId {
+    [self clearSearchQuery];
+    
     [self didSelectEtalase:[self etalaseWithId:etalaseId]];
 }
 
