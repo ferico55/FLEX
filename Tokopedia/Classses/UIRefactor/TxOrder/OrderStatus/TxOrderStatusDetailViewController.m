@@ -291,6 +291,7 @@
         switch (buttonIndex) {
             case 1://Selesai
             {
+                [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [_delegate confirmDelivery:_order atIndexPath:_indexPath];
                 [_delegate delegateViewController:self];
             }

@@ -56,6 +56,13 @@
 #define GA_EVENT_CATEGORY_SECURITY_QUESTION @"Security Question"
 #define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
 #define GA_EVENT_CATEGORY_SEARCH_RESULT @"Search Result"
+#define GA_EVENT_CATEGORY_SALES @"Sales"
+#define GA_EVENT_CATEGORY_NEW_ORDER @"New Order"
+#define GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION @"Shipping"
+#define GA_EVENT_CATEGORY_SHIPMENT_STATUS @"Status"
+#define GA_EVENT_CATEGORY_TRANSACTION_LIST @"Transaction"
+#define GA_EVENT_CATEGORY_RECEIVED @"Received"
+#define GA_EVENT_CATEGORY_TRACKING @"Tracking"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
@@ -78,7 +85,7 @@
 #define GA_EVENT_ACTION_ATC_ABANDON @"Add to Cart Abandon"
 #define GA_EVENT_ACTION_ATC_ERROR @"Add to Cart Error"
 #define GA_EVENT_ACTION_REGISTER_SUCCESS @"Register Success"
-#define GA_EVENT_ACTION_REGISTER_ERROR @"Error"
+#define GA_EVENT_ACTION_REGISTER_ERROR @"Register Error"
 #define GA_EVENT_ACTION_REGISTER @"Register"
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"
 #define GA_EVENT_ACTION_LOGIN_ERROR @"Login Error"
