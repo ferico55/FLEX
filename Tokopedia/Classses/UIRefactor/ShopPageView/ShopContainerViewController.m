@@ -77,7 +77,9 @@
 
 
 
-@implementation ShopContainerViewController
+@implementation ShopContainerViewController {
+    BOOL _uiCreated;
+}
 
 @synthesize data = _data;
 
@@ -154,6 +156,10 @@
 }
 
 - (void)showUi {
+    if (_uiCreated) return;
+    
+    _uiCreated = YES;
+    
     __weak typeof(self) weakSelf = self;
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
