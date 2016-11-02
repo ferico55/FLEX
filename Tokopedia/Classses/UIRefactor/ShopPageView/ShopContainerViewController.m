@@ -467,6 +467,10 @@
 #pragma mark - Tap Action
 - (IBAction)infoTap:(id)sender {
     if (_shop) {
+        [AnalyticsManager trackEventName:@"clickShopHome"
+                                category:GA_EVENT_CATEGORY_SHOP_HOME
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Shop Info"];
         ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
         vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
                     kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{}};
@@ -537,6 +541,10 @@
 
 - (IBAction)settingTap:(id)sender {
     if (_shop) {
+        [AnalyticsManager trackEventName:@"clickShopHome"
+                                category:GA_EVENT_CATEGORY_SHOP_HOME
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Setting"];
         ShopSettingViewController *settingController = [ShopSettingViewController new];
         settingController.data = @{
                                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
@@ -547,6 +555,10 @@
 }
 
 - (IBAction)addProductTap:(id)sender {
+    [AnalyticsManager trackEventName:@"clickShopHome"
+                            category:GA_EVENT_CATEGORY_SHOP_HOME
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Add Product"];
     ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
     productViewController.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];

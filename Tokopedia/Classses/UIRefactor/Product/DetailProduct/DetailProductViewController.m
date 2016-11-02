@@ -712,6 +712,7 @@ TTTAttributedLabelDelegate
                 break;
             }
             case 21 : {
+                [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Promote"];
                 [_promoteNetworkManager resetRequestCount];
                 [_promoteNetworkManager doRequest];
                 break;

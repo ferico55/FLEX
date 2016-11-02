@@ -370,6 +370,7 @@
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
+    [AnalyticsManager trackEventName:@"clickNotes" category:GA_EVENT_CATEGORY_SHOP_NOTES action:GA_EVENT_ACTION_CLICK label:@"Delete"];
     NotesList *list = _list[indexpath.row];
     [_list removeObjectAtIndex:indexpath.row];
     [_table beginUpdates];

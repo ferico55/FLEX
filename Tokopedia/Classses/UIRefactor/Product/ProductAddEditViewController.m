@@ -159,6 +159,7 @@ FilterCategoryViewDelegate
 -(void)onTapNextButton:(UIBarButtonItem*)button{
     [[self.tableView superview] endEditing:YES];
     if ([self dataInputIsValid]) {
+        
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
