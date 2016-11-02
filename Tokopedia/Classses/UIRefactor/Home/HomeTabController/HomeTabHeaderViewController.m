@@ -44,7 +44,7 @@
 }
 
 - (void)initButton {
-    UIButton * (^createButton)(NSString* ,NSInteger, NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger multiplier, NSInteger buttonTag) {
+    UIButton * (^createButton)(NSString* , NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger buttonTag) {
         UIButton *button;
         button = [[UIButton alloc] init];
         button.titleLabel.font = [UIFont title2ThemeMedium];
@@ -55,19 +55,22 @@
         return button;
     };
     _stackView = [[OAStackView alloc] initWithArrangedSubviews:
-                  @[createButton(@"HOME", 1, 1),
-                    createButton(@"FEED", 2, 2),
-                    createButton(@"WISHLIST", 3, 3),
-                    createButton(@"TERAKHIR DILIHAT", 4, 4),
-                    createButton(@"FAVORIT", 5, 5)]];
+                  @[createButton(@"HOME", 1),
+                    createButton(@"FEED", 2),
+                    createButton(@"WISHLIST", 3),
+                    createButton(@"TERAKHIR DILIHAT", 4),
+                    createButton(@"FAVORIT", 5)]];
     _stackView.axis = UILayoutConstraintAxisHorizontal;
     _stackView.alignment = OAStackViewAlignmentFill;
-    [_scrollView addSubview:_stackView];
+    _stackView.layoutMarginsRelativeArrangement = YES;
+    _stackView.layoutMargins = UIEdgeInsetsMake(0, STACKVIEW_LEFTRIGHT_MARGIN, 0, STACKVIEW_LEFTRIGHT_MARGIN);
+  
 
 }
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
+      [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
@@ -84,9 +87,7 @@
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
         [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.mas_equalTo(_scrollView);
-            make.left.mas_equalTo(_scrollView).with.offset(STACKVIEW_LEFTRIGHT_MARGIN);
-            make.right.mas_equalTo(_scrollView).with.offset(-STACKVIEW_LEFTRIGHT_MARGIN);
+            make.top.bottom.left.right.mas_equalTo(_scrollView);
             make.height.mas_equalTo(_scrollView);
         }];
 
@@ -96,9 +97,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNotificationCenter];
-    
-    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/2)*6, self.view.frame.size.height);
-    
+
     _scrollView.delegate = self;
     _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _scrollView.bounces = NO;
