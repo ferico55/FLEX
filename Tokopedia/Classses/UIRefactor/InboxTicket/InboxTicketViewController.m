@@ -165,7 +165,15 @@ NoResultDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
-    
+    NSString *type = @"";
+    if (_inboxCustomerServiceType == InboxCustomerServiceTypeAll) {
+        type = @"Semua";
+    } else if (_inboxCustomerServiceType == InboxCustomerServiceTypeClosed) {
+        type = @"Ditutup";
+    } else {
+        type = @"Dalam Proses";
+    }
+    [AnalyticsManager trackEventName:@"clickHelp" category:GA_EVENT_CATEGORY_INBOX_TICKET action:GA_EVENT_ACTION_CLICK label:type];
     InboxTicketDetailViewController *controller = self.detailViewController;
     if (self.detailViewController == nil) {
         controller = [InboxTicketDetailViewController new];

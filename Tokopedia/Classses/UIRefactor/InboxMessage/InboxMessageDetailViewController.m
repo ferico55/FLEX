@@ -393,7 +393,10 @@
                     _textView.text = nil;
                     [self adjustButtonSendAvailability];
                 } else {
-                    
+                    [AnalyticsManager trackEventName:@"clickMessage"
+                                            category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                              action:GA_EVENT_ACTION_ERROR
+                                               label:[_data objectForKey:@"nav"]?:@""];
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
@@ -529,6 +532,10 @@
                          [_refreshControl endRefreshing];
                      }
                      onFailure:^(NSError *errorResult) {
+                         [AnalyticsManager trackEventName:@"clickMessage"
+                                                 category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                                   action:GA_EVENT_ACTION_ERROR
+                                                    label:[_data objectForKey:@"nav"]?:@""];
                          _table.tableFooterView = nil;
                          _isrefreshview = NO;
                          [_refreshControl endRefreshing];

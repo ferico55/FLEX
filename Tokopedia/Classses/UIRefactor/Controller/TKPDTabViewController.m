@@ -93,6 +93,12 @@
 }
 
 - (IBAction)valueChangedSegmentedControl:(UISegmentedControl *)sender {
+    if ([_inboxType isEqualToString:@"Ticket"]) {
+        [AnalyticsManager trackEventName:@"clickHelp" category:GA_EVENT_CATEGORY_INBOX_TICKET action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
+    } else if ([_inboxType isEqualToString:@"Talk"]) {
+        [AnalyticsManager trackEventName:@"clickProductDiscussion" category:GA_EVENT_CATEGORY_INBOX_TALK action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
+    }
+    
     UIViewController *controller = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     controller.view.frame = _containerView.bounds;
 
