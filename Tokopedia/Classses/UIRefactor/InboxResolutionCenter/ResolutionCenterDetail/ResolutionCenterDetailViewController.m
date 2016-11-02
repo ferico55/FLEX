@@ -1276,14 +1276,14 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
 
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    NSString *oldAddressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    NSString *oldAddressID = _selectedAddress.address_id;
 
     BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
 
     AddressFormList *address = [userInfo objectForKey:@"address"];
     ResolutionConversation *conversation = viewController.data[@"conversation"];
 
-    if (address.address_id == 0) {
+    if ([address.address_id integerValue] == 0) {
         address.address_id = address.addr_id;
     }
 
@@ -1300,8 +1300,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)requestAddAddress{
-    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
-    [RequestResolution fetchInputAddressID:addressID resolutionID:_resolutionID onSuccess:^(ResolutionActionResult * data) {
+    [RequestResolution fetchInputAddressID:_selectedAddress.address_id resolutionID:_resolutionID onSuccess:^(ResolutionActionResult * data) {
         
         [self refreshRequest];
         
@@ -1311,7 +1310,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)requestEditOldAddressID:(NSString*)oldAddressID conversationID:(NSString*)conversationID{
-    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    NSString *addressID = _selectedAddress.address_id;
     [RequestResolution fetchEditAddressID:addressID resolutionID:_resolutionID oldAddressID:oldAddressID oldConversationID:conversationID onSuccess:^(ResolutionActionResult * data) {
         
         [self refreshRequest];
