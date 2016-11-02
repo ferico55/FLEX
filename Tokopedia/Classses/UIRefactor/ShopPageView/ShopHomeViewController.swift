@@ -138,10 +138,7 @@ class ShopHomeViewController: UIViewController {
     private func notifyScrolling() {
         let userInfo = ["y_position": webView.scrollView.contentOffset.y]
         
-        NSNotificationCenter.defaultCenter().postNotificationName("updateProductHeaderPosition", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotificationName("updateTalkHeaderPosition", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotificationName("updateNotesHeaderPosition", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotificationName("updateReviewHeaderPosition", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotificationName("updateHeaderPosition", object: self, userInfo: userInfo)
     }
     
     deinit {
