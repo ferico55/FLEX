@@ -16,7 +16,7 @@ class ShopHomeViewController: UIViewController {
     var onEtalaseSelected: ((String, String) -> Void)?
     var onTabSelected: ((ShopPageTab) -> Void)?
     var data: [NSObject: AnyObject]?
-    var shopPageHeader: ShopPageHeader?
+    var shopPageHeader: ShopPageHeader!
     var showHomeTab: Bool = false
     
     private let webView = WKWebView()
@@ -87,10 +87,6 @@ class ShopHomeViewController: UIViewController {
         fakeTab.layer.shadowColor = UIColor.blackColor().CGColor
         fakeTab.layer.shadowRadius = 1
         fakeTab.layer.shadowOpacity = 3
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
         
         let header = ShopPageHeader(selectedTab: .Home)
         header.onTabSelected = self.onTabSelected
@@ -103,7 +99,7 @@ class ShopHomeViewController: UIViewController {
                                    width: self.view.bounds.width,
                                    height: header.view.frame.height)
         
-        header.view.layoutIfNeeded()
+//        header.view.layoutIfNeeded()
         
         self.shopPageHeader = header
         
@@ -125,6 +121,15 @@ class ShopHomeViewController: UIViewController {
             
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        //TODO: fix header layout. height is hardcoded to prevent the header from setting its own height
+        self.shopPageHeader.view.frame.size = CGSize(width: self.view.bounds.width, height: 245)
+        self.shopPageHeader.view.layoutIfNeeded()
         
         progressView.frame.size.width = self.view.bounds.size.width
         webView.scrollView.addSubview(progressView);
