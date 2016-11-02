@@ -35,7 +35,7 @@
 #import "FavoriteShopRequest.h"
 #import "PromoRequest.h"
 #import "Tokopedia-Swift.h"
-
+#import "NoResultReusableView.h"
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
@@ -335,12 +335,17 @@
 
 #pragma mark - Request And Mapping
 -(void)requestShopInfo{
+    __weak typeof(self) weakSelf = self;
+    
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
+    
     NSString *shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
+        
         _shop = shop;
         
-        //TODO: do it only once
         [self showUi];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateHeaderShopPage];
@@ -389,8 +394,20 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
         _isNoData = NO;
     } onFailure:^(NSError *error) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
-        [alert show];
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
+        
+        NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:self.view.bounds];
+        [noResultView setNoResultImage:@"icon_retry_grey"];
+        [noResultView setNoResultTitle:@"Kendala koneksi internet"];
+        [noResultView setNoResultDesc:@"Silakan mencoba kembali"];
+        [noResultView setNoResultButtonTitle:@"Coba Kembali"];
+        
+        noResultView.onButtonTap = ^(NoResultReusableView *noResultView) {
+            [noResultView removeFromSuperview];
+            [weakSelf requestShopInfo];
+        };
+        
+        [self.view addSubview:noResultView];
     }];
 }
 
