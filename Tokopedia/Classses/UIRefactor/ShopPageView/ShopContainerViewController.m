@@ -288,6 +288,15 @@
     NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
         _shop = shop;
+        if(_shop.result.info == nil) {
+            WebViewController* controller = [[WebViewController alloc] init];
+            controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+            controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+            
+            [self.navigationController pushViewController:controller animated:YES];
+            return;
+        }
+        
         if ([_userManager isMyShopWithShopId:_shop.result.info.shop_id]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
             _addProductBarButton.enabled = YES;

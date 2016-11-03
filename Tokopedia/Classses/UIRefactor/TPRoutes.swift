@@ -38,9 +38,17 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //kereta
+        //hot
         JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
             NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
+            
+            return true
+        }
+        
+        //bantuan
+        JLRoutes.globalRoutes().addRoute("/bantuan/*") { (params: [String : AnyObject]!) -> Bool in
+            let url = params[kJLRouteURLKey] as! NSURL
+            openWebView(url)
             
             return true
         }
