@@ -147,11 +147,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             let iconStackView = OAStackView()
             self.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
             
-            let url = NSURL(string: layoutRow.image_url)
-            let imageData: NSData? = NSData(contentsOfURL: url!)
-            var iconImageView: UIImageView = UIImageView()
-            if let imageData = imageData {
-                iconImageView = UIImageView(image: UIImage(data: imageData))
+            let url: NSURL? = NSURL(string: layoutRow.image_url)
+            let iconImageView: UIImageView = UIImageView()
+            if let url = url {
+                iconImageView.setImageWithURL(url)
             }
             let imageViewContainer = UIView()
             imageViewContainer.addSubview(iconImageView)
@@ -231,14 +230,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         })
         bottomSeparatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
         categoryVerticalView.addArrangedSubview(bottomSeparatorView)
-        self.categoryPlaceholder.addArrangedSubview(categoryVerticalView)
     }
     
     func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
+
         for layout_section in homePageCategoryData.layout_sections {
             categoryVerticalView = OAStackView()
             self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
-            
             setCategoryTitleLabel(layout_section.title)
             
             setCategoryUpperSeparator()
@@ -246,6 +244,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
             
             setBottomSeparatorView()
+            
+            self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
     }
     
@@ -268,10 +268,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
         
         // init category
+        self.categoryPlaceholder.layoutMarginsRelativeArrangement = true
+        self.categoryPlaceholder.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
-        self.categoryPlaceholder.mas_makeConstraints { (make) in
-            make.left.mas_equalTo()(self.outerStackView.mas_left).with().offset()(20)
-        }
     }
     
     // MARK: Keyboard Manager
@@ -286,13 +285,11 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     func requestCategory() {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { (mappingResult, operation) in
-            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
                 let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                 let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
                 let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
                 self.setupOuterStackCategoryWithData(homePageCategoryData)
-                })
         }) { (error) in
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
             stickyAlertView.show()
