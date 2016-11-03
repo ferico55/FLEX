@@ -65,13 +65,11 @@
     _stackView.alignment = OAStackViewAlignmentFill;
     _stackView.layoutMarginsRelativeArrangement = YES;
     _stackView.layoutMargins = UIEdgeInsetsMake(0, STACKVIEW_LEFTRIGHT_MARGIN, 0, STACKVIEW_LEFTRIGHT_MARGIN);
-  
-
 }
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
-      [_scrollView addSubview:_stackView];
+    [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
@@ -134,6 +132,7 @@
     [_scrollView setScrollEnabled:YES];
     [_stackView removeFromSuperview];
     [self initButton];
+    [self viewDidLayoutSubviews];
     _loggedIn = YES;
 }
 
@@ -178,6 +177,10 @@
     switch (page) {
         case 1 :{
             _totalOffset = 0;
+            break;
+        }
+        case 5 :{
+            _totalOffset = _maxXInScrollView;
             break;
         }
         default:
