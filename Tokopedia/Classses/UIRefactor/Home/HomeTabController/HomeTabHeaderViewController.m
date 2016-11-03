@@ -24,6 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) OAStackView *stackView;
+@property (nonatomic) CGFloat maxXInScrollView;
 
 @end
 
@@ -92,7 +93,9 @@
         }];
 
     }
-    }
+    
+    _maxXInScrollView = [self xInScrollViewFormula: [_stackView.arrangedSubviews count]] - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count]-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -171,49 +174,30 @@
 
 - (void)tap:(int)page {
     [self.view layoutIfNeeded];
-    NSInteger xInScrollView = [[_stackView.arrangedSubviews objectAtIndex:page-1] convertPoint:CGPointZero toView:_scrollView].x;
+    NSInteger xInScrollView = [self xInScrollViewFormula: page];
     switch (page) {
         case 1 :{
             _totalOffset = 0;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 1;
             break;
         }
-            
-        case 2 : {
-            _totalOffset = xInScrollView / 2;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 2;
-            break;
-        }
-            
-        case 3 : {
-            xInScrollView = xInScrollView / 2;
-            _totalOffset = xInScrollView;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 3;
-            break;
-        }
-            
-        case 4 : {
-            xInScrollView = xInScrollView / 2;
-            _totalOffset = xInScrollView;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 4;
-            break;
-        }
-            
-        case 5 : {
-             xInScrollView = xInScrollView - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:page-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
-            _totalOffset = xInScrollView;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 5;
-            break;
-        }
-            
         default:
+            _totalOffset = [self totalOffsetFormula:xInScrollView page:page];
             break;
     }
+    _viewControllerIndex = page;
+    [self tapButtonAnimate:_totalOffset];
+}
+
+- (NSInteger) xInScrollViewFormula: (NSInteger)page {
+    return [[_stackView.arrangedSubviews objectAtIndex:page-1] convertPoint:CGPointZero toView:_scrollView].x;
+}
+
+- (CGFloat) totalOffsetFormula: (NSInteger)xInScrollView page: (NSInteger) page {
+    CGFloat totalOffset = xInScrollView - ((_stackView.arrangedSubviews[page-2].frame.size.width / 2)*(page-1) + _stackView.spacing);
+    if (totalOffset >= _maxXInScrollView) {
+        totalOffset = _maxXInScrollView;
+    }
+    return totalOffset;
 }
 
 - (void)setActiveButton
