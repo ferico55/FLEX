@@ -338,7 +338,7 @@
     }];
 }
 
--(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
+-(void)didReceiveActionButtonFavoriteShopConfirmation{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
     [self setFavoriteRightButtonItem];
     NSArray *tempArr = self.navigationController.viewControllers;
@@ -506,8 +506,21 @@
     	if([_data objectForKey:PromoRefKey]){
         	adKey = [_data objectForKey:PromoRefKey];
     	}
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
+        [self requestFavoriteShop:_shop.result.info.shop_id adKey:adKey];
     }
+}
+
+-(void)requestFavoriteShop:(NSString*)shopID adKey:(NSString*)adKey{
+    
+    [FavoriteShopRequest requestActionButtonFavoriteShop:shopID withAdKey:adKey onSuccess:^(FavoriteShopActionResult *data) {
+        
+        [self didReceiveActionButtonFavoriteShopConfirmation];
+        
+    } onFailure:^{
+        
+        [self failToRequestActionButtonFavoriteShopConfirmation];
+        
+    }];
 }
 
 //this function called when user tap WHITE HEART button, with intention to FAVORITE a shop
@@ -517,7 +530,7 @@
     	if([_data objectForKey:PromoRefKey]){
         	adKey = [_data objectForKey:PromoRefKey];
     	}
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
+        [self requestFavoriteShop:_shop.result.info.shop_id adKey:adKey];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
