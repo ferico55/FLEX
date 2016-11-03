@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ReplyInboxTicketResult : NSObject
+@interface ReplyInboxTicketResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_success;
 @property (strong, nonatomic) NSString *post_key;
