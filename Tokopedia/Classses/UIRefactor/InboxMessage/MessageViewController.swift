@@ -243,7 +243,7 @@ class MessageViewController: JSQMessagesViewController {
     //MARK: TextView Delegate
     override func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         var urlString : String!
-        if(URL.scheme == "http" || URL.scheme == "https") {
+        if(URL.scheme?.lowercaseString == "http" || URL.scheme?.lowercaseString == "https") {
             if(URL.host == "www.tokopedia.com") {
                 urlString = URL.absoluteString!
             } else {
