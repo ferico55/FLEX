@@ -270,10 +270,6 @@ typedef enum {
 #define GTMKeyCancelPromoSearch       @"cancel_promo_search"
 #define GTMKeyCancelPromoShopFeed     @"cancel_promo_shop_feed"
 
-#define GTMKeyNotifyLBLMBase @"notify_base_url"
-#define GTMKeyNotifyLBLMPost @"notify_post_url"
-#define GTMKeyNotifyLBLMFull @"notify_full_url"
-
 #define GTMVeritransClientKey @"veritrans_client_key"
 
 #define GTMHiddenPaymentKey @"hidden_payment_gateways"
