@@ -12,10 +12,10 @@ import UIKit
 class MyWishlistLabel: NSObject {
     
     var title: String!
-    var image_url: String!
+    var color: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistBadge.self)
+        let mapping = RKObjectMapping(forClass: MyWishlistLabel.self)
         mapping.addAttributeMappingsFromArray(["title", "color"])
         
         return mapping

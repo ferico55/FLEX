@@ -1215,7 +1215,7 @@ TTTAttributedLabelDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagOtherProduct)
-        return @"/search/v2.3/product";
+        return @"/search/v2.4/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagNoteCanReture)

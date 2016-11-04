@@ -21,7 +21,7 @@ class MyWishlistData: NSObject {
     var condition: String!
     var shop: MyWishlistShop!
     var badges: [MyWishlistBadge]!
-    var labels: [MyWishlistLabel]!
+    var labels: [ProductLabel]!
     var available: Bool = false
     var status: String!
     var preorder: Bool = false
@@ -35,7 +35,7 @@ class MyWishlistData: NSObject {
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "wholesale_price", toKeyPath: "wholesale_price", withMapping: MyWishlistWholesalePrice.mapping()))
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "shop", toKeyPath: "shop", withMapping: MyWishlistShop.mapping()))
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", withMapping: MyWishlistBadge.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", withMapping: MyWishlistLabel.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", withMapping: ProductLabel.mapping()))
         
         
         return mapping

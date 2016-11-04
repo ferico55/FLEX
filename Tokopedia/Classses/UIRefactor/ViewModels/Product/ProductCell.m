@@ -54,7 +54,7 @@
     
     for(ProductLabel* productLabel in labels) {
         UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.text = [NSString stringWithFormat:@" %@  ", productLabel.title];
+        label.text = [NSString stringWithFormat:@"%@ ", productLabel.title];
         label.backgroundColor  = [UIColor fromHexString:productLabel.color];
         label.textAlignment = NSTextAlignmentCenter;
         label.layer.cornerRadius = 3;
