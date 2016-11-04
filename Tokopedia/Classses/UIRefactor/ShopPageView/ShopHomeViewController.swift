@@ -19,6 +19,8 @@ class ShopHomeViewController: UIViewController {
     var shopPageHeader: ShopPageHeader!
     var showHomeTab: Bool = false
     
+    let url: String
+    
     private let webView = WKWebView()
     
     private let router = JLRoutes()
@@ -30,7 +32,9 @@ class ShopHomeViewController: UIViewController {
         return progressView
     }()
     
-    init() {
+    init(url: String) {
+        self.url = url
+        
         super.init(nibName: nil, bundle: nil)
         
         router.addRoute("/shop/:shopDomain/etalase/:etalaseId") { [unowned self] dictionary in
@@ -67,7 +71,7 @@ class ShopHomeViewController: UIViewController {
             make.edges.equalTo()(self.view)
         }
         
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "https://s3-ap-southeast-1.amazonaws.com/tokopedia-upload-test/brand-store/ramayana/_apps/top.html")!))
+        webView.loadRequest(NSURLRequest(URL: NSURL(string: self.url)!))
         
         webView.navigationDelegate = self
         

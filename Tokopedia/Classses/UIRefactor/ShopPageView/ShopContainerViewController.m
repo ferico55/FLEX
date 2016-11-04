@@ -197,7 +197,7 @@
     _shopNotesViewController.onTabSelected = onTabSelected;
     _shopNotesViewController.showHomeTab = _shop.result.info.official;
     
-    _shopHomeViewController = [ShopHomeViewController new];
+    _shopHomeViewController = [[ShopHomeViewController alloc] initWithUrl: _shop.result.info.shop_official_top];
     _shopHomeViewController.data = _data;
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
         [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
