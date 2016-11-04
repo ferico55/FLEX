@@ -63,7 +63,7 @@ class ProductWishlistCell : UICollectionViewCell {
         
     }
     
-    internal func setLabels(labels: [AnyObject]) {
+    internal func setLabels(labels: [AnyObject]?) {
         labelsView.arrangedSubviews.forEach { (subview) in
             labelsView .removeArrangedSubview(subview)
         }
@@ -73,23 +73,26 @@ class ProductWishlistCell : UICollectionViewCell {
         labelsView.axis = .Horizontal
         labelsView.distribution = .EqualSpacing
         
-        labels.forEach { (productLabel) in
-            let productObject = productLabel as! ProductLabel
-            
-            let label = UILabel(frame: CGRectZero)
-            label.text = "\(productObject.title) "
-            label.backgroundColor = UIColor.fromHexString(productObject.color)
-            label.textAlignment = .Center
-            label.layer.cornerRadius = 3
-            label.layer.masksToBounds = true
-            label.layer.borderWidth = 1.0
-            label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.whiteColor().CGColor
-            label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
-            label.font = UIFont.smallTheme()
-            
-            self.labelsView .addArrangedSubview(label)
-            
+        if(labels?.count > 0) {
+            labels!.forEach { (productLabel) in
+                let productObject = productLabel as! ProductLabel
+                
+                let label = UILabel(frame: CGRectZero)
+                label.text = "\(productObject.title) "
+                label.backgroundColor = UIColor.fromHexString(productObject.color)
+                label.textAlignment = .Center
+                label.layer.cornerRadius = 3
+                label.layer.masksToBounds = true
+                label.layer.borderWidth = 1.0
+                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.whiteColor().CGColor
+                label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
+                label.font = UIFont.smallTheme()
+                
+                self.labelsView .addArrangedSubview(label)
+                
+            }
         }
+        
     }
     
     internal func setBadges(badges: [AnyObject]) {
