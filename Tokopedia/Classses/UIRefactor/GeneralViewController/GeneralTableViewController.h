@@ -36,4 +36,7 @@
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 
+@property (strong, nonatomic) NSString *noResultTitle;
+@property (strong, nonatomic) NSString *noResultDescription;
+
 @end
