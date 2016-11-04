@@ -99,22 +99,14 @@ class ShopHomeViewController: UIViewController {
                                    width: self.view.bounds.width,
                                    height: header.view.frame.height)
         
-//        header.view.layoutIfNeeded()
-        
         self.shopPageHeader = header
         
+        webView.scrollView.delegate = self
         webView.scrollView.contentInset.top = header.view.frame.size.height
         
         self.addChildViewController(header)
         webView.scrollView.addSubview(header.view)
         header.didMoveToParentViewController(self)
-        
-        webView.scrollView.bk_addObserverForKeyPath("contentOffset") { [unowned self] view in
-            let scrollView = view as! UIScrollView
-            
-            self.fakeTab.hidden = !(scrollView.contentOffset.y > -self.fakeTab.frame.height)
-            self.notifyScrolling()
-        }
         
         webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
             let webView = view as! WKWebView
@@ -145,6 +137,13 @@ class ShopHomeViewController: UIViewController {
         webView.bk_removeAllBlockObservers()
         webView.scrollView.bk_removeAllBlockObservers()
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+}
+
+extension ShopHomeViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.fakeTab.hidden = !(scrollView.contentOffset.y > -self.fakeTab.frame.height)
+        self.notifyScrolling()
     }
 }
 
