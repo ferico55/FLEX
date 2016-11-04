@@ -491,7 +491,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)determineNavTitle:(UIScrollView*)scrollView {
-    if(scrollView.contentOffset.y > 180) {
+    if(scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationShopTitle" object:nil userInfo:nil];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationShopTitle" object:nil userInfo:nil];
