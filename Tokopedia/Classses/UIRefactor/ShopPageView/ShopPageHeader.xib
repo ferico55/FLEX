@@ -31,7 +31,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ou8-Bc-lrO">
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ds4-4z-ewW">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ds4-4z-ewW">
                             <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="120" id="WSO-EC-bks"/>
@@ -153,12 +153,12 @@
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="Ds4-4z-ewW" secondAttribute="top" id="7Mf-VF-3pl"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="leading" secondItem="Ou8-Bc-lrO" secondAttribute="leading" id="PA8-eU-G5U"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="leading" secondItem="fs6-Rf-uOW" secondAttribute="leading" id="YDd-vF-YdD"/>
-                        <constraint firstAttribute="trailing" secondItem="Ds4-4z-ewW" secondAttribute="trailing" constant="-30" id="YNp-aa-Agu"/>
+                        <constraint firstAttribute="trailing" secondItem="Ds4-4z-ewW" secondAttribute="trailing" id="YNp-aa-Agu"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="trailing" secondItem="fs6-Rf-uOW" secondAttribute="trailing" id="amn-7a-RFP"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="fs6-Rf-uOW" secondAttribute="top" id="bwV-Mr-Zi6"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="Ou8-Bc-lrO" secondAttribute="top" id="kph-sN-DbS"/>
                         <constraint firstAttribute="bottom" secondItem="nZg-u9-ck3" secondAttribute="bottom" constant="3" id="nFk-oH-QaA"/>
-                        <constraint firstItem="Ds4-4z-ewW" firstAttribute="leading" secondItem="Ou8-Bc-lrO" secondAttribute="leading" constant="-31" id="prn-GT-Zjs"/>
+                        <constraint firstItem="Ds4-4z-ewW" firstAttribute="leading" secondItem="Ou8-Bc-lrO" secondAttribute="leading" id="prn-GT-Zjs"/>
                     </constraints>
                 </view>
             </subviews>
