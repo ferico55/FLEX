@@ -38,6 +38,7 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
       
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pdpVideoCollectionViewCell", forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
         cell.youtubePlayerView.loadWithVideoId("M7lc1UVf-VE")
+//        cell.youtubePlayerView.loadWithVideoId("M7lc1UVf-VE", playerVars: ["showinfo" : 0])
         return cell
     }
     
