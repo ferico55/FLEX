@@ -34,6 +34,7 @@ def common_pods
     pod 'Appsee'
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
+    pod 'youtube-ios-player-helper', '~> 0.1.4'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

@@ -111,6 +111,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-TokopediaTests/TTTAttributedLabel.framework"
   install_framework "Pods-TokopediaTests/TransitionKit.framework"
   install_framework "Pods-TokopediaTests/UITableView_FDTemplateLayoutCell.framework"
+  install_framework "Pods-TokopediaTests/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-TokopediaTests/AFNetworking.framework"
@@ -139,4 +140,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-TokopediaTests/TTTAttributedLabel.framework"
   install_framework "Pods-TokopediaTests/TransitionKit.framework"
   install_framework "Pods-TokopediaTests/UITableView_FDTemplateLayoutCell.framework"
+  install_framework "Pods-TokopediaTests/youtube_ios_player_helper.framework"
 fi
