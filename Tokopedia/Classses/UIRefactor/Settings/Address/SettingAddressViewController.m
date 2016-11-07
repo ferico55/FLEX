@@ -125,7 +125,7 @@
 
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
     _list = [NSMutableArray new];
@@ -486,7 +486,7 @@
     [_table reloadData];
 }
 
--(void)refreshView:(UIRefreshControl*)refresh {
+-(void)refreshView {
     
     _page = 1;
     [self request];
@@ -515,7 +515,7 @@
     [searchBar setShowsCancelButton:NO animated:YES];
     _searchKeyword = searchBar.text;
     
-    [self refreshView:nil];
+    [self refreshView];
     return YES;
 }
 
@@ -533,7 +533,7 @@
     //TODO: Behavior after edit
     [_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
     [_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
-    [self refreshView:nil];
+    [self refreshView];
 }
 
 #pragma mark - Add / Edit Address Delegate
@@ -627,7 +627,7 @@
         [_delegate SettingAddressViewController:self withUserInfo:@{DATA_ADDRESS_DETAIL_KEY: address}];
     }
     
-    [self request];
+    [self refreshView];
 }
 
 @end
