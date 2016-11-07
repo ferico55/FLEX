@@ -251,7 +251,6 @@ EtalaseViewControllerDelegate
     
     [_refreshControl endRefreshing];
     _shopPageRequest = [[ShopPageRequest alloc]init];
-    [self requestProduct];
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
@@ -301,6 +300,8 @@ EtalaseViewControllerDelegate
     
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
+    
+    [self requestProduct];
     
     ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
     shopTabView.showHomeTab = self.showHomeTab;
@@ -658,7 +659,11 @@ EtalaseViewControllerDelegate
 - (void)showProductsWithEtalaseId:(NSString *)etalaseId {
     [self clearSearchQuery];
     
-    [self didSelectEtalase:[self etalaseWithId:etalaseId]];
+    EtalaseList *etalase = [self etalaseWithId:etalaseId];
+    
+    // used to show correct etalase after navigating from official store
+    self.initialEtalase = etalase;
+    [self didSelectEtalase:etalase];
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{

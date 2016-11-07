@@ -232,11 +232,8 @@
 }
 
 - (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
+    [_shopProductViewController showProductsWithEtalaseId:etalaseId];
     [self displayViewController:_shopProductViewController];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_shopProductViewController showProductsWithEtalaseId:etalaseId];
-    });
 }
 
 -(void)disableAllButtons{
