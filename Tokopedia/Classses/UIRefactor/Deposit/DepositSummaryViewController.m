@@ -16,6 +16,7 @@
 #import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
 #import "DepositRequest.h"
+#import "WebViewController.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;
@@ -65,6 +66,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *endDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *filterDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *infoButton;
+@property (strong, nonatomic) IBOutlet UIButton *topUpButton;
 
 @property (strong, nonatomic) IBOutlet UIView *infoReviewSaldo;
 @property (strong, nonatomic) IBOutlet UIView *filterDateArea;
@@ -146,8 +148,8 @@
     _table.estimatedRowHeight = 138.0;
     _table.rowHeight = UITableViewAutomaticDimension;
     
-    _filterDateButton.layer.cornerRadius = 3.0;
-    _withdrawalButton.layer.cornerRadius = 3.0;
+    _filterDateButton.layer.cornerRadius = 5.0;
+    _withdrawalButton.layer.cornerRadius = 5.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
     
@@ -381,6 +383,20 @@
 }
 
 #pragma mark - IBAction
+- (IBAction)topUpSaldoButtonTapped:(id)sender {
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId];
+    NSString *deviceID = [auth getMyDeviceToken];
+    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
+    NSString *jsURL = @"https://js.tokopedia.com/wvlogin?uid=";
+    NSString *url = [[[[[jsURL stringByAppendingString:userID] stringByAppendingString:@"&token="] stringByAppendingString:deviceID] stringByAppendingString:@"&url="] stringByAppendingString:pulsaURL];
+    WebViewController *controller = [WebViewController new];
+    controller.strURL = url;
+    controller.strTitle = @"Top Up Saldo";
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 -(IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
