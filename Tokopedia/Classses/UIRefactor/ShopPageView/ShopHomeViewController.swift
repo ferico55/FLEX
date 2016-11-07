@@ -15,6 +15,7 @@ class ShopHomeViewController: UIViewController {
 
     var onEtalaseSelected: ((String, String) -> Void)?
     var onTabSelected: ((ShopPageTab) -> Void)?
+    var onProductSelected: ((String) -> Void)?
     var data: [NSObject: AnyObject]?
     var shopPageHeader: ShopPageHeader!
     var showHomeTab: Bool = false
@@ -42,6 +43,13 @@ class ShopHomeViewController: UIViewController {
             let etalaseId = dictionary["etalaseId"] as! String
             
             self.onEtalaseSelected?(shopDomain, etalaseId)
+            return true
+        }
+        
+        router.addRoute("/shop/:shopDomain/product/:productId") { [unowned self] dictionary in
+            let productId = dictionary["productId"] as! String
+            
+            self.onProductSelected?(productId)
             return true
         }
         

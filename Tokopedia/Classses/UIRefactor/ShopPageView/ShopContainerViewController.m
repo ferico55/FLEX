@@ -202,6 +202,16 @@
     _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
         [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
     };
+    
+    _shopHomeViewController.onProductSelected = ^(NSString *productId) {
+        NavigateViewController *navigationController = [[NavigateViewController alloc] init];
+        [navigationController navigateToProductFromViewController:weakSelf
+                                                         withName:@""
+                                                        withPrice:@""
+                                                           withId:productId
+                                                     withImageurl:@""
+                                                     withShopName:@""];
+    };
     _shopHomeViewController.onTabSelected = onTabSelected;
     _shopHomeViewController.showHomeTab = _shop.result.info.official;
     
