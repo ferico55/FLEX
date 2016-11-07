@@ -171,6 +171,8 @@ TTTAttributedLabelDelegate
     __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
+    TokopediaNetworkManager *tokopediaNetworkManagerVideo;
+    
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -251,6 +253,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) DetailProductVideoCollectionDataSource *detailProductVideoCollectionDataSource;
 @property (nonatomic) BOOL isHaveVideo;
 @property (nonatomic) NSInteger videoCellHeight;
+@property (weak, nonatomic) NSArray<DetailProductVideoArray*> *detailProductVideoDataArray;
 
 @end
 
@@ -328,6 +331,9 @@ TTTAttributedLabelDelegate
     tokopediaOtherProduct.tagRequest = CTagOtherProduct;
     tokopediaOtherProduct.isParameterNotEncrypted = YES;
     tokopediaOtherProduct.isUsingHmac = NO;
+    
+    tokopediaNetworkManagerVideo = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerVideo.isUsingHmac = YES;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     
@@ -1026,21 +1032,21 @@ TTTAttributedLabelDelegate
                 return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
         }
     }
-    else if(section == 2)
-    {
-        if (_isHaveVideo){
+    else if (_isHaveVideo){
+        if (section == 2) {
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
                 return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
             else
                 return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
         }
-    } else if (section == 1) {
-        if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
-        else
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
+    } else {
+        if (section == 1) {
+            if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
+            else
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
+        }
     }
-    
     return 40;
 }
 
@@ -1189,6 +1195,7 @@ TTTAttributedLabelDelegate
                 NSString *cellid = @"DetailProductVideoCellIdentifier";
                 [tableView registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellid];
                 DetailProductVideoTableViewCell *videoCell = (DetailProductVideoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+                _detailProductVideoCollectionDataSource.detailProductVideoDataArray = _detailProductVideoDataArray;
                 videoCell.videoCollectionView.delegate = _detailProductVideoCollectionDataSource;
                 videoCell.videoCollectionView.dataSource = _detailProductVideoCollectionDataSource;
                 _detailProductVideoCollectionDataSource.didSelectItem = ^(YTPlayerView* youtubePlayerView ){
@@ -1232,7 +1239,9 @@ TTTAttributedLabelDelegate
             if (indexPath.section == 1) {
                 NSString *cellid = @"DetailProductVideoCellIdentifier";
                 [tableView registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellid];
+                
                 DetailProductVideoTableViewCell *videoCell = (DetailProductVideoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+                _detailProductVideoCollectionDataSource.detailProductVideoDataArray = _detailProductVideoDataArray;
                 videoCell.videoCollectionView.delegate = _detailProductVideoCollectionDataSource;
                 videoCell.videoCollectionView.dataSource = _detailProductVideoCollectionDataSource;
                 _detailProductVideoCollectionDataSource.didSelectItem = ^(YTPlayerView* youtubePlayerView ){
@@ -1775,21 +1784,7 @@ TTTAttributedLabelDelegate
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
-    _isHaveVideo = NO;
-    if (_product.data.wholesale_price) {
-        if (_isHaveVideo) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
-        } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
-        }
-        
-    } else {
-        if (_isHaveVideo) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
-        } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
-        }
-    }
+    [self getVideoData];
     
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
@@ -1873,6 +1868,50 @@ TTTAttributedLabelDelegate
         [AnalyticsManager trackProductView:_product];
         [self requestprocess:object];
     }
+}
+
+- (void) getVideoData {
+    __weak __typeof(self) weakSelf = self;
+    [tokopediaNetworkManagerVideo requestWithBaseUrl:[NSString goldMerchantUrl] path:[NSString stringWithFormat:@"/v1/product/video/%@", _product.data.info.product_id] method:RKRequestMethodGET parameter:nil mapping:[DetailProductVideoResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf getVideoSuccess: successResult];
+        if (!_isnodatawholesale) {
+            if (_isHaveVideo) {
+                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:2]]];
+            } else {
+                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+            }
+            
+        } else {
+            if (_isHaveVideo) {
+                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
+            } else {
+                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+            }
+        }
+        [self.table reloadData];
+    } onFailure:^(NSError *errorResult) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+        [alert show];
+    }];
+}
+
+- (void) getVideoSuccess: (RKMappingResult*) successResult {
+    NSDictionary *result = successResult.dictionary;
+    DetailProductVideoResponse *detailProductVideoResponse = [result objectForKey:@""];
+    
+    for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
+        if ([videoData.video count] > 0) {
+            _isHaveVideo = YES;
+            _detailProductVideoDataArray = videoData.video;
+            return;
+        } else {
+            _isHaveVideo = NO;
+            return;
+        }
+    }
+    
+    _isHaveVideo = NO;
+    return;
 }
 
 - (void) hideReportButton: (BOOL) isNeedToRemoveBtnReport{

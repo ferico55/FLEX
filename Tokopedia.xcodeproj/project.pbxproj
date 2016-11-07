@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		342DE05A1DD02A9F00F8C4E1 /* DetailProductVideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342DE0591DD02A9F00F8C4E1 /* DetailProductVideoResponse.swift */; };
+		342DE05C1DD0312F00F8C4E1 /* DetailProductVideoLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342DE05B1DD0312F00F8C4E1 /* DetailProductVideoLinks.swift */; };
+		342DE05E1DD031F500F8C4E1 /* DetailProductVideoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342DE05D1DD031F500F8C4E1 /* DetailProductVideoData.swift */; };
+		342DE0601DD033F000F8C4E1 /* DetailProductVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342DE05F1DD033F000F8C4E1 /* DetailProductVideoArray.swift */; };
 		349188101DB48D1600CE7868 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 349177FC1DB48D0A00CE7868 /* AppDelegate.m */; };
 		34918EE81DB48D1D00CE7868 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3491846A1DB48D1000CE7868 /* InfoPlist.strings */; };
 		34918EE91DB48D1D00CE7868 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 3491846C1DB48D1000CE7868 /* GTM-NCTWRP */; };
@@ -2702,6 +2706,10 @@
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		342DE0591DD02A9F00F8C4E1 /* DetailProductVideoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoResponse.swift; sourceTree = "<group>"; };
+		342DE05B1DD0312F00F8C4E1 /* DetailProductVideoLinks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoLinks.swift; sourceTree = "<group>"; };
+		342DE05D1DD031F500F8C4E1 /* DetailProductVideoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoData.swift; sourceTree = "<group>"; };
+		342DE05F1DD033F000F8C4E1 /* DetailProductVideoArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoArray.swift; sourceTree = "<group>"; };
 		349177FB1DB48D0A00CE7868 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		349177FC1DB48D0A00CE7868 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3491846B1DB48D1000CE7868 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -6610,6 +6618,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		342DE0611DD033FB00F8C4E1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				342DE0591DD02A9F00F8C4E1 /* DetailProductVideoResponse.swift */,
+				342DE05D1DD031F500F8C4E1 /* DetailProductVideoData.swift */,
+				342DE05F1DD033F000F8C4E1 /* DetailProductVideoArray.swift */,
+				342DE05B1DD0312F00F8C4E1 /* DetailProductVideoLinks.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		349177FA1DB48D0A00CE7868 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -6646,6 +6665,7 @@
 		349ED4371DC3107200F8E640 /* DetailProductVideo */ = {
 			isa = PBXGroup;
 			children = (
+				342DE0611DD033FB00F8C4E1 /* Model */,
 				34A8A07B1DC303B300B7A75F /* DetailProductVideoTableViewCell.swift */,
 				34A8A07D1DC303C500B7A75F /* DetailProductVideoTableViewCell.xib */,
 				349ED43A1DC338D100F8E640 /* DetailProductVideoCollectionViewCell.swift */,
@@ -15269,6 +15289,7 @@
 				453FD14A1DB4B93300125AD5 /* PhoneVerifRequest.m in Sources */,
 				453FCEF31DB4B92F00125AD5 /* HistoryProductResult.m in Sources */,
 				453FCED91DB4B92F00125AD5 /* Errors.m in Sources */,
+				342DE05E1DD031F500F8C4E1 /* DetailProductVideoData.swift in Sources */,
 				453FCF111DB4B93000125AD5 /* ResolutionButton.m in Sources */,
 				453FD0181DB4B93100125AD5 /* TrackOrder.m in Sources */,
 				453FD0441DB4B93100125AD5 /* TxOrderConfirmationList.m in Sources */,
@@ -15373,6 +15394,7 @@
 				453FD1061DB4B93300125AD5 /* Using.swift in Sources */,
 				453FD2311DB4B93500125AD5 /* AnnouncementTickerView.m in Sources */,
 				453FD13F1DB4B93300125AD5 /* TKPHomeProductsStore.m in Sources */,
+				342DE05C1DD0312F00F8C4E1 /* DetailProductVideoLinks.swift in Sources */,
 				453FD3361DB4B93800125AD5 /* RequestMoveTo.m in Sources */,
 				453FCE8A1DB4B92F00125AD5 /* AddressDistrict.m in Sources */,
 				453FCF9F1DB4B93000125AD5 /* ShopReputation.m in Sources */,
@@ -15411,6 +15433,7 @@
 				453FD06D1DB4B93200125AD5 /* TxOrderPaymentEditOrder.m in Sources */,
 				453FD1CD1DB4B93500125AD5 /* ContactUsFormDataManager.m in Sources */,
 				453FD36A1DB4B93800125AD5 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
+				342DE0601DD033F000F8C4E1 /* DetailProductVideoArray.swift in Sources */,
 				453FCEB91DB4B92F00125AD5 /* ProductList.m in Sources */,
 				453FD0F41DB4B93300125AD5 /* ShareReplay1.swift in Sources */,
 				453FD34C1DB4B93800125AD5 /* PulsaCategoryView.swift in Sources */,
@@ -15486,6 +15509,7 @@
 				453FD07A1DB4B93200125AD5 /* UploadImage.m in Sources */,
 				453FCFCE1DB4B93100125AD5 /* ShipmentCityData.m in Sources */,
 				453FD1CA1DB4B93400125AD5 /* ContactUsFormCategoryCell.m in Sources */,
+				342DE05A1DD02A9F00F8C4E1 /* DetailProductVideoResponse.swift in Sources */,
 				453FCEA11DB4B92F00125AD5 /* ContactUsActionResultStatus.m in Sources */,
 				453FD02F1DB4B93100125AD5 /* ShipmentAvailable.m in Sources */,
 				453FD4F21DB4B93D00125AD5 /* CartModelView.m in Sources */,
