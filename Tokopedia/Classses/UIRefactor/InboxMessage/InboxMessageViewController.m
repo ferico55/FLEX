@@ -358,13 +358,7 @@
         list.message_read_status = @"1";
         
         __weak typeof(self) weakSelf = self;
-        //
-        //    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        //    vc.onMessagePosted = ^(NSString *replyMessage) {
-        //        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
-        //    };
-        //
-        //    vc.data = [self dataForIndexPath:indexPath];
+        
         MessageViewController *vc = [[MessageViewController alloc] init];
         vc.senderId = _userManager.getUserId;
         vc.senderDisplayName = @"Tonito";
@@ -615,7 +609,7 @@
     
     if(status) {
         //if success
-        if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
+        if([inboxmessageaction.data.is_success isEqualToString:@"1"]) {
 
             if([_navthatwillrefresh isEqualToString:@"inbox-archive-sent"]) {
                 [self reloadInbox];
