@@ -90,7 +90,6 @@
                             <constraint firstAttribute="bottom" secondItem="ktU-84-qF9" secondAttribute="bottom" constant="4" id="3B5-i1-fdK"/>
                             <constraint firstItem="ktU-84-qF9" firstAttribute="leading" secondItem="18h-Q2-lJK" secondAttribute="trailing" constant="1" id="BaQ-lS-1sD"/>
                             <constraint firstAttribute="bottom" secondItem="18h-Q2-lJK" secondAttribute="bottom" constant="4" id="F6V-lo-mKE"/>
-                            <constraint firstAttribute="trailing" secondItem="hhk-Hb-ghg" secondAttribute="trailing" constant="7" id="Gcd-BT-l6w"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="top" secondItem="Tn9-gR-GHT" secondAttribute="bottom" constant="3" id="HYw-Lv-7kj"/>
                             <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="2" id="JCX-u5-eZ0"/>
                             <constraint firstItem="bHE-Jb-fd8" firstAttribute="top" secondItem="mlD-8n-5Cw" secondAttribute="bottom" id="M9C-lR-KfD"/>
@@ -107,6 +106,7 @@
                             <constraint firstItem="Tn9-gR-GHT" firstAttribute="top" secondItem="Ymv-Zs-D1n" secondAttribute="top" constant="7" id="lyf-He-toy"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="7" id="mnY-pY-8ML"/>
                             <constraint firstAttribute="trailing" secondItem="ktU-84-qF9" secondAttribute="trailing" constant="8" id="o8a-2z-Ybz"/>
+                            <constraint firstItem="hhk-Hb-ghg" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="7" id="oQP-Rj-ws0"/>
                             <constraint firstAttribute="trailing" secondItem="bHE-Jb-fd8" secondAttribute="trailing" constant="7" id="umj-bG-ohV"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>

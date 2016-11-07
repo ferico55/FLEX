@@ -69,7 +69,7 @@ class ProductWishlistCell : UICollectionViewCell {
         }
         
         labelsView.alignment = .Fill
-        labelsView.spacing = 5
+        labelsView.spacing = 2
         labelsView.axis = .Horizontal
         labelsView.distribution = .EqualSpacing
         
@@ -86,7 +86,7 @@ class ProductWishlistCell : UICollectionViewCell {
                 label.layer.borderWidth = 1.0
                 label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.whiteColor().CGColor
                 label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
-                label.font = UIFont.smallTheme()
+                label.font = UIFont.microTheme()
                 
                 self.labelsView .addArrangedSubview(label)
                 

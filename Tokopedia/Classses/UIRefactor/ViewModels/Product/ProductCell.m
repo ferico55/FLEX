@@ -48,7 +48,7 @@
     }
     
     _labelsView.alignment = OAStackViewAlignmentFill;
-    _labelsView.spacing = 5;
+    _labelsView.spacing = 2;
     _labelsView.axis = UILayoutConstraintAxisHorizontal;
     _labelsView.distribution = OAStackViewDistributionEqualSpacing;
     
@@ -62,7 +62,7 @@
         label.layer.borderWidth = 1.0;
         label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
         label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
-        label.font = [UIFont smallTheme];
+        label.font = [UIFont microTheme];
         
         [label sizeToFit];
         
