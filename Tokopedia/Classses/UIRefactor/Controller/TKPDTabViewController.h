@@ -12,6 +12,11 @@ static NSString *TKPDTabViewSegmentedIndex = @"TKPDTabViewSegmentedIndex";
 static NSString *TKPDTabViewNavigationMenuIndex = @"TKPDTabViewNavigationMenuIndex";
 static NSString *TKPDTabNotification = @"TKPDTabNotification";
 
+typedef NS_ENUM(NSInteger, InboxType) {
+    InboxTypeTalk,
+    InboxTypeTicket,
+};
+
 @protocol TKPDTabViewDelegate <NSObject>
 
 @optional;
@@ -29,7 +34,7 @@ static NSString *TKPDTabNotification = @"TKPDTabNotification";
 @property (strong, nonatomic) NSArray *tabTitles;
 @property (strong, nonatomic) NSArray *menuTitles;
 @property (strong, nonatomic) UIViewController *splitVC;
-@property (strong, nonatomic) NSString *inboxType;
+@property InboxType inboxType;
 
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 

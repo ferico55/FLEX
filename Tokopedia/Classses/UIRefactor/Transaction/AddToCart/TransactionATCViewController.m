@@ -974,10 +974,6 @@ typedef enum
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
     
-    if (_selectedAddress != address) {
-        [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Change Address"];
-    }
-    
     if ([address.address_id isEqualToString: noAddress]) {
         [self requestAddAddress:address];
         return;

@@ -16,6 +16,9 @@
 #import "Login.h"
 #import "TransactionCartResult.h"
 #import <Localytics/LocalyticsTypes.h>
+#import "InboxTicketViewController.h"
+#import "string_product.h"
+#import "AddressFormList.h"
 
 @interface AnalyticsManager : NSObject
 
@@ -63,6 +66,12 @@
 + (void)trackOpenPushNotificationSetting;
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
+
 + (void)trackLogin:(Login *)login;
++ (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString*)label;
++ (void)trackInboxTicketClickWithType:(InboxCustomerServiceType)type;
++ (void)trackAddProductType:(NSInteger)type;
++ (void)trackGiveRatingReviewWithRole:(NSString *)role;
++ (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress;
 
 @end
