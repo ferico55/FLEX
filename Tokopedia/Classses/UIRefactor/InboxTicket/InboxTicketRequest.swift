@@ -131,7 +131,7 @@ class InboxTicketRequest: NSObject {
             .flatMap { (generatedHost) -> Observable<String> in
                 host = generatedHost
                 
-                return self.getPostKeyReplayTicket(objectRequest, host: host!).doOnCompleted({ 
+                return self.getPostKeyReplyTicket(objectRequest, host: host!).doOnCompleted({ 
                     onSuccess()
                     return
                 })
@@ -150,7 +150,7 @@ class InboxTicketRequest: NSObject {
                 return self.getFileUploaded(objectRequest, host: host!)
             }
             .flatMap{ (fileUploaded) -> Observable<String> in
-                return self.submitReplayTicket(fileUploaded, postKey: postKeyParam!, ticketID: objectRequest.ticketID)
+                return self.submitReplyTicket(fileUploaded, postKey: postKeyParam!, ticketID: objectRequest.ticketID)
             }
             .subscribe(onNext: {(success) in
                     onSuccess()
@@ -160,7 +160,7 @@ class InboxTicketRequest: NSObject {
             )
     }
     
-    private class func getPostKeyReplayTicket(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
+    private class func getPostKeyReplyTicket(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
         
         let imageIds = postData.selectedImages.map{$0.imageID}
         let imageIdParam = imageIds.joinWithSeparator("~")
@@ -236,7 +236,7 @@ class InboxTicketRequest: NSObject {
         })
     }
     
-    private class func submitReplayTicket(fileUploaded: String, postKey: String, ticketID: String)-> Observable<String>{
+    private class func submitReplyTicket(fileUploaded: String, postKey: String, ticketID: String)-> Observable<String>{
         
         let param : [String : String] = [
             "file_uploaded" : fileUploaded,
