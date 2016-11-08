@@ -67,11 +67,13 @@
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
 
+// Specific trackers
 + (void)trackLogin:(Login *)login;
 + (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString*)label;
 + (void)trackInboxTicketClickWithType:(InboxCustomerServiceType)type;
 + (void)trackAddProductType:(NSInteger)type;
 + (void)trackGiveRatingReviewWithRole:(NSString *)role;
 + (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress;
++ (void)trackInboxMessageClick:(NSString *)label;
 
 @end

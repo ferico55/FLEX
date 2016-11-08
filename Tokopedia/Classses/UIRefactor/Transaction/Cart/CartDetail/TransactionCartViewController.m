@@ -242,6 +242,7 @@
     [self initNoResultView];
     [self initNoInternetConnectionView];
     [self setDefaultInputData];
+    [AnalyticsManager trackScreenName:@"Shopping Cart"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(insertErrorMessage:)
@@ -276,7 +277,6 @@
     [super viewWillAppear:animated];
     
     if (_indexPage == 0) {
-        [AnalyticsManager trackScreenName:@"Shopping Cart"];
         
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];

@@ -672,4 +672,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     }
 }
 
++ (void)trackInboxMessageClick:(NSString *)label {
+    [self trackEventName:@"clickMessage" category:GA_EVENT_CATEGORY_INBOX_MESSAGE action:GA_EVENT_ACTION_CLICK label:label];
+}
+
 @end
