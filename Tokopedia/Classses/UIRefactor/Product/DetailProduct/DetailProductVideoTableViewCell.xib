@@ -35,7 +35,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="videoCollectionView" destination="6mc-5P-vGD" id="pVy-7r-iUZ"/>
+                <outlet property="videoCollectionView" destination="6mc-5P-vGD" id="w1i-zv-Wla"/>
             </connections>
         </tableViewCell>
     </objects>

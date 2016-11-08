@@ -250,7 +250,6 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
-@property (strong, nonatomic) DetailProductVideoCollectionDataSource *detailProductVideoCollectionDataSource;
 @property (nonatomic) BOOL isHaveVideo;
 @property (nonatomic) NSInteger videoCellHeight;
 @property (weak, nonatomic) NSArray<DetailProductVideoArray*> *detailProductVideoDataArray;
@@ -401,8 +400,6 @@ TTTAttributedLabelDelegate
     _videoCellHeight = 105;
     
     afterLoginRedirectTo = @"";
-    
-    _detailProductVideoCollectionDataSource = [DetailProductVideoCollectionDataSource new];
     [self unsetWarehouse];
 }
 
@@ -911,7 +908,6 @@ TTTAttributedLabelDelegate
             [mView addSubview:btnExpand];
         }
         
-        
         [expandCollapseButton removeFromSuperview];
         [mView addSubview:bt];
         return mView;
@@ -1080,14 +1076,8 @@ TTTAttributedLabelDelegate
 }
 
 -(DetailProductVideoTableViewCell *) getDetailProductVideoTableViewCell {
-    [_table registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
     DetailProductVideoTableViewCell *videoCell = (DetailProductVideoTableViewCell *)[_table dequeueReusableCellWithIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
-    _detailProductVideoCollectionDataSource.detailProductVideoDataArray = _detailProductVideoDataArray;
-    videoCell.videoCollectionView.delegate = _detailProductVideoCollectionDataSource;
-    videoCell.videoCollectionView.dataSource = _detailProductVideoCollectionDataSource;
-    _detailProductVideoCollectionDataSource.didSelectItem = ^(YTPlayerView* youtubePlayerView ){
-        [youtubePlayerView playVideo];
-    };
+    videoCell.detailProductVideoDataArray = _detailProductVideoDataArray;
     return videoCell;
 }
 
@@ -1724,6 +1714,7 @@ TTTAttributedLabelDelegate
     for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
         if ([videoData.video count] > 0) {
             _isHaveVideo = YES;
+            [_table registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
             _detailProductVideoDataArray = videoData.video;
             return;
         } else {

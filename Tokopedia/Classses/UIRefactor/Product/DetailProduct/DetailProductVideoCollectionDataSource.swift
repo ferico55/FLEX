@@ -53,9 +53,10 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pdpVideoCollectionViewCell", forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
-        if let didSelectItem = didSelectItem {
-            didSelectItem(playerView: cell.youtubePlayerView)
-        }
+        cell.youtubePlayerView.playVideo()
+//        if let didSelectItem = didSelectItem {
+//            didSelectItem(playerView: cell.youtubePlayerView)
+//        }
     }
     
     
