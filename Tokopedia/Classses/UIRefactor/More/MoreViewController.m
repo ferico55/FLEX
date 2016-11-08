@@ -129,8 +129,9 @@
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateSaldoTokopedia:)
-                                                     name:@"updateSaldoTokopedia" object:nil];
+                                                 selector:@selector(updateSaldoTokopedia)
+                                                     name:@"updateSaldoTokopedia"
+                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateProfilePicture:)
@@ -212,7 +213,7 @@
     
     _request = [DepositRequest new];
     
-    [self updateSaldoTokopedia:nil];
+    [self updateSaldoTokopedia];
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
@@ -253,7 +254,7 @@
 //    [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
-    [self updateSaldoTokopedia:nil];
+    [self updateSaldoTokopedia];
     
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
@@ -990,7 +991,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     [self pushViewController:controller];
 }
 
-- (void)updateSaldoTokopedia:(NSNotification*)notification {
+- (void)updateSaldoTokopedia {
     [_request requestGetDepositOnSuccess:^(DepositResult *result) {
         _depositLabel.text = result.deposit_total;
         _depositLabel.hidden = NO;

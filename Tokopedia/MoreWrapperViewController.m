@@ -40,7 +40,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initNotificationManager];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
+    if (_moreViewController) {
+        [_moreViewController updateSaldoTokopedia];
+    }
 }
 
 - (void)tapNotificationBar {

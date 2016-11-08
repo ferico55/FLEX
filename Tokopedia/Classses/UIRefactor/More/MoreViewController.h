@@ -14,6 +14,7 @@
 - (IBAction)actionCreateShop:(id)sender;
 - (void)updateShopInformation;
 - (void)updateImageURL;
+- (void)updateSaldoTokopedia;
 
 @property(strong, nonatomic) MoreWrapperViewController* wrapperViewController;
 @end
