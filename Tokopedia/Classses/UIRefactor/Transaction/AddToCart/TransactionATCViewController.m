@@ -415,18 +415,27 @@ typedef enum
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
     
-    BOOL eligibleToChooseLogistic = (shipments.count == 0 && [_selectedAddress hasAddress]);
-    [self showErrorMessage:eligibleToChooseLogistic];
+    [self adjustErrorMessageView];
 }
 
--(void)showErrorMessage:(BOOL)isShow{
-    if (isShow) {
-        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
-        _tableView.tableHeaderView = _messageZeroShipmentView;
-    } else {
-        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+-(void)adjustErrorMessageView{
+    BOOL eligibleToChooseLogistic = (_shipments.count == 0 && [_selectedAddress hasAddress]);
+    if (eligibleToChooseLogistic){
+        [self hideErrorMessage];
+    }else {
+        [self showErrorMessage];
     }
 }
+
+-(void)showErrorMessage{
+    [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
+    _tableView.tableHeaderView = _messageZeroShipmentView;
+}
+
+-(void)hideErrorMessage{
+    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+}
+
 
 -(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
     if ([self shipments:shipments containsShipment:_selectedShipment]) {
