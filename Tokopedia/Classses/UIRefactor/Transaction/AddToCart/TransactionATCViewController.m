@@ -415,14 +415,13 @@ typedef enum
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
     
-    BOOL isShowErrorLabel = (shipments.count == 0 && [self isHasAddress]);
-    [self isShowZeroShipmentErrorMessage:isShowErrorLabel messageError:[self messageZeroShipmentAvailable]];
-
+    BOOL eligibleToChooseLogistic = (shipments.count == 0 && [self isHasAddress]);
+    [self showErrorMessage:eligibleToChooseLogistic];
 }
 
--(void)isShowZeroShipmentErrorMessage:(BOOL)isShow messageError:(NSString*)messageError{
+-(void)showErrorMessage:(BOOL)isShow{
     if (isShow) {
-        [_messageZeroShipmentLabel setCustomAttributedText:messageError];
+        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
         _tableView.tableHeaderView = _messageZeroShipmentView;
     } else {
         _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
