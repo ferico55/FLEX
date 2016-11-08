@@ -420,7 +420,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 
     if (_page == 0) {
-        if (((NSMutableArray *)_messages[1]).count < [data.ticket_reply.ticket_reply_total_data integerValue]){
+        if (_messages[1].count < [data.ticket_reply.ticket_reply_total_data integerValue]){
             _canLoadMore = YES;
         }
     } else {
