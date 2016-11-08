@@ -46,4 +46,6 @@ static NSString *noAddress = @"-1";
 
 @property (nonatomic) BOOL isDefaultAddress;
 
+@property (nonatomic) BOOL hasAddress;
+
 @end

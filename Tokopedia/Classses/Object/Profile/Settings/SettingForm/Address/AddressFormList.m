@@ -50,6 +50,12 @@
     return _latitude?:@"";
 }
 
+-(BOOL)hasAddress{
+    return (self.address_name != nil &&
+            ![self.address_name isEqualToString:@""] &&
+            ![self.address_name isEqualToString:@"0"]);
+}
+
 - (AddressViewModel *)viewModel {
     if(_viewModel == nil) {
         AddressViewModel *tempViewModel = [AddressViewModel new];

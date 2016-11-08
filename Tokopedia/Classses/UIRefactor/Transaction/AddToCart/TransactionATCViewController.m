@@ -306,7 +306,7 @@ typedef enum
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
     
-    if ([self isHasAddress]){
+    if ([_selectedAddress hasAddress]){
         [self doCalculate];
         [self requestRate];
     }
@@ -393,7 +393,7 @@ typedef enum
 }
 
 -(void)failedFetchShipmentFee:(NSError*)error{
-    if (_shipments.count == 0 && [self isHasAddress]) {
+    if (_shipments.count == 0 && [_selectedAddress hasAddress]) {
         [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
         _tableView.tableHeaderView = _messageZeroShipmentView;
     } else{
@@ -415,7 +415,7 @@ typedef enum
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
     
-    BOOL eligibleToChooseLogistic = (shipments.count == 0 && [self isHasAddress]);
+    BOOL eligibleToChooseLogistic = (shipments.count == 0 && [_selectedAddress hasAddress]);
     [self showErrorMessage:eligibleToChooseLogistic];
 }
 
@@ -543,7 +543,7 @@ typedef enum
                         
                         label.text = address.address_name;
                         _borderFullAddress.hidden = YES;
-                        if (![self isHasAddress]) {
+                        if (![_selectedAddress hasAddress]) {
                             _borderFullAddress.hidden = NO;
                             label.text= @"Tambah Alamat";
                         }
@@ -1091,7 +1091,7 @@ typedef enum
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    if (![self isHasAddress]) {
+    if (![_selectedAddress hasAddress]) {
         isValid = NO;
         [errorMessage addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
@@ -1114,12 +1114,6 @@ typedef enum
     }
     else
         return YES;
-}
-
--(BOOL)isHasAddress{
-    return (_selectedAddress.address_name != nil &&
-            ![_selectedAddress.address_name isEqualToString:@""] &&
-            ![_selectedAddress.address_name isEqualToString:@"0"]);
 }
 
 -(void)buyButtonIsLoading:(BOOL)isLoading
