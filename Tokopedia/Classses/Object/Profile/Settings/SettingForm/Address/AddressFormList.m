@@ -50,6 +50,13 @@
     return _latitude?:@"";
 }
 
+-(NSString *)addr_id{
+    if (_addr_id && ![_addr_id isEqualToString:@""]) {
+        _address_id = _addr_id;
+    }
+    return _addr_id?:@"";
+}
+
 -(BOOL)hasAddress{
     return (self.address_name != nil &&
             ![self.address_name isEqualToString:@""] &&
