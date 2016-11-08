@@ -21,8 +21,8 @@
     NSString *province = address.province_id?:@"";
     NSString *district = address.district_id?:@"";
     
-    NSString *longitude = address.longitude?:@"";
-    NSString *latitude = address.latitude?:@"";
+    NSString *longitude = address.longitude;
+    NSString *latitude = address.latitude;
     
     NSString *recievername = address.receiver_name?:@"";
     NSString *addressname = address.address_name?:@"";

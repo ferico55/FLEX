@@ -42,6 +42,14 @@
     return ([_address_id integerValue]==0)?noAddress:_address_id;
 }
 
+-(NSString *)longitude{
+    return _longitude?:@"";
+}
+
+-(NSString *)latitude{
+    return _latitude?:@"";
+}
+
 - (AddressViewModel *)viewModel {
     if(_viewModel == nil) {
         AddressViewModel *tempViewModel = [AddressViewModel new];
