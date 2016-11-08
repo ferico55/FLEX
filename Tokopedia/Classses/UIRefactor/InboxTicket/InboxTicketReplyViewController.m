@@ -158,7 +158,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
         __weak typeof(self) weakSelf = self;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [weakSelf requestReplayTicket];
+            [weakSelf requestReplyTicket];
         }];
         [alert addAction: changeSolution];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
@@ -169,7 +169,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
         
     } else {
         
-        [self requestReplayTicket];
+        [self requestReplyTicket];
 
     }
 }
@@ -332,7 +332,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
 }
 
 
--(void)notifySuccessReplay{
+-(void)notifySuccessReply{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm'Z'"];
@@ -359,8 +359,8 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
 }
 
 #pragma mark - Request
--(ReplayTicketRequestObject*)objectRequest{
-    ReplayTicketRequestObject *object = [ReplayTicketRequestObject new];
+-(ReplyTicketRequestObject*)objectRequest{
+    ReplyTicketRequestObject *object = [ReplyTicketRequestObject new];
     object.selectedImages = _selectedImages;
     object.rate = _rating;
     object.newTicketStatus = [self newTicketStatus];
@@ -369,16 +369,16 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     return object;
 }
 
--(void)requestReplayTicket{
+-(void)requestReplyTicket{
     
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [indicatorView startAnimating];
     UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
     self.navigationItem.rightBarButtonItem = indicatorBarButton;
     
-    [InboxTicketRequest fetchReplayTicket:[self objectRequest] onSuccess:^{
+    [InboxTicketRequest fetchReplyTicket:[self objectRequest] onSuccess:^{
         
-        [self notifySuccessReplay];
+        [self notifySuccessReply];
         self.navigationItem.rightBarButtonItem = _doneButton;
         
     } onFailure:^{

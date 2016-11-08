@@ -32,7 +32,7 @@ class TicketListRequestObject: NSObject {
     var status  : InboxCustomerServiceType  = .All
 }
 
-class ReplayTicketRequestObject: NSObject {
+class ReplyTicketRequestObject: NSObject {
     var newTicketStatus = ""
     var ticketID = ""
     var message = ""
@@ -122,7 +122,7 @@ class InboxTicketRequest: NSObject {
         }
     }
     
-    class func fetchReplayTicket(objectRequest: ReplayTicketRequestObject, onSuccess: (() -> Void), onFailure: (() -> Void)) {
+    class func fetchReplyTicket(objectRequest: ReplyTicketRequestObject, onSuccess: (() -> Void), onFailure: (() -> Void)) {
         
         var host : GeneratedHost?
         var postKeyParam : String?
@@ -160,7 +160,7 @@ class InboxTicketRequest: NSObject {
             )
     }
     
-    private class func getPostKeyReplayTicket(postData:ReplayTicketRequestObject, host: GeneratedHost)-> Observable<String>{
+    private class func getPostKeyReplayTicket(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
         
         let imageIds = postData.selectedImages.map{$0.imageID}
         let imageIdParam = imageIds.joinWithSeparator("~")
@@ -221,7 +221,7 @@ class InboxTicketRequest: NSObject {
         
     }
     
-    private class func getFileUploaded(postData:ReplayTicketRequestObject, host: GeneratedHost)-> Observable<String>{
+    private class func getFileUploaded(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
         
         let imagesDictionary : NSMutableDictionary = NSMutableDictionary()
         postData.selectedImages.forEach { (imageObj) in
