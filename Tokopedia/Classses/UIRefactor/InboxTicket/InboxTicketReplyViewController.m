@@ -228,15 +228,11 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     for (int i= 0; i<selectedAssets.count; i++) {
         AttachedImageObject *object = [AttachedImageObject new];
         object.asset = selectedAssets[i];
-        object.imageID = [NSString stringWithFormat:@"%@%zd",[self timeStamp], i];
+        object.imageID = [NSString stringWithFormat:@"%@%zd",[[NSDate date] timeStamp], i];
         [_selectedImages addObject:object];
     }
     
     [self setImageViews];
-}
-
-- (NSString *) timeStamp {
-    return [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
 }
 
 -(void)setImageViews{
