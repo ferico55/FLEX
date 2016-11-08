@@ -382,13 +382,13 @@ NSString *const RECENT_SEARCH = @"recent_search";
         controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
         controller.isFromAutoComplete = YES;
         controller.hidesBottomBarWhenPushed = YES;
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:GA_EVENT_ACTION_SEARCH_HOTLIST label:searchSuggestionItem.keyword];
+        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:@"Search Hotist" label:searchSuggestionItem.keyword];
         
         [self.navigationController pushViewController:controller animated:YES];
     } else {
         
         NSString *actionForTracker = [self actionForTrackerWithSearchSuggestionDataId:searchSuggestionData.id];
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:actionForTracker label:searchSuggestionItem.keyword];
+        [AnalyticsManager trackEventName:@"clickSearch" category:@"Search" action:actionForTracker label:searchSuggestionItem.keyword];
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
         [_searchBar setText:searchSuggestionItem.keyword];
@@ -407,7 +407,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:GA_EVENT_ACTION_SEARCH label:searchString];
+        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:@"Search" label:searchString];
         [self goToResultPage:_searchBar.text withAutoComplete:NO];
     }
     else {
@@ -591,11 +591,11 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (NSString*)actionForTrackerWithSearchSuggestionDataId: (NSString*)searchuggestionDataId {
     NSString *actionForTracker = @"";
     if ([searchuggestionDataId isEqual: @"autocomplete"]) {
-        actionForTracker = GA_EVENT_ACTION_SEARCH_AUTOCOMPLETE;
+        actionForTracker = @"Search Autocomplete";
     } else if ([searchuggestionDataId isEqual: @"recent_search"]) {
-        actionForTracker = GA_EVENT_ACTION_SEARCH_HISTORY;
+        actionForTracker = @"Search History";
     } else if ([searchuggestionDataId isEqual: @"popular_search"]) {
-        actionForTracker = GA_EVENT_ACTION_POPULAR_SEARCH;
+        actionForTracker = @"Popular Search";
     }
     
     return actionForTracker;

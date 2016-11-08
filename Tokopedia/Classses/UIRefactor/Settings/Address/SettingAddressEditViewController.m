@@ -318,7 +318,7 @@
 
     [RequestAddAddress fetchAddAddress:address isFromCart:@"" success:^(ProfileSettingsResult *data, AddressFormList *address) {
         if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
-            [AnalyticsManager trackEventName:@"addAddressSuccess" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_ADD_ADDRESS_SUCCESS label:@"Add Address Success"];
+            [AnalyticsManager trackEventName:@"addAddressSuccess" category:GA_EVENT_CATEGORY_ATC action:@"Add Address Success" label:@"Add Address Success"];
         }
         [self.navigationController popViewControllerAnimated:YES];
         

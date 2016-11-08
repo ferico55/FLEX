@@ -200,7 +200,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                         let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                         let reportProductResponse: ReportProductSubmitResponse = result[""] as! ReportProductSubmitResponse
                         if reportProductResponse.data.is_success == "1" {
-                            AnalyticsManager.trackEventName("reportSuccess", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_REPORT_SUCCESS, label: "Report Success")
+                            AnalyticsManager.trackEventName("reportSuccess", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: @"Report Success", label: "Report Success")
                             weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
                         } else {
                             weakSelf.showErrorAlertViewWithIsNeedPopViewController(reportProductResponse.message_error[0])
