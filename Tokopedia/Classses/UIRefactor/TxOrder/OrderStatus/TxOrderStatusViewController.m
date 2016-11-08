@@ -959,34 +959,22 @@
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
     OrderDeliveredConfirmationAlertView *confirmationAlert = [OrderDeliveredConfirmationAlertView newview];
     if ([self isOrderFreeReturn:order]) {
-        confirmationAlert.alertTitleLabel.text = @"Sudah Diterima";
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[order.order_detail.detail_free_return_msg dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding]} documentAttributes:nil error:nil];
-        confirmationAlert.alertMessageLabel.attributedText = attributedString;
-        confirmationAlert.alertMessageLabel.font = [UIFont systemFontOfSize:14.0];
-        confirmationAlert.alertMessageLabel.textAlignment = NSTextAlignmentCenter;
-        confirmationAlert.freeReturnsInfoHeightConstraint.constant = 50;
-        [confirmationAlert setHeight:300];
+        confirmationAlert.title = @"Sudah Diterima";
+        confirmationAlert.message = order.order_detail.detail_free_return_msg;
+        confirmationAlert.isFreeReturn = YES;
     } else {
-        confirmationAlert.alertTitleLabel.text = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-        confirmationAlert.alertMessageLabel.text = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
-        confirmationAlert.freeReturnsInfoView.hidden = YES;
-        confirmationAlert.freeReturnsInfoHeightConstraint.constant = 0;
-        [confirmationAlert setHeight:250];
+        confirmationAlert.title = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        confirmationAlert.message = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        confirmationAlert.isFreeReturn = NO;
     }
-    
+    __weak typeof(self) weakSelf = self;
     confirmationAlert.didComplain = ^{
-        [confirmationAlert dismiss];
-        [self showAlertViewOpenComplain];
+        [weakSelf showAlertViewOpenComplain];
     };
     
     confirmationAlert.didOK = ^{
-        [confirmationAlert dismiss];
         [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
-        [self confirmDelivery:order];
-    };
-    
-    confirmationAlert.didCancel = ^{
-        [confirmationAlert dismiss];
+        [weakSelf confirmDelivery:order];
     };
     
     [confirmationAlert show];

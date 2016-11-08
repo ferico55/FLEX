@@ -16,10 +16,42 @@ class OrderDeliveredConfirmationAlertView: TKPDAlertView {
     
     var didCancel: (() -> Void)?
     
-    @IBOutlet var alertTitleLabel: UILabel!
-    @IBOutlet var alertMessageLabel: UILabel!
+    @IBOutlet private var alertTitleLabel: UILabel!
+    @IBOutlet private var alertMessageLabel: UILabel!
     @IBOutlet var freeReturnsInfoView: UIView!
     @IBOutlet var freeReturnsInfoHeightConstraint: NSLayoutConstraint!
+    
+    var isFreeReturn: Bool = false{
+        didSet{
+            if isFreeReturn == true {
+                freeReturnsInfoHeightConstraint.constant = 50;
+                setHeight(300)
+                freeReturnsInfoView.hidden = false
+            } else {
+                freeReturnsInfoHeightConstraint.constant = 0;
+                setHeight(250)
+                freeReturnsInfoView.hidden = true
+            }
+        }
+    }
+    
+    var title: String? {
+        didSet{
+            alertTitleLabel.text = title
+        }
+    }
+    
+    var message: String? {
+        didSet{
+            alertMessageLabel.text = message
+            let attributedString = try! NSAttributedString(data: (message?.dataUsingEncoding(NSUTF8StringEncoding))!, options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : NSNumber(unsignedInteger:NSUTF8StringEncoding)], documentAttributes: nil)
+
+            alertMessageLabel.attributedText = attributedString;
+            alertMessageLabel.font = UIFont.largeTheme();
+            alertMessageLabel.textAlignment = .Center;
+            
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,22 +66,19 @@ class OrderDeliveredConfirmationAlertView: TKPDAlertView {
         super.init(coder: aDecoder)
     }
 
-    @IBAction func didTapOKButton(sender: UIButton) {
-        if let didOK = didOK {
-            didOK()
-        }
+    @IBAction private func didTapOKButton(sender: UIButton) {
+        dismiss()
+        didOK?()
     }
     
-    @IBAction func didTapComplainButton(sender: UIButton) {
-        if let didComplain = didComplain {
-            didComplain()
-        }
+    @IBAction private func didTapComplainButton(sender: UIButton) {
+        dismiss()
+        didComplain?()
     }
     
-    @IBAction func didCancel(sender: UIButton) {
-        if let didCancel = didCancel {
-            didCancel()
-        }
+    @IBAction private func didCancel(sender: UIButton) {
+        dismiss()
+        didCancel?()
     }
     
     func dismiss() {

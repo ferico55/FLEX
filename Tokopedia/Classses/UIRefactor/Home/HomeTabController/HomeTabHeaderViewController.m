@@ -191,11 +191,6 @@
     [self setActiveButton];
 }
 
-- (NSInteger) calculateLeadingNeededToMakeButtonCentered:(NSInteger) arrangedSubViewAtIndex {
-    return ([UIScreen mainScreen].bounds.size.width / 2 ) - ([_stackView.arrangedSubviews objectAtIndex:arrangedSubViewAtIndex].bounds.size.width / 2);
-}
-
-
 - (void)tap:(int)page {
     [self.view layoutIfNeeded];
     NSInteger xInScrollView = [self xInScrollViewFormula: page];

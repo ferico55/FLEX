@@ -25,9 +25,9 @@ extension NSDate {
         return result
     }
     
-    class func getStringDate(date: NSDate, withFormat dateFormat: String) -> String{
+    func stringWithFormat(dateFormat: String) -> String{
         let formatter = NSDateFormatter()
         formatter.dateFormat = dateFormat
-        return formatter.stringFromDate(date)
+        return formatter.stringFromDate(self)
     }
 }

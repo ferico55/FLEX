@@ -380,7 +380,8 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
 #pragma mark - Cell Delegate
 -(void)didTapButton:(UIButton*)sender Conversation:(ResolutionConversation*)conversation
-{    
+{
+     __weak typeof(self) weakSelf = self;
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
         UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:BUTTON_TITLE_CANCEL_COMPLAIN message:_resolutionDetail.resolution_button.button_cancel_text delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
         cancelComplainAlert.tag = TAG_ALERT_CANCEL_COMPLAIN;
@@ -431,9 +432,10 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
+        
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self doRequestAcceptAdminSolutionResolution];
+            [weakSelf doRequestAcceptAdminSolutionResolution];
         }];
         
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
@@ -456,7 +458,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self doRequestAcceptResolution];
+            [weakSelf doRequestAcceptResolution];
         }];
         
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
@@ -469,7 +471,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_FINISH_COMPLAIN message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self doRequestFinishReturResolution];
+            [weakSelf doRequestFinishReturResolution];
         }];
         
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
@@ -487,7 +489,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         controller.type = 1;
         controller.resolutionID = _resolutionID;
         [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+            [weakSelf addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
 
         }];
         [self.navigationController pushViewController:controller animated:YES];

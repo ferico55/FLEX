@@ -217,7 +217,7 @@
         cell.finishLabel.hidden = NO;
              
          NSString *dateFinishString = order.order_deadline.deadline_finish_date;
-         NSString *todayString = [NSDate getStringDate:[NSDate date] withFormat:@"dd-MM-yyyy"];
+         NSString *todayString = [[NSDate date] stringWithFormat:@"dd-MM-yyyy"];
          if ([dateFinishString isEqual:todayString]) {
              dateFinishString = @"Hari ini";
          }
