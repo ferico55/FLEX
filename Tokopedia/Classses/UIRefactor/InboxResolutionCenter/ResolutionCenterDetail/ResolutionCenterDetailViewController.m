@@ -1282,14 +1282,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
     AddressFormList *address = [userInfo objectForKey:@"address"];
     ResolutionConversation *conversation = viewController.data[@"conversation"];
-
-    if ([address.address_id integerValue] == 0) {
-        address.address_id = address.addr_id;
-    }
-
-    if (conversation.address.address_id == 0) {
-        conversation.address.address_id = conversation.address.addr_id;
-    }
+    
     _selectedAddress = address;
     
     if (isEditAddress) {

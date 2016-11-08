@@ -8,6 +8,12 @@
 
 #import "AddressFormList.h"
 
+@interface AddressFormList()
+
+@property (nonatomic, strong) NSString *addr_id;
+
+@end
+
 @implementation AddressFormList
 
 -(NSString *)postal_code{
@@ -48,6 +54,10 @@
 
 -(NSString *)latitude{
     return _latitude?:@"";
+}
+
+-(void)setAddr_id:(NSString*)addr_id{
+    _address_id = addr_id;
 }
 
 -(BOOL)hasAddress{
