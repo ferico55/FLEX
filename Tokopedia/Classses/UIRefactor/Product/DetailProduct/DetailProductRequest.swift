@@ -30,7 +30,7 @@ class DetailProductRequest: NSObject {
                                             let data = response.data as! PromoteResult
                                             
                                             if data.is_dink == "1" {
-                                                StickyAlertView.showSuccessMessage(["Promo pada product \(data.p_name_enc) telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
+                                                StickyAlertView.showSuccessMessage(["Promo pada product \(data.product_name) telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
                                                 onSuccess(data)
                                             } else {
                                                 StickyAlertView.showErrorMessage(["Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])

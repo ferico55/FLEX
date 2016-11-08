@@ -12,6 +12,6 @@
 @interface PromoteResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *is_dink;
-@property (nonatomic, strong) NSString *p_name_enc;
+@property (nonatomic, strong) NSString *product_name;
 
 @end

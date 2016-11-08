@@ -13,7 +13,10 @@
 +(RKObjectMapping*)mapping
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromArray:@[@"is_dink", @"p_name_enc"]];
+    [mapping addAttributeMappingsFromDictionary:@{
+        @"product_name" : @"p_name_enc",
+        @"is_dink"      : @"is_dink"
+    }];
     return mapping;
 }
 
