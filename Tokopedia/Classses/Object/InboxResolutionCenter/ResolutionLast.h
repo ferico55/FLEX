@@ -36,5 +36,6 @@
 @property (nonatomic, strong) NSString *last_category_trouble_type;
 @property (nonatomic, strong) NSString *last_category_trouble_string;
 @property (nonatomic, strong) NSString *last_solution_remark;
+@property (nonatomic, strong) NSString *last_show_button_string_text;
 
 @end
