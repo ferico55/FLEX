@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InboxTicketUserInvolve : NSObject
+@interface InboxTicketUserInvolve : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *full_name;
 

@@ -706,7 +706,7 @@ typedef enum TagRequest {
     }];
     [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
         if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
-            [self.delegate didReceiveActionType:@"reject"
+            [self.delegate didReceiveActionType:ProceedTypeReject
                                          reason:@"Order expired"
                                        products:nil
                                 productQuantity:nil];
@@ -722,7 +722,7 @@ typedef enum TagRequest {
         //nope
     }];
     [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
-        [self.delegate didReceiveActionType:@"accept"
+        [self.delegate didReceiveActionType:ProceedTypeAccept
                                      reason:nil
                                    products:nil
                             productQuantity:nil];
@@ -756,7 +756,7 @@ typedef enum TagRequest {
     }];
     [alert bk_addButtonWithTitle:@"Ya" handler:^{
         if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
-            [self.delegate didReceiveActionType:@"accept"
+            [self.delegate didReceiveActionType:ProceedTypeAccept
                                          reason:nil
                                        products:nil
                                 productQuantity:nil];
@@ -810,7 +810,7 @@ typedef enum TagRequest {
 
 - (void)didSelectProducts:(NSArray *)products
 {
-    [self.delegate didReceiveActionType:@"reject"
+    [self.delegate didReceiveActionType:ProceedTypeReject
                                  reason:@"Persediaan barang habis"
                                products:products
                         productQuantity:nil];
@@ -821,7 +821,7 @@ typedef enum TagRequest {
 
 - (void)didFinishWritingExplanation:(NSString *)explanation
 {
-    [self.delegate didReceiveActionType:@"reject"
+    [self.delegate didReceiveActionType:ProceedTypeReject
                                  reason:explanation
                                products:nil
                         productQuantity:nil];
@@ -833,7 +833,7 @@ typedef enum TagRequest {
 
 - (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation
 {
-    [self.delegate didReceiveActionType:@"partial"
+    [self.delegate didReceiveActionType:ProceedTypePartial
                                  reason:explanation
                                products:nil
                         productQuantity:productQuantity];
@@ -844,7 +844,7 @@ typedef enum TagRequest {
 
 - (void)cancelShipmentWithExplanation:(NSString *)explanation
 {
-    [self.delegate didReceiveActionType:@"reject"
+    [self.delegate didReceiveActionType:ProceedTypeReject
                                 courier:nil
                          courierPackage:nil
                           receiptNumber:nil
@@ -856,7 +856,7 @@ typedef enum TagRequest {
 
 - (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage
 {
-    [self.delegate didReceiveActionType:@"confirm"
+    [self.delegate didReceiveActionType:ProceedTypeConfirm
                                 courier:courier
                          courierPackage:courierPackage
                           receiptNumber:receiptNumber

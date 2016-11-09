@@ -25,7 +25,6 @@
 #define API_GET_NEW_ORDER_STATUS_KEY    @"get_order_status"
 #define API_GET_NEW_ORDER_LIST_KEY      @"get_order_list"
 #define API_PROCEED_ORDER_KEY           @"proceed_order"
-#define API_PROCEED_SHIPPING_KEY        @"proceed_shipping"
 #define API_EDIT_SHIPPING_REF           @"edit_shipping_ref"
 
 #define API_ACTION_TYPE_KEY             @"action_type"
