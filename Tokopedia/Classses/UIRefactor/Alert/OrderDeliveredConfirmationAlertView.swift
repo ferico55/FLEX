@@ -18,8 +18,8 @@ class OrderDeliveredConfirmationAlertView: TKPDAlertView {
     
     @IBOutlet private var alertTitleLabel: UILabel!
     @IBOutlet private var alertMessageLabel: UILabel!
-    @IBOutlet var freeReturnsInfoView: UIView!
-    @IBOutlet var freeReturnsInfoHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var freeReturnsInfoView: UIView!
+    @IBOutlet private var freeReturnsInfoHeightConstraint: NSLayoutConstraint!
     
     var isFreeReturn: Bool = false{
         didSet{
