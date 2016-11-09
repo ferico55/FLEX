@@ -414,7 +414,7 @@
 
 - (void)didFinishWritingExplanation:(NSString *)explanation
 {
-    [self requestActionType:@"reject"
+    [self requestActionType:ProceedTypeReject
                      reason:explanation
                    products:nil
             productQuantity:nil];
@@ -424,7 +424,7 @@
 #pragma mark - Product quantity delegate
 
 - (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation {
-    [self requestActionType:@"partial"
+    [self requestActionType:ProceedTypePartial
                      reason:explanation
                    products:nil
             productQuantity:productQuantity];
@@ -458,7 +458,7 @@
         //nope
     }];
     [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
-        [welf requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
+        [welf requestActionType:ProceedTypeAccept reason:nil products:nil productQuantity:nil];
     }];
     [alert show];
 }
@@ -470,7 +470,7 @@
         //nope
     }];
     [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
-        [welf requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
+        [welf requestActionType:ProceedTypeAccept reason:nil products:nil productQuantity:nil];
     }];
     [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
         [welf showManageProductQuantityPage];
@@ -501,7 +501,7 @@
         //nope
     }];
     [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
-        [welf requestActionType:@"reject" reason:@"Order expired" products:_selectedOrder.order_products productQuantity:nil];
+        [welf requestActionType:ProceedTypeReject reason:@"Order expired" products:_selectedOrder.order_products productQuantity:nil];
     }];
     [alert show];
 }
@@ -585,7 +585,27 @@
 
 #pragma mark - Reskit Actions
 
-- (void)requestActionType:(NSString *)type
+- (NSString*)ProceedTypeString:(ProceedType)type{
+    switch (type) {
+        case ProceedTypeConfirm:
+            return @"confirm";
+            break;
+        case ProceedTypeReject:
+            return @"reject";
+            break;
+        case ProceedTypeAccept:
+            return @"accept";
+            break;
+        case ProceedTypePartial:
+            return @"partial";
+            break;
+        default:
+            return @"";
+            break;
+    }
+}
+
+- (void)requestActionType:(ProceedType)type
                    reason:(NSString *)reason
                  products:(NSArray *)products
           productQuantity:(NSArray *)productQuantity {
@@ -606,8 +626,9 @@
     NSString *orderId = _selectedOrder.order_detail.detail_order_id;
     NSString *estimationShipping = _selectedOrder.order_last.last_est_shipping_left;
     
+        
     NSDictionary *parameters = @{
-        @"action_type": type,
+        @"action_type": [self ProceedTypeString:type],
         @"est_shipping": estimationShipping,
         @"list_product_id": productIds?:@"",
         @"order_id": orderId,
@@ -642,7 +663,7 @@
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 }
 
-- (void)didReceiveActionType:(NSString *)actionType orderId:(NSString *)orderId mappingResult:(RKMappingResult *)mappingResult {
+- (void)didReceiveActionType:(ProceedType)actionType orderId:(NSString *)orderId mappingResult:(RKMappingResult *)mappingResult {
     ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status && [actionOrder.result.is_success boolValue]) {
@@ -651,9 +672,9 @@
         [_orderInProcess removeObjectForKey:orderId];
 
         NSString *message;
-        if ([actionType isEqualToString:@"accept"]) {
+        if (actionType == ProceedTypeAccept) {
             message = @"Anda telah berhasil memproses transaksi.";
-        } else if ([actionType isEqualToString:@"partial"]) {
+        } else if (actionType == ProceedTypePartial) {
             message = @"Anda telah berhasil memproses transaksi sebagian.";
         } else {
             message = @"Anda telah berhasil membatalkan transaksi.";
@@ -721,7 +742,7 @@
 
 #pragma mark - Order detail delegate
 
-- (void)didReceiveActionType:(NSString *)actionType
+- (void)didReceiveActionType:(ProceedType)actionType
                       reason:(NSString *)reason
                     products:(NSArray *)products
              productQuantity:(NSArray *)productQuantity {

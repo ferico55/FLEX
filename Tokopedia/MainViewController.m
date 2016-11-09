@@ -34,8 +34,6 @@
 #import "InboxRootViewController.h"
 #import "CategoryViewController.h"
 
-#import "RequestNotifyLBLM.h"
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
@@ -69,7 +67,6 @@
     UIAlertView *_logingOutAlertView;
     NSTimer *_containerTimer;
     
-    RequestNotifyLBLM *_requestLBLM;
     TKPStoreManager *_storeManager;
     
     MainViewControllerPage _page;

@@ -23,6 +23,7 @@
 #import "ShipmentOrder.h"
 #import "ShipmentCourier.h"
 #import "UITableView+IndexPath.h"
+#import "Tokopedia-Swift.h"
 
 #define IDropShipmentPackageID @"19"
 
@@ -141,15 +142,15 @@
 
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
-                                                              action:@selector(tap:)];
+                                                              action:nil];
     return button;
 }
 
 - (UIBarButtonItem *)filterBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(tap:)];
     return button;
@@ -415,7 +416,7 @@
 
 #pragma mark - Order detail delegate
 
-- (void)didReceiveActionType:(NSString *)type
+- (void)didReceiveActionType:(ProceedType)type
                      courier:(ShipmentCourier *)courier
               courierPackage:(ShipmentCourierPackage *)courierPackage
                receiptNumber:(NSString *)receiptNumber
@@ -451,7 +452,7 @@
 - (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber
                                 courier:(ShipmentCourier *)courier
                          courierPackage:(ShipmentCourierPackage *)courierPackage {
-    [self requestAction:@"confirm"
+    [self requestAction:ProceedTypeConfirm
                 courier:courier
          courierPackage:courierPackage
           receiptNumber:receiptNumber
@@ -461,7 +462,7 @@
 #pragma mark - Cancel shipment delegate
 
 - (void)cancelShipmentWithExplanation:(NSString *)explanation {
-    [self requestAction:@"reject"
+    [self requestAction:ProceedTypeReject
                 courier:nil
          courierPackage:nil
           receiptNumber:nil
@@ -470,32 +471,29 @@
 
 #pragma mark - Resktit methods for actions
 
-- (void)requestAction:(NSString *)type
+- (void)requestAction:(ProceedType)type
               courier:(ShipmentCourier *)courier
        courierPackage:(ShipmentCourierPackage *)courierPackage
         receiptNumber:(NSString *)receiptNumber
       rejectionReason:(NSString *)rejectionReason {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSDictionary *parameters = @{
-                                 API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
-                                 API_ACTION_TYPE_KEY         : type,
-                                 API_USER_ID_KEY             : auth.getUserId,
-                                 API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
-                                 API_SHIPMENT_ID_KEY         : courier.shipment_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_id],
-                                 API_SHIPMENT_NAME_KEY       : courier.shipment_name ?: _selectedOrder.order_shipment.shipment_name,
-                                 API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id,
-                                 API_SHIPMENT_REF_KEY        : receiptNumber ?: @"",
-                                 API_REASON_KEY              : rejectionReason ?: @"",
-                                 };
+    
+    ProceedShippingObjectRequest *object = [ProceedShippingObjectRequest new];
+    object.type = type;
+    object.orderID = _selectedOrder.order_detail.detail_order_id;
+    object.shippingRef = courier.shipment_id;
+    object.shipmentID = courier.shipment_id ?: [NSString stringWithFormat:@"%zd",_selectedOrder.order_shipment.shipment_id];
+    object.shipmentName = courier.shipment_name ?: _selectedOrder.order_shipment.shipment_name;
+    object.shipmentPackageID = courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id;
+    object.reason = rejectionReason;
+
     
     // Add information about which transaction is in processing and at what index path
     OrderTransaction *order = _selectedOrder;
     
     NSIndexPath *indexPath = _selectedIndexPath;
     
-    NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
-    NSString *key = order.order_detail.detail_order_id;
-    [_orderInProcess setObject:object forKey:key];
+    NSString *orderID = order.order_detail.detail_order_id;
+    [_orderInProcess setObject:object forKey:orderID];
     
     // Delete row for the object
     [_orders removeObjectAtIndex:indexPath.row];
@@ -503,75 +501,16 @@
     
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(timeoutAtIndexPath:)
-                                                    userInfo:@{@"orderId" : key}
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                             path:@"/v4/action/myshop-order/proceed_shipping.pl"
-                                           method:RKRequestMethodPOST
-                                        parameter:parameters
-                                          mapping:[ActionOrder mapping]
-                                        onSuccess:^(RKMappingResult *mappingResult,
-                                                    RKObjectRequestOperation *operation) {
-                                            [self actionRequestSuccess:mappingResult
-                                                         withOperation:operation
-                                                               orderId:key
-                                                            actionType:type];
-                                        } onFailure:^(NSError *error) {
-                                            [self actionRequestFailure:error orderId:key];
-                                        }];
-}
-
-- (void)actionRequestSuccess:(id)object
-               withOperation:(RKObjectRequestOperation *)operation
-                     orderId:(NSString *)orderId
-                  actionType:(NSString *)actionType {
-    NSDictionary *result = ((RKMappingResult *)object).dictionary;
-    
-    ActionOrder *actionOrder = [result objectForKey:@""];
-    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status && [actionOrder.result.is_success boolValue]) {
-        NSString *message;
-        if ([actionType isEqualToString:@"confirm"]) {
-            message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
-        } else if ([actionType isEqualToString:@"reject"]) {
-            message = @"Anda telah berhasil membatalkan pengiriman barang.";
-        }
+    [ShipmentRequest fetchProceedShipping:object onSuccess:^{
+        
         _numberOfProcessedOrder++;
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
-        [alert show];
-        [_orderInProcess removeObjectForKey:orderId];
-    } else {
-        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
-                                                                       delegate:self];
-        [alert show];
-        [self performSelector:@selector(restoreData:) withObject:orderId];
-    }
-}
+        [_orderInProcess removeObjectForKey:orderID];
+        
+    } onFailure:^{
+        
+        [self performSelector:@selector(restoreData:) withObject:orderID];
 
-- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId {
-    NSLog(@"\n\nRequest error : %@\n\n", object);
-    NSDictionary *result = ((RKMappingResult *)object).dictionary;
-    ActionOrder *actionOrder = [result objectForKey:@""];
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
-                                                                   delegate:self];
-    [alert show];
-    
-    [self performSelector:@selector(restoreData:) withObject:orderId];
-}
-
-- (void)timeoutAtIndexPath:(NSTimer *)timer {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-    NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
-    [self performSelector:@selector(restoreData:) withObject:orderId];
+    }];
 }
 
 - (void)reloadData {
