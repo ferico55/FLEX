@@ -31,7 +31,6 @@
 #import "LoadingView.h"
 
 #import "NoResultReusableView.h"
-#import "RequestLDExtension.h"
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "RequestResolutionData.h"
@@ -46,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate>
 {
     NSMutableArray *_list;
     NSString *_URINext;
@@ -73,7 +72,6 @@
     
     UIViewController *_detailViewController;
     
-    RequestLDExtension *_requestLD;
     LuckyDealWord *_worlds;
     
     BOOL _isNeedPopUpLD;
@@ -600,18 +598,10 @@
      __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
-        if (data.ld.url) {
-            _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = data.ld;
-            _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:data.ld.url];
-        } else {
-            [weakSelf disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
-            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertSuccess show];
-            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-        }
+        UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertSuccess show];
+        alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
         [weakSelf failedConfirmDelivery:order];
@@ -621,19 +611,13 @@
 -(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
-        if (data.ld.url) {
-            _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = data.ld;
-            _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:data.ld.url];
-        } else {
-            [weakSelf disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
-            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertSuccess show];
-            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-        }
+        UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertSuccess show];
+        alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+        
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
         [weakSelf failedConfirmDelivery:order];

@@ -18,20 +18,18 @@
 #import "InboxTicketDetailViewController.h"
 #import "NoResultReusableView.h"
 #import "ContactUsWebViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxTicketViewController ()
 <
-    TokopediaNetworkManagerDelegate,
     TKPDTabViewDelegate,
     InboxTicketDetailDelegate,
-NoResultDelegate
+    NoResultDelegate
 >
 {
-    TokopediaNetworkManager *_networkManager;
     NSMutableArray *_tickets;
     NSString *_uriNext;
-    NSInteger _page;
-    NSString *_filter;
+    InboxTicketFilterType _filter;
     UIRefreshControl *_refreshControl;
     NSIndexPath *_selectedIndexPath;
     NSInteger _currentTabMenuIndex;
@@ -53,14 +51,11 @@ NoResultDelegate
     
     _tickets = [NSMutableArray new];
     _uriNext = @"";
-    _page = 1;
     _currentTabMenuIndex = 0;
     _currentTabSegmentIndex = 0;
-    _filter = @"all";
+    _filter = InboxTicketFilterTypeAll;
 
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
+    [self requestListTicketPage:1];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -158,9 +153,13 @@ NoResultDelegate
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [_networkManager doRequest];
+            [self requestListTicketPage:[self page]];
         }
     }
+}
+
+-(NSInteger)page{
+    return [[TokopediaNetworkManager getPageFromUri:_uriNext] integerValue];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -184,112 +183,16 @@ NoResultDelegate
 }
 
 #pragma mark - Tokopedia network manager
-
-- (NSDictionary *)getParameter:(int)tag
-{
-    NSString *status = @"";
-    if (self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess) {
-        status = @"1";
-    } else if (self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed) {
-        status = @"2";
-    }
+-(TicketListRequestObject *)requestObjectListTicket{
+    TicketListRequestObject *object = [TicketListRequestObject new];
+    object.filter = _filter;
+    object.keyword = @"";
+    object.status = _inboxCustomerServiceType;
     
-    NSDictionary *dictionary = @{
-                                 API_ACTION_KEY : API_GET_INBOX_TICKET,
-                                 API_STATUS_KEY : status,
-                                 API_FILTER_KEY : _filter,
-                                 API_PAGE_KEY   : @(_page),
-                                 };
-    return dictionary;
+    return object;
 }
 
-- (NSString *)getPath:(int)tag
-{
-    return API_PATH;
-}
-
-- (id)getObjectManager:(int)tag {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxTicket class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxTicketResult class]];
-    
-    RKObjectMapping *inboxTicketMapping = [RKObjectMapping mappingForClass:[InboxTicketList class]];
-    [inboxTicketMapping addAttributeMappingsFromArray:@[API_LIST_TICKET_CREATE_TIME_KEY,
-                                                        API_LIST_TICKET_CREATE_TIME_FMT2_KEY,
-                                                        API_LIST_TICKET_FIRST_MESSAGE_NAME_KEY,
-                                                        API_LIST_TICKET_UPDATE_TIME_FMT2_KEY,
-                                                        API_LIST_TICKET_UPDATE_TIME_FMT_KEY,
-                                                        API_LIST_TICKET_STATUS_KEY,
-                                                        API_LIST_TICKET_READ_STATUS_KEY,
-                                                        API_LIST_TICKET_UPDATE_IS_CS_KEY,
-                                                        API_LIST_TICKET_INBOX_ID_KEY,
-                                                        API_LIST_TICKET_UPDATE_BY_URL_KEY,
-                                                        API_LIST_TICKET_CATEGORY_KEY,
-                                                        API_LIST_TICKET_TITLE_KEY,
-                                                        API_LIST_TICKET_TOTAL_MESSAGE_KEY,
-                                                        API_LIST_TICKET_SHOW_MORE_KEY,
-                                                        API_LIST_TICKET_RESPOND_STATUS_KEY,
-                                                        API_LIST_TICKET_IS_REPLIED_KEY,
-                                                        API_LIST_TICKET_URL_DETAIL_KEY,
-                                                        API_LIST_TICKET_UPDATE_BY_ID_KEY,
-                                                        API_LIST_TICKET_ID_KEY,
-                                                        API_LIST_TICKET_UPDATE_BY_NAME_KEY,
-                                                        API_LIST_TICKET_CATEGORY_ID_KEY
-                                                        ]];
-    
-    RKObjectMapping *userInvolveMapping = [RKObjectMapping mappingForClass:[InboxTicketUserInvolve class]];
-    [userInvolveMapping addAttributeMappingsFromArray:@[
-                                                        API_LIST_TICKET_FULL_NAME_KEY,
-                                                        ]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[InboxTicketPaging class]];
-    [pagingMapping addAttributeMappingsFromArray:@[API_PAGING_URI_NEXT_KEY,
-                                                   API_PAGING_URI_PREV_KEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_KEY
-                                                                                 toKeyPath:API_LIST_KEY
-                                                                               withMapping:inboxTicketMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_PAGING_KEY
-                                                                                 toKeyPath:API_PAGING_KEY
-                                                                               withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *userInvolve = [RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_TICKET_USER_INVOLVE_KEY
-                                                                                     toKeyPath:API_LIST_TICKET_USER_INVOLVE_KEY
-                                                                                   withMapping:userInvolveMapping];
-    [inboxTicketMapping addPropertyMapping:userInvolve];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
-    return inboxTicket.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
+-(void)setLoadingView{
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicator startAnimating];
     
@@ -302,81 +205,81 @@ NoResultDelegate
     self.tableView.tableFooterView = loadingView;
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
-    InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
+-(NSString *)noResultViewTitle{
+    NSDictionary *readNoResultViewTitle = @{
+         @(InboxCustomerServiceTypeClosed) : @"Tidak ada tiket bantuan yang sudah ditutup",
+         @(InboxCustomerServiceTypeInProcess) : @"Tidak ada tiket bantuan dalam proses",
+         @(InboxCustomerServiceTypeAll) : @"Tidak ada tiket bantuan"
+    };
     
-    if (_page == 1) {
-        [_tickets removeAllObjects];
-    }
-    
-    [_tickets addObjectsFromArray: inboxTicket.result.list];
-    
-    if (_tickets.count > 0) {
-        //self.view = _contentView;
-        
-        _uriNext =  inboxTicket.result.paging.uri_next;
-        if (![_uriNext isEqualToString:@"0"]) {
-            _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
-        }
-        self.tableView.tableFooterView = nil;
+    if (_filter == InboxTicketFilterTypeUnread){
+        return @"Anda sudah membaca semua tiket bantuan";
     } else {
+        return readNoResultViewTitle[@(_inboxCustomerServiceType)];
+    }
+}
+
+-(NSString*)noResultViewDescription{
+    if (_filter == InboxTicketFilterTypeAll &&
+        _inboxCustomerServiceType == InboxCustomerServiceTypeAll){
+        return @"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di halaman bantuan kami";
+    }
+    return @"";
+}
+
+-(void)setNoResultViewAppearance{
+    [_noResultView setNoResultTitle:[self noResultViewTitle]];
+    [_noResultView setNoResultDesc:[self noResultViewDescription]];
+    
+    if (_filter == InboxTicketFilterTypeAll &&
+        _inboxCustomerServiceType == InboxCustomerServiceTypeAll){
+        [_noResultView hideButton:NO];
+        [_noResultView setNoResultButtonTitle:@"Hubungi Kami"];
+    } else {
+        [_noResultView hideButton:YES];
+    }
+    [_noResultView layoutIfNeeded];
+    self.tableView.tableFooterView = _noResultView;
+}
+
+-(void)requestListTicketPage:(NSInteger)page{
+    
+    [self setLoadingView];
+    
+    [InboxTicketRequest fetchListTicket:[self requestObjectListTicket] page:page onSuccess:^(InboxTicketResult * data) {
         
-        if([_filter isEqualToString:@"unread"]){
-            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
-                [_noResultView setNoResultDesc:@""];
-                [_noResultView hideButton:YES];
-            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
-                [_noResultView setNoResultDesc:@""];
-                [_noResultView hideButton:YES];
-            }else{
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
-                [_noResultView setNoResultDesc:@""];
-                [_noResultView hideButton:YES];
-            }
-        }else{
-            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
-                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan yang sudah ditutup"];
-                [_noResultView setNoResultDesc:@""];
-                [_noResultView hideButton:YES];
-            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
-                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan dalam proses"];
-                [_noResultView setNoResultDesc:@""];
-                [_noResultView hideButton:YES];
-            }else{
-                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan"];
-                [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di halaman bantuan kami"];
-                [_noResultView hideButton:NO];
-                [_noResultView setNoResultButtonTitle:@"Hubungi Kami"];
-            }
+        if (page == 1) {
+            [_tickets removeAllObjects];
         }
-        [_noResultView removeFromSuperview];
-        [_noResultView layoutIfNeeded];
-        self.tableView.tableFooterView = _noResultView;
-        //self.view = _noResultView;
-    }
-    
-    [self.tableView reloadData];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxTicketList* ticket = _tickets.count? [_tickets objectAtIndex:0]: nil;
-        if (_tickets.count) {
-            if (!_selectedIndexPath) {
-                _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            }
-            [self selectCurrentTableRow];
+        
+        [_tickets addObjectsFromArray: data.list];
+        
+        if (_tickets.count > 0) {
+            _uriNext =  data.paging.uri_next;
+            self.tableView.tableFooterView = nil;
+            
+        } else {
+            [self setNoResultViewAppearance];
         }
-        [self.detailViewController updateTicket:ticket];
-    }
-    
-    [_refreshControl endRefreshing];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+        
+        [self.tableView reloadData];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            InboxTicketList* ticket = _tickets.count? [_tickets objectAtIndex:0]: nil;
+            if (_tickets.count) {
+                if (!_selectedIndexPath) {
+                    _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                }
+                [self selectCurrentTableRow];
+            }
+            [self.detailViewController updateTicket:ticket];
+        }
+        
+        [_refreshControl endRefreshing];
+        
+    } onFailure:^{
+        [_refreshControl endRefreshing];
+    }];
 }
 
 #pragma mark - No Result Delegate
@@ -413,9 +316,7 @@ NoResultDelegate
 #pragma mark - Methods
 
 - (void)refreshView {
-    _page = 1;
-    [_networkManager requestCancel];
-    [_networkManager doRequest];
+    [self requestListTicketPage:1];
 }
 
 - (void)reloadDataSource:(NSNotification *)notification {
@@ -425,16 +326,10 @@ NoResultDelegate
     NSInteger currentMenuIndex = [[[notification object] objectForKey:TKPDTabViewNavigationMenuIndex] integerValue];
     if (_currentTabMenuIndex != currentMenuIndex) {
         _currentTabMenuIndex = currentMenuIndex;
-        if (_currentTabMenuIndex == 1) {
-            _filter = @"unread";
-        } else {
-            _filter = @"all";
-        }
-        _page = 1;
+        _filter = _currentTabMenuIndex;
         [_tickets removeAllObjects];
         [self.tableView reloadData];
-        [_networkManager requestCancel];
-        [_networkManager doRequest];
+        [self requestListTicketPage:1];
     }
 }
 

@@ -25,7 +25,6 @@
 #import "LoadingView.h"
 #import "TableViewScrollAndSwipe.h"
 
-#import "RequestNotifyLBLM.h"
 #import "NotificationManager.h"
 #import "PhoneVerifRequest.h"
 #import "PhoneVerifViewController.h"
@@ -44,7 +43,6 @@
     
     BOOL _isFailRequest;
     
-    RequestNotifyLBLM *_requestLBLM;
     NotificationManager *_notifManager;
 }
 
@@ -127,11 +125,6 @@
     [_requestHotlistManager requestCancel];
 }
 
--(void)doRequestNotify {
-    _requestLBLM = [RequestNotifyLBLM new];
-    [_requestLBLM doRequestLBLM];
-}
-
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -140,7 +133,6 @@
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
-    [self doRequestNotify];
     [self checkForPhoneVerification];
 }
 

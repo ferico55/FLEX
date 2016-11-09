@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "InboxTicketDetailAttachment.h"
 
-@interface InboxTicketTicket : NSObject
+@interface InboxTicketTicket : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *ticket_first_message_name;
 @property (strong, nonatomic) NSString *ticket_create_time;
@@ -33,7 +34,7 @@
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;
 @property (strong, nonatomic) NSString *ticket_total_message;
-@property (strong, nonatomic) NSArray *ticket_attachment;
+@property (strong, nonatomic) NSArray <InboxTicketDetailAttachment*>*ticket_attachment;
 @property (strong, nonatomic) NSString *ticket_invoice_ref_num;
 
 @end
