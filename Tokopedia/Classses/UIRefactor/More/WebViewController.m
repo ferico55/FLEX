@@ -22,19 +22,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    
     self.navigationItem.title = strTitle;
-
+    
     if(strContentHTML != nil) {
         [webView loadHTMLString:strContentHTML baseURL:nil];
     }
@@ -58,7 +48,14 @@
         [request setURL:[NSURL URLWithString:strURL]];
         [webView loadRequest:request];
     }
+    // Do any additional setup after loading the view from its nib.
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
