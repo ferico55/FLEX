@@ -676,4 +676,24 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [self trackEventName:@"clickMessage" category:GA_EVENT_CATEGORY_INBOX_MESSAGE action:GA_EVENT_ACTION_CLICK label:label];
 }
 
++ (NSString *)searchActionWithID:(NSString *)searchID {
+    NSString *actionForTracker = @"Search";
+    if ([searchID isEqualToString:@"autocomplete"]) {
+        actionForTracker = @"Search Autocomplete";
+    } else if ([searchID isEqualToString:@"recent_search"]) {
+        actionForTracker = @"Search History";
+    } else if ([searchID isEqualToString:@"popular_search"]) {
+        actionForTracker = @"Popular Search";
+    } else if ([searchID isEqualToString:@"hotlist"]) {
+        actionForTracker = @"Search Hotlist";
+    }
+    
+    return actionForTracker;
+}
+
++ (void)trackSearch:(NSString *)type keyword:(NSString *)keyword {
+    NSString *searchAction = [self searchActionWithID:type];
+    [self trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:searchAction label:keyword];
+}
+
 @end
