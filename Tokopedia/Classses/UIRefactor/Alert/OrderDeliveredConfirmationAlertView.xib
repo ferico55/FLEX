@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="OrderDeliveredConfirmationAlertView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sudah Diterima" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ1-7R-Rqi">
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Rt-IK-FLi">
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" image="icon_free" translatesAutoresizingMaskIntoConstraints="NO" id="rco-hb-4e8"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Gratis Ongkos Kirim untuk Retur Produk" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uK7-mc-OzH">
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X2u-EF-Bdz" userLabel="LeftBlock1">
+                            <constraints>
+                                <constraint firstAttribute="height" constant="5" id="9Yz-jx-X7P"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5v0-rE-lGS" userLabel="RightBlock2">
+                            <constraints>
+                                <constraint firstAttribute="height" constant="5" id="bIe-B1-0qR"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="rco-hb-4e8" firstAttribute="centerY" secondItem="uK7-mc-OzH" secondAttribute="centerY" id="2V6-FR-zYu"/>
+                        <constraint firstItem="uK7-mc-OzH" firstAttribute="centerY" secondItem="5v0-rE-lGS" secondAttribute="centerY" id="4Lc-Xz-PFX"/>
+                        <constraint firstItem="rco-hb-4e8" firstAttribute="centerY" secondItem="X2u-EF-Bdz" secondAttribute="centerY" id="7eg-tA-zSi"/>
+                        <constraint firstItem="X2u-EF-Bdz" firstAttribute="leading" secondItem="4Rt-IK-FLi" secondAttribute="leading" id="Aun-AS-R6r"/>
+                        <constraint firstItem="rco-hb-4e8" firstAttribute="leading" secondItem="X2u-EF-Bdz" secondAttribute="trailing" id="Btf-Rf-pnN"/>
+                        <constraint firstItem="5v0-rE-lGS" firstAttribute="leading" secondItem="uK7-mc-OzH" secondAttribute="trailing" id="Vxi-zr-cd5"/>
+                        <constraint firstItem="X2u-EF-Bdz" firstAttribute="width" secondItem="5v0-rE-lGS" secondAttribute="width" id="b96-hb-F3j"/>
+                        <constraint firstAttribute="height" constant="50" id="dAT-2v-pYN"/>
+                        <constraint firstAttribute="trailing" secondItem="5v0-rE-lGS" secondAttribute="trailing" id="gzD-AZ-2o5"/>
+                        <constraint firstItem="rco-hb-4e8" firstAttribute="centerY" secondItem="4Rt-IK-FLi" secondAttribute="centerY" id="sDW-xH-WmZ"/>
+                        <constraint firstItem="uK7-mc-OzH" firstAttribute="leading" secondItem="rco-hb-4e8" secondAttribute="trailing" constant="8" id="scW-4a-GpG"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BfC-sS-pZx">
+                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Komplain"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapComplainButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="EKX-TB-sk5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="REg-Fc-fm7">
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <state key="normal" title="Batal">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didCancel:" destination="iN0-l3-epB" eventType="touchUpInside" id="gC1-mg-oJl"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rGK-wN-OD0" userLabel="LeftBlock2">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="99B-Ho-Lye"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVI-xN-MtT" userLabel="RightBlock2"/>
+                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="255" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRb-vB-bcZ">
+                    <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="cWC-RQ-5p3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Selesai"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapOKButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="vgr-nR-qSM"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="m8o-ak-FY2">
+                    <string key="text">Transaksi ini difasilitasi fitur Free Returns. Dalam 3 hari, transaksi ini akan selesai otomatis dan Anda tidak dapat mengajukan klaim Free Returns. Klik "Komplain" untuk mengajukan klaim atau klik "Selesai" jika ingin menyelesaikan transaksi sekarang.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="jRb-vB-bcZ" firstAttribute="leading" secondItem="rGK-wN-OD0" secondAttribute="trailing" constant="8" id="3d5-aJ-qib"/>
+                <constraint firstItem="REg-Fc-fm7" firstAttribute="leading" secondItem="BfC-sS-pZx" secondAttribute="trailing" constant="10" id="6hx-YU-t0a"/>
+                <constraint firstItem="rGK-wN-OD0" firstAttribute="height" secondItem="SVI-xN-MtT" secondAttribute="height" id="9LZ-nt-MZa"/>
+                <constraint firstItem="QJ1-7R-Rqi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="9WL-Tg-lid"/>
+                <constraint firstAttribute="trailing" secondItem="m8o-ak-FY2" secondAttribute="trailing" constant="18" id="A0N-Xu-AeK"/>
+                <constraint firstItem="BfC-sS-pZx" firstAttribute="width" secondItem="jRb-vB-bcZ" secondAttribute="width" id="B4f-ei-PO8"/>
+                <constraint firstItem="m8o-ak-FY2" firstAttribute="top" secondItem="QJ1-7R-Rqi" secondAttribute="bottom" constant="8" id="BBO-Pp-qxk"/>
+                <constraint firstItem="4Rt-IK-FLi" firstAttribute="top" secondItem="m8o-ak-FY2" secondAttribute="bottom" constant="8" id="Ctc-GI-4mQ"/>
+                <constraint firstItem="BfC-sS-pZx" firstAttribute="leading" secondItem="jRb-vB-bcZ" secondAttribute="trailing" constant="10" id="Dza-fU-cK4"/>
+                <constraint firstItem="jRb-vB-bcZ" firstAttribute="centerY" secondItem="BfC-sS-pZx" secondAttribute="centerY" id="ITU-M4-Wew"/>
+                <constraint firstItem="m8o-ak-FY2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="IuX-kz-1WO"/>
+                <constraint firstAttribute="bottom" secondItem="jRb-vB-bcZ" secondAttribute="bottom" constant="18" id="JNW-dF-gLj"/>
+                <constraint firstItem="REg-Fc-fm7" firstAttribute="width" secondItem="jRb-vB-bcZ" secondAttribute="width" id="McR-uy-KWm"/>
+                <constraint firstItem="rGK-wN-OD0" firstAttribute="centerY" secondItem="SVI-xN-MtT" secondAttribute="centerY" id="Nyw-0r-zNb"/>
+                <constraint firstItem="jRb-vB-bcZ" firstAttribute="top" secondItem="4Rt-IK-FLi" secondAttribute="bottom" constant="8" id="PTO-Tb-z0M"/>
+                <constraint firstItem="rGK-wN-OD0" firstAttribute="centerY" secondItem="jRb-vB-bcZ" secondAttribute="centerY" id="Put-bN-R0g"/>
+                <constraint firstItem="REg-Fc-fm7" firstAttribute="centerY" secondItem="SVI-xN-MtT" secondAttribute="centerY" id="S2m-rX-sLq"/>
+                <constraint firstItem="rGK-wN-OD0" firstAttribute="width" secondItem="SVI-xN-MtT" secondAttribute="width" id="SwR-tU-K2g"/>
+                <constraint firstItem="4Rt-IK-FLi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="TUk-dE-Ku7"/>
+                <constraint firstItem="4Rt-IK-FLi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Yk7-yq-HD4"/>
+                <constraint firstAttribute="trailing" secondItem="4Rt-IK-FLi" secondAttribute="trailing" id="bmQ-ek-YnR"/>
+                <constraint firstAttribute="trailing" secondItem="SVI-xN-MtT" secondAttribute="trailing" id="mtJ-qD-zh7"/>
+                <constraint firstItem="SVI-xN-MtT" firstAttribute="leading" secondItem="REg-Fc-fm7" secondAttribute="trailing" constant="8" id="vf1-KU-Emz"/>
+                <constraint firstItem="rGK-wN-OD0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wzL-A8-cVm"/>
+                <constraint firstItem="QJ1-7R-Rqi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="y2b-y4-eqc"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="5"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="alertMessageLabel" destination="m8o-ak-FY2" id="teZ-ZC-nvE"/>
+                <outlet property="alertTitleLabel" destination="QJ1-7R-Rqi" id="rhV-hs-lzu"/>
+                <outlet property="freeReturnsInfoHeightConstraint" destination="dAT-2v-pYN" id="MeB-Oe-Q0m"/>
+                <outlet property="freeReturnsInfoView" destination="4Rt-IK-FLi" id="Lsv-T4-KKh"/>
+                <outletCollection property="buttons" destination="BfC-sS-pZx" id="gPn-LI-LdE"/>
+                <outletCollection property="buttons" destination="jRb-vB-bcZ" id="VVa-Ah-oD6"/>
+            </connections>
+            <point key="canvasLocation" x="203" y="19"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_free" width="16" height="16"/>
+    </resources>
+</document>

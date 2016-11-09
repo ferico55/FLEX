@@ -32,5 +32,6 @@
 
 - (NSString *)kv_decodeHTMLCharacterEntities;
 - (NSString *)kv_encodeHTMLCharacterEntities;
+- (NSString *) stringByStrippingHTML;
 
 @end
