@@ -13,6 +13,7 @@
 #import "Order.h"
 #import "OrderTransaction.h"
 #import "string_order.h"
+#import "Tokopedia-Swift.h"
 
 @interface SubmitShipmentConfirmationViewController ()
 <
@@ -82,7 +83,7 @@
 
 - (void)setBackButton {
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -90,7 +91,7 @@
 
 - (void)setCancelButton {
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
@@ -311,10 +312,12 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
+            [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Cancel"];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
             
             if ([self isInstantCourier]) {
+                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [self request];
                 return;
             }
@@ -322,6 +325,7 @@
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >= 7 && textField.text.length <= 17) {
+                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [self request];
             } else {
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]
@@ -364,83 +368,41 @@
 
 #pragma mark - Resktit methods for actions
 
-- (void)request {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userId = auth.getUserId;
-
+-(ProceedShippingObjectRequest*)proceedShippingObjectRequest{
+    
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     UITextField *textField = (UITextField *)[cell viewWithTag:1];
+    
+    ProceedShippingObjectRequest *object = [ProceedShippingObjectRequest new];
+    object.type = ProceedTypeConfirm;
+    object.orderID = _order.order_detail.detail_order_id;
+    object.shippingRef = textField.text;
 
-    NSDictionary *parameters;
     if (_changeCourier) {
-        parameters = @{
-                  API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
-                  API_ACTION_TYPE_KEY         : @"confirm",
-                  API_USER_ID_KEY             : userId,
-                  API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
-                  API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
-                  API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,
-                  API_SHIPMENT_PACKAGE_ID_KEY : _selectedCourierPackage.sp_id ?: _order.order_shipment.shipment_package_id,
-                  API_SHIPMENT_REF_KEY        : textField.text ?: @"",
-                  };
-    } else {
-        parameters = @{
-                  API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
-                  API_ACTION_TYPE_KEY         : @"confirm",
-                  API_USER_ID_KEY             : userId,
-                  API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
-                  API_SHIPMENT_REF_KEY        : textField.text ?: @"",
-                  };
+        object.shipmentID = _selectedCourier.shipment_id;
+        object.shipmentName = _selectedCourier.shipment_name;
+        object.shipmentPackageID = _selectedCourierPackage.sp_id;
     }
     
-    [self.networkManager requestWithBaseUrl:[NSString v4Url]
-                                       path:@"/v4/action/myshop-order/proceed_shipping.pl"
-                                     method:RKRequestMethodPOST
-                                  parameter:parameters
-                                    mapping:[ActionOrder mapping]
-                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                      [self actionRequestSuccess:mappingResult];
-                                  } onFailure:^(NSError *error) {
-                                      [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
-                                      [self actionRequestFailure:error];
-                                  }];
+    return object;
 }
 
-- (void)actionRequestSuccess:(RKMappingResult *)mappingResult {
-    ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status && [actionOrder.result.is_success boolValue]) {
+- (void)request {
+    [ShipmentRequest fetchProceedShipping:[self proceedShippingObjectRequest] onSuccess:^{
+        
         [AnalyticsManager localyticsTrackShipmentConfirmation:YES];
-        NSArray *message = actionOrder.message_status.count > 0 ? actionOrder.message_status : @[@"Anda telah berhasil mengkonfirmasi pengiriman barang."];
-    
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:message delegate:self];
-        [alert show];
-
+        
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
         if ([self.delegate respondsToSelector:@selector(successConfirmOrder:)]) {
             [self.delegate successConfirmOrder:self.order];
         }
         
-    } else if (actionOrder.message_error.count > 0){
+    } onFailure:^{
+        
         [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:actionOrder.message_error[0]
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil, nil];
-        alert.delegate = self;
-        [alert show];
-    }
-}
-
-- (void)actionRequestFailure:(NSError *)error {
-    NSLog(@"\n\nRequest error : %@\n\n", error);
-    NSString *errorString = [error localizedDescription];
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorString]
-                                                                   delegate:self];
-    [alert show];
+        
+    }];
 }
 
 #pragma mark - BarCode Delegate

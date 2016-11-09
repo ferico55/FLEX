@@ -28,7 +28,6 @@
 #import "ViewLabelUser.h"
 #import "WebViewInvoiceViewController.h"
 #import "NoResultReusableView.h"
-#import "RequestLDExtension.h"
 #import "NavigateViewController.h"
 #import "NavigationHelper.h"
 #import "MyReviewDetailViewController.h"
@@ -45,7 +44,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -70,7 +69,6 @@
     
     NSString *_keyword;
     
-    RequestLDExtension *_requestLD;
     NavigateViewController *_navigate;
     
     ReviewRequest *_reviewRequest;

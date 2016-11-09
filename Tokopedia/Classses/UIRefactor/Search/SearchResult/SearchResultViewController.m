@@ -1267,7 +1267,7 @@ ImageSearchRequestDelegate
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
-            [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:GA_EVENT_ACTION_NO_RESULT label:[_data objectForKey:@"search"]?:@""];
+            [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:@"No Result" label:[_data objectForKey:@"search"]?:@""];
 
             if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];

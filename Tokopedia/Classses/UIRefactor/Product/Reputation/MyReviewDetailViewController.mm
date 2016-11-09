@@ -23,7 +23,6 @@
 #import "CMPopTipView.h"
 #import "GiveReviewResponseViewController.h"
 #import "ReportViewController.h"
-#import "RequestLDExtension.h"
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
 #import "UIImageView+AFNetworking.h"
@@ -39,7 +38,6 @@
     MyReviewDetailHeaderSmileyDelegate,
     UIActionSheetDelegate,
     UIAlertViewDelegate,
-    requestLDExttensionDelegate,
     LoadingViewDelegate,
     CMPopTipViewDelegate,
     SmileyDelegate
@@ -69,7 +67,6 @@
     
     CMPopTipView *_cmPopTipView;
     
-    RequestLDExtension *_request;
     ImageStorage *_imageCache;
     
     LoadingView *_loadingView;
@@ -289,20 +286,15 @@
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
+        [AnalyticsManager trackGiveRatingReviewWithRole:_detailMyInboxReputation.role];
+        
         [_reviewRequest requestInsertReputationWithReputationID:_detailMyInboxReputation.reputation_id
                                                            role:_detailMyInboxReputation.role
                                                           score:_score
                                                       onSuccess:^(GeneralActionResult *result) {
                                                           NSDateFormatter *date = [NSDateFormatter new];
                                                           date.dateFormat = @"d MMMM yyyy, HH:mm";
-                                                          
-                                                          if (![result.ld.url isEqualToString:@""] && result.ld.url) {
-                                                              _request = [RequestLDExtension new];
-                                                              _request.luckyDeal = result.ld;
-                                                              _request.delegate = self;
-                                                              [_request doRequestMemberExtendURLString:result.ld.url];
-                                                          }
-                                                          
+                                                        
                                                           if ([_selectedInbox.role isEqualToString:@"2"]) {
                                                               if (_selectedInbox.buyer_score != nil && ![_selectedInbox.buyer_score isEqualToString:@""]) {
                                                                   _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];

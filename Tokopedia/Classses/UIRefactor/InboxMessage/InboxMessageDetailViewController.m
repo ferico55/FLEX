@@ -222,7 +222,7 @@
     if(status) {
         //if success
         InboxMessageDetailList *msg = _messages[_messages.count-1];
-        if([inboxmessageaction.result.is_success isEqualToString:@"0"]) {
+        if([inboxmessageaction.data.is_success isEqualToString:@"0"]) {
             msg.is_not_delivered = @"1";
         } else {
             msg.is_just_sent = NO;
@@ -393,7 +393,10 @@
                     _textView.text = nil;
                     [self adjustButtonSendAvailability];
                 } else {
-                    
+                    [AnalyticsManager trackEventName:@"clickMessage"
+                                            category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                              action:GA_EVENT_ACTION_ERROR
+                                               label:[_data objectForKey:@"nav"]?:@""];
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
@@ -529,6 +532,10 @@
                          [_refreshControl endRefreshing];
                      }
                      onFailure:^(NSError *errorResult) {
+                         [AnalyticsManager trackEventName:@"clickMessage"
+                                                 category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                                   action:GA_EVENT_ACTION_ERROR
+                                                    label:[_data objectForKey:@"nav"]?:@""];
                          _table.tableFooterView = nil;
                          _isrefreshview = NO;
                          [_refreshControl endRefreshing];

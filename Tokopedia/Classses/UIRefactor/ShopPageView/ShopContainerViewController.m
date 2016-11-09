@@ -338,7 +338,7 @@
     }];
 }
 
--(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
+-(void)didReceiveActionButtonFavoriteShopConfirmation{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
     [self setFavoriteRightButtonItem];
     NSArray *tempArr = self.navigationController.viewControllers;
@@ -467,6 +467,10 @@
 #pragma mark - Tap Action
 - (IBAction)infoTap:(id)sender {
     if (_shop) {
+        [AnalyticsManager trackEventName:@"clickShopHome"
+                                category:GA_EVENT_CATEGORY_SHOP_HOME
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Shop Info"];
         ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
         vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
                     kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{}};
@@ -506,8 +510,21 @@
     	if([_data objectForKey:PromoRefKey]){
         	adKey = [_data objectForKey:PromoRefKey];
     	}
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
+        [self requestFavoriteShop:_shop.result.info.shop_id adKey:adKey];
     }
+}
+
+-(void)requestFavoriteShop:(NSString*)shopID adKey:(NSString*)adKey{
+    
+    [FavoriteShopRequest requestActionButtonFavoriteShop:shopID withAdKey:adKey onSuccess:^(FavoriteShopActionResult *data) {
+        
+        [self didReceiveActionButtonFavoriteShopConfirmation];
+        
+    } onFailure:^{
+        
+        [self failToRequestActionButtonFavoriteShopConfirmation];
+        
+    }];
 }
 
 //this function called when user tap WHITE HEART button, with intention to FAVORITE a shop
@@ -517,7 +534,7 @@
     	if([_data objectForKey:PromoRefKey]){
         	adKey = [_data objectForKey:PromoRefKey];
     	}
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
+        [self requestFavoriteShop:_shop.result.info.shop_id adKey:adKey];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -537,6 +554,10 @@
 
 - (IBAction)settingTap:(id)sender {
     if (_shop) {
+        [AnalyticsManager trackEventName:@"clickShopHome"
+                                category:GA_EVENT_CATEGORY_SHOP_HOME
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Setting"];
         ShopSettingViewController *settingController = [ShopSettingViewController new];
         settingController.data = @{
                                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
@@ -547,6 +568,10 @@
 }
 
 - (IBAction)addProductTap:(id)sender {
+    [AnalyticsManager trackEventName:@"clickShopHome"
+                            category:GA_EVENT_CATEGORY_SHOP_HOME
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Add Product"];
     ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
     productViewController.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];

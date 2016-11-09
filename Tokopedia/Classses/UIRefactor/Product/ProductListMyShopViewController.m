@@ -263,7 +263,7 @@ NoResultDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_VIEW label:@"Product"];
     _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
@@ -475,6 +475,7 @@ NoResultDelegate
     [self.products removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Delete"];
     NSString *productId = [NSString stringWithFormat:@"%d", product.product_id];
     [ProductRequest deleteProductWithId:productId
           setCompletionBlockWithSuccess:^(ShopSettings *response) {
@@ -715,6 +716,7 @@ NoResultDelegate
     if(self.isMovingToGudang){
         if (buttonIndex == 1) {
             NSString *productId = [NSString stringWithFormat:@"%d", selectedProduct.product_id];
+            [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Stock"];
             [ProductRequest moveProductToWarehouse:productId
                      setCompletionBlockWithSuccess:^(ShopSettings *response) {
                          [self moveProductToWirehouse];

@@ -158,7 +158,7 @@
 }
 
 - (IBAction)tap:(UISegmentedControl*)sender {
-    
+    [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
     UIPageViewControllerNavigationDirection direction;
     if (_index>sender.selectedSegmentIndex)
         direction = UIPageViewControllerNavigationDirectionReverse;

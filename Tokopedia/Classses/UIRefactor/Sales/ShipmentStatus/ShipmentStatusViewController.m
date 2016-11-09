@@ -377,6 +377,7 @@
 #pragma mark - Cell delegate
 
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
+    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Track"];
     OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
     
@@ -410,6 +411,7 @@
 }
 
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath {
+    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Invoice"];
     OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
     

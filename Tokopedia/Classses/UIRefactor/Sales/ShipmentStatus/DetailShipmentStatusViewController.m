@@ -130,7 +130,7 @@
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
-        
+            [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Detail"];
             self.title = @"";
             OrderDetailViewController *controller = [OrderDetailViewController new];
             controller.transaction = _order;
@@ -143,7 +143,7 @@
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
             navigationController.navigationBar.translucent = NO;
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
+            
             ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
             controller.delegate = self;
             controller.order = _order;
@@ -152,6 +152,7 @@
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         
         } else if (button.tag == 3) {
+            [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_VIEW label:@"Invoice"];
             [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
         }
     }
