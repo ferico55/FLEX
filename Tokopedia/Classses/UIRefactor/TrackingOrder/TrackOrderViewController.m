@@ -47,6 +47,8 @@
     
     self.title = @"Lacak Pengiriman";
     
+    [AnalyticsManager trackScreenName:@"Shipment Tracking Order Page"];
+    
     self.networkManager = [TokopediaNetworkManager new];
     self.networkManager.isUsingHmac = YES;
     [self request];
@@ -77,11 +79,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [AnalyticsManager trackScreenName:@"Shipment Tracking Order Page"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
