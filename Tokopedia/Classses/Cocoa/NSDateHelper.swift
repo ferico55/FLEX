@@ -24,4 +24,10 @@ extension NSDate {
         let result = dateFormat.stringFromDate(date)
         return result
     }
+    
+    func stringWithFormat(dateFormat: String) -> String{
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = dateFormat
+        return formatter.stringFromDate(self)
+    }
 }

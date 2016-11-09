@@ -9,6 +9,10 @@
 #import "HomeTabHeaderViewController.h"
 #import "UserAuthentificationManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "OAStackView.h"
+#import "Masonry.h"
+
+#define STACKVIEW_LEFTRIGHT_MARGIN 20
 
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
@@ -18,6 +22,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) OAStackView *stackView;
+@property (nonatomic) CGFloat maxXInScrollView;
 
 @end
 
@@ -38,14 +44,9 @@
 }
 
 - (void)initButton {
-    UIButton * (^createButton)(NSString* ,NSInteger, NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger multiplier, NSInteger buttonTag) {
+    UIButton * (^createButton)(NSString* , NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger buttonTag) {
         UIButton *button;
-        if(IS_IPAD) {
-            button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/5)*multiplier - ([[UIScreen mainScreen]bounds].size.width/5), 0, ([[UIScreen mainScreen]bounds].size.width/5), 44)];
-        } else {
-            button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
-        }
-
+        button = [[UIButton alloc] init];
         button.titleLabel.font = [UIFont title2ThemeMedium];
         button.tag = buttonTag;
         [button setTitle:buttonTitle forState:UIControlStateNormal];
@@ -53,31 +54,50 @@
         
         return button;
     };
-    
-    if(IS_IPAD) {
-        [_scrollView setScrollEnabled:NO];
-    }
-
-    [_scrollView addSubview:createButton(@"HOME", 1, 1)];
-    [_scrollView addSubview:createButton(@"PRODUCT FEED", 2, 2)];
-    [_scrollView addSubview:createButton(@"WISHLIST", 3, 3)];
-    [_scrollView addSubview:createButton(@"TERAKHIR DILIHAT", 4, 4)];
-    [_scrollView addSubview:createButton(@"TOKO FAVORIT", 5, 5)];
+    _stackView = [[OAStackView alloc] initWithArrangedSubviews:
+                  @[createButton(@"HOME", 1),
+                    createButton(@"FEED", 2),
+                    createButton(@"WISHLIST", 3),
+                    createButton(@"TERAKHIR DILIHAT", 4),
+                    createButton(@"FAVORIT", 5)]];
+    _stackView.axis = UILayoutConstraintAxisHorizontal;
+    _stackView.alignment = OAStackViewAlignmentFill;
+    _stackView.layoutMarginsRelativeArrangement = YES;
+    _stackView.layoutMargins = UIEdgeInsetsMake(0, STACKVIEW_LEFTRIGHT_MARGIN, 0, STACKVIEW_LEFTRIGHT_MARGIN);
 }
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
+    [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
+    if(IS_IPAD) {
+        [_scrollView setScrollEnabled:NO];
+        _stackView.distribution = OAStackViewDistributionFillEqually;
+        _stackView.spacing = 0.0;
+        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.mas_equalTo(_scrollView);
+            make.left.mas_equalTo(self.view);
+            make.right.mas_equalTo(self.view);
+        }];
+    } else {
+        _stackView.distribution = OAStackViewDistributionFillProportionally;
+        _stackView.spacing = 35.0;
+        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.mas_equalTo(_scrollView);
+            make.height.mas_equalTo(_scrollView);
+        }];
+
+    }
+    
+    _maxXInScrollView = [self xInScrollViewFormula: [_stackView.arrangedSubviews count]] - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count]-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNotificationCenter];
-    
-    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/2)*6, self.view.frame.size.height);
-    
+
     _scrollView.delegate = self;
     _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _scrollView.bounces = NO;
@@ -109,8 +129,9 @@
 
 - (void)userDidLogin:(NSNotification *)notification {
     [_scrollView setScrollEnabled:YES];
-    [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [_stackView removeFromSuperview];
     [self initButton];
+    [self viewDidLayoutSubviews];
     _loggedIn = YES;
 }
 
@@ -127,7 +148,6 @@
             _scrollView.contentOffset = CGPointMake(totalOffset, 0);
         }];
     }
-    
 }
 
 - (void)tapButton:(UIButton*)button {
@@ -171,54 +191,41 @@
     [self setActiveButton];
 }
 
-
 - (void)tap:(int)page {
-    int divider = 2;
-
+    [self.view layoutIfNeeded];
+    NSInteger xInScrollView = [self xInScrollViewFormula: page];
     switch (page) {
         case 1 :{
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*0;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 1;
+            _totalOffset = 0;
             break;
         }
-            
-        case 2 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*1;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 2;
+        case 5 :{
+            _totalOffset = _maxXInScrollView;
             break;
         }
-            
-        case 3 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*2;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 3;
-            break;
-        }
-            
-        case 4 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*3;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 4;
-            break;
-        }
-            
-        case 5 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*4;
-            [self tapButtonAnimate:_totalOffset];
-            _viewControllerIndex = 5;
-            break;
-        }
-            
         default:
+            _totalOffset = [self totalOffsetFormula:xInScrollView page:page];
             break;
     }
+    _viewControllerIndex = page;
+    [self tapButtonAnimate:_totalOffset];
+}
+
+- (NSInteger) xInScrollViewFormula: (NSInteger)page {
+    return [[_stackView.arrangedSubviews objectAtIndex:page-1] convertPoint:CGPointZero toView:_scrollView].x;
+}
+
+- (CGFloat) totalOffsetFormula: (NSInteger)xInScrollView page: (NSInteger) page {
+    CGFloat totalOffset = xInScrollView - ((_stackView.arrangedSubviews[page-2].frame.size.width / 2)*(page-1) + _stackView.spacing);
+    if (totalOffset >= _maxXInScrollView) {
+        totalOffset = _maxXInScrollView;
+    }
+    return totalOffset;
 }
 
 - (void)setActiveButton
 {
-    for (UIButton *button in _scrollView.subviews) {
+    for (UIButton *button in _stackView.arrangedSubviews) {
         if ([button isKindOfClass:[UIButton class]]) {
             if (button.tag == _viewControllerIndex) {
                 [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -230,7 +237,7 @@
 }
 
 - (void)removeButton {
-    for (UIButton *button in _scrollView.subviews) {
+    for (UIButton *button in _stackView.arrangedSubviews) {
         if(button.tag > 1) {
             [button removeFromSuperview];
         }

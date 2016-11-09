@@ -86,7 +86,7 @@ NoResultDelegate
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
-@property (strong, nonatomic) NSMutableArray *products;
+@property (strong, nonatomic) NSMutableArray<ManageProductList*> *products;
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSIndexPath *lastActionIndexPath;
@@ -601,11 +601,12 @@ NoResultDelegate
 - (MGSwipeButton *)deleteButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+    __weak typeof(self) weakSelf = self;
     MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_DELETE_TITLE
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
-                                                      [self deleteListAtIndexPath:indexPath];
+                                                      [weakSelf showDeleteAlertForProductAtIndexPath:indexPath];
                                                       return YES;
                                                   }];
     [button.titleLabel setFont:[UIFont largeTheme]];
@@ -754,6 +755,18 @@ NoResultDelegate
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
+}
+
+-(void)showDeleteAlertForProductAtIndexPath:(NSIndexPath *)indexPath {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hapus Produk" message:[NSString stringWithFormat:@"Apakah Anda yakin ingin menghapus %@?", _products[indexPath.row].product_name] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yaAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf deleteListAtIndexPath:indexPath];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:yaAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - NoResult Delegate

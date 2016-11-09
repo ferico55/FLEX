@@ -189,7 +189,7 @@ FavoriteShopRequestDelegate
     
     if(indexPath.section == 0){
         PromoShop *promoShop = _promoShops[indexPath.row].shop;
-        cell.shopname.text = promoShop.name;
+        cell.shopname.text = [promoShop.name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = promoShop.location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:promoShop.image_shop.s_url]
                            placeholderImage:[UIImage imageNamed:@"icon_default_shops.jpg"]];
