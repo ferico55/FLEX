@@ -313,21 +313,7 @@
             [parameters setValue:scIdentifier forKey:@"sc_identifier"];
         }
         
-        for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
-            NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
-            if ([key isEqualToString:@"pmin"]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"pmin"];
-            } else if ([key isEqualToString:@"pmax"]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"pmax"];
-            } else if ([key isEqualToString:@"ob"]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"ob"];
-            } else if ([key isEqualToString:@"floc"]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"floc"];
-            } else if ([key isEqualToString:@"fshop"]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"fshop"];
-            }
-        }
-        
+        [parameters addEntriesFromDictionary:[NSDictionary dictionaryFromURLString:hotlist.url]];
         [parameters setValue:@"directory" forKey:@"type"];
         
         SearchResultViewController *controller = [SearchResultViewController new];
