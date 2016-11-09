@@ -102,7 +102,8 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             (cell as! FilterTableViewCell).disableSelected = false
             (cell as! FilterTableViewCell).setPading(10)
             for selected in selectedObjects {
-                if selected == item {
+                if selected.value == item.value && selected.key == item.key {
+                    item.isSelected = true
                     tableView .selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
                 }
             }
