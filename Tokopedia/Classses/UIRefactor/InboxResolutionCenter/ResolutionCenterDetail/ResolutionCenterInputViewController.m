@@ -246,6 +246,7 @@
 
 -(void)tapSendReply:(UIBarButtonItem*)button{
     if ([self isValid]) {
+        [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_SEND label:@"Comment"];
         [self doRequestReplyResolutionButton:button];
     }
 }
@@ -505,7 +506,7 @@
         [self.navigationController popViewControllerAnimated:YES];
 
     } onFailure:^{
-        
+        [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_ERROR label:@"Comment"];
         sendButton.enabled = YES;
         
     }];

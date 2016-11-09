@@ -289,6 +289,8 @@
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
+        [AnalyticsManager trackGiveRatingReviewWithRole:_detailMyInboxReputation.role];
+        
         [_reviewRequest requestInsertReputationWithReputationID:_detailMyInboxReputation.reputation_id
                                                            role:_detailMyInboxReputation.role
                                                           score:_score

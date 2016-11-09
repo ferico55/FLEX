@@ -421,6 +421,7 @@
 #pragma mark View actions
 -(IBAction)tap:(UISegmentedControl*) sender
 {
+    [AnalyticsManager trackInboxMessageClick:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
     UIBarButtonItem *barbutton1;
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                   style:UIBarButtonItemStylePlain

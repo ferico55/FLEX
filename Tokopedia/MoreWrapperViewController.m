@@ -40,6 +40,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initNotificationManager];
+    if (_moreViewController) {
+        [_moreViewController updateSaldoTokopedia];
+    }
 }
 
 - (void)tapNotificationBar {

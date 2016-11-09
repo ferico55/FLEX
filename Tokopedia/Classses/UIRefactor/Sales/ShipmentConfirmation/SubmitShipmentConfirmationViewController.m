@@ -311,10 +311,12 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
+            [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Cancel"];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
             
             if ([self isInstantCourier]) {
+                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [self request];
                 return;
             }
@@ -322,6 +324,7 @@
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >= 7 && textField.text.length <= 17) {
+                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [self request];
             } else {
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]

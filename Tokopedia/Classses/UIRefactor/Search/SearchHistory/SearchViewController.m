@@ -371,8 +371,9 @@ NSString *const RECENT_SEARCH = @"recent_search";
     SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
     
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
+    [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
     
-    if ([searchSuggestionData.id  isEqual: @"hotlist"]){
+    if ([searchSuggestionData.id isEqual: @"hotlist"]){
         NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
         
         HotlistResultViewController *controller = [HotlistResultViewController new];
@@ -382,13 +383,9 @@ NSString *const RECENT_SEARCH = @"recent_search";
         controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
         controller.isFromAutoComplete = YES;
         controller.hidesBottomBarWhenPushed = YES;
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:GA_EVENT_ACTION_SEARCH_HOTLIST label:searchSuggestionItem.keyword];
         
         [self.navigationController pushViewController:controller animated:YES];
     } else {
-        
-        NSString *actionForTracker = [self actionForTrackerWithSearchSuggestionDataId:searchSuggestionData.id];
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:actionForTracker label:searchSuggestionItem.keyword];
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
         [_searchBar setText:searchSuggestionItem.keyword];
@@ -407,7 +404,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
-        [AnalyticsManager trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:GA_EVENT_ACTION_SEARCH label:searchString];
+        [AnalyticsManager trackSearch:@"search" keyword:searchString];
         [self goToResultPage:_searchBar.text withAutoComplete:NO];
     }
     else {
@@ -586,19 +583,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
-}
-
-- (NSString*)actionForTrackerWithSearchSuggestionDataId: (NSString*)searchuggestionDataId {
-    NSString *actionForTracker = @"";
-    if ([searchuggestionDataId isEqual: @"autocomplete"]) {
-        actionForTracker = GA_EVENT_ACTION_SEARCH_AUTOCOMPLETE;
-    } else if ([searchuggestionDataId isEqual: @"recent_search"]) {
-        actionForTracker = GA_EVENT_ACTION_SEARCH_HISTORY;
-    } else if ([searchuggestionDataId isEqual: @"popular_search"]) {
-        actionForTracker = GA_EVENT_ACTION_POPULAR_SEARCH;
-    }
-    
-    return actionForTracker;
 }
 
 #pragma mark - Image search

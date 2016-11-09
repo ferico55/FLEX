@@ -119,7 +119,7 @@
         } else {
             NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
             NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
             [_delegate shouldDoRequestTopPayThxCode:paymentID toppayParam:_toppayParam];
             if ([self isModal]) {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
