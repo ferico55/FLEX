@@ -317,7 +317,9 @@
     AddressFormList *address = [self getAddressWithAddressID:nil];
 
     [RequestAddAddress fetchAddAddress:address isFromCart:@"" success:^(ProfileSettingsResult *data, AddressFormList *address) {
-        
+        if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
+            [AnalyticsManager trackEventName:@"addAddressSuccess" category:GA_EVENT_CATEGORY_ATC action:@"Add Address Success" label:@"Add Address Success"];
+        }
         [self.navigationController popViewControllerAnimated:YES];
         
         address = [self getAddressWithAddressID:data.address_id];

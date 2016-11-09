@@ -75,23 +75,27 @@
 }
 
 - (IBAction)newOrderDidTap:(id)sender {
+    [AnalyticsManager trackClickSales:@"New Order"];
     SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)shipmentConfirmationDidTap:(id)sender {
+    [AnalyticsManager trackClickSales:@"Shipping"];
     ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)shipmentStatusDidTap:(id)sender {
+    [AnalyticsManager trackClickSales:@"Status"];
     ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)listTransactionDidTap:(id)sender {
+    [AnalyticsManager trackClickSales:@"Transaction"];
     SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }

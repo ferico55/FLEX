@@ -9,5 +9,14 @@
 #import "ReplyInboxTicketResult.h"
 
 @implementation ReplyInboxTicketResult
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"is_success",
+                                             @"post_key",
+                                             @"file_uploaded"]
+     ];
+    return mapping;
+}
 
 @end

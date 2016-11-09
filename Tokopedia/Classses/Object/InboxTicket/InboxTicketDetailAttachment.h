@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InboxTicketDetailAttachment : NSObject
+@interface InboxTicketDetailAttachment : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *img_src;
 @property (strong, nonatomic) NSString *img_link;

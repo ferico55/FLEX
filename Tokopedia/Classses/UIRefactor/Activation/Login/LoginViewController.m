@@ -283,7 +283,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)didTapRegisterButton {
     [AnalyticsManager trackEventName:@"registerLogin"
                             category:GA_EVENT_CATEGORY_LOGIN
-                              action:GA_EVENT_ACTION_REGISTER
+                              action:@"Register"
                                label:@"Register"];
     RegisterViewController *controller = [RegisterViewController new];
     [self.navigationController pushViewController:controller animated:YES];

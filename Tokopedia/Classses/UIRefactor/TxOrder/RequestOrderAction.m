@@ -30,7 +30,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/delivery_finish_order.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -60,7 +60,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/delivery_confirm.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -144,7 +144,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/upload_valid_proof_by_payment.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -272,7 +272,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/confirm_payment.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -313,7 +313,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/edit_payment.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -401,7 +401,7 @@ static failedCompletionBlock failedUploadProof;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/cancel_payment.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

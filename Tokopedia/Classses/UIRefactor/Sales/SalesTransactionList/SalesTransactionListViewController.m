@@ -252,6 +252,7 @@
 }
 
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath {
+    [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_VIEW label:@"Detail"];
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
     
@@ -262,6 +263,7 @@
 }
 
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
+    [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_CLICK label:@"Track"];
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
     

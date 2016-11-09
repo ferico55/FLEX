@@ -355,6 +355,7 @@
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath {
     self.isManualDelete = YES;
+    [AnalyticsManager trackEventName:@"clickLocation" category:GA_EVENT_CATEGORY_SHOP_LOCATION action:GA_EVENT_ACTION_CLICK label:@"Delete"];
     [self.inputData setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [self.inputData setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
     [self removeShopAddress];

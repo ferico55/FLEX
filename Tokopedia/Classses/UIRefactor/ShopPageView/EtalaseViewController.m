@@ -472,6 +472,7 @@
 
 - (void)requestDeleteEtalase:(NSIndexPath*) indexPath{
     if(!_isLoading){
+        [AnalyticsManager trackEventName:@"clickEtalase" category:GA_EVENT_CATEGORY_ETALASE action:GA_EVENT_ACTION_CLICK label:@"Delete"];
         _isLoading = YES;
         EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
@@ -509,6 +510,7 @@
         //batal
     }else if(buttonIndex == 1){
         //OK
+        [AnalyticsManager trackEventName:@"clickEtalase" category:GA_EVENT_CATEGORY_ETALASE action:GA_EVENT_ACTION_EDIT label:@"Etalase"];
         [self requestEditEtalase:[alertView textFieldAtIndex:0].text];
     }
 }

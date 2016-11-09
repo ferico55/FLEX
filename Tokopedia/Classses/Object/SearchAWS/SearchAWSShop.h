@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Tokopedia-Swift.h"
+
+@class SearchShopModelView;
 
 @interface SearchAWSShop : NSObject
 

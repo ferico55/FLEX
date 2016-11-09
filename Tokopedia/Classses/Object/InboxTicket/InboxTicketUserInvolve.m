@@ -15,4 +15,11 @@
     return _full_name;
 }
 
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"full_name"]];
+    return mapping;
+}
+
 @end
