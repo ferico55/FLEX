@@ -116,7 +116,7 @@
                                         options:NSLiteralSearch
                                           range:NSMakeRange(0, [escaped length])];
         }
-        
+                
         // @"<br/>"
         range = [self rangeOfString:@"<br/>"];
         if (range.location != NSNotFound) {
@@ -210,8 +210,16 @@
                                     options:NSLiteralSearch
                                       range:NSMakeRange(0, [encoded length])];
     }
-
+    
     return encoded;
+}
+
+-(NSString *) stringByStrippingHTML {
+    NSRange r;
+    NSString *s = [self copy];
+    while ((r = [s rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+        s = [s stringByReplacingCharactersInRange:r withString:@""];
+    return s;
 }
 
 @end

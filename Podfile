@@ -32,6 +32,8 @@ def common_pods
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
+    pod 'JSQMessagesViewController'
+
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     

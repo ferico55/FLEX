@@ -24,4 +24,15 @@ extension NSDate {
         let result = dateFormat.stringFromDate(date)
         return result
     }
+    
+    func timeStamp() -> String{
+        let myDateString = String(Int64(self.timeIntervalSince1970*1000))
+        return "\(myDateString)"
+    }
+    
+    func stringWithFormat(dateFormat: String) -> String{
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = dateFormat
+        return formatter.stringFromDate(self)
+    }
 }

@@ -31,7 +31,6 @@
 #import "LoadingView.h"
 
 #import "NoResultReusableView.h"
-#import "RequestLDExtension.h"
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "RequestResolutionData.h"
@@ -46,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate>
 {
     NSMutableArray *_list;
     NSString *_URINext;
@@ -73,7 +72,6 @@
     
     UIViewController *_detailViewController;
     
-    RequestLDExtension *_requestLD;
     LuckyDealWord *_worlds;
     
     BOOL _isNeedPopUpLD;
@@ -88,6 +86,7 @@
 @property (strong, nonatomic) IBOutlet UIView *twoButtonsView;
 @property (strong, nonatomic) IBOutlet UIView *oneButtonView;
 @property (strong, nonatomic) IBOutlet UIView *oneButtonReOrderView;
+@property (strong, nonatomic) TxOrderStatusDetailViewController *txOrderStatusDetailVc;
 
 @end
 
@@ -226,7 +225,7 @@
     _detailViewController = viewController;
 }
 
--(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath
+-(void)confirmDelivery:(TxOrderStatusList *)order
 {
     [_list removeObject:order];
     [_tableView reloadData];
@@ -596,42 +595,32 @@
 }
 
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
+     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
-        if (data.ld.url) {
-            _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = data.ld;
-            _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:data.ld.url];
-        } else {
-            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertSuccess show];
-            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-        }
+        UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertSuccess show];
+        alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
-        [self failedConfirmDelivery:order];
+        [weakSelf failedConfirmDelivery:order];
     }];
 }
 
 -(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
+    __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
-        if (data.ld.url) {
-            _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = data.ld;
-            _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:data.ld.url];
-        } else {
-            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertSuccess show];
-            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-        }
+        UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertSuccess show];
+        alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+        
     } failure:^(NSError *error, TxOrderStatusList* order) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
-        [self failedConfirmDelivery:order];
+        [weakSelf failedConfirmDelivery:order];
     }];
 }
 
@@ -772,6 +761,7 @@
 }
 
 -(void)didFinishCreateComplain{
+    [self disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
     [self refreshRequest];
 }
 
@@ -917,9 +907,9 @@
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath
 {
-    TxOrderStatusDetailViewController *vc = [TxOrderStatusDetailViewController new];
+    _txOrderStatusDetailVc = [TxOrderStatusDetailViewController new];
     TxOrderStatusList *order = _list[indexPath.row];
-    vc.order = order;
+    _txOrderStatusDetailVc.order = order;
     int buttonCount = 0;
     if ([self isShowButtonConfirmOrder:order]) {
         buttonCount +=1;
@@ -928,15 +918,15 @@
         buttonCount +=1;
     }
     
-    vc.buttonHeaderCount = buttonCount;
+    _txOrderStatusDetailVc.buttonHeaderCount = buttonCount;
     
     if ([self isShowButtonSeeComplainOrder:order])
-        vc.isComplain = YES;
+        _txOrderStatusDetailVc.isComplain = YES;
     else if ([self isShowButtonReorder:order])
-        vc.reOrder = YES;
-    vc.indexPath = indexPath;
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+        _txOrderStatusDetailVc.reOrder = YES;
+    _txOrderStatusDetailVc.indexPath = indexPath;
+    _txOrderStatusDetailVc.delegate = self;
+    [self.navigationController pushViewController:_txOrderStatusDetailVc animated:YES];
 }
 
 -(void)shouldTrackOrder:(TxOrderStatusList*)order
@@ -951,44 +941,27 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-
+    OrderDeliveredConfirmationAlertView *confirmationAlert = [OrderDeliveredConfirmationAlertView newview];
     if ([self isOrderFreeReturn:order]) {
-        FreeReturnsConfirmationAlertView *confirmationAlert = [FreeReturnsConfirmationAlertView newview];
-        
-        confirmationAlert.didComplain = ^{
-            [confirmationAlert dismiss];
-            [self showAlertViewOpenComplain];
-        };
-        
-        confirmationAlert.didOK = ^{
-            [confirmationAlert dismiss];
-          // do nothing if user tap OK when order is Free Returns
-        };
-        
-        [confirmationAlert show];
+        confirmationAlert.title = @"Sudah Diterima";
+        confirmationAlert.message = order.order_detail.detail_free_return_msg;
+        confirmationAlert.isFreeReturn = YES;
     } else {
-        NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
-        NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-        NSString *selesaiString = @"Selesai";
-        void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
-            NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-            [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
-        };
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
-        [alertController addAction:cancelAction];
-        UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
-        UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self showAlertViewOpenComplain];
-        }];
-        
-        [alertController addAction:OKAction];
-        [alertController addAction:complainAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
+        confirmationAlert.title = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        confirmationAlert.message = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        confirmationAlert.isFreeReturn = NO;
     }
+    __weak typeof(self) weakSelf = self;
+    confirmationAlert.didComplain = ^{
+        [weakSelf showAlertViewOpenComplain];
+    };
     
-
+    confirmationAlert.didOK = ^{
+        [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+        [weakSelf confirmDelivery:order];
+    };
+    
+    [confirmationAlert show];
 }
 
 -(void)showAlertReorder
@@ -1036,6 +1009,20 @@
     }
     
     return YES;
+}
+
+- (void) disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail {
+    if (_txOrderStatusDetailVc != nil){
+        for (UIButton* deliveredButton in _txOrderStatusDetailVc.deliveredButton) {
+            [deliveredButton bk_removeEventHandlersForControlEvents:UIControlEventAllEvents];
+            deliveredButton.hidden = YES;
+        }
+        
+        if (_txOrderStatusDetailVc.complainButton != nil) {
+            [_txOrderStatusDetailVc.complainButton bk_removeEventHandlersForControlEvents:UIControlEventAllEvents];
+            _txOrderStatusDetailVc.complainButton.hidden = YES;
+        }
+    }
 }
 
 @end

@@ -42,7 +42,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var didSuccessPressBuy: (NSURL -> Void)?
     
     let WIDGET_LEFT_MARGIN: CGFloat = 20
-    let WIDGET_RIGHT_MARGIN: CGFloat = -20
+    let WIDGET_RIGHT_MARGIN: CGFloat = 20
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -88,12 +88,13 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             }
         }
         
+        self.layoutMarginsRelativeArrangement = true
+        self.layoutMargins = UIEdgeInsets(top: 0, left: self.WIDGET_LEFT_MARGIN, bottom: 0, right: self.WIDGET_RIGHT_MARGIN)
         self.addArrangedSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
             make.height.equalTo()(44)
-            make.left.equalTo()(self.pulsaCategoryControl.superview?.mas_left).with().offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.pulsaCategoryControl.superview?.mas_right).with().offset()(self.WIDGET_RIGHT_MARGIN)
         }
+        
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
             self.selectedCategory = categories[control.selectedSegmentIndex]
@@ -140,9 +141,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         saldoButtonPlaceholder = UIView(frame: CGRectZero)
         self.addArrangedSubview(saldoButtonPlaceholder)
         saldoButtonPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.buttonErrorLabel.mas_bottom)
-            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right)
             make.height.equalTo()(0)
         }
         
@@ -192,7 +190,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.height.equalTo()(0)
             make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
             make.left.equalTo()(self.saldoLabel.mas_right).offset()(10)
-            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right).offset()(self.WIDGET_RIGHT_MARGIN)
+            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
         }
     }
     
@@ -200,7 +198,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         fieldPlaceholder = UIView(frame: CGRectZero)
           self.addArrangedSubview(fieldPlaceholder)
         fieldPlaceholder.mas_makeConstraints { make in
-            make.width.mas_equalTo()(self.mas_width)
             make.height.mas_equalTo()(44)
         }
         
@@ -228,7 +225,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : self.WIDGET_RIGHT_MARGIN)
+            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : -self.WIDGET_RIGHT_MARGIN)
         }
         
         self.prefixView = UIView()
@@ -263,8 +260,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         self.addArrangedSubview(numberErrorLabel)
         
         numberErrorLabel.mas_makeConstraints { make in
-            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right)
             make.height.equalTo()(0)
         }
     }
@@ -452,9 +447,8 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         productButton.mas_makeConstraints { make in
             make.top.equalTo()(self.buttonsPlaceholder.mas_top)
-            make.left.equalTo()(self.mas_left).with().offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right).with().offset()(self.WIDGET_RIGHT_MARGIN)
             make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
+            make.left.equalTo()(self.buttonsPlaceholder.mas_left)
         }
         
         buttonErrorLabel = UILabel(frame: CGRectZero)
@@ -464,9 +458,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         buttonErrorLabel.mas_makeConstraints { make in
             make.height.equalTo()(0)
-            make.top.equalTo()(self.buttonsPlaceholder.mas_bottom).offset()(3)
-            make.left.equalTo()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right)
         }
     }
     
@@ -500,10 +491,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         self.buttonsPlaceholder.mas_updateConstraints { make in
             make.height.equalTo()(44)
         }
-        productButton.mas_updateConstraints { make in
-            make.height.equalTo()(44)
-        }
-        
+
         buyButton.mas_updateConstraints { make in
             make.height.equalTo()(44)
         }
@@ -586,10 +574,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.height.equalTo()(0)
         }
         
-        productButton.mas_updateConstraints { make in
-            make.height.equalTo()(0)
-        }
-        
         buyButton.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
@@ -622,7 +606,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     func setupStackViewFormat() {
         self.axis = .Vertical
         self.distribution = .Fill
-        self.alignment = .Center
+        self.alignment = .Fill
         self.spacing = 5.0
     }
     

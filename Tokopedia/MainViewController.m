@@ -34,8 +34,6 @@
 #import "InboxRootViewController.h"
 #import "CategoryViewController.h"
 
-#import "RequestNotifyLBLM.h"
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
@@ -69,7 +67,6 @@
     UIAlertView *_logingOutAlertView;
     NSTimer *_containerTimer;
     
-    RequestNotifyLBLM *_requestLBLM;
     TKPStoreManager *_storeManager;
     
     MainViewControllerPage _page;
@@ -487,7 +484,7 @@ typedef enum TagRequest {
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
 
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar?"
                                                         message:nil
                                                        delegate:self
                                               cancelButtonTitle:@"Batal"

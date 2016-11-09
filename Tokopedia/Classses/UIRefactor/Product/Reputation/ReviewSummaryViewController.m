@@ -284,6 +284,7 @@ TokopediaNetworkManagerDelegate
                                                              [self sendButtonIsLoading:NO];
                                                          }];
         } else {
+            [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_SEND label:@"Review"];
             [_reviewRequest requestSubmitReviewWithImageWithReputationID:_review.reputation_id
                                                                productID:_review.product_id
                                                             accuracyRate:_accuracyRate
@@ -316,6 +317,7 @@ TokopediaNetworkManagerDelegate
                                                                    }
                                                                }
                                                                onFailure:^(NSError *error) {
+                                                                   [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_ERROR label:@"Review"];
                                                                    [AnalyticsManager localyticsTrackGiveReview:NO accuracy:_accuracyRate quality:_qualityRate];
                                                                    [AnalyticsManager trackSuccessSubmitReview:0];
                                                                    [self sendButtonIsLoading:NO];

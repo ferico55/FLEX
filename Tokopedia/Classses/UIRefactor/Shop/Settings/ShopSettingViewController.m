@@ -75,12 +75,20 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0 : {
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Shop Info"];
             EditShopViewController *controller = [EditShopViewController new];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case 1:
         {
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Etalase"];
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.isEditable = YES;
             vc.showOtherEtalase = NO;
@@ -103,6 +111,10 @@
         case 2:
         {
             //Product
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Product"];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
             [self.navigationController pushViewController:vc animated:YES];
@@ -111,6 +123,10 @@
         case 3:
         {
             //Location
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Location"];
             MyShopAddressViewController *vc = [MyShopAddressViewController new];
             vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
             [self.navigationController pushViewController:vc animated:YES];
@@ -118,6 +134,10 @@
         }
         case 4:
         {
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Shipping"];
             ShipmentViewController *controller = [[ShipmentViewController alloc] initWithShipmentType:ShipmentTypeSettings];
             [self.navigationController pushViewController:controller animated:YES];
             break;
@@ -125,6 +145,10 @@
         case 5:
         {
             //Payment
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Payment"];
             ShopPaymentViewController *controller = [ShopPaymentViewController new];
             [self.navigationController pushViewController:controller animated:YES];
             break;
@@ -132,6 +156,10 @@
         case 6:
         {
             //Notes
+            [AnalyticsManager trackEventName:@"clickManageShop"
+                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Notes"];
             DetailShopResult *shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
 
             MyShopNoteViewController *vc = [MyShopNoteViewController new];

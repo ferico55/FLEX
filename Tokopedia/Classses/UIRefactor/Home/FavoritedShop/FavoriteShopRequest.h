@@ -23,12 +23,10 @@
 
 @protocol FavoriteShopRequestDelegate <NSObject>
 - (void) didReceiveFavoriteShopListing:(FavoritedShopResult*)favoriteShops;
-- (void) didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction*)action;
 - (void) didReceiveProductFeed:(SearchAWS*)feed;
 - (void) didReceiveAllFavoriteShopString:(NSString*)favoriteShops;
 
 - (void) failToRequestFavoriteShopListing;
-- (void) failToRequestActionButtonFavoriteShopConfirmation;
 - (void) failToRequestProductFeed;
 - (void) failToRequestAllFavoriteShopString;
 
@@ -37,7 +35,7 @@
 @interface FavoriteShopRequest : NSObject
 -(void)requestFavoriteShopListings;
 -(void)requestFavoriteShopListingsWithPage:(NSInteger)page;
--(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey;
++(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey onSuccess:(void(^)(FavoriteShopActionResult* data))onSuccess onFailure:(void(^)())onFailure;
 -(void)requestProductFeedWithFavoriteShopString:(NSString*)favoriteShopString withPage:(NSInteger)p;
 -(void)cancelAllOperation;
 

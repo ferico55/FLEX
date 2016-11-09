@@ -665,6 +665,8 @@
     
     self.navigationItem.rightBarButtonItem = self.loadingView;
     
+    [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPPING action:GA_EVENT_ACTION_EDIT label:@"Form"];
+    
     NSString *path = @"/v4/action/myshop-shipment/update_shipping_info.pl";
 
     [self.networkManager requestWithBaseUrl:[NSString v4Url]

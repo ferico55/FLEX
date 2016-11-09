@@ -16,5 +16,7 @@
 @property (nonatomic) NSInteger button_edit;
 @property (nonatomic) NSInteger hide_no_reply;
 @property (nonatomic) NSInteger button_report_hide;
+@property (strong, nonatomic) NSString *button_cancel_text;
+@property (strong, nonatomic) NSString *button_report_text;
 
 @end

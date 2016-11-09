@@ -11,16 +11,17 @@
 #import "ShipmentCourier.h"
 #import "ShipmentCourierPackage.h"
 #import "OrderBooking.h"
+#import "Tokopedia-Swift.h"
 
 @protocol OrderDetailDelegate <NSObject>
 
 @optional;
-- (void)didReceiveActionType:(NSString *)actionType
+- (void)didReceiveActionType:(ProceedType)actionType
                       reason:(NSString *)reason
                     products:(NSArray *)products
              productQuantity:(NSArray *)productQuantity;
 
-- (void)didReceiveActionType:(NSString *)type
+- (void)didReceiveActionType:(ProceedType)type
                      courier:(ShipmentCourier *)courier
               courierPackage:(ShipmentCourierPackage *)courierPackage
                receiptNumber:(NSString *)receiptNumber
