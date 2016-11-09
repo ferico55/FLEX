@@ -1227,8 +1227,12 @@ TTTAttributedLabelDelegate
     if (status) {
         
         if (_product.data == nil) {
-            [self initNoResultView];
-            self.table.hidden = YES;
+            WebViewController* controller = [[WebViewController alloc] init];
+            controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
+            controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
+            
+            
+            [self.navigationController pushViewController:controller animated:YES];
             return;
         }
         
