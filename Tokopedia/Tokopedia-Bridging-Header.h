@@ -107,6 +107,8 @@
 #import "LoadingView.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "InboxMessageDetail.h"
+#import "InboxMessageAction.h"
 #import "DeeplinkController.h"
 #import "TPContactUsDependencies.h"
 #import "SearchResultViewController.h"

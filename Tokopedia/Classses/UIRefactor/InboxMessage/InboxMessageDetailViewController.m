@@ -222,7 +222,7 @@
     if(status) {
         //if success
         InboxMessageDetailList *msg = _messages[_messages.count-1];
-        if([inboxmessageaction.result.is_success isEqualToString:@"0"]) {
+        if([inboxmessageaction.data.is_success isEqualToString:@"0"]) {
             msg.is_not_delivered = @"1";
         } else {
             msg.is_just_sent = NO;
