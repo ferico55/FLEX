@@ -78,19 +78,27 @@
     _badgesView.distribution = OAStackViewDistributionFillEqually;
     _badgesView.alignment = OAStackViewAlignmentCenter;
     
-    for(ProductBadge* productBadge in badges) {
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [imageView setImageWithURL:[NSURL URLWithString:productBadge.image_url]];
-        
-        if(imageView.image.size.width > 1) {
-            [_badgesView addArrangedSubview:imageView];
-            
-            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(_badgesView.mas_height);
-                make.height.equalTo(_badgesView.mas_height);
-            }];
-        }
+    NSMutableArray *urls = [NSMutableArray new];
+    for(ProductBadge* badge in badges){
+        [urls addObject:badge.image_url];
     }
+    
+    [imageDownloader downloadImagesWithUrls:urls onComplete:^(NSArray<UIImage *> *images) {
+        for(UIImage *image in images){
+            if(image.size.width > 1){
+                UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+                imageView.image = image;
+                
+                [_badgesView addArrangedSubview:imageView];
+                
+                [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.width.equalTo(_badgesView.mas_height);
+                    make.height.equalTo(_badgesView.mas_height);
+                }];
+            }
+        }
+    }];
+
 }
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
