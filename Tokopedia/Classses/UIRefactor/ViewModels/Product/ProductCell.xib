@@ -75,10 +75,10 @@
                                     <constraint firstAttribute="height" constant="11" id="Tvc-8i-5Fs"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ktU-84-qF9" userLabel="Badges View" customClass="TKPDStackView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ktU-84-qF9" userLabel="Badges View" customClass="OAStackView">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="MUl-8D-GPL"/>
-                                    <constraint firstAttribute="width" constant="60" id="dSp-Gm-lAL"/>
+                                    <constraint firstAttribute="width" constant="1" placeholder="YES" id="lyQ-rL-LPQ"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -88,7 +88,6 @@
                             <constraint firstAttribute="trailing" secondItem="mlD-8n-5Cw" secondAttribute="trailing" constant="7" id="272-13-Y3U"/>
                             <constraint firstAttribute="trailing" secondItem="ZXj-s2-9Ow" secondAttribute="trailing" constant="7" id="2T6-2o-ztS"/>
                             <constraint firstAttribute="bottom" secondItem="ktU-84-qF9" secondAttribute="bottom" constant="4" id="3B5-i1-fdK"/>
-                            <constraint firstItem="ktU-84-qF9" firstAttribute="leading" secondItem="18h-Q2-lJK" secondAttribute="trailing" constant="1" id="BaQ-lS-1sD"/>
                             <constraint firstAttribute="bottom" secondItem="18h-Q2-lJK" secondAttribute="bottom" constant="4" id="F6V-lo-mKE"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="top" secondItem="Tn9-gR-GHT" secondAttribute="bottom" constant="3" id="HYw-Lv-7kj"/>
                             <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="2" id="JCX-u5-eZ0"/>
@@ -129,7 +128,7 @@
             <size key="customSize" width="145" height="228"/>
             <connections>
                 <outlet property="badgesConstraint" destination="3B5-i1-fdK" id="hzp-gN-PLy"/>
-                <outlet property="badgesView" destination="ktU-84-qF9" id="OnG-IX-she"/>
+                <outlet property="badgesView" destination="ktU-84-qF9" id="J66-tZ-JEl"/>
                 <outlet property="catalogPriceLabel" destination="bHE-Jb-fd8" id="wpN-Z1-ngs"/>
                 <outlet property="labelsView" destination="hhk-Hb-ghg" id="qre-BY-hzY"/>
                 <outlet property="locationImage" destination="Ywu-mc-7Di" id="2jn-2i-dgc"/>

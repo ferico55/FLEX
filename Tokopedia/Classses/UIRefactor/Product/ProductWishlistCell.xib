@@ -108,10 +108,10 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HP2-b5-WIV" customClass="TKPDStackView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HP2-b5-WIV" customClass="OAStackView">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="1cC-R8-omu"/>
+                                    <constraint firstAttribute="width" constant="1" placeholder="YES" id="1cC-R8-omu"/>
                                     <constraint firstAttribute="height" constant="15" id="OyL-6K-Rgu"/>
                                 </constraints>
                             </view>
@@ -131,7 +131,6 @@
                             <constraint firstItem="R9x-Jm-WYp" firstAttribute="top" secondItem="NKp-Ma-mvF" secondAttribute="bottom" id="EyK-QT-ggo"/>
                             <constraint firstItem="NLM-gg-oMC" firstAttribute="centerY" secondItem="NKp-Ma-mvF" secondAttribute="centerY" id="FxD-QP-PFU"/>
                             <constraint firstItem="NLM-gg-oMC" firstAttribute="leading" secondItem="Idk-87-dsS" secondAttribute="leading" constant="7" id="Ieu-Tk-zI0"/>
-                            <constraint firstItem="HP2-b5-WIV" firstAttribute="leading" secondItem="NKp-Ma-mvF" secondAttribute="trailing" id="LfS-6z-QO0"/>
                             <constraint firstItem="fxd-Cw-NAO" firstAttribute="top" secondItem="DVO-vT-ijw" secondAttribute="bottom" constant="5" id="P2u-Tk-iXa"/>
                             <constraint firstItem="NKp-Ma-mvF" firstAttribute="top" secondItem="NLM-gg-oMC" secondAttribute="top" id="REW-cJ-xUU"/>
                             <constraint firstItem="DVO-vT-ijw" firstAttribute="top" secondItem="Idk-87-dsS" secondAttribute="top" constant="7" id="TIs-rE-VKC"/>
@@ -170,9 +169,7 @@
                         </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="1ic-TY-Hsj"/>
-                                <exclude reference="ah4-r2-Egr"/>
-                                <exclude reference="vOL-3t-2ph"/>
+                                <exclude reference="hCr-Tu-TWN"/>
                                 <exclude reference="REW-cJ-xUU"/>
                                 <exclude reference="qcb-nU-hDY"/>
                                 <exclude reference="u36-Xw-0DB"/>
@@ -181,11 +178,13 @@
                                 <exclude reference="j05-Yd-xKk"/>
                                 <exclude reference="puT-y2-oRb"/>
                                 <exclude reference="xdn-P2-785"/>
-                                <exclude reference="hCr-Tu-TWN"/>
                                 <exclude reference="3Ko-pn-g86"/>
                                 <exclude reference="EyK-QT-ggo"/>
                                 <exclude reference="qr5-eT-Bot"/>
                                 <exclude reference="b1t-IC-RTu"/>
+                                <exclude reference="1ic-TY-Hsj"/>
+                                <exclude reference="ah4-r2-Egr"/>
+                                <exclude reference="vOL-3t-2ph"/>
                             </mask>
                         </variation>
                     </view>
@@ -199,7 +198,7 @@
             </constraints>
             <size key="customSize" width="145" height="270"/>
             <connections>
-                <outlet property="badgesView" destination="HP2-b5-WIV" id="PKO-ps-rGu"/>
+                <outlet property="badgesView" destination="HP2-b5-WIV" id="OKL-NR-w5Z"/>
                 <outlet property="labelsView" destination="taV-iF-MrM" id="4Ag-U4-FEi"/>
                 <outlet property="locationLabel" destination="NKp-Ma-mvF" id="vey-M9-9Rw"/>
                 <outlet property="productBuyButton" destination="RQc-tU-Kr9" id="s76-WO-Utl"/>

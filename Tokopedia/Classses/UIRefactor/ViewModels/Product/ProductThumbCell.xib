@@ -91,9 +91,9 @@
                                     <constraint firstAttribute="height" constant="10" id="ktp-Br-sgO"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Ja-Enl" customClass="TKPDStackView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Ja-Enl" customClass="OAStackView">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="86" id="Jj6-xW-0lB"/>
+                                    <constraint firstAttribute="width" constant="1" placeholder="YES" id="Jj6-xW-0lB"/>
                                     <constraint firstAttribute="height" constant="20" id="MyR-Jb-RHw"/>
                                 </constraints>
                             </view>
@@ -103,7 +103,6 @@
                             <constraint firstAttribute="trailing" secondItem="Kw8-LN-It2" secondAttribute="trailing" constant="3" id="ARI-H7-8dL"/>
                             <constraint firstItem="ysz-tw-Sdy" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="Aeb-Fc-slm"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="5" id="BW7-IX-wJl"/>
-                            <constraint firstItem="cRl-Ja-Enl" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" id="D8f-Jk-YlC"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="top" secondItem="459-Qy-tpA" secondAttribute="bottom" constant="1" id="Dds-sq-Aax"/>
                             <constraint firstAttribute="bottom" secondItem="Jyc-LY-qhp" secondAttribute="bottom" constant="6" id="KrE-aK-ZXL"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="top" secondItem="ysz-tw-Sdy" secondAttribute="bottom" constant="-7" id="Pov-PH-eBx"/>
@@ -111,7 +110,6 @@
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="leading" secondItem="Jyc-LY-qhp" secondAttribute="trailing" constant="1" id="YtL-3m-uEq"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="leading" secondItem="eFV-8v-Xwg" secondAttribute="leading" constant="7" id="ZIU-LO-z8z"/>
                             <constraint firstAttribute="bottom" secondItem="aeK-n3-p3K" secondAttribute="bottom" constant="7" id="fs5-6k-T7I"/>
-                            <constraint firstItem="cRl-Ja-Enl" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" id="h9k-8q-7W4"/>
                             <constraint firstItem="C9d-rJ-e1Q" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="hS1-go-vyD"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="centerY" secondItem="Jyc-LY-qhp" secondAttribute="centerY" id="i0k-NE-TV0"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="jPp-AN-0dU"/>
@@ -152,7 +150,7 @@
                 <constraint firstItem="eFV-8v-Xwg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="oJR-Je-Dvt"/>
             </constraints>
             <connections>
-                <outlet property="badgesView" destination="cRl-Ja-Enl" id="4ru-hJ-gft"/>
+                <outlet property="badgesView" destination="cRl-Ja-Enl" id="RAD-s6-Ii8"/>
                 <outlet property="catalogPriceLabel" destination="jcG-C2-gR2" id="7GC-Mn-yJ3"/>
                 <outlet property="labelsView" destination="C9d-rJ-e1Q" id="rru-Yg-X6U"/>
                 <outlet property="locationIcon" destination="Jyc-LY-qhp" id="Kxf-W6-BiF"/>

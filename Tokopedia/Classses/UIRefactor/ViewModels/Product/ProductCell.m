@@ -71,27 +71,29 @@
 }
 
 - (void)setBadges:(NSArray<ProductBadge*>*)badges {
-    //all of this is just for badges, dynamic badges
-    [_badgesView removeAllPushedView];
-    CGSize badgeSize = CGSizeMake(_badgesView.frame.size.height, _badgesView.frame.size.height);
-    [_badgesView setOrientation:TKPDStackViewOrientationRightToLeft];
     
-    NSMutableArray *urls = [NSMutableArray new];
-    for(ProductBadge* badge in badges){
-        [urls addObject:badge.image_url];
+    for(UIView* subview in _badgesView.arrangedSubviews) {
+        [_badgesView removeArrangedSubview:subview];
     }
     
-    [imageDownloader downloadImagesWithUrls:urls onComplete:^(NSArray<UIImage *> *images) {
-        for(UIImage *image in images){
-            if(image.size.width > 1){
-                UIView *badgeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-                UIImageView *badgeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-                badgeImageView.image = image;
-                [badgeView addSubview:badgeImageView];
-                [_badgesView pushView:badgeView];
-            }
+    _badgesView.spacing = 2;
+    _badgesView.axis = UILayoutConstraintAxisHorizontal;
+    _badgesView.distribution = OAStackViewDistributionFillEqually;
+    _badgesView.alignment = OAStackViewAlignmentCenter;
+    
+    for(ProductBadge* productBadge in badges) {
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [imageView setImageWithURL:[NSURL URLWithString:productBadge.image_url]];
+        
+        if(imageView.image.size.width > 1) {
+            [_badgesView addArrangedSubview:imageView];
+            
+            [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.equalTo(_badgesView.mas_height);
+                make.height.equalTo(_badgesView.mas_height);
+            }];
         }
-    }];
+    }
 }
 
 

@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceWidthConstraint;
 
-@property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
 
 - (void)setViewModel:(ProductModelView*)viewModel;

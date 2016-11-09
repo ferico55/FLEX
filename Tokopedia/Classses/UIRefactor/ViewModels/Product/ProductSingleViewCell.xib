@@ -101,9 +101,9 @@
                                     <constraint firstAttribute="width" constant="10" id="Lcg-p4-Yeh"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uV9-z2-y1O" customClass="TKPDStackView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uV9-z2-y1O" customClass="OAStackView">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="134" id="GSH-Qs-u6f"/>
+                                    <constraint firstAttribute="width" constant="1" placeholder="YES" id="GSH-Qs-u6f"/>
                                     <constraint firstAttribute="height" constant="20" id="cD5-fq-4uT"/>
                                 </constraints>
                             </view>
@@ -125,7 +125,6 @@
                             <constraint firstAttribute="bottom" secondItem="E3W-vA-ubj" secondAttribute="bottom" constant="8" id="7x7-qt-s04"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="8hs-x1-0j2"/>
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="leading" secondItem="eGy-Mg-oHd" secondAttribute="trailing" id="DJj-PU-Q7t"/>
-                            <constraint firstItem="uV9-z2-y1O" firstAttribute="leading" secondItem="T0n-0t-ya4" secondAttribute="trailing" constant="8" id="ErA-63-sXy"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="F6E-QS-e04"/>
                             <constraint firstItem="T0n-0t-ya4" firstAttribute="leading" secondItem="E3W-vA-ubj" secondAttribute="trailing" constant="-1" id="FZs-gy-0S2"/>
                             <constraint firstItem="xYp-Qr-lkc" firstAttribute="top" secondItem="sy2-3E-5tq" secondAttribute="top" constant="10" id="KKU-0L-zFG"/>
@@ -164,16 +163,16 @@
                         </userDefinedRuntimeAttributes>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="0mg-li-S5L"/>
+                                <exclude reference="F6E-QS-e04"/>
+                                <exclude reference="eFO-gl-cJr"/>
+                                <exclude reference="tKM-EI-pWe"/>
                                 <exclude reference="7ki-UH-cWm"/>
                                 <exclude reference="FZs-gy-0S2"/>
                                 <exclude reference="Tas-Dw-36x"/>
                                 <exclude reference="mTY-gl-SBT"/>
+                                <exclude reference="0mg-li-S5L"/>
                                 <exclude reference="ex8-Ij-cyi"/>
                                 <exclude reference="uqX-fv-TF9"/>
-                                <exclude reference="F6E-QS-e04"/>
-                                <exclude reference="eFO-gl-cJr"/>
-                                <exclude reference="tKM-EI-pWe"/>
                             </mask>
                         </variation>
                     </view>
@@ -187,7 +186,7 @@
             </constraints>
             <size key="customSize" width="300" height="387"/>
             <connections>
-                <outlet property="badgesView" destination="uV9-z2-y1O" id="3ZR-o9-jbv"/>
+                <outlet property="badgesView" destination="uV9-z2-y1O" id="mZb-9Z-eO8"/>
                 <outlet property="catalogPriceLabel" destination="e4n-03-AzD" id="W4d-zL-JBp"/>
                 <outlet property="infoContraint" destination="uqX-fv-TF9" id="vSr-MU-fXp"/>
                 <outlet property="labelsView" destination="L72-VL-NKd" id="rT0-jL-Aub"/>

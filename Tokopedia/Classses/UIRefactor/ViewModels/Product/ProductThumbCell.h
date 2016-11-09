@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *luckyIconLocation;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceWidthConstraint;
 
-@property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
 
 @end

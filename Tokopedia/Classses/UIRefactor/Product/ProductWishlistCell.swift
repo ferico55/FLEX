@@ -19,7 +19,7 @@ class ProductWishlistCell : UICollectionViewCell {
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var badgesView: TKPDStackView!
+    @IBOutlet weak var badgesView: OAStackView!
     @IBOutlet weak var labelsView: OAStackView!
     
     var imageDownloader = QueueImageDownloader()
@@ -95,30 +95,59 @@ class ProductWishlistCell : UICollectionViewCell {
         
     }
     
-    internal func setBadges(badges: [AnyObject]) {
-        //all of this is just for badges, dynamic badges
-        self.badgesView .removeAllPushedView()
-        let badgeSize = CGSizeMake(self.badgesView.frame.size.height, self.badgesView.frame.size.height);
-        self.badgesView.orientation = .RightToLeft;
-        
-        
-        let urls = NSMutableArray()
-        badges.enumerate().map { index, badge in
-            urls.addObject(badge.image_url)
+//    - (void)setBadges:(NSArray<ProductBadge*>*)badges {
+//    
+//    for(UIView* subview in _badgesView.arrangedSubviews) {
+//    [_badgesView removeArrangedSubview:subview];
+//    }
+//    
+//    _badgesView.spacing = 2;
+//    _badgesView.axis = UILayoutConstraintAxisHorizontal;
+//    _badgesView.distribution = OAStackViewDistributionFillEqually;
+//    _badgesView.alignment = OAStackViewAlignmentCenter;
+//    
+//    for(ProductBadge* productBadge in badges) {
+//    UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+//    [imageView setImageWithURL:[NSURL URLWithString:productBadge.image_url]];
+//    
+//    if(imageView.image.size.width > 1) {
+//    [_badgesView addArrangedSubview:imageView];
+//    
+//    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//    make.width.equalTo(_badgesView.mas_height);
+//    make.height.equalTo(_badgesView.mas_height);
+//    }];
+//    }
+//    }
+//    }
+    
+    internal func setBadges(badges: [AnyObject]?) {
+        badgesView.arrangedSubviews.forEach { (subview) in
+            badgesView .removeArrangedSubview(subview)
         }
         
-        imageDownloader.downloadImagesWithUrls(urls.copy() as! [String], onComplete: { images in
-            images.enumerate().map{ index, image in
-                if(image.size.width > 1){
+        badgesView.alignment = .Fill
+        badgesView.spacing = 2
+        badgesView.axis = .Horizontal
+        badgesView.distribution = .FillEqually
+        badgesView.alignment = .Center
+        
+        if(badges?.count > 0) {
+            badges!.forEach { (productBadge) in
+                let productObject = productBadge as! ProductBadge
+                let imageView = UIImageView(frame: CGRectZero)
+                imageView.setImageWithURL(NSURL(string: productObject.image_url))
+                
+                if(imageView.image?.size.width > 1) {
+                    badgesView .addArrangedSubview(imageView)
                     
-                    let badgeView = UIView(frame: CGRectMake(0, 0, badgeSize.width, badgeSize.height))
-                    let badgeImageView = UIImageView(frame: CGRectMake(0, 0, badgeSize.width, badgeSize.height))
-                    badgeImageView.image = image;
-                    badgeView.addSubview(badgeImageView)
-                    self.badgesView.pushView(badgeView)
+                    imageView.mas_makeConstraints({ (make) in
+                        make.width.equalTo()(self.badgesView.mas_height)
+                        make.height.equalTo()(self.badgesView.mas_height)
+                    })
                 }
             }
-        })
+        }
     }
     
     @IBAction func tapBuyButton(sender: AnyObject) {

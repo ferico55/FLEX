@@ -30,7 +30,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
 @property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
 
-@property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
 
 
