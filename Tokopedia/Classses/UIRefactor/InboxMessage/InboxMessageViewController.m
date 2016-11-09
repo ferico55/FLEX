@@ -361,7 +361,6 @@
         
         MessageViewController *vc = [[MessageViewController alloc] init];
         vc.senderId = _userManager.getUserId;
-        vc.senderDisplayName = @"Tonito";
         vc.messageTitle = list.message_title;
         vc.messageId = list.message_id;
         vc.messageTabName = [_data objectForKey:@"nav"];

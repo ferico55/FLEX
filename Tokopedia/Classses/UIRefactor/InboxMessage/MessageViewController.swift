@@ -159,7 +159,7 @@ class MessageViewController: JSQMessagesViewController {
             let message = messages[indexPath.item - 1]
             let previousMessage = self.messages[indexPath.item]
             let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
-            let previousDateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
             
             if(dateString != previousDateString) {
                 return 30
@@ -222,8 +222,8 @@ class MessageViewController: JSQMessagesViewController {
                                         self.receiveErrorSendMessage(result.message_error)
                                     }
                                },
-                               onFailure: { (error) in
-                                    self.receiveErrorSendMessage([])
+                               onFailure: {  [weak self] (error) in
+                                    self!.receiveErrorSendMessage([])
                                }
                 
         )
