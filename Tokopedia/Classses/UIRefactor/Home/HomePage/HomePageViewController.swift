@@ -457,12 +457,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
-            self.pulsaActiveCategories = []
-            categories.enumerate().forEach { [unowned self] id, category in
-                self.pulsaActiveCategories = categories.filter({ (pulsaCategory) -> Bool in
-                    pulsaCategory.attributes.status == 1
-                })
-            }
+            self.pulsaActiveCategories = categories.filter({ (pulsaCategory) -> Bool in
+                pulsaCategory.attributes.status == 1
+            })
             
             var sortedCategories = self.pulsaActiveCategories!
             sortedCategories.sortInPlace({
