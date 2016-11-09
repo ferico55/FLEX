@@ -75,39 +75,27 @@
 }
 
 - (IBAction)newOrderDidTap:(id)sender {
-    [AnalyticsManager trackEventName:@"clickSales"
-                            category:GA_EVENT_CATEGORY_SALES
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"New Order"];
+    [AnalyticsManager trackClickSales:@"New Order"];
     SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)shipmentConfirmationDidTap:(id)sender {
-    [AnalyticsManager trackEventName:@"clickSales"
-                            category:GA_EVENT_CATEGORY_SALES
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"Shipping"];
+    [AnalyticsManager trackClickSales:@"Shipping"];
     ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)shipmentStatusDidTap:(id)sender {
-    [AnalyticsManager trackEventName:@"clickSales"
-                            category:GA_EVENT_CATEGORY_SALES
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"Status"];
+    [AnalyticsManager trackClickSales:@"Status"];
     ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)listTransactionDidTap:(id)sender {
-    [AnalyticsManager trackEventName:@"clickSales"
-                            category:GA_EVENT_CATEGORY_SALES
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"Transaction"];
+    [AnalyticsManager trackClickSales:@"Transaction"];
     SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }

@@ -76,5 +76,6 @@
 + (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress;
 + (void)trackInboxMessageClick:(NSString *)label;
 + (void)trackSearch:(NSString *)type keyword:(NSString *)keyword;
++ (void)trackClickSales:(NSString *)label;
 
 @end

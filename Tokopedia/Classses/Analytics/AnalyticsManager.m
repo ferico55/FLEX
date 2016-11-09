@@ -696,4 +696,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [self trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:searchAction label:keyword];
 }
 
++ (void)trackClickSales:(NSString *)label {
+    [self trackEventName:@"clickSales" category:GA_EVENT_CATEGORY_SALES action:GA_EVENT_ACTION_CLICK label:label];
+}
+
 @end
