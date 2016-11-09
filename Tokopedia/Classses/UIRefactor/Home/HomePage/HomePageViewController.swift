@@ -15,23 +15,25 @@ import OAStackView
 
 class HomePageViewController: UIViewController, LoginViewDelegate {
     
-    var digitalGoodsDataSource: DigitalGoodsDataSource!
-    var carouselDataSource: CarouselDataSource!
+    private var digitalGoodsDataSource: DigitalGoodsDataSource!
+    private var carouselDataSource: CarouselDataSource!
     
-    var tickerRequest: AnnouncementTickerRequest!
-    var tickerView: AnnouncementTickerView!
+    private var tickerRequest: AnnouncementTickerRequest!
+    private var tickerView: AnnouncementTickerView!
     
-    var pulsaView: PulsaView!
-    var prefixes = Dictionary<String, Dictionary<String, String>>()
-    var requestManager: PulsaRequest!
-    var navigator: PulsaNavigator!
+    private var pulsaView: PulsaView!
+    private var prefixes = Dictionary<String, Dictionary<String, String>>()
+    private var requestManager: PulsaRequest!
+    private var navigator: PulsaNavigator!
     
-    var sliderPlaceholder: UIView!
-    var pulsaPlaceholder: OAStackView!
-    var tickerPlaceholder: UIView!
-    var miniSliderPlaceholder: UIView!
-    var categoryPlaceholder: OAStackView!
-    var keyboardManager: PulsaKeyboardManager!
+    private var sliderPlaceholder: UIView!
+    private var pulsaPlaceholder: OAStackView!
+    private var tickerPlaceholder: UIView!
+    private var miniSliderPlaceholder: UIView!
+    private var categoryPlaceholder: OAStackView!
+    private var keyboardManager: PulsaKeyboardManager!
+    private var homePageCategoryData: HomePageCategoryData?
+    private var pulsaActiveCategories: [PulsaCategory]?
     
     @IBOutlet var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
@@ -61,14 +63,17 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.initOuterStackView()
         self.initViewLayout()
         self.requestTicker()
-        self.requestCategory()
-        self.requestPulsaWidget()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.requestBanner()
+        if pulsaActiveCategories == nil {
+            self.requestPulsaWidget()
+        }
+        if homePageCategoryData == nil {
+            self.requestCategory()
+        }
         AnalyticsManager.trackScreenName("Top Category")
     }
     
@@ -288,8 +293,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
                 let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                 let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
-                let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
-                self.setupOuterStackCategoryWithData(homePageCategoryData)
+                self.homePageCategoryData = homePageCategoryResponse.data
+                self.setupOuterStackCategoryWithData(self.homePageCategoryData!)
         }) { (error) in
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
             stickyAlertView.show()
@@ -456,14 +461,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
-            var activeCategories: [PulsaCategory] = []
-            categories.enumerate().forEach { id, category in
+            self.pulsaActiveCategories = []
+            categories.enumerate().forEach { [unowned self] id, category in
                 if(category.attributes.status == 1) {
-                    activeCategories.append(category)
+                    self.pulsaActiveCategories!.append(category)
                 }
             }
             
-            var sortedCategories = activeCategories
+            var sortedCategories = self.pulsaActiveCategories!
             sortedCategories.sortInPlace({
                 $0.attributes.weight < $1.attributes.weight
             })
