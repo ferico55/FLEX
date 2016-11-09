@@ -83,6 +83,9 @@ PODS:
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
   - JLRoutes (1.6.4)
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
@@ -138,6 +141,7 @@ DEPENDENCIES:
   - JLPermissions/Contacts
   - JLPermissions/Notification
   - JLRoutes (~> 1.6.2)
+  - JSQMessagesViewController
   - Localytics
   - Masonry
   - NJKWebViewProgress
@@ -179,6 +183,8 @@ SPEC CHECKSUMS:
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d

@@ -165,7 +165,7 @@ NoResultDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
-    
+    [AnalyticsManager trackInboxTicketClickWithType:_inboxCustomerServiceType];
     InboxTicketDetailViewController *controller = self.detailViewController;
     if (self.detailViewController == nil) {
         controller = [InboxTicketDetailViewController new];

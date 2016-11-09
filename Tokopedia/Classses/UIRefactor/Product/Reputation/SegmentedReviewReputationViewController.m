@@ -244,6 +244,7 @@
 }
 
 - (IBAction)actionValueChange:(id)sender {
+    [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
     for(UIView *subView in viewContent.subviews) {
         [subView removeFromSuperview];
     }

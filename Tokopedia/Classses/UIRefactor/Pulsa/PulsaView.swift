@@ -225,7 +225,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : self.WIDGET_RIGHT_MARGIN)
+            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : -self.WIDGET_RIGHT_MARGIN)
         }
         
         self.prefixView = UIView()

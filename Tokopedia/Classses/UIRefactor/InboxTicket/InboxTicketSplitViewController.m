@@ -23,6 +23,7 @@
 
     TKPDTabViewController *controller = [TKPDTabViewController new];
     controller.hidesBottomBarWhenPushed = YES;
+    controller.inboxType = @"Ticket";
     
     InboxTicketViewController *allInbox = [InboxTicketViewController new];
     allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;

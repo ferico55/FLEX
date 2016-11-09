@@ -309,6 +309,11 @@
     }
     NSString *baseURL = [NSString v4Url];
     NSString *path = _type == 2? @"/v4/action/myshop-address/add_location.pl": @"/v4/action/myshop-address/edit_location.pl";
+    if (_type == 2) {
+        [AnalyticsManager trackEventName:@"clickLocation" category:GA_EVENT_CATEGORY_SHOP_LOCATION action:GA_EVENT_ACTION_CLICK label:@"Add"];
+    } else {
+        [AnalyticsManager trackEventName:@"clickLocation" category:GA_EVENT_CATEGORY_SHOP_LOCATION action:GA_EVENT_ACTION_EDIT label:@"Location"];
+    }
     [_networkManager requestWithBaseUrl:baseURL
                                    path:path
                                  method:RKRequestMethodGET
