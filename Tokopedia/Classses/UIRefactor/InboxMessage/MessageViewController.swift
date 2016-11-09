@@ -158,7 +158,7 @@ class MessageViewController: JSQMessagesViewController {
         if(indexPath.item > 0) {
             let message = messages[indexPath.item - 1]
             let previousMessage = self.messages[indexPath.item]
-            let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
             let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
             
             if(dateString != previousDateString) {
@@ -174,16 +174,16 @@ class MessageViewController: JSQMessagesViewController {
         let message = messages[indexPath.item]
         
         if(indexPath.item == 0) {
-            return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
         }
         
         if(indexPath.item > 0) {
             let previousMessage = self.messages[indexPath.item - 1]
-            let dateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
-            let previousDateString = NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
 
             if(dateString != previousDateString) {
-                return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+                return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
             }
         }
         return nil
@@ -196,7 +196,7 @@ class MessageViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
         let message = messages[indexPath.item]
         
-        return NSAttributedString.init(string: JSQMessagesTimestampFormatter.sharedFormatter().timeForDate(message.date))
+        return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().timeForDate(message.date))
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
