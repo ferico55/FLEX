@@ -598,6 +598,7 @@
      __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
+        [self disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
         UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertSuccess show];
         alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
@@ -613,6 +614,7 @@
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         
         [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
+        [self disableDeliveredButtonIfUserConfirmFromTxOrderStatusDetail];
         UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertSuccess show];
         alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;

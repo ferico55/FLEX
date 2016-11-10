@@ -130,7 +130,7 @@
                                                  name:@"removeButtonWithdraw" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateSaldoTokopedia)
+                                             selector:@selector(updateSaldoTokopedia:)
                                                  name:@"updateSaldoTokopedia" object:nil];
 }
 
