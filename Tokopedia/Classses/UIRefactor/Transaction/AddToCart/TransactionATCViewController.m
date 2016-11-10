@@ -419,7 +419,7 @@ typedef enum
 }
 
 -(void)adjustErrorMessageView{
-    BOOL eligibleToChooseLogistic = (_shipments.count == 0 && [_selectedAddress hasAddress]);
+    BOOL eligibleToChooseLogistic = (_shipments.count > 0 && [_selectedAddress hasAddress]);
     if (eligibleToChooseLogistic){
         [self hideErrorMessage];
     }else {
