@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ProductBadge.h"
+#import "ProductLabel.h"
 @class ProductModelView;
 
 @interface HistoryProductList : NSObject <TKPObjectMapping>
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *shop_lucky;
 @property (nonatomic, strong) NSArray *badges;
+@property (nonatomic, strong) NSArray *labels;
 
 // this is happen because product_wholesale from API is integer format
 // we have to fix API Spec first

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDStackView.h"
+#import <OAStackView/OAStackView.h>
 @class ProductModelView;
 @class CatalogModelView;
 
@@ -27,10 +28,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *preorderPosition;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgesConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
-@property (weak, nonatomic) IBOutlet UILabel *grosirLabel;
-@property (weak, nonatomic) IBOutlet UILabel *preorderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
 
-@property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *badgesView;
+@property (strong, nonatomic) IBOutlet OAStackView *labelsView;
+
 
 @end
