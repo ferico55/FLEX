@@ -26,6 +26,15 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
         super.init()
     }
     
+    init(videoCollectionView: UICollectionView, detailProductVideoDataArray: [DetailProductVideoArray]) {
+        super.init()
+        videoCollectionView.delegate = self
+        videoCollectionView.dataSource = self
+        self.detailProductVideoDataArray = detailProductVideoDataArray
+        videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: "pdpVideoCollectionViewCell")
+        activityIndicatorArray = []
+    }
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         if let detailProductVideoDataArray = self.detailProductVideoDataArray {
             if detailProductVideoDataArray.count > 0 {
@@ -36,8 +45,6 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "pdpVideoCollectionViewCell")
-        activityIndicatorArray = []
         if let detailProductVideoDataArray = self.detailProductVideoDataArray {
             return detailProductVideoDataArray.count
         }

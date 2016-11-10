@@ -10,14 +10,12 @@ import UIKit
 
 class DetailProductVideoTableViewCell: UITableViewCell {
 
-    @IBOutlet var videoCollectionView: UICollectionView!
+    @IBOutlet private var videoCollectionView: UICollectionView!
     
-    var detailProductVideoCollectionDataSource: DetailProductVideoCollectionDataSource = DetailProductVideoCollectionDataSource()
+    private var detailProductVideoCollectionDataSource: DetailProductVideoCollectionDataSource?
     var detailProductVideoDataArray: [DetailProductVideoArray]? {
         didSet{
-            detailProductVideoCollectionDataSource.detailProductVideoDataArray = detailProductVideoDataArray
-            videoCollectionView.delegate = detailProductVideoCollectionDataSource
-            videoCollectionView.dataSource = detailProductVideoCollectionDataSource
+            detailProductVideoCollectionDataSource = DetailProductVideoCollectionDataSource(videoCollectionView: videoCollectionView, detailProductVideoDataArray: detailProductVideoDataArray!)
         }
     }
     
