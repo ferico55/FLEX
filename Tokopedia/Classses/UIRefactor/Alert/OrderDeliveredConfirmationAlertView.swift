@@ -29,7 +29,7 @@ class OrderDeliveredConfirmationAlertView: TKPDAlertView {
                 freeReturnsInfoView.hidden = false
             } else {
                 freeReturnsInfoHeightConstraint.constant = 0;
-                setHeight(250)
+                setHeight(300)
                 freeReturnsInfoView.hidden = true
             }
         }
