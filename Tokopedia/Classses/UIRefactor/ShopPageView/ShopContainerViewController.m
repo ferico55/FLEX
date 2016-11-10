@@ -213,10 +213,10 @@
                                                      withShopName:@""];
     };
     _shopHomeViewController.onTabSelected = onTabSelected;
-    _shopHomeViewController.showHomeTab = _shop.result.info.official;
+    _shopHomeViewController.showHomeTab = !_shop.result.info.shop_official_top.empty;
     
     
-    UIViewController *firstViewController = _shop.result.info.official? _shopHomeViewController: _shopProductViewController;
+    UIViewController *firstViewController = !_shop.result.info.shop_official_top.empty? _shopHomeViewController: _shopProductViewController;
     NSArray *viewControllers = [NSArray arrayWithObject:firstViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
