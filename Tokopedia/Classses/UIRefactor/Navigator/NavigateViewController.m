@@ -404,7 +404,7 @@
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url {
     NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *data = [[urlString URLQueryParametersWithOptions:URLQueryOptionDefault] mutableCopy];
-    [data setObject:url.parameters[@"q"] forKey:@"search"];
+    [data setObject:url.parameters[@"q"]?:@"" forKey:@"search"];
     
     SearchResultViewController *searchProductController = [[SearchResultViewController alloc] init];
     [data setObject:@"search_product" forKey:@"type"];

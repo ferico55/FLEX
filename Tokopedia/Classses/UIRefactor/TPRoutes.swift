@@ -27,18 +27,28 @@ class TPRoutes: NSObject {
         
         //contact us
         JLRoutes.globalRoutes().addRoute("/contact-us.pl") { (params: [String : AnyObject]!) -> Bool in
-            let userManager = UserAuthentificationManager()
-            if(userManager.isLogin) {
-                let dependencies = TPContactUsDependencies()
-                dependencies.pushContactUsViewControllerFromNavigation(UIApplication.topViewController()?.navigationController!)
-            }
+            redirectContactUs()
+
+            return true
+        }
+        
+        JLRoutes.globalRoutes().addRoute("/contact-us") { (params: [String : AnyObject]!) -> Bool in
+            redirectContactUs()
             
             return true
         }
         
-        //kereta
+        //hot
         JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
             NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
+            
+            return true
+        }
+        
+        //bantuan
+        JLRoutes.globalRoutes().addRoute("/bantuan/*") { (params: [String : AnyObject]!) -> Bool in
+            let url = params[kJLRouteURLKey] as! NSURL
+            openWebView(url)
             
             return true
         }
@@ -140,6 +150,14 @@ class TPRoutes: NSObject {
         
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    static func redirectContactUs() {
+        let userManager = UserAuthentificationManager()
+        if(userManager.isLogin) {
+            let dependencies = TPContactUsDependencies()
+            dependencies.pushContactUsViewControllerFromNavigation(UIApplication.topViewController()?.navigationController!)
+        }
     }
     
     static func isContainPerlPostFix(urlPath: String) -> Bool {

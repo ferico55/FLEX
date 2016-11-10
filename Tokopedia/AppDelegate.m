@@ -76,11 +76,7 @@
     [self showFlexManagerOnSecretGesture];
 #endif
     
-    [Rollout setupWithKey:@"56a717aed7bed00574f5169c"
-#ifdef DEBUG
-        developmentDevice:YES
-#endif
-     ];
+    [Rollout setupWithKey:@"580495d0c8d2937468f2c263"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
