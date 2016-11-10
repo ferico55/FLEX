@@ -18,6 +18,7 @@
 @end
 
 @interface NoResultReusableView : UIView
+@property (nonatomic, copy) void (^onButtonTap)(NoResultReusableView *);
 @property (nonatomic, retain) IBOutlet UIView *view;
 @property (nonatomic, weak) id<NoResultDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIButton *button;

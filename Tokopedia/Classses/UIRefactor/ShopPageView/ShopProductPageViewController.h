@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EtalaseList.h"
-@class ShopPageHeader;
+#import "ShopPageHeader.h"
 
 @interface ShopProductPageViewController : GAITrackedViewController
 
@@ -19,4 +19,10 @@
 
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 @property (nonatomic, strong) EtalaseList *initialEtalase;
+
+@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
+
+- (void)showProductsWithEtalaseId:(NSString *)etalaseId;
+
 @end
