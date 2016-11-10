@@ -18,6 +18,10 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ACU-dP-i6J" customClass="YTPlayerView">
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hf8-E4-nbG">
+                        <frame key="frameInset" minX="50" minY="24" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <constraints>
@@ -28,6 +32,7 @@
             </constraints>
             <size key="customSize" width="139" height="122"/>
             <connections>
+                <outlet property="activityIndicator" destination="hf8-E4-nbG" id="hvO-RI-TB7"/>
                 <outlet property="youtubePlayerView" destination="ACU-dP-i6J" id="maD-Yy-yXO"/>
             </connections>
             <point key="canvasLocation" x="174.5" y="154"/>

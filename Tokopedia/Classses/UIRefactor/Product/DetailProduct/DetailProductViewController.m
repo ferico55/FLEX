@@ -1596,7 +1596,11 @@ TTTAttributedLabelDelegate
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
-    [self getVideoData];
+    if (_product.data.shop_info.shop_is_gold == 1) {
+        [self getVideoData];
+    } else {
+        [self setExpandedSection];
+    }
     
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
@@ -1686,21 +1690,7 @@ TTTAttributedLabelDelegate
     __weak __typeof(self) weakSelf = self;
     [tokopediaNetworkManagerVideo requestWithBaseUrl:[NSString goldMerchantUrl] path:[NSString stringWithFormat:@"/v1/product/video/%@", _product.data.info.product_id] method:RKRequestMethodGET parameter:nil mapping:[DetailProductVideoResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         [weakSelf getVideoSuccess: successResult];
-        if (!_isnodatawholesale) {
-            if (_isHaveVideo) {
-                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:2]]];
-            } else {
-                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
-            }
-            
-        } else {
-            if (_isHaveVideo) {
-                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
-            } else {
-                _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
-            }
-        }
-        [self.table reloadData];
+        [self setExpandedSection];
     } onFailure:^(NSError *errorResult) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
         [alert show];
@@ -1725,6 +1715,24 @@ TTTAttributedLabelDelegate
     
     _isHaveVideo = NO;
     return;
+}
+
+-(void) setExpandedSection {
+    if (!_isnodatawholesale) {
+        if (_isHaveVideo) {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:2]]];
+        } else {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+        }
+        
+    } else {
+        if (_isHaveVideo) {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
+        } else {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+        }
+    }
+    [self.table reloadData];
 }
 
 - (void) hideReportButton: (BOOL) isNeedToRemoveBtnReport{

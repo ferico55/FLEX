@@ -12,6 +12,9 @@ import youtube_ios_player_helper
 class DetailProductVideoCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var youtubePlayerView: YTPlayerView!
+
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
