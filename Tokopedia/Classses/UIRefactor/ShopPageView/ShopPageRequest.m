@@ -68,13 +68,14 @@
 -(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Talk *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _talkNetworkManager = [TokopediaNetworkManager new];
     _talkNetworkManager.isUsingHmac = YES;
-    [_talkNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                       path:@"/v4/shop/get_shop_talk.pl"
+    [_talkNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                       path:@"/talk/v2/read"
                                      method:RKRequestMethodGET
                                   parameter:@{@"page"           : @(page),
                                               @"per_page"       : @(TALK_PER_PAGE),
                                               @"shop_domain"    : shopDomain,
-                                              @"shop_id"        : shopId
+                                              @"shop_id"        : shopId,
+                                              @"type"           : @"s"
                                               }
                                     mapping:[Talk mapping_v4]
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

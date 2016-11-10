@@ -2667,6 +2667,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		92E680E51DD458A400F02E17 /* ShopHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E680E41DD458A400F02E17 /* ShopHomeViewController.swift */; };
+		92E680E81DD45AFC00F02E17 /* ShopTabView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92E680E71DD45AFC00F02E17 /* ShopTabView.mm */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6517,6 +6519,9 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		92E680E41DD458A400F02E17 /* ShopHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopHomeViewController.swift; sourceTree = "<group>"; };
+		92E680E61DD45AFC00F02E17 /* ShopTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTabView.h; sourceTree = "<group>"; };
+		92E680E71DD45AFC00F02E17 /* ShopTabView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShopTabView.mm; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -11355,6 +11360,9 @@
 		45C9254A1DD31F6500030401 /* ShopPageView */ = {
 			isa = PBXGroup;
 			children = (
+				92E680E61DD45AFC00F02E17 /* ShopTabView.h */,
+				92E680E71DD45AFC00F02E17 /* ShopTabView.mm */,
+				92E680E41DD458A400F02E17 /* ShopHomeViewController.swift */,
 				45C9254B1DD31F6500030401 /* EtalaseCell.h */,
 				45C9254C1DD31F6500030401 /* EtalaseCell.m */,
 				45C9254D1DD31F6500030401 /* EtalaseCell.xib */,
@@ -14896,6 +14904,7 @@
 				45C92F4D1DD31F7500030401 /* PulsaOperator.swift in Sources */,
 				45C92CFA1DD31F7000030401 /* TakeWhile.swift in Sources */,
 				45C92C8A1DD31F6F00030401 /* ImagePickerController.swift in Sources */,
+				92E680E81DD45AFC00F02E17 /* ShopTabView.mm in Sources */,
 				45C92D211DD31F7000030401 /* InvocableType.swift in Sources */,
 				45C92D061DD31F7000030401 /* Observable+Aggregate.swift in Sources */,
 				45C92C6D1DD31F6F00030401 /* GeneratedHost.m in Sources */,
@@ -15361,6 +15370,7 @@
 				45C92C311DD31F6E00030401 /* TransactionCart.m in Sources */,
 				45C92A871DD31F6C00030401 /* AddressDistrict.m in Sources */,
 				45C92FE31DD31F7600030401 /* SearchResultViewController.m in Sources */,
+				92E680E51DD458A400F02E17 /* ShopHomeViewController.swift in Sources */,
 				45C92D8A1DD31F7100030401 /* TKPDLiveCameraTableViewCell.m in Sources */,
 				45C92CA51DD31F6F00030401 /* Lock.swift in Sources */,
 				45C92BB11DD31F6E00030401 /* SearchAWS.m in Sources */,
@@ -16171,6 +16181,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADERMAP_USES_VFS = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -16224,6 +16235,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADERMAP_USES_VFS = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

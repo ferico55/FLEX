@@ -27,6 +27,7 @@
 #import "TalkCell.h"
 #import "ShopPageRequest.h"
 #import "ProductTalkDetailViewController.h"
+#import "ShopTabView.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -120,7 +121,8 @@ NoResultDelegate>
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
-                                                 name:@"updateTalkHeaderPosition" object:nil];
+                                                 name:@"updateHeaderPosition"
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTotalComment:)
@@ -162,15 +164,15 @@ NoResultDelegate>
     _table.delegate = self;
     _table.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabDiscussion];
     _shopPageHeader.data = _data;
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
     _header = _shopPageHeader.view;
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
     
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
@@ -189,14 +191,39 @@ NoResultDelegate>
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
     
+    [_refreshControl endRefreshing];
+    [self initNotification];
+    [self requestTalk];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabDiscussion];
+    shopTabView.showHomeTab = self.showHomeTab;
+    [self.view addSubview:shopTabView];
+    
+    shopTabView.onTabSelected = self.onTabSelected;
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
     [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_fakeStickyTab.layer setShadowRadius:1];
     [_fakeStickyTab.layer setShadowOpacity:0.3];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
     
-    [_refreshControl endRefreshing];
-    [self initNotification];
-    [self requestTalk];
+    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    _header.frame = CGRectMake(0, -_header.frame.size.height, self.view.bounds.size.width, _header.frame.size.height);
+    
+    [_header layoutIfNeeded];
+    [_table addSubview:_header];
 }
 
 
@@ -219,18 +246,6 @@ NoResultDelegate>
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark - TableView Delegate
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _header;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return _header.frame.size.height;
-}
-
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -362,19 +377,14 @@ NoResultDelegate>
 
 - (void)updateTalkHeaderPosition:(NSNotification *)notification
 {
-    id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+    if (notification.object != self) {
+        id userinfo = notification.userInfo;
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        
+        _table.contentOffset = cgpoint;
     }
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    NSLog(@"Child Position %f",[[userinfo objectForKey:@"yposition"] floatValue]);
-    
-    //    if(ypos < _header.frame.size.height - _stickyTab.frame.size.height) {
-    _table.contentOffset = cgpoint;
-    //    }
 }
 
 #pragma mark - Memory Management
@@ -386,13 +396,7 @@ NoResultDelegate>
 #pragma mark - Scroll view delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"Content offset container %f", scrollView.contentOffset.y);
-
-    
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
-    
-    NSLog(@"Sticky Tab %hhd", isFakeStickyVisible);
-    //    NSLog(@"Range : %f", (_header.frame.size.height - _stickyTab.frame.size.height));
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
@@ -406,10 +410,7 @@ NoResultDelegate>
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateReviewHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateProductHeaderPosition" object:nil userInfo:userInfo];
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
 }
 
 #pragma mark - Shop Header Delegate

@@ -34,4 +34,6 @@
 
 + (NSString *)jsonStringArrayFromArray:(NSArray *)array;
 
+- (BOOL)empty;
+
 @end
