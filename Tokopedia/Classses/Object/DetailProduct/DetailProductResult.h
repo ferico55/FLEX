@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSArray *breadcrumb;
 @property (nonatomic, strong) NSArray *other_product;
 @property (nonatomic, strong) NSArray *product_images;
+@property (nonatomic, strong) NSString *cashback;
 @property (nonatomic, strong) ProductDetail *info;
 
 //code tambal sulam

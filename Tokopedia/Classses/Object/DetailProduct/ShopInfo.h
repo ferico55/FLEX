@@ -37,6 +37,7 @@
 @property (nonatomic, strong) NSString *shop_is_closed_note;
 @property (nonatomic, strong) NSString *shop_is_closed_reason;
 @property (nonatomic, strong) NSString *shop_is_closed_until;
+@property (nonatomic, strong) NSString *shop_official_top;
 @property (nonatomic, strong) ResponseSpeed *respond_speed;
 
 @property (nonatomic) NSArray *shop_pay_gateway;
