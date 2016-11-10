@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="300"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sudah Diterima" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ1-7R-Rqi">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sudah Diterima" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ1-7R-Rqi">
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -124,6 +124,7 @@
                 <constraint firstItem="jRb-vB-bcZ" firstAttribute="centerY" secondItem="BfC-sS-pZx" secondAttribute="centerY" id="ITU-M4-Wew"/>
                 <constraint firstItem="m8o-ak-FY2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="IuX-kz-1WO"/>
                 <constraint firstAttribute="bottom" secondItem="jRb-vB-bcZ" secondAttribute="bottom" constant="18" id="JNW-dF-gLj"/>
+                <constraint firstAttribute="trailing" secondItem="QJ1-7R-Rqi" secondAttribute="trailing" constant="8" id="KGX-Rw-SYO"/>
                 <constraint firstItem="REg-Fc-fm7" firstAttribute="width" secondItem="jRb-vB-bcZ" secondAttribute="width" id="McR-uy-KWm"/>
                 <constraint firstItem="rGK-wN-OD0" firstAttribute="centerY" secondItem="SVI-xN-MtT" secondAttribute="centerY" id="Nyw-0r-zNb"/>
                 <constraint firstItem="jRb-vB-bcZ" firstAttribute="top" secondItem="4Rt-IK-FLi" secondAttribute="bottom" constant="8" id="PTO-Tb-z0M"/>
@@ -133,10 +134,10 @@
                 <constraint firstItem="4Rt-IK-FLi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="TUk-dE-Ku7"/>
                 <constraint firstItem="4Rt-IK-FLi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Yk7-yq-HD4"/>
                 <constraint firstAttribute="trailing" secondItem="4Rt-IK-FLi" secondAttribute="trailing" id="bmQ-ek-YnR"/>
+                <constraint firstItem="QJ1-7R-Rqi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="kBb-Px-Nvk"/>
                 <constraint firstAttribute="trailing" secondItem="SVI-xN-MtT" secondAttribute="trailing" id="mtJ-qD-zh7"/>
                 <constraint firstItem="SVI-xN-MtT" firstAttribute="leading" secondItem="REg-Fc-fm7" secondAttribute="trailing" constant="8" id="vf1-KU-Emz"/>
                 <constraint firstItem="rGK-wN-OD0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wzL-A8-cVm"/>
-                <constraint firstItem="QJ1-7R-Rqi" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="y2b-y4-eqc"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <userDefinedRuntimeAttributes>
