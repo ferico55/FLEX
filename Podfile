@@ -13,7 +13,7 @@ def common_pods
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-    pod 'Rollout.io', '~> 1.0.0'
+    pod 'Rollout.io', '~> 1.7.1'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'

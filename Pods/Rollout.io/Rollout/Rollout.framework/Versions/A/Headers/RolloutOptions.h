@@ -19,6 +19,8 @@ typedef enum {
 @property (nonatomic) RolloutOptionsVerboseLevel verbose;
 @property (nonatomic, strong) NSArray *silentFiles;
 @property (nonatomic) BOOL rolloutDisabled;
-
+@property (nonatomic, copy) NSArray *patchingDisabledClasses;
+@property (nonatomic, strong) NSArray *blockedInJSClasses;
+@property (nonatomic, copy) NSString *customSigningCertificate;
 @end
 

@@ -114,7 +114,7 @@ PODS:
     - TransitionKit (~> 2.2)
   - Reveal-iOS-SDK (1.6.2)
   - RKValueTransformers (1.1.3)
-  - Rollout.io (1.0.0)
+  - Rollout.io (1.7.1)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
   - TPKeyboardAvoiding (1.3)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - OAStackView (~> 1.0.1)
   - RestKit (~> 0.27.0)
   - Reveal-iOS-SDK
-  - Rollout.io (~> 1.0.0)
+  - Rollout.io (~> 1.7.1)
   - SPTPersistentCache (~> 1.0)
   - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
@@ -192,7 +192,7 @@ SPEC CHECKSUMS:
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
-  Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
+  Rollout.io: 4a178b5020f33162de7309087ceabcefa7d0c5f2
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
