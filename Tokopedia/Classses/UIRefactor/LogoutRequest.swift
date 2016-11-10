@@ -8,14 +8,14 @@
 
 import UIKit
 
-class LogoutRequestObject: NSObject {
+class LogoutRequestParameter: NSObject {
     var deviceTokenID   = ""
     var deviceID        = ""
 }
 
 class LogoutRequest: NSObject {
     
-    class func fetchLogout(objectRequest: LogoutRequestObject, onSuccess: ((LogoutResult) -> Void)) {
+    class func fetchLogout(objectRequest: LogoutRequestParameter, onSuccess: ((LogoutResult) -> Void)) {
         
         let param : [String : String] = [
             "device_token_id"   : objectRequest.deviceTokenID,
