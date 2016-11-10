@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Shop.h"
 
+typedef NS_ENUM(NSUInteger, ShopPageTab) {
+    ShopPageTabHome,
+    ShopPageTabProduct,
+    ShopPageTabDiscussion,
+    ShopPageTabReview,
+    ShopPageTabNote,
+    ShopPageTabUnknown
+};
+
 @protocol ShopPageHeaderDelegate <NSObject>
 
 - (void)didLoadImage:(UIImage *)image;
@@ -30,6 +39,9 @@
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
 
+@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
 
+- (instancetype)initWithSelectedTab:(ShopPageTab)tab;
 - (void)setHeaderShopPage:(Shop *)userInfo;
 @end

@@ -24,12 +24,6 @@
 @property (nonatomic) BOOL enableAddEtalase;
 @property (nonatomic) BOOL isEditable;
 
-@property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
-@property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
-@property (strong, nonatomic) IBOutlet UIButton *tambahEtalaseButton;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIView *footerView;
-
 @property (strong, nonatomic) EtalaseList *initialSelectedEtalase;
 
 @property (nonatomic, weak) id<EtalaseViewControllerDelegate> delegate;

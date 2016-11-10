@@ -34,7 +34,8 @@
 #import "ShopPageRequest.h"
 #import "FavoriteShopRequest.h"
 #import "PromoRequest.h"
-
+#import "Tokopedia-Swift.h"
+#import "NoResultReusableView.h"
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
@@ -59,6 +60,8 @@
 @property (strong, nonatomic) ShopTalkPageViewController *shopTalkViewController;
 @property (strong, nonatomic) ShopReviewPageViewController *shopReviewViewController;
 @property (strong, nonatomic) ShopNotesPageViewController *shopNotesViewController;
+@property (strong, nonatomic) ShopHomeViewController *shopHomeViewController;
+
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;
@@ -74,7 +77,9 @@
 
 
 
-@implementation ShopContainerViewController
+@implementation ShopContainerViewController {
+    BOOL _uiCreated;
+}
 
 @synthesize data = _data;
 
@@ -129,6 +134,17 @@
     [super viewDidLoad];
     
     [self initNotificationCenter];
+    
+    [self initBarButton];
+    [self disableAllButtons];
+    
+    shopPageRequest = [ShopPageRequest new];
+    
+    favoriteShopRequest = [FavoriteShopRequest new];
+    favoriteShopRequest.delegate = self;
+    
+    [self requestShopInfo];
+    
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
     // Do any additional setup after loading the view from its nib.
@@ -136,34 +152,72 @@
     _isNoData = YES;
     _isRefreshView = NO;
     
-    shopPageRequest = [ShopPageRequest new];
-    favoriteShopRequest = [FavoriteShopRequest new];
-    favoriteShopRequest.delegate = self;
-    
     _userManager = [UserAuthentificationManager new];
+}
+
+- (void)showUi {
+    if (_uiCreated) return;
     
-    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    _uiCreated = YES;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                        options:nil];
     
     _pageController.dataSource = self;
     _pageController.delegate = self;
+    
+    void (^onTabSelected)(ShopPageTab) = ^(ShopPageTab tab) {
+        [weakSelf navigateToTab:tab];
+    };
+    
     
     _shopProductViewController = [ShopProductPageViewController new];
     _shopProductViewController.data = _data;
     if(_initialEtalase){
         _shopProductViewController.initialEtalase = _initialEtalase;
     }
+    _shopProductViewController.onTabSelected = onTabSelected;
+    _shopProductViewController.showHomeTab = _shop.result.info.official;
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
+    _shopTalkViewController.onTabSelected = onTabSelected;
+    _shopTalkViewController.showHomeTab = _shop.result.info.official;
     
     _shopReviewViewController = [ShopReviewPageViewController new];
     _shopReviewViewController.data = _data;
+    _shopReviewViewController.onTabSelected = onTabSelected;
+    _shopReviewViewController.showHomeTab = _shop.result.info.official;
     
     _shopNotesViewController = [ShopNotesPageViewController new];
     _shopNotesViewController.data = _data;
+    _shopNotesViewController.onTabSelected = onTabSelected;
+    _shopNotesViewController.showHomeTab = _shop.result.info.official;
+    
+    _shopHomeViewController = [[ShopHomeViewController alloc] initWithUrl: _shop.result.info.shop_official_top];
+    _shopHomeViewController.data = _data;
+    _shopHomeViewController.onEtalaseSelected = ^(NSString *shopDomain, NSString *etalaseId) {
+        [weakSelf showProductsWithShopDomain:shopDomain etalaseId:etalaseId];
+    };
+    
+    _shopHomeViewController.onProductSelected = ^(NSString *productId) {
+        NavigateViewController *navigationController = [[NavigateViewController alloc] init];
+        [navigationController navigateToProductFromViewController:weakSelf
+                                                         withName:@""
+                                                        withPrice:@""
+                                                           withId:productId
+                                                     withImageurl:@""
+                                                     withShopName:@""];
+    };
+    _shopHomeViewController.onTabSelected = onTabSelected;
+    _shopHomeViewController.showHomeTab = !_shop.result.info.shop_official_top.empty;
     
     
-    NSArray *viewControllers = [NSArray arrayWithObject:_shopProductViewController];
+    UIViewController *firstViewController = !_shop.result.info.shop_official_top.empty? _shopHomeViewController: _shopProductViewController;
+    NSArray *viewControllers = [NSArray arrayWithObject:firstViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
@@ -182,11 +236,14 @@
     thisControl.hidden = true;
     self.pageController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
     
-    [self requestShopInfo];
+    
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-    [self initBarButton];
-    [self disableAllButtons];
+}
+
+- (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
+    [_shopProductViewController showProductsWithEtalaseId:etalaseId];
+    [self displayViewController:_shopProductViewController];
 }
 
 -(void)disableAllButtons{
@@ -270,6 +327,7 @@
     [_shopProductViewController.shopPageHeader setHeaderShopPage:_shop];
     [_shopReviewViewController.shopPageHeader setHeaderShopPage:_shop];
     [_shopTalkViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopHomeViewController.shopPageHeader setHeaderShopPage:_shop];
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -283,11 +341,35 @@
 }
 
 #pragma mark - Request And Mapping
+
+- (void)openWebView  {
+    WebViewController* controller = [[WebViewController alloc] init];
+    controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+    controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 -(void)requestShopInfo{
+    __weak typeof(self) weakSelf = self;
+    
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
+    
     NSString *shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
+        
         _shop = shop;
+        if(_shop.result.info == nil) {
+            [self openWebView];
+        }
+        
+        [self showUi];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateHeaderShopPage];
+        });
+        
         if ([_userManager isMyShopWithShopId:_shop.result.info.shop_id]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
             _addProductBarButton.enabled = YES;
@@ -330,11 +412,21 @@
         [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
         [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
         _isNoData = NO;
-        [self updateHeaderShopPage];
-        
     } onFailure:^(NSError *error) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
-        [alert show];
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
+        
+        NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:self.view.bounds];
+        [noResultView setNoResultImage:@"icon_retry_grey"];
+        [noResultView setNoResultTitle:@"Kendala koneksi internet"];
+        [noResultView setNoResultDesc:@"Silakan mencoba kembali"];
+        [noResultView setNoResultButtonTitle:@"Coba Kembali"];
+        
+        noResultView.onButtonTap = ^(NoResultReusableView *noResultView) {
+            [noResultView removeFromSuperview];
+            [weakSelf requestShopInfo];
+        };
+        
+        [self.view addSubview:noResultView];
     }];
 }
 
@@ -580,6 +672,19 @@
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
+- (void)navigateToTab:(ShopPageTab)tab {
+    NSDictionary<NSNumber *, UIViewController *> *controllerForTab =
+    @{
+      @(ShopPageTabHome): _shopHomeViewController,
+      @(ShopPageTabProduct): _shopProductViewController,
+      @(ShopPageTabDiscussion): _shopTalkViewController,
+      @(ShopPageTabReview): _shopReviewViewController,
+      @(ShopPageTabNote): _shopNotesViewController
+    };
+    
+    [self displayViewController:controllerForTab[@(tab)]];
+}
+
 - (IBAction)tap:(id)sender {
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -611,33 +716,41 @@
         switch (btn.tag) {
             case 10:
             {
-                [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopTalkViewController];
                 break;
             }
             case 11:
             {
-                [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopReviewViewController];
                 break;
             }
             case 12:
             {                
-                [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopNotesViewController];
                 break;
             }
                 
             case 13:
             {
-                [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self updateHeaderShopPage];
+                [self displayViewController:_shopProductViewController];
                 break;
             }
+            case 14:
+                [self displayViewController:_shopHomeViewController];
+                break;
             default:
                 break;
         }
     }
+}
+
+- (void)displayViewController:(UIViewController *)viewController {
+    [_pageController setViewControllers:@[viewController]
+                              direction:UIPageViewControllerNavigationDirectionReverse
+                               animated:NO
+                             completion:nil];
+    
+    [self updateHeaderShopPage];
 }
 
 #pragma mark - LoginView Delegate

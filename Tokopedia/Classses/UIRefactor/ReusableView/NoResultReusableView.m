@@ -127,7 +127,11 @@
     [_button setHidden:hide];
 }
 -(void)buttonDidTapped:(id)sender{
-    [self.delegate buttonDidTapped:sender];
+    if (self.onButtonTap) {
+        self.onButtonTap(self);
+    } else {
+        [self.delegate buttonDidTapped:sender];
+    }
 }
 
 /*

@@ -213,6 +213,8 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
+@property (strong, nonatomic) IBOutlet UILabel *cashbackLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *priceLabelTop;
 
 @end
 
@@ -1216,6 +1218,13 @@ TTTAttributedLabelDelegate
                              }];
 }
 
+- (void)displayCashbackLabel {
+    _cashbackLabel.hidden = NO;
+    _priceLabelTop.constant = 10;
+    
+    // add whitespace for padding
+    _cashbackLabel.text = [NSString stringWithFormat:@"Cashback %@   ", _product.data.cashback];
+}
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -1225,10 +1234,17 @@ TTTAttributedLabelDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        if (![_product.data.cashback isEqualToString:@""]) {
+            [self displayCashbackLabel];
+        }
         
         if (_product.data == nil) {
-            [self initNoResultView];
-            self.table.hidden = YES;
+            WebViewController* controller = [[WebViewController alloc] init];
+            controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
+            controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
+            
+            
+            [self.navigationController pushViewController:controller animated:YES];
             return;
         }
         

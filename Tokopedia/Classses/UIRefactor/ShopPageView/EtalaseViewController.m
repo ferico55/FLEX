@@ -13,6 +13,12 @@
 
 @interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
 
+@property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
+@property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
+@property (strong, nonatomic) IBOutlet UIButton *tambahEtalaseButton;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+
 @end
 
 @implementation EtalaseViewController{
@@ -283,33 +289,35 @@
                                          }];
 }
 
--(void)selectInitialSelectedEtalase{
-    NSIndexPath *selected;
+- (NSIndexPath *)indexPathForSelectedEtalase {
+    NSIndexPath *selected = nil;
     if(_initialSelectedEtalase){
         NSInteger position = [self etalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
         NSInteger otherPosition = [self otherEtalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
         
         if(position != -1){
             selected = [NSIndexPath indexPathForRow:position inSection:1];
-            [_tableView selectRowAtIndexPath:selected
-                                    animated:YES
-                              scrollPosition:UITableViewScrollPositionMiddle];
         }else if(otherPosition != -1){
             selected = [NSIndexPath indexPathForRow:otherPosition inSection:0];
-            [_tableView selectRowAtIndexPath:selected
-                                    animated:YES
-                              scrollPosition:UITableViewScrollPositionMiddle];
         }
     }else{
         NSInteger semuaEtalasePosition = [self otherEtalaseListIndexWithId:@""];
         if(semuaEtalasePosition != -1){
-            selected =[NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0];
-            [_tableView selectRowAtIndexPath:selected
-                                    animated:YES
-                              scrollPosition:UITableViewScrollPositionMiddle];
+            selected = [NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0];
         }
     }
-    if(selected != nil) selectedIndexPath = selected;
+    
+    return selected;
+}
+
+-(void)selectInitialSelectedEtalase{
+    NSIndexPath *indexPath = [self indexPathForSelectedEtalase];
+    
+    [_tableView selectRowAtIndexPath:indexPath
+                            animated:YES
+                      scrollPosition:UITableViewScrollPositionMiddle];
+    
+    if(indexPath != nil) selectedIndexPath = indexPath;
 }
 
 -(NSInteger)etalaseListIndexWithId:(NSString*)selectedEtalaseId{

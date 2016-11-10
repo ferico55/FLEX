@@ -10,4 +10,13 @@
 
 @implementation LogoutResult
 
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"is_delete_device",
+                                            @"is_logout"]
+     ];
+    return mapping;
+}
+
 @end
