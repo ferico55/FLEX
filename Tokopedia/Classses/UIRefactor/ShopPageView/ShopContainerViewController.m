@@ -341,6 +341,15 @@
 }
 
 #pragma mark - Request And Mapping
+
+- (void)openWebView  {
+    WebViewController* controller = [[WebViewController alloc] init];
+    controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+    controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@", [self.data objectForKey:@"shop_domain"]?:@""];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 -(void)requestShopInfo{
     __weak typeof(self) weakSelf = self;
     
@@ -352,6 +361,9 @@
         [SwiftOverlays removeAllOverlaysFromView:self.view];
         
         _shop = shop;
+        if(_shop.result.info == nil) {
+            [self openWebView];
+        }
         
         [self showUi];
         dispatch_async(dispatch_get_main_queue(), ^{
