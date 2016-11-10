@@ -12,6 +12,14 @@
 
 @implementation DetailProductResult
 
+- (instancetype)init {
+    if (self = [super init]) {
+        //guard in case the cashback field is not published next release
+        //can be removed later
+        self.cashback = @"";
+    }
+    return self;
+}
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
@@ -24,6 +32,10 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"other_product" toKeyPath:@"other_product" withMapping:[OtherProduct mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_images" toKeyPath:@"product_images" withMapping:[ProductImages mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price" toKeyPath:@"wholesale_price" withMapping:[WholesalePrice mapping]]];
+    
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"cashback.product_cashback": @"cashback"
+                                                  }];
     
     return mapping;
 }
