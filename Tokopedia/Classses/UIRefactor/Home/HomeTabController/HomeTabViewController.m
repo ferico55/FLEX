@@ -53,6 +53,7 @@
 @property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
+@property (strong, nonatomic) PromoView *promoView;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
 @property (strong, nonatomic) HomeTabHeaderViewController *homeHeaderController;
@@ -114,6 +115,7 @@
     _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
+    
     _historyController = [HistoryProductViewController new];
     _shopViewController = [FavoritedShopViewController new];
     
@@ -284,8 +286,7 @@
         [self addChildViewController:_homePageController];
         [self.scrollView addSubview:_homePageController.view];
         [_homePageController didMoveToParentViewController:self];
-    }
-    if(page == 1) {
+    } else if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
         frame.origin.x = _scrollView.frame.size.width;
         frame.size.height = _scrollView.frame.size.height;
@@ -295,13 +296,24 @@
         [self.scrollView addSubview:_productFeedController.view];
         [_productFeedController didMoveToParentViewController:self];
     } else if(page == 2) {
+        if (_promoView == nil){
+            _promoView = [[PromoView alloc] initWithFrame: CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _scrollView.frame.size.height)];
+            _promoView.homeTabViewController = self;
+            CGRect frame = _promoView.frame;
+            frame.origin.x = _scrollView.frame.size.width*page;
+            frame.size.height = _scrollView.frame.size.height;
+            frame.size.width = [UIScreen mainScreen].bounds.size.width;
+            _promoView.frame = frame;
+            [self.scrollView addSubview:_promoView];
+        }
+    } else if(page == 3) {
         CGRect frame = _wishListViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
         _wishListViewController.view.frame = frame;
         [self addChildViewController:_wishListViewController];
         [self.scrollView addSubview:_wishListViewController.view];
-    } else if(page == 3) {
+    } else if(page == 4) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
@@ -309,7 +321,7 @@
         [self addChildViewController:_historyController];
         [self.scrollView addSubview:_historyController.view];
         [_historyController didMoveToParentViewController:self];
-    } else if(page == 4) {
+    } else if(page == 5) {
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
@@ -327,17 +339,7 @@
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
     [self goToPage:index-1];
-    if(index == 1) {
-        [self tapButtonAnimate:0];
-    } else if(index == 2) {
-        [self tapButtonAnimate:_scrollView.frame.size.width];
-    } else if(index == 3) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*2];
-    } else if(index == 4) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*3];
-    } else if(index == 5) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*4];
-    }
+    [self tapButtonAnimate:_scrollView.frame.size.width*(index-1)];
 }
 
 - (void)tapButtonAnimate:(CGFloat)totalOffset{

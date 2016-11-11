@@ -57,9 +57,10 @@
     _stackView = [[OAStackView alloc] initWithArrangedSubviews:
                   @[createButton(@"HOME", 1),
                     createButton(@"FEED", 2),
-                    createButton(@"WISHLIST", 3),
-                    createButton(@"TERAKHIR DILIHAT", 4),
-                    createButton(@"FAVORIT", 5)]];
+                    createButton(@"PROMO", 3),
+                    createButton(@"WISHLIST", 4),
+                    createButton(@"TERAKHIR DILIHAT", 5),
+                    createButton(@"FAVORIT", 6)]];
     _stackView.axis = UILayoutConstraintAxisHorizontal;
     _stackView.alignment = OAStackViewAlignmentFill;
     _stackView.layoutMarginsRelativeArrangement = YES;
@@ -163,12 +164,15 @@
             name = @"Product Feed";
             break;
         case 3:
-            name = @"Wishlist";
+            name = @"Promo";
             break;
         case 4:
-            name = @"Last Seen";
+            name = @"Wishlist";
             break;
         case 5:
+            name = @"Last Seen";
+            break;
+        case 6:
             name = @"Favorite";
             break;
         default:
@@ -199,7 +203,7 @@
             _totalOffset = 0;
             break;
         }
-        case 5 :{
+        case 6 :{
             _totalOffset = _maxXInScrollView;
             break;
         }
