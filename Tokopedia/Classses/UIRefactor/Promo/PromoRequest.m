@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
-                                   path:@"/promo/v1/display/shops"
+                                   path:@"/promo/v1.1/display/shops"
                                  method:RKRequestMethodGET
                               parameter:@{@"src":@"fav_shop",
                                           @"item":@"3",
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     [parameter addEntriesFromDictionary:filterParameter];
     
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
-                                   path:@"/promo/v1/display/products"
+                                   path:@"/promo/v1.1/display/products"
                                  method:RKRequestMethodGET
                               parameter:parameter
                                 mapping:[PromoResponse mapping]
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     [parameter removeObjectForKey:@"q"];
     
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
-                                   path:@"/promo/v1/display/products"
+                                   path:@"/promo/v1.1/display/products"
                                  method:RKRequestMethodGET
                               parameter:parameter
                                 mapping:[PromoResponse mapping]
@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     _networkManager.isUsingHmac = YES;
     
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
-                                   path:@"/promo/v1/display/products"
+                                   path:@"/promo/v1.1/display/products"
                                  method:RKRequestMethodGET
                               parameter:@{@"item": @"4",
                                           @"src":@"fav_product",

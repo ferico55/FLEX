@@ -30,6 +30,9 @@
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image"
                                                                                         toKeyPath:@"image"
                                                                                       withMapping:[PromoProductImage mapping]]];
+    
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"labels" toKeyPath:@"labels" withMapping:[ProductLabel mapping]]];
+    
     return promoProductMapping;
 }
 
@@ -37,25 +40,6 @@
     return [_name kv_decodeHTMLCharacterEntities];
 }
 
-- (ProductModelView *)viewModel {
-    
-    if(_viewModel == nil) {
-        ProductModelView *viewModel = [[ProductModelView alloc] init];
-        [viewModel setProductName:_name];
-        [viewModel setProductPrice:_price_format];
-        /*
-        [viewModel setProductShop:_];
-        [viewModel setProductThumbUrl:self.product_image_200];
-        [viewModel setProductReview:self.product_review_count];
-        [viewModel setProductTalk:self.product_talk_count];
-        [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
-        [viewModel setLuckyMerchantImageURL:self.shop_lucky];
-         */
-        _viewModel = viewModel;
-    }
-    
-    return _viewModel;
-}
 
 - (NSDictionary *)productFieldObjects {
     return @{

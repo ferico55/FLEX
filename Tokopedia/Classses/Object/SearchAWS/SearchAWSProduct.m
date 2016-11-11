@@ -43,6 +43,7 @@
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setBadges:self.badges];
+        [viewModel setLabels:self.labels];
         _viewModel = viewModel;
     }
     
@@ -85,6 +86,9 @@
     
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"labels" toKeyPath:@"labels" withMapping:[ProductLabel mapping]]];
+    
     
     return listMapping;
 
