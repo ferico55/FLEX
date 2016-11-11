@@ -12,6 +12,8 @@
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
 #import "ProductBadge.h"
+#import "ProductLabel.h"
+#import "Tokopedia-Swift.h"
 #import "QueueImageDownloader.h"
 
 
@@ -29,10 +31,6 @@
     [self.productShop setText:viewModel.productShop];
     
     self.shopLocation.text = viewModel.shopLocation;
-    self.grosirLabel.layer.masksToBounds = YES;
-    self.preorderLabel.layer.masksToBounds = YES;
-    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
-    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.grosirPosition.constant = viewModel.isProductPreorder ? 10 : -64;
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
@@ -40,28 +38,70 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
-    //all of this is just for badges, dynamic badges
-    [_badgesView removeAllPushedView];
-    CGSize badgeSize = CGSizeMake(_badgesView.frame.size.height, _badgesView.frame.size.height);
-    [_badgesView setOrientation:TKPDStackViewOrientationRightToLeft];
+    [self setBadges:viewModel.badges];
+    [self setLabels:viewModel.labels];
+}
+
+- (void)setLabels:(NSArray<ProductLabel*>*) labels {
+    for(UIView* subview in _labelsView.arrangedSubviews) {
+        [_labelsView removeArrangedSubview:subview];
+    }
     
+    _labelsView.alignment = OAStackViewAlignmentFill;
+    _labelsView.spacing = 2;
+    _labelsView.axis = UILayoutConstraintAxisHorizontal;
+    _labelsView.distribution = OAStackViewDistributionEqualSpacing;
+    
+    for(ProductLabel* productLabel in labels) {
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.text = [NSString stringWithFormat:@" %@  ", productLabel.title];
+        label.backgroundColor  = [UIColor fromHexString:productLabel.color];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.layer.cornerRadius = 3;
+        label.layer.masksToBounds = YES;
+        label.layer.borderWidth = 1.0;
+        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
+        label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
+        label.font = [UIFont microTheme];
+        
+        [label sizeToFit];
+        
+        [_labelsView addArrangedSubview:label];
+    }
+}
+
+- (void)setBadges:(NSArray<ProductBadge*>*)badges {
+    
+    for(UIView* subview in _badgesView.arrangedSubviews) {
+        [_badgesView removeArrangedSubview:subview];
+    }
+    
+    _badgesView.spacing = 2;
+    _badgesView.axis = UILayoutConstraintAxisHorizontal;
+    _badgesView.distribution = OAStackViewDistributionFillEqually;
+    _badgesView.alignment = OAStackViewAlignmentCenter;
     
     NSMutableArray *urls = [NSMutableArray new];
-    for(ProductBadge* badge in viewModel.badges){
+    for(ProductBadge* badge in badges){
         [urls addObject:badge.image_url];
     }
     
     [imageDownloader downloadImagesWithUrls:urls onComplete:^(NSArray<UIImage *> *images) {
         for(UIImage *image in images){
             if(image.size.width > 1){
-                UIView *badgeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-                UIImageView *badgeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-                badgeImageView.image = image;
-                [badgeView addSubview:badgeImageView];
-                [_badgesView pushView:badgeView];
+                UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+                imageView.image = image;
+                
+                [_badgesView addArrangedSubview:imageView];
+                
+                [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.width.equalTo(_badgesView.mas_height);
+                    make.height.equalTo(_badgesView.mas_height);
+                }];
             }
         }
     }];
+
 }
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
@@ -79,8 +119,6 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
-    self.preorderLabel.hidden = YES;
-    self.grosirLabel.hidden = YES;
     self.locationIcon.hidden = YES;
     self.shopLocation.text = nil;
     self.productInfoLabel.hidden = YES;

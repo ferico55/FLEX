@@ -11,6 +11,7 @@
 #import "PromoCategory.h"
 #import "WholesalePrice.h"
 #import "PromoProductImage.h"
+#import "ProductLabel.h"
 
 @interface PromoProduct : NSObject
 
@@ -24,9 +25,10 @@
 @property (strong, nonatomic) PromoCategory *category;
 @property (strong, nonatomic) NSMutableArray<WholesalePrice*> *wholesale_price;
 @property (strong, nonatomic) PromoProductImage *image;
+@property (strong, nonatomic) NSArray<ProductLabel*> *labels;
 
 
-@property (strong, nonatomic) ProductModelView *viewModel;
+
 
 - (NSDictionary *)productFieldObjects;
 

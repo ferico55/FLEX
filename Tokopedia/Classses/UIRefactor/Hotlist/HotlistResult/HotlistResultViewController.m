@@ -961,7 +961,7 @@ static NSString const *rows = @"12";
 
 - (void)requestHotlist {
     [_requestHotlistManager requestWithBaseUrl:[NSString aceUrl]
-                                          path:@"/search/v2.3/product"
+                                          path:@"/search/v2.4/product"
                                         method:RKRequestMethodGET
                                      parameter:[self parameters]
                                        mapping:[SearchAWS mapping]
