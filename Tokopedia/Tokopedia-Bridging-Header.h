@@ -140,6 +140,7 @@
 #import "ShopTabView.h"
 #import "LogoutResult.h"
 #import "HomeTabViewController.h"
+#import "RetryCollectionReusableView.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

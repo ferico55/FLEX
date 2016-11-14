@@ -18,5 +18,6 @@
 @interface RetryCollectionReusableView : UICollectionReusableView
 
 @property (weak, nonatomic) id<RetryViewDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIButton *retryButton;
 
 @end

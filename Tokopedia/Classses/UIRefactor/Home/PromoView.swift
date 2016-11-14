@@ -27,11 +27,7 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
         self.UIDelegate = self
         self.navigationDelegate = self
         refreshPromo()
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.center.x = self.bounds.midX
-        activityIndicator.startAnimating()
-        self.addSubview(activityIndicator)
+        generateActivityIndicator()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,15 +86,27 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
     }
     
     func generateRetryButton(){
-        retryButton = UIButton(type: .System)
-        retryButton.setTitle("Coba Kembali", forState: .Normal)
+        retryButton = (NSBundle.mainBundle().loadNibNamed("RetryCollectionReusableView", owner: nil, options: nil)![0] as! RetryCollectionReusableView).retryButton
         retryButton.addTarget(self, action: #selector(PromoView.pressRetryButton), forControlEvents: .TouchUpInside)
         retryButton.hidden = true
+        retryButton.layer.cornerRadius = 3
         self.addSubview(retryButton)
         retryButton.mas_makeConstraints { (make) in
-            make.centerX.equalTo()(self)
-            make.top.equalTo()(self).with().offset()(50)
+            make.left.equalTo()(self).with().offset()(25)
+            make.right.equalTo()(self).with().offset()(-25)
+            make.top.equalTo()(self).with().offset()(5)
+            make.height.equalTo()(40)
         }
+    }
+    
+    func generateActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center.x = self.bounds.midX
+        activityIndicator.frame.origin.y = 15
+        activityIndicator.startAnimating()
+        self.addSubview(activityIndicator)
+
     }
     
     func refreshPromo(){
