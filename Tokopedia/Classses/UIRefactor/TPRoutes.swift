@@ -38,6 +38,13 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //promo
+        JLRoutes.globalRoutes().addRoute("/promo") { (params: [String : AnyObject]!) -> Bool in
+            openWebView(NSURL(string: "https://www.tokopedia.com/promo?utm_source=ios")!)
+            
+            return true
+        }
+        
         //hotlist
         JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
             NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
