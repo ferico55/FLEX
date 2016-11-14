@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
-                                   path:@"/promo/v1.1/display/shops"
+                                   path:@"/promo/v1/display/shops"
                                  method:RKRequestMethodGET
                               parameter:@{@"src":@"fav_shop",
                                           @"item":@"3",
