@@ -1,6 +1,9 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
+# use old specs for cocoapods 0.39.0
+source "https://github.com/CocoaPods/Old-Specs"
+
 use_frameworks!
 
 def common_pods
