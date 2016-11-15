@@ -338,7 +338,7 @@
 {
     switch (section) {
         case 0:{
-            return 1;
+            return 2;
             break;
         }
         
@@ -385,19 +385,19 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 3) {
+    if (section == 2) {
         return @"PROFIL SAYA";
-    } else if (section == 4) {
+    } else if (section == 3) {
         if ([_auth objectForKey:@"shop_id"] &&
             [[_auth objectForKey:@"shop_id"] integerValue] > 0)
             return @"TOKO SAYA";
         else return @"";
-    } else if (section == 5) {
+    } else if (section == 4) {
         if ([_auth objectForKey:@"shop_id"] &&
             [[_auth objectForKey:@"shop_id"] integerValue] > 0)
             return @"";
         else return @"TOKO SAYA";
-    } else if(section == 6) {
+    } else if(section == 5) {
         return @"Kotak Masuk";
     }
     return @"";
