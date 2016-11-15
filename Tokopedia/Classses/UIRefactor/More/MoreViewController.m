@@ -334,49 +334,46 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 9;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
         case 0:{
-            return 2;
+            return 1;
             break;
         }
-        case 1:
+        
+        case 1: return 1;
+        case 2:
             return 3;
             break;
             
-        case 2:
+        case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
                 return 4;
             else return 0;
             break;
             
-        case 3:
+        case 4:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
                 return 0;
             else return 1;
             break;
             
-        case 4:
+        case 5:
             return 5;
             break;
             
-        case 5:
+        case 6:
             return 4;
             break;
             
-        case 6:
+        case 7:
             return _shouldDisplayPushNotificationCell?1:0;
             break;
             
-        case 7 :
+        case 8 :
             return 1;
             break;
             
@@ -388,19 +385,19 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 3) {
         return @"PROFIL SAYA";
-    } else if (section == 2) {
+    } else if (section == 4) {
         if ([_auth objectForKey:@"shop_id"] &&
             [[_auth objectForKey:@"shop_id"] integerValue] > 0)
             return @"TOKO SAYA";
         else return @"";
-    } else if (section == 3) {
+    } else if (section == 5) {
         if ([_auth objectForKey:@"shop_id"] &&
             [[_auth objectForKey:@"shop_id"] integerValue] > 0)
             return @"";
         else return @"TOKO SAYA";
-    } else if(section == 4) {
+    } else if(section == 6) {
         return @"Kotak Masuk";
     }
     return @"";
@@ -429,7 +426,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                        label:@"Saldo"];
         }
     }
-    if (indexPath.section == 0 && indexPath.row == 1) {
+    if (indexPath.section == 1 && indexPath.row == 0) {
         NSString  *currentDeviceId = [_auth objectForKey:@"device_token"];
         NSString *userID = [_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY];
         NSString *url_ = _LPResult.uri;
@@ -448,7 +445,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
     
-    if (indexPath.section == 1 && indexPath.row == 0) {
+    if (indexPath.section == 2 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
         [AnalyticsManager trackEventName:@"clickMore"
                                 category:GA_EVENT_CATEGORY_MORE
@@ -458,7 +455,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
     }
     
-    else if (indexPath.section == 1 && indexPath.row == 1) {
+    else if (indexPath.section == 2 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
@@ -469,7 +466,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
-    else if(indexPath.section==1 && indexPath.row==2) {
+    else if(indexPath.section==2 && indexPath.row==2) {
         [AnalyticsManager trackEventName:@"clickMore"
                                 category:GA_EVENT_CATEGORY_MORE
                                   action:GA_EVENT_ACTION_CLICK
@@ -480,7 +477,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
     }
     
-    else if (indexPath.section == 2) {
+    else if (indexPath.section == 3) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackEventName:@"clickMore"
                                     category:GA_EVENT_CATEGORY_MORE
@@ -531,7 +528,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         
     }
     
-    else if (indexPath.section == 4) {
+    else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackEventName:@"clickMore"
                                     category:GA_EVENT_CATEGORY_MORE
@@ -613,7 +610,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         }
     }
     
-    else if (indexPath.section == 5) {
+    else if (indexPath.section == 6) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackEventName:@"clickMore"
                                     category:GA_EVENT_CATEGORY_MORE
@@ -661,7 +658,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         }
     }
     
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 7) {
         [AnalyticsManager trackEventName:@"clickMore"
                                 category:GA_EVENT_CATEGORY_MORE
                                   action:GA_EVENT_ACTION_CLICK
@@ -669,7 +666,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [self activatePushNotification];
     }
     
-    else if (indexPath.section == 7) {
+    else if (indexPath.section == 8) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackEventName:@"clickMore"
                                     category:GA_EVENT_CATEGORY_MORE
