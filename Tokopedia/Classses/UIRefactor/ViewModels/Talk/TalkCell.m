@@ -265,7 +265,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     };
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
-    controller.inboxType = @"Talk";
     [controller.navigationController pushViewController:_reportController animated:YES];
 }
 

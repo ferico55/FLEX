@@ -41,6 +41,7 @@
 @property(nonatomic, strong) NSString* product_url;
 @property(nonatomic, strong) NSString* product_name;
 @property(nonatomic, strong) NSArray* badges;
+@property(nonatomic, strong) NSArray* labels;
 
 @property NSInteger product_wholesale;
 @property NSInteger product_preorder;

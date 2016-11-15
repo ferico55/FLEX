@@ -8,16 +8,14 @@
 
 #import <Foundation/Foundation.h>
 @protocol RolloutNetwork;
-@class RolloutSwiftDevModeDataProvider;
+@protocol RolloutDeviceProperties;
+@protocol RolloutErrors;
 
 @interface RolloutConfiguration : NSObject
 
-
 @property (atomic) NSDictionary *conf;
 @property (atomic, readonly) NSDictionary *configurationsByTweakId;
-@property (nonatomic) RolloutSwiftDevModeDataProvider *swiftDevModeDataProvider;
 
-
-- (instancetype)init;
+- (instancetype)initWithDeviceProperties:(id<RolloutDeviceProperties>)deviceProperties rolloutErrors:(id<RolloutErrors>)rolloutErrors;
 @end
 

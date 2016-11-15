@@ -20,7 +20,8 @@ class MyWishlistData: NSObject {
     var wholesale_price: [MyWishlistWholesalePrice]!
     var condition: String!
     var shop: MyWishlistShop!
-    var badges: [MyWishlistBadge]!
+    var badges: [ProductBadge]!
+    var labels: [ProductLabel]!
     var available: Bool = false
     var status: String!
     var preorder: Bool = false
@@ -33,7 +34,9 @@ class MyWishlistData: NSObject {
         mapping.addAttributeMappingsFromArray(["id", "name", "url", "image", "price", "price_formatted", "minimum_order", "condition", "available", "status", "preorder"])
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "wholesale_price", toKeyPath: "wholesale_price", withMapping: MyWishlistWholesalePrice.mapping()))
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "shop", toKeyPath: "shop", withMapping: MyWishlistShop.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", withMapping: MyWishlistBadge.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", withMapping: ProductBadge.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", withMapping: ProductLabel.mapping()))
+        
         
         return mapping
     }
@@ -49,7 +52,7 @@ class MyWishlistData: NSObject {
             productModelView.isProductBuyAble = self.available
             
             var luckyMerchantImageURL = ""
-            for badge: MyWishlistBadge in self.badges {
+            for badge: ProductBadge in self.badges {
                 if badge.title == "Lucky Merchant" {
                     luckyMerchantImageURL = badge.image_url
                 }
@@ -65,6 +68,7 @@ class MyWishlistData: NSObject {
             productModelView.isProductPreorder = self.preorder
             productModelView.shopLocation = self.shop.location
             productModelView.badges = self.badges
+            productModelView.labels = self.labels
             
             self.productModelView = productModelView
         }

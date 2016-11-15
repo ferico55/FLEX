@@ -325,6 +325,7 @@
         address = [self getAddressWithAddressID:data.address_id];
         
         if ([self.delegate respondsToSelector:@selector(successAddAddress:)]) {
+            address.address_id = data.address_id;
             [self.delegate successAddAddress:address];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
