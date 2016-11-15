@@ -84,7 +84,7 @@ class ProductWishlistCell : UICollectionViewCell {
                 label.layer.cornerRadius = 3
                 label.layer.masksToBounds = true
                 label.layer.borderWidth = 1.0
-                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.whiteColor().CGColor
+                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.fromHexString(productObject.color).CGColor
                 label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
                 label.font = UIFont.microTheme()
                 
