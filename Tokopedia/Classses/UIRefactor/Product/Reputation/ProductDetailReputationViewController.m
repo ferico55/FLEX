@@ -815,41 +815,42 @@
                                                          responseMessage:[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
                                                                 reviewID:_detailReputationReview.review_id
                                                                   shopID:_detailReputationReview.shop_id
-                                                               onSuccess:^(ResponseCommentResult *result) {
-                                                                   if([result.is_success isEqualToString:@"1"]) {
+                                                               onSuccess:^(ResponseComment *result) {
+                                                                   ResponseCommentResult *data = result.data;
+                                                                   if([data.is_success isEqualToString:@"1"]) {
                                                                        isSuccessSentMessage = YES;
                                                                        
-                                                                       _detailReputationReview.review_response = result.review_response;
-                                                                       _detailReputationReview.review_response.response_create_time = result.review_response.response_time_fmt;
-                                                                       _detailReputationReview.review_response.response_message = result.review_response.response_msg;
+                                                                       _detailReputationReview.review_response = data.review_response;
+                                                                       _detailReputationReview.review_response.response_create_time = data.review_response.response_time_fmt;
+                                                                       _detailReputationReview.review_response.response_message = data.review_response.response_msg;
                                                                        _detailReputationReview.review_response.failedSentMessage = NO;
                                                                        _detailReputationReview.review_response.canDelete = YES;
                                                                        
                                                                        
-                                                                       if(result.product_owner != nil) {
-                                                                           _detailReputationReview.product_owner.user_label_id = result.product_owner.user_label_id;
-                                                                           _detailReputationReview.product_owner.user_label = result.product_owner.user_label;
+                                                                       if(data.product_owner != nil) {
+                                                                           _detailReputationReview.product_owner.user_label_id = data.product_owner.user_label_id;
+                                                                           _detailReputationReview.product_owner.user_label = data.product_owner.user_label;
                                                                            
                                                                            if(_isFromInboxNotification) {
-                                                                               _detailReputationReview.product_owner.shop_id = result.product_owner.shop_id;
+                                                                               _detailReputationReview.product_owner.shop_id = data.product_owner.shop_id;
                                                                                
-                                                                               _detailReputationReview.product_owner.user_url = result.product_owner.user_url;
-                                                                               _detailReputationReview.product_owner.shop_img = result.product_owner.shop_img;
-                                                                               _detailReputationReview.product_owner.shop_url = result.product_owner.shop_url;
-                                                                               _detailReputationReview.product_owner.shop_name = result.product_owner.shop_name;
-                                                                               _detailReputationReview.product_owner.full_name = result.product_owner.full_name;
-                                                                               _detailReputationReview.product_owner.user_img = result.product_owner.user_img;
-                                                                               _detailReputationReview.product_owner.user_id = result.product_owner.user_id;
-                                                                               _detailReputationReview.product_owner.shop_reputation_badge = result.product_owner.shop_reputation_badge;
-                                                                               _detailReputationReview.product_owner.shop_reputation_score = result.product_owner.shop_reputation_score;
+                                                                               _detailReputationReview.product_owner.user_url = data.product_owner.user_url;
+                                                                               _detailReputationReview.product_owner.shop_img = data.product_owner.shop_img;
+                                                                               _detailReputationReview.product_owner.shop_url = data.product_owner.shop_url;
+                                                                               _detailReputationReview.product_owner.shop_name = data.product_owner.shop_name;
+                                                                               _detailReputationReview.product_owner.full_name = data.product_owner.full_name;
+                                                                               _detailReputationReview.product_owner.user_img = data.product_owner.user_img;
+                                                                               _detailReputationReview.product_owner.user_id = data.product_owner.user_id;
+                                                                               _detailReputationReview.product_owner.shop_reputation_badge = data.product_owner.shop_reputation_badge;
+                                                                               _detailReputationReview.product_owner.shop_reputation_score = data.product_owner.shop_reputation_score;
                                                                            }
                                                                            else {
-                                                                               _shopBadgeLevel = _detailReputationReview.shop_badge_level = result.shop_reputation.reputation_badge_object?:_shopBadgeLevel;
-                                                                               _detailReputationReview.product_owner.shop_reputation_score = result.product_owner.shop_reputation_score;
-                                                                               _detailReputationReview.product_owner.shop_id = result.shop_id;
-                                                                               _detailReputationReview.product_owner.shop_name = result.shop_name?:result.product_owner.shop_name;
-                                                                               _detailReputationReview.product_owner.shop_url = result.shop_img_uri;
-                                                                               _shopImage = result.product_owner.shop_img;
+                                                                               _shopBadgeLevel = _detailReputationReview.shop_badge_level = data.shop_reputation.reputation_badge_object?:_shopBadgeLevel;
+                                                                               _detailReputationReview.product_owner.shop_reputation_score = data.product_owner.shop_reputation_score;
+                                                                               _detailReputationReview.product_owner.shop_id = data.shop_id;
+                                                                               _detailReputationReview.product_owner.shop_name = data.shop_name?:data.product_owner.shop_name;
+                                                                               _detailReputationReview.product_owner.shop_url = data.shop_img_uri;
+                                                                               _shopImage = data.product_owner.shop_img;
                                                                            }
                                                                        }
                                                                        

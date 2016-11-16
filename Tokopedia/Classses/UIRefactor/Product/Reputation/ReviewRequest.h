@@ -18,6 +18,7 @@
 #import "ImageResult.h"
 #import "SkipReviewResult.h"
 #import "ResponseCommentResult.h"
+#import "ResponseComment.h"
 #import "GeneralActionResult.h"
 #import "ReviewResult.h"
 #import "GeneralAction.h"
@@ -108,7 +109,7 @@
                                               responseMessage:(NSString*)responseMessage
                                                      reviewID:(NSString*)reviewID
                                                        shopID:(NSString*)shopID
-                                                    onSuccess:(void(^)(ResponseCommentResult *result))successCallback
+                                                    onSuccess:(void(^)(ResponseComment *result))successCallback
                                                     onFailure:(void(^)(NSError *error))errorCallback;
 
 - (void)requestDeleteReputationReviewResponseWithReputationID:(NSString*)reputationID

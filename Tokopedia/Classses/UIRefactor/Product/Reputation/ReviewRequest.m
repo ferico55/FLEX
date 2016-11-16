@@ -622,7 +622,7 @@
                                               responseMessage:(NSString *)responseMessage
                                                      reviewID:(NSString *)reviewID
                                                        shopID:(NSString *)shopID
-                                                    onSuccess:(void (^)(ResponseCommentResult *))successCallback
+                                                    onSuccess:(void (^)(ResponseComment *))successCallback
                                                     onFailure:(void (^)(NSError *))errorCallback {
     insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
@@ -638,7 +638,7 @@
                                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                                NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                                ResponseComment *obj = [result objectForKey:@""];
-                                                               successCallback(obj.data);
+                                                               successCallback(obj);
                                                            } onFailure:^(NSError *errorResult) {
                                                                errorCallback(errorResult);
                                                            }];
