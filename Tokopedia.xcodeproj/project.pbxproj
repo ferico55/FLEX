@@ -13052,13 +13052,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
+				9852790493753292549B327E /* 📦 Check Pods Manifest.lock */,
 				01EFBFF07FF62E46077006C0 /* Rollout.io pre-build */,
-				9852790493753292549B327E /* Check Pods Manifest.lock */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
-				270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */,
-				7041848328563DD0D68C3890 /* Embed Pods Frameworks */,
+				270CBF0B5FC08042843CD1B4 /* 📦 Copy Pods Resources */,
+				7041848328563DD0D68C3890 /* 📦 Embed Pods Frameworks */,
 				8747D4C024A3C2D7C9B8658B /* Rollout.io post-build */,
 			);
 			buildRules = (
@@ -13074,12 +13074,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFB219B0656400AF74C1 /* Build configuration list for PBXNativeTarget "TokopediaTests" */;
 			buildPhases = (
-				E69AA1A952B2C8DACAC50186 /* Check Pods Manifest.lock */,
+				E69AA1A952B2C8DACAC50186 /* 📦 Check Pods Manifest.lock */,
 				FC36DF9A19B0656400AF74C1 /* Sources */,
 				FC36DF9B19B0656400AF74C1 /* Frameworks */,
 				FC36DF9C19B0656400AF74C1 /* Resources */,
-				2340CF76B183AE415524ED79 /* Copy Pods Resources */,
-				817BAC840492E118911FF150 /* Embed Pods Frameworks */,
+				2340CF76B183AE415524ED79 /* 📦 Copy Pods Resources */,
+				817BAC840492E118911FF150 /* 📦 Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -13120,7 +13120,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */;
+			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -14418,14 +14418,14 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=8 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
 		};
-		2340CF76B183AE415524ED79 /* Copy Pods Resources */ = {
+		2340CF76B183AE415524ED79 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14433,14 +14433,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */ = {
+		270CBF0B5FC08042843CD1B4 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14448,14 +14448,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7041848328563DD0D68C3890 /* Embed Pods Frameworks */ = {
+		7041848328563DD0D68C3890 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14463,14 +14463,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		817BAC840492E118911FF150 /* Embed Pods Frameworks */ = {
+		817BAC840492E118911FF150 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14492,14 +14492,14 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=8 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
 		};
-		9852790493753292549B327E /* Check Pods Manifest.lock */ = {
+		9852790493753292549B327E /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14507,14 +14507,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E69AA1A952B2C8DACAC50186 /* Check Pods Manifest.lock */ = {
+		E69AA1A952B2C8DACAC50186 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -16127,10 +16127,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;
@@ -16218,7 +16215,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */ = {
+		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC36DFAD19B0656400AF74C1 /* Debug */,
