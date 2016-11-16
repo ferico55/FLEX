@@ -94,6 +94,12 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.globalRoutes().addRoute("/tiket/kereta-api") { (params: [String : AnyObject]!) -> Bool in
+            openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
+            
+            return true
+        }
+        
         //tiket KAI - blog
         JLRoutes.globalRoutes().addRoute("/tiket/travel") { (params: [String : AnyObject]!) -> Bool in
             openWebView(NSURL(string: "https://tiket.tokopedia.com/travel?utm_source=ios")!)
@@ -136,7 +142,7 @@ class TPRoutes: NSObject {
         //pulsa to specific page
         JLRoutes.globalRoutes().addRoute("/pulsa/:pulsaProduct") { (params: [String : AnyObject]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
-            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct  + "?utm_source=ios"
+            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct  + "/?utm_source=ios"
             openWebView(NSURL(string: urlString)!)
             
             return true
