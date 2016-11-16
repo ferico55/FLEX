@@ -27,8 +27,7 @@
     TKPDAlertViewDelegate,
     TransactionCartWebViewViewControllerDelegate,
     UITextFieldDelegate,
-    UIWebViewDelegate,
-    CCReaderDelegate
+    UIWebViewDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -581,36 +580,6 @@
     return isValid;
 }
 
-#pragma mark - Credit Card Scanner
-
-- (IBAction)didPressScanButton:(UIButton *)sender {
-    if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-            // Will get here on both iOS 7 & 8 even though camera permissions weren't required
-            // until iOS 8. So for iOS 7 permission will always be granted.
-            if (granted) {
-                // Permission has been granted. Use dispatch_async for any UI updating
-                // code because this block may be executed in a thread.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self goToCCReaderViewController];
-                });
-            } else {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Tidak Dapat Mengakses Kamera" message:@"Anda harus membuka ijin akses kamera melalui setting." preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [alert addAction:okAction];
-                [self.navigationController presentViewController:alert animated:YES completion:nil];
-            }
-        }];
-    }
-}
-
--(void) goToCCReaderViewController {
-    CCReaderViewController *ccReaderVC = [CCReaderViewController new];
-    ccReaderVC.delegate = self;
-    [AnalyticsManager trackEventName:@"clickCardIOScan" category:GA_EVENT_CATEGORY_CARDIO_SCAN action:GA_EVENT_ACTION_CLICK label:@"Click Camera Icon"];
-    [self.navigationController presentViewController:ccReaderVC animated:YES completion:nil];
-}
-
 -(NSString *) generateSpaceOnCCTextFieldWithString:(NSString *)originalString {
     NSMutableString *resultString = [NSMutableString string];
     
@@ -625,21 +594,6 @@
         [resultString appendFormat:@"%@ ",[originalString substringWithRange:NSMakeRange(fromIndex, len)]];
     }
     return resultString;
-}
-
-
-#pragma mark - CCView Delegate
-
-- (void)didScanCard:(CardIOCreditCardInfo *)cardInfo {
-    if (cardInfo) {
-        NSString *cardNumberWithSeparatedSpace = [self generateSpaceOnCCTextFieldWithString:cardInfo.cardNumber];
-        _CCNumberTextField.text = cardNumberWithSeparatedSpace;
-        _CVVTextField.text = cardInfo.cvv;
-        _expDateLabel.text = [NSString stringWithFormat:@"%02i/%i", cardInfo.expiryMonth, cardInfo.expiryYear];
-    }
-    else {
-        NSLog(@"User cancelled payment info");
-    }
 }
 
 @end

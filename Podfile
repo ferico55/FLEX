@@ -28,7 +28,6 @@ def common_pods
     pod 'GoogleSignIn', '~> 2.4.0'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
-    pod 'CardIO'
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'

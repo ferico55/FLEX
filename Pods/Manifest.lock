@@ -40,7 +40,6 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
-  - CardIO (5.3.2)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - DownPicker (0.1.34)
@@ -83,9 +82,6 @@ PODS:
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
   - JLRoutes (1.6.4)
-  - JSQMessagesViewController (7.3.4):
-    - JSQSystemSoundPlayer (~> 2.0.1)
-  - JSQSystemSoundPlayer (2.0.1)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
@@ -114,13 +110,14 @@ PODS:
     - TransitionKit (~> 2.2)
   - Reveal-iOS-SDK (1.6.2)
   - RKValueTransformers (1.1.3)
-  - Rollout.io (1.7.1)
+  - Rollout.io (1.0.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
   - TPKeyboardAvoiding (1.3)
   - TransitionKit (2.2.1)
   - TTTAttributedLabel (1.13.4)
   - UITableView+FDTemplateLayoutCell (1.4)
+  - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
@@ -128,7 +125,6 @@ DEPENDENCIES:
   - Appsee
   - AppsFlyerFramework
   - BlocksKit (~> 2.2.5)
-  - CardIO
   - ComponentKit (~> 0.14)
   - DownPicker
   - EAIntroView (~> 2.8.0)
@@ -141,18 +137,18 @@ DEPENDENCIES:
   - JLPermissions/Contacts
   - JLPermissions/Notification
   - JLRoutes (~> 1.6.2)
-  - JSQMessagesViewController
   - Localytics
   - Masonry
   - NJKWebViewProgress
   - OAStackView (~> 1.0.1)
   - RestKit (~> 0.27.0)
   - Reveal-iOS-SDK
-  - Rollout.io (~> 1.7.1)
+  - Rollout.io (~> 1.0.0)
   - SPTPersistentCache (~> 1.0)
   - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
   - UITableView+FDTemplateLayoutCell (~> 1.4)
+  - youtube-ios-player-helper (~> 0.1.6)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -161,7 +157,6 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  CardIO: 92c45caef0d986c4a303a7afba0c9b76ff2b1f6e
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
@@ -183,8 +178,6 @@ SPEC CHECKSUMS:
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
-  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
-  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
@@ -192,14 +185,15 @@ SPEC CHECKSUMS:
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
-  Rollout.io: 4a178b5020f33162de7309087ceabcefa7d0c5f2
+  Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
   TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
+  youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 81f6014703d243a7354d313b9b50dde07eb9c64a
+PODFILE CHECKSUM: 7ac8f5395030d83c6ee51b06929989715e3442fa
 
 COCOAPODS: 1.0.0
