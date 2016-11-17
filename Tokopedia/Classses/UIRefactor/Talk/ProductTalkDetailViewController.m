@@ -247,9 +247,9 @@
 
 - (NSDictionary *)generateData {
     if (!_talk || !_indexPath) return nil;
-
+    
     return @{
-            TKPD_TALK_MESSAGE:_talk.talk_message?:@0,
+            TKPD_TALK_MESSAGE:[[_talk.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities]?:@0,
             TKPD_TALK_USER_IMG:_talk.talk_user_image?:@0,
             TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@0,
             TKPD_TALK_USER_NAME:_talk.talk_user_name?:@0,
@@ -269,7 +269,7 @@
 
 #pragma mark - Memory Management
 - (void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    //NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
 - (void)didReceiveMemoryWarning
@@ -327,7 +327,7 @@
 
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
+        //NSLog(@"%@", NSStringFromSelector(_cmd));
         
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/

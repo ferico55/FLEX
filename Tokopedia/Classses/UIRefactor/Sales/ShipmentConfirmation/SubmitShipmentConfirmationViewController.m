@@ -315,13 +315,12 @@
             [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Cancel"];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            
             if ([self isInstantCourier]) {
-                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
-                [self request];
+                UIAlertView *pickupAlert = [[UIAlertView alloc] initWithTitle:@"" message:@"Dengan mengklik tombol \"Ya\", pihak kurir akan segera melakukan pickup ke tempat Anda. Tidak perlu bayar ongkir pada kurir." delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                [pickupAlert show];
                 return;
             }
-
+            
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >= 7 && textField.text.length <= 17) {
@@ -333,6 +332,13 @@
                 [alert show];
             }
         }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != [alertView cancelButtonIndex]){
+        [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+        [self request];
     }
 }
 
