@@ -40,7 +40,19 @@ class TPRoutes: NSObject {
         
         //promo
         JLRoutes.globalRoutes().addRoute("/promo") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://www.tokopedia.com/promo?utm_source=ios")!)
+            let utmString = getUTMString(params)
+            let urlString = "https://www.tokopedia.com/promo" + utmString
+            openWebView(NSURL(string: urlString)!)
+            
+            return true
+        }
+        
+        //promo category
+        JLRoutes.globalRoutes().addRoute("/promo/category/:categoryName") { (params: [String : AnyObject]!) -> Bool in
+            let categoryName = params["categoryName"] as! String
+            let utmString = getUTMString(params)
+            let urlString = "https://www.tokopedia.com/promo/category/" + categoryName + utmString
+            openWebView(NSURL(string: urlString)!)
             
             return true
         }
@@ -54,15 +66,17 @@ class TPRoutes: NSObject {
         
         //blog marketplace
         JLRoutes.globalRoutes().addRoute("/blog") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://blog.tokopedia.com/")!)
-            
+            let utmString = getUTMString(params)
+            let urlString = "https://blog.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
             return true
         }
         
         //blog marketplace category
         JLRoutes.globalRoutes().addRoute("/blog/category/:categoryName") { (params: [String : AnyObject]!) -> Bool in
             let categoryName = params["categoryName"] as! String
-            let urlString = "https://blog.tokopedia.com/category/" + categoryName + "?utm_source=ios"
+            let utmString = getUTMString(params)
+            let urlString = "https://blog.tokopedia.com/category/" + categoryName + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -73,7 +87,8 @@ class TPRoutes: NSObject {
             let year = params["year"] as! String
             let month = params["month"] as! String
             let title = params["title"] as! String
-            let urlString = "https://blog.tokopedia.com/" + year + "/" + month + "/" + title + "?utm_source=ios"
+            let utmString = getUTMString(params)
+            let urlString = "https://blog.tokopedia.com/" + year + "/" + month + "/" + title + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -87,22 +102,20 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //kereta
-        JLRoutes.globalRoutes().addRoute("/kereta-api") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
+        //Tokopedia Tiket
+        JLRoutes.globalRoutes().addRoutes(["/kereta-api", "/tiket/kereta-api"]) { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://tiket.tokopedia.com/kereta-api" + utmString
+            openWebView(NSURL(string: urlString)!)
             
             return true
         }
-        
-        JLRoutes.globalRoutes().addRoute("/tiket/kereta-api") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://tiket.tokopedia.com/kereta-api?utm_source=ios")!)
-            
-            return true
-        }
-        
-        //tiket KAI - blog
+
+        //Tokopedia
         JLRoutes.globalRoutes().addRoute("/tiket/travel") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://tiket.tokopedia.com/travel?utm_source=ios")!)
+            let utmString = getUTMString(params)
+            let urlString = "https://tiket.tokopedia.com/travel" + utmString
+            openWebView(NSURL(string: urlString)!)
             
             return true
         }
@@ -110,7 +123,8 @@ class TPRoutes: NSObject {
         //tiket KAI - blog article
         JLRoutes.globalRoutes().addRoute("/tiket/travel/:articleName") { (params: [String : AnyObject]!) -> Bool in
             let articleName = params["articleName"] as! String
-            let urlString = "https://tiket.tokopedia.com/travel/" + articleName + "?utm_source=ios"
+            let utmString = getUTMString(params)
+            let urlString = "https://tiket.tokopedia.com/travel/" + articleName + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -118,14 +132,18 @@ class TPRoutes: NSObject {
         
         //pulsa
         JLRoutes.globalRoutes().addRoute("/pulsa") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://pulsa.tokopedia.com?utm_source=ios")!)
+            let utmString = getUTMString(params)
+            let urlString = "https://pulsa.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
             
             return true
         }
         
         //pulsa blog
         JLRoutes.globalRoutes().addRoute("/pulsa/blog") { (params: [String : AnyObject]!) -> Bool in
-            openWebView(NSURL(string: "https://pulsa.tokopedia.com/blog?utm_source=ios")!)
+            let utmString = getUTMString(params)
+            let urlString = "https://pulsa.tokopedia.com/blog" + utmString
+            openWebView(NSURL(string: urlString)!)
             
             return true
         }
@@ -133,7 +151,8 @@ class TPRoutes: NSObject {
         //pulsa blog article
         JLRoutes.globalRoutes().addRoute("/pulsa/blog/:articleName") { (params: [String : AnyObject]!) -> Bool in
             let articleName = params["articleName"] as! String
-            let urlString = "https://pulsa.tokopedia.com/blog/" + articleName + "?utm_source=ios"
+            let utmString = getUTMString(params)
+            let urlString = "https://pulsa.tokopedia.com/blog/" + articleName + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -142,7 +161,8 @@ class TPRoutes: NSObject {
         //pulsa to specific page
         JLRoutes.globalRoutes().addRoute("/pulsa/:pulsaProduct") { (params: [String : AnyObject]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
-            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct  + "/?utm_source=ios"
+            let utmString = getUTMString(params)
+            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct  + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -218,7 +238,18 @@ class TPRoutes: NSObject {
         
     }
     
-    
+    static func getUTMString(params: [String : AnyObject]) -> String {
+        if params["utm_source"] != nil && params["utm_medium"] != nil && params["utm_campaign"] != nil {
+            let utmSource = params["utm_source"] as! String
+            let utmMedium = params["utm_medium"] as! String
+            let utmCampaign = params["utm_campaign"] as! String
+            
+            return "?utm_source=" + utmSource + "&utm_medium=" + utmMedium + "&utm_campaign=" + utmCampaign
+            
+        } else {
+            return ""
+        }
+    }
     
     static func openWebView(url: NSURL) {
         let controller = WebViewController()
