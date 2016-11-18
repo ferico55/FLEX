@@ -327,6 +327,9 @@
                                                           }
                                                           
                                                           [self refreshData];
+                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"getInboxReputation"
+                                                                                                              object:nil
+                                                                                                            userInfo:nil];
                                                       }
                                                       onFailure:^(NSError *error) {
                                                           

@@ -277,6 +277,9 @@ TokopediaNetworkManagerDelegate
                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
                                                                                                                          object:nil
                                                                                                                        userInfo:@{@"n" : @"1"}];
+                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:@"getInboxReputation"
+                                                                                                                         object:nil
+                                                                                                                       userInfo:nil];
                                                                  }
                                                              }
                                                          }
@@ -313,6 +316,9 @@ TokopediaNetworkManagerDelegate
                                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
                                                                                                                                object:nil
                                                                                                                              userInfo:@{@"n" : @"1"}];
+                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"getInboxReputation"
+                                                                                                                               object:nil
+                                                                                                                             userInfo:nil];
                                                                        }
                                                                    }
                                                                }
