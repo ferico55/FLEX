@@ -140,7 +140,7 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*6, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setPagingEnabled:YES];
     
     //this code to prevent user lose their hometabheader being hided by scrollview if they already loggedin from previous version
@@ -211,7 +211,7 @@
     _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
         _isAbleToSwipe = YES;
-        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
+        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*6, 300)];
         [_scrollView setPagingEnabled:YES];
     } else {
         _isAbleToSwipe = NO;
@@ -351,7 +351,7 @@
 - (void)redirectToWishList
 {
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    tempBtn.tag = 3;
+    tempBtn.tag = 4;
     [_homeHeaderController tapButton:tempBtn];
 }
 

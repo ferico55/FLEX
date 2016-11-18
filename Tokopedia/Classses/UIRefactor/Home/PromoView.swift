@@ -109,6 +109,8 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
 
     }
     
+    //MARK: Common Method
+    
     func refreshPromo(){
         retryButton.hidden = true
         self.loadRequest(urlRequest)
