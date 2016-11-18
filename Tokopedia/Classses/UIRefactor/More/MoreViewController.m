@@ -415,15 +415,19 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     _wrapperViewController.hidesBottomBarWhenPushed = YES;
     UIViewController* wrapperController = _wrapperViewController;
     
-    if(indexPath.section == 0 && indexPath.row == 0) {
-        if(![_depositLabel.text isEqualToString:@"-"]) {
-            DepositSummaryViewController *depositController = [DepositSummaryViewController new];
-            depositController.data = @{@"total_saldo":_depositLabel.text};
-            [wrapperController.navigationController pushViewController:depositController animated:YES];
-            [AnalyticsManager trackEventName:@"clickMore"
-                                    category:GA_EVENT_CATEGORY_MORE
-                                      action:GA_EVENT_ACTION_CLICK
-                                       label:@"Saldo"];
+    if(indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            if(![_depositLabel.text isEqualToString:@"-"]) {
+                DepositSummaryViewController *depositController = [DepositSummaryViewController new];
+                depositController.data = @{@"total_saldo":_depositLabel.text};
+                [wrapperController.navigationController pushViewController:depositController animated:YES];
+                [AnalyticsManager trackEventName:@"clickMore"
+                                        category:GA_EVENT_CATEGORY_MORE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:@"Saldo"];
+            }
+        } else if (indexPath.row == 1) {
+            [NavigateViewController navigateToSaldoTopupFromViewController:_wrapperViewController];
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {
