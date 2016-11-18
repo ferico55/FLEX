@@ -84,10 +84,18 @@
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
-        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.left.right.mas_equalTo(_scrollView);
-            make.height.mas_equalTo(_scrollView);
-        }];
+        
+        if (_loggedIn){
+            [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.bottom.left.right.mas_equalTo(_scrollView);
+                make.height.mas_equalTo(_scrollView);
+            }];
+        } else {
+            [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.bottom.left.right.mas_equalTo(_scrollView);
+                make.height.width.mas_equalTo(_scrollView);
+            }];
+        }
 
     }
     
@@ -239,7 +247,7 @@
 - (void)removeButton {
     for (UIButton *button in _stackView.arrangedSubviews) {
         if(button.tag > 1) {
-            [button removeFromSuperview];
+            [_stackView removeArrangedSubview:button];
         }
     }
 }
