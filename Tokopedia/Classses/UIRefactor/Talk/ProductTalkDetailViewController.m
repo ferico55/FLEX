@@ -269,7 +269,7 @@
 
 #pragma mark - Memory Management
 - (void)dealloc{
-    //NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
 - (void)didReceiveMemoryWarning
@@ -327,7 +327,7 @@
 
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
-        //NSLog(@"%@", NSStringFromSelector(_cmd));
+        NSLog(@"%@", NSStringFromSelector(_cmd));
         
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
