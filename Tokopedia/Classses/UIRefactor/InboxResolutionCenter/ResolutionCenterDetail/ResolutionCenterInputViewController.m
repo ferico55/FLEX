@@ -246,6 +246,7 @@
 
 -(void)tapSendReply:(UIBarButtonItem*)button{
     if ([self isValid]) {
+        [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_SEND label:@"Comment"];
         [self doRequestReplyResolutionButton:button];
     }
 }
@@ -284,8 +285,8 @@
 -(void)didTapReportButton
 {
     __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Konfirmasi Bantuan" message:@"Apakah Anda yakin ingin meminta bantuan Tokopedia untuk memutuskan resolusinya?" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Konfirmasi Bantuan" message:_resolution.resolution_button.button_report_text preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *changeSolution = [UIAlertAction actionWithTitle:@"Konfirmasi" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [weakSelf doRequestReport];
     }];
     [alert addAction: changeSolution];
@@ -505,7 +506,7 @@
         [self.navigationController popViewControllerAnimated:YES];
 
     } onFailure:^{
-        
+        [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_ERROR label:@"Comment"];
         sendButton.enabled = YES;
         
     }];

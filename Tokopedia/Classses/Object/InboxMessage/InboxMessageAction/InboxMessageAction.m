@@ -15,10 +15,9 @@
     [statusMapping addAttributeMappingsFromDictionary:@{@"status": @"status",
                                                         @"message_error": @"message_error",
                                                         @"server_process_time": @"server_process_time"}];
-
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[InboxMessageActionResult mapping]];
-    [statusMapping addPropertyMapping:resulRel];
+    
+    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[InboxMessageActionResult mapping]];
+    [statusMapping addPropertyMapping:dataRel];
     return statusMapping;
 }
 @end

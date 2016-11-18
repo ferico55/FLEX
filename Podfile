@@ -1,6 +1,9 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
+# use old specs for cocoapods 0.39.0
+source "https://github.com/CocoaPods/Old-Specs"
+
 use_frameworks!
 
 def common_pods
@@ -13,7 +16,7 @@ def common_pods
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-    pod 'Rollout.io', '~> 1.0.0'
+    pod 'Rollout.io', '~> 1.7.1'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
@@ -32,6 +35,8 @@ def common_pods
     pod 'TPKeyboardAvoiding', '~> 1.3'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
+    pod 'JSQMessagesViewController'
+
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     

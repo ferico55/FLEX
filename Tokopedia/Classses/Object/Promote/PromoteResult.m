@@ -10,4 +10,14 @@
 
 @implementation PromoteResult
 
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:@{
+        @"product_name" : @"p_name_enc",
+        @"is_dink"      : @"is_dink"
+    }];
+    return mapping;
+}
+
 @end

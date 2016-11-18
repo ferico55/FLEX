@@ -20,8 +20,9 @@
 #import "ProductAddEditViewController.h"
 #import "string_more.h"
 #import "LoginViewController.h"
+#import "ShopTabView.h"
 
-
+@import Masonry;
 
 @interface ShopPageHeader () <UIScrollViewDelegate, UISearchBarDelegate, LoginViewDelegate> {
     ShopDescriptionView *_descriptionView;
@@ -37,6 +38,8 @@
     
     
     NSDictionary *_auth;
+    ShopPageTab _selectedTab;
+    IBOutlet UIView *_tabContainer;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -56,6 +59,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedReason;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedUntil;
 
+@property (strong, nonatomic) IBOutlet UIView *homeMarker;
+@property (strong, nonatomic) IBOutlet UIView *productMarker;
+@property (strong, nonatomic) IBOutlet UIView *talkMarker;
+@property (strong, nonatomic) IBOutlet UIView *reviewMarker;
+@property (strong, nonatomic) IBOutlet UIView *noteMarker;
 
 
 @end
@@ -67,12 +75,22 @@
 
 @synthesize data = _data;
 
+- (instancetype)initWithSelectedTab:(ShopPageTab)tab {
+    self = [self initWithNibName:nil bundle:nil];
+    
+    if (self) {
+        _selectedTab = tab;
+    }
+    
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     self.hidesBottomBarWhenPushed = YES;
     if (self) {
-        // Custom initialization
+        _selectedTab = ShopPageTabUnknown;
     }
     return self;
 }
@@ -119,9 +137,6 @@
 
 - (void)viewDidLoad
 {
-    [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
-    [_shopImageView.layer setMasksToBounds:YES];
-    
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
     [self initButton];
@@ -150,6 +165,17 @@
     [_navigationTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_navigationTab.layer setShadowRadius:1];
     [_navigationTab.layer setShadowOpacity:0.3];
+    
+    ShopTabView *tabView = [[ShopTabView alloc] initWithTab:_selectedTab];
+    [_tabContainer addSubview:tabView];
+    
+    tabView.showHomeTab = self.showHomeTab;
+    
+    [tabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_tabContainer);
+    }];
+    
+    tabView.onTabSelected = self.onTabSelected;
 }
 
 - (void)showPopUp:(id)sender {
@@ -200,11 +226,6 @@
     [_statView.openStatusLabel setHidden:YES];
     [_statView.statLabel setHidden:YES];
     
-    // Set cover image
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
     if ([[_shop.result.is_open stringValue] isEqualToString:@"1"]) {
         _shopClosedView.hidden = YES;
     } else if ([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
@@ -222,50 +243,15 @@
     }
     
     if(_shop.result.info.shop_is_gold == 1) {
-        [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            _coverImageView.contentMode = UIViewContentModeScaleToFill;
-            _coverImageView.image = image;
-            _coverImageView.hidden = NO;
-#pragma clang diagnostic pop
-        } failure:nil];
+        [_coverImageView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]];
     } else {
         [_coverImageView setBackgroundColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     }
     
-    NSURLRequest *requestBadge =  [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_lucky?:@""]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [_luckyBadgeView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_lucky?:@""]];
     
-    [_luckyBadgeView setImageWithURLRequest:requestBadge placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        _luckyBadgeView.contentMode = UIViewContentModeScaleToFill;
-        _luckyBadgeView.image = image;
-        _luckyBadgeView.hidden = NO;
-#pragma clang diagnostic pop
-    } failure:nil];
-
-    
-    
-    //set shop image
-    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_avatarIndicator startAnimating];
-    [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        _shopImageView.image = image;
-        _shopImageView.hidden = NO;
-        
-        _shopImageView.layer.cornerRadius = _shopImageView.frame.size.height /2;
-        _shopImageView.layer.masksToBounds = YES;
-        _shopImageView.layer.borderWidth = 0;
-#pragma clang diagnostic pop
-    } failure:nil];
+    [_shopImageView setImageWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
+                   placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
     
 }
 

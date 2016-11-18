@@ -200,7 +200,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         }
         
         if(answer.data.allow_login == "1") {
-            AnalyticsManager.trackEventName("OTPSuccess", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SUCCESS, label: "Confirm OTP")
+            AnalyticsManager.trackEventName("OTPSuccess", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: "OTP Success", label: "Confirm OTP")
             self.successAnswerCallback(answer)
             self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
         }

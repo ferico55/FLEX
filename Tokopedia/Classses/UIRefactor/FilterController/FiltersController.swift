@@ -277,6 +277,11 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             if !(labels.contains(key)){
                 labels.append(key)
             }
+            
+            if params[filter.key] == filter.value {
+                return;
+            }
+            
             var value : String?
             if filterParam != nil && filterParam != "" {
                 value = "\(filterParam!),\(filter.value)"

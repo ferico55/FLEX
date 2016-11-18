@@ -14,6 +14,7 @@
 #import "Breadcrumb.h"
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "TKPDTabViewController.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -582,7 +583,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     AnalyticsManager *manager = [[self alloc] init];
     
     NSDictionary *data = @{
-                           @"event" : @"openScreen",
+                           @"event" : @"openCampaign",
                            @"utmSource" : [url.parameters objectForKey:@"utm_source"]?:@"",
                            @"utmMedium" : [url.parameters objectForKey:@"utm_medium"]?:@"",
                            @"utmCampaign" : [url.parameters objectForKey:@"utm_campaign"]?:@"",
@@ -621,6 +622,82 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     
     // AppsFlyer Tracking
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+}
+
++ (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString *)label {
+    
+    if (inboxType == InboxTypeTalk) {
+        [self trackEventName:@"clickProductDiscussion" category:GA_EVENT_CATEGORY_INBOX_TALK action:GA_EVENT_ACTION_CLICK label:label];
+    } else if (inboxType == InboxTypeTicket) {
+        [self trackEventName:@"clickHelp" category:GA_EVENT_CATEGORY_INBOX_TICKET action:GA_EVENT_ACTION_CLICK label:label];
+    }
+}
+
++ (void)trackInboxTicketClickWithType:(InboxCustomerServiceType)type {
+    NSString *inboxType = @"";
+    if (type == InboxCustomerServiceTypeAll) {
+        inboxType = @"Semua";
+    } else if (type == InboxCustomerServiceTypeClosed) {
+        inboxType = @"Ditutup";
+    } else {
+        inboxType = @"Dalam Proses";
+    }
+    
+    [self trackEventName:@"clickHelp" category:GA_EVENT_CATEGORY_INBOX_TICKET action:GA_EVENT_ACTION_CLICK label:inboxType];
+}
+
++ (void)trackAddProductType:(NSInteger)type {
+    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
+        [self trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Add"];
+    } else {
+        [self trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_COPY label:@"Product"];
+    }
+}
+
++ (void)trackGiveRatingReviewWithRole:(NSString *)role {
+    NSString *type = @"";
+    
+    if ([role isEqualToString:@"2"]) {
+        type = @"Smiley Buyer";
+    } else {
+        type = @"Smiley Seller";
+    }
+    
+    [self trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_CLICK label:type];
+}
+
++ (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress {
+    if (oldAddress != newAddress) {
+        [self trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Change Address"];
+    }
+}
+
++ (void)trackInboxMessageClick:(NSString *)label {
+    [self trackEventName:@"clickMessage" category:GA_EVENT_CATEGORY_INBOX_MESSAGE action:GA_EVENT_ACTION_CLICK label:label];
+}
+
++ (NSString *)searchActionWithID:(NSString *)searchID {
+    NSString *actionForTracker = @"Search";
+    if ([searchID isEqualToString:@"autocomplete"]) {
+        actionForTracker = @"Search Autocomplete";
+    } else if ([searchID isEqualToString:@"recent_search"]) {
+        actionForTracker = @"Search History";
+    } else if ([searchID isEqualToString:@"popular_search"]) {
+        actionForTracker = @"Popular Search";
+    } else if ([searchID isEqualToString:@"hotlist"]) {
+        actionForTracker = @"Search Hotlist";
+    }
+    
+    return actionForTracker;
+}
+
++ (void)trackSearch:(NSString *)type keyword:(NSString *)keyword {
+    NSString *searchAction = [self searchActionWithID:type];
+    [self trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:searchAction label:keyword];
+}
+
++ (void)trackClickSales:(NSString *)label {
+    [self trackEventName:@"clickSales" category:GA_EVENT_CATEGORY_SALES action:GA_EVENT_ACTION_CLICK label:label];
 }
 
 @end

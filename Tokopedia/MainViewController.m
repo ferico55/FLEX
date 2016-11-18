@@ -34,8 +34,6 @@
 #import "InboxRootViewController.h"
 #import "CategoryViewController.h"
 
-#import "RequestNotifyLBLM.h"
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
@@ -43,6 +41,7 @@
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
 #import "PhoneVerifViewController.h"
+#import "Tokopedia-Swift.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -51,7 +50,6 @@
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
     LoginViewDelegate,
-    TokopediaNetworkManagerDelegate,
     TKPAppFlow
 >
 {
@@ -60,16 +58,12 @@
     URLCacheController *_cacheController;
     
     UserAuthentificationManager *_userManager;
-    TokopediaNetworkManager *_logoutRequestManager;
-    __weak RKObjectManager *_objectmanager;
-    
     NSString *_persistToken;
     NSString *_persistBaseUrl;
     
     UIAlertView *_logingOutAlertView;
     NSTimer *_containerTimer;
     
-    RequestNotifyLBLM *_requestLBLM;
     TKPStoreManager *_storeManager;
     
     MainViewControllerPage _page;
@@ -118,11 +112,7 @@ typedef enum TagRequest {
         
     _auth = [NSMutableDictionary new];
     _cacheController = [URLCacheController new];
-    
-    _logoutRequestManager = [TokopediaNetworkManager new];
-    _logoutRequestManager.delegate = self;
-    _logoutRequestManager.tagRequest = LogoutTag;
-    
+
     [[UISegmentedControl appearance] setTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
@@ -165,9 +155,6 @@ typedef enum TagRequest {
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_logoutRequestManager requestCancel];
-    _logoutRequestManager.delegate = nil;
-    _logoutRequestManager = nil;
 }
 
 
@@ -251,18 +238,14 @@ typedef enum TagRequest {
     _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     [swipevcNav.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        _swipevc.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    _swipevc.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 2 **/
     HotlistViewController *categoryvc = [HotlistViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
 
     [categoryNavBar.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];
@@ -279,10 +262,7 @@ typedef enum TagRequest {
     TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
     UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
     [cartNavBar.navigationBar setTranslucent:NO];
-    //[cartNavBar.navigationItem setTitleView:logo];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        cart.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    cart.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 5 **/
     UINavigationController *moreNavBar;
@@ -327,16 +307,8 @@ typedef enum TagRequest {
 - (void)adjustnavigationbar
 {
     // Move to root view controller
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
-    
     UINavigationBar *proxy = [UINavigationBar appearance];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) { // iOS 7
-        [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
-    } else {
-        [proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-    }
-    
+    [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     [proxy setTintColor:[UIColor whiteColor]];
     [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
@@ -487,7 +459,7 @@ typedef enum TagRequest {
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
 
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar?"
                                                         message:nil
                                                        delegate:self
                                               cancelButtonTitle:@"Batal"
@@ -533,7 +505,7 @@ typedef enum TagRequest {
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
 
-    [_logoutRequestManager doRequest];
+    [self requestLogout];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
@@ -623,92 +595,17 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Logout Controller
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *param;
-    if(tag == LogoutTag) {
-        param = @{@"device_token_id" : [_userManager getMyDeviceIdToken],
-                  @"device_id" : [_userManager getMyDeviceToken] //token device from ios
-                  };
-    }
-    
-    return param;
+-(LogoutRequestParameter*) logoutObjectRequest{
+    UserAuthentificationManager* auth = [UserAuthentificationManager new];
+    LogoutRequestParameter *object = [LogoutRequestParameter new];
+    object.deviceTokenID = [auth getMyDeviceIdToken];
+    object.deviceID = [auth getMyDeviceToken]; //token device from ios
+    return object;
 }
 
-- (NSString *)getPath:(int)tag {
-    NSString *path;
-    if(tag == LogoutTag) {
-        path = kTKPDLOGOUT_APIPATH;
-    }
-    
-    return path;
+-(void)requestLogout{
+    [LogoutRequest fetchLogout:[self logoutObjectRequest] onSuccess:^(LogoutResult * data) {}];
 }
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    Logout *logout = stat;
-    
-    return logout.status;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == LogoutTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
-        
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Logout class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LogoutResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGOUT_ISDELETEDEVICE    : kTKPDLOGOUT_ISDELETEDEVICE,
-                                                            kTKPDLOGOUT_ISLOGOUT     : kTKPDLOGOUT_ISLOGOUT,
-                                                            }];
-        //add relationship mapping
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping]];
-        
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:kTKPDLOGOUT_APIPATH
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectmanager;
-    }
-    
-    return nil;
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    if(tag == LogoutTag) {
-        
-    }
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    if(tag == LogoutTag) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        Logout *logout = [result objectForKey:@""];
-        
-        if([logout.result.is_logout isEqualToString:@"1"]) {
-            
-        }
-    }
-}
-
 
 - (void)redirectNotification:(NSNotification*)notification {
     _tabBarController.selectedIndex = 0;

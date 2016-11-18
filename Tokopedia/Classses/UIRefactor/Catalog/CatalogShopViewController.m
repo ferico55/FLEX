@@ -208,7 +208,7 @@
     
     CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
     SearchAWSShop *shop = catalogShop.shop;
-    cell.shopNameLabel.text = shop.shop_name;
+    cell.shopNameLabel.text = [shop.shop_name kv_decodeHTMLCharacterEntities];
     [cell.btnLocation setTitle:shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-" forState:UIControlStateNormal];
     
     SearchAWSProduct *product = [catalogShop.products objectAtIndex:0];

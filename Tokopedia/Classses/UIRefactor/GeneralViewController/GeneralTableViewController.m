@@ -9,10 +9,12 @@
 #import "EtalaseList.h"
 #import "GeneralTableViewController.h"
 #import "ResizeableImageCell.h"
+#import "NoResultReusableView.h"
 
 @interface GeneralTableViewController ()
 <
-    UISearchBarDelegate
+    UISearchBarDelegate,
+    NoResultDelegate
 >
 {
     NSIndexPath *_selectedIndexPath;
@@ -20,6 +22,7 @@
     NSMutableArray *_searchResults;
     NSMutableArray *_searchContents;
     NSString *strObjectName;
+    NoResultReusableView *_noResultView;
 }
 
 @end
@@ -90,6 +93,20 @@
                                                                       action:@selector(tap:)];
         backButton.tag = 2;
         self.navigationItem.backBarButtonItem = backButton;
+    }
+    
+    [self initNoResultView];
+}
+
+- (void)initNoResultView{
+    if (_objects.count == 0){
+        _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+        _noResultView.delegate = self;
+        [_noResultView generateAllElements:@"no-result.png"
+                                     title:_noResultTitle?:@"Tidak Ada Data"
+                                      desc:_noResultDescription?:@""
+                                  btnTitle:nil];
+        [self.tableView addSubview:_noResultView];
     }
 }
 

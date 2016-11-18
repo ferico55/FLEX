@@ -15,25 +15,27 @@ import OAStackView
 
 class HomePageViewController: UIViewController, LoginViewDelegate {
     
-    var digitalGoodsDataSource: DigitalGoodsDataSource!
-    var carouselDataSource: CarouselDataSource!
+    private var digitalGoodsDataSource: DigitalGoodsDataSource!
+    private var carouselDataSource: CarouselDataSource!
     
-    var tickerRequest: AnnouncementTickerRequest!
-    var tickerView: AnnouncementTickerView!
+    private var tickerRequest: AnnouncementTickerRequest!
+    private var tickerView: AnnouncementTickerView!
     
-    var pulsaView: PulsaView!
-    var prefixes = Dictionary<String, Dictionary<String, String>>()
-    var requestManager: PulsaRequest!
-    var navigator: PulsaNavigator!
+    private var pulsaView: PulsaView!
+    private var prefixes = Dictionary<String, Dictionary<String, String>>()
+    private var requestManager: PulsaRequest!
+    private var navigator: PulsaNavigator!
     
-    var sliderPlaceholder: UIView!
-    var pulsaPlaceholder: OAStackView!
-    var tickerPlaceholder: UIView!
-    var miniSliderPlaceholder: UIView!
-    var categoryPlaceholder: OAStackView!
-    var keyboardManager: PulsaKeyboardManager!
+    private var sliderPlaceholder: UIView!
+    private var pulsaPlaceholder: OAStackView!
+    private var tickerPlaceholder: UIView!
+    private var miniSliderPlaceholder: UIView!
+    private var categoryPlaceholder: OAStackView!
+    private var keyboardManager: PulsaKeyboardManager!
+    private var homePageCategoryData: HomePageCategoryData?
+    private var pulsaActiveCategories: [PulsaCategory]?
     
-    @IBOutlet var homePageScrollView: UIScrollView!
+    @IBOutlet private var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
     private lazy var layoutRows: [HomePageCategoryLayoutRow] = [HomePageCategoryLayoutRow]()
     private lazy var categoryVerticalView: OAStackView = OAStackView()
@@ -61,14 +63,17 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.initOuterStackView()
         self.initViewLayout()
         self.requestTicker()
-        self.requestCategory()
-        self.requestPulsaWidget()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.requestBanner()
+        if pulsaActiveCategories == nil {
+            self.requestPulsaWidget()
+        }
+        if homePageCategoryData == nil {
+            self.requestCategory()
+        }
         AnalyticsManager.trackScreenName("Top Category")
     }
     
@@ -89,25 +94,25 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     // MARK: Setup StackView
     
-    func initOuterStackView() {
+    private func initOuterStackView() {
         self.outerStackView = OAStackView()
         setStackViewAttribute(self.outerStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 5.0)
         self.homePageScrollView.addSubview(self.outerStackView)
         setupOuterStackViewConstraint()
     }
     
-    func setStackViewAttribute(stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
+    private func setStackViewAttribute(stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
         stackView.axis = axis
         stackView.alignment = alignment
         stackView.distribution = distribution
         stackView.spacing = spacing
     }
     
-    func setupBannerView() {
+    private func setupBannerView() {
         self.requestBanner()
     }
     
-    func setupOuterStackViewConstraint() {
+    private func setupOuterStackViewConstraint() {
         self.outerStackView.mas_makeConstraints { (make) in
             make.top.mas_equalTo()(self.homePageScrollView.mas_top)
             make.bottom.mas_equalTo()(self.homePageScrollView.mas_bottom)
@@ -117,7 +122,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         }
     }
     
-    func setCategoryTitleLabel(title: String) {
+    private func setCategoryTitleLabel(title: String) {
         let categoryTitlelabel: UILabel = UILabel()
         categoryTitlelabel.text = title
         categoryTitlelabel.font = UIFont.largeTheme()
@@ -128,7 +133,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         categoryVerticalView.addArrangedSubview(categoryTitlelabel)
     }
     
-    func setHorizontalCategoryLayoutWithLayoutSections(layoutRows: [HomePageCategoryLayoutRow]) {
+    private func setHorizontalCategoryLayoutWithLayoutSections(layoutRows: [HomePageCategoryLayoutRow]) {
         let horizontalScrollView = UIScrollView()
         horizontalScrollView.showsHorizontalScrollIndicator = false
         
@@ -147,11 +152,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             let iconStackView = OAStackView()
             self.setStackViewAttribute(iconStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
             
-            let url = NSURL(string: layoutRow.image_url)
-            let imageData: NSData? = NSData(contentsOfURL: url!)
-            var iconImageView: UIImageView = UIImageView()
-            if let imageData = imageData {
-                iconImageView = UIImageView(image: UIImage(data: imageData))
+            let url: NSURL? = NSURL(string: layoutRow.image_url)
+            let iconImageView: UIImageView = UIImageView()
+            if let url = url {
+                iconImageView.setImageWithURL(url)
             }
             let imageViewContainer = UIView()
             imageViewContainer.addSubview(iconImageView)
@@ -201,7 +205,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         categoryVerticalView.addArrangedSubview(horizontalScrollView)
     }
     
-    func setCategoryUpperSeparator() {
+    private func setCategoryUpperSeparator() {
         let upperSeparatorView = UIView()
         upperSeparatorView.mas_makeConstraints({ (make) in
             make.height.mas_equalTo()(2)
@@ -218,7 +222,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         categoryVerticalView.addArrangedSubview(topEmptyView)
     }
     
-    func setBottomSeparatorView() {
+    private func setBottomSeparatorView() {
         let bottomEmptyView = UIView()
         bottomEmptyView.mas_makeConstraints({ (make) in
             make.height.mas_equalTo()(8)
@@ -231,14 +235,13 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         })
         bottomSeparatorView.backgroundColor = UIColor(red: 235.0/255, green: 235.0/255, blue: 235.0/255, alpha: 1.0)
         categoryVerticalView.addArrangedSubview(bottomSeparatorView)
-        self.categoryPlaceholder.addArrangedSubview(categoryVerticalView)
     }
     
-    func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
+    private func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
+
         for layout_section in homePageCategoryData.layout_sections {
             categoryVerticalView = OAStackView()
             self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
-            
             setCategoryTitleLabel(layout_section.title)
             
             setCategoryUpperSeparator()
@@ -246,10 +249,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
             
             setBottomSeparatorView()
+            
+            self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
     }
     
-    func initViewLayout() {
+    private func initViewLayout() {
         self.sliderPlaceholder = UIView(frame: CGRectZero)
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
         self.tickerPlaceholder = UIView(frame: CGRectZero)
@@ -268,38 +273,35 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
         
         // init category
+        self.categoryPlaceholder.layoutMarginsRelativeArrangement = true
+        self.categoryPlaceholder.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
-        self.categoryPlaceholder.mas_makeConstraints { (make) in
-            make.left.mas_equalTo()(self.outerStackView.mas_left).with().offset()(20)
-        }
     }
     
     // MARK: Keyboard Manager
     
-    func initKeyboardManager() {
+    private func initKeyboardManager() {
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.homePageScrollView = self.homePageScrollView
     }
     
     // MARK: Request Method
     
-    func requestCategory() {
+    private func requestCategory() {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { (mappingResult, operation) in
-            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
                 let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
                 let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
-                let homePageCategoryData: HomePageCategoryData = homePageCategoryResponse.data
-                self.setupOuterStackCategoryWithData(homePageCategoryData)
-                })
+                self.homePageCategoryData = homePageCategoryResponse.data
+                self.setupOuterStackCategoryWithData(self.homePageCategoryData!)
         }) { (error) in
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
             stickyAlertView.show()
         }
     }
     
-    func requestBanner() {
+    private func requestBanner() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         
         let backgroundColor = self.backgroundColor
@@ -331,7 +333,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
     }
     
-    func mappingPrefixFromOperators(operators: [PulsaOperator]) {
+    private func mappingPrefixFromOperators(operators: [PulsaOperator]) {
         //mapping operator by prefix
         // {0812 : {"image" : "simpati.png", "id" : "1"}}
         operators.enumerate().forEach { id, op in
@@ -358,7 +360,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         }
     }
     
-    func didReceiveOperator(operators: [PulsaOperator]) {
+    private func didReceiveOperator(operators: [PulsaOperator]) {
         self.mappingPrefixFromOperators(operators)
         
         self.pulsaView.addActionNumberField();
@@ -418,11 +420,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         return foundOperator
     }
     
-    func redirectViewController(viewController: AnyObject!) {
-        
-    }
-    
-    func requestMiniSlider() {
+    private func requestMiniSlider() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         
         bannersStore.fetchMiniSlideWithCompletion({[unowned self] (slide, error) in
@@ -455,18 +453,15 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
     }
     
-    func requestPulsaWidget() {
+    private func requestPulsaWidget() {
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
-            var activeCategories: [PulsaCategory] = []
-            categories.enumerate().forEach { id, category in
-                if(category.attributes.status == 1) {
-                    activeCategories.append(category)
-                }
-            }
+            self.pulsaActiveCategories = categories.filter({ (pulsaCategory) -> Bool in
+                pulsaCategory.attributes.status == 1
+            })
             
-            var sortedCategories = activeCategories
+            var sortedCategories = self.pulsaActiveCategories!
             sortedCategories.sortInPlace({
                 $0.attributes.weight < $1.attributes.weight
             })
@@ -505,7 +500,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         }
     }
     
-    func requestTicker() {
+    private func requestTicker() {
         tickerRequest = AnnouncementTickerRequest()
         tickerRequest.fetchTicker({[unowned self] (ticker) in
             
@@ -543,7 +538,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     // MARK: Method
     
-    func didTapCategory(tapGestureRecognizer: UITapGestureRecognizer) {
+    private func didTapCategory(tapGestureRecognizer: UITapGestureRecognizer) {
         var selectedIconStackView = tapGestureRecognizer.view as! OAStackView
         
         for layoutRow in layoutRows {
@@ -577,5 +572,11 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 }
             }
         }
+    }
+    
+    //MARK: Login Delegate
+    
+    func redirectViewController(viewController: AnyObject!) {
+        
     }
 }

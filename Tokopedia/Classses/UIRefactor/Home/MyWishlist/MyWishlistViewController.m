@@ -172,7 +172,7 @@ typedef enum TagRequest {
 
 -(NSString *) getWishlistPath {
     NSString *userId = [_userManager getUserId];
-    return [NSString stringWithFormat:@"/v1.0.1/users/%@/wishlist/products", userId];
+    return [NSString stringWithFormat:@"/v1.0.2/users/%@/wishlist/products", userId];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -201,8 +201,6 @@ typedef enum TagRequest {
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
-    
-    
     
     MyWishlistData *list = ((MyWishlistData *)[_product objectAtIndex:indexPath.row]);
     [cell setViewModel:list.viewModel];

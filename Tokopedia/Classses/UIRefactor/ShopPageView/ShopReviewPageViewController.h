@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ShopPageHeader;
+#import "ShopPageHeader.h"
 
 @interface ShopReviewPageViewController : GAITrackedViewController
 
@@ -16,6 +16,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
+
+@property (nonatomic, copy) void(^onTabSelected)(ShopPageTab);
+@property BOOL showHomeTab;
 
 - (void)reloadTable;
 @end

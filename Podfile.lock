@@ -83,6 +83,9 @@ PODS:
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
   - JLRoutes (1.6.4)
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
@@ -111,7 +114,7 @@ PODS:
     - TransitionKit (~> 2.2)
   - Reveal-iOS-SDK (1.6.2)
   - RKValueTransformers (1.1.3)
-  - Rollout.io (1.0.0)
+  - Rollout.io (1.7.1)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
   - TPKeyboardAvoiding (1.3)
@@ -138,13 +141,14 @@ DEPENDENCIES:
   - JLPermissions/Contacts
   - JLPermissions/Notification
   - JLRoutes (~> 1.6.2)
+  - JSQMessagesViewController
   - Localytics
   - Masonry
   - NJKWebViewProgress
   - OAStackView (~> 1.0.1)
   - RestKit (~> 0.27.0)
   - Reveal-iOS-SDK
-  - Rollout.io (~> 1.0.0)
+  - Rollout.io (~> 1.7.1)
   - SPTPersistentCache (~> 1.0)
   - TPKeyboardAvoiding (~> 1.3)
   - TTTAttributedLabel
@@ -169,7 +173,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
+  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -179,6 +183,8 @@ SPEC CHECKSUMS:
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
@@ -186,7 +192,7 @@ SPEC CHECKSUMS:
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
-  Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
+  Rollout.io: 4a178b5020f33162de7309087ceabcefa7d0c5f2
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe

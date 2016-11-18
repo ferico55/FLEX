@@ -39,4 +39,27 @@
     return viewModel;
 }
 
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"ticket_detail_id",
+                                             @"ticket_detail_create_time",
+                                             @"ticket_detail_create_time_fmt",
+                                             @"ticket_detail_user_name",
+                                             @"ticket_detail_new_rating",
+                                             @"ticket_detail_is_cs",
+                                             @"ticket_detail_user_url",
+                                             @"ticket_detail_user_label_id",
+                                             @"ticket_detail_user_label",
+                                             @"ticket_detail_user_image",
+                                             @"ticket_detail_user_id",
+                                             @"ticket_detail_new_status",
+                                             @"ticket_detail_message",
+                                             @"is_just_sent",
+                                             @"ticket_detail_action"]
+     ];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ticket_detail_attachment" toKeyPath:@"ticket_detail_attachment" withMapping:[InboxTicketDetailAttachment mapping]]];
+    return mapping;
+}
+
 @end

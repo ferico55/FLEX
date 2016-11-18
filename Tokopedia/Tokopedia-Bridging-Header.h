@@ -107,6 +107,8 @@
 #import "LoadingView.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "InboxMessageDetail.h"
+#import "InboxMessageAction.h"
 #import "DeeplinkController.h"
 #import "TPContactUsDependencies.h"
 #import "SearchResultViewController.h"
@@ -124,6 +126,19 @@
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
 #import "BankAccountFormResult.h"
+#import "CatalogShopAWS.h"
+#import "OrderBookingResponse.h"
+#import "LogoutResult.h"
+#import "InboxTicketResult.h"
+#import "InboxTicketViewController.h"
+#import "ReplyInboxTicketResult.h"
+#import "InboxTicketResultDetail.h"
+#import "PromoteResult.h"
+#import "SearchAWSResult.h"
+#import "LoyaltyPointResult.h"
+#import "ShopPageHeader.h"
+#import "ShopTabView.h"
+#import "LogoutResult.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
