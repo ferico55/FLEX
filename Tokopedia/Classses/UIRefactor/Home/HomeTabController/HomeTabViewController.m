@@ -33,12 +33,15 @@
 
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
+#import "SearchViewController.h"
 
 @interface HomeTabViewController ()
 <
     UIScrollViewDelegate,
     NotificationManagerDelegate,
-    RedirectHandlerDelegate
+    RedirectHandlerDelegate,
+    UISearchControllerDelegate,
+    UISearchResultsUpdating
 >
 {
     NotificationManager *_notifManager;
@@ -48,6 +51,9 @@
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
     NSURL *_deeplinkUrl;
+    Debouncer* _debouncer;
+    
+    UISearchController* _searchController;
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
@@ -80,37 +86,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeeplinkUrl:)
-//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
-   
 }
-
-//- (void)didLoggedIn {
-//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-//    CGRect frame = _scrollView.frame;
-//    frame.origin.y = 44;
-//    frame.size.height = self.view.frame.size.height-44;
-//    _scrollView.frame = frame;
-//
-////    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
-//}
-
-//- (void)didLoggedOut {
-//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
-//}
 
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-	__weak typeof(self) weakSelf = self;
     _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
@@ -128,15 +110,6 @@
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setPagingEnabled:YES];
@@ -151,6 +124,8 @@
 
     [self addChildViewController:_homePageController];
     [self.scrollView addSubview:_homePageController.view];
+    
+    [self setSearchBar];
     
     NSLayoutConstraint *width =[NSLayoutConstraint
                                 constraintWithItem:_homePageController.view
@@ -193,8 +168,26 @@
     [self setHeaderBar];
 }
 
+- (void)setSearchBar {
+    SearchViewController* resultController = [[SearchViewController alloc] init];
+    
+    _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    _searchController.searchResultsUpdater = self;
+    _searchController.searchBar.placeholder = @"Cari produk, katalog dan toko";
+    _searchController.searchBar.tintColor = [UIColor grayColor];
+    _searchController.hidesNavigationBarDuringPresentation = NO;
+    _searchController.dimsBackgroundDuringPresentation = NO;
+    _searchController.delegate = self;
+    
+    resultController.searchBar = _searchController.searchBar;
+    self.definesPresentationContext = YES;
+    
+    self.navigationItem.titleView = _searchController.searchBar;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     
     self.navigationController.title = @"Home";
     
@@ -218,12 +211,22 @@
     }
     
     [Localytics triggerInAppMessage:@"Home - Hot List"];
+    
 }
+
+
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     float fractionalPage = _scrollView.contentOffset.x  / _scrollView.frame.size.width;
     _page = lround(fractionalPage);
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_searchController setActive:NO];
+    _searchController.searchResultsController.view.hidden = YES;
 }
 
 - (void)setArrow {
@@ -461,6 +464,22 @@
     NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
     
     [_redirectHandler proxyRequest:code];
+}
+
+#pragma mark - Search Controller Delegate
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        searchController.searchResultsController.view.hidden = NO;
+    });
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
 
