@@ -46,6 +46,8 @@
     
     [shopProductPageListMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
     
+    [shopProductPageListMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"labels" toKeyPath:@"labels" withMapping:[ProductLabel mapping]]];
+    
     return shopProductPageListMapping;
 }
 
@@ -71,6 +73,7 @@
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setBadges:self.badges];
+        [viewModel setLabels:self.labels];
         
         _viewModel = viewModel;
     }

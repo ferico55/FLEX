@@ -1089,8 +1089,8 @@ ImageSearchRequestDelegate
     NSDictionary *pathDictionary = @{
                                      @"search_catalog" : @"/search/v2.1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
-                                     @"search_product" : @"/search/v2.3/product",
-                                     [self directoryType] : @"/search/v2.3/product"
+                                     @"search_product" : @"/search/v2.4/product",
+                                     [self directoryType] : @"/search/v2.4/product"
                                      };
     return pathDictionary;
 }

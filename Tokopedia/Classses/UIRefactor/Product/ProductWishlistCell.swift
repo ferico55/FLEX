@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OAStackView
 
 
 class ProductWishlistCell : UICollectionViewCell {
@@ -17,34 +18,24 @@ class ProductWishlistCell : UICollectionViewCell {
     @IBOutlet weak var productShopName: UILabel!
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var productName: UILabel!
-    @IBOutlet weak var preorderLabel: UILabel!
-    @IBOutlet weak var wholesaleLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var badgesView: TKPDStackView!
+    @IBOutlet weak var badgesView: OAStackView!
+    @IBOutlet weak var labelsView: OAStackView!
     
     var imageDownloader = QueueImageDownloader()
     
     
     @IBOutlet weak var preorderPositionConstraint: NSLayoutConstraint!
     
-
-//    @IBOutlet weak var goldBadgeHeightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var luckyBadgeTopConstraint: NSLayoutConstraint!
     var tappedBuyButton: ((ProductWishlistCell) -> Void)?
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(viewModel : ProductModelView) {
         let url = NSURL(string: viewModel.productThumbUrl)!
-        let luckyBadgeUrl = NSURL(string: viewModel.luckyMerchantImageURL)!
         productName.text = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop
         
-        preorderLabel.layer.masksToBounds = true
-        wholesaleLabel.layer.masksToBounds = true
-        preorderPositionConstraint.constant = !viewModel.isWholesale ? -42 : 3;
-        preorderLabel.hidden = viewModel.isProductPreorder ? false : true
-        wholesaleLabel.hidden = viewModel.isWholesale ? false : true
         locationLabel.text = viewModel.shopLocation
         
         productImage.setImageWithUrl(url, placeHolderImage: UIImage(named: "grey-bg.png"))
@@ -67,30 +58,80 @@ class ProductWishlistCell : UICollectionViewCell {
             productBuyButton.layer.borderColor = UIColor.lightGrayColor().CGColor
             productBuyButton.userInteractionEnabled = false
         }
+        setBadges(viewModel.badges)
+        setLabels(viewModel.labels)
         
-        //all of this is just for badges, dynamic badges
-        self.badgesView .removeAllPushedView()
-        let badgeSize = CGSizeMake(self.badgesView.frame.size.height, self.badgesView.frame.size.height);
-        self.badgesView.orientation = .RightToLeft;
-        
-        
-        let urls = NSMutableArray()
-        viewModel.badges.enumerate().map { index, badge in
-            urls.addObject(badge.image_url)
+    }
+    
+    internal func setLabels(labels: [AnyObject]?) {
+        labelsView.arrangedSubviews.forEach { (subview) in
+            labelsView .removeArrangedSubview(subview)
         }
         
-        imageDownloader.downloadImagesWithUrls(urls.copy() as! [String], onComplete: { images in
-            images.enumerate().map{ index, image in
-                if(image.size.width > 1){
-                    
-                    let badgeView = UIView(frame: CGRectMake(0, 0, badgeSize.width, badgeSize.height))
-                    let badgeImageView = UIImageView(frame: CGRectMake(0, 0, badgeSize.width, badgeSize.height))
-                    badgeImageView.image = image;
-                    badgeView.addSubview(badgeImageView)
-                    self.badgesView.pushView(badgeView)
-                }
+        labelsView.alignment = .Fill
+        labelsView.spacing = 2
+        labelsView.axis = .Horizontal
+        labelsView.distribution = .EqualSpacing
+        
+        if(labels?.count > 0) {
+            labels!.forEach { (productLabel) in
+                let productObject = productLabel as! ProductLabel
+                
+                let label = UILabel(frame: CGRectZero)
+                label.text = "\(productObject.title) "
+                label.backgroundColor = UIColor.fromHexString(productObject.color)
+                label.textAlignment = .Center
+                label.layer.cornerRadius = 3
+                label.layer.masksToBounds = true
+                label.layer.borderWidth = 1.0
+                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.fromHexString(productObject.color).CGColor
+                label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
+                label.font = UIFont.microTheme()
+                
+                self.labelsView .addArrangedSubview(label)
+                
             }
-        })
+        }
+        
+    }
+    
+    internal func setBadges(badges: [AnyObject]?) {
+        badgesView.arrangedSubviews.forEach { (subview) in
+            badgesView .removeArrangedSubview(subview)
+        }
+        
+        badgesView.alignment = .Fill
+        badgesView.spacing = 2
+        badgesView.axis = .Horizontal
+        badgesView.distribution = .FillEqually
+        badgesView.alignment = .Center
+        
+        if(badges?.count > 0) {
+            var urls = [String]()
+            badges!.forEach({ badge in
+                let badgeObject = badge as! ProductBadge
+                urls.append(badgeObject.image_url)
+            })
+            
+            imageDownloader.downloadImagesWithUrls(urls) { [weak self](images) in
+                images.forEach({ (image) in
+                    if(image.size.width > 1) {
+                        let imageView = UIImageView(frame: CGRectZero)
+                        imageView.image = image
+                        
+                        self!.badgesView .addArrangedSubview(imageView)
+                        
+                        imageView.mas_makeConstraints({ (make) in
+                            make.width.equalTo()(self!.badgesView.mas_height)
+                            make.height.equalTo()(self!.badgesView.mas_height)
+                        })
+
+                    }
+                })
+            }
+
+        }
+        
     }
     
     @IBAction func tapBuyButton(sender: AnyObject) {

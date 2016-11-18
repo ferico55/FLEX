@@ -40,6 +40,7 @@
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setShopLocation:self.shop_location];
         [viewModel setBadges:_badges];
+        [viewModel setLabels:_labels];
         _viewModel = viewModel;
     }
     
@@ -67,6 +68,7 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
     
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"labels" toKeyPath:@"labels" withMapping:[ProductLabel mapping]]];
     
     return mapping;
 }
