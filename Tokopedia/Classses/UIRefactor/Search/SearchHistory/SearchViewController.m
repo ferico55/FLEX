@@ -79,7 +79,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _authManager = [UserAuthentificationManager new];
     debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:nil];
     
     _searchSuggestionDataArray = [NSMutableArray new];
@@ -144,7 +144,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _authManager = [UserAuthentificationManager new];
 
     [self getUserSearchSuggestionDataWithQuery:@""];
     
