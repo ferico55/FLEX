@@ -77,5 +77,6 @@
 + (void)trackInboxMessageClick:(NSString *)label;
 + (void)trackSearch:(NSString *)type keyword:(NSString *)keyword;
 + (void)trackClickSales:(NSString *)label;
++ (void)trackClickNavigateFromMore:(NSString *)page;
 
 @end

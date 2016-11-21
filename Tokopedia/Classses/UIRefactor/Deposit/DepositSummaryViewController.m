@@ -17,6 +17,7 @@
 #import "TokopediaNetworkManager.h"
 #import "DepositRequest.h"
 #import "WebViewController.h"
+#import "NavigateViewController.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;
@@ -383,18 +384,9 @@
 }
 
 #pragma mark - IBAction
-- (IBAction)topUpSaldoButtonTapped:(id)sender {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userID = [auth getUserId];
-    NSString *deviceID = [auth getMyDeviceToken];
-    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
-    NSString *jsURL = @"https://js.tokopedia.com/wvlogin?uid=";
-    NSString *url = [[[[[jsURL stringByAppendingString:userID] stringByAppendingString:@"&token="] stringByAppendingString:deviceID] stringByAppendingString:@"&url="] stringByAppendingString:pulsaURL];
-    WebViewController *controller = [WebViewController new];
-    controller.strURL = url;
-    controller.strTitle = @"Top Up Saldo";
-    
-    [self.navigationController pushViewController:controller animated:YES];
+- (IBAction)topUpSaldoButtonTapped:(id)sender {    
+    [NavigateViewController navigateToSaldoTopupFromViewController:self];
+    [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"TopUp"];
 }
 
 -(IBAction)tap:(id)sender {
@@ -436,6 +428,7 @@
             case 10:
             {
                 DepositFormViewController *formViewController = [DepositFormViewController new];
+                [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"Withdraw"];
                 [self.navigationController pushViewController:formViewController animated:YES];
                 break;
             }
