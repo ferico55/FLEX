@@ -46,17 +46,22 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
     }
     
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
-        if navigationAction.request.URL!.query!.containsString("newpage=1") {
-            let webViewController = WebViewController()
-            webViewController.strURL = navigationAction.request.URL?.absoluteString
-            webViewController.onTapLinkWithUrl = { [unowned self] url in
-                if url.absoluteString == "https://www.tokopedia.com/" {
-                    self.homeTabViewController?.navigationController?.popViewControllerAnimated(true)
+        if let query = navigationAction.request.URL!.query {
+            if query.containsString("newpage=1"){
+                let webViewController = WebViewController()
+                webViewController.strURL = navigationAction.request.URL?.absoluteString
+                webViewController.onTapLinkWithUrl = { [unowned self] url in
+                    if url.absoluteString == "https://www.tokopedia.com/" {
+                        self.homeTabViewController?.navigationController?.popViewControllerAnimated(true)
+                    }
                 }
+                homeTabViewController?.navigationController?.pushViewController(webViewController, animated: true)
+                decisionHandler(.Cancel)
+                return
             }
-            homeTabViewController?.navigationController?.pushViewController(webViewController, animated: true)
-            decisionHandler(.Cancel)
-            return
+            else {
+                decisionHandler(.Allow)
+            }
         } else {
             decisionHandler(.Allow)
         }
