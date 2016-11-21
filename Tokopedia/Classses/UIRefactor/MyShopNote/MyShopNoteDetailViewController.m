@@ -305,7 +305,7 @@
 -(void)showShopNoteDetail
 {
     MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
-    [requestManager requestNoteDetail:@([[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY]integerValue])
+    [requestManager requestNoteDetail:@([[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:([[_data objectForKey:kTKPD_SHOPIDKEY] isEqualToString:@""]?:[[_data objectForKey:kTKPD_SHOPIDKEY] integerValue]))
                                noteId:@([[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue])
                                 terms:(_type == NOTES_RETURNABLE_PRODUCT)? @1:@0
                             onSuccess:^(NoteDetail *noteDetail, RKObjectRequestOperation *operation) {
