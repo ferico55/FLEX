@@ -1013,7 +1013,7 @@ TTTAttributedLabelDelegate
     UITableViewCell* cell = nil;
     
     if (indexPath.section == [_table numberOfSections] - 1){
-        return [self getDetailProductVideoTableViewCell];
+        return [self getDetailProductDescriptionTableViewCell];
     }
     
     // Configure the cell...
@@ -1025,6 +1025,7 @@ TTTAttributedLabelDelegate
             productInfoCell = [DetailProductInfoCell newcell];
             ((DetailProductInfoCell*)productInfoCell).delegate = self;
         }
+        [productInfoCell layoutIfNeeded];
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable

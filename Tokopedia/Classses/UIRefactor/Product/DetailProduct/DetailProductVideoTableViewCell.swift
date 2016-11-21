@@ -15,7 +15,9 @@ class DetailProductVideoTableViewCell: UITableViewCell {
     private var detailProductVideoCollectionDataSource: DetailProductVideoCollectionDataSource?
     var detailProductVideoDataArray: [DetailProductVideoArray]? {
         didSet{
-            detailProductVideoCollectionDataSource = DetailProductVideoCollectionDataSource(videoCollectionView: videoCollectionView, detailProductVideoDataArray: detailProductVideoDataArray!)
+            if let detailProductVideoDataArray = detailProductVideoDataArray{
+                detailProductVideoCollectionDataSource = DetailProductVideoCollectionDataSource(videoCollectionView: videoCollectionView, detailProductVideoDataArray: detailProductVideoDataArray)
+            }
         }
     }
     

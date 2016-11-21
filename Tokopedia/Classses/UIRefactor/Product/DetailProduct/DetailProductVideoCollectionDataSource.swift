@@ -14,7 +14,7 @@ import Masonry
 import youtube_ios_player_helper
 
 @objc(DetailProductVideoCollectionDataSource)
-class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate{
+class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate, UIWebViewDelegate{
     
     var detailProductVideoDataArray: [DetailProductVideoArray]?
     
@@ -61,13 +61,13 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
         let videoId = self.detailProductVideoDataArray![indexPath.row].url
         let playerVars = [
             "showinfo" : 0,
-            "rel" : 0,
-//            "modestbranding" : 1,
+            "modestbranding" : 1,
             "controls" : 1,
             "origin" : "https://www.tokopedia.com"
         ]
         cell.youtubePlayerView.tag = indexPath.row
         cell.youtubePlayerView.delegate = self
+        cell.youtubePlayerView.webView?.delegate = self
         activityIndicatorArray?.append(cell.activityIndicator)
         cell.youtubePlayerView.loadWithVideoId(videoId, playerVars: playerVars)
         return cell
@@ -81,5 +81,11 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     func playerViewDidBecomeReady(playerView: YTPlayerView) {
         activityIndicatorArray? [playerView.tag].stopAnimating()
     }
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        print("asoy")
+        return false
+    }
+
     
 }
