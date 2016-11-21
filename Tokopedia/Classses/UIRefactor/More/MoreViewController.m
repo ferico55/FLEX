@@ -575,7 +575,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             } else {
                 TKPDTabViewController *controller = [TKPDTabViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
-                controller.inboxType = @"Ticket";
+                controller.inboxType = InboxTypeTicket;
                 
                 InboxTicketViewController *allInbox = [InboxTicketViewController new];
                 allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
