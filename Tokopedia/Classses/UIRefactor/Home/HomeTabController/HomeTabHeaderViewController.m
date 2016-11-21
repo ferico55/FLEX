@@ -74,13 +74,11 @@
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
     if(IS_IPAD) {
-        [_scrollView setScrollEnabled:NO];
-        _stackView.distribution = OAStackViewDistributionFillEqually;
+        //[_scrollView setScrollEnabled:NO];
+        _stackView.distribution = OAStackViewDistributionEqualSpacing;
         _stackView.spacing = 0.0;
         [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.mas_equalTo(_scrollView);
-            make.left.mas_equalTo(self.view);
-            make.right.mas_equalTo(self.view);
+            make.top.bottom.left.right.height.width.mas_equalTo(_scrollView);
         }];
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
