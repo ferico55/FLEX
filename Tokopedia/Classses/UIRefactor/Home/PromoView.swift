@@ -46,7 +46,7 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
     }
     
     func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
-        if (navigationAction.request.URL!.absoluteString!.containsString("blog")) {
+        if navigationAction.request.URL!.query!.containsString("newpage=1") {
             let webViewController = WebViewController()
             webViewController.strURL = navigationAction.request.URL?.absoluteString
             webViewController.onTapLinkWithUrl = { [unowned self] url in
