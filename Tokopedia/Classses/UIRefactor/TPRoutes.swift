@@ -47,6 +47,46 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //gold merchant
+        JLRoutes.globalRoutes().addRoute("/gold") { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://gold.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
+            return true
+        }
+        
+        //events
+        JLRoutes.globalRoutes().addRoute("/events") { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://events.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
+            return true
+        }
+        
+        //halaman kota
+        JLRoutes.globalRoutes().addRoute("/kota") { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://kota.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
+            return true
+        }
+        
+        //tech
+        JLRoutes.globalRoutes().addRoute("/tech") { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://tech.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
+            return true
+        }
+        
+        //seller
+        JLRoutes.globalRoutes().addRoute("/seller-center") { (params: [String : AnyObject]!) -> Bool in
+            let utmString = getUTMString(params)
+            let urlString = "https://seller.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)!)
+            return true
+        }
+        
         //promo category
         JLRoutes.globalRoutes().addRoute("/promo/category/:categoryName") { (params: [String : AnyObject]!) -> Bool in
             let categoryName = params["categoryName"] as! String
