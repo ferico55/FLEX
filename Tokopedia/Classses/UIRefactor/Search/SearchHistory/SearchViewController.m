@@ -366,7 +366,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         controller.isFromAutoComplete = YES;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.presentController.navigationController pushViewController:controller animated:YES];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -446,7 +446,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - Notification delegate
 - (void)goToHotlist:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
-    [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
+    [self.presentController.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -536,7 +536,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [viewController setNavigationTitle:searchText];
     
     viewController.hidesBottomBarWhenPushed = YES;
-    [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
+    [self.presentController.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)orientationChanged:(NSNotification*)note {
@@ -553,7 +553,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     imagePicker.allowsEditing = YES;
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:imagePicker animated:YES completion:NULL];
+    [self.presentController.navigationController presentViewController:imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -561,7 +561,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
         controller.imageQuery = info;
         controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.presentController.navigationController pushViewController:controller animated:YES];
     }];
 }
 

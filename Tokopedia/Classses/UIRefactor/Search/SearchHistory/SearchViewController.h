@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic, setter = setData:) NSDictionary *data;
 @property (weak, nonatomic) UISearchBar *searchBar;
+@property (weak, nonatomic) UIViewController* presentController;
 
 @end

@@ -22,6 +22,7 @@
 #import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
+#import "ImagePickerCategoryController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -41,7 +42,9 @@
     NotificationManagerDelegate,
     RedirectHandlerDelegate,
     UISearchControllerDelegate,
-    UISearchResultsUpdating
+    UISearchResultsUpdating,
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate
 >
 {
     NotificationManager *_notifManager;
@@ -86,6 +89,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
 
 #pragma mark - Lifecycle
@@ -126,6 +132,8 @@
     [self.scrollView addSubview:_homePageController.view];
     
     [self setSearchBar];
+    [self setSearchByImage];
+    
     
     NSLayoutConstraint *width =[NSLayoutConstraint
                                 constraintWithItem:_homePageController.view
@@ -170,17 +178,17 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
-    self.definesPresentationContext = NO;
     [_searchController setActive:NO];
+    self.definesPresentationContext = NO;
 }
 
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
+    resultController.presentController = self;
     
     _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     _searchController.searchResultsUpdater = self;
-    _searchController.searchBar.placeholder = @"Cari produk, katalog dan toko";
+    _searchController.searchBar.placeholder = @"Cari produk atau toko";
     _searchController.searchBar.tintColor = [UIColor lightGrayColor];
     _searchController.hidesNavigationBarDuringPresentation = NO;
     _searchController.dimsBackgroundDuringPresentation = NO;
@@ -190,6 +198,27 @@
     self.definesPresentationContext = YES;
     
     self.navigationItem.titleView = _searchController.searchBar;
+}
+
+- (void)setSearchByImage {
+    if([self isEnableImageSearch]) {
+        _searchController.searchBar.showsBookmarkButton = YES;
+        [_searchController.searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    }
+}
+
+
+-(BOOL)isEnableImageSearch{
+    UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+    if (!userManager.isLogin) {
+        return NO;
+    }
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    
+    NSString *enableImageSearchString = [gtmContainer stringForKey:@"enable_image_search"]?:@"0";
+    
+    return [enableImageSearchString isEqualToString:@"1"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -234,8 +263,7 @@
     
     self.definesPresentationContext = YES;
     
-    [_searchController setActive:NO];
-    _searchController.searchResultsController.view.hidden = YES;
+//    _searchController.searchResultsController.view.hidden = YES;
 }
 
 - (void)setArrow {
@@ -489,6 +517,15 @@
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self setSearchByImage];
+}
+
+- (void)userDidLogout:(NSNotification*)notification {
+    [self setSearchByImage];
 }
 
 
