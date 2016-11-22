@@ -235,7 +235,7 @@ RetryViewDelegate
     NSDictionary *userinfo = notification.userInfo;
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
-    if(tag == 3) {
+    if(tag == 4) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];

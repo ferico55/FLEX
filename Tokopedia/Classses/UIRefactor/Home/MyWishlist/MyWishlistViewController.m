@@ -401,7 +401,7 @@ typedef enum TagRequest {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
-    if(tag == 2) {
+    if(tag == 3) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
