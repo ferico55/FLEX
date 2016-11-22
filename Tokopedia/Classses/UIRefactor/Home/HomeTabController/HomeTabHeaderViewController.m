@@ -57,7 +57,7 @@
     _stackView = [[OAStackView alloc] initWithArrangedSubviews:
                   @[createButton(@"HOME", 1),
                     createButton(@"FEED", 2),
-                    createButton(@"WISHLIST", 3),
+                    createButton(@"PROMO", 3),
                     createButton(@"TERAKHIR DILIHAT", 4),
                     createButton(@"FAVORIT", 5)]];
     _stackView.axis = UILayoutConstraintAxisHorizontal;
@@ -73,13 +73,11 @@
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
     if(IS_IPAD) {
-        [_scrollView setScrollEnabled:NO];
-        _stackView.distribution = OAStackViewDistributionFillEqually;
+        //[_scrollView setScrollEnabled:NO];
+        _stackView.distribution = OAStackViewDistributionEqualSpacing;
         _stackView.spacing = 0.0;
         [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.mas_equalTo(_scrollView);
-            make.left.mas_equalTo(self.view);
-            make.right.mas_equalTo(self.view);
+            make.top.bottom.left.right.height.width.mas_equalTo(_scrollView);
         }];
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
@@ -163,7 +161,7 @@
             name = @"Product Feed";
             break;
         case 3:
-            name = @"Wishlist";
+            name = @"Promo";
             break;
         case 4:
             name = @"Last Seen";
