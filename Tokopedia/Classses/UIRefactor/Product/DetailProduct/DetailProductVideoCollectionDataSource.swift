@@ -20,7 +20,11 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     private var activityIndicatorArray: [UIActivityIndicatorView]?
     
+    private var videoCollectionView: UICollectionView!
+    
     private var cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
+    
+    private var VIDEO_CELL_IDENTIFIER = "pdpVideoCollectionViewCell"
     
     override init(){
         super.init()
@@ -28,10 +32,11 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     init(videoCollectionView: UICollectionView, detailProductVideoDataArray: [DetailProductVideoArray]) {
         super.init()
-        videoCollectionView.delegate = self
-        videoCollectionView.dataSource = self
+        self.videoCollectionView = videoCollectionView
+        self.videoCollectionView.delegate = self
+        self.videoCollectionView.dataSource = self
         self.detailProductVideoDataArray = detailProductVideoDataArray
-        videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: "pdpVideoCollectionViewCell")
+        self.videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: "pdpVideoCollectionViewCell")
         activityIndicatorArray = []
     }
     
@@ -57,35 +62,44 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
       
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pdpVideoCollectionViewCell", forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VIDEO_CELL_IDENTIFIER, forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
         let videoId = self.detailProductVideoDataArray![indexPath.row].url
         let playerVars = [
-            "showinfo" : 0,
-            "modestbranding" : 1,
-            "controls" : 1,
             "origin" : "https://www.tokopedia.com"
         ]
-        cell.youtubePlayerView.tag = indexPath.row
+        cell.youtubePlayerView.tag = indexPath.item
         cell.youtubePlayerView.delegate = self
-        cell.youtubePlayerView.webView?.delegate = self
         activityIndicatorArray?.append(cell.activityIndicator)
+        cell.thumbnailImageView.setImageWithURL(NSURL(string: "https://img.youtube.com/vi/\(videoId)/0.jpg"))
+        cell.thumbnailImageView.hidden = true
         cell.youtubePlayerView.loadWithVideoId(videoId, playerVars: playerVars)
+        cell.youtubePlayerView.webView?.allowsInlineMediaPlayback = false
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("pdpVideoCollectionViewCell", forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
         cell.youtubePlayerView.playVideo()
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView) {
+        let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
+        
+        let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
+        cell.thumbnailImageView.hidden = false
         activityIndicatorArray? [playerView.tag].stopAnimating()
     }
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        print("asoy")
-        return false
+    func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
+        let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
+        let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
+        switch state {
+        case .Paused, .Ended:
+            cell.activityIndicator.stopAnimating()
+        case .Buffering:
+            cell.activityIndicator.startAnimating()
+        default:
+            break
+        }
     }
-
-    
 }
