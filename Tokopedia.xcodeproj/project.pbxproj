@@ -2651,6 +2651,9 @@
 		7AF532891DE43D1C0014183E /* notifikasi.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532861DE43D1C0014183E /* notifikasi.png */; };
 		7AF5328A1DE43D1C0014183E /* notifikasi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532871DE43D1C0014183E /* notifikasi@2x.png */; };
 		7AF5328B1DE43D1C0014183E /* notifikasi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532881DE43D1C0014183E /* notifikasi@3x.png */; };
+		7AF5328F1DE44E2B0014183E /* icon_wishlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5328C1DE44E2B0014183E /* icon_wishlist.png */; };
+		7AF532901DE44E2B0014183E /* icon_wishlist@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5328D1DE44E2B0014183E /* icon_wishlist@2x.png */; };
+		7AF532911DE44E2B0014183E /* icon_wishlist@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF5328E1DE44E2B0014183E /* icon_wishlist@3x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -6505,6 +6508,9 @@
 		7AF532861DE43D1C0014183E /* notifikasi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notifikasi.png; sourceTree = "<group>"; };
 		7AF532871DE43D1C0014183E /* notifikasi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifikasi@2x.png"; sourceTree = "<group>"; };
 		7AF532881DE43D1C0014183E /* notifikasi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifikasi@3x.png"; sourceTree = "<group>"; };
+		7AF5328C1DE44E2B0014183E /* icon_wishlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_wishlist.png; sourceTree = "<group>"; };
+		7AF5328D1DE44E2B0014183E /* icon_wishlist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist@2x.png"; sourceTree = "<group>"; };
+		7AF5328E1DE44E2B0014183E /* icon_wishlist@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist@3x.png"; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -7599,6 +7605,9 @@
 		45C984E71DD46E3700030401 /* Icon Tab Bar */ = {
 			isa = PBXGroup;
 			children = (
+				7AF5328C1DE44E2B0014183E /* icon_wishlist.png */,
+				7AF5328D1DE44E2B0014183E /* icon_wishlist@2x.png */,
+				7AF5328E1DE44E2B0014183E /* icon_wishlist@3x.png */,
 				45C984E81DD46E3700030401 /* icon_cart.png */,
 				45C984E91DD46E3700030401 /* icon_cart@2x.png */,
 				45C984EA1DD46E3700030401 /* icon_cart_active.png */,
@@ -13218,6 +13227,7 @@
 				45C98E371DD46E4100030401 /* icon_shop_message.png in Resources */,
 				45C98F2F1DD46E4200030401 /* ic_cart@2x.png in Resources */,
 				7A61C92F1DD48BB900F65C1C /* FilterConditionCell.xib in Resources */,
+				7AF532901DE44E2B0014183E /* icon_wishlist@2x.png in Resources */,
 				7A61C73C1DD48BB700F65C1C /* EditSolutionBuyerViewController.xib in Resources */,
 				45C98C631DD46E3E00030401 /* icon_20.png in Resources */,
 				7A61C6C91DD48BB700F65C1C /* DepositSummaryViewController.xib in Resources */,
@@ -14164,6 +14174,7 @@
 				45C98CB41DD46E3F00030401 /* icon_button_favorite_active.png in Resources */,
 				7AF5328B1DE43D1C0014183E /* notifikasi@3x.png in Resources */,
 				7A61C8951DD48BB900F65C1C /* ChangeReceiptNumberViewController.xib in Resources */,
+				7AF532911DE44E2B0014183E /* icon_wishlist@3x.png in Resources */,
 				45C98ED01DD46E4200030401 /* map_gokil.png in Resources */,
 				45C98C831DD46E3F00030401 /* General Settings Icon.png in Resources */,
 				45C98C3F1DD46E3E00030401 /* banner_1.jpg in Resources */,
@@ -14250,6 +14261,7 @@
 				45C98F0B1DD46E4200030401 /* slide3_phone.png in Resources */,
 				45C98CA51DD46E3F00030401 /* icon_arrow_up@2x.png in Resources */,
 				45C98CB21DD46E3F00030401 /* icon_btn_trash@2x.png in Resources */,
+				7AF5328F1DE44E2B0014183E /* icon_wishlist.png in Resources */,
 				45C98E321DD46E4100030401 /* icon_shop_favorite@2x.png in Resources */,
 				45C98CE91DD46E3F00030401 /* icon_4@3x.png in Resources */,
 				45C98DAF1DD46E4000030401 /* icon_netral50@2x.png in Resources */,
