@@ -168,13 +168,20 @@
     [self setHeaderBar];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    self.definesPresentationContext = NO;
+    [_searchController setActive:NO];
+}
+
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
     
     _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     _searchController.searchResultsUpdater = self;
     _searchController.searchBar.placeholder = @"Cari produk, katalog dan toko";
-    _searchController.searchBar.tintColor = [UIColor grayColor];
+    _searchController.searchBar.tintColor = [UIColor lightGrayColor];
     _searchController.hidesNavigationBarDuringPresentation = NO;
     _searchController.dimsBackgroundDuringPresentation = NO;
     _searchController.delegate = self;
@@ -224,6 +231,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    self.definesPresentationContext = YES;
     
     [_searchController setActive:NO];
     _searchController.searchResultsController.view.hidden = YES;

@@ -15,8 +15,9 @@
 #import "Tokopedia-Swift.h"
 
 #import "DBManager.h"
+#import "SearchViewController.h"
 
-@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate>{
+@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate, UISearchResultsUpdating, UISearchControllerDelegate>{
     UIView *_tabbar;
     NSArray *_buttons;
     NSInteger _unloadSelectedIndex;
@@ -27,6 +28,7 @@
     
     NSArray *_initialCategories;
     CategoryDetail *_selectedCategory;
+    UISearchController* _searchController;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
@@ -86,13 +88,10 @@
         _unloadSelectedIndex = -1;
         _unloadViewControllers = nil;
     }
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tapbutton:)];
-    backBarButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     if (![self isUseDynamicFilter]) {
         NSBundle* bundle = [NSBundle mainBundle];
@@ -122,6 +121,8 @@
                                                  name:@"changeNavigationTitle"
                                                object:nil];
     
+    [self setSearchBar];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,6 +130,7 @@
     [super viewWillAppear:animated];
     if (self.navigationTitle) {
         self.navigationItem.title = [self.navigationTitle capitalizedString];
+        _searchController.searchBar.text = self.navigationTitle;
     }
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -169,6 +171,40 @@
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
         [_delegate tabBarController:self childControllerContentInset:inset];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    self.definesPresentationContext = NO;
+    [_searchController setActive:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.definesPresentationContext = YES;
+    _searchController.searchResultsController.view.hidden = YES;
+}
+
+- (void)setSearchBar {
+    SearchViewController* resultController = [[SearchViewController alloc] init];
+    
+    _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    _searchController.searchResultsUpdater = self;
+    _searchController.searchBar.placeholder = @"Cari produk, katalog dan toko";
+    _searchController.searchBar.tintColor = [UIColor lightGrayColor];
+    _searchController.searchBar.backgroundColor = [UIColor clearColor];
+    _searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _searchController.hidesNavigationBarDuringPresentation = NO;
+    _searchController.dimsBackgroundDuringPresentation = NO;
+    _searchController.delegate = self;
+    
+    
+    resultController.searchBar = _searchController.searchBar;
+    self.definesPresentationContext = YES;
+    
+    self.navigationItem.titleView = _searchController.searchBar;
 }
 
 #pragma mark -
@@ -676,7 +712,28 @@
     if (title) {
         self.navigationTitle = [title capitalizedString];
         self.navigationItem.title = [title capitalizedString];
+        _searchController.searchBar.text = title;
     }
+}
+
+#pragma mark - Search Controller Delegate
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        searchController.searchResultsController.view.hidden = NO;
+    });
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)didTapBackButton {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
