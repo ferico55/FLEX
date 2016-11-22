@@ -2648,6 +2648,9 @@
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AF532891DE43D1C0014183E /* notifikasi.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532861DE43D1C0014183E /* notifikasi.png */; };
+		7AF5328A1DE43D1C0014183E /* notifikasi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532871DE43D1C0014183E /* notifikasi@2x.png */; };
+		7AF5328B1DE43D1C0014183E /* notifikasi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF532881DE43D1C0014183E /* notifikasi@3x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -6499,6 +6502,9 @@
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AF532861DE43D1C0014183E /* notifikasi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notifikasi.png; sourceTree = "<group>"; };
+		7AF532871DE43D1C0014183E /* notifikasi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifikasi@2x.png"; sourceTree = "<group>"; };
+		7AF532881DE43D1C0014183E /* notifikasi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifikasi@3x.png"; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -6652,6 +6658,9 @@
 		45C981C91DD46E3400030401 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AF532861DE43D1C0014183E /* notifikasi.png */,
+				7AF532871DE43D1C0014183E /* notifikasi@2x.png */,
+				7AF532881DE43D1C0014183E /* notifikasi@3x.png */,
 				45C981CA1DD46E3400030401 /* activate_push_1.png */,
 				45C981CB1DD46E3400030401 /* activate_push_1@2x.png */,
 				45C981CC1DD46E3400030401 /* activate_push_1@3x.png */,
@@ -13120,7 +13129,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */;
+			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -13295,6 +13304,7 @@
 				7A61C89D1DD48BB900F65C1C /* ShipmentStatusCell.xib in Resources */,
 				45C98D8E1DD46E4000030401 /* icon_medal_gold14.png in Resources */,
 				7A61C6571DD48BB600F65C1C /* CameraCollectionCell.xib in Resources */,
+				7AF532891DE43D1C0014183E /* notifikasi.png in Resources */,
 				45C98F4C1DD46E4200030401 /* icon_search_active.png in Resources */,
 				45C98C441DD46E3E00030401 /* camera-grey.png in Resources */,
 				45C98C351DD46E3E00030401 /* attached_image_placeholder.png in Resources */,
@@ -13609,6 +13619,7 @@
 				45C98F581DD46E4300030401 /* icon_camera_grey_active.png in Resources */,
 				45C98E431DD46E4100030401 /* icon_smile20.png in Resources */,
 				45C98CDC1DD46E3F00030401 /* icon_12@3x.png in Resources */,
+				7AF5328A1DE43D1C0014183E /* notifikasi@2x.png in Resources */,
 				45C98EC11DD46E4200030401 /* Keranjang@2x.png in Resources */,
 				45C98F601DD46E4300030401 /* Icon_close_white.png in Resources */,
 				45C98C331DD46E3E00030401 /* activate_push_3@2x.png in Resources */,
@@ -14151,6 +14162,7 @@
 				45C98D061DD46E3F00030401 /* icon_checkmark@2x.png in Resources */,
 				45C98EB51DD46E4200030401 /* icon_search@2x.png in Resources */,
 				45C98CB41DD46E3F00030401 /* icon_button_favorite_active.png in Resources */,
+				7AF5328B1DE43D1C0014183E /* notifikasi@3x.png in Resources */,
 				7A61C8951DD48BB900F65C1C /* ChangeReceiptNumberViewController.xib in Resources */,
 				45C98ED01DD46E4200030401 /* map_gokil.png in Resources */,
 				45C98C831DD46E3F00030401 /* General Settings Icon.png in Resources */,
@@ -16218,7 +16230,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */ = {
+		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC36DFAD19B0656400AF74C1 /* Debug */,
