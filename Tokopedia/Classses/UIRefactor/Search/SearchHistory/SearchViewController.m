@@ -366,7 +366,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         controller.isFromAutoComplete = YES;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.presentController.navigationController pushViewController:controller animated:YES];
+        [self.presentingViewController.navigationController pushViewController:controller animated:YES];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -446,7 +446,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - Notification delegate
 - (void)goToHotlist:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
-    [self.presentController.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
+    [self.presentingViewController.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -536,7 +536,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [viewController setNavigationTitle:searchText];
     
     viewController.hidesBottomBarWhenPushed = YES;
-    [self.presentController.navigationController pushViewController:viewController animated:YES];
+    [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)orientationChanged:(NSNotification*)note {
