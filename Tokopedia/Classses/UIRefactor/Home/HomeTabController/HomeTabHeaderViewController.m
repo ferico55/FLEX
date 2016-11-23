@@ -55,7 +55,7 @@
         return button;
     };
     _stackView = [[OAStackView alloc] initWithArrangedSubviews:
-                  @[createButton(@"HOME", 1),
+                  @[createButton(@"JELAJAH", 1),
                     createButton(@"FEED", 2),
                     createButton(@"PROMO", 3),
                     createButton(@"TERAKHIR DILIHAT", 4),

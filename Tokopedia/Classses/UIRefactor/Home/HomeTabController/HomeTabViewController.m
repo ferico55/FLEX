@@ -56,13 +56,14 @@
     NSURL *_deeplinkUrl;
     Debouncer* _debouncer;
     
-    UISearchController* _searchController;
+    
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) PromoView *promoView;
+@property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
 @property (strong, nonatomic) HomeTabHeaderViewController *homeHeaderController;
@@ -180,7 +181,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [_searchController setActive:NO];
+    [self.searchController setActive:NO];
     self.definesPresentationContext = NO;
 }
 
@@ -188,24 +189,26 @@
     SearchViewController* resultController = [[SearchViewController alloc] init];
     resultController.presentController = self;
     
-    _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
-    _searchController.searchResultsUpdater = self;
-    _searchController.searchBar.placeholder = @"Cari produk atau toko";
-    _searchController.searchBar.tintColor = [UIColor lightGrayColor];
-    _searchController.hidesNavigationBarDuringPresentation = NO;
-    _searchController.dimsBackgroundDuringPresentation = NO;
-    _searchController.delegate = self;
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.placeholder = @"Cari produk atau toko";
+    self.searchController.searchBar.tintColor = [UIColor lightGrayColor];
+    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.delegate = self;
     
-    resultController.searchBar = _searchController.searchBar;
+    resultController.searchBar = self.searchController.searchBar;
     self.definesPresentationContext = YES;
     
-    self.navigationItem.titleView = _searchController.searchBar;
+    self.navigationItem.titleView = self.searchController.searchBar;
 }
 
 - (void)setSearchByImage {
     if([self isEnableImageSearch]) {
-        _searchController.searchBar.showsBookmarkButton = YES;
-        [_searchController.searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+        self.searchController.searchBar.showsBookmarkButton = YES;
+        [self.searchController.searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    } else  {
+        self.searchController.searchBar.showsBookmarkButton = NO;
     }
 }
 
