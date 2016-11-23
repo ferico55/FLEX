@@ -733,7 +733,7 @@
 }
 
 - (void)didTapBackButton {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end
