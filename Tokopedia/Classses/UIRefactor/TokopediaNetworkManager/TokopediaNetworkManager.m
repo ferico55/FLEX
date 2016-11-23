@@ -17,7 +17,9 @@
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
-@implementation TokopediaNetworkManager
+@implementation TokopediaNetworkManager {
+    __weak RKManagedObjectRequestOperation *_objectRequest;
+}
 @synthesize tagRequest;
 
 - (id)init {
@@ -360,6 +362,8 @@
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
 
+    RKManagedObjectRequestOperation *operation = nil;
+    
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString* date = [hmac getDate];
@@ -388,10 +392,10 @@
             [_objectManager.HTTPClient setDefaultHeader:key value:value];
         }];
         
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
-                                                                              method:method
-                                                                                path:path
-                                                                          parameters:bindedParameters];
+        operation = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                         method:method
+                                                                           path:path
+                                                                     parameters:bindedParameters];
     } else {
         NSDictionary *parameters;
         if (self.isParameterNotEncrypted) {
@@ -404,13 +408,13 @@
             [_objectManager.HTTPClient setDefaultHeader:key value:value];
         }];
         
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
-                                                                              method:method
-                                                                                path:path
-                                                                          parameters:parameters];
+        operation = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                         method:method
+                                                                           path:path
+                                                                     parameters:parameters];
     }
     
-    
+    _objectRequest = operation;
     
     [_requestTimer invalidate];
     _requestTimer = nil;

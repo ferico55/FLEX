@@ -39,7 +39,6 @@ DEPRECATED_ATTRIBUTE
     
     NSOperationQueue *_queueForRequest;
     __weak RKObjectManager *_objectManager;
-    RKManagedObjectRequestOperation *_objectRequest;
     
     NSTimer *_requestTimer;
     NSInteger *_nextPage;
