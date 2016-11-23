@@ -18,7 +18,13 @@
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @implementation TokopediaNetworkManager {
+    __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_objectRequest;
+    
+    NSTimer *_requestTimer;
+    NSInteger _requestCount;
+    NSDictionary *_parameter;
+    NSOperationQueue *_operationQueue;
 }
 @synthesize tagRequest;
 

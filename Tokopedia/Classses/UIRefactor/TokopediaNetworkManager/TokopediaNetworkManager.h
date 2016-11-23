@@ -33,25 +33,7 @@ DEPRECATED_ATTRIBUTE
 
 @end
 
-@interface TokopediaNetworkManager : NSObject {
-    URLCacheConnection *_urlCacheConnection;
-    URLCacheController *_urlCacheController;
-    
-    NSOperationQueue *_queueForRequest;
-    __weak RKObjectManager *_objectManager;
-    
-    NSTimer *_requestTimer;
-    NSInteger *_nextPage;
-    NSInteger *_limitPerPage;
-    NSInteger _requestCount;
-    NSDictionary *_parameter;
-    NSOperationQueue *_operationQueue;
-    
-    
-    BOOL _isNoData;
-    NSMutableArray *objectArray;
-    
-}
+@interface TokopediaNetworkManager : NSObject
 
 @property (weak, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
