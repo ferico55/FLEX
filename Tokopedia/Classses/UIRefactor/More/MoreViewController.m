@@ -334,11 +334,15 @@
 
 #pragma mark - Table view data source
 
+- (BOOL)shouldShowTopupSaldo {
+    return FBTweakValue(@"More", @"Topup Saldo", @"Show Topup", YES);
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
         case 0:{
-            return 2;
+            return [self shouldShowTopupSaldo]?2: 1;
             break;
         }
         
