@@ -474,10 +474,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                 category:GA_EVENT_CATEGORY_MORE
                                   action:GA_EVENT_ACTION_CLICK
                                    label:@"Wishlist"];
-        UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
-        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:3];
-        [wrapperController.tabBarController setSelectedIndex:0];
-        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
+        [wrapperController.tabBarController setSelectedIndex:2];
     }
     
     else if (indexPath.section == 2) {
