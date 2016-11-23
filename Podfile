@@ -35,7 +35,7 @@ def common_pods
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
-
+    
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     
