@@ -24,9 +24,9 @@
 
 "load_earlier_messages" = "Load Earlier Messages";
 
-"send" = "Kirim";
+"send" = "Send";
 
-"new_message" = "Pesan baru";
+"new_message" = "New Message";
 
 "text_message_accessibility_label" = "%@: %@";
 

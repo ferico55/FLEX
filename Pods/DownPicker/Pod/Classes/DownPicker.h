@@ -18,9 +18,9 @@
     NSArray* dataArray;
     NSString* placeholder;
     NSString* placeholderWhileSelecting;
-    NSString* toolbarDoneButtonText;
+	NSString* toolbarDoneButtonText;
     NSString* toolbarCancelButtonText;
-    UIBarStyle toolbarStyle;
+	UIBarStyle toolbarStyle;
 }
 
 @property (nonatomic) NSString* text;
