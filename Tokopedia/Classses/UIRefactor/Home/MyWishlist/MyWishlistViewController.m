@@ -125,6 +125,7 @@ typedef enum TagRequest {
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    [self initNotificationManager];
     
     _userManager = [[UserAuthentificationManager alloc] init];
     
