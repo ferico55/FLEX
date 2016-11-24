@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCCDetailViewController">
@@ -11,7 +15,6 @@
                 <outlet property="CVVTextField" destination="7t8-Yf-1cY" id="ToA-Qu-wXx"/>
                 <outlet property="expDateLabel" destination="PSn-3S-TEB" id="Fwd-2J-UK7"/>
                 <outlet property="nameTextField" destination="hsc-W7-Woz" id="Lis-wj-Cnj"/>
-                <outlet property="scanCCButton" destination="u94-hq-VfV" id="5f3-ml-Slv"/>
                 <outlet property="tableview" destination="Xeu-nm-cAw" id="WAa-dO-kiW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="tableViewCells" destination="gGK-4p-s07" id="EoO-YS-JK5"/>
@@ -22,12 +25,12 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Xeu-nm-cAw">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Xeu-nm-cAw">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="i4G-Z7-mnm"/>
@@ -35,7 +38,7 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Xeu-nm-cAw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1PC-zy-rBL">
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
@@ -64,7 +67,7 @@
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama tertera pada kartu kredit" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hsc-W7-Woz">
                                 <rect key="frame" x="15" y="0.0" width="290" height="44"/>
-                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -72,7 +75,7 @@
                                 </connections>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="hsc-W7-Woz" secondAttribute="bottom" id="Ezx-WH-j6l"/>
                             <constraint firstItem="hsc-W7-Woz" firstAttribute="leading" secondItem="Rbn-Cx-1j5" secondAttribute="leading" constant="15" id="S1l-2h-qw7"/>
@@ -81,7 +84,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="Rbn-Cx-1j5" secondAttribute="bottom" constant="-0.5" id="9NT-Jz-yHi"/>
                     <constraint firstItem="Rbn-Cx-1j5" firstAttribute="leading" secondItem="oLP-8z-N7j" secondAttribute="leading" id="KWZ-Oq-xaY"/>
@@ -89,7 +92,7 @@
                     <constraint firstAttribute="trailing" secondItem="Rbn-Cx-1j5" secondAttribute="trailing" id="Whb-Wr-3cG"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="540" y="-65"/>
         </tableViewCell>
         <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LKB-Yk-09g">
@@ -104,38 +107,24 @@
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nomor Kartu Kredit" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="t7E-ke-oih">
                                 <rect key="frame" x="15" y="0.0" width="290" height="44"/>
-                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="ccF-3J-bfU"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u94-hq-VfV">
-                                <rect key="frame" x="282" y="7" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="A1c-0J-Whd"/>
-                                    <constraint firstAttribute="width" constant="30" id="lrz-f0-ghx"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Scan" image="icon_camera_grey_active.png"/>
-                                <connections>
-                                    <action selector="didPressScanButton:" destination="-1" eventType="touchUpInside" id="JX5-WP-rz9"/>
-                                </connections>
-                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="t7E-ke-oih" secondAttribute="trailing" constant="15" id="2gt-sM-pWr"/>
                             <constraint firstItem="t7E-ke-oih" firstAttribute="top" secondItem="HJf-m3-Hoh" secondAttribute="top" id="4wt-A2-DhT"/>
-                            <constraint firstItem="u94-hq-VfV" firstAttribute="centerY" secondItem="t7E-ke-oih" secondAttribute="centerY" id="Sjx-nW-Z2m"/>
                             <constraint firstItem="t7E-ke-oih" firstAttribute="leading" secondItem="HJf-m3-Hoh" secondAttribute="leading" constant="15" id="ejK-aH-ye7"/>
-                            <constraint firstAttribute="trailing" secondItem="u94-hq-VfV" secondAttribute="trailing" constant="8" id="gwF-DX-APw"/>
                             <constraint firstAttribute="bottom" secondItem="t7E-ke-oih" secondAttribute="bottom" id="mao-ed-jcJ"/>
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="HJf-m3-Hoh" secondAttribute="trailing" id="6JN-R6-JFt"/>
                     <constraint firstAttribute="bottom" secondItem="HJf-m3-Hoh" secondAttribute="bottom" constant="-0.5" id="C1T-r4-9wr"/>
@@ -143,7 +132,7 @@
                     <constraint firstItem="HJf-m3-Hoh" firstAttribute="leading" secondItem="bc1-N4-jpj" secondAttribute="leading" id="fVU-8r-YcV"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="540" y="22"/>
         </tableViewCell>
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="8y9-gi-DFS" detailTextLabel="PSn-3S-TEB" style="IBUITableViewCellStyleValue1" id="m6C-I9-qo2">
@@ -163,7 +152,7 @@
                         <rect key="frame" x="244" y="14" width="61" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -180,29 +169,29 @@
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfP-5i-eWP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="CVV/CVC" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7t8-Yf-1cY">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="CVV/CVC" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7t8-Yf-1cY">
                                 <rect key="frame" x="15" y="0.0" width="255" height="44"/>
-                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="iQV-0C-cm8"/>
                                 </connections>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="gZQ-ra-g9R">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="gZQ-ra-g9R">
                                 <rect key="frame" x="285" y="12" width="20" height="20"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="516-QG-BRk">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="516-QG-BRk">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="infoCVC:" destination="-1" eventType="touchUpInside" id="rYi-Wi-2zb"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="7t8-Yf-1cY" firstAttribute="top" secondItem="BfP-5i-eWP" secondAttribute="top" id="0cR-aT-z9a"/>
                             <constraint firstItem="gZQ-ra-g9R" firstAttribute="leading" secondItem="7t8-Yf-1cY" secondAttribute="trailing" constant="15" id="198-80-KHd"/>
@@ -239,7 +228,7 @@
                         </variation>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="BfP-5i-eWP" secondAttribute="bottom" constant="-0.5" id="3Ap-AA-rKu"/>
                     <constraint firstItem="BfP-5i-eWP" firstAttribute="leading" secondItem="qEz-0b-aiu" secondAttribute="leading" id="hUv-8I-nD9"/>
@@ -247,12 +236,11 @@
                     <constraint firstItem="BfP-5i-eWP" firstAttribute="top" secondItem="qEz-0b-aiu" secondAttribute="top" id="oip-gC-8EJ"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="540" y="210"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_camera_grey_active.png" width="14" height="14"/>
-        <image name="icon_info_grey.png" width="20" height="20"/>
+        <image name="icon_info_grey.png" width="14" height="14"/>
     </resources>
 </document>
