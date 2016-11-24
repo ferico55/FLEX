@@ -192,7 +192,7 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     self.searchController.searchResultsUpdater = self;
     self.searchController.searchBar.placeholder = @"Cari produk atau toko";
-    self.searchController.searchBar.tintColor = [UIColor lightGrayColor];
+    self.searchController.searchBar.tintColor = [UIColor blackColor];
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.delegate = self;
