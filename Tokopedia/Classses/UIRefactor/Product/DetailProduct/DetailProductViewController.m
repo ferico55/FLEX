@@ -252,7 +252,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
 @property (nonatomic) BOOL isHaveVideo;
 @property (nonatomic) NSInteger videoCellHeight;
-@property (weak, nonatomic) NSArray<DetailProductVideoArray*> *detailProductVideoDataArray;
+@property (strong, nonatomic) NSArray<DetailProductVideoArray*> *detailProductVideoDataArray;
 
 @end
 
