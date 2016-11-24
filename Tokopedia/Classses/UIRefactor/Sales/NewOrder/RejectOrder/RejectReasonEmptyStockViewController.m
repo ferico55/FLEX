@@ -10,6 +10,7 @@
 #import "RejectReasonEmptyStockCell.h"
 #import "RejectOrderRequest.h"
 #import <BlocksKit/BlocksKit.h>
+#import "NSArray+BlocksKit.h"
 
 @interface RejectReasonEmptyStockViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;

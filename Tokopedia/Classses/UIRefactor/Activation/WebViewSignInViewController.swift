@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BlocksKit
 
 @objc(WebViewSignInViewController)
 class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebViewProgressDelegate {
