@@ -1316,7 +1316,6 @@
 		3439290A1DE4614700CE3B19 /* PulsaCategoryClientNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4A1DE4612800CE3B19 /* PulsaCategoryClientNumber.swift */; };
 		3439290B1DE4614700CE3B19 /* PulsaCategoryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4B1DE4612800CE3B19 /* PulsaCategoryRoot.swift */; };
 		3439290C1DE4614700CE3B19 /* PulsaCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4C1DE4612800CE3B19 /* PulsaCategoryView.swift */; };
-		3439290D1DE4614700CE3B19 /* PulsaKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4D1DE4612800CE3B19 /* PulsaKeyboardManager.swift */; };
 		3439290E1DE4614700CE3B19 /* PulsaNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4E1DE4612800CE3B19 /* PulsaNavigator.swift */; };
 		3439290F1DE4614700CE3B19 /* PulsaOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D4F1DE4612800CE3B19 /* PulsaOperator.swift */; };
 		343929101DE4614700CE3B19 /* PulsaOperatorAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34391D501DE4612800CE3B19 /* PulsaOperatorAttribute.swift */; };
@@ -4881,7 +4880,6 @@
 		34391D4A1DE4612800CE3B19 /* PulsaCategoryClientNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryClientNumber.swift; sourceTree = "<group>"; };
 		34391D4B1DE4612800CE3B19 /* PulsaCategoryRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryRoot.swift; sourceTree = "<group>"; };
 		34391D4C1DE4612800CE3B19 /* PulsaCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryView.swift; sourceTree = "<group>"; };
-		34391D4D1DE4612800CE3B19 /* PulsaKeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaKeyboardManager.swift; sourceTree = "<group>"; };
 		34391D4E1DE4612800CE3B19 /* PulsaNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaNavigator.swift; sourceTree = "<group>"; };
 		34391D4F1DE4612800CE3B19 /* PulsaOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperator.swift; sourceTree = "<group>"; };
 		34391D501DE4612800CE3B19 /* PulsaOperatorAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorAttribute.swift; sourceTree = "<group>"; };
@@ -10608,7 +10606,6 @@
 				34391D4A1DE4612800CE3B19 /* PulsaCategoryClientNumber.swift */,
 				34391D4B1DE4612800CE3B19 /* PulsaCategoryRoot.swift */,
 				34391D4C1DE4612800CE3B19 /* PulsaCategoryView.swift */,
-				34391D4D1DE4612800CE3B19 /* PulsaKeyboardManager.swift */,
 				34391D4E1DE4612800CE3B19 /* PulsaNavigator.swift */,
 				34391D4F1DE4612800CE3B19 /* PulsaOperator.swift */,
 				34391D501DE4612800CE3B19 /* PulsaOperatorAttribute.swift */,
@@ -14506,7 +14503,6 @@
 				3439299A1DE4614A00CE3B19 /* SearchSuggestionItem.swift in Sources */,
 				3439292F1DE4614800CE3B19 /* ResolutionCenterCreateStepOneCell.m in Sources */,
 				343928811DE4614500CE3B19 /* CourierOptionViewCell.m in Sources */,
-				3439290D1DE4614700CE3B19 /* PulsaKeyboardManager.swift in Sources */,
 				343926BE1DE4613F00CE3B19 /* Using.swift in Sources */,
 				343924B71DE4613A00CE3B19 /* Hashtags.m in Sources */,
 				343929181DE4614700CE3B19 /* PulsaProductViewController.swift in Sources */,
