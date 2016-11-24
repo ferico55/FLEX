@@ -60,7 +60,6 @@
 #import "NSURL+Dictionary.h"
 #import "UIImage+Resize.h"
 #import <Masonry/Masonry.h>
-#import "CardIO.h"
 #import "WebViewController.h"
 #import "GAITrackedViewController.h"
 #import "LoginViewController.h"
