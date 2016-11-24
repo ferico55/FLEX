@@ -367,23 +367,19 @@
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
     [_requestHotlistManager requestCancel];
-    [_product removeAllObjects];
-    
     [self requestHotlist];
 }
 
-
 - (void)didReceiveHotlist:(Hotlist*)hotlist {
     [_refreshControl endRefreshing];
-    
+    if (_page == 1) [_product removeAllObjects];
     _urinext =  hotlist.data.paging.uri_next;
     _page = [[_requestHotlistManager splitUriToPage:_urinext] integerValue];
-    
     [_product addObjectsFromArray: hotlist.data.list];
     _isFailRequest = NO;
-    
     [_collectionView reloadData];
 }
+
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     _isFailRequest = NO;
