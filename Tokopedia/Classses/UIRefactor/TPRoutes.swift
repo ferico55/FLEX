@@ -202,7 +202,7 @@ class TPRoutes: NSObject {
         JLRoutes.globalRoutes().addRoute("/pulsa/:pulsaProduct") { (params: [String : AnyObject]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
             let utmString = getUTMString(params)
-            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct  + utmString
+            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct + "/" + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
