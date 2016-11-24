@@ -193,14 +193,26 @@
     self.searchController.searchResultsUpdater = self;
     self.searchController.searchBar.placeholder = @"Cari produk atau toko";
     self.searchController.searchBar.tintColor = [UIColor blackColor];
+    self.searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.delegate = self;
     
     resultController.searchBar = self.searchController.searchBar;
+    [self.searchController.searchBar sizeToFit];
     self.definesPresentationContext = YES;
     
-    self.navigationItem.titleView = self.searchController.searchBar;
+    //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
+    UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
+    [searchWrapper setBackgroundColor:[UIColor clearColor]];
+    [searchWrapper addSubview:self.searchController.searchBar];
+    self.searchController.searchBar.layer.borderWidth = 1;
+    self.searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
+    
+    [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(searchWrapper);
+    }];
+    self.navigationItem.titleView = searchWrapper;
 }
 
 - (void)setSearchByImage {
