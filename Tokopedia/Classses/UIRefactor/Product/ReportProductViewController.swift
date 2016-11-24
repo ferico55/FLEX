@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BlocksKit
 
 @objc(ReportProductViewController)
 class ReportProductViewController: UIViewController, UITextViewDelegate{
