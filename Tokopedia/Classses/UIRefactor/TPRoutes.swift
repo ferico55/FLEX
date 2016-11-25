@@ -74,7 +74,7 @@ class TPRoutes: NSObject {
         //tech
         JLRoutes.globalRoutes().addRoute("/tech") { (params: [String : AnyObject]!) -> Bool in
             let utmString = getUTMString(params)
-            let urlString = "https://tech.tokopedia.com" + utmString
+            let urlString = "http://tech.tokopedia.com" + utmString
             openWebView(NSURL(string: urlString)!)
             return true
         }
@@ -202,7 +202,7 @@ class TPRoutes: NSObject {
         JLRoutes.globalRoutes().addRoute("/pulsa/:pulsaProduct") { (params: [String : AnyObject]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
             let utmString = getUTMString(params)
-            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct + "/" + utmString
+            let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct + utmString
             openWebView(NSURL(string: urlString)!)
             
             return true
@@ -284,7 +284,7 @@ class TPRoutes: NSObject {
             let utmMedium = params["utm_medium"] as! String
             let utmCampaign = params["utm_campaign"] as! String
             
-            return "?utm_source=" + utmSource + "&utm_medium=" + utmMedium + "&utm_campaign=" + utmCampaign
+            return "/?utm_source=" + utmSource + "&utm_medium=" + utmMedium + "&utm_campaign=" + utmCampaign
             
         } else {
             return ""
