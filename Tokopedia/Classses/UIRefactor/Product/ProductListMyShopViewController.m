@@ -86,7 +86,7 @@ NoResultDelegate
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
-@property (strong, nonatomic) NSMutableArray *products;
+@property (strong, nonatomic) NSMutableArray<ManageProductList*> *products;
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSIndexPath *lastActionIndexPath;
@@ -263,7 +263,7 @@ NoResultDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_VIEW label:@"Product"];
     _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
@@ -475,6 +475,7 @@ NoResultDelegate
     [self.products removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Delete"];
     NSString *productId = [NSString stringWithFormat:@"%d", product.product_id];
     [ProductRequest deleteProductWithId:productId
           setCompletionBlockWithSuccess:^(ShopSettings *response) {
@@ -601,11 +602,12 @@ NoResultDelegate
 - (MGSwipeButton *)deleteButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+    __weak typeof(self) weakSelf = self;
     MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_DELETE_TITLE
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
-                                                      [self deleteListAtIndexPath:indexPath];
+                                                      [weakSelf showDeleteAlertForProductAtIndexPath:indexPath];
                                                       return YES;
                                                   }];
     [button.titleLabel setFont:[UIFont largeTheme]];
@@ -714,6 +716,7 @@ NoResultDelegate
     if(self.isMovingToGudang){
         if (buttonIndex == 1) {
             NSString *productId = [NSString stringWithFormat:@"%d", selectedProduct.product_id];
+            [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Stock"];
             [ProductRequest moveProductToWarehouse:productId
                      setCompletionBlockWithSuccess:^(ShopSettings *response) {
                          [self moveProductToWirehouse];
@@ -754,6 +757,18 @@ NoResultDelegate
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
+}
+
+-(void)showDeleteAlertForProductAtIndexPath:(NSIndexPath *)indexPath {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hapus Produk" message:[NSString stringWithFormat:@"Apakah Anda yakin ingin menghapus %@?", _products[indexPath.row].product_name] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yaAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf deleteListAtIndexPath:indexPath];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:yaAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - NoResult Delegate

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,12 +19,17 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ACU-dP-i6J" customClass="YTPlayerView">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="68"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MoV-da-suj">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="68"/>
                         <subviews>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A1i-8Y-tME"/>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A1i-8Y-tME">
+                                <rect key="frame" x="0.0" y="0.0" width="120" height="68"/>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_play" translatesAutoresizingMaskIntoConstraints="NO" id="s9v-cq-fhC">
+                                <rect key="frame" x="48" y="22" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="UO8-xL-hGC"/>
                                     <constraint firstAttribute="width" constant="25" id="d5o-YR-j79"/>
@@ -39,7 +47,7 @@
                         </constraints>
                     </view>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hf8-E4-nbG">
-                        <frame key="frameInset" minX="50" minY="24" width="20" height="20"/>
+                        <rect key="frame" x="50" y="24" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </activityIndicatorView>
                 </subviews>
@@ -57,6 +65,7 @@
             <size key="customSize" width="139" height="122"/>
             <connections>
                 <outlet property="activityIndicator" destination="hf8-E4-nbG" id="hvO-RI-TB7"/>
+                <outlet property="thumbnailContainerView" destination="MoV-da-suj" id="bKd-IV-esn"/>
                 <outlet property="thumbnailImageView" destination="A1i-8Y-tME" id="4b2-l1-ip6"/>
                 <outlet property="youtubePlayerView" destination="ACU-dP-i6J" id="maD-Yy-yXO"/>
             </connections>

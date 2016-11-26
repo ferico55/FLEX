@@ -42,6 +42,7 @@
 #import "ProductReputationSimpleCell.h"
 #import "ShopPageRequest.h"
 #import "NSString+TPBaseUrl.h"
+#import "ShopTabView.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
@@ -191,18 +192,14 @@
     _table.dataSource = self;
     _table.allowsSelection = YES;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabReview];
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
     
     _header = _shopPageHeader.view;
     
-    CGRect newFrame = _header.frame;
-    newFrame.size.height += 5;
-    _header.frame = newFrame;
-    
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:21];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
@@ -214,11 +211,6 @@
     if (_list.count > 0) {
         _isNoData = NO;
     }
-    
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
@@ -292,6 +284,40 @@
                               }];
     
     [self initNotification];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabReview];
+    shopTabView.showHomeTab = self.showHomeTab;
+    [self.view addSubview:shopTabView];
+    
+    shopTabView.onTabSelected = self.onTabSelected;
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _header.frame = CGRectMake(0,
+                               -_header.frame.size.height,
+                               self.view.bounds.size.width,
+                               _header.frame.size.height);
+    
+    [_header layoutIfNeeded];
+    
+    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    [_table addSubview:_header];
 }
 
 
@@ -534,37 +560,12 @@
 
 
 #pragma mark - TableView Source
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _header;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return _header.frame.size.height;
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isNoData ? 0 : _list.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*
-    ReviewList *reputationDetail = _list[indexPath.row];
-    UILabel *messageLabel = [[UILabel alloc] init];
-    
-    [messageLabel setText:reputationDetail.review_message];
-    [messageLabel sizeToFit];
-    
-    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                           context:nil];
-    messageLabel.frame = sizeOfMessage;
-    
-    CGFloat height = 150 + messageLabel.frame.size.height ;
-    return height;
-     */
     DetailReputationReview *review = _list[indexPath.row];
     if (review.review_image_attachment.count == 0) {
         return 200;
@@ -727,7 +728,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
@@ -742,26 +743,18 @@
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTalkHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateProductHeaderPosition" object:nil userInfo:userInfo];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
 }
 
 - (void)updateReviewHeaderPosition:(NSNotification *)notification
 {
-    id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+    if (notification.object != self) {
+        id userinfo = notification.userInfo;
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        _table.contentOffset = cgpoint;
     }
-    
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _table.contentOffset = cgpoint;
-    
-    
 }
 
 

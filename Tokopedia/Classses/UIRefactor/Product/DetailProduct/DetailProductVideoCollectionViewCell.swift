@@ -14,6 +14,7 @@ class DetailProductVideoCollectionViewCell: UICollectionViewCell {
     @IBOutlet var youtubePlayerView: YTPlayerView!
     @IBOutlet var thumbnailImageView: UIImageView!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var thumbnailContainerView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -305,8 +305,11 @@ typedef enum
     [self setProduct:_ATCForm.form.product_detail];
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
-    [self doCalculate];
-    [self requestRate];
+    
+    if ([_selectedAddress hasAddress]){
+        [self doCalculate];
+        [self requestRate];
+    }
     
     [self adjustViewIsLoading:NO];
     
@@ -390,7 +393,7 @@ typedef enum
 }
 
 -(void)failedFetchShipmentFee:(NSError*)error{
-    if (_shipments.count == 0) {
+    if (_shipments.count == 0 && [_selectedAddress hasAddress]) {
         [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
         _tableView.tableHeaderView = _messageZeroShipmentView;
     } else{
@@ -412,17 +415,27 @@ typedef enum
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
     
-    [self isShowZeroShipmentErrorMessage:(shipments.count == 0) messageError:[self messageZeroShipmentAvailable]];
+    [self adjustErrorMessageView];
 }
 
--(void)isShowZeroShipmentErrorMessage:(BOOL)isShow messageError:(NSString*)messageError{
-    if (isShow) {
-        [_messageZeroShipmentLabel setCustomAttributedText:messageError];
-        _tableView.tableHeaderView = _messageZeroShipmentView;
-    } else {
-        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+-(void)adjustErrorMessageView{
+    BOOL eligibleToChooseLogistic = (_shipments.count > 0 && [_selectedAddress hasAddress]);
+    if (eligibleToChooseLogistic){
+        [self hideErrorMessage];
+    }else {
+        [self showErrorMessage];
     }
 }
+
+-(void)showErrorMessage{
+    [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
+    _tableView.tableHeaderView = _messageZeroShipmentView;
+}
+
+-(void)hideErrorMessage{
+    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+}
+
 
 -(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
     if ([self shipments:shipments containsShipment:_selectedShipment]) {
@@ -539,8 +552,7 @@ typedef enum
                         
                         label.text = address.address_name;
                         _borderFullAddress.hidden = YES;
-                        if ([address.address_name isEqualToString:@"0"])
-                        {
+                        if (![_selectedAddress hasAddress]) {
                             _borderFullAddress.hidden = NO;
                             label.text= @"Tambah Alamat";
                         }
@@ -952,7 +964,7 @@ typedef enum
             }
             else
             {
-                
+                [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Add to Cart"];
                 UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
                 UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
@@ -973,33 +985,11 @@ typedef enum
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
-    if ([address.address_id isEqualToString: noAddress]) {
-        [self requestAddAddress:address];
-        return;
-    }
     [self setAddress:address];
     [self requestFormWithAddressID:address.address_id?:@""];
 }
 
--(void)requestAddAddress:(AddressFormList*)address{
-    
-    [self adjustViewIsLoading:YES];
-    
-    [RequestAddAddress fetchAddAddress:address
-                            isFromCart:@"1"
-                               success:^(ProfileSettingsResult *data, AddressFormList *address) {
-                                   
-                                   [self successAddAddress:address result:data];
-                                   
-                               } failure:^(NSError *error) {
-                                   
-                                   [self failedAddAddress:address error:error];
-                                   
-                               }];
-}
-
--(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
-    [self adjustViewIsLoading:NO];
+-(void)successAddAddress:(AddressFormList *)address{
     [self setAddress:address];
     [self requestFormWithAddressID:address.address_id?:@""];
 }
@@ -1110,8 +1100,7 @@ typedef enum
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    AddressFormList *selectedAddress = _selectedAddress;
-    if (selectedAddress.address_name == nil || [selectedAddress.address_name isEqualToString:@""] || [selectedAddress.address_name isEqualToString:@"0"]) {
+    if (![_selectedAddress hasAddress]) {
         isValid = NO;
         [errorMessage addObject:ERRORMESSAGE_NULL_ADDRESS];
     }

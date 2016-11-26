@@ -17,7 +17,9 @@
                       @"button_no_btn",
                       @"button_edit",
                       @"hide_no_reply",
-                      @"button_report_hide"];
+                      @"button_report_hide",
+                      @"button_cancel_text",
+                      @"button_report_text"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -27,4 +29,12 @@
     return mapping;
 }
 
+- (NSString*)button_cancel_text {
+    
+    return [[_button_cancel_text kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
+}
+
+- (NSString*)button_report_text {
+    return [[_button_report_text kv_decodeHTMLCharacterEntities] stringByStrippingHTML];
+}
 @end

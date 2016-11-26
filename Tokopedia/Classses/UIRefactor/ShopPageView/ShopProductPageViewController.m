@@ -47,6 +47,7 @@
 #import "ShopProductPageResult.h"
 #import "ShopProductPageList.h"
 #import "ShopPageRequest.h"
+#import "ShopTabView.h"
 
 #import "EtalaseViewController.h"
 
@@ -81,8 +82,8 @@ EtalaseViewControllerDelegate
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
+@property (nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 
@@ -175,7 +176,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai produk."
@@ -187,16 +188,6 @@ EtalaseViewControllerDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateProductHeaderPosition:)
                                                  name:@"updateProductHeaderPosition" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 
@@ -226,37 +217,21 @@ EtalaseViewControllerDelegate
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabProduct];
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
+    
+    _searchBar = [[UISearchBar alloc] init];
+    _searchBar.delegate = self;
+    
     _navigationBarIsAnimating = NO;
     
     _header = _shopPageHeader.view;
     
-    
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:19];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
-    UIView *searchView = _shopPageHeader.searchView;
-    [searchView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, searchView.frame.size.height)];
-    UISearchBar *searchBar = _shopPageHeader.searchBar;
-    searchBar.delegate = self;
-    
-    CGRect newHeaderPosition = searchView.frame;
-    newHeaderPosition.origin.y = _header.frame.size.height;
-    searchView.frame = newHeaderPosition;
-    searchView.backgroundColor = [UIColor clearColor];
-    
-    CGRect newFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _header.frame.size.height + searchView.frame.size.height);
-    _header.frame = newFrame;
-    [_header addSubview:searchView];
-    
-    [_header setClipsToBounds:YES];
-    [_header.layer setMasksToBounds:YES];
-    UIView *header = [[UIView alloc] initWithFrame:_header.frame];
-    [header setBackgroundColor:[UIColor whiteColor]];
-    [header addSubview:_header];
     [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -271,17 +246,11 @@ EtalaseViewControllerDelegate
         _isNoData = NO;
     }
     
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
-    
     [self initNotification];
     
     
     [_refreshControl endRefreshing];
     _shopPageRequest = [[ShopPageRequest alloc]init];
-    [self requestProduct];
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
@@ -331,6 +300,38 @@ EtalaseViewControllerDelegate
     
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
+    
+    [self requestProduct];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
+    shopTabView.showHomeTab = self.showHomeTab;
+    [self.view addSubview:shopTabView];
+    
+    shopTabView.onTabSelected = self.onTabSelected;
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _collectionView.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
+    
+    _header.frame = CGRectMake(0, -_header.frame.size.height,
+                               self.view.bounds.size.width, _header.frame.size.height);
+    [_header layoutIfNeeded];
+    [_collectionView addSubview:_header];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -345,8 +346,7 @@ EtalaseViewControllerDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _header.frame.size.height);
-    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+    return CGSizeMake(collectionView.bounds.size.width, _shopPageHeader.searchView.frame.size.height);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
@@ -376,8 +376,13 @@ EtalaseViewControllerDelegate
     }
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
-        [_header removeFromSuperview];
-        [reusableView addSubview:_header];
+    
+        [_searchBar removeFromSuperview];
+        [reusableView addSubview:_searchBar];
+        
+        [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(reusableView);
+        }];
     }
     
     return reusableView;
@@ -475,7 +480,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height - _shopPageHeader.searchView.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
@@ -487,7 +492,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)determineNavTitle:(UIScrollView*)scrollView {
-    if(scrollView.contentOffset.y > 180) {
+    if(scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationShopTitle" object:nil userInfo:nil];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationShopTitle" object:nil userInfo:nil];
@@ -498,23 +503,20 @@ EtalaseViewControllerDelegate
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTalkHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateReviewHeaderPosition" object:nil userInfo:userInfo];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition"
+                                                        object:self
+                                                      userInfo:userInfo];
 }
 
 - (void)updateProductHeaderPosition:(NSNotification *)notification {
     id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    }
     
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _collectionView.contentOffset = cgpoint;
+    if (notification.object != self) {
+        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+        
+        CGPoint cgpoint = CGPointMake(0, ypos);
+        _collectionView.contentOffset = cgpoint;
+    }
 }
 
 #pragma mark - SearchBar Delegate
@@ -623,17 +625,45 @@ EtalaseViewControllerDelegate
 }
 
 - (IBAction)tapToEtalase:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
+    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    [self openEtalaseWithId:etalase.etalase_id];
+}
+
+- (EtalaseList *)etalaseWithId:(NSString *)etalaseId {
+    if (!etalaseId) return nil;
+    
+    EtalaseList *etalase = [EtalaseList new];
+    etalase.etalase_id = etalaseId;
+    
+    return etalase;
+}
+
+- (void)openEtalaseWithId:(NSString *)etalaseId {
     EtalaseViewController *vc = [EtalaseViewController new];
     vc.delegate = self;
     vc.isEditable = NO;
     vc.showOtherEtalase = YES;
-    vc.initialSelectedEtalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    vc.initialSelectedEtalase = [self etalaseWithId:etalaseId];
     vc.shopDomain = _shop.result.info.shop_domain;
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShopId:shopId];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)clearSearchQuery {
+    _searchBar.text = @"";
+    [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+}
+
+- (void)showProductsWithEtalaseId:(NSString *)etalaseId {
+    [self clearSearchQuery];
+    
+    EtalaseList *etalase = [self etalaseWithId:etalaseId];
+    
+    // used to show correct etalase after navigating from official store
+    self.initialEtalase = etalase;
+    [self didSelectEtalase:etalase];
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
@@ -716,22 +746,7 @@ EtalaseViewControllerDelegate
     }
     
     [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:shopName];
-    }
-
-#pragma mark - Keyboard
-- (void)keyboardWillShow:(NSNotification *)info {
-    _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-    _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    NSDictionary* keyboardInfo = [info userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
-
-- (void)keyboardWillHide:(NSNotification *)info {
-    _collectionView.contentInset = UIEdgeInsetsZero;
-}
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton {

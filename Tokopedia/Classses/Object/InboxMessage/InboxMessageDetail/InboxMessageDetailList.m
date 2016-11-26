@@ -29,8 +29,12 @@
                                                  @"user_name",
                                                  @"user_image",
                                                  @"user_label",
-                                                 @"user_label_id"
+                                                 @"user_label_id",
+                                                 @"message_create_time_fmt"
                                                  ]];
+    
+    RKRelationshipMapping *replyMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"message_reply_time" toKeyPath:@"message_reply_time" withMapping:[InboxMessageReplyTime mapping]];
+    [listMapping addPropertyMapping:replyMapping];
     
     return listMapping;
 }

@@ -28,6 +28,7 @@
 #import "NoResultReusableView.h"
 
 #import "Tokopedia-Swift.h"
+#import "ShopTabView.h"
 
 @interface ShopNotesPageViewController ()
 <
@@ -43,7 +44,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickytab;
+@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSMutableArray *list;
@@ -136,16 +137,16 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabNote];
     _shopPageHeader.delegate = self;
+    _shopPageHeader.onTabSelected = self.onTabSelected;
     _shopPageHeader.data = _data;
+    _shopPageHeader.showHomeTab = self.showHomeTab;
     
     _header = _shopPageHeader.view;
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
     
-    UIView *btmGreenLine = (UIView *)[_header viewWithTag:22];
-    [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
@@ -159,14 +160,28 @@
         _isNoData = NO;
     }
     
-    [_fakeStickytab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickytab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickytab.layer setShadowRadius:1];
-    [_fakeStickytab.layer setShadowOpacity:0.3];
-    
     [_refreshControl endRefreshing];
     [self initNotification];
     [self requestNotes];
+    
+    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabDiscussion];
+    shopTabView.showHomeTab = self.showHomeTab;
+    [self.view addSubview:shopTabView];
+    
+    shopTabView.onTabSelected = self.onTabSelected;
+    
+    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@40);
+    }];
+    
+    _fakeStickyTab = shopTabView;
+    _fakeStickyTab.hidden = YES;
+    
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
 

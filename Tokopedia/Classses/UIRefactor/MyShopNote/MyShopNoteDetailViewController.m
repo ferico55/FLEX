@@ -419,6 +419,7 @@
     
     if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
         //add
+        [AnalyticsManager trackEventName:@"clickNotes" category:GA_EVENT_CATEGORY_SHOP_NOTES action:GA_EVENT_ACTION_CLICK label:@"Add"];
         [requestManager requestAddNoteWithTitle:noteTitle
                                     noteContent:noteContent
                                           terms:terms
@@ -432,6 +433,7 @@
     else
     {
         //edit
+        [AnalyticsManager trackEventName:@"clickNotes" category:GA_EVENT_CATEGORY_SHOP_NOTES action:GA_EVENT_ACTION_EDIT label:@"Notes"];
         NSString *noteId = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
         
         [requestManager requestEditNote:noteId

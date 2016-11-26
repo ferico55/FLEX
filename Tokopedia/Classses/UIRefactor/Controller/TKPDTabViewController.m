@@ -93,6 +93,8 @@
 }
 
 - (IBAction)valueChangedSegmentedControl:(UISegmentedControl *)sender {
+    [AnalyticsManager trackSegmentedControlTapped:_inboxType label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
+    
     UIViewController *controller = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     controller.view.frame = _containerView.bounds;
 

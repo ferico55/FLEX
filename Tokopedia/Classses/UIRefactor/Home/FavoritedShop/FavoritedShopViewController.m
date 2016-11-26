@@ -189,7 +189,7 @@ FavoriteShopRequestDelegate
     
     if(indexPath.section == 0){
         PromoShop *promoShop = _promoShops[indexPath.row].shop;
-        cell.shopname.text = promoShop.name;
+        cell.shopname.text = [promoShop.name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = promoShop.location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:promoShop.image_shop.s_url]
                            placeholderImage:[UIImage imageNamed:@"icon_default_shops.jpg"]];
@@ -301,7 +301,17 @@ FavoriteShopRequestDelegate
 
 -(void)pressFavoriteAction:(NSString*)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
-    [_favoriteShopRequest requestActionButtonFavoriteShop:shopid withAdKey:_selectedPromoShop.ad_ref_key];
+    [FavoriteShopRequest requestActionButtonFavoriteShop:shopid withAdKey:_selectedPromoShop.ad_ref_key onSuccess:^(FavoriteShopActionResult *data) {
+        
+        [self resetAllState];
+        [_table reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
+        
+    } onFailure:^{
+        
+        [self failToRequestActionButtonFavoriteShopConfirmation];
+        
+    }];
 }
 
 
@@ -336,12 +346,6 @@ FavoriteShopRequestDelegate
         _isnodata = YES;
     }
     [self resetAllState];
-}
-
--(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
-    [self resetAllState];
-    [_table reloadData];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
 }
 
 -(void)failToRequestFavoriteShopListing{

@@ -47,6 +47,8 @@
     
     self.title = @"Lacak Pengiriman";
     
+    [AnalyticsManager trackScreenName:@"Shipment Tracking Order Page"];
+    
     self.networkManager = [TokopediaNetworkManager new];
     self.networkManager.isUsingHmac = YES;
     [self request];

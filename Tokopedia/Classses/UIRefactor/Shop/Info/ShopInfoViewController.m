@@ -277,6 +277,10 @@
             }
             case 11:
             {
+                [AnalyticsManager trackEventName:@"clickShopHome"
+                                        category:GA_EVENT_CATEGORY_SHOP_HOME
+                                          action:GA_EVENT_ACTION_EDIT
+                                           label:@"Shop Info"];
                 EditShopViewController *controller = [EditShopViewController new];
                 [self.navigationController pushViewController:controller animated:YES];
                 break;

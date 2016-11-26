@@ -74,6 +74,17 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
         cell.thumbnailImageView.hidden = true
         cell.youtubePlayerView.loadWithVideoId(videoId, playerVars: playerVars)
         cell.youtubePlayerView.webView?.allowsInlineMediaPlayback = false
+        
+        if UI_USER_INTERFACE_IDIOM() == .Pad {
+            switch UIDevice.currentDevice().systemVersion.compare("10.0.0", options: NSStringCompareOptions.NumericSearch) {
+            // jika di bawah iOS 10.0.0, karena untuk iPad dengan OS di bawah 10 tidak dapat memutar video Youtube secara full screen ketika pertama kali di-play
+            case .OrderedAscending:
+                cell.thumbnailContainerView.hidden = true
+                cell.youtubePlayerView.hidden = false
+            default:
+                break
+            }
+        }
         return cell
     }
     

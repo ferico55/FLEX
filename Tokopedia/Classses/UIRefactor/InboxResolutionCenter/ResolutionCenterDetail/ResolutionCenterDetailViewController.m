@@ -381,10 +381,13 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 #pragma mark - Cell Delegate
 -(void)didTapButton:(UIButton*)sender Conversation:(ResolutionConversation*)conversation
 {
+    [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_CLICK label:sender.titleLabel.text];
+     __weak typeof(self) weakSelf = self;
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
-        UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:@"Konfirmasi Pembatalan Komplain" message:@"Apakah Anda yakin ingin membatalkan komplain ini?\nTransaksi akan dinyatakan selesai dan seluruh dana pembayaran akan diteruskan kepada penjual." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
+        UIAlertView *cancelComplainAlert = [[UIAlertView alloc]initWithTitle:BUTTON_TITLE_CANCEL_COMPLAIN message:_resolutionDetail.resolution_button.button_cancel_text delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya", nil];
         cancelComplainAlert.tag = TAG_ALERT_CANCEL_COMPLAIN;
         [cancelComplainAlert show];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_TRACK]) {
@@ -394,6 +397,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.shippingRef = conversation.input_resi;
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_RESI]) {
@@ -405,6 +409,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.conversationID = conversation.conversation_id;
         vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_RESI]) {
@@ -413,6 +418,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         vc.isInputResi = YES;
         vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
@@ -423,10 +429,21 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
                                        @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
-        [self doRequestAcceptAdminSolutionResolution];
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf doRequestAcceptAdminSolutionResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
@@ -437,13 +454,33 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
                                        @"address":[AddressFormList new]
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
+        return;
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
-        [self doRequestAcceptResolution];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_ACCEPT_SOLUTION message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf doRequestAcceptResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
-        [self doRequestFinishReturResolution];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:BUTTON_TITLE_FINISH_COMPLAIN message:_resolutionDetail.resolution_last.last_show_button_string_text preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf doRequestFinishReturResolution];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+        
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
         BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
@@ -453,10 +490,11 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         controller.type = 1;
         controller.resolutionID = _resolutionID;
         [controller didSuccessEdit:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
-            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+            [weakSelf addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
 
         }];
         [self.navigationController pushViewController:controller animated:YES];
+        return;
     }
 }
 
@@ -1276,20 +1314,13 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 
 
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    NSString *oldAddressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    NSString *oldAddressID = _selectedAddress.address_id;
 
     BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
 
     AddressFormList *address = [userInfo objectForKey:@"address"];
     ResolutionConversation *conversation = viewController.data[@"conversation"];
-
-    if (address.address_id == 0) {
-        address.address_id = address.addr_id;
-    }
-
-    if (conversation.address.address_id == 0) {
-        conversation.address.address_id = conversation.address.addr_id;
-    }
+    
     _selectedAddress = address;
     
     if (isEditAddress) {
@@ -1300,8 +1331,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)requestAddAddress{
-    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
-    [RequestResolution fetchInputAddressID:addressID resolutionID:_resolutionID onSuccess:^(ResolutionActionResult * data) {
+    [RequestResolution fetchInputAddressID:_selectedAddress.address_id resolutionID:_resolutionID onSuccess:^(ResolutionActionResult * data) {
         
         [self refreshRequest];
         
@@ -1311,7 +1341,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)requestEditOldAddressID:(NSString*)oldAddressID conversationID:(NSString*)conversationID{
-    NSString *addressID = [NSString stringWithFormat:@"%zd", _selectedAddress.address_id];
+    NSString *addressID = _selectedAddress.address_id;
     [RequestResolution fetchEditAddressID:addressID resolutionID:_resolutionID oldAddressID:oldAddressID oldConversationID:conversationID onSuccess:^(ResolutionActionResult * data) {
         
         [self refreshRequest];
