@@ -1273,9 +1273,12 @@ TTTAttributedLabelDelegate
         if(_product.data.shop_info.shop_status!=nil && [_product.data.shop_info.shop_status isEqualToString:@"2"]) {
             viewContentTokoTutup.hidden = NO;
             lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.data.shop_info.shop_is_closed_until];
-        } else if (_product.data.shop_info.shop_status != nil && [_product.data.shop_info.shop_status isEqualToString:@"3"]) {
+        }else if (_product.data.shop_info.shop_status != nil && [_product.data.shop_info.shop_status isEqualToString:@"3"]) {
             viewContentTokoTutup.hidden = NO;
             lblDescTokoTutup.text = @"Toko ini sedang dimoderasi";
+        }else if (_product.data.shop_info.shop_status != nil && [_product.data.shop_info.shop_status isEqualToString:@"4"]) {
+            viewContentTokoTutup.hidden = NO;
+            lblDescTokoTutup.text = @"Toko ini sedang tidak aktif";
         }
         
         //Set shop in warehouse
@@ -1478,8 +1481,7 @@ TTTAttributedLabelDelegate
                 
                 hasSetTokoTutup = !hasSetTokoTutup;
                 [self hiddenButtonBuyAndPromo];
-            }
-            else {
+            }else {
                 //Check is in warehouse
                 if([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING) {
                     [self hiddenButtonBuyAndPromo];
