@@ -580,14 +580,23 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 InboxTicketViewController *allInbox = [InboxTicketViewController new];
                 allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
                 allInbox.delegate = controller;
+                allInbox.onTapContactUsButton = ^{
+                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
+                };
                 
                 InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
                 unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
                 unreadInbox.delegate = controller;
+                unreadInbox.onTapContactUsButton = ^{
+                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
+                };
                 
                 InboxTicketViewController *closedInbox = [InboxTicketViewController new];
                 closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
                 closedInbox.delegate = controller;
+                closedInbox.onTapContactUsButton = ^{
+                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
+                };
                 
                 controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
                 controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
