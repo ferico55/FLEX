@@ -311,7 +311,7 @@ typedef enum TagRequest {
     
     NSUInteger index = 0;
     NSDictionary *textAttributes = @{
-                                     NSForegroundColorAttributeName:[UIColor blackColor],
+                                     NSForegroundColorAttributeName:[UIColor colorWithRed:(102/255.0) green:(102/255.0) blue:(102/255.0) alpha:1],
                                      NSFontAttributeName:IS_IPAD?[UIFont microTheme]:[UIFont systemFontOfSize:11]};
     for(NSDictionary* item in items) {
         

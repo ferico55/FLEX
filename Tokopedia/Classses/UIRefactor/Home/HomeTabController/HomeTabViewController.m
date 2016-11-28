@@ -218,7 +218,7 @@
 - (void)setSearchByImage {
     if([self isEnableImageSearch]) {
         self.searchController.searchBar.showsBookmarkButton = YES;
-        [self.searchController.searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+        [self.searchController.searchBar setImage:[UIImage imageNamed:@"icon_snap.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     } else  {
         self.searchController.searchBar.showsBookmarkButton = NO;
     }
