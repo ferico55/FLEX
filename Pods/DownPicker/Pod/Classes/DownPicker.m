@@ -29,14 +29,14 @@
     if (self) {
         self->textField = tf;
         self->textField.delegate = self;
-        
+       
         // set UI defaults
         self->toolbarStyle = UIBarStyleDefault;
-        
+		
         // set language defaults
         self->placeholder = @"Tap to choose...";
         self->placeholderWhileSelecting = @"Pick an option...";
-        self->toolbarDoneButtonText = @"Done";
+		self->toolbarDoneButtonText = @"Done";
         self->toolbarCancelButtonText = @"Cancel";
         
         // hide the caret and its blinking
@@ -56,7 +56,7 @@
         
         // show the arrow image by default
         [self showArrowImage:YES];
-        
+
         // set the data array (if present)
         if (data != nil) {
             [self setData: data];
@@ -81,6 +81,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self->textField.text = [dataArray objectAtIndex:row];
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
@@ -104,12 +105,12 @@
         self->textField.placeholder = self->placeholder;
     }
     /*
-     else {
-     if (![self->textField.text isEqualToString:_previousSelectedString]) {
-     [self sendActionsForControlEvents:UIControlEventValueChanged];
-     }
-     }
-     */
+    else {
+        if (![self->textField.text isEqualToString:_previousSelectedString]) {
+            [self sendActionsForControlEvents:UIControlEventValueChanged];
+        }
+    }
+    */
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
@@ -148,7 +149,7 @@
             [self->pickerView selectRow:[self->dataArray indexOfObject:self->textField.text] inComponent:0 animated:YES];
         }
     }
-    
+
     UIToolbar* toolbar = [[UIToolbar alloc] init];
     toolbar.barStyle = self->toolbarStyle;
     [toolbar sizeToFit];
@@ -175,11 +176,11 @@
     } else {
         [toolbar setItems:[NSArray arrayWithObjects:flexibleSpace, doneButton, nil]];
     }
-    
-    
+
+
     //custom input view
     textField.inputView = pickerView;
-    textField.inputAccessoryView = toolbar;
+    textField.inputAccessoryView = toolbar;  
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)aTextField
@@ -209,7 +210,7 @@
 -(void) showArrowImage:(BOOL)b
 {
     if (b == YES) {
-        // set the DownPicker arrow to the right (you can replace it with any 32x24 px transparent image: changing size might give different results)
+      // set the DownPicker arrow to the right (you can replace it with any 32x24 px transparent image: changing size might give different results)
         self->textField.rightViewMode = UITextFieldViewModeAlways;
     }
     else {

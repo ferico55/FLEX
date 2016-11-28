@@ -40,7 +40,6 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
-  - CardIO (5.3.2)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - DownPicker (0.1.34)
@@ -128,7 +127,6 @@ DEPENDENCIES:
   - Appsee
   - AppsFlyerFramework
   - BlocksKit (~> 2.2.5)
-  - CardIO
   - ComponentKit (~> 0.14)
   - DownPicker
   - EAIntroView (~> 2.8.0)
@@ -161,7 +159,6 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  CardIO: 92c45caef0d986c4a303a7afba0c9b76ff2b1f6e
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
@@ -200,4 +197,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: e2558ec105d132fb1416178d45a5ce70cd709868
+
+COCOAPODS: 1.0.0
