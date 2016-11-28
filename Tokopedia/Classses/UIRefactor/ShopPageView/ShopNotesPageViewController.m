@@ -309,6 +309,7 @@
                                                          if (_list.count == 0) {
                                                              _table.tableFooterView = _noResultView;
                                                              _act.hidden = YES;
+                                                             [self initNoResultView];
                                                          }else{
                                                              [_noResultView removeFromSuperview];
                                                          }
