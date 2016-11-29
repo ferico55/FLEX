@@ -84,19 +84,12 @@
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
-        
-        if (_loggedIn){
-            [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.bottom.left.right.mas_equalTo(_scrollView);
-                make.height.mas_equalTo(_scrollView);
-            }];
-        } else {
-            [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.bottom.left.right.mas_equalTo(_scrollView);
-                make.height.width.mas_equalTo(_scrollView);
-            }];
-        }
-
+        [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.height.mas_equalTo(_scrollView);
+            if (!_loggedIn){
+                make.width.mas_equalTo(_scrollView);
+            }
+        }];
     }
     
     _maxXInScrollView = [self xInScrollViewFormula: [_stackView.arrangedSubviews count]] - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count]-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
@@ -132,6 +125,7 @@
         [_scrollView setContentOffset:CGPointMake(0, _scrollView.contentOffset.y)];
         [self tap:1];
         [self setActiveButton];
+        [self viewDidLayoutSubviews];
     }
 }
 
