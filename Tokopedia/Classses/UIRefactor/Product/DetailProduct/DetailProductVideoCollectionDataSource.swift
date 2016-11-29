@@ -22,8 +22,6 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     private var videoCollectionView: UICollectionView!
     
-    private var cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
-    
     private var VIDEO_CELL_IDENTIFIER = "pdpVideoCollectionViewCell"
     
     override init(){
@@ -36,7 +34,8 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
         self.videoCollectionView.delegate = self
         self.videoCollectionView.dataSource = self
         self.detailProductVideoDataArray = detailProductVideoDataArray
-        self.videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: "pdpVideoCollectionViewCell")
+        var cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
+        self.videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: VIDEO_CELL_IDENTIFIER)
         activityIndicatorArray = []
     }
     
