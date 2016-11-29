@@ -248,11 +248,14 @@ class TPRoutes: NSObject {
         JLRoutes.globalRoutes().addRoute("/:shopName") { (params: [String : AnyObject]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let shopName = params["shopName"] as! String
-            if(DeeplinkController.shouldOpenWebViewURL(url) || isContainPerlPostFix(shopName)) {
-                openWebView(url)
-            } else {
-                navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: shopName)
-            }
+            isShopExists(shopName, shopExists: { (isExists) in
+                if isExists {
+                    navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: shopName)
+                } else {
+                    openWebView(url)
+                }
+            })
+            
             
             return true
         }
@@ -263,15 +266,17 @@ class TPRoutes: NSObject {
             let productName = params["productName"] as! String
             let shopName = params["shopName"] as! String
             
-            if(DeeplinkController.shouldOpenWebViewURL(url) || isContainPerlPostFix(productName)) {
-                openWebView(url)
-            } else {
-                let data = [
-                    "product_key" : productName,
-                    "shop_domain" : shopName
-                ]
-                navigator.navigateToProductFromViewController(UIApplication.topViewController(), withData: data)
-            }
+            isShopExists(shopName, shopExists: { (isExists) in
+                if isExists {
+                    let data = [
+                        "product_key" : productName,
+                        "shop_domain" : shopName
+                    ]
+                    navigator.navigateToProductFromViewController(UIApplication.topViewController(), withData: data)
+                } else {
+                    openWebView(url)
+                }
+            })
             
             return true
         }
@@ -320,6 +325,29 @@ class TPRoutes: NSObject {
     static func routeURL(url: NSURL) -> Bool {
         AnalyticsManager.trackCampaign(url)
         return JLRoutes.routeURL(url)
+    }
+    
+    static func isShopExists(domain: String, shopExists: ((Bool) -> Void)) {
+        let networkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/shop/get_shop_info.pl",
+                                          method: .GET,
+                                          parameter: ["shop_domain" : domain],
+                                          mapping: Shop.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response = result[""] as! Shop
+                                            
+                                            if response.result.info == nil {
+                                                shopExists(false)
+                                            } else {
+                                                shopExists(true)
+                                            }
+            }) { (error) in
+                shopExists(false)
+        }
     }
     
 }
