@@ -20,6 +20,8 @@
 + (NSString*)mojitoUrl;
 + (NSString*)pulsaUrl;
 + (NSString*)kunyitUrl;
++ (NSString*)goldMerchantUrl;
 + (NSString*)pointUrl;
+
 
 @end
