@@ -185,6 +185,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Deposit Summary Page"];
+    [self reloadListDeposit:nil];
+    [self updateSaldoTokopedia:nil];
 }
 
 
