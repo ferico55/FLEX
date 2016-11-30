@@ -49,7 +49,7 @@ import UIKit
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cellNib = UINib.init(nibName: "ProductCell", bundle: nil)
+        let cellNib = UINib(nibName: "ProductCell", bundle: nil)
         collectionView.registerNib(cellNib, forCellWithReuseIdentifier: ProductDataSource.productCellIdentifier)
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ProductDataSource.productCellIdentifier, forIndexPath: indexPath) as! ProductCell
         

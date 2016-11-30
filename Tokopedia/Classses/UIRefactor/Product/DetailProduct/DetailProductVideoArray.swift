@@ -8,15 +8,15 @@
 
 import UIKit
 
-@objc(DetailProductVideoArray)
-class DetailProductVideoArray: NSObject {
+@objc(DetailProductVideo)
+class DetailProductVideo: NSObject {
     var url: String!
     var type: String!
     var varDefault: Int!
     var status: Int!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: DetailProductVideoArray.self)
+        let mapping = RKObjectMapping(forClass: DetailProductVideo.self)
         
         mapping.addAttributeMappingsFromDictionary(["varDefault" : "default"])
         mapping.addAttributeMappingsFromArray(["url", "type"])

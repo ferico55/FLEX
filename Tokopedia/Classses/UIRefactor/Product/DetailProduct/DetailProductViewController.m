@@ -217,7 +217,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
 @property (nonatomic) BOOL isHaveVideo;
 @property (nonatomic) NSInteger videoCellHeight;
-@property (strong, nonatomic) NSArray<DetailProductVideoArray*> *detailProductVideoDataArray;
+@property (strong, nonatomic) NSArray<DetailProductVideo*> *detailProductVideoDataArray;
 @property (strong, nonatomic) IBOutlet UILabel *cashbackLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *priceLabelTop;
 

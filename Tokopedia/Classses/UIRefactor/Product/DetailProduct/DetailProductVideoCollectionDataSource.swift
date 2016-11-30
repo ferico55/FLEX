@@ -16,43 +16,31 @@ import youtube_ios_player_helper
 @objc(DetailProductVideoCollectionDataSource)
 class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate, UIWebViewDelegate{
     
-    var detailProductVideoDataArray: [DetailProductVideoArray]?
+    var detailProductVideoDataArray: [DetailProductVideo]!
     
     private var activityIndicatorArray: [UIActivityIndicatorView]?
     
-    private var videoCollectionView: UICollectionView!
+    private let videoCollectionView: UICollectionView
     
-    private var VIDEO_CELL_IDENTIFIER = "pdpVideoCollectionViewCell"
+    private let VIDEO_CELL_IDENTIFIER = "pdpVideoCollectionViewCell"
     
-    override init(){
-        super.init()
-    }
-    
-    init(videoCollectionView: UICollectionView, detailProductVideoDataArray: [DetailProductVideoArray]) {
-        super.init()
+    init(videoCollectionView: UICollectionView, detailProductVideoDataArray: [DetailProductVideo]) {
         self.videoCollectionView = videoCollectionView
+        super.init()
         self.videoCollectionView.delegate = self
         self.videoCollectionView.dataSource = self
         self.detailProductVideoDataArray = detailProductVideoDataArray
-        var cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
+        let cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
         self.videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: VIDEO_CELL_IDENTIFIER)
         activityIndicatorArray = []
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        if let detailProductVideoDataArray = self.detailProductVideoDataArray {
-            if detailProductVideoDataArray.count > 0 {
-                return 1
-            }
-        }
-        return 0
+        return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let detailProductVideoDataArray = self.detailProductVideoDataArray {
             return detailProductVideoDataArray.count
-        }
-        return 0
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
