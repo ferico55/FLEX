@@ -12,12 +12,12 @@ import Foundation
 class DetailProductVideoData: NSObject {
     
     var product_id: String!
-    var video: [DetailProductVideo]!
+    var videos: [DetailProductVideo]!
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: DetailProductVideoData.self)
         mapping.addAttributeMappingsFromArray(["product_id"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "video", toKeyPath: "video", withMapping: DetailProductVideo.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "video", toKeyPath: "videos", withMapping: DetailProductVideo.mapping()))
         return mapping
     }
 }

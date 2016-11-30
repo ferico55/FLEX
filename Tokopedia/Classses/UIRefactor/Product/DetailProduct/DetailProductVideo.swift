@@ -13,13 +13,13 @@ class DetailProductVideo: NSObject {
     var url: String!
     var type: String!
     var varDefault: Int!
-    var status: Int!
+    var status: NSNumber!
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: DetailProductVideo.self)
         
         mapping.addAttributeMappingsFromDictionary(["varDefault" : "default"])
-        mapping.addAttributeMappingsFromArray(["url", "type"])
+        mapping.addAttributeMappingsFromArray(["url", "type", "status"])
         
         return mapping
     }

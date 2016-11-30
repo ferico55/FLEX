@@ -81,6 +81,8 @@
 #import "YTPlayerView.h"
 #import "FavoriteShopRequest.h"
 
+static NSInteger VIDEO_CELL_HEIGHT = 105;
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -215,8 +217,6 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
-@property (nonatomic) BOOL isHaveVideo;
-@property (nonatomic) NSInteger videoCellHeight;
 @property (strong, nonatomic) NSArray<DetailProductVideo*> *detailProductVideoDataArray;
 @property (strong, nonatomic) IBOutlet UILabel *cashbackLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *priceLabelTop;
@@ -301,6 +301,7 @@ TTTAttributedLabelDelegate
     //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     [_table setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [_table registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
@@ -340,10 +341,10 @@ TTTAttributedLabelDelegate
     self.infoShopView.layer.masksToBounds = YES;
     _constraintHeightBuyButton.constant = 0;
     _constraintHeightDinkButton.constant = 0;
-    _videoCellHeight = 105;
     
     afterLoginRedirectTo = @"";
     [self unsetWarehouse];
+    _detailProductVideoDataArray = [NSArray<DetailProductVideo*> new];
 }
 
 - (void)initNotification {
@@ -911,9 +912,9 @@ TTTAttributedLabelDelegate
             }
         }
         
-        if (_isHaveVideo) {
+        if (_detailProductVideoDataArray.count > 0) {
             if (indexPath.section == [_table numberOfSections] - 2) {
-                return _videoCellHeight;
+                return VIDEO_CELL_HEIGHT;
             }
         }
         
@@ -929,10 +930,10 @@ TTTAttributedLabelDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (!_isnodatawholesale){
-        if (_isHaveVideo) {
+        if (_detailProductVideoDataArray.count > 0) {
             return 4;
         } else return 3;
-    } else if (_isHaveVideo){
+    } else if (_detailProductVideoDataArray.count > 0){
         return 3;
     }
     return 2;
@@ -1005,7 +1006,7 @@ TTTAttributedLabelDelegate
         }
     }
     
-    if (_isHaveVideo)
+    if (_detailProductVideoDataArray.count > 0)
     {
         if (indexPath.section == [_table numberOfSections] - 2) {
             return [self getDetailProductVideoTableViewCell];
@@ -1018,7 +1019,7 @@ TTTAttributedLabelDelegate
 
 -(DetailProductVideoTableViewCell *) getDetailProductVideoTableViewCell {
     DetailProductVideoTableViewCell *videoCell = (DetailProductVideoTableViewCell *)[_table dequeueReusableCellWithIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
-    videoCell.detailProductVideoDataArray = _detailProductVideoDataArray;
+    videoCell.videos = _detailProductVideoDataArray;
     return videoCell;
 }
 
@@ -1312,31 +1313,31 @@ TTTAttributedLabelDelegate
     DetailProductVideoResponse *detailProductVideoResponse = [result objectForKey:@""];
     
     for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
-        if ([videoData.video count] > 0) {
-            _isHaveVideo = YES;
-            [_table registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
-            _detailProductVideoDataArray = videoData.video;
-            return;
-        } else {
-            _isHaveVideo = NO;
+        if ([videoData.videos count] > 0) {
+            NSMutableArray<DetailProductVideo*> *tempVideoArray = [NSMutableArray<DetailProductVideo*> new];
+            for (DetailProductVideo *video in videoData.videos) {
+                if ([video.status isEqual: @1]) {
+                    [tempVideoArray addObject:video];
+                }
+            }
+            _detailProductVideoDataArray = [tempVideoArray mutableCopy];
             return;
         }
     }
     
-    _isHaveVideo = NO;
     return;
 }
 
 -(void) setExpandedSection {
     if (!_isnodatawholesale) {
-        if (_isHaveVideo) {
+        if (_detailProductVideoDataArray.count > 0) {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @2]];
         } else {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];
         }
         
     } else {
-        if (_isHaveVideo) {
+        if (_detailProductVideoDataArray.count > 0) {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @1]];
         } else {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];

@@ -1207,7 +1207,7 @@
 		3452B4901DE853F200E15FEA /* DetailProductInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88A1DE853E100E15FEA /* DetailProductInfoCell.m */; };
 		3452B4911DE853F200E15FEA /* DetailProductInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3452A88B1DE853E100E15FEA /* DetailProductInfoCell.xib */; };
 		3452B4921DE853F200E15FEA /* DetailProductRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88C1DE853E100E15FEA /* DetailProductRequest.swift */; };
-		3452B4931DE853F200E15FEA /* DetailProductVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88D1DE853E100E15FEA /* DetailProductVideoArray.swift */; };
+		3452B4931DE853F200E15FEA /* DetailProductVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88D1DE853E100E15FEA /* DetailProductVideo.swift */; };
 		3452B4941DE853F200E15FEA /* DetailProductVideoCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88E1DE853E100E15FEA /* DetailProductVideoCollectionDataSource.swift */; };
 		3452B4951DE853F200E15FEA /* DetailProductVideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452A88F1DE853E100E15FEA /* DetailProductVideoCollectionViewCell.swift */; };
 		3452B4961DE853F200E15FEA /* DetailProductVideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3452A8901DE853E100E15FEA /* DetailProductVideoCollectionViewCell.xib */; };
@@ -4718,7 +4718,7 @@
 		3452A88A1DE853E100E15FEA /* DetailProductInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductInfoCell.m; sourceTree = "<group>"; };
 		3452A88B1DE853E100E15FEA /* DetailProductInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductInfoCell.xib; sourceTree = "<group>"; };
 		3452A88C1DE853E100E15FEA /* DetailProductRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductRequest.swift; sourceTree = "<group>"; };
-		3452A88D1DE853E100E15FEA /* DetailProductVideoArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoArray.swift; sourceTree = "<group>"; };
+		3452A88D1DE853E100E15FEA /* DetailProductVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideo.swift; sourceTree = "<group>"; };
 		3452A88E1DE853E100E15FEA /* DetailProductVideoCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoCollectionDataSource.swift; sourceTree = "<group>"; };
 		3452A88F1DE853E100E15FEA /* DetailProductVideoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailProductVideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		3452A8901DE853E100E15FEA /* DetailProductVideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductVideoCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -10418,7 +10418,7 @@
 				3452A88A1DE853E100E15FEA /* DetailProductInfoCell.m */,
 				3452A88B1DE853E100E15FEA /* DetailProductInfoCell.xib */,
 				3452A88C1DE853E100E15FEA /* DetailProductRequest.swift */,
-				3452A88D1DE853E100E15FEA /* DetailProductVideoArray.swift */,
+				3452A88D1DE853E100E15FEA /* DetailProductVideo.swift */,
 				3452A88E1DE853E100E15FEA /* DetailProductVideoCollectionDataSource.swift */,
 				3452A88F1DE853E100E15FEA /* DetailProductVideoCollectionViewCell.swift */,
 				3452A8901DE853E100E15FEA /* DetailProductVideoCollectionViewCell.xib */,
@@ -15735,7 +15735,7 @@
 				3452B3E71DE853F100E15FEA /* HomeTabViewController.m in Sources */,
 				3452B1C11DE853EE00E15FEA /* TKPString.m in Sources */,
 				3452B00A1DE853EC00E15FEA /* QueueImageDownloader.m in Sources */,
-				3452B4931DE853F200E15FEA /* DetailProductVideoArray.swift in Sources */,
+				3452B4931DE853F200E15FEA /* DetailProductVideo.swift in Sources */,
 				3452B0141DE853EC00E15FEA /* UIScrollViewCategory.swift in Sources */,
 				3452B0DD1DE853ED00E15FEA /* ConversationViewModel.m in Sources */,
 				3452B2E81DE853EF00E15FEA /* TKPGooglePlaceDetailProductStore.m in Sources */,

@@ -14,9 +14,9 @@ import Masonry
 import youtube_ios_player_helper
 
 @objc(DetailProductVideoCollectionDataSource)
-class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate, UIWebViewDelegate{
+class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIWebViewDelegate{
     
-    var detailProductVideoDataArray: [DetailProductVideo]!
+    var videos: [DetailProductVideo]!
     
     private var activityIndicatorArray: [UIActivityIndicatorView]?
     
@@ -24,12 +24,12 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     
     private let VIDEO_CELL_IDENTIFIER = "pdpVideoCollectionViewCell"
     
-    init(videoCollectionView: UICollectionView, detailProductVideoDataArray: [DetailProductVideo]) {
+    init(videoCollectionView: UICollectionView, videos: [DetailProductVideo]) {
         self.videoCollectionView = videoCollectionView
         super.init()
         self.videoCollectionView.delegate = self
         self.videoCollectionView.dataSource = self
-        self.detailProductVideoDataArray = detailProductVideoDataArray
+        self.videos = videos
         let cellNib = UINib.init(nibName: "DetailProductVideoCollectionViewCell", bundle: nil)
         self.videoCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: VIDEO_CELL_IDENTIFIER)
         activityIndicatorArray = []
@@ -40,7 +40,7 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return detailProductVideoDataArray.count
+            return videos.count
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -48,20 +48,12 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-      
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VIDEO_CELL_IDENTIFIER, forIndexPath: indexPath) as! DetailProductVideoCollectionViewCell
-        let videoId = self.detailProductVideoDataArray![indexPath.row].url
-        let playerVars = [
-            "origin" : "https://www.tokopedia.com"
-        ]
         cell.youtubePlayerView.tag = indexPath.item
-        cell.youtubePlayerView.delegate = self
         activityIndicatorArray?.append(cell.activityIndicator)
-        cell.thumbnailImageView.setImageWithURL(NSURL(string: "https://img.youtube.com/vi/\(videoId)/0.jpg"))
+
         cell.thumbnailImageView.hidden = true
-        cell.youtubePlayerView.loadWithVideoId(videoId, playerVars: playerVars)
-        cell.youtubePlayerView.webView?.allowsInlineMediaPlayback = false
-        
+        cell.video = self.videos[indexPath.row]
         if UI_USER_INTERFACE_IDIOM() == .Pad {
             switch UIDevice.currentDevice().systemVersion.compare("10.0.0", options: NSStringCompareOptions.NumericSearch) {
             // jika di bawah iOS 10.0.0, karena untuk iPad dengan OS di bawah 10 tidak dapat memutar video Youtube secara full screen ketika pertama kali di-play
@@ -72,32 +64,33 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
                 break
             }
         }
+    
+        cell.playerViewDidBecomeReady = { [unowned self] playerView in
+            let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
+            
+            let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
+            cell.thumbnailImageView.hidden = false
+            self.activityIndicatorArray? [playerView.tag].stopAnimating()
+        }
+        cell.playerViewDidChangeToState = { [unowned self] playerView, state in
+            let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
+            let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
+            switch state {
+            case .Paused, .Ended:
+                cell.activityIndicator.stopAnimating()
+            case .Buffering:
+                cell.activityIndicator.startAnimating()
+            default:
+                break
+            }
+        }
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
-        cell.youtubePlayerView.playVideo()
+        cell.playVideo()
     }
     
-    func playerViewDidBecomeReady(playerView: YTPlayerView) {
-        let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
-        
-        let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
-        cell.thumbnailImageView.hidden = false
-        activityIndicatorArray? [playerView.tag].stopAnimating()
-    }
     
-    func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
-        let indexPath = NSIndexPath(forItem: playerView.tag, inSection: 0)
-        let cell = self.videoCollectionView.cellForItemAtIndexPath(indexPath) as! DetailProductVideoCollectionViewCell
-        switch state {
-        case .Paused, .Ended:
-            cell.activityIndicator.stopAnimating()
-        case .Buffering:
-            cell.activityIndicator.startAnimating()
-        default:
-            break
-        }
-    }
 }

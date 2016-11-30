@@ -68,6 +68,12 @@
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    [self adjustConstraints];
+}
+
+- (void) adjustConstraints {
     [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
@@ -125,15 +131,14 @@
         [_scrollView setContentOffset:CGPointMake(0, _scrollView.contentOffset.y)];
         [self tap:1];
         [self setActiveButton];
-        [self viewDidLayoutSubviews];
     }
+    [self adjustConstraints];
 }
 
 - (void)userDidLogin:(NSNotification *)notification {
     [_scrollView setScrollEnabled:YES];
     [_stackView removeFromSuperview];
     [self initButton];
-    [self viewDidLayoutSubviews];
     _loggedIn = YES;
 }
 
