@@ -316,8 +316,16 @@
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
             if ([self isInstantCourier] && !_changeCourier) {
-                UIAlertView *pickupAlert = [[UIAlertView alloc] initWithTitle:@"" message:@"Dengan mengklik tombol \"Ya\", pihak kurir akan segera melakukan pickup ke tempat Anda. Tidak perlu bayar ongkir pada kurir." delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-                [pickupAlert show];
+                //UIAlertView *pickupAlert = [[UIAlertView alloc] initWithTitle:@"" message:@"Dengan mengklik tombol \"Ya\", pihak kurir akan segera melakukan pickup ke tempat Anda. Tidak perlu bayar ongkir pada kurir." delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                //[pickupAlert show];
+                __weak typeof(self) weakSelf = self;
+                UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:@"Konfirmasi" message:@"Dengan mengklik tombol \"Ya\", pihak kurir akan segera melakukan pickup ke tempat Anda. Tidak perlu bayar ongkir pada kurir."];
+                [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
+                [alertView bk_addButtonWithTitle:@"Ya" handler:^{
+                    [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+                    [weakSelf request];
+                }];
+                [alertView show];
                 return;
             }
             
@@ -337,12 +345,12 @@
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != [alertView cancelButtonIndex]){
-        [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
-        [self request];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    if (buttonIndex != [alertView cancelButtonIndex]){
+//        [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+//        [self request];
+//    }
+//}
 
 - (void)changeSwitch:(id)sender
 {

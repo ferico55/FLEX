@@ -237,7 +237,6 @@
     }else if ([[_shop.result.is_open stringValue] isEqualToString:@"3"] || [[_shop.result.is_open stringValue] isEqualToString:@"4"]) {
         _shopClosedView.hidden = NO;
         NSString *title = [_shop.result.info.shop_status_title stringByStrippingHTML];
-        //NSString *description = [_shop.result.info.shop_status_message stringByStrippingHTML];
         [_shopClosedReason setCustomAttributedText:nil];
         [_shopClosedUntil setText:title];
     }
