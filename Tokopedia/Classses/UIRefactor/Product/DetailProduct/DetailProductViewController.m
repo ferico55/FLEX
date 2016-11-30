@@ -137,19 +137,6 @@ TTTAttributedLabelDelegate
     OtherProduct *_otherProduct;
     
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
-    NSOperationQueue *operationWishList;
-    
-    __weak RKObjectManager *_objectNoteCanReture;
-    TokopediaNetworkManager *tokopediaNoteCanReture;
-    
-    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
-    
-    TokopediaNetworkManager *tokopediaNetworkManagerPriceAlert;
-    RKObjectManager *objectPriceAlertManager;
-    
-    __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
     TokopediaNetworkManager *tokopediaNetworkManagerVideo;
     
@@ -277,7 +264,6 @@ TTTAttributedLabelDelegate
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
-    operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
@@ -1344,16 +1330,16 @@ TTTAttributedLabelDelegate
 -(void) setExpandedSection {
     if (!_isnodatawholesale) {
         if (_isHaveVideo) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:2]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @2]];
         } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];
         }
         
     } else {
         if (_isHaveVideo) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @1]];
         } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];
         }
     }
     [self.table reloadData];
