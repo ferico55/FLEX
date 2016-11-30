@@ -212,6 +212,8 @@
     [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(searchWrapper);
     }];
+
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
     self.navigationItem.titleView = searchWrapper;
 }
 
