@@ -28,12 +28,13 @@
     
     NSArray *_initialCategories;
     CategoryDetail *_selectedCategory;
-    UISearchController* _searchController;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIView *tabView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabViewHeightConstraint;
+@property (strong, nonatomic) UISearchController* searchController;
+
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 
@@ -121,18 +122,21 @@
                                                  name:@"changeNavigationTitle"
                                                object:nil];
     
-    [self setSearchBar];
+    
     
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self setSearchBar];
     if (self.navigationTitle) {
         self.navigationItem.title = [self.navigationTitle capitalizedString];
-        _searchController.searchBar.text = self.navigationTitle;
+        self.searchController.searchBar.text = self.navigationTitle;
     }
     self.hidesBottomBarWhenPushed = YES;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -177,41 +181,41 @@
     [super viewDidDisappear:animated];
     
     self.definesPresentationContext = NO;
-    [_searchController setActive:NO];
+    [self.searchController setActive:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.definesPresentationContext = YES;
-    _searchController.searchResultsController.view.hidden = YES;
+    self.searchController.searchResultsController.view.hidden = YES;
 }
 
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
+    resultController.presentController = self;
     
-    _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
-    _searchController.searchResultsUpdater = self;
-    _searchController.searchBar.placeholder = @"Cari produk atau toko";
-    _searchController.searchBar.tintColor = [UIColor blackColor];
-    _searchController.searchBar.backgroundColor = [UIColor clearColor];
-    _searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
-    _searchController.hidesNavigationBarDuringPresentation = NO;
-    _searchController.dimsBackgroundDuringPresentation = NO;
-    _searchController.delegate = self;
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.placeholder = @"Cari produk atau toko";
+    self.searchController.searchBar.tintColor = [UIColor blackColor];
+    self.searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.delegate = self;
     
-    
-    resultController.searchBar = _searchController.searchBar;
+    resultController.searchBar = self.searchController.searchBar;
+    [self.searchController.searchBar sizeToFit];
     self.definesPresentationContext = YES;
     
     //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
-    UIView* searchWrapper = [[UIView alloc] initWithFrame:_searchController.searchBar.bounds];
+    UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
     [searchWrapper setBackgroundColor:[UIColor clearColor]];
-    [searchWrapper addSubview:_searchController.searchBar];
-    _searchController.searchBar.layer.borderWidth = 1;
-    _searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
+    [searchWrapper addSubview:self.searchController.searchBar];
+    self.searchController.searchBar.layer.borderWidth = 1;
+    self.searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
     
-    [_searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(searchWrapper);
     }];
     self.navigationItem.titleView = searchWrapper;
@@ -722,7 +726,7 @@
     if (title) {
         self.navigationTitle = [title capitalizedString];
         self.navigationItem.title = [title capitalizedString];
-        _searchController.searchBar.text = title;
+        self.searchController.searchBar.text = title;
     }
 }
 
