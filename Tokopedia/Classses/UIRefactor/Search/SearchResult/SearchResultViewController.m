@@ -1008,7 +1008,7 @@ ImageSearchRequestDelegate
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[self selectedCategoryIDsString]?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
-        [parameter setObject:_image_url forKey:@"image_url"];
+        [parameter setObject:_image_url?:@"" forKey:@"image_url"];
         if (_strImageSearchResult) {
             [parameter setObject:_strImageSearchResult forKey:@"id"];
             [parameter setObject:@(allProductsCount) forKey:@"rows"];
