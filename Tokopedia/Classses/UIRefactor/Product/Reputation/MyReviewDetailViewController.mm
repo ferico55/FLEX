@@ -327,7 +327,11 @@
                                                           }
                                                           
                                                           [self refreshData];
-                                                          self.onSmileyTapped();
+                                                          
+                                                          if(self.onSmileyTapped) {
+                                                              self.onSmileyTapped();
+                                                          }
+                                                          
                                                       }
                                                       onFailure:^(NSError *error) {
                                                           
