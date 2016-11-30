@@ -13,6 +13,7 @@
 
 @property (nonatomic, weak) DetailMyInboxReputation *detailMyInboxReputation;
 @property (nonatomic, weak) NSString* autoRead;
+@property (nonatomic, strong) void (^onSmileyTapped)();
 @property int tag;
 
 @end

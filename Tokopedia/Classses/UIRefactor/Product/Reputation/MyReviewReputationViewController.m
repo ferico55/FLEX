@@ -553,10 +553,15 @@
         tempObj.read_status = CValueRead;
         tempObj.viewModel.read_status = CValueRead;
         
+        __weak typeof(self) weakSelf = self;
+        
         MyReviewDetailViewController *vc = [MyReviewDetailViewController new];
         vc.detailMyInboxReputation = tempObj;
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
+        vc.onSmileyTapped = ^{
+            [weakSelf refreshView:nil];
+        };
         
         [AnalyticsManager trackEventName:@"clickReview"
                                 category:GA_EVENT_CATEGORY_INBOX_REVIEW

@@ -327,9 +327,7 @@
                                                           }
                                                           
                                                           [self refreshData];
-                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"getInboxReputation"
-                                                                                                              object:nil
-                                                                                                            userInfo:nil];
+                                                          self.onSmileyTapped();
                                                       }
                                                       onFailure:^(NSError *error) {
                                                           
