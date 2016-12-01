@@ -1199,7 +1199,7 @@ TTTAttributedLabelDelegate
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
-    if (_product.data.shop_info.shop_is_gold == 1) {
+    if ([self isAbleToLoadVideo]) {
         [self getVideoData];
     } else {
         [self setExpandedSection];
@@ -2476,6 +2476,10 @@ TTTAttributedLabelDelegate
 
 -(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
     return [NSString stringWithFormat:@"/v1/products/%@/wishlist", productId];
+}
+
+-(BOOL) isAbleToLoadVideo {
+    return _product.data.shop_info.shop_is_gold == 1 ? YES : NO;
 }
 
 @end
