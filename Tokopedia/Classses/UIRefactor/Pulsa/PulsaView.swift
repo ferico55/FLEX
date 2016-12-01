@@ -557,9 +557,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                 pulsaUrl += "&product_id=" + self.selectedProduct.id!
                 pulsaUrl += "&operator_id=" +  self.selectedOperator.id!
                 pulsaUrl += "&instant_checkout=" + (self.saldoSwitch.on ? "1" : "0")
-                pulsaUrl += "&utm_source=ios"
+                pulsaUrl += "&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=" + self.selectedCategory.attributes.name
                 
-                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}& ").invertedSet
                 var url = "https://js.tokopedia.com/wvlogin?uid=" + self.userManager.getUserId()
                 url += "&token=" + self.userManager.getMyDeviceToken()
                 url += "&url=" + pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!

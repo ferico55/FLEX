@@ -49,6 +49,7 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 2) {
+            [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPPING action:GA_EVENT_ACTION_CLICK label:@"Reject Shipment"];
             [self.delegate cancelShipmentWithExplanation:_textView.text];
         }
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
