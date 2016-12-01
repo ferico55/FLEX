@@ -402,22 +402,18 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-//    [searchBar setShowsCancelButton:NO animated:YES];
-//    [searchBar setShowsBookmarkButton:NO];
     if ([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
     } else {
         _searchBarTrailingConstraint.constant = 0;
     }
-//    [self deActivateSearchBar];
     return YES;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
-//    _searchBar.showsBookmarkButton = ([self isEnableImageSearch]);
     _searchBarTrailingConstraint.constant = 0;
-//    [self activateSearchBar];
+    
     return YES;
 }
 

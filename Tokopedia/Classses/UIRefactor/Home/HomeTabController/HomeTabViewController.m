@@ -281,8 +281,6 @@
     [super viewDidAppear:animated];
     
     self.definesPresentationContext = YES;
-    
-//    _searchController.searchResultsController.view.hidden = YES;
 }
 
 - (void)setArrow {

@@ -377,8 +377,6 @@ typedef enum TagRequest {
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
-//    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-//    _swipevc.navigationItem.titleView = logo;
 
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];

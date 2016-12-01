@@ -492,23 +492,34 @@ typedef enum TagRequest {
 }
 
 - (void)userDidLogout {
-    [_flowLayout setFooterReferenceSize:CGSizeZero];
-    [_collectionView addSubview:_notLoggedInView];
-    [_noResultView removeFromSuperview];
-    _product = nil;
-    [_collectionView reloadData];
-    
-    [self initNotificationManager];
+    [self setAsGuestView];
+    [self resetWishlist];
 }
 
 - (void)userDidLogin {
+    [self setAsBuyerView];
+    [self refreshView:nil];
+}
+
+- (void)setAsGuestView {
+    [_flowLayout setFooterReferenceSize:CGSizeZero];
+    [_collectionView addSubview:_notLoggedInView];
+    [_noResultView removeFromSuperview];
+    [self initNotificationManager];
+}
+
+- (void)setAsBuyerView {
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
     [_notLoggedInView removeFromSuperview];
-    [self refreshView:nil];
-    
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
 }
+
+- (void)resetWishlist {
+    _product = nil;
+    [_collectionView reloadData];
+}
+
 
 #pragma mark - Notification Manager
 - (void)initNotificationManager {
