@@ -165,9 +165,14 @@ extension ShopHomeViewController: WKNavigationDelegate {
                  decisionHandler: (WKNavigationActionPolicy) -> Void) {        
         if router.routeURL(navigationAction.request.URL!) {
             decisionHandler(.Cancel)
-        }
-        else {
+        } else if navigationAction.request.URL!.absoluteString! == self.url {
             decisionHandler(.Allow)
+        } else {
+            let webViewController = WebViewController()
+            webViewController.strURL = navigationAction.request.URL!.absoluteString!
+            self.navigationController!.pushViewController(webViewController, animated: true)
+            
+            decisionHandler(.Cancel);
         }
     }
     

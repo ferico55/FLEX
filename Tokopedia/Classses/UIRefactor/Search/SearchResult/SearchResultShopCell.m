@@ -18,6 +18,12 @@
     
     self.shopLocation.text = modelView.shopLocation;
     self.goldBadgeView.hidden = modelView.isGoldShop ? NO : YES;
+    
+    if (modelView.official) {
+        _goldBadgeView.image = [UIImage imageNamed:@"badge_official_small"];
+    } else if(modelView.isGoldShop) {
+        _goldBadgeView.image = [UIImage imageNamed:@"Badges_gold_merchant"];
+    }
 }
 
 @end

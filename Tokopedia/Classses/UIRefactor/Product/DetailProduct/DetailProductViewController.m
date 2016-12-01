@@ -1970,11 +1970,16 @@ TTTAttributedLabelDelegate
     _shoplocation.attributedText = myString;
     //_shoplocation.text = _product.data.shop_info.shop_location?:@"";
     
-    if(_product.data.shop_info.shop_is_gold == 1) {
+    if(_product.data.shop_info.shop_is_gold == 1 || _product.data.shop_info.official) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
     }
+    
+    if (_product.data.shop_info.official) {
+        _goldShop.image = [UIImage imageNamed:@"badge_official_small"];
+    }
+    
     _constraintBadgeGoldWidth.constant = (_product.data.shop_info.shop_is_gold == 1)?20:0;
     _constraintBadgeLuckySpace.constant = (_product.data.shop_info.shop_is_gold == 1)?4:0;
     
