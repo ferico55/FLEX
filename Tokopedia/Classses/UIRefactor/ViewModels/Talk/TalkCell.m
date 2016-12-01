@@ -255,32 +255,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
-    if([_userManager isLogin]) {
-        [self showReportView];
-    }else{
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        LoginViewController *loginController = [LoginViewController new];
-        loginController.delegate = self;
-        loginController.isPresentedViewController = YES;
-        loginController.redirectViewController = self;
-        
-        navigationController.viewControllers = @[loginController];
-        [((ProductTalkViewController*) self.delegate).navigationController presentViewController:navigationController animated:YES completion:nil];
-    }
-}
-
-#pragma mark - login delegate
-- (void)redirectViewController:(id)viewController{
-    [((ProductTalkViewController* )self.delegate).navigationController dismissViewControllerAnimated:YES completion:^{
-        [self showReportView];
-    }];
-}
-
-- (void)showReportView{
     __weak __typeof(self) weakSelf = self;
     _reportController = [ReportViewController new];
     _reportController.strProductID = _talk.talk_product_id;
@@ -288,10 +262,48 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _reportController.onFinishWritingReport = ^(NSString *message) {
         [weakSelf reportTalkWithMessage:message];
     };
+    [_reportController displayFrom:self];
+    //TKPDTabViewController *controller = [_delegate getNavigationController:self];
+    //[controller.navigationController pushViewController:_reportController animated:YES];
+
     
-    TKPDTabViewController *controller = [_delegate getNavigationController:self];
-    [controller.navigationController pushViewController:_reportController animated:YES];
+//    if([_userManager isLogin]) {
+//        [self showReportView];
+//    }else{
+//        UINavigationController *navigationController = [[UINavigationController alloc] init];
+//        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+//        navigationController.navigationBar.translucent = NO;
+//        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        
+//        LoginViewController *loginController = [LoginViewController new];
+//        loginController.delegate = self;
+//        loginController.isPresentedViewController = YES;
+//        loginController.redirectViewController = self;
+//        
+//        navigationController.viewControllers = @[loginController];
+//        [((ProductTalkViewController*) self.delegate).navigationController presentViewController:navigationController animated:YES completion:nil];
+//    }
 }
+
+#pragma mark - login delegate
+//- (void)redirectViewController:(id)viewController{
+//    [((ProductTalkViewController* )self.delegate).navigationController dismissViewControllerAnimated:YES completion:^{
+//        [self showReportView];
+//    }];
+//}
+
+//- (void)showReportView{
+//    __weak __typeof(self) weakSelf = self;
+//    _reportController = [ReportViewController new];
+//    _reportController.strProductID = _talk.talk_product_id;
+//    _reportController.strShopID = _talk.talk_shop_id;
+//    _reportController.onFinishWritingReport = ^(NSString *message) {
+//        [weakSelf reportTalkWithMessage:message];
+//    };
+//    
+//    TKPDTabViewController *controller = [_delegate getNavigationController:self];
+//    [controller.navigationController pushViewController:_reportController animated:YES];
+//}
 
 #pragma mark - Smiley Delegate
 - (IBAction)tapToViewSmile:sender {

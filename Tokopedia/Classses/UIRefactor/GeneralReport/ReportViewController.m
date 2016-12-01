@@ -149,5 +149,35 @@
 
 }
 
+#pragma mark - user without login
+- (void)displayFrom:(UIViewController *)viewController {
+    if(![_userManager isLogin]) {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        //return;
+    }else{
+        //TKPDTabViewController *controller = [_delegate getNavigationController:self];
+        //[controller.navigationController pushViewController:_reportController animated:YES];
+        //[viewController presentViewController:viewController animated:YES completion:nil];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+
+//    if(udahLogin) {
+//        [viewController pushViewController: self];
+//    } else {
+//        //tampilin halaman login lalu tampilin halaman report ketika udah selesai
+//    }
+}
+
 
 @end

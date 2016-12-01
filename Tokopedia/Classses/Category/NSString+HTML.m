@@ -73,7 +73,6 @@
         NSRange range = [self rangeOfString:@"&bull;"];
         if (range.location != NSNotFound) {
             [escaped replaceOccurrencesOfString:@"&bull;"
-                                     //withString:[NSString stringWithFormat:@"%C", (unsigned short) 42]
                                         withString:@"•"
                                         options:NSLiteralSearch
                                           range:NSMakeRange(0, [escaped length])];
