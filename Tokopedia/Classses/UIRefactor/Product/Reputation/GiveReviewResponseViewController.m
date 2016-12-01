@@ -155,8 +155,6 @@
                                                                        shopID:_review.shop_id
                                                                     onSuccess:^(ResponseComment *result) {
                                                                         if ([result.data.is_success isEqualToString:@"1"]) {
-                                                                            NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                                                                            
                                                                             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil membalas ulasan"]
                                                                                                                                              delegate:self];
                                                                             [alert show];

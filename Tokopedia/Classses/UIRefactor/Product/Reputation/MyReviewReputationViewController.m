@@ -115,11 +115,6 @@
     _searchBar.layer.borderColor = [[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0] CGColor];
     [_searchBar setBackgroundImage:[UIImage new]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshView:)
-                                                 name:@"getInboxReputation"
-                                               object:nil];
-    
     if ([strNav isEqualToString:@"inbox-reputation"]) {
         _searchBar.placeholder = @"Cari Invoice / Penjual / Pembeli";
     } else if ([strNav isEqualToString:@"inbox-reputation-my-product"]) {
@@ -560,6 +555,9 @@
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
         vc.onSmileyTapped = ^{
+            [weakSelf refreshView:nil];
+        };
+        vc.didDetailReviewUpdated = ^{
             [weakSelf refreshView:nil];
         };
         
