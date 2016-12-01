@@ -82,7 +82,19 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     }
     
     func generateRetryButton(){
-        retryButton = (UINib(nibName: "RetryCollectionReusableView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! RetryCollectionReusableView).retryButton
+        retryButton = LoadingView().buttonRetry
+        switch UIDevice.currentDevice().systemVersion.compare("9.0.0", options: NSStringCompareOptions.NumericSearch) {
+        // jika di bawah iOS 9.0.0, karena untuk di bawah iOS 9 jika tombol di klik akan menghasilkan crash
+        case .OrderedAscending:
+            retryButton = UIButton(type: .Custom)
+            retryButton.setTitle("Coba Kembali.", forState: .Normal)
+            retryButton.titleLabel?.font = UIFont.mediumSystemFontOfSize(15.0)
+            retryButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            retryButton.backgroundColor = UIColor.init(red: 189.0/255.0, green: 189.0/255.0, blue: 189.0/255.0, alpha: 1.0)
+        default:
+            break
+        }
+        
         retryButton.addTarget(self, action: #selector(PromoView.pressRetryButton), forControlEvents: .TouchUpInside)
         retryButton.hidden = true
         retryButton.layer.cornerRadius = 3
