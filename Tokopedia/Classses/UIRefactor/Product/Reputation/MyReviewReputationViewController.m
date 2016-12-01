@@ -557,7 +557,7 @@
         vc.onSmileyTapped = ^{
             [weakSelf refreshView:nil];
         };
-        vc.didDetailReviewUpdated = ^{
+        vc.onDetailReviewUpdated = ^{
             [weakSelf refreshView:nil];
         };
         

@@ -160,7 +160,9 @@
                                                                             [alert show];
                                                                             
                                                                             [self.navigationController popViewControllerAnimated:YES];
-                                                                            _onReviewCommentSubmitted();
+                                                                            if (_onReviewCommentSubmitted) {
+                                                                                _onReviewCommentSubmitted();
+                                                                            }
                                                                         } else {
                                                                             if (result.message_error && result.message_error.count > 0) {
                                                                                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error

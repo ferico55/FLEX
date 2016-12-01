@@ -832,7 +832,9 @@
                                                                  [_dataManager removeAllReviews];
                                                                  [_dataManager addReviews:result.list];
                                                              }
-                                                             _didDetailReviewUpdated();
+                                                             if (_onDetailReviewUpdated) {
+                                                                 _onDetailReviewUpdated();
+                                                             }
                                                          } onFailure:^(NSError *errorResult) {
                                                              [_refreshControl endRefreshing];
                                                              [_reviewList removeAllObjects];
