@@ -340,6 +340,8 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     [_shops removeAllObjects];
+    [_table reloadData];
+    
     [_refreshControl endRefreshing];
     [self loadData];
 }
