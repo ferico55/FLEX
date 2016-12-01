@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -21,6 +21,7 @@
                 <outlet property="saldoLabel" destination="52R-KB-qU9" id="kWR-xH-FmO"/>
                 <outlet property="startDateButton" destination="cST-0v-TnW" id="XYa-pL-lSF"/>
                 <outlet property="table" destination="rwP-AU-vY2" id="HVX-1O-YkA"/>
+                <outlet property="topUpButton" destination="SDC-oh-vLR" id="Or1-pi-Ty9"/>
                 <outlet property="view" destination="LwV-gO-gHE" id="l2a-31-P38"/>
                 <outlet property="withdrawalButton" destination="jlw-rr-sU4" id="FbH-ZS-ohU"/>
             </connections>
@@ -108,9 +109,6 @@
                                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jlw-rr-sU4">
                                             <color key="backgroundColor" red="0.070588235294117646" green="0.7803921568627451" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="304" id="PcQ-My-Zik">
-                                                    <variation key="heightClass=regular-widthClass=regular" constant="500"/>
-                                                </constraint>
                                                 <constraint firstAttribute="height" constant="38" id="vQC-99-hLT"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -118,66 +116,44 @@
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="PcQ-My-Zik"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=compact">
-                                                <mask key="constraints">
-                                                    <exclude reference="PcQ-My-Zik"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=regular">
-                                                <mask key="constraints">
-                                                    <exclude reference="PcQ-My-Zik"/>
-                                                </mask>
-                                            </variation>
                                             <connections>
                                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="ipA-Gp-HPD"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SDC-oh-vLR">
+                                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="38" id="Fsh-Tj-76f"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                            <state key="normal" title="TOP UP">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="topUpSaldoButtonTapped:" destination="-1" eventType="touchUpInside" id="1fP-yP-zsQ"/>
                                             </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="jlw-rr-sU4" secondAttribute="centerX" id="0Ca-g2-NCJ"/>
-                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="leading" secondItem="NB9-vm-aF5" secondAttribute="leading" constant="15" id="4tg-eN-30N"/>
-                                        <constraint firstAttribute="trailing" secondItem="jlw-rr-sU4" secondAttribute="trailing" constant="15" id="9f9-ma-JYA"/>
-                                        <constraint firstAttribute="trailing" secondItem="jlw-rr-sU4" secondAttribute="trailing" constant="80" id="Fau-5B-lpv">
-                                            <variation key="heightClass=regular-widthClass=regular" constant="15"/>
-                                        </constraint>
+                                        <constraint firstAttribute="trailing" secondItem="SDC-oh-vLR" secondAttribute="trailing" constant="8" id="BSq-2N-Yp1"/>
+                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="leading" secondItem="NB9-vm-aF5" secondAttribute="leading" constant="8" id="Jj9-SF-KoK"/>
                                         <constraint firstAttribute="centerX" secondItem="9XM-uR-7za" secondAttribute="centerX" id="VO9-zu-McU"/>
-                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="leading" secondItem="NB9-vm-aF5" secondAttribute="leading" constant="15" id="WTE-5q-MQW"/>
                                         <constraint firstItem="jlw-rr-sU4" firstAttribute="top" secondItem="52R-KB-qU9" secondAttribute="bottom" constant="6" id="Yx1-8P-f7a"/>
+                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="width" secondItem="jlw-rr-sU4" secondAttribute="width" id="btB-RX-Z6i"/>
+                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="leading" secondItem="jlw-rr-sU4" secondAttribute="trailing" constant="8" id="eW9-JA-SpB"/>
                                         <constraint firstItem="52R-KB-qU9" firstAttribute="top" secondItem="9XM-uR-7za" secondAttribute="bottom" constant="-4" id="fGl-dg-TqK"/>
+                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="top" secondItem="52R-KB-qU9" secondAttribute="bottom" constant="6" id="h5b-LA-X61"/>
                                         <constraint firstAttribute="centerX" secondItem="52R-KB-qU9" secondAttribute="centerX" id="idt-3Z-fsR"/>
-                                        <constraint firstAttribute="trailing" secondItem="jlw-rr-sU4" secondAttribute="trailing" constant="15" id="uan-wq-3K0"/>
                                         <constraint firstItem="9XM-uR-7za" firstAttribute="top" secondItem="NB9-vm-aF5" secondAttribute="top" constant="8" id="wTZ-8b-taj"/>
                                         <constraint firstAttribute="height" constant="100" id="zGD-sw-Ru0"/>
-                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="leading" secondItem="NB9-vm-aF5" secondAttribute="leading" constant="80" id="zV4-yl-aCy">
-                                            <variation key="heightClass=regular-widthClass=regular" constant="15"/>
-                                        </constraint>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="4tg-eN-30N"/>
-                                            <exclude reference="9f9-ma-JYA"/>
-                                            <exclude reference="Fau-5B-lpv"/>
-                                            <exclude reference="zV4-yl-aCy"/>
-                                        </mask>
-                                    </variation>
-                                    <variation key="heightClass=regular-widthClass=compact">
-                                        <mask key="constraints">
-                                            <include reference="4tg-eN-30N"/>
-                                            <include reference="9f9-ma-JYA"/>
-                                        </mask>
-                                    </variation>
-                                    <variation key="heightClass=regular-widthClass=regular">
-                                        <mask key="constraints">
-                                            <include reference="Fau-5B-lpv"/>
-                                            <include reference="zV4-yl-aCy"/>
-                                        </mask>
-                                    </variation>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8jG-eq-QJM">
                                     <subviews>

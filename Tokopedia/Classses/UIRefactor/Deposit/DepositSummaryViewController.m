@@ -16,6 +16,8 @@
 #import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
 #import "DepositRequest.h"
+#import "WebViewController.h"
+#import "NavigateViewController.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;
@@ -65,6 +67,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *endDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *filterDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *infoButton;
+@property (strong, nonatomic) IBOutlet UIButton *topUpButton;
 
 @property (strong, nonatomic) IBOutlet UIView *infoReviewSaldo;
 @property (strong, nonatomic) IBOutlet UIView *filterDateArea;
@@ -146,8 +149,8 @@
     _table.estimatedRowHeight = 138.0;
     _table.rowHeight = UITableViewAutomaticDimension;
     
-    _filterDateButton.layer.cornerRadius = 3.0;
-    _withdrawalButton.layer.cornerRadius = 3.0;
+    _filterDateButton.layer.cornerRadius = 5.0;
+    _withdrawalButton.layer.cornerRadius = 5.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
     
@@ -182,6 +185,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Deposit Summary Page"];
+    [self reloadListDeposit:nil];
+    [self updateSaldoTokopedia:nil];
 }
 
 
@@ -381,6 +386,11 @@
 }
 
 #pragma mark - IBAction
+- (IBAction)topUpSaldoButtonTapped:(id)sender {    
+    [NavigateViewController navigateToSaldoTopupFromViewController:self];
+    [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"TopUp"];
+}
+
 -(IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
@@ -420,6 +430,7 @@
             case 10:
             {
                 DepositFormViewController *formViewController = [DepositFormViewController new];
+                [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"Withdraw"];
                 [self.navigationController pushViewController:formViewController animated:YES];
                 break;
             }

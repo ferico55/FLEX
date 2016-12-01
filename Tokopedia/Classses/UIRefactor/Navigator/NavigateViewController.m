@@ -246,7 +246,7 @@
 //        [viewController.navigationController pushViewController:controller animated:YES];
         TKPDTabViewController *controller = [TKPDTabViewController new];
         controller.hidesBottomBarWhenPushed = YES;
-        controller.inboxType = @"Talk";
+        controller.inboxType = InboxTypeTalk;
         
         InboxTalkViewController *allTalk = [InboxTalkViewController new];
         allTalk.inboxTalkType = InboxTalkTypeAll;
@@ -579,6 +579,20 @@
 //    placePicker.type = type;
 //    placePicker.delegate = viewController;
     [viewController.navigationController pushViewController:placePicker animated:YES];
+}
+
++ (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController {
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId];
+    NSString *deviceID = [auth getMyDeviceToken];
+    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
+    NSString *jsURL = @"https://js.tokopedia.com/wvlogin?uid=";
+    NSString *url = [[[[[jsURL stringByAppendingString:userID] stringByAppendingString:@"&token="] stringByAppendingString:deviceID] stringByAppendingString:@"&url="] stringByAppendingString:pulsaURL];
+    WebViewController *controller = [WebViewController new];
+    controller.strURL = url;
+    controller.strTitle = @"Top Up Saldo";
+    
+    [viewController.navigationController pushViewController:controller animated:YES];
 }
 
 @end
