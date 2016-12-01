@@ -31,7 +31,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private var tickerPlaceholder: UIView!
     private var miniSliderPlaceholder: UIView!
     private var categoryPlaceholder: OAStackView!
-    private var keyboardManager: PulsaKeyboardManager!
     private var homePageCategoryData: HomePageCategoryData?
     private var pulsaActiveCategories: [PulsaCategory]?
     
@@ -59,7 +58,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.initKeyboardManager()
         self.initOuterStackView()
         self.initViewLayout()
         self.requestTicker()
@@ -82,15 +80,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.stopBannerRequest()
-        
-        self.keyboardManager.endObservingKeyboard()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.keyboardManager.beginObservingKeyboard()
-    }
     
     // MARK: Setup StackView
     
@@ -276,13 +267,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.categoryPlaceholder.layoutMarginsRelativeArrangement = true
         self.categoryPlaceholder.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
-    }
-    
-    // MARK: Keyboard Manager
-    
-    private func initKeyboardManager() {
-        self.keyboardManager = PulsaKeyboardManager()
-        self.keyboardManager.homePageScrollView = self.homePageScrollView
     }
     
     // MARK: Request Method

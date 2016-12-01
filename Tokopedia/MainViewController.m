@@ -42,6 +42,7 @@
 #import "MoreWrapperViewController.h"
 #import "PhoneVerifViewController.h"
 #import "Tokopedia-Swift.h"
+#import "MyWishlistViewController.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -208,33 +209,7 @@ typedef enum TagRequest {
                                              forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
                                              forState:UIControlStateSelected];
-//    
-//    /** TAB BAR INDEX 1 **/
-//    /** adjust view controllers at tab bar controller **/
-//    NSMutableArray *viewcontrollers = [NSMutableArray new];
-//    /** create new view controller **/
-//    if (!isauth) {
-//        // before login
-////        HotlistViewController *v = [HotlistViewController new];
-////        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-////        [viewcontrollers addObject:v];
-//        CategoryViewController *controller = [[CategoryViewController alloc] init];
-//        controller.data = @{@"auth" : _auth?:@{}};
-//        [viewcontrollers addObject:controller];
-//    }
-//    else{
-//        // after login
-//        HotlistViewController *controller = [[HotlistViewController alloc] init];
-//        controller.data = @{@"auth" : _auth?:@{}};
-//        [viewcontrollers addObject:controller];
-//        ProductFeedViewController *v1 = [ProductFeedViewController new];
-//        [viewcontrollers addObject:v1];
-//        HistoryProductViewController *v2 = [HistoryProductViewController new];
-//        [viewcontrollers addObject:v2];
-//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-//        [viewcontrollers addObject:v3];
-//    }
-    
+
     _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     [swipevcNav.navigationBar setTranslucent:NO];
@@ -248,14 +223,12 @@ typedef enum TagRequest {
     categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 3 **/
-    SearchViewController *search = [SearchViewController new];
-    if (_auth) {
-        search.data = @{kTKPD_AUTHKEY:_auth?:@{}};
-    }
-    UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
-    searchNavBar.navigationBar.translucent = NO;
+    MyWishlistViewController *wishlistController = [MyWishlistViewController new];
+    
+    UINavigationController *wishlistNavbar = [[UINavigationController alloc]initWithRootViewController:wishlistController];
+    wishlistNavbar.navigationBar.translucent = NO;
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        search.edgesForExtendedLayout = UIRectEdgeNone;
+        wishlistController.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
     /** TAB BAR INDEX 4 **/
@@ -286,13 +259,13 @@ typedef enum TagRequest {
     {
         _swipevc.extendedLayoutIncludesOpaqueBars = YES;
         categoryvc.extendedLayoutIncludesOpaqueBars = YES;
-        search.extendedLayoutIncludesOpaqueBars = YES;
+        wishlistController.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
         moreNavBar.extendedLayoutIncludesOpaqueBars = YES;
         [moreNavBar.navigationBar setTranslucent:NO];
     }
     
-    NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
+    NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, wishlistNavbar, cartNavBar, moreNavBar, nil];
     _tabBarController.viewControllers = controllers;
     _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
@@ -329,16 +302,16 @@ typedef enum TagRequest {
 -(void)initTabBar {
     NSArray* items = @[@{@"name" : @"Home", @"image" : @"icon_home.png", @"selectedImage" : @"icon_home_active.png"},
                        @{@"name" : @"Hot List", @"image" : @"icon_hotlist.png", @"selectedImage" : @"icon_hotlist_active.png"},
-                       @{@"name" : @"Cari", @"image" : @"icon_search.png", @"selectedImage" : @"icon_search_active.png"},
+                       @{@"name" : @"Wishlist", @"image" : @"icon_wishlist.png", @"selectedImage" : @"icon_wishlist_active.png"},
                        @{@"name" : @"Keranjang", @"image" : @"icon_cart.png", @"selectedImage" : @"icon_cart_active.png"},
-                       @{@"name" : @"More", @"image" : @"icon_more.png", @"selectedImage" : @"icon_more_active.png"}];
+                       @{@"name" : @"Lainnya", @"image" : @"icon_more.png", @"selectedImage" : @"icon_more_active.png"}];
     UITabBar *tabBar = _tabBarController.tabBar;
     tabBar.tintColor = [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1];
     tabBar.backgroundImage = [UIImage imageNamed:@"tabnav_bg"];
     
     NSUInteger index = 0;
     NSDictionary *textAttributes = @{
-                                     NSForegroundColorAttributeName:[UIColor blackColor],
+                                     NSForegroundColorAttributeName:[UIColor colorWithRed:(102/255.0) green:(102/255.0) blue:(102/255.0) alpha:1],
                                      NSFontAttributeName:IS_IPAD?[UIFont microTheme]:[UIFont systemFontOfSize:11]};
     for(NSDictionary* item in items) {
         
@@ -404,8 +377,6 @@ typedef enum TagRequest {
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    _swipevc.navigationItem.titleView = logo;
 
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];

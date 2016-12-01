@@ -22,6 +22,7 @@
 #import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
+#import "ImagePickerCategoryController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -33,12 +34,17 @@
 
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
+#import "SearchViewController.h"
 
 @interface HomeTabViewController ()
 <
     UIScrollViewDelegate,
     NotificationManagerDelegate,
-    RedirectHandlerDelegate
+    RedirectHandlerDelegate,
+    UISearchControllerDelegate,
+    UISearchResultsUpdating,
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate
 >
 {
     NotificationManager *_notifManager;
@@ -48,11 +54,16 @@
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
     NSURL *_deeplinkUrl;
+    Debouncer* _debouncer;
+    
+    
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
+@property (strong, nonatomic) PromoView *promoView;
+@property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
 @property (strong, nonatomic) HomeTabHeaderViewController *homeHeaderController;
@@ -81,39 +92,19 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeeplinkUrl:)
-//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
-   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
-
-//- (void)didLoggedIn {
-//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-//    CGRect frame = _scrollView.frame;
-//    frame.origin.y = 44;
-//    frame.size.height = self.view.frame.size.height-44;
-//    _scrollView.frame = frame;
-//
-////    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
-//}
-
-//- (void)didLoggedOut {
-//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
-//}
 
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-	__weak typeof(self) weakSelf = self;
     _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
+    
     _historyController = [HistoryProductViewController new];
     _shopViewController = [FavoritedShopViewController new];
     
@@ -127,15 +118,6 @@
 
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
-    
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
@@ -151,6 +133,10 @@
 
     [self addChildViewController:_homePageController];
     [self.scrollView addSubview:_homePageController.view];
+    
+    [self setSearchBar];
+    [self setSearchByImage];
+    
     
     NSLayoutConstraint *width =[NSLayoutConstraint
                                 constraintWithItem:_homePageController.view
@@ -193,8 +179,70 @@
     [self setHeaderBar];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.searchController setActive:NO];
+    self.definesPresentationContext = NO;
+}
+
+- (void)setSearchBar {
+    SearchViewController* resultController = [[SearchViewController alloc] init];
+    resultController.presentController = self;
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.placeholder = @"Cari produk atau toko";
+    self.searchController.searchBar.tintColor = [UIColor blackColor];
+    self.searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.delegate = self;
+    
+    resultController.searchBar = self.searchController.searchBar;
+    [self.searchController.searchBar sizeToFit];
+    self.definesPresentationContext = YES;
+    
+    //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
+    UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
+    [searchWrapper setBackgroundColor:[UIColor clearColor]];
+    [searchWrapper addSubview:self.searchController.searchBar];
+    self.searchController.searchBar.layer.borderWidth = 1;
+    self.searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
+    
+    [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(searchWrapper);
+    }];
+
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]} forState:UIControlStateNormal];
+    self.navigationItem.titleView = searchWrapper;
+}
+
+- (void)setSearchByImage {
+    if([self isEnableImageSearch]) {
+        self.searchController.searchBar.showsBookmarkButton = YES;
+        [self.searchController.searchBar setImage:[UIImage imageNamed:@"icon_snap.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    } else  {
+        self.searchController.searchBar.showsBookmarkButton = NO;
+    }
+}
+
+
+-(BOOL)isEnableImageSearch{
+    UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+    if (!userManager.isLogin) {
+        return NO;
+    }
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    
+    NSString *enableImageSearchString = [gtmContainer stringForKey:@"enable_image_search"]?:@"0";
+    
+    return [enableImageSearchString isEqualToString:@"1"];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     
     self.navigationController.title = @"Home";
     
@@ -218,12 +266,21 @@
     }
     
     [Localytics triggerInAppMessage:@"Home - Hot List"];
+    
 }
+
+
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     float fractionalPage = _scrollView.contentOffset.x  / _scrollView.frame.size.width;
     _page = lround(fractionalPage);
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.definesPresentationContext = YES;
 }
 
 - (void)setArrow {
@@ -284,8 +341,7 @@
         [self addChildViewController:_homePageController];
         [self.scrollView addSubview:_homePageController.view];
         [_homePageController didMoveToParentViewController:self];
-    }
-    if(page == 1) {
+    } else if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
         frame.origin.x = _scrollView.frame.size.width;
         frame.size.height = _scrollView.frame.size.height;
@@ -295,12 +351,16 @@
         [self.scrollView addSubview:_productFeedController.view];
         [_productFeedController didMoveToParentViewController:self];
     } else if(page == 2) {
-        CGRect frame = _wishListViewController.view.frame;
-        frame.origin.x = _scrollView.frame.size.width*page;
-        frame.size.height = _scrollView.frame.size.height;
-        _wishListViewController.view.frame = frame;
-        [self addChildViewController:_wishListViewController];
-        [self.scrollView addSubview:_wishListViewController.view];
+        if (_promoView == nil){
+            _promoView = [[PromoView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _scrollView.frame.size.height)configuration:[[WKWebViewConfiguration alloc] init]];
+            _promoView.homeTabViewController = self;
+            CGRect frame = _promoView.frame;
+            frame.origin.x = _scrollView.frame.size.width*page;
+            frame.size.height = _scrollView.frame.size.height;
+            frame.size.width = [UIScreen mainScreen].bounds.size.width;
+            _promoView.frame = frame;
+            [self.scrollView addSubview:_promoView];
+        }
     } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
@@ -327,17 +387,7 @@
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
     [self goToPage:index-1];
-    if(index == 1) {
-        [self tapButtonAnimate:0];
-    } else if(index == 2) {
-        [self tapButtonAnimate:_scrollView.frame.size.width];
-    } else if(index == 3) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*2];
-    } else if(index == 4) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*3];
-    } else if(index == 5) {
-        [self tapButtonAnimate:_scrollView.frame.size.width*4];
-    }
+    [self tapButtonAnimate:_scrollView.frame.size.width*(index-1)];
 }
 
 - (void)tapButtonAnimate:(CGFloat)totalOffset{
@@ -349,7 +399,7 @@
 - (void)redirectToWishList
 {
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    tempBtn.tag = 3;
+    tempBtn.tag = 4;
     [_homeHeaderController tapButton:tempBtn];
 }
 
@@ -461,6 +511,31 @@
     NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
     
     [_redirectHandler proxyRequest:code];
+}
+
+#pragma mark - Search Controller Delegate
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        searchController.searchResultsController.view.hidden = NO;
+    });
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self setSearchByImage];
+}
+
+- (void)userDidLogout:(NSNotification*)notification {
+    [self setSearchByImage];
 }
 
 
