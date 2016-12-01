@@ -9,16 +9,15 @@
 import UIKit
 import WebKit
 
-class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegate {
+class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     
-    var homeTabViewController: HomeTabViewController?
-    private var firstTimeLoad = true
-    private let promoURL = "https://m.tokopedia.com/promo?flag_app=1"
+    var homeTabViewController: HomeTabViewController!
+    private static let PROMO_URL = "https://m.tokopedia.com/promo?flag_app=1"
     private var refreshControl: UIRefreshControl!
     private var activityIndicator: UIActivityIndicatorView!
-    private var retryButton: UIButton!
+    var retryButton: UIButton!
     private var urlRequest: NSURLRequest{
-        return NSURLRequest(URL: NSURL(string: promoURL)!)
+        return NSURLRequest(URL: NSURL(string: PromoView.PROMO_URL)!)
     }
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
         super.init(frame: frame, configuration: configuration)
@@ -37,11 +36,11 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
     // MARK: WK Web View Delegate
     
     func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.refreshControl.beginRefreshing()
+        refreshControl.beginRefreshing()
     }
     
     func webView(webView: WKWebView, didCommitNavigation navigation: WKNavigation!) {
-        self.refreshControl.endRefreshing()
+        refreshControl.endRefreshing()
         activityIndicator.stopAnimating()
     }
     
@@ -52,10 +51,10 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
                 webViewController.strURL = navigationAction.request.URL?.absoluteString
                 webViewController.onTapLinkWithUrl = { [unowned self] url in
                     if url.absoluteString == "https://www.tokopedia.com/" {
-                        self.homeTabViewController?.navigationController?.popViewControllerAnimated(true)
+                        self.homeTabViewController.navigationController?.popViewControllerAnimated(true)
                     }
                 }
-                homeTabViewController?.navigationController?.pushViewController(webViewController, animated: true)
+                homeTabViewController.navigationController?.pushViewController(webViewController, animated: true)
                 decisionHandler(.Cancel)
                 return
             }
@@ -67,18 +66,10 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
         }
     }
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-        let retryCollectionReusableView = RetryCollectionReusableView()
-        retryCollectionReusableView.delegate = self
-        self.addSubview(retryCollectionReusableView)
-    }
-    
     func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
         refreshControl.endRefreshing()
         let urlRequest = NSURLRequest(URL: NSURL(string: "about:blank")!)
         webView.loadRequest(urlRequest)
-        let retryCollectionReusableView = RetryCollectionReusableView()
-        retryCollectionReusableView.delegate = self
         retryButton.hidden = false
     }
     
@@ -91,7 +82,7 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
     }
     
     func generateRetryButton(){
-        retryButton = (NSBundle.mainBundle().loadNibNamed("RetryCollectionReusableView", owner: nil, options: nil)![0] as! RetryCollectionReusableView).retryButton
+        retryButton = (UINib(nibName: "RetryCollectionReusableView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! RetryCollectionReusableView).retryButton
         retryButton.addTarget(self, action: #selector(PromoView.pressRetryButton), forControlEvents: .TouchUpInside)
         retryButton.hidden = true
         retryButton.layer.cornerRadius = 3
@@ -111,7 +102,6 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate, RetryViewDelegat
         activityIndicator.frame.origin.y = 15
         activityIndicator.startAnimating()
         self.addSubview(activityIndicator)
-
     }
     
     //MARK: Common Method
