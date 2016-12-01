@@ -11,6 +11,7 @@
 
 #define CPaddingTopDescToko 10
 #define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoCellIdentifier"
+#define kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER @"DetailProductVideoCellIdentifier"
 
 #pragma mark - Detail Product Info Cell Delegate
 @protocol DetailProductInfoCellDelegate <NSObject>
