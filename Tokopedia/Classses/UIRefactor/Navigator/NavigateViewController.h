@@ -45,6 +45,7 @@
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID;
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController;
++ (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
