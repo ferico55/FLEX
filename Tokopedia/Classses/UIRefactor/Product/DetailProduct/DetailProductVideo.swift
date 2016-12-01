@@ -13,7 +13,14 @@ class DetailProductVideo: NSObject {
     var url: String!
     var type: String!
     var varDefault: Int!
-    var status: NSNumber!
+    var status: NSNumber! {
+        didSet {
+            if status == 1 {
+                banned = false
+            }
+        }
+    }
+    var banned: Bool = true
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: DetailProductVideo.self)

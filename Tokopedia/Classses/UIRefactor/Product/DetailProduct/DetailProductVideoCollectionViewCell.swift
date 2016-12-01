@@ -11,10 +11,10 @@ import youtube_ios_player_helper
 
 class DetailProductVideoCollectionViewCell: UICollectionViewCell, YTPlayerViewDelegate{
 
-    @IBOutlet var youtubePlayerView: YTPlayerView!
-    @IBOutlet var thumbnailImageView: UIImageView!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet var thumbnailContainerView: UIView!
+    @IBOutlet private var youtubePlayerView: YTPlayerView!
+    @IBOutlet private var thumbnailImageView: UIImageView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var thumbnailContainerView: UIView!
     var playerVars = [
         "origin" : "https://www.tokopedia.com"
     ]
@@ -24,13 +24,21 @@ class DetailProductVideoCollectionViewCell: UICollectionViewCell, YTPlayerViewDe
             self.youtubePlayerView.loadWithVideoId(video.url, playerVars: playerVars)
             self.youtubePlayerView.webView?.allowsInlineMediaPlayback = false
             self.youtubePlayerView.delegate = self
+            self.thumbnailImageView.hidden = true
             self.thumbnailImageView.setImageWithURL(NSURL(string: "https://img.youtube.com/vi/\(video.url)/0.jpg"))
+            
+            if UI_USER_INTERFACE_IDIOM() == .Pad {
+                switch UIDevice.currentDevice().systemVersion.compare("10.0.0", options: NSStringCompareOptions.NumericSearch) {
+                // jika di bawah iOS 10.0.0, karena untuk iPad dengan OS di bawah 10 tidak dapat memutar video Youtube secara full screen ketika pertama kali di-play
+                case .OrderedAscending:
+                    self.thumbnailContainerView.hidden = true
+                    self.youtubePlayerView.hidden = false
+                default:
+                    break
+                }
+            }
         }
     }
-    
-    var playerViewDidBecomeReady: ((playerView: YTPlayerView) -> Void)?
-    var playerViewDidChangeToState: ((playerView: YTPlayerView, didChangeToState: YTPlayerState) -> Void)?
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,11 +50,19 @@ class DetailProductVideoCollectionViewCell: UICollectionViewCell, YTPlayerViewDe
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView) {
-        playerViewDidBecomeReady?(playerView: playerView)
+        self.thumbnailImageView.hidden = false
+        self.activityIndicator.stopAnimating()
     }
     
     func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
-        playerViewDidChangeToState?(playerView: playerView, didChangeToState: state)
+        switch state {
+        case .Paused, .Ended:
+            self.activityIndicator.stopAnimating()
+        case .Buffering:
+            self.activityIndicator.startAnimating()
+        default:
+            break
+        }
     }
 
 }

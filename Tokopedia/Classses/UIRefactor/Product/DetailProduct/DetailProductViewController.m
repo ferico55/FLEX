@@ -78,7 +78,6 @@
 
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
-#import "YTPlayerView.h"
 #import "FavoriteShopRequest.h"
 
 static NSInteger VIDEO_CELL_HEIGHT = 105;
@@ -1313,14 +1312,13 @@ TTTAttributedLabelDelegate
     DetailProductVideoResponse *detailProductVideoResponse = [result objectForKey:@""];
     
     for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
+        
         if ([videoData.videos count] > 0) {
-            NSMutableArray<DetailProductVideo*> *tempVideoArray = [NSMutableArray<DetailProductVideo*> new];
-            for (DetailProductVideo *video in videoData.videos) {
-                if ([video.status isEqual: @1]) {
-                    [tempVideoArray addObject:video];
-                }
-            }
-            _detailProductVideoDataArray = [tempVideoArray mutableCopy];
+            NSMutableArray<DetailProductVideo*> *nonBannedVideoArray = [NSMutableArray<DetailProductVideo*> new];
+            nonBannedVideoArray = [[videoData.videos bk_select:^BOOL(id obj) {
+                return ((DetailProductVideo *)obj).banned == NO;
+            }] mutableCopy];
+            _detailProductVideoDataArray = nonBannedVideoArray;
             return;
         }
     }
