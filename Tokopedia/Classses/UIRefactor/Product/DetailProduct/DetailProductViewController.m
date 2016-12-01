@@ -80,6 +80,8 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import "FavoriteShopRequest.h"
 
+static NSInteger VIDEO_CELL_HEIGHT = 105;
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -136,7 +138,8 @@ TTTAttributedLabelDelegate
     OtherProduct *_otherProduct;
     
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
-    NSOperationQueue *operationWishList;
+    
+    TokopediaNetworkManager *tokopediaNetworkManagerVideo;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -213,6 +216,7 @@ TTTAttributedLabelDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportWidthConstraint;
+@property (strong, nonatomic) NSArray<DetailProductVideo*> *detailProductVideoDataArray;
 @property (strong, nonatomic) IBOutlet UILabel *cashbackLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *priceLabelTop;
 
@@ -259,7 +263,6 @@ TTTAttributedLabelDelegate
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
-    operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
@@ -271,6 +274,9 @@ TTTAttributedLabelDelegate
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
     
+    
+    tokopediaNetworkManagerVideo = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerVideo.isUsingHmac = YES;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     
@@ -294,6 +300,7 @@ TTTAttributedLabelDelegate
     //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     [_table setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [_table registerNib:[UINib nibWithNibName:@"DetailProductVideoTableViewCell" bundle:nil] forCellReuseIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
@@ -335,8 +342,8 @@ TTTAttributedLabelDelegate
     _constraintHeightDinkButton.constant = 0;
     
     afterLoginRedirectTo = @"";
-    
     [self unsetWarehouse];
+    _detailProductVideoDataArray = [NSArray<DetailProductVideo*> new];
 }
 
 - (void)initNotification {
@@ -417,11 +424,7 @@ TTTAttributedLabelDelegate
         [self requestprocess:product];
         
         [self loadData];
-        if (_product.data.wholesale_price) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
-        } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
-        }
+
         [self.table reloadData];
     }
 }
@@ -809,84 +812,47 @@ TTTAttributedLabelDelegate
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [bt.titleLabel setFont:[UIFont title2ThemeMedium]];
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
-    switch (section) {
-        case 0:
-            [bt setTitle:PRODUCT_INFO  forState: UIControlStateNormal];
-            break;
-        case 1:
-            if (!_isnodatawholesale)
-                [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
-            else
-            {
-                CGRect rectLblDesc = CGRectZero;
-                [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
-                
-                CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
-                if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-                {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
-                    
-                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
-                }
-                else
-                {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
-                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
-                }
-                [expandCollapseButton removeFromSuperview];
-                
-                
-                if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC) {
-                    btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
-                    [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
-                    [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                    btnExpand.tag = 0;
-                    btnExpand.objSection = (int)section;
-                    
-                    [mView addSubview:btnExpand];
-                }
-                [mView addSubview:bt];
-                return mView;
-            }
-            break;
-        case 2:
+    
+    if (section == 0){
+        [bt setTitle:PRODUCT_INFO  forState: UIControlStateNormal];
+    } else if (section == 1 && !_isnodatawholesale) {
+        [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
+    } else if (section == [_table numberOfSections] - 2) {
+        [bt removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+        [bt setTitle: @"Video Produk" forState: UIControlStateNormal];
+        [expandCollapseButton removeFromSuperview];
+    } else if (section == [_table numberOfSections] - 1) {
+        [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+        CGRect rectLblDesc = CGRectZero;
+        CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
+        
+        if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
         {
-            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
-            CGRect rectLblDesc = CGRectZero;
-            CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
-            
-            if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-            {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
-                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
-            }
-            else
-            {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
-                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
-            }
-            
-            
-            if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC)
-            {
-                btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
-                [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
-                [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                btnExpand.tag = 0;
-                btnExpand.objSection = (int)section;
-                [mView addSubview:btnExpand];
-            }
-            
-            
-            [expandCollapseButton removeFromSuperview];
-            [mView addSubview:bt];
-            return mView;
+            rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+            [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
         }
-            break;
-            
-        default:
-            break;
+        else
+        {
+            rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
+            [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+        }
+        
+        
+        if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC)
+        {
+            btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
+            [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
+            [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            btnExpand.tag = 0;
+            btnExpand.objSection = (int)section;
+            [mView addSubview:btnExpand];
+        }
+        
+        [expandCollapseButton removeFromSuperview];
+        [mView addSubview:bt];
+        return mView;
     }
+    
     [mView addSubview:bt];
     
     // Add border bottom if view header section is collapse
@@ -905,25 +871,12 @@ TTTAttributedLabelDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(! _isnodatawholesale)
-    {
-        //40 is height default of title description
-        if(section == 2)
-        {
-            if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
-            else
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
-        }
-    }
-    else if(section == 1)
-    {
+    if (section == [_table numberOfSections] - 1){
         if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
             return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
         else
             return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
     }
-    
     return 40;
 }
 
@@ -950,31 +903,46 @@ TTTAttributedLabelDelegate
     if (sectionIsExanded) {
         if (indexPath.section == 0) {
             return _informationHeight+50;
-        } else if (indexPath.section == 1 && _product.data.wholesale_price.count > 0) {
-            return (44*2) + (_product.data.wholesale_price.count*44);//44 is standart height of uitableviewcell
-        } else {
+        }
+        
+        if (!_isnodatawholesale) {
+            if (indexPath.section == 1) {
+                return (44*2) + (_product.data.wholesale_price.count*44);//44 is standart height of uitableviewcell
+            }
+        }
+        
+        if (_detailProductVideoDataArray.count > 0) {
+            if (indexPath.section == [_table numberOfSections] - 2) {
+                return VIDEO_CELL_HEIGHT;
+            }
+        }
+        
+        if (indexPath.section == [_table numberOfSections] - 1) {
             return _descriptionHeight+50;
         }
-    } else {
-        return 0;
     }
+    
+    return 0;
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (!_isnodatawholesale)return 3;
-    else return 2;
+    if (!_isnodatawholesale){
+        if (_detailProductVideoDataArray.count > 0) {
+            return 4;
+        } else return 3;
+    } else if (_detailProductVideoDataArray.count > 0){
+        return 3;
+    }
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(! _isnodatawholesale)
-    {
-        if(section == 2)
-            return 0;
-    }
-    else if(section == 1)
+    if (section == [_table numberOfSections] - 1) {
         return 0;
+    }
     
     return 1;
 }
@@ -983,6 +951,10 @@ TTTAttributedLabelDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
+    
+    if (indexPath.section == [_table numberOfSections] - 1){
+        return [self getDetailProductDescriptionTableViewCell];
+    }
     
     // Configure the cell...
     if (indexPath.section == 0) {
@@ -993,6 +965,7 @@ TTTAttributedLabelDelegate
             productInfoCell = [DetailProductInfoCell newcell];
             ((DetailProductInfoCell*)productInfoCell).delegate = self;
         }
+        [productInfoCell layoutIfNeeded];
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable
@@ -1030,40 +1003,37 @@ TTTAttributedLabelDelegate
             
             return cell;
         }
-        if (indexPath.section == 2) {
-            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (descriptionCell == nil) {
-                descriptionCell = [DetailProductDescriptionCell newcell];
-                if(!_isnodata) {
-                    descriptionCell.descriptionText = _formattedProductDescription;
-                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
-                }
-            }
-            cell = descriptionCell;
-            return cell;
-            
-        }
     }
-    else
+    
+    if (_detailProductVideoDataArray.count > 0)
     {
-        if (indexPath.section == 1) {
-            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (descriptionCell == nil) {
-                descriptionCell = [DetailProductDescriptionCell newcell];
-                if(!_isnodata) {
-                    descriptionCell.descriptionText = _formattedProductDescription;
-                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
-                }
-            }
-            
-            cell = descriptionCell;
-            return cell;
+        if (indexPath.section == [_table numberOfSections] - 2) {
+            return [self getDetailProductVideoTableViewCell];
         }
         
     }
+    
     return cell;
+}
+
+-(DetailProductVideoTableViewCell *) getDetailProductVideoTableViewCell {
+    DetailProductVideoTableViewCell *videoCell = (DetailProductVideoTableViewCell *)[_table dequeueReusableCellWithIdentifier:kTKPDDETAILPRODUCTVIDEOCELLIDENTIFIER];
+    videoCell.videos = _detailProductVideoDataArray;
+    return videoCell;
+}
+
+-(DetailProductDescriptionCell*) getDetailProductDescriptionTableViewCell {
+    NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+    DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[_table dequeueReusableCellWithIdentifier:cellid];
+    if (descriptionCell == nil) {
+        descriptionCell = [DetailProductDescriptionCell newcell];
+        if(!_isnodata) {
+            descriptionCell.descriptionText = _formattedProductDescription;
+            _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
+        }
+    }
+    
+    return descriptionCell;
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)sender
@@ -1229,7 +1199,11 @@ TTTAttributedLabelDelegate
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
-    
+    if ([self isAbleToLoadVideo]) {
+        [self getVideoData];
+    } else {
+        [self setExpandedSection];
+    }
     
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
@@ -1323,6 +1297,53 @@ TTTAttributedLabelDelegate
         [AnalyticsManager trackProductView:_product];
         [self requestprocess:object];
     }
+}
+
+- (void) getVideoData {
+    __weak __typeof(self) weakSelf = self;
+    [tokopediaNetworkManagerVideo requestWithBaseUrl:[NSString goldMerchantUrl] path:[NSString stringWithFormat:@"/v1/product/video/%@", _product.data.info.product_id] method:RKRequestMethodGET parameter:nil mapping:[DetailProductVideoResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf getVideoSuccess: successResult];
+        [self setExpandedSection];
+    } onFailure:^(NSError *errorResult) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+        [alert show];
+    }];
+}
+
+- (void) getVideoSuccess: (RKMappingResult*) successResult {
+    NSDictionary *result = successResult.dictionary;
+    DetailProductVideoResponse *detailProductVideoResponse = [result objectForKey:@""];
+    
+    for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
+        
+        if ([videoData.videos count] > 0) {
+            NSArray<DetailProductVideo*> *nonBannedVideoArray = [videoData.videos bk_select:^BOOL(DetailProductVideo *obj) {
+                return obj.banned == NO;
+            }];
+            _detailProductVideoDataArray = nonBannedVideoArray;
+            return;
+        }
+    }
+    
+    return;
+}
+
+-(void) setExpandedSection {
+    if (!_isnodatawholesale) {
+        if (_detailProductVideoDataArray.count > 0) {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @2]];
+        } else {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];
+        }
+        
+    } else {
+        if (_detailProductVideoDataArray.count > 0) {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0, @1]];
+        } else {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[@0]];
+        }
+    }
+    [self.table reloadData];
 }
 
 - (void) hideReportButton: (BOOL) isNeedToRemoveBtnReport{
@@ -1951,11 +1972,16 @@ TTTAttributedLabelDelegate
     _shoplocation.attributedText = myString;
     //_shoplocation.text = _product.data.shop_info.shop_location?:@"";
     
-    if(_product.data.shop_info.shop_is_gold == 1) {
+    if(_product.data.shop_info.shop_is_gold == 1 || _product.data.shop_info.official) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
     }
+    
+    if (_product.data.shop_info.official) {
+        _goldShop.image = [UIImage imageNamed:@"badge_official_small"];
+    }
+    
     _constraintBadgeGoldWidth.constant = (_product.data.shop_info.shop_is_gold == 1)?20:0;
     _constraintBadgeLuckySpace.constant = (_product.data.shop_info.shop_is_gold == 1)?4:0;
     
@@ -2457,6 +2483,10 @@ TTTAttributedLabelDelegate
 
 -(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
     return [NSString stringWithFormat:@"/v1/products/%@/wishlist", productId];
+}
+
+-(BOOL) isAbleToLoadVideo {
+    return _product.data.shop_info.shop_is_gold == 1 ? YES : NO;
 }
 
 @end

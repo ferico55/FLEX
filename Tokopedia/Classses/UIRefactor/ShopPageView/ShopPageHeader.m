@@ -196,10 +196,14 @@
     
     _descriptionView.nameLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
     
-    if (_shop.result.info.shop_is_gold == 1) {
+    if (_shop.result.info.shop_is_gold == 1 || _shop.result.info.official) {
         _goldBadgeView.hidden = NO;
     } else {
         _constraintGoldBadgeWidth.constant = 0;
+    }
+    
+    if (_shop.result.info.official) {
+        _goldBadgeView.image = [UIImage imageNamed:@"badge_official"];
     }
     
     

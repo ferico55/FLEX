@@ -19,6 +19,7 @@
         modelView.shopLocation = self.shop_location;
         modelView.isGoldShop = (self.shop_gold_status == 1) ? YES : NO;
         modelView.isFavorite = [self.shop_is_fave_shop isEqualToString:@"1"] ? YES : NO;
+        modelView.official = self.official;
         
         _modelView = modelView;
     }
