@@ -246,7 +246,7 @@
 //        [viewController.navigationController pushViewController:controller animated:YES];
         TKPDTabViewController *controller = [TKPDTabViewController new];
         controller.hidesBottomBarWhenPushed = YES;
-        controller.inboxType = @"Talk";
+        controller.inboxType = InboxTypeTalk;
         
         InboxTalkViewController *allTalk = [InboxTalkViewController new];
         allTalk.inboxTalkType = InboxTalkTypeAll;
