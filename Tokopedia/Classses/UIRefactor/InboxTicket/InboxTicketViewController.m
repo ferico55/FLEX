@@ -285,7 +285,6 @@
 #pragma mark - No Result Delegate
 
 - (void)buttonDidTapped:(id)sender{
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToContactUs" object:nil];
     if(_onTapContactUsButton) {
         _onTapContactUsButton();
     }    
