@@ -86,12 +86,12 @@
             
             NSURL *url = [NSURL URLWithString:imageAttachment.uri_thumbnail];
             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            __block UIImage *image = nil;
             __weak typeof(self) weakSelf = self;
             
             [NSURLConnection sendAsynchronousRequest:urlRequest
                                                queue:[NSOperationQueue mainQueue]
                                    completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+                                       UIImage *image;
                                        if (!connectionError) {
                                            image = [[UIImage alloc] initWithData:data];
                                        } else {
