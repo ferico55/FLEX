@@ -161,13 +161,8 @@
                                                                                                                                              delegate:self];
                                                                             [alert show];
                                                                             
-                                                                            for (UIViewController *aViewController in allViewControllers) {
-                                                                                if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                                    [self.navigationController popToViewController:aViewController animated:YES];
-                                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                                        object:nil];
-                                                                                }
-                                                                            }
+                                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                                            _onReviewCommentSubmitted();
                                                                         } else {
                                                                             if (result.message_error && result.message_error.count > 0) {
                                                                                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error

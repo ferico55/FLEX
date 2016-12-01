@@ -525,10 +525,14 @@
 }
 
 - (void)didTapToGiveResponse:(DetailReputationReview *)review {
+    __weak __typeof(self) weakSelf = self;
     GiveReviewResponseViewController *vc = [GiveReviewResponseViewController new];
     vc.inbox = _detailMyInboxReputation;
     vc.review = review;
     vc.imageCache = _imageCache;
+    vc.onReviewCommentSubmitted = ^{
+        [weakSelf refreshData];
+    };
     
     [self.navigationController pushViewController:vc animated:YES];
 }
