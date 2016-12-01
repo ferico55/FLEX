@@ -1314,10 +1314,9 @@ TTTAttributedLabelDelegate
     for (DetailProductVideoData* videoData in detailProductVideoResponse.data){
         
         if ([videoData.videos count] > 0) {
-            NSMutableArray<DetailProductVideo*> *nonBannedVideoArray = [NSMutableArray<DetailProductVideo*> new];
-            nonBannedVideoArray = [[videoData.videos bk_select:^BOOL(id obj) {
-                return ((DetailProductVideo *)obj).banned == NO;
-            }] mutableCopy];
+            NSArray<DetailProductVideo*> *nonBannedVideoArray = [videoData.videos bk_select:^BOOL(DetailProductVideo *obj) {
+                return obj.banned == NO;
+            }];
             _detailProductVideoDataArray = nonBannedVideoArray;
             return;
         }
