@@ -2623,6 +2623,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		92D57DE31DE6DE3F00226CFC /* badge_official_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D57DE01DE6DE3F00226CFC /* badge_official_small.png */; };
+		92D57DE41DE6DE3F00226CFC /* badge_official_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D57DE11DE6DE3F00226CFC /* badge_official_small@2x.png */; };
+		92D57DE51DE6DE3F00226CFC /* badge_official_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D57DE21DE6DE3F00226CFC /* badge_official_small@3x.png */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6473,6 +6476,9 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		92D57DE01DE6DE3F00226CFC /* badge_official_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badge_official_small.png; sourceTree = "<group>"; };
+		92D57DE11DE6DE3F00226CFC /* badge_official_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "badge_official_small@2x.png"; sourceTree = "<group>"; };
+		92D57DE21DE6DE3F00226CFC /* badge_official_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "badge_official_small@3x.png"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -11784,6 +11790,9 @@
 		34CF7FC31DE59BE400D25E0D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				92D57DE01DE6DE3F00226CFC /* badge_official_small.png */,
+				92D57DE11DE6DE3F00226CFC /* badge_official_small@2x.png */,
+				92D57DE21DE6DE3F00226CFC /* badge_official_small@3x.png */,
 				34CF7FC41DE59BE400D25E0D /* activate_push_1.png */,
 				34CF7FC51DE59BE400D25E0D /* activate_push_1@2x.png */,
 				34CF7FC61DE59BE400D25E0D /* activate_push_1@3x.png */,
@@ -13531,6 +13540,7 @@
 				34CF8D5A1DE59BFB00D25E0D /* icon_search@2x.png in Resources */,
 				34CF8A9E1DE59BF600D25E0D /* icon-checkmark-filled.png in Resources */,
 				34CF8BA41DE59BF800D25E0D /* icon_medal_silver14@2x.png in Resources */,
+				92D57DE41DE6DE3F00226CFC /* badge_official_small@2x.png in Resources */,
 				34CF88B11DE59BF200D25E0D /* OrderRejectExplanationViewController.xib in Resources */,
 				34CF8A6C1DE59BF500D25E0D /* icon_18.png in Resources */,
 				34CF8D411DE59BFB00D25E0D /* ic_home.png in Resources */,
@@ -13609,6 +13619,7 @@
 				34CF89CB1DE59BF400D25E0D /* TransactionCartResultCell.xib in Resources */,
 				34CF8B1D1DE59BF700D25E0D /* icon_circle.png in Resources */,
 				34CF8B781DE59BF700D25E0D /* icon_lock_grey.png in Resources */,
+				92D57DE31DE6DE3F00226CFC /* badge_official_small.png in Resources */,
 				34CF8C021DE59BF800D25E0D /* icon_problem_new_user@2x.png in Resources */,
 				34CF8D1D1DE59BFB00D25E0D /* pin_poin_toped_60.png in Resources */,
 				34CF86F11DE59BEE00D25E0D /* ContactUsFormViewController.xib in Resources */,
@@ -13898,6 +13909,7 @@
 				34CF8D981DE59BFC00D25E0D /* Tokopedia-Info.plist in Resources */,
 				34CF8ABA1DE59BF600D25E0D /* icon_arrow_white_up.png in Resources */,
 				34CF8CB41DE59BFA00D25E0D /* icon_view.png in Resources */,
+				92D57DE51DE6DE3F00226CFC /* badge_official_small@3x.png in Resources */,
 				34CF89311DE59BF300D25E0D /* SettingUserPhoneViewController.xib in Resources */,
 				34CF8AE01DE59BF600D25E0D /* icon_cancel@2x.png in Resources */,
 				34CF8B241DE59BF700D25E0D /* icon_close_white.png in Resources */,
