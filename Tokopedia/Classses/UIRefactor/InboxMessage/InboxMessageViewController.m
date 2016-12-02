@@ -392,6 +392,7 @@
 }
 
 - (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= _messages.count) return;
     InboxMessageList *list = _messages[indexPath.row];
 
     list.message_reply = message;
