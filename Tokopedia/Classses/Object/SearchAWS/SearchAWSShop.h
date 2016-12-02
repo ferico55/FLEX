@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSString *shop_lucky;
 @property (nonatomic, strong) NSString *reputation_image_uri;
 @property (nonatomic, strong) NSString *reputation_score;
+@property (nonatomic) BOOL official;
 
 @property (nonatomic, strong) SearchShopModelView* modelView;
 

@@ -340,6 +340,8 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     [_shops removeAllObjects];
+    [_table reloadData];
+    
     [_refreshControl endRefreshing];
     [self loadData];
 }
@@ -448,7 +450,8 @@ static NSString const *rows = @"12";
                                                       kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY:kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
                                                       kTKPDSEARCH_APISHOPTOTALFAVKEY:kTKPDSEARCH_APISHOPTOTALFAVKEY,
                                                       kTKPDSEARCH_APISHOPGOLDSHOP:kTKPDSEARCH_APISHOPGOLDSTATUS ,
-                                                      kTKPDSEARCH_APISHOPISFAV:kTKPDSEARCH_APISHOPISFAV
+                                                      kTKPDSEARCH_APISHOPISFAV:kTKPDSEARCH_APISHOPISFAV,
+                                                      @"is_official": @"official"
                                                       }];
     
     /** paging mapping **/

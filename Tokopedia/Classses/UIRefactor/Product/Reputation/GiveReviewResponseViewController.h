@@ -16,5 +16,6 @@
 @property (nonatomic, weak) DetailMyInboxReputation *inbox;
 @property (nonatomic, weak) DetailReputationReview *review;
 @property (nonatomic, weak) ImageStorage *imageCache;
+@property (nonatomic, strong) void (^onReviewCommentSubmitted)();
 
 @end

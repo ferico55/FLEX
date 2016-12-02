@@ -14,22 +14,22 @@
 #import "Tokopedia-swift.h"
 
 @implementation UserAuthentificationManager {
-    NSMutableDictionary *_auth;
+
 }
 
 - (id)init
 {
     self = [super init];
-    if (self) {
-        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-    }
     return self;
+}
+
+- (NSMutableDictionary *) secureStorageDictionary {
+    return [NSMutableDictionary dictionaryWithDictionary:[[TKPDSecureStorage standardKeyChains] keychainDictionary]];
 }
 
 - (BOOL)isLogin
 {
-    if ([[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue]) {
+    if ([[[self secureStorageDictionary] objectForKey:kTKPD_ISLOGINKEY] boolValue]) {
         return YES;
     } else {
         return NO;
@@ -38,42 +38,42 @@
 
 - (id)getUserLoginData {
     if([self isLogin]) {
-        return _auth;
+        return [self secureStorageDictionary];
     } else {
         return nil;
     }
 }
 
 - (NSString *)getUserId {
-    if ([_auth objectForKey:@"user_id"]) {
-        if ([[_auth objectForKey:@"user_id"] isKindOfClass:[NSString class]]) {
-            return [_auth objectForKey:@"user_id"];
+    if ([[self secureStorageDictionary] objectForKey:@"user_id"]) {
+        if ([[[self secureStorageDictionary] objectForKey:@"user_id"] isKindOfClass:[NSString class]]) {
+            return [[self secureStorageDictionary] objectForKey:@"user_id"];
         } else {
-            return [[_auth objectForKey:@"user_id"] stringValue];
+            return [[[self secureStorageDictionary] objectForKey:@"user_id"] stringValue];
         }
     }
     return @"0";
 }
 
 - (NSString*)getMyDeviceToken {
-    if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
-        return [_auth objectForKey:@"device_token"]?: @"0";
+    if ([[[self secureStorageDictionary] objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
+        return [[self secureStorageDictionary] objectForKey:@"device_token"]?: @"0";
     } else {
-        return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
+        return [[[self secureStorageDictionary] objectForKey:@"device_token"] stringValue]?: @"0";
     }
 }
 
 //auto increment from database that had been saved in secure storage
 - (NSString*)getMyDeviceIdToken {
-    return [_auth objectForKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY] ?: @"0";
+    return [[self secureStorageDictionary] objectForKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY] ?: @"0";
 }
 
 - (NSString *)getShopId {
-    if ([_auth objectForKey:@"shop_id"]) {
-        if ([[_auth objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
-            return [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_id"]];
+    if ([[self secureStorageDictionary] objectForKey:@"shop_id"]) {
+        if ([[[self secureStorageDictionary] objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"shop_id"]];
         } else {
-            return [_auth objectForKey:@"shop_id"];
+            return [[self secureStorageDictionary] objectForKey:@"shop_id"];
         }        
     } else {
         return @"0";
@@ -81,22 +81,22 @@
 }
 
 - (NSString *)getShopName {
-    return [_auth objectForKey:@"shop_name"]?:@"0";
+    return [[self secureStorageDictionary] objectForKey:@"shop_name"]?:@"0";
 }
 
 -(NSString *)getShopHasTerm
 {
-    NSNumber *shopHasTerms = [_auth objectForKey:@"shop_has_terms"];
+    NSNumber *shopHasTerms = [[self secureStorageDictionary] objectForKey:@"shop_has_terms"];
     
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
 -(CategoryDetail *)getLastProductAddCategory
 {
-    if ([_auth objectForKey:LAST_CATEGORY_VALUE]) {
+    if ([[self secureStorageDictionary] objectForKey:LAST_CATEGORY_VALUE]) {
         CategoryDetail *category = [[CategoryDetail alloc] init];
-        category.categoryId = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_VALUE]];
-        category.name = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_NAME]];
+        category.categoryId = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:LAST_CATEGORY_VALUE]];
+        category.name = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:LAST_CATEGORY_NAME]];
         return category;
     } else {
         return nil;
@@ -206,17 +206,17 @@
 }
 
 - (void)setUserImage:(NSString *)userImage {
-    [_auth setObject:userImage forKey:@"user_image"];
+    [[self secureStorageDictionary] setObject:userImage forKey:@"user_image"];
 }
 
 - (ReputationDetail *)reputation {
-    if ([_auth objectForKey:@"has_reputation"]) {
+    if ([[self secureStorageDictionary] objectForKey:@"has_reputation"]) {
         ReputationDetail *reputation = [ReputationDetail new];
-        reputation.positive = [_auth objectForKey:@"reputation_positive"];
-        reputation.positive_percentage = [_auth objectForKey:@"reputation_positive_percentage"];
-        reputation.neutral = [_auth objectForKey:@"reputation_neutral"];
-        reputation.negative = [_auth objectForKey:@"reputation_negative"];
-        reputation.no_reputation = [[_auth objectForKey:@"no_reputation"] stringValue];
+        reputation.positive = [[self secureStorageDictionary] objectForKey:@"reputation_positive"];
+        reputation.positive_percentage = [[self secureStorageDictionary] objectForKey:@"reputation_positive_percentage"];
+        reputation.neutral = [[self secureStorageDictionary] objectForKey:@"reputation_neutral"];
+        reputation.negative = [[self secureStorageDictionary] objectForKey:@"reputation_negative"];
+        reputation.no_reputation = [[[self secureStorageDictionary] objectForKey:@"no_reputation"] stringValue];
         return reputation;
     } else {
         return nil;
@@ -224,7 +224,7 @@
 }
 
 - (BOOL)isUserPhoneVerified{
-    NSString* msisdn_is_verified = [NSString stringWithFormat:@"%@", [_auth objectForKey:@"msisdn_is_verified"]];
+    NSString* msisdn_is_verified = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"msisdn_is_verified"]];
     return [msisdn_is_verified isEqualToString:@"1"];
 }
 
@@ -243,7 +243,7 @@
 }
 
 - (BOOL)userHasShop {
-    return ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
+    return ([[self secureStorageDictionary] objectForKey:@"shop_id"] && [[[self secureStorageDictionary] objectForKey:@"shop_id"] integerValue] > 0);
 }
 
 @end

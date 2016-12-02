@@ -15,8 +15,7 @@
 
 typedef void (^failedCompletionBlock)(NSError *error);
 
-static failedCompletionBlock failedCompletionSubmitConfirmation;
-static failedCompletionBlock failedUploadProof;
+static failedCompletionBlock onFailure;
 
 @implementation RequestOrderAction
 
@@ -114,7 +113,7 @@ static failedCompletionBlock failedUploadProof;
 
 +(void)fetchUploadImageProof:(UIImage*)image imageName:(NSString*)imageName paymentID:(NSString*)paymentID success:(void (^)(TransactionActionResult *data))success failure:(void (^)(NSError *error))failure {
     
-    failedUploadProof = failure;
+    onFailure = failure;
     
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     RequestObjectUploadImage *objectRequest = [RequestObjectUploadImage new];
@@ -156,11 +155,11 @@ static failedCompletionBlock failedUploadProof;
                                  }
                                  else{
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];
-                                     failedUploadProof(nil);
+                                     onFailure(nil);
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedUploadProof(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -179,12 +178,12 @@ static failedCompletionBlock failedUploadProof;
                                          success(imageResult);
                                          
                                      } onFailure:^(NSError *error) {
-                                         failedCompletionSubmitConfirmation(error);
+                                         onFailure(error);
                                      }];
         
         
     } onFailure:^{
-        failedCompletionSubmitConfirmation(nil);
+        onFailure(nil);
     }];
 }
 
@@ -256,13 +255,13 @@ static failedCompletionBlock failedUploadProof;
                                  if(response.result.is_success == 1){
                                      success(response);
                                  } else {
-                                     failedCompletionSubmitConfirmation(nil);
+                                     onFailure(nil);
                                      NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                                      [StickyAlertView showErrorMessage:array];
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedCompletionSubmitConfirmation(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -281,13 +280,13 @@ static failedCompletionBlock failedUploadProof;
                                  if(response.data.is_success == 1){
                                      success(response);
                                  } else {
-                                     failedCompletionSubmitConfirmation(nil);
+                                     onFailure(nil);
                                      NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                                      [StickyAlertView showErrorMessage:array];
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedCompletionSubmitConfirmation(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -350,7 +349,7 @@ static failedCompletionBlock failedUploadProof;
                           success:(void(^)(TransactionAction *data))success
                            failed:(void(^)(NSError *error))failed {
     
-    failedCompletionSubmitConfirmation = failed;
+    onFailure = failed;
     
     if ([imageObject isEqual:@{}]) {
         

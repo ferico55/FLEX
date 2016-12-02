@@ -327,6 +327,11 @@
                                                           }
                                                           
                                                           [self refreshData];
+                                                          
+                                                          if(self.onSmileyTapped) {
+                                                              self.onSmileyTapped();
+                                                          }
+                                                          
                                                       }
                                                       onFailure:^(NSError *error) {
                                                           
@@ -520,10 +525,14 @@
 }
 
 - (void)didTapToGiveResponse:(DetailReputationReview *)review {
+    __weak __typeof(self) weakSelf = self;
     GiveReviewResponseViewController *vc = [GiveReviewResponseViewController new];
     vc.inbox = _detailMyInboxReputation;
     vc.review = review;
     vc.imageCache = _imageCache;
+    vc.onReviewCommentSubmitted = ^{
+        [weakSelf refreshData];
+    };
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -822,6 +831,9 @@
                                                              } else {
                                                                  [_dataManager removeAllReviews];
                                                                  [_dataManager addReviews:result.list];
+                                                             }
+                                                             if (_onDetailReviewUpdated) {
+                                                                 _onDetailReviewUpdated();
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
                                                              [_refreshControl endRefreshing];

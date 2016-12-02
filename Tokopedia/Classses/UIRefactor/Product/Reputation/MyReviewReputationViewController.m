@@ -115,8 +115,6 @@
     _searchBar.layer.borderColor = [[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0] CGColor];
     [_searchBar setBackgroundImage:[UIImage new]];
     
-    
-    
     if ([strNav isEqualToString:@"inbox-reputation"]) {
         _searchBar.placeholder = @"Cari Invoice / Penjual / Pembeli";
     } else if ([strNav isEqualToString:@"inbox-reputation-my-product"]) {
@@ -550,10 +548,18 @@
         tempObj.read_status = CValueRead;
         tempObj.viewModel.read_status = CValueRead;
         
+        __weak typeof(self) weakSelf = self;
+        
         MyReviewDetailViewController *vc = [MyReviewDetailViewController new];
         vc.detailMyInboxReputation = tempObj;
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
+        vc.onSmileyTapped = ^{
+            [weakSelf refreshView:nil];
+        };
+        vc.onDetailReviewUpdated = ^{
+            [weakSelf refreshView:nil];
+        };
         
         [AnalyticsManager trackEventName:@"clickReview"
                                 category:GA_EVENT_CATEGORY_INBOX_REVIEW
