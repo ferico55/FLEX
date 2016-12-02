@@ -14,4 +14,5 @@ class SearchShopModelView: NSObject {
     var isFavorite = false
     var isGoldShop = false
     var shopImageUrl: String!
+    var official: Bool = false
 }

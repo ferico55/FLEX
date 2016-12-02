@@ -54,9 +54,6 @@
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
     NSURL *_deeplinkUrl;
-    Debouncer* _debouncer;
-    
-    
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
@@ -246,9 +243,6 @@
     
     self.navigationController.title = @"Home";
     
-    [self goToPage:_page];
-    [self initNotificationManager];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
@@ -256,14 +250,17 @@
     
     _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
+        [self goToPage:_page];
         _isAbleToSwipe = YES;
         [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
     } else {
+        [self goToPage:0];
         _isAbleToSwipe = NO;
         [_scrollView setContentSize:CGSizeMake(300, 300)];
         [_scrollView setPagingEnabled:NO];
     }
+    [self initNotificationManager];
     
     [Localytics triggerInAppMessage:@"Home - Hot List"];
     

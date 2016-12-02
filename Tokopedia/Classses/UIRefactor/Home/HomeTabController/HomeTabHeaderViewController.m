@@ -68,6 +68,12 @@
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    [self adjustConstraints];
+}
+
+- (void) adjustConstraints {
     [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
@@ -82,11 +88,12 @@
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
-        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.left.right.mas_equalTo(_scrollView);
-            make.height.mas_equalTo(_scrollView);
+        [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.height.mas_equalTo(_scrollView);
+            if (!_loggedIn){
+                make.width.mas_equalTo(_scrollView);
+            }
         }];
-
     }
     
     _maxXInScrollView = [self xInScrollViewFormula: [_stackView.arrangedSubviews count]] - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count]-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
@@ -123,13 +130,13 @@
         [self tap:1];
         [self setActiveButton];
     }
+    [self adjustConstraints];
 }
 
 - (void)userDidLogin:(NSNotification *)notification {
     [_scrollView setScrollEnabled:YES];
     [_stackView removeFromSuperview];
     [self initButton];
-    [self viewDidLayoutSubviews];
     _loggedIn = YES;
 }
 
@@ -237,7 +244,7 @@
 - (void)removeButton {
     for (UIButton *button in _stackView.arrangedSubviews) {
         if(button.tag > 1) {
-            [button removeFromSuperview];
+            [_stackView removeArrangedSubview:button];
         }
     }
 }

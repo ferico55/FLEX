@@ -250,7 +250,7 @@
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
     NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
     
-    if(index > _talkList.count) return;
+    if(index >= _talkList.count) return;
 
     TalkList *list = _talkList[index];
     if ([talkId isEqualToString:list.talk_id]) {
