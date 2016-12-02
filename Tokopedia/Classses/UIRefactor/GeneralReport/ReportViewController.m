@@ -17,7 +17,7 @@
 #import "LoginViewController.h"
 #import "MyReviewDetailViewController.h"
 #import "ReviewRequest.h"
-
+#import "TKPDTabViewController.h"
 @interface ReportViewController () <UITextViewDelegate, LoginViewDelegate> {
     UserAuthentificationManager *_userManager;
 }
@@ -146,10 +146,12 @@
 
 // implement this to dismiss login view controller (-_-")
 - (void)redirectViewController:(id)viewController {
-
+    [((ProductTalkViewController* )self.delegate).navigationController dismissViewControllerAnimated:YES completion:^{
+        [self displayFrom:viewController];
+    }];
 }
 
-#pragma mark - user without login
+//#pragma mark - user without login
 - (void)displayFrom:(UIViewController *)viewController {
     if(![_userManager isLogin]) {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -166,18 +168,12 @@
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         //return;
     }else{
-        //TKPDTabViewController *controller = [_delegate getNavigationController:self];
-        //[controller.navigationController pushViewController:_reportController animated:YES];
+        //TKPDTabViewController *controller = [TKPDTabViewController getNavigationController:self];
+        //[controller.navigationController pushViewController:viewController animated:YES];
         //[viewController presentViewController:viewController animated:YES completion:nil];
         [self.navigationController pushViewController:viewController animated:YES];
+        //[self.navigationController presentViewController:viewController animated:YES completion:nil];
     }
-
-//    if(udahLogin) {
-//        [viewController pushViewController: self];
-//    } else {
-//        //tampilin halaman login lalu tampilin halaman report ketika udah selesai
-//    }
 }
-
 
 @end

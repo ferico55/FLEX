@@ -262,11 +262,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _reportController.onFinishWritingReport = ^(NSString *message) {
         [weakSelf reportTalkWithMessage:message];
     };
-    [_reportController displayFrom:self];
-    //TKPDTabViewController *controller = [_delegate getNavigationController:self];
-    //[controller.navigationController pushViewController:_reportController animated:YES];
+    [_reportController displayFrom:[_delegate getNavigationController:self]];
 
-    
 //    if([_userManager isLogin]) {
 //        [self showReportView];
 //    }else{
@@ -285,13 +282,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 //    }
 }
 
-#pragma mark - login delegate
+//#pragma mark - login delegate
 //- (void)redirectViewController:(id)viewController{
 //    [((ProductTalkViewController* )self.delegate).navigationController dismissViewControllerAnimated:YES completion:^{
 //        [self showReportView];
 //    }];
 //}
-
+//
 //- (void)showReportView{
 //    __weak __typeof(self) weakSelf = self;
 //    _reportController = [ReportViewController new];
