@@ -307,13 +307,13 @@
     [submitReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                        path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodPOST
-                                                  parameter:@{@"product_id" : productID,
+                                                  parameter:@{@"product_id" : productID?:@"",
                                                               @"rate_accuracy" : @(accuracyRate),
                                                               @"rate_quality" : @(qualityRate),
-                                                              @"reputation_id" : reputationID,
-                                                              @"review_message" : reviewMessage,
-                                                              @"shop_id" : shopID,
-                                                              @"server_id" : serverID,
+                                                              @"reputation_id" : reputationID?:@"",
+                                                              @"review_message" : reviewMessage?:@"",
+                                                              @"shop_id" : shopID?:@"",
+                                                              @"server_id" : serverID?:@"",
                                                               @"has_product_review_photo" : hasPhoto,
                                                               @"product_review_photo_all" : allImageIDs?:@"",
                                                               @"product_review_photo_obj" : uploaded?:@""
@@ -622,7 +622,7 @@
                                               responseMessage:(NSString *)responseMessage
                                                      reviewID:(NSString *)reviewID
                                                        shopID:(NSString *)shopID
-                                                    onSuccess:(void (^)(ResponseCommentResult *))successCallback
+                                                    onSuccess:(void (^)(ResponseComment *))successCallback
                                                     onFailure:(void (^)(NSError *))errorCallback {
     insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
@@ -638,7 +638,7 @@
                                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                                NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                                ResponseComment *obj = [result objectForKey:@""];
-                                                               successCallback(obj.data);
+                                                               successCallback(obj);
                                                            } onFailure:^(NSError *errorResult) {
                                                                errorCallback(errorResult);
                                                            }];

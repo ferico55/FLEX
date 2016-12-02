@@ -84,24 +84,41 @@
         for (int ii = 0; ii < _review.review_image_attachment.count; ii++) {
             ReviewImageAttachment *imageAttachment = _review.review_image_attachment[ii];
             
-            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]]];
+            NSURL *url = [NSURL URLWithString:imageAttachment.uri_thumbnail];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            __weak typeof(self) weakSelf = self;
             
-            AttachedPicture *pict = [AttachedPicture new];
-            pict.image = image;
-            pict.largeUrl = imageAttachment.uri_large;
-            pict.thumbnailUrl = imageAttachment.uri_thumbnail;
-            pict.imageDescription = imageAttachment.desc;
-            pict.attachmentID = imageAttachment.attachment_id;
-            pict.isDeleted = @"0";
-            pict.isPreviouslyUploaded = @"1";
-            
-            [_uploadedPictures addObject:pict];
-            [_attachedPictures addObject:pict];
-            [_tempUploadedPictures addObject:pict];
+            [NSURLConnection sendAsynchronousRequest:urlRequest
+                                               queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+                                       UIImage *image;
+                                       if (!connectionError) {
+                                           image = [[UIImage alloc] initWithData:data];
+                                       } else {
+                                           image = [UIImage imageNamed:@"icon_toped_loading_grey-01.png"];
+                                       }
+                                       
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           AttachedPicture *pict = [AttachedPicture new];
+                                           pict.image = image;
+                                           pict.largeUrl = imageAttachment.uri_large;
+                                           pict.thumbnailUrl = imageAttachment.uri_thumbnail;
+                                           pict.imageDescription = imageAttachment.desc;
+                                           pict.attachmentID = imageAttachment.attachment_id;
+                                           pict.isDeleted = @"0";
+                                           pict.isPreviouslyUploaded = @"1";
+                                           
+                                           [_uploadedPictures addObject:pict];
+                                           [_attachedPictures addObject:pict];
+                                           [_tempUploadedPictures addObject:pict];
+                                           
+                                           [weakSelf setAttachedPictures];
+                                       });
+                                   }];
         }
+    } else {
+        [self setAttachedPictures];
     }
-    
-    [self setAttachedPictures];
     
     if (_isEdit) {
         _reviewDetailTextView.text = [NSString convertHTML:_review.review_message];
