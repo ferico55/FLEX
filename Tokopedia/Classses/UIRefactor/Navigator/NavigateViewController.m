@@ -46,6 +46,7 @@
 #import "Tokopedia-Swift.h"
 
 #import "GalleryViewController.h"
+#import "ContactUsWebViewController.h"
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
@@ -579,6 +580,13 @@
 //    placePicker.type = type;
 //    placePicker.delegate = viewController;
     [viewController.navigationController pushViewController:placePicker animated:YES];
+}
+
++ (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
+    ContactUsWebViewController *controller = [ContactUsWebViewController new];
+    controller.title = @"Hubungi Kami";
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
 }
 
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController {

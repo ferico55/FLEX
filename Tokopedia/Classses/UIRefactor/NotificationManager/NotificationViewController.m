@@ -27,7 +27,8 @@
 #import "InboxTalkSplitViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "InboxTicketSplitViewController.h"
-
+#import "NavigateViewController.h"
+#import "ContactUsWebViewController.h"
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol> {
     NSDictionary *_auth;
@@ -429,18 +430,28 @@
                     TKPDTabViewController *controller = [TKPDTabViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
                     controller.inboxType = InboxTypeTicket;
+                    __weak typeof(self) weakSelf = self;
                     
                     InboxTicketViewController *allInbox = [InboxTicketViewController new];
                     allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
                     allInbox.delegate = controller;
+                    allInbox.onTapContactUsButton = ^{
+                        [weakSelf navigateToContactUs];
+                    };
                     
                     InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
                     unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
                     unreadInbox.delegate = controller;
+                    unreadInbox.onTapContactUsButton = ^{
+                        [weakSelf navigateToContactUs];
+                    };
                     
                     InboxTicketViewController *closedInbox = [InboxTicketViewController new];
                     closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
                     closedInbox.delegate = controller;
+                    closedInbox.onTapContactUsButton = ^{
+                        [weakSelf navigateToContactUs];
+                    };
                     
                     controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
                     controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
@@ -546,6 +557,13 @@
             [self.delegate pushViewController:vc];
         }
     }
+}
+
+- (void)navigateToContactUs {
+    ContactUsWebViewController *controller = [ContactUsWebViewController new];
+    controller.title = @"Hubungi Kami";
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.delegate pushViewController:controller];
 }
 
 #pragma mark - Memory Management
