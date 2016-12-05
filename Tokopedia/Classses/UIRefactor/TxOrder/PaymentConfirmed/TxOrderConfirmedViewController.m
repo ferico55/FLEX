@@ -452,21 +452,10 @@
 
         
     } failure:^(NSError *error) {
-        [self isLoading:NO];
+        
+        [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
     }];
 }
-
-
--(void)isLoading:(BOOL)isLoading{
-    if(isLoading){
-        [self.tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-        [_refreshControl beginRefreshing];
-    } else {
-        [self.tableView setContentOffset:CGPointZero];
-        [_refreshControl endRefreshing];
-    }
-}
-
 
 #pragma mark - TKPD Camera controller delegate
 
@@ -490,6 +479,7 @@
                                        [self refreshRequest];
                                        
     } failure:^(NSError *error) {
+        [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         [_dataInput removeAllObjects];
         [_tableView reloadData];
     }];
