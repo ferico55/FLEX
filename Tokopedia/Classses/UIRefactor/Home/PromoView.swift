@@ -11,7 +11,7 @@ import WebKit
 
 class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     
-    var homeTabViewController: HomeTabViewController!
+    weak var homeTabViewController: HomeTabViewController!
     private static let PROMO_URL = "https://m.tokopedia.com/promo?flag_app=1"
     private var refreshControl: UIRefreshControl!
     private var activityIndicator: UIActivityIndicatorView!
@@ -19,8 +19,9 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     private var urlRequest: NSURLRequest{
         return NSURLRequest(URL: NSURL(string: PromoView.PROMO_URL)!)
     }
-    override init(frame: CGRect, configuration: WKWebViewConfiguration) {
-        super.init(frame: frame, configuration: configuration)
+    
+    init(frame: CGRect) {
+        super.init(frame: frame, configuration: WKWebViewConfiguration())
         generateRefreshControl()
         generateRetryButton()
         self.UIDelegate = self

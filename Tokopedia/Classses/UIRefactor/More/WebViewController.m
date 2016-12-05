@@ -10,7 +10,7 @@
 #import "WebViewController.h"
 
 @interface WebViewController ()
-
+@property (strong, nonatomic) IBOutlet UIWebView *webView;
 @end
 
 @implementation WebViewController
