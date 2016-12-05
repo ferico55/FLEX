@@ -10,7 +10,7 @@
 #import "WebViewController.h"
 
 @interface WebViewController ()
-
+@property (strong, nonatomic) IBOutlet UIWebView *webView;
 @end
 
 @implementation WebViewController
@@ -26,12 +26,12 @@
     self.navigationItem.title = strTitle;
     
     if(strContentHTML != nil) {
-        [webView loadHTMLString:strContentHTML baseURL:nil];
+        [_webView loadHTMLString:strContentHTML baseURL:nil];
     }
     else {
         //SetUp URL
         progressProxy = [[NJKWebViewProgress alloc] init];
-        webView.delegate = progressProxy;
+        _webView.delegate = progressProxy;
         progressProxy.webViewProxyDelegate = self;
         progressProxy.progressDelegate = self;
         
@@ -46,7 +46,7 @@
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
         [request setURL:[NSURL URLWithString:strURL]];
-        [webView loadRequest:request];
+        [_webView loadRequest:request];
     }
     // Do any additional setup after loading the view from its nib.
 }

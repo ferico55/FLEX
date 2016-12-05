@@ -18,6 +18,7 @@
 #import "MainViewController.h"
 #import "TransactionBuyResult.h"
 #import "NotificationManager.h"
+#import "NoResultReusableView.h"
 #define normalWidth 320
 #define normalHeight 568
 
@@ -40,6 +41,7 @@
     BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
+    NoResultReusableView* _notLoggedInView;
     
     NSURL *_deeplinkUrl;
 }
@@ -96,6 +98,7 @@
     [self.navigationItem setTitleView:logo];
     
     [self initNotification];
+    [self initNotLoggedInView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -107,10 +110,10 @@
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if(!_isLogin) {
         [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-        [[self view] addSubview:_noLoginView];
-        [_noLoginView setHidden:NO];
+        [[self view] addSubview:_notLoggedInView];
+        [_notLoggedInView setHidden:NO];
     } else {
-        [_noLoginView setHidden:YES];
+        [_notLoggedInView setHidden:YES];
     }
     
     if (_index == 0) {
@@ -166,6 +169,19 @@
 }
 
 #pragma mark - Methods
+- (void)initNotLoggedInView {
+    __weak typeof(self) weakSelf = self;
+    _notLoggedInView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_notLoggedInView generateAllElements:@"icon_no_data_grey.png"
+                                    title:@"Anda belum login"
+                                     desc:@"Belum punya akun Tokopedia ?"
+                                 btnTitle:@"Daftar disini!"];
+    _notLoggedInView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        RegisterViewController* controller = [RegisterViewController new];
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
+}
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
     for(UIView* view in pageViewController.view.subviews){

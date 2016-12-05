@@ -26,5 +26,4 @@
 @property (nonatomic, strong) NSString *strCommentTalkID;
 @property (nonatomic, strong) NSString *strShopID;
 @property (nonatomic, strong) NSString *strReviewID;
-@property (nonatomic, strong) UIViewController* HelpViewController;
 @end

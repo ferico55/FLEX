@@ -23,7 +23,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
-
+@property (nonatomic, strong) UIViewController* HelpViewController;
 @end
 
 @implementation ReportViewController

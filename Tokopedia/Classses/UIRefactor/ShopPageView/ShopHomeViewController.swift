@@ -146,6 +146,12 @@ class ShopHomeViewController: UIViewController {
     }
     
     deinit {
+        // prevent the view controller from being retained after deallocated
+        // this code is never needed at app version 1.92. somehow
+        // at 1.93 with XCode 8.1, with iOS 9 and below, if we don't remove the delegate
+        // this view controller will still receive messages even after deallocated, which causes crash
+        webView.scrollView.delegate = nil
+        
         webView.bk_removeAllBlockObservers()
         webView.scrollView.bk_removeAllBlockObservers()
         NSNotificationCenter.defaultCenter().removeObserver(self)
