@@ -82,7 +82,7 @@
         _stackView.distribution = OAStackViewDistributionEqualSpacing;
         _stackView.spacing = 0.0;
         [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.left.right.height.width.mas_equalTo(_scrollView);
+            make.edge.mas_equalTo(_scrollView);
         }];
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
