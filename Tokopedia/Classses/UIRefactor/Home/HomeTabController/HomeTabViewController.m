@@ -29,7 +29,6 @@
 
 #import "InboxRootViewController.h"
 #import "NavigateViewController.h"
-#import "CategoryViewController.h"
 
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"

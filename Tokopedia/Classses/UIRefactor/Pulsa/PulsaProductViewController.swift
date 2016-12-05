@@ -18,6 +18,7 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBOutlet weak var tableView: UITableView!
     var products: [PulsaProduct]!
+    var selectedOperator: PulsaOperator!
     var didSelectProduct: (PulsaProduct -> Void)?
     
     init() {
@@ -82,7 +83,13 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         } else {
             cell.promoPrice.hidden = true
             cell.productTag.hidden = true
-            cell.currentPrice.text = product.attributes.price
+            if(self.selectedOperator.attributes.rule.show_price == true) {
+                cell.currentPrice.hidden = false
+                cell.currentPrice.text = product.attributes.price
+            } else {
+                cell.currentPrice.hidden = true
+            }
+            
         }
         
         if(product.attributes.status == ProductStatus.Active.rawValue) {
