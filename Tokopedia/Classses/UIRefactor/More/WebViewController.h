@@ -11,9 +11,8 @@
 
 @interface WebViewController : UIViewController<UIWebViewDelegate, NJKWebViewProgressDelegate>
 {
-    IBOutlet UIWebView *webView;
-}
 
+}
 @property (nonatomic, strong) NSString *strContentHTML;
 @property (nonatomic, strong) NSString *strURL;
 @property (nonatomic, strong) NSString *strTitle;

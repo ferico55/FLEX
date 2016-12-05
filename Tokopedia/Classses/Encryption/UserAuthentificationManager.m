@@ -191,7 +191,8 @@
     }
     
     NSInteger myShopID = [[self getShopId] integerValue];
-    return shopID == myShopID;
+    
+    return shopID != 0 && shopID == myShopID; // 0 is not available shop_id
 }
 
 - (BOOL)isMyUser:(id)userId {
