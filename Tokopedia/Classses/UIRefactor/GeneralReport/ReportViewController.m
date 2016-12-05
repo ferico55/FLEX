@@ -23,7 +23,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
-@property (nonatomic, strong) UIViewController* HelpViewController;
+@property (nonatomic, strong) UIViewController* viewControllerToNavigate;
 @end
 
 @implementation ReportViewController
@@ -146,14 +146,14 @@
 
 // implement this to dismiss login view controller (-_-")
 - (void)redirectViewController:(id)viewController {
-    [_HelpViewController.navigationController pushViewController:viewController animated:YES];
+    [_viewControllerToNavigate.navigationController pushViewController:viewController animated:YES];
 }
 
 //#pragma mark - user without login
 - (void)displayFrom:(UIViewController *)viewController {
     _userManager = [UserAuthentificationManager new];
     if(![_userManager isLogin]) {
-        _HelpViewController = viewController;
+        _viewControllerToNavigate = viewController;
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
         navigationController.navigationBar.translucent = NO;

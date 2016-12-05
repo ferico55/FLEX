@@ -136,9 +136,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone || [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad  || _isNeedRequestListDetail) {
-        [self doRequestDetail];
-    }
+    [self doRequestDetail];
     
     _inputConversation.layer.cornerRadius = 2;
     
