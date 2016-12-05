@@ -11,7 +11,6 @@
 #import "SearchViewController.h"
 #import "TransactionCartRootViewController.h"   
 #import "MoreViewController.h"
-#import "CategoryViewController.h"
 
 
 #import "HotlistViewController.h"
@@ -32,7 +31,6 @@
 #import "AlertBaseUrl.h"
 
 #import "InboxRootViewController.h"
-#import "CategoryViewController.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>

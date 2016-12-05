@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddressBookViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
+                <outlet property="searchBar" destination="mjO-IU-CeS" id="Enh-IT-9zP"/>
                 <outlet property="tableView" destination="cdd-S8-Qvr" id="myx-uA-AZU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -16,23 +18,30 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cdd-S8-Qvr">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="mjO-IU-CeS">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="4t6-FP-HzC"/>
+                    </constraints>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cdd-S8-Qvr" customClass="TPKeyboardAvoidingTableView">
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="dOH-3S-e4S"/>
                         <outlet property="delegate" destination="-1" id="Frk-cl-Eti"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="cdd-S8-Qvr" secondAttribute="trailing" id="A2I-UT-Bx9"/>
+                <constraint firstItem="mjO-IU-CeS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Qd9-6l-TrN"/>
                 <constraint firstAttribute="bottom" secondItem="cdd-S8-Qvr" secondAttribute="bottom" id="SgV-oJ-FCR"/>
-                <constraint firstItem="cdd-S8-Qvr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="d3i-g5-JM2"/>
+                <constraint firstItem="cdd-S8-Qvr" firstAttribute="top" secondItem="mjO-IU-CeS" secondAttribute="bottom" id="cOH-aJ-XbQ"/>
+                <constraint firstAttribute="trailing" secondItem="mjO-IU-CeS" secondAttribute="trailing" id="gJP-yr-jLa"/>
+                <constraint firstItem="mjO-IU-CeS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sah-xh-bIl"/>
                 <constraint firstItem="cdd-S8-Qvr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="sn8-6h-FQZ"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
         </view>
     </objects>
 </document>
