@@ -11,11 +11,11 @@ import WebKit
 
 class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     
-    weak var homeTabViewController: HomeTabViewController!
+    weak var viewControllerToNavigate: UIViewController!
     private static let PROMO_URL = "https://m.tokopedia.com/promo?flag_app=1"
     private var refreshControl: UIRefreshControl!
     private var activityIndicator: UIActivityIndicatorView!
-    var retryButton: UIButton!
+    private var retryButton: UIButton!
     private var urlRequest: NSURLRequest{
         return NSURLRequest(URL: NSURL(string: PromoView.PROMO_URL)!)
     }
@@ -52,10 +52,10 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
                 webViewController.strURL = navigationAction.request.URL?.absoluteString
                 webViewController.onTapLinkWithUrl = { [unowned self] url in
                     if url.absoluteString == "https://www.tokopedia.com/" {
-                        self.homeTabViewController.navigationController?.popViewControllerAnimated(true)
+                        self.viewControllerToNavigate.navigationController?.popViewControllerAnimated(true)
                     }
                 }
-                homeTabViewController.navigationController?.pushViewController(webViewController, animated: true)
+                viewControllerToNavigate.navigationController?.pushViewController(webViewController, animated: true)
                 decisionHandler(.Cancel)
                 return
             }

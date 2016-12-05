@@ -355,7 +355,7 @@
     } else if(page == 2) {
         if (_promoView == nil){
             _promoView = [[PromoView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _scrollView.frame.size.height)];
-            _promoView.homeTabViewController = self;
+            _promoView.viewControllerToNavigate = self;
             CGRect frame = _promoView.frame;
             frame.origin.x = _scrollView.frame.size.width*page;
             frame.size.height = _scrollView.frame.size.height;
