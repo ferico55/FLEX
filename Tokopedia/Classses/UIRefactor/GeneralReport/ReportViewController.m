@@ -146,14 +146,14 @@
 
 // implement this to dismiss login view controller (-_-")
 - (void)redirectViewController:(id)viewController {
-    [((ProductTalkViewController* )self.delegate).navigationController dismissViewControllerAnimated:YES completion:^{
-        [self displayFrom:viewController];
-    }];
+    [_HelpViewController.navigationController pushViewController:viewController animated:YES];
 }
 
 //#pragma mark - user without login
 - (void)displayFrom:(UIViewController *)viewController {
+    _userManager = [UserAuthentificationManager new];
     if(![_userManager isLogin]) {
+        _HelpViewController = viewController;
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
         navigationController.navigationBar.translucent = NO;
@@ -164,15 +164,9 @@
         controller.isPresentedViewController = YES;
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        //return;
+        [viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
     }else{
-        //TKPDTabViewController *controller = [TKPDTabViewController getNavigationController:self];
-        //[controller.navigationController pushViewController:viewController animated:YES];
-        //[viewController presentViewController:viewController animated:YES completion:nil];
-        [self.navigationController pushViewController:viewController animated:YES];
-        //[self.navigationController presentViewController:viewController animated:YES completion:nil];
+        [viewController.navigationController pushViewController:self animated:YES];
     }
 }
 
