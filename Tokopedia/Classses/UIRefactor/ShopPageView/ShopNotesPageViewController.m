@@ -223,6 +223,7 @@
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.delegate = self;
     vc.noteList = list;
+    vc.shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY)?:kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY,
                 kTKPDNOTES_APINOTEIDKEY:list.note_id?:@(0),

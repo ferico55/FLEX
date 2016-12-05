@@ -15999,7 +15999,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADERMAP_USES_VFS = "";
+				HEADERMAP_USES_VFS = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -16053,7 +16053,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADERMAP_USES_VFS = "";
+				HEADERMAP_USES_VFS = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
