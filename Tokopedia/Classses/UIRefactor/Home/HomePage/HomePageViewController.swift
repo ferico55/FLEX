@@ -333,92 +333,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
     }
     
-    private func mappingPrefixFromOperators(operators: [PulsaOperator]) {
-        //mapping operator by prefix
-        // {0812 : {"image" : "simpati.png", "id" : "1"}}
-        operators.enumerate().forEach { id, op in
-            op.attributes.prefix.map { prefix in
-                var prefixDictionary = Dictionary<String, String>()
-                prefixDictionary["image"] = op.attributes.image
-                prefixDictionary["id"] = op.id
-                
-                //BOLT only had 3 chars prefix
-                if(prefix.characters.count == 3) {
-                    let range = 0...9
-                    range.enumerate().forEach { index, element in
-                        prefixes[prefix.stringByAppendingString(String(element))] = prefixDictionary
-                    }
-                } else {
-                    prefixes[prefix] = prefixDictionary
-                }
-            }
-            
-        }
-        
-        if(prefixes.count > 0) {
-            self.pulsaView.prefixes = self.prefixes
-        }
-    }
-    
-    private func didReceiveOperator(operators: [PulsaOperator]) {
-        self.mappingPrefixFromOperators(operators)
-        
-        self.pulsaView.addActionNumberField();
-        
-        self.pulsaView.didPrefixEntered = { operatorId, categoryId in
-            self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
-            
-            self.requestManager.requestProduct(operatorId, categoryId: categoryId)
-            
-            self.requestManager.didReceiveProduct = { products in
-                self.didReceiveProduct(products)
-            }
-            
-        }
-        
-        self.pulsaView.didTapAddressbook = { [unowned self] contacts in
-            self.navigator.navigateToAddressBook(contacts)
-        }
-        
-        self.pulsaView.didShowAlertPermission = {
-            let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Aktifkan", style: .Default, handler: { (action) in
-                switch action.style{
-                case .Default:
-                    JLContactsPermission.sharedInstance().displayAppSystemSettings()
-                    
-                case .Cancel:
-                    print("cancel")
-                    
-                case .Destructive:
-                    print("destructive")
-                }
-            }))
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    func didReceiveProduct(products: [PulsaProduct]) {
-        if(products.count > 0) {
-            self.pulsaView.showBuyButton(products)
-            self.pulsaView.didTapProduct = { [unowned self] products in
-                self.navigator.navigateToPulsaProduct(products)
-            }
-        } else {
-            self.pulsaView.prefixView?.hidden = true
-        }
-    }
-    
-    func findOperatorById(id: String, operators: [PulsaOperator]) -> PulsaOperator{
-        var foundOperator = PulsaOperator()
-        operators.enumerate().forEach { index, op in
-            if(op.id == id) {
-                foundOperator = operators[index]
-            }
-        }
-        
-        return foundOperator
-    }
     
     private func requestMiniSlider() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
@@ -478,24 +392,38 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.navigator.pulsaView = self.pulsaView
             self.navigator.controller = self
             
-            self.pulsaView.didAskedForLogin = {
+            self.pulsaView.didAskedForLogin = { [unowned self] in
                 self.navigator.loginDelegate = self
                 self.navigator.navigateToLoginIfRequired()
             }
             
-            self.pulsaView.didSuccessPressBuy = { url in
+            self.pulsaView.didTapProduct = { [unowned self] products in
+                self.navigator.navigateToPulsaProduct(products, selectedOperator: self.pulsaView.selectedOperator)
+            }
+            
+            self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
                 self.navigator.navigateToSuccess(url)
             }
             
-            self.requestManager.requestOperator()
-            self.requestManager.didReceiveOperator = { operators in
-                var sortedOperators = operators
-                
-                sortedOperators.sortInPlace({
-                    $0.attributes.weight < $1.attributes.weight
-                })
-                
-                self.didReceiveOperator(sortedOperators)
+            self.pulsaView.didTapAddressbook = { [unowned self] in
+                self.navigator.navigateToAddressBook()
+            }
+            
+            self.pulsaView.didShowAlertPermission = { [unowned self] in
+                let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "Aktifkan", style: .Default, handler: { (action) in
+                    switch action.style{
+                    case .Default:
+                        JLContactsPermission.sharedInstance().displayAppSystemSettings()
+                        
+                    case .Cancel:
+                        print("cancel")
+                        
+                    case .Destructive:
+                        print("destructive")
+                    }
+                }))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
     }

@@ -77,7 +77,8 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
-#import "CategoryDataSource.h"
+#import "AnnouncementTickerView.h"
+
 
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"

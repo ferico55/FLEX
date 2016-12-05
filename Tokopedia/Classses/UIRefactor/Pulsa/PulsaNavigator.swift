@@ -18,9 +18,9 @@ class PulsaNavigator: NSObject {
         
     }
     
-    func navigateToAddressBook(contacts: [APContact]) {
+    func navigateToAddressBook() {
         let controller = AddressBookViewController()
-        controller.contacts = contacts
+
         controller.didTapContact = { [unowned self] contact in
             var phoneNumber = contact
             phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
@@ -36,8 +36,6 @@ class PulsaNavigator: NSObject {
             self.pulsaView.numberField.text = phoneNumber
             
             if(phoneNumber.characters.count >= 4) {
-                let prefix = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0) ..< phoneNumber.startIndex.advancedBy(4))
-                
                 self.pulsaView.checkInputtedNumber()
             }
         }
@@ -46,7 +44,7 @@ class PulsaNavigator: NSObject {
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
-    func navigateToPulsaProduct(products: [PulsaProduct]) {
+    func navigateToPulsaProduct(products: [PulsaProduct], selectedOperator: PulsaOperator) {
         let controller = PulsaProductViewController()
         var activeProducts: [PulsaProduct] = []
         
@@ -64,6 +62,7 @@ class PulsaNavigator: NSObject {
             self.pulsaView.hideErrors()
             self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
         }
+        controller.selectedOperator = selectedOperator
         
         controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
