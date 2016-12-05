@@ -13,8 +13,6 @@
 {
 
 }
-
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) NSString *strContentHTML;
 @property (nonatomic, strong) NSString *strURL;
 @property (nonatomic, strong) NSString *strTitle;
