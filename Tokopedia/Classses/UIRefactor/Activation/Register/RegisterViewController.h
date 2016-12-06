@@ -13,4 +13,5 @@
 @interface RegisterViewController : GAITrackedViewController <GIDSignInDelegate, GIDSignInUIDelegate>
 @property (nonatomic) NSString *emailFromForgotPassword;
 
+@property(nonatomic, copy) void(^onLoginSuccess)();
 @end

@@ -78,6 +78,7 @@ MMNumberKeyboardDelegate
 
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
+
 @end
 
 @implementation RegisterViewController
@@ -752,6 +753,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)navigateToProperPage {
+    
     if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
         LoginViewController *loginController = (LoginViewController *) self.navigationController.viewControllers[0];
         if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
@@ -763,13 +765,12 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                 object:nil
                                                               userInfo:nil];
         }
-    } else if ([self.navigationController.viewControllers[0] isKindOfClass:[TransactionCartRootViewController class]]) {
+    } else {
         [self.navigationController popViewControllerAnimated:YES];
-        [self.tabBarController setSelectedIndex:3];
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                            object:nil
-                                                          userInfo:nil];
+        self.onLoginSuccess();
     }
+    
+    
 }
 
 

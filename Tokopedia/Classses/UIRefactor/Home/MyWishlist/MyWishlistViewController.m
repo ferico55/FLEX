@@ -117,7 +117,12 @@ typedef enum TagRequest {
                               btnTitle:@"Daftar disini!"];
     _notLoggedInView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        
         RegisterViewController* controller = [RegisterViewController new];
+        controller.onLoginSuccess = ^() {
+            [weakSelf.tabBarController setSelectedIndex:2];
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
+        };
         [weakSelf.navigationController pushViewController:controller animated:YES];
     };
 }
