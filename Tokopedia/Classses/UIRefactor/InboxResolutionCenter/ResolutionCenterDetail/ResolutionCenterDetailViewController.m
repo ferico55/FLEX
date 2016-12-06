@@ -345,17 +345,16 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)doRequestCancelComplain{
+    
+    __weak typeof(self) wself = self;
+    
     [RequestResolutionAction fetchCancelResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
-        if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
-            NSArray *viewControllers = self.navigationController.viewControllers;
-            UIViewController *destinationVC = viewControllers[viewControllers.count-3];
-            [self.navigationController popToViewController:destinationVC animated:YES];
+        
+        [wself.navigationController popViewControllerAnimated:YES];
+        if (wself.didCancelComplain) {
+            wself.didCancelComplain();
         }
-        else
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }
+        
     } failure:^(NSError *error) {
         
     }];

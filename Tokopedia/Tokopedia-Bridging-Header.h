@@ -79,7 +79,6 @@
 #import "CarouselDataSource.h"
 #import "AnnouncementTickerView.h"
 
-
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
@@ -142,6 +141,7 @@
 #import "Shop.h"
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
+#import "RequestOrderAction.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

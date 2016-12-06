@@ -25,25 +25,19 @@
 
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
-
+#import "DetailOrderButtonsView.h"
+#import "SendMessageViewController.h"
+#import "TrackOrderViewController.h"
+#import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"
-
-#define TAG_ALERT_REORDER 10
-#define TAG_ALERT_CONFIRMATION 12
 
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NavigateViewController *_navigate;
 }
 
-@property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
-@property (strong, nonatomic) IBOutlet UIView *headerOneButtonComplain;
-@property (strong, nonatomic) IBOutlet UIView *headerOneButton;
-@property (strong, nonatomic) IBOutlet UIView *headerViewWithoutButton;
-@property (weak, nonatomic) IBOutlet UIButton *transactionDetailButton;
-@property (strong, nonatomic) IBOutlet UIView *headerReorderView;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *invoiceLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @end
 
 @implementation TxOrderStatusDetailViewController
@@ -55,52 +49,278 @@
     
     self.title = @"Detail Status";
     
-    switch (_buttonHeaderCount) {
-        case 0:
-            _tableView.tableHeaderView = _headerViewWithoutButton;
-            break;
-        case 1:
-            _tableView.tableHeaderView = _headerOneButton;
-            break;
-        case 2:
-            _tableView.tableHeaderView = _headerTwoButton;
-            break;
-        default:
-            break;
-    }
-    if (_isComplain) {
-        _tableView.tableHeaderView = _headerOneButtonComplain;
-    }
-    if (_reOrder) {
-        _tableView.tableHeaderView = _headerReorderView;
-    }
+    [self adjustButtonsView];
     
-    [_invoiceLabel makeObjectsPerformSelector:@selector(setText:) withObject:_order.order_detail.detail_invoice];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:nil];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if (_buttonHeaderCount >0) {
-        UIBarButtonItem *trackBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lacak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [trackBarButtonItem setTintColor:[UIColor whiteColor]];
-        self.navigationItem.rightBarButtonItem = trackBarButtonItem;
+    _tableView.estimatedRowHeight = 125.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+}
+
+- (void)adjustButtonsView{
+    
+    DetailOrderButtonsView *headerView = [[DetailOrderButtonsView alloc] initWithOrder:_order];
+    CGRect headerFrame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
+    headerView.frame = headerFrame;
+    [headerView sizeToFit];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [headerView context].onTapInvoice = ^(TxOrderStatusList *order){
+        [weakSelf tapInvoiceOrder:order];
+    };
+    
+    [headerView context].onTapSeeComplaint = ^(TxOrderStatusList *order){
+        [weakSelf tapSeeComplaintOrder:order fromView:headerView];
+    };
+    
+    [headerView context].onTapComplaintNotReceived = ^(TxOrderStatusList *order){
+        [weakSelf tapComplaintNotReceivedOrder:order fromView:headerView];
+    };
+    
+    [headerView context].onTapTracking = ^(TxOrderStatusList *order){
+        [weakSelf tapTrackOrder:order];
+    };
+    
+    [headerView context].onTapReceivedOrder = ^(TxOrderStatusList *order){
+        [weakSelf tapConfirmDeliveryOrder:order fromView:headerView];
+    };
+    
+    [headerView context].onTapReorder = ^(TxOrderStatusList *order){
+        [weakSelf tapReorderOrder:order];
+    };
+    
+    [headerView context].onTapCancel = ^(TxOrderStatusList *order){
+        [weakSelf tapRequestCancelOrder:order fromView:headerView];
+    };
+    
+    [headerView context].onTapAskSeller = ^(TxOrderStatusList *order){
+        [weakSelf tapAskSellerOrder:order];
+    };
+    
+    _tableView.tableHeaderView = headerView;
+
+}
+
+-(void)tapInvoiceOrder:(TxOrderStatusList*)order{
+    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
+}
+
+-(void)tapComplaintNotReceivedOrder:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
+    [self createComplainOrder:order isReceived:NO fromView:view];
+}
+
+-(void)tapConfirmDeliveryOrder:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view
+{
+    OrderDeliveredConfirmationAlertView *confirmationAlert = [OrderDeliveredConfirmationAlertView newview];
+    if (order.order_detail.detail_free_return == 1){
+        confirmationAlert.title = @"Sudah Diterima";
+        confirmationAlert.message = order.order_detail.detail_free_return_msg;
+        confirmationAlert.isFreeReturn = YES;
+    } else {
+        confirmationAlert.title = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+        confirmationAlert.message = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        confirmationAlert.isFreeReturn = NO;
     }
+    __weak typeof(self) weakSelf = self;
+    confirmationAlert.didComplain = ^{
+        [weakSelf createComplainOrder:order isReceived:YES fromView:view];
+    };
+    
+    confirmationAlert.didOK = ^{
+        [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+        [weakSelf doRequestFinishOrder:order fromView:view];
+    };
+    
+    [confirmationAlert show];
+}
+
+#pragma mark - Request Delivery Finish Order
+-(void)doRequestFinishOrder:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
+    if ([order.type isEqualToString:ACTION_GET_TX_ORDER_DELIVER]) {
+        [self confirmDeliveryOrderDeliver:order fromView:view];
+    } else if ([order.type isEqualToString:ACTION_GET_TX_ORDER_STATUS]) {
+        [self confirmDeliveryOrderStatus:order fromView:view];
+    } else if ([order.type isEqualToString:ACTION_GET_TX_ORDER_LIST]) {
+        if ([order fromShippingStatus]){
+            [self confirmDeliveryOrderStatus:order fromView:view];
+        } else {
+            [self confirmDeliveryOrderDeliver:order fromView:view];
+        }
+    }
+}
+
+-(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
+    __weak typeof(self) weakSelf = self;
+    [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        
+        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
+        [weakSelf showAlertForReview];
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+        
+        [view removeAcceptButton];
+        [view removeComplaintNotReceivedButton];
+        
+        if (weakSelf.didReceivedOrder) {
+            weakSelf.didReceivedOrder(order);
+        }
+        
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
+    }];
+}
+
+-(void)showAlertForReview{
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:nil
+                                  message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* OK = [UIAlertAction
+                          actionWithTitle:@"OK"
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
+                          }];
+    
+    [alert addAction:OK];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
+    
+    __weak typeof(self) weakSelf = self;
+    [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        
+        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
+        [weakSelf showAlertForReview];
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+        
+        if (weakSelf.didReceivedOrder) {
+            weakSelf.didReceivedOrder(order);
+        }
+        
+        [view removeAcceptButton];
+        [view removeComplaintNotReceivedButton];
+        
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
+
+    }];
+}
+
+
+-(void)tapTrackOrder:(TxOrderStatusList*)order
+{
+    TrackOrderViewController *vc = [TrackOrderViewController new];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.orderID = [order.order_detail.detail_order_id integerValue];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)tapRequestCancelOrder:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView*)view{
+    __weak typeof(self) weakSelf = self;
+    CancelOrderViewController *vc = [CancelOrderViewController new];
+    vc.order = order;
+    vc.didRequestCancelOrder = ^(TxOrderStatusList *order){
+        if(weakSelf.didRequestCancel){
+            weakSelf.didRequestCancel(order);
+        }
+        
+        [view removeRequestCancelButton];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)tapAskSellerOrder:(TxOrderStatusList *)order{
+    
+    SendMessageViewController *messageController = [SendMessageViewController new];
+    messageController.data = @{
+                               @"shop_id":order.order_shop.shop_id?:@"",
+                               @"shop_name":order.order_shop.shop_name?:@""
+                               };
+    messageController.subject = order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    [self.navigationController pushViewController:messageController animated:YES];
+    
+}
+
+-(void)tapReorderOrder:(TxOrderStatusList*)order{
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Pemesanan Ulang"
+                                  message:@"Apakah Anda ingin melakukan pemesanan ulang terhadap produk ini ?"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+
+    __weak typeof(self) wself = self;
+
+    UIAlertAction* yes = [UIAlertAction
+                         actionWithTitle:@"Ya"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [wself doRequestReorder:order];
+
+                         }];
+
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Tidak"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+
+                             }];
+
+    [alert addAction:yes];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)doRequestReorder:(TxOrderStatusList*)order{
+    __weak typeof(self) weakSelf = self;
+    [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
+        
+        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        if (weakSelf.didReorder){
+            weakSelf.didReorder(order);
+        }
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    } failure:^(NSError *error, TxOrderStatusList *order) {
+        
+    }];
+}
+
+-(void)createComplainOrder:(TxOrderStatusList*)order isReceived:(BOOL)isReceived fromView:(DetailOrderButtonsView*)headerView {
+    ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+    vc.order = order;
+    vc.product_is_received = isReceived;
+    
+    __weak typeof(self) weakSelf = self;
+    vc.didCreateComplaint = ^(TxOrderStatusList *order){
+        [headerView removeComplaintNotReceivedButton];
+        [headerView removeAcceptButton];
+        if (weakSelf.didCreateComplaint) {
+            weakSelf.didCreateComplaint(order);
+        }
+    };
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTranslucent:NO];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Purchase Detail Page"];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -109,48 +329,6 @@
     return [_order.order_history count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    OrderHistory *history = [_order.order_history objectAtIndex:indexPath.row];
-    NSString *status;
-    if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = history.history_buyer_status;
-    } else {
-        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
-        if(range.location != NSNotFound){
-            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
-        }
-        else
-            status = history.history_seller_status;
-    }
-    if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@%@", history.history_comments,[self AWBString]]];
-    }
-    CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
-    return messageSize.height;
-}
-
--(NSString*)AWBString
-{
-    NSString *shipRef = _order.order_detail.detail_ship_ref_num?:@"";
-    NSLog(@"shipping resi :%@",shipRef);
-    NSString *lastComment = _order.order_last.last_comments?:@"";
-    
-    NSMutableArray *comment = [NSMutableArray new];
-    
-    if (shipRef &&
-        ![shipRef isEqualToString:@""] &&
-        ![shipRef isEqualToString:@"0"])
-    {
-        [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", _order.order_last.last_shipping_ref_num]];
-    }
-    if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
-        [comment addObject:lastComment];
-    }
-    
-    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
-    return statusString;
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -174,13 +352,13 @@
     } else {
         NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
         if(range.location != NSNotFound){
-            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
+            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, _order.formattedStringRefNumber];
         }
         else
             status = history.history_seller_status;
         
     }
-    if (![history.history_comments isEqualToString:@"0"]) {
+    if (![history.history_comments isEqualToString:@""]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
     }
     
@@ -195,81 +373,26 @@
     return cell;
 }
 
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        TrackOrderViewController *vc = [TrackOrderViewController new];
-        vc.orderID = [_order.order_detail.detail_order_id integerValue];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else{
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 10) {
-            [_delegate confirmDeliveryAtIndexPath:_indexPath];
-        }
-        else if (button.tag == 11)
-        {
-            //Complain
-            [_delegate complainAtIndexPath:_indexPath];
-        }
-        else if (button.tag == 12)
-        {
-            //lihat complain
-            ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
-            NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
-            NSString *resolutionID = [queries objectForKey:@"id"];
-            vc.resolutionID = resolutionID;
-            vc.indexPath = _indexPath;
-            vc.delegate = self;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else if (button.tag == 13)
-        {
-            //Pesan ulang
-            UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:ALERT_REORDER_TITLE
-                                                                       message:ALERT_REORDER_DESCRIPTION
-                                                                      delegate:self
-                                                             cancelButtonTitle:@"Tidak"
-                                                             otherButtonTitles:@"Ya", nil];
-            alertConfirmation.tag = TAG_ALERT_REORDER;
-            [alertConfirmation show];
-        }
-        else{
-            //Transaction Detail
-            TxOrderTransactionDetailViewController *vc = [TxOrderTransactionDetailViewController new];
-            vc.order = _order;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-    }
-}
-- (IBAction)gesture:(id)sender {
-    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
-}
-
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == TAG_ALERT_REORDER) {
-        if (buttonIndex == 1) {
-            [_delegate reOrder:_order atIndexPath:_indexPath];
-            [_delegate delegateViewController:self];
-        }
-    }
-}
-
--(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
-{
-    NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
+-(void)tapSeeComplaintOrder:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView*)view{
+    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
-    
-	[RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
+    vc.resolutionID = resolutionID;
+    vc.delegate = self;
+    __weak typeof(self) weakSelf = self;
+    vc.didCancelComplain = ^(){
+        if(weakSelf.didCancelComplaint){
+            weakSelf.didCancelComplaint(order);
+        }
         
-    } failure:^(NSError *error) {
-        
-    }];
-    
-    [_delegate delegateViewController:self];
-
+        [view removeSeeComplaintButton];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)tapDetailTransaction:(id)sender {
+    TxOrderTransactionDetailViewController *vc = [TxOrderTransactionDetailViewController new];
+    vc.order = _order;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
