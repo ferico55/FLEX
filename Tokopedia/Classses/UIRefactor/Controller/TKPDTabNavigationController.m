@@ -146,6 +146,10 @@
     self.hidesBottomBarWhenPushed = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if ([self isMovingFromParentViewController]){
+        [self didTapBackButton];
+    }
 }
 
 - (void)viewDidLayoutSubviews
