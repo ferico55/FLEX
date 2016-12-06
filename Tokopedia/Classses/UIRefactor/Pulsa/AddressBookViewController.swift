@@ -71,7 +71,12 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.contacts[section].phones!.count
+        if((self.contacts[section].phones) != nil) {
+            return self.contacts[section].phones!.count
+        }
+        
+        return 0
+        
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

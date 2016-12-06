@@ -349,7 +349,7 @@ typedef enum TagRequest {
             break;
             
         case MainViewControllerPageSearch:
-            return 2;
+            return 0;
             break;
             
         default:
