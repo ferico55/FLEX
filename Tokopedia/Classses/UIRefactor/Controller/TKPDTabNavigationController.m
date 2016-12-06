@@ -91,7 +91,7 @@
     }
 
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
-    self.navigationItem.leftBarButtonItem = backButton;
+    self.navigationItem.backBarButtonItem = backButton;
     
     
     if (![self isUseDynamicFilter]) {
