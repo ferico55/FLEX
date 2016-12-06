@@ -247,9 +247,9 @@
 
 - (NSDictionary *)generateData {
     if (!_talk || !_indexPath) return nil;
-
+    
     return @{
-            TKPD_TALK_MESSAGE:_talk.talk_message?:@0,
+            TKPD_TALK_MESSAGE:[[_talk.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities]?:@0,
             TKPD_TALK_USER_IMG:_talk.talk_user_image?:@0,
             TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@0,
             TKPD_TALK_USER_NAME:_talk.talk_user_name?:@0,

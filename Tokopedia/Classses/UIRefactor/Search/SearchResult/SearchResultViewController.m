@@ -180,17 +180,12 @@ ImageSearchRequestDelegate
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _userManager = [UserAuthentificationManager new];
-    
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
     _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
-;
-
-    
     _start = 0;
     
     [self initNoResultView];
@@ -678,14 +673,17 @@ ImageSearchRequestDelegate
         }
         case 12:
         {
-            NSString *title;
+            NSString *title = @"";
             if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
                 title = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
             } else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY]) {
                 title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY];
             } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
                 title = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+            }else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]){
+                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENT_1];
             }
+            
             title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
             NSURL *url = [NSURL URLWithString: _searchObject.data.share_url?:@"www.tokopedia.com"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title

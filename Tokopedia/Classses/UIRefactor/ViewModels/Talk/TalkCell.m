@@ -14,11 +14,12 @@
 #import "CMPopTipView.h"
 #import "TalkList.h"
 #import "ProductTalkDetailViewController.h"
+#import "ProductTalkViewController.h"
 #import "TKPDTabViewController.h"
 #import "GeneralAction.h"
 #import "ReportViewController.h"
 #import "SmileyAndMedal.h"
-
+#import "LoginViewController.h"
 #import "stringrestkit.h"
 #import "detail.h"
 #import "string_inbox_talk.h"
@@ -32,7 +33,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     RequestReportTalk
 };
 
-@interface TalkCell ()
+@interface TalkCell ()<LoginViewDelegate>
 
 @property (strong, nonatomic) ReportViewController *reportController;
 
@@ -65,7 +66,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)awakeFromNib {
     // Initialization code
-    
+    [super awakeFromNib];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     
@@ -254,18 +255,16 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
+    __weak __typeof(self) weakSelf = self;
     _reportController = [ReportViewController new];
-
     _reportController.strProductID = _talk.talk_product_id;
     _reportController.strShopID = _talk.talk_shop_id;
-
-    __weak __typeof(self) weakSelf = self;
     _reportController.onFinishWritingReport = ^(NSString *message) {
         [weakSelf reportTalkWithMessage:message];
     };
-    
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
-    [controller.navigationController pushViewController:_reportController animated:YES];
+    [_reportController displayFrom:controller];
+    
 }
 
 #pragma mark - Smiley Delegate

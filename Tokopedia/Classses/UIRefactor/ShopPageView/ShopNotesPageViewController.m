@@ -227,7 +227,7 @@
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY)?:kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY,
                 kTKPDNOTES_APINOTEIDKEY:list.note_id?:@(0),
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title?:@"",
+                kTKPDNOTES_APINOTETITLEKEY:[list.note_title kv_decodeHTMLCharacterEntities]?:@"",
                 kTKPDNOTES_APINOTESTATUSKEY:list.note_status?:@"",
                 @"shop_id" : [_data objectForKey:@"shop_id"]?:@""
                 };
@@ -273,7 +273,7 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
+            ((GeneralList1GestureCell*)cell).textLabel.text = [list.note_title kv_decodeHTMLCharacterEntities];
             ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
@@ -310,6 +310,7 @@
                                                          if (_list.count == 0) {
                                                              _table.tableFooterView = _noResultView;
                                                              _act.hidden = YES;
+                                                             [self initNoResultView];
                                                          }else{
                                                              [_noResultView removeFromSuperview];
                                                          }

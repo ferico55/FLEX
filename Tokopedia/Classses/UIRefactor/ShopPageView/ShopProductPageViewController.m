@@ -361,8 +361,6 @@ EtalaseViewControllerDelegate
     return size;
 }
 
-
-
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     
@@ -431,7 +429,6 @@ EtalaseViewControllerDelegate
     return cell;
 }
 
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
     
@@ -498,7 +495,6 @@ EtalaseViewControllerDelegate
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationShopTitle" object:nil userInfo:nil];
     }
 }
-
 
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};

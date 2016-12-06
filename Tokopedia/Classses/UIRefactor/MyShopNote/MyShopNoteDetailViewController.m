@@ -238,8 +238,8 @@
             case 11: {
                 //save
                 NSMutableArray *messages = [NSMutableArray new];
-                NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
-                NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:_note.result.detail.notes_content;
+                NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities]?:@"";
+                NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
                 
                 notetitle = [notetitle stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
                 content = [content stringByTrimmingCharactersInSet:
@@ -305,9 +305,7 @@
 -(void)showShopNoteDetail
 {
     MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
-    
-    
-    [requestManager requestNoteDetail:@([[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY]integerValue])
+    [requestManager requestNoteDetail:@([[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:([[_data objectForKey:kTKPD_SHOPIDKEY] isEqualToString:@""]?:[[_data objectForKey:kTKPD_SHOPIDKEY] integerValue]))
                            shopDomain:self.shopDomain
                                noteId:@([[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue])
                                 terms:(_type == NOTES_RETURNABLE_PRODUCT)? @1:@0
@@ -348,7 +346,7 @@
     UIFont *font = [UIFont smallTheme];
     [attributes setObject:font forKey:NSFontAttributeName];
     
-    NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
+    NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
     contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
     if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
@@ -399,7 +397,7 @@
             _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
             _timeNoteLabel.hidden = NO;
         }
-        _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+        _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities];
     }
     
     if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -413,11 +411,11 @@
 {
     MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
     
-    NSString *noteTitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
+    NSString *noteTitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities]?:@"";
     if (_type == NOTES_RETURNABLE_PRODUCT) {
         noteTitle = @"Kebijakan Pengembalian Produk";
     }
-    NSString *noteContent = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
+    NSString *noteContent = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities]]?:@"";
     NSString *terms = (_type == NOTES_RETURNABLE_PRODUCT)?@"1":@"0";
     
     if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
@@ -572,7 +570,7 @@
                 [_barbuttonedit setEnabled:YES];
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
-                _titleNoteTextField.text = _note.result.detail.notes_title;
+                _titleNoteTextField.text = [_note.result.detail.notes_title kv_decodeHTMLCharacterEntities];
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -583,7 +581,7 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSString *note = _note.result.detail.notes_content;
+                NSString *note = [_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
                 note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
                 NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
@@ -615,7 +613,7 @@
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
 
-                _titleNoteTextField.text = _note.result.detail.notes_title;
+                _titleNoteTextField.text = [_note.result.detail.notes_title kv_decodeHTMLCharacterEntities];
                 _titleNoteTextField.enabled = NO;
                 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
@@ -624,7 +622,7 @@
                 style.lineSpacing = 5.0;
                 
                 UIFont *font = [UIFont smallTheme];
-                NSString *note = _note.result.detail.notes_content;
+                NSString *note = [_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
                 note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
                 NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data

@@ -333,7 +333,6 @@
     
     cell.message = list;
     cell.popTipAnchor = self.view;
-    
     return cell;
 }
 

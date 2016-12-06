@@ -700,6 +700,7 @@
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
+    
     NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     
@@ -834,6 +835,8 @@
             }
             NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
             textString = fixed_order_saldo_left_amount_idr;
+            
+            _totalPaymentTextField.text = [NSString stringWithFormat:@"%.0f",fixed_order_saldo_left_amount];
         } else {
             textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
         }
