@@ -615,10 +615,10 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                     clientNumber = numberField.text!
                 }
                 
-                let pulsaUrl = "https://pulsa.tokopedia.com?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoSwitch.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(self.selectedCategory.attributes.name)"
+                let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoSwitch.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(self.selectedCategory.attributes.name)"
                 
                 let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}& ").invertedSet
-                let url = "https://js.tokopedia.com/wvlogin?uid=\(self.userManager.getUserId())&token=\(self.userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
+                let url = "\(NSString.jsUrl())/wvlogin?uid=\(self.userManager.getUserId())&token=\(self.userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
                 
                 self.didSuccessPressBuy!(NSURL(string: url)!)
             }

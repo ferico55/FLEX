@@ -18,7 +18,9 @@
 + (NSString*)accountsUrl;
 + (NSString*)hadesUrl;
 + (NSString*)mojitoUrl;
++ (NSString*)pulsaApiUrl;
 + (NSString*)pulsaUrl;
++ (NSString*)jsUrl;
 + (NSString*)kunyitUrl;
 + (NSString*)goldMerchantUrl;
 + (NSString*)pointUrl;

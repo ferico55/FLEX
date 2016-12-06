@@ -55,7 +55,7 @@
                                     [NSString aceUrl]: @"web_service_v4",
                                     [NSString keroUrl]: @"web_service_v4",
                                     [NSString hadesUrl]: @"web_service_v4",
-                                    [NSString pulsaUrl ]: @"web_service_v4",
+                                    [NSString pulsaApiUrl]: @"web_service_v4",
                                     [NSString kunyitUrl]: @"web_service_v4",
                                     [NSString accountsUrl]: @"web_service_v4",
                                     [NSString topAdsUrl]: @"web_service_v4",
