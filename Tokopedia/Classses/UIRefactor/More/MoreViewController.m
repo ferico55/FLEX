@@ -463,7 +463,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
-    else if(indexPath.section==1 && indexPath.row==2) {
+    else if(indexPath.section == 2 && indexPath.row == 2) {
         [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
         [wrapperController.tabBarController setSelectedIndex:2];
     }
