@@ -90,7 +90,7 @@
         _unloadViewControllers = nil;
     }
 
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:nil];
+    UIBarButtonItem *backButton =  [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:self action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     

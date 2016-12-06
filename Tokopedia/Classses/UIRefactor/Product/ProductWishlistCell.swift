@@ -119,11 +119,11 @@ class ProductWishlistCell : UICollectionViewCell {
                         let imageView = UIImageView(frame: CGRectZero)
                         imageView.image = image
                         
-                        self!.badgesView .addArrangedSubview(imageView)
+                        self?.badgesView .addArrangedSubview(imageView)
                         
                         imageView.mas_makeConstraints({ (make) in
-                            make.width.equalTo()(self!.badgesView.mas_height)
-                            make.height.equalTo()(self!.badgesView.mas_height)
+                            make.width.equalTo()(self?.badgesView.mas_height)
+                            make.height.equalTo()(self?.badgesView.mas_height)
                         })
 
                     }
