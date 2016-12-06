@@ -36,10 +36,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ds4-4z-ewW">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                             <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="120" id="WSO-EC-bks"/>
+                                <constraint firstAttribute="height" constant="100" id="WSO-EC-bks"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZg-u9-ck3">
