@@ -315,22 +315,29 @@
             [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Cancel"];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            
-            if ([self isInstantCourier]) {
-                [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
-                [self request];
+            if ([self isInstantCourier] && !_changeCourier) {
+                __weak typeof(self) weakSelf = self;
+                UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:@"Konfirmasi" message:@"Dengan mengklik tombol \"Ya\", pihak kurir akan segera melakukan pickup ke tempat Anda. Tidak perlu bayar ongkir pada kurir."];
+                [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
+                [alertView bk_addButtonWithTitle:@"Ya" handler:^{
+                    [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+                    [weakSelf request];
+                }];
+                [alertView show];
                 return;
             }
-
+            
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
-            if (textField.text.length >= 7 && textField.text.length <= 17) {
+            if (textField.text.length < 7 || textField.text.length > 17) {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"] delegate:self];
+                [alert show];
+            }else if(_selectedCourier == nil || [_selectedCourier.shipment_id isEqualToString:@""]){
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Agen Kurir harus disi"] delegate:self];
+                [alert show];
+            }else{
                 [AnalyticsManager trackEventName:@"clickShipping" category:GA_EVENT_CATEGORY_SHIPMENT_CONFIRMATION action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
                 [self request];
-            } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]
-                                                                               delegate:self];
-                [alert show];
             }
         }
     }
@@ -382,6 +389,7 @@
         object.shipmentID = _selectedCourier.shipment_id;
         object.shipmentName = _selectedCourier.shipment_name;
         object.shipmentPackageID = _selectedCourierPackage.sp_id;
+        _order.order_is_pickup = [self isInstantCourier] ? 0 : 1;
     }
     
     return object;

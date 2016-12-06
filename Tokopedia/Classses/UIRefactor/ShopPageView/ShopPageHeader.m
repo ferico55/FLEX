@@ -232,17 +232,16 @@
     
     if ([[_shop.result.is_open stringValue] isEqualToString:@"1"]) {
         _shopClosedView.hidden = YES;
-    } else if ([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
+    }else if ([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
         _shopClosedView.hidden = NO;
-        NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
-        NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
+        NSString* until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
+        NSString* reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
         [_shopClosedReason setCustomAttributedText:reason];
         [_shopClosedUntil setText:until];
-    } else if ([[_shop.result.is_open stringValue] isEqualToString:@"3"]) {
+    }else if ([[_shop.result.is_open stringValue] isEqualToString:@"3"] || [[_shop.result.is_open stringValue] isEqualToString:@"4"]) {
         _shopClosedView.hidden = NO;
-        NSString *title = @"Toko dalam status moderasi";
-        NSString *description = @"Kami sarankan untuk tidak melakukan transaksi secara langsung di toko ini.";
-        [_shopClosedReason setCustomAttributedText:description];
+        NSString *title = [_shop.result.info.shop_status_title stringByStrippingHTML];
+        [_shopClosedReason setCustomAttributedText:nil];
         [_shopClosedUntil setText:title];
     }
     

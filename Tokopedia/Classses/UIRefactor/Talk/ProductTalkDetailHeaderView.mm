@@ -119,7 +119,7 @@
                          {
                              [CKLabelComponent
                               newWithLabelAttributes:{
-                                  .string = talk.talk_message,
+                                  .string = [[talk.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities],
                                   .font = [UIFont largeTheme],
                                   .lineSpacing = 5
                               }
