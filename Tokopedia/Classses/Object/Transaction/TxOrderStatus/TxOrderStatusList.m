@@ -7,8 +7,206 @@
 //
 
 #import "TxOrderStatusList.h"
+#import "string_tx_order.h"
 
 @implementation TxOrderStatusList
+
+-(NSString *)dayLeftString{
+    
+    if (self.dayLeft<0) {
+        return @"Expired";
+    }
+    
+    switch (self.dayLeft) {
+        case 1:
+            return @"Besok";
+            break;
+        case  0:
+            return @"Hari Ini";
+            break;
+        default:
+            return [NSString stringWithFormat:@"%zd Hari Lagi",self.dayLeft];
+            break;
+    }
+    
+    return @"";
+}
+
+-(NSInteger)dayLeft{
+    return (self.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED)?self.order_deadline.deadline_process_day_left:self.order_deadline.deadline_shipping_day_left;
+
+}
+
+-(BOOL)hasDueDate{
+    if ((self.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED ||
+         self.order_detail.detail_order_status == ORDER_PROCESS ||
+         self.order_detail.detail_order_status == ORDER_PROCESS_PARTIAL)&&
+        !self.canSeeComplaint&&
+        !self.canReorder&&
+        !self.canComplaintNotReceived&&
+        !self.trackable&&
+        !self.canAccept) {
+        return YES;
+    }
+    return NO;
+}
+
+-(BOOL)canReorder{
+    return (self.order_detail.detail_order_status == ORDER_CANCELED || self.order_detail.detail_order_status == ORDER_REJECTED);
+}
+
+-(void)setCanComplaintNotReceived:(BOOL)canComplaintNotReceived {
+    if (canComplaintNotReceived) {
+        self.order_button.button_open_dispute = 1;
+    } else {
+        self.order_button.button_open_dispute = 0;
+    }
+}
+
+-(BOOL)canComplaintNotReceived{
+    return (self.order_button.button_open_dispute == 1);
+}
+
+-(BOOL)canAskSeller{
+    return (self.order_button.button_ask_seller == 1);
+}
+
+-(void)setCanSeeComplaint:(BOOL)canSeeComplaint{
+    if (canSeeComplaint) {
+        self.order_button.button_res_center_go_to = 1;
+    } else {
+        self.order_button.button_res_center_go_to = 0;
+    }
+}
+
+-(BOOL)canSeeComplaint{
+    return (self.order_button.button_res_center_go_to == 1);
+}
+
+-(void)setCanRequestCancel:(BOOL)canRequestCancel{
+    if (canRequestCancel) {
+        self.order_button.button_cancel_request = 1;
+    } else {
+        self.order_button.button_cancel_request = 0;
+    }
+}
+
+-(BOOL)canRequestCancel{
+    return (self.order_button.button_cancel_request == 1);
+}
+
+-(BOOL)trackable {
+    NSInteger orderStatus = self.order_detail.detail_order_status;
+    NSString *shipRef = self.order_detail.detail_ship_ref_num?:@"";
+    if(orderStatus == ORDER_SHIPPING ||
+       orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
+       orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+       orderStatus == ORDER_DELIVERED ||
+       orderStatus == ORDER_DELIVERY_FAILURE||
+       orderStatus == ORDER_SHIPPING_WAITING)
+    {
+        
+        if((orderStatus == ORDER_SHIPPING ||
+            orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
+           ![shipRef isEqualToString:@""])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)accept {
+    self.order_detail.detail_order_status = ORDER_FINISHED;
+}
+
+-(BOOL)canAccept{
+    NSInteger orderStatus = self.order_detail.detail_order_status;
+    NSString *shipRef = self.order_detail.detail_ship_ref_num?:@"";
+    if(orderStatus == ORDER_SHIPPING ||
+       orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
+       orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+       orderStatus == ORDER_DELIVERED ||
+       orderStatus == ORDER_DELIVERY_FAILURE||
+       orderStatus == ORDER_SHIPPING_WAITING||
+       orderStatus == ORDER_DELIVERED_DUE_LIMIT)
+    {
+        
+        if((orderStatus == ORDER_SHIPPING ||
+            orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
+           ![shipRef isEqualToString:@""]) {
+            if(([self.type isEqualToString:ACTION_GET_TX_ORDER_STATUS] || [self.type isEqualToString:ACTION_GET_TX_ORDER_LIST]) ) {
+                return YES;
+            }
+        }
+        else {
+            if([self.type isEqualToString:ACTION_GET_TX_ORDER_DELIVER] || [self.type isEqualToString:ACTION_GET_TX_ORDER_LIST]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+-(BOOL)fromShippingStatus{
+    NSInteger orderStatus = self.order_detail.detail_order_status;
+    NSString *shipRef = self.order_detail.detail_ship_ref_num?:@"";
+
+    if((orderStatus == ORDER_SHIPPING ||
+        orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
+        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+        orderStatus == ORDER_SHIPPING_WAITING) &&
+       ![shipRef isEqualToString:@""]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(NSString*)lastStatusString{
+    
+    NSString *lastStatus = [NSString convertHTML:self.order_last.last_buyer_status];
+    
+    NSMutableArray *comment = [NSMutableArray new];
+    
+    if (lastStatus &&![lastStatus isEqualToString:@""]&&![lastStatus isEqualToString:@"0"]) {
+        [comment addObject:lastStatus];
+    }
+        
+    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
+    
+    if ([statusString isEqual:@""]) {
+        statusString = @"-";
+    }
+    
+    return statusString;
+}
+
+-(NSString *)formattedStringLastComment{
+    NSString *lastComment = self.order_last.last_comments?:@"";
+    if (lastComment && ![lastComment isEqualToString:@"0"] && ![lastComment isEqualToString:@""]) {
+        return lastComment;
+    }
+    return @"";
+}
+
+-(NSString *)formattedStringRefNumber{
+    NSString *shipRef = self.order_detail.detail_ship_ref_num?:@"";
+    if (shipRef &&
+        ![shipRef isEqualToString:@""] &&
+        ![shipRef isEqualToString:@"0"])
+    {
+        return [NSString stringWithFormat:@"Nomor resi: %@", self.order_last.last_shipping_ref_num];
+    }
+    
+    return @"";
+}
+
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[

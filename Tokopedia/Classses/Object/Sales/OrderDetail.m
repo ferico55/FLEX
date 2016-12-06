@@ -14,6 +14,17 @@
     return [_detail_free_return_msg kv_decodeHTMLCharacterEntities];
 }
 
+-(NSString *)invoiceURLString{
+    NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:_detail_pdf_uri];
+    NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"]?:@"";
+    NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"]?:@"";
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId];
+    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",[NSString basicUrl],invoicePDF,invoiceID,userID];
+    
+    return invoiceURLforWS;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[

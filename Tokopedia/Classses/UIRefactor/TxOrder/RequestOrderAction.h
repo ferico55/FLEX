@@ -75,4 +75,9 @@
                              Success:(void (^)(TransactionAction *data))success
                              failure:(void (^)(NSError *error))failure;
 
++(void)fetchRequestCancelOrderID:(NSString*)orderID
+                          reason:(NSString*)reason
+                       onSuccess:(void (^)())onSuccess
+                       onFailure:(void (^)())onFailure;
+
 @end

@@ -423,4 +423,41 @@ static failedCompletionBlock onFailure;
                              }];
 }
 
++(void)fetchRequestCancelOrderID:(NSString*)orderID
+                          reason:(NSString*)reason
+                        onSuccess:(void (^)())onSuccess
+                        onFailure:(void (^)())onFailure {
+    
+    
+    NSDictionary* param = @{ @"order_id" : orderID,
+                             @"reason_cancel" : reason
+                             };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/request_cancel_order.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.is_success == 1)
+                                 {
+                                     NSArray *array = response.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil melakukan permintaan pembatalan order", nil];
+                                     [StickyAlertView showSuccessMessage:array];
+                                     onSuccess();
+                                 } else {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     onFailure();
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure();
+                             }];
+}
+
 @end

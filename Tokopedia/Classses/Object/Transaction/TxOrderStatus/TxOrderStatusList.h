@@ -36,4 +36,22 @@
 @property (strong, nonatomic) NSString *order_JOB_detail;
 @property (strong, nonatomic) OrderDestination *order_destination;
 
+@property (strong, nonatomic) NSString *type;
+@property (strong, nonatomic) NSString *lastStatusString;
+@property (strong, nonatomic) NSString *formattedStringRefNumber;
+@property (strong, nonatomic) NSString *formattedStringLastComment;
+@property (strong, nonatomic) NSString *dayLeftString;
+@property (nonatomic) NSInteger dayLeft;
+@property (nonatomic) BOOL trackable;
+@property (nonatomic) BOOL canReorder;
+@property (nonatomic) BOOL canComplaintNotReceived;
+@property (nonatomic) BOOL canAccept;
+@property (nonatomic) BOOL canSeeComplaint;
+@property (nonatomic) BOOL canAskSeller;
+@property (nonatomic) BOOL canRequestCancel;
+@property (nonatomic) BOOL hasDueDate;
+@property (nonatomic) BOOL fromShippingStatus;
+
+- (void)accept;
+
 @end

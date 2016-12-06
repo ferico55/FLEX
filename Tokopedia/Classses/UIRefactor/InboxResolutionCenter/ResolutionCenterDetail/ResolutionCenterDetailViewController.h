@@ -14,7 +14,6 @@
 #pragma mark - Transaction Cart Payment Delegate
 @protocol ResolutionCenterDetailViewControllerDelegate <NSObject>
 @required
-- (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
 - (void)finishComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
 - (void)didResponseComplain:(NSIndexPath*)indexPath;
 @end
@@ -33,6 +32,8 @@
 
 @property NSIndexPath *indexPath;
 @property NSString *resolutionID;
+
+@property (nonatomic, copy) void(^didCancelComplain)();
 
 @property BOOL isNeedRequestListDetail;
 

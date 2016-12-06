@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CancelOrderViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="reasonTextView" destination="DJg-sj-YRD" id="eLc-NB-dTp"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lWN-Q3-Mqk">
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apakah Anda yakin akan meminta penjual untuk membatalkan pesanan ini?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6zM-ss-DlG">
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mk9-OM-Kab">
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="G6c-Z9-aX7"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Mk9-OM-Kab" secondAttribute="bottom" constant="1" id="2RY-zB-rWY"/>
+                        <constraint firstItem="Mk9-OM-Kab" firstAttribute="top" secondItem="6zM-ss-DlG" secondAttribute="bottom" id="HD5-yD-LRB"/>
+                        <constraint firstAttribute="trailing" secondItem="Mk9-OM-Kab" secondAttribute="trailing" id="JEF-vk-OGc"/>
+                        <constraint firstAttribute="trailing" secondItem="6zM-ss-DlG" secondAttribute="trailing" constant="15" id="UKS-pc-Jn8"/>
+                        <constraint firstItem="6zM-ss-DlG" firstAttribute="leading" secondItem="lWN-Q3-Mqk" secondAttribute="leading" constant="15" id="iBk-Ia-iZx"/>
+                        <constraint firstAttribute="height" constant="64" id="pqq-G2-PN4"/>
+                        <constraint firstItem="6zM-ss-DlG" firstAttribute="top" secondItem="lWN-Q3-Mqk" secondAttribute="top" id="qip-b8-Ahd"/>
+                        <constraint firstItem="Mk9-OM-Kab" firstAttribute="leading" secondItem="lWN-Q3-Mqk" secondAttribute="leading" id="sL9-KF-SZa"/>
+                    </constraints>
+                </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DJg-sj-YRD" customClass="RSKPlaceholderTextView" customModule="Tokopedia" customModuleProvider="target">
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="o4v-yD-msq"/>
+                    </connections>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="DJg-sj-YRD" secondAttribute="trailing" constant="15" id="4ys-x0-8Js"/>
+                <constraint firstItem="DJg-sj-YRD" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="CsO-6t-tVn"/>
+                <constraint firstItem="DJg-sj-YRD" firstAttribute="top" secondItem="lWN-Q3-Mqk" secondAttribute="bottom" id="FOs-uD-aec"/>
+                <constraint firstAttribute="trailing" secondItem="lWN-Q3-Mqk" secondAttribute="trailing" id="MYQ-H6-7ED"/>
+                <constraint firstItem="lWN-Q3-Mqk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="d7H-pv-cUN"/>
+                <constraint firstItem="lWN-Q3-Mqk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zZO-El-wl2"/>
+                <constraint firstAttribute="bottom" secondItem="DJg-sj-YRD" secondAttribute="bottom" id="zdQ-Az-Ivw"/>
+            </constraints>
+            <point key="canvasLocation" x="34.5" y="92.5"/>
+        </view>
+    </objects>
+</document>

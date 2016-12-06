@@ -11,6 +11,9 @@
 @implementation OrderHistory
 
 - (NSString *)history_comments {
+    if ([_history_comments isEqualToString:@"0"]) {
+        _history_comments = @"";
+    }
     return [_history_comments stringByReplacingOccurrencesOfString:@"            " withString:@""];
 }
 +(NSDictionary *)attributeMappingDictionary

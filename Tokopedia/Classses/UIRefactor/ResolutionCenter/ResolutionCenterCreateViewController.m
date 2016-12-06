@@ -235,7 +235,12 @@ ResolutionCenterCreateStepThreeDelegate
 
 -(void)didFinishCreateComplainInStepThree{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    [_delegate didFinishCreateComplain];
+    if (self.didCreateComplaint) {
+        self.didCreateComplaint(_order);
+    }
+    if([self respondsToSelector:@selector(didFinishCreateComplaint)]){
+        [_delegate didFinishCreateComplain];
+    }
 }
 
 #pragma mark - Customize Back Button Item
