@@ -90,8 +90,8 @@
         _unloadViewControllers = nil;
     }
 
-    UIBarButtonItem *backButton =  [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:self action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
     
     if (![self isUseDynamicFilter]) {
@@ -146,6 +146,10 @@
     self.hidesBottomBarWhenPushed = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if ([self isMovingFromParentViewController]){
+        [self didTapBackButton];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -746,6 +750,9 @@
     
 }
 
+- (void)didTapBackButton {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 @end
 
