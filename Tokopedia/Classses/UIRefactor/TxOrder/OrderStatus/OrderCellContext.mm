@@ -13,4 +13,12 @@
 
 @implementation OrderCellContext
 
+-(instancetype)init{
+    
+    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_right_grey.png"];
+    self.images = @{@"arrow" : arrowImage};
+    
+    return self;
+}
+
 @end

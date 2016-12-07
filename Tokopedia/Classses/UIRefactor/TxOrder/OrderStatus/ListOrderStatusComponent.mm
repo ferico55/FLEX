@@ -46,7 +46,7 @@
                    .flexShrink = YES
                },
               {
-                  [self disclosureImage],
+                  [self disclosureImageWithContext:context],
                   .alignSelf = CKStackLayoutAlignSelfCenter,
               }
            }]
@@ -76,10 +76,10 @@
        }];
 }
 
-+(CKComponent *)disclosureImage{
++(CKComponent *)disclosureImageWithContext:(OrderCellContext*)context{
     return
     [CKImageComponent
-     newWithImage:[UIImage imageNamed:@"icon_arrow_right_grey.png"]
+     newWithImage:context.images[@"arrow"]
      size:{15,15}
      ];
 }

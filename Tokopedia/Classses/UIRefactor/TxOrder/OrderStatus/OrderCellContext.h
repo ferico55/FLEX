@@ -14,6 +14,7 @@
 @interface OrderCellContext : NSObject
 
 @property id<CKNetworkImageDownloading> imageDownloader;
+@property (nonatomic, strong) NSDictionary *images;
 
 @property (nonatomic, copy) void(^onTapReorder)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^onTapSeeComplaint)(TxOrderStatusList *);
