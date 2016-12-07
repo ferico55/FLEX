@@ -209,7 +209,7 @@
         make.left.right.top.equalTo(searchWrapper);
     }];
 
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]];
     self.navigationItem.titleView = searchWrapper;
 }
 
