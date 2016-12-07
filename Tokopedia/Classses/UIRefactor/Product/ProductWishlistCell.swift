@@ -114,16 +114,18 @@ class ProductWishlistCell : UICollectionViewCell {
             })
             
             imageDownloader.downloadImagesWithUrls(urls) { [weak self](images) in
+                guard let `self` = self else { return }
+                
                 images.forEach({ (image) in
                     if(image.size.width > 1) {
                         let imageView = UIImageView(frame: CGRectZero)
                         imageView.image = image
                         
-                        self?.badgesView .addArrangedSubview(imageView)
+                        self.badgesView .addArrangedSubview(imageView)
                         
                         imageView.mas_makeConstraints({ (make) in
-                            make.width.equalTo()(self?.badgesView.mas_height)
-                            make.height.equalTo()(self?.badgesView.mas_height)
+                            make.width.equalTo()(self.badgesView.mas_height)
+                            make.height.equalTo()(self.badgesView.mas_height)
                         })
 
                     }
