@@ -667,7 +667,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 }
 
 + (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress {
-    if (oldAddress != newAddress) {
+    if (oldAddress && newAddress && (oldAddress != newAddress)) {
         [self trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Change Address"];
     }
 }

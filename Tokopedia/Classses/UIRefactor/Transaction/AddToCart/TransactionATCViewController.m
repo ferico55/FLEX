@@ -985,6 +985,7 @@ typedef enum
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:@"address"];
+    [AnalyticsManager trackIfSelectedAddressChanged:_selectedAddress to:address];
     [self setAddress:address];
     [self requestFormWithAddressID:address.address_id?:@""];
 }
