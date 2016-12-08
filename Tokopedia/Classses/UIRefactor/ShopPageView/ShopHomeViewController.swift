@@ -175,7 +175,9 @@ extension ShopHomeViewController: WKNavigationDelegate {
             decisionHandler(.Allow)
         } else {
             let webViewController = WebViewController()
-            webViewController.strURL = navigationAction.request.URL!.absoluteString!
+            let url = UserAuthentificationManager().webViewUrlFromUrl(navigationAction.request.URL!.absoluteString!)
+            
+            webViewController.strURL = url
             self.navigationController!.pushViewController(webViewController, animated: true)
             
             decisionHandler(.Cancel);

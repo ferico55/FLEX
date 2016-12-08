@@ -40,5 +40,6 @@
 
 + (void)ensureDeviceIdExistence;
 - (BOOL)userHasShop;
+- (NSString *)webViewUrlFromUrl:(NSString *)url;
 
 @end

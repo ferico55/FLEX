@@ -247,4 +247,11 @@
     return ([[self secureStorageDictionary] objectForKey:@"shop_id"] && [[[self secureStorageDictionary] objectForKey:@"shop_id"] integerValue] > 0);
 }
 
+- (NSString *)webViewUrlFromUrl:(NSString *)url {
+    NSString *userId = self.getUserId;
+    NSString *deviceId = self.getMyDeviceToken;
+    NSString *jsUrl = [NSString stringWithFormat:@"https://js.tokopedia.com/wvlogin?uid=%@&token=%@&url=%@", userId, deviceId, url];
+    return jsUrl;
+}
+
 @end
