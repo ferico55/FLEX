@@ -57,7 +57,7 @@
     _stackView = [[OAStackView alloc] initWithArrangedSubviews:
                   @[createButton(@"HOME", 1),
                     createButton(@"FEED", 2),
-                    createButton(@"WISHLIST", 3),
+                    createButton(@"PROMO", 3),
                     createButton(@"TERAKHIR DILIHAT", 4),
                     createButton(@"FAVORIT", 5)]];
     _stackView.axis = UILayoutConstraintAxisHorizontal;
@@ -68,27 +68,32 @@
 
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    [self adjustConstraints];
+}
+
+- (void) adjustConstraints {
     [_scrollView addSubview:_stackView];
     CGRect newFrame = _scrollView.frame;
     newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
     if(IS_IPAD) {
         [_scrollView setScrollEnabled:NO];
-        _stackView.distribution = OAStackViewDistributionFillEqually;
+        _stackView.distribution = OAStackViewDistributionEqualSpacing;
         _stackView.spacing = 0.0;
         [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.mas_equalTo(_scrollView);
-            make.left.mas_equalTo(self.view);
-            make.right.mas_equalTo(self.view);
+            make.edges.mas_equalTo(self.view);
         }];
     } else {
         _stackView.distribution = OAStackViewDistributionFillProportionally;
         _stackView.spacing = 35.0;
-        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.left.right.mas_equalTo(_scrollView);
-            make.height.mas_equalTo(_scrollView);
+        [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.height.mas_equalTo(_scrollView);
+            if (!_loggedIn){
+                make.width.mas_equalTo(_scrollView);
+            }
         }];
-
     }
     
     _maxXInScrollView = [self xInScrollViewFormula: [_stackView.arrangedSubviews count]] - SCREEN_WIDTH + [_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count]-1].frame.size.width+ STACKVIEW_LEFTRIGHT_MARGIN;
@@ -125,13 +130,13 @@
         [self tap:1];
         [self setActiveButton];
     }
+    [self adjustConstraints];
 }
 
 - (void)userDidLogin:(NSNotification *)notification {
     [_scrollView setScrollEnabled:YES];
     [_stackView removeFromSuperview];
     [self initButton];
-    [self viewDidLayoutSubviews];
     _loggedIn = YES;
 }
 
@@ -163,7 +168,7 @@
             name = @"Product Feed";
             break;
         case 3:
-            name = @"Wishlist";
+            name = @"Promo";
             break;
         case 4:
             name = @"Last Seen";
@@ -239,7 +244,7 @@
 - (void)removeButton {
     for (UIButton *button in _stackView.arrangedSubviews) {
         if(button.tag > 1) {
-            [button removeFromSuperview];
+            [_stackView removeArrangedSubview:button];
         }
     }
 }

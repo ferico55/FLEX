@@ -64,7 +64,7 @@
         [viewModel setTotalComment:self.talk_total_comment];
         [viewModel setFollowStatus:[NSString stringWithFormat:@"%ld", (long)self.talk_follow_status]];
         [viewModel setReadStatus:self.talk_read_status];
-        [viewModel setTalkMessage:self.talk_message];
+        [viewModel setTalkMessage:[[self.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities]];
         [viewModel setTalkOwnerStatus:self.talk_own];
         [viewModel setProductStatus:self.talk_product_status];
         [viewModel setUserReputation:self.talk_user_reputation];

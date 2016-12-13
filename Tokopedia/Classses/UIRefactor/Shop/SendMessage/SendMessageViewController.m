@@ -177,6 +177,8 @@
     
     _shoplabel.text = [_data objectForKey:@"shop_name"];
     
+    _messagesubjectfield.text = _subject?:@"";
+    _messagefield.text = _message?:@"";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -252,11 +254,6 @@
                 }
                 else if(_messagefield.text.length == 0) {
                     NSArray *array = [[NSArray alloc] initWithObjects:kTKPDMESSAGE_EMPTY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                else if(_messagefield.text.length < 3 || _messagesubjectfield.text.length < 3) {
-                    NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
                 } else {

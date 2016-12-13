@@ -56,7 +56,9 @@
                       @"shop_is_closed_until",
                       @"lucky_merchant",
                       @"shop_is_official",
-                      @"shop_official_top"
+                      @"shop_official_top",
+                      @"shop_status_title",
+                      @"shop_status_message"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

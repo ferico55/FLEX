@@ -38,10 +38,10 @@ class PulsaRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaUrl(),
-                               path: "/v1/category/list",
+            requestWithBaseUrl(NSString.pulsaApiUrl(),
+                               path: "/v1.1/category/list",
                                method: .GET,
-                               parameter: ["device" : "ios"],
+                               parameter: nil,
                                mapping: PulsaCategoryRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let category = mappingResult.dictionary()[""] as! PulsaCategoryRoot
@@ -68,8 +68,8 @@ class PulsaRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaUrl(),
-                               path: "/v1/operator/list",
+            requestWithBaseUrl(NSString.pulsaApiUrl(),
+                               path: "/v1.1/operator/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
                                mapping: PulsaOperatorRoot.mapping(),
@@ -91,8 +91,8 @@ class PulsaRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaUrl(),
-                               path: "/v1/product/list",
+            requestWithBaseUrl(NSString.pulsaApiUrl(),
+                               path: "/v1.1/product/list",
                                method: .GET,
                                parameter: ["operator_id" : operatorId, "category_id" : categoryId, "device" : "ios"],
                                mapping: PulsaProductRoot.mapping(),
@@ -111,7 +111,7 @@ class PulsaRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaUrl(),
+            requestWithBaseUrl(NSString.pulsaApiUrl(),
                                path: "/v1/status",
                                method: .GET,
                                parameter: nil,

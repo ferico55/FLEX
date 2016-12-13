@@ -363,9 +363,6 @@
         [SwiftOverlays removeAllOverlaysFromView:self.view];
         
         _shop = shop;
-        if(_shop.result.info == nil) {
-            [self openWebView];
-        }
         
         [self showUi];
         dispatch_async(dispatch_get_main_queue(), ^{

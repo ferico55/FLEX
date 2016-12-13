@@ -146,6 +146,12 @@ class ShopHomeViewController: UIViewController {
     }
     
     deinit {
+        // prevent the view controller from being retained after deallocated
+        // this code is never needed at app version 1.92. somehow
+        // at 1.93 with XCode 8.1, with iOS 9 and below, if we don't remove the delegate
+        // this view controller will still receive messages even after deallocated, which causes crash
+        webView.scrollView.delegate = nil
+        
         webView.bk_removeAllBlockObservers()
         webView.scrollView.bk_removeAllBlockObservers()
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -165,9 +171,16 @@ extension ShopHomeViewController: WKNavigationDelegate {
                  decisionHandler: (WKNavigationActionPolicy) -> Void) {        
         if router.routeURL(navigationAction.request.URL!) {
             decisionHandler(.Cancel)
-        }
-        else {
+        } else if navigationAction.request.URL!.absoluteString! == self.url {
             decisionHandler(.Allow)
+        } else {
+            let webViewController = WebViewController()
+            let url = UserAuthentificationManager().webViewUrlFromUrl(navigationAction.request.URL!.absoluteString!)
+            
+            webViewController.strURL = url
+            self.navigationController!.pushViewController(webViewController, animated: true)
+            
+            decisionHandler(.Cancel);
         }
     }
     

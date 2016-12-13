@@ -46,10 +46,12 @@ NotificationManagerDelegate
     NotificationManager *_notifManager;
     UITapGestureRecognizer *imageSearchGestureRecognizer;
     Debouncer *debouncer;
+    
+
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) NotificationViewController *notificationController;
 @property (strong, nonatomic) IBOutlet UIView *iconCamera;
@@ -79,26 +81,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _authManager = [UserAuthentificationManager new];
     debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:nil];
     
     _searchSuggestionDataArray = [NSMutableArray new];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [self.searchBar becomeFirstResponder];
-    [self.searchBar setShowsBookmarkButton:NO];
-    
-    [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [self.view addSubview:_searchBar];
-    
     _searchBar.delegate = self;
-    _searchBar.showsCancelButton = NO;
-    
-    [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
-    
-    imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
-    [_iconCamera addGestureRecognizer:imageSearchGestureRecognizer];
-    
+
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearAllHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
@@ -112,7 +100,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     _requestManager = [TokopediaNetworkManager new];
     _requestManager.isUsingHmac = YES;
     
-
 }
 
 -(BOOL)isEnableImageSearch{
@@ -144,7 +131,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _authManager = [UserAuthentificationManager new];
 
     [self getUserSearchSuggestionDataWithQuery:@""];
     
@@ -165,11 +151,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [Localytics triggerInAppMessage:@"Search Product"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -384,7 +365,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         controller.isFromAutoComplete = YES;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.presentingViewController.navigationController pushViewController:controller animated:YES];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -420,22 +401,18 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:NO animated:YES];
-    [searchBar setShowsBookmarkButton:NO];
     if ([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
     } else {
         _searchBarTrailingConstraint.constant = 0;
     }
-    [self deActivateSearchBar];
     return YES;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
-    _searchBar.showsBookmarkButton = ([self isEnableImageSearch]);
     _searchBarTrailingConstraint.constant = 0;
-    [self activateSearchBar];
+    
     return YES;
 }
 
@@ -464,7 +441,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - Notification delegate
 - (void)goToHotlist:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
-    [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
+    [self.presentingViewController.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -524,30 +501,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 
-
-#pragma mark - SearchBar Method
-- (void)activateSearchBar {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
-    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
-    } completion:^(BOOL finished) {
-        
-    }];
-}
-
-- (void)deActivateSearchBar {
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
-    } completion:^(BOOL finished) {
-        
-    }];
-}
-
 -(void) hideKeyboard {
     [self.searchBar resignFirstResponder];
 }
@@ -578,7 +531,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [viewController setNavigationTitle:searchText];
     
     viewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)orientationChanged:(NSNotification*)note {
@@ -595,7 +548,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     imagePicker.allowsEditing = YES;
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:imagePicker animated:YES completion:NULL];
+    [self.presentController.navigationController presentViewController:imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -603,7 +556,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
         controller.imageQuery = info;
         controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.presentController.navigationController pushViewController:controller animated:YES];
     }];
 }
 

@@ -15,8 +15,7 @@
 
 typedef void (^failedCompletionBlock)(NSError *error);
 
-static failedCompletionBlock failedCompletionSubmitConfirmation;
-static failedCompletionBlock failedUploadProof;
+static failedCompletionBlock onFailure;
 
 @implementation RequestOrderAction
 
@@ -114,7 +113,7 @@ static failedCompletionBlock failedUploadProof;
 
 +(void)fetchUploadImageProof:(UIImage*)image imageName:(NSString*)imageName paymentID:(NSString*)paymentID success:(void (^)(TransactionActionResult *data))success failure:(void (^)(NSError *error))failure {
     
-    failedUploadProof = failure;
+    onFailure = failure;
     
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     RequestObjectUploadImage *objectRequest = [RequestObjectUploadImage new];
@@ -156,11 +155,11 @@ static failedCompletionBlock failedUploadProof;
                                  }
                                  else{
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];
-                                     failedUploadProof(nil);
+                                     onFailure(nil);
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedUploadProof(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -179,12 +178,12 @@ static failedCompletionBlock failedUploadProof;
                                          success(imageResult);
                                          
                                      } onFailure:^(NSError *error) {
-                                         failedCompletionSubmitConfirmation(error);
+                                         onFailure(error);
                                      }];
         
         
     } onFailure:^{
-        failedCompletionSubmitConfirmation(nil);
+        onFailure(nil);
     }];
 }
 
@@ -256,13 +255,13 @@ static failedCompletionBlock failedUploadProof;
                                  if(response.result.is_success == 1){
                                      success(response);
                                  } else {
-                                     failedCompletionSubmitConfirmation(nil);
+                                     onFailure(nil);
                                      NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                                      [StickyAlertView showErrorMessage:array];
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedCompletionSubmitConfirmation(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -281,13 +280,13 @@ static failedCompletionBlock failedUploadProof;
                                  if(response.data.is_success == 1){
                                      success(response);
                                  } else {
-                                     failedCompletionSubmitConfirmation(nil);
+                                     onFailure(nil);
                                      NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                                      [StickyAlertView showErrorMessage:array];
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedCompletionSubmitConfirmation(errorResult);
+                                 onFailure(errorResult);
                              }];
 }
 
@@ -350,7 +349,7 @@ static failedCompletionBlock failedUploadProof;
                           success:(void(^)(TransactionAction *data))success
                            failed:(void(^)(NSError *error))failed {
     
-    failedCompletionSubmitConfirmation = failed;
+    onFailure = failed;
     
     if ([imageObject isEqual:@{}]) {
         
@@ -421,6 +420,43 @@ static failedCompletionBlock failedUploadProof;
                                  
                              } onFailure:^(NSError *errorResult) {
                                  failure(errorResult);
+                             }];
+}
+
++(void)fetchRequestCancelOrderID:(NSString*)orderID
+                          reason:(NSString*)reason
+                        onSuccess:(void (^)())onSuccess
+                        onFailure:(void (^)())onFailure {
+    
+    
+    NSDictionary* param = @{ @"order_id" : orderID,
+                             @"reason_cancel" : reason
+                             };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/request_cancel_order.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.is_success == 1)
+                                 {
+                                     NSArray *array = response.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil melakukan permintaan pembatalan order", nil];
+                                     [StickyAlertView showSuccessMessage:array];
+                                     onSuccess();
+                                 } else {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     onFailure();
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure();
                              }];
 }
 

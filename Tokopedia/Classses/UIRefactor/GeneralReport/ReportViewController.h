@@ -14,10 +14,10 @@
 - (NSDictionary*)getParameter;
 - (NSString*)getPath;
 - (UIViewController*)didReceiveViewController;
-
 @end
 
 @interface ReportViewController : UIViewController
+- (void)displayFrom:(UIViewController *)viewController;
 
 @property (copy, nonatomic) void (^onFinishWritingReport)(NSString* message);
 

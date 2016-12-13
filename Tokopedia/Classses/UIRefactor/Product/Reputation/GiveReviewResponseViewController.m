@@ -153,21 +153,27 @@
                                                               responseMessage:_textView.text
                                                                      reviewID:_review.review_id
                                                                        shopID:_review.shop_id
-                                                                    onSuccess:^(ResponseCommentResult *result) {
-                                                                        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                                                                        
-                                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil membalas ulasan"]
-                                                                                                                                         delegate:self];
-                                                                        [alert show];
-                                                                        
-                                                                        for (UIViewController *aViewController in allViewControllers) {
-                                                                            if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                                [self.navigationController popToViewController:aViewController animated:YES];
-                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                                    object:nil];
+                                                                    onSuccess:^(ResponseComment *result) {
+                                                                        if ([result.data.is_success isEqualToString:@"1"]) {
+                                                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil membalas ulasan"]
+                                                                                                                                             delegate:self];
+                                                                            [alert show];
+                                                                            
+                                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                                            if (_onReviewCommentSubmitted) {
+                                                                                _onReviewCommentSubmitted();
+                                                                            }
+                                                                        } else {
+                                                                            if (result.message_error && result.message_error.count > 0) {
+                                                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
+                                                                                                                                               delegate:self];
+                                                                                [alert show];
+                                                                            } else {
+                                                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal membalas ulasan"]
+                                                                                                                                               delegate:self];
+                                                                                [alert show];
                                                                             }
                                                                         }
-                                                                        
                                                                     }
                                                                     onFailure:^(NSError *error) {
                                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal membalas ulasan"]

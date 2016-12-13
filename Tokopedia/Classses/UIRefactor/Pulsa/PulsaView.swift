@@ -24,7 +24,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var saldoButtonPlaceholder: UIView!
     var phoneBook: UIImageView!
     
-    let addressBook = APAddressBook()
     var saldoSwitch = UISwitch()
     var saldoLabel: UILabel!
     var selectedOperator = PulsaOperator()
@@ -33,9 +32,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     var userManager = UserAuthentificationManager()
     var prefixView: UIView?
     var inputtedNumber: String?
+    var listOperators: [PulsaOperator]?
     
-    var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
-    var didTapAddressbook: ([APContact] -> Void)?
+    var didTapAddressbook: (Void -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
     var didShowAlertPermission: (Void -> Void)?
@@ -44,10 +43,16 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     let WIDGET_LEFT_MARGIN: CGFloat = 20
     let WIDGET_RIGHT_MARGIN: CGFloat = 20
     
-    var prefixes: Dictionary<String, Dictionary<String, String>>?
+    private var arrangedPrefix = [Prefix]()
+
+    struct Prefix {
+        var phoneNumber: String
+        var image: String
+        var id: String
+    }
     
     struct ButtonConstant {
-        static let defaultProductButtonTitle = "Pilih Nominal"
+        static let defaultProductButtonTitle = "- Pilih -"
     }
     
     struct CategoryConstant {
@@ -97,15 +102,11 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
-            self.selectedCategory = categories[control.selectedSegmentIndex]
-            self.buildAllView(self.selectedCategory)
-            self.addActionNumberField()
+            self.buildViewByCategory(categories[control.selectedSegmentIndex])
         }, forControlEvents: .ValueChanged)
         
-        self.buildAllView(categories[0])
-        self.pulsaCategoryControl.selectedSegmentIndex = 0
-        self.pulsaCategoryControl.backgroundColor = UIColor.whiteColor()
-        self.selectedCategory = categories[0]
+        requestOperatorsWithInitialCategory(categories.first!)
+
     }
     
     required init(coder: NSCoder) {
@@ -116,8 +117,75 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    func buildAllView(category: PulsaCategory) {
+    private func requestOperatorsWithInitialCategory(category: PulsaCategory) {
+        let requestManager = PulsaRequest()
         
+        requestManager.didReceiveOperator = { operators in
+            let sortedOperators = operators.sort({ (op0, op1) -> Bool in
+                op0.attributes.weight < op1.attributes.weight
+            })
+            
+            self.listOperators = sortedOperators
+            self .createPrefixCollection(sortedOperators)
+            
+            //view must be built after receive operator
+            //because on some case like pulsa and data, we need prefixes (only exists in operator attributes)
+            //and if we show view, when there is no prefix, this will cause crash
+            self.buildViewByCategory(category)
+            self.pulsaCategoryControl.selectedSegmentIndex = 0
+            self.pulsaCategoryControl.backgroundColor = UIColor.whiteColor()
+        }
+        requestManager.requestOperator()
+    }
+    
+    private func createPrefixCollection(operators: [PulsaOperator]) {
+        operators.enumerate().forEach { id, op in
+            op.attributes.prefix.forEach { prefix in
+                let prefix = Prefix(phoneNumber: prefix, image: op.attributes.image, id: op.id!)
+                arrangedPrefix.append(prefix)
+            }
+        }
+    }
+    
+    private func buildViewByCategory(category: PulsaCategory) {
+        self.selectedCategory = category
+        self.resetPulsaOperator()
+        self.buildAllView(category)
+        
+        //Ignoring add action on number field, when client_number attribute is not show
+        //instead find product directly, because some product which doesn't has number field (saldo), will show product only
+        if(!self.selectedCategory.attributes.client_number.is_shown) {
+            self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!)
+        } else {
+            self.addActionNumberField()
+        }
+    }
+    
+    private func findProducts(operatorId: String, categoryId: String) {
+        if self.findOperatorById(operatorId) != nil {
+            self.selectedOperator = self.findOperatorById(operatorId)!
+        }
+        
+        let requestProductsManager = PulsaRequest()
+        requestProductsManager.didReceiveProduct = {[unowned self] products in
+            if(products.count > 0) {
+                self.showBuyButton(products)
+            } else {
+                self.prefixView!.hidden = true
+            }
+        }
+        requestProductsManager.requestProduct(operatorId, categoryId: categoryId)
+        
+    }
+    
+    func findOperatorById(id: String) -> PulsaOperator? {
+        return self.listOperators?.filter({ (op) -> Bool in
+            op.id == id
+        }).first
+    }
+    
+    
+    func buildAllView(category: PulsaCategory) {
         self.arrangedSubviews.enumerate().forEach { index, subview in
             if(index > 0) {
                 self.removeArrangedSubview(subview)
@@ -125,7 +193,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
         
         self.buildFields(category)
-        self.buildButtons()
+        self.buildButtons(category)
         self.buildUseSaldoView()
         
         // jika user sudah input angka kemudian berganti category widget, maka angka tersebut tidak akan tereset
@@ -195,6 +263,11 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func buildFields(category: PulsaCategory) {
+        //if no client number shown, then skip build field control
+        if(!self.selectedCategory.attributes.client_number.is_shown) {
+            return;
+        }
+        
         fieldPlaceholder = UIView(frame: CGRectZero)
           self.addArrangedSubview(fieldPlaceholder)
         fieldPlaceholder.mas_makeConstraints { make in
@@ -285,18 +358,11 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func showAddressBook() {
-        self.addressBook.filterBlock = { contacts in
-            return contacts.phones?.count > 0
-        }
-        self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
-            if((error == nil) && contacts?.count > 0) {
-                self.didTapAddressbook!(contacts!)
-            }
-        })
+        self.didTapAddressbook?()
     }
     
     func showContactAlertPermission() {
-        self.didShowAlertPermission!()
+        self.didShowAlertPermission?()
     }
     
     func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {
@@ -321,18 +387,6 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
             self.hideErrors()
-            //operator must exists first
-            //fix this to prevent crash using serial dispatch
-            var inputtedText = self.numberField.text!
-            
-            if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
-                if(inputtedText.characters.count >= 2) {
-                    let firstTwoCharacters = inputtedText.substringWithRange(inputtedText.startIndex.advancedBy(0) ..< inputtedText.startIndex.advancedBy(2))
-                    if(firstTwoCharacters == "62") {
-                        inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
-                    }
-                }
-            }
             self.checkInputtedNumber()
             }, forControlEvents: .EditingChanged)
     }
@@ -344,28 +398,24 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         var inputtedText = self.numberField.text!
         
         if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
-            if(inputtedText.characters.count >= 2) {
-                let countryCode = inputtedText.substringWithRange(inputtedText.startIndex.advancedBy(0)..<inputtedText.startIndex.advancedBy(2))
-                if(countryCode == "62") {
-                    inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
-                }
+            inputtedText = self.convertAreaNumber(inputtedText)
+        }
+        
+        self.setRightViewNumberField(inputtedText)
+        self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
+    }
+    
+    //convert code area from +62 into 0
+    private func convertAreaNumber(phoneNumber: String) -> String{
+        var convertedNumber = phoneNumber
+        if(phoneNumber.characters.count >= 2) {
+            let countryCode = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0)..<phoneNumber.startIndex.advancedBy(2))
+            if(countryCode == "62") {
+                convertedNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex..<phoneNumber.startIndex.advancedBy(2), withString: "0")
             }
         }
         
-        if(inputtedText.characters.count >= 4) {
-            let prefix = inputtedText.substringWithRange(Range<String.Index>(inputtedText.startIndex.advancedBy(0) ..< inputtedText.startIndex.advancedBy(4)))
-            self.setRightViewNumberField(prefix)
-            self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
-        }
-        
-        if(inputtedText.characters.count < 4) {
-            if let prefixView = self.prefixView {
-                prefixView.hidden = true
-            }
-            
-            resetPulsaOperator()
-            self.hideBuyButtons()
-        }
+        return convertedNumber
     }
     
     func resetPulsaOperator() {
@@ -373,46 +423,62 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func hideErrors() {
-        self.numberErrorLabel.mas_updateConstraints { make in
+        self.numberErrorLabel?.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
         
-        self.buttonErrorLabel.mas_updateConstraints { make in
+        self.buttonErrorLabel?.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
     }
     
+    private func findPrefix(inputtedString: String) -> Prefix {
+        var returnPrefix = Prefix(phoneNumber: "", image: "", id: "")
+        self.arrangedPrefix.forEach { (prefix) in
+            if(inputtedString.hasPrefix(prefix.phoneNumber)) {
+                returnPrefix = prefix
+            }
+        }
+        
+        return returnPrefix
+    }
+    
     func setRightViewNumberField(inputtedPrefix: String) {
-        if(self.selectedCategory.id == CategoryConstant.Pulsa || self.selectedCategory.id == CategoryConstant.PaketData) {
-            let prefix = self.prefixes![inputtedPrefix]
-            if(prefix != nil) {
-                self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
+        if(self.selectedCategory.attributes.validate_prefix) {
+            let prefix = self.findPrefix(inputtedPrefix)
+            
+            if(prefix.phoneNumber != "") {
+                self.findProducts((prefix.id), categoryId: self.selectedCategory.id!)
                 
-                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
+                let prefixImage = UIImageView(frame: CGRectMake(0, 0, 60, 30))
                 prefixView?.removeAllSubviews()
                 prefixView!.addSubview(prefixImage)
-                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+                prefixImage.setImageWithURL((NSURL(string: (prefix.image))))
                 self.prefixView!.hidden = false
-
+                
                 self.numberField.rightViewMode = .Always
             } else {
-                self.prefixView!.hidden = true
+                if let prefixView = self.prefixView {
+                    prefixView.hidden = true
+                }
+                
+                resetPulsaOperator()
                 self.hideBuyButtons()
             }
-        } else if(self.selectedCategory.id == CategoryConstant.Listrik) {
-            self.didPrefixEntered!(operatorId: "6", categoryId: self.selectedCategory.id!)
+        } else {
+            self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!)
             
-            
-            let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
+            let prefixImage = UIImageView(frame: CGRectMake(0, 0, 60, 30))
             self.prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
             self.prefixView!.addSubview(prefixImage)
             
             prefixImage.contentMode = .ScaleAspectFill
-            prefixImage.setImageWithURL((NSURL.init(string: self.selectedOperator.attributes.image)))
+            prefixImage.setImageWithURL((NSURL(string: self.selectedOperator.attributes.image)))
             self.numberField.rightView = prefixView
             self.numberField.rightViewMode = .Always
+
         }
-        
+                
         self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { textField, range, string in
             guard let text = textField.text else { return true }
             
@@ -421,7 +487,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
     }
 
-    func buildButtons() {
+    func buildButtons(category: PulsaCategory) {
         buttonsPlaceholder = UIView(frame: CGRectZero)
         self.addArrangedSubview(buttonsPlaceholder)
         
@@ -441,7 +507,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         buttonsPlaceholder.addSubview(productButton)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.height.equalTo()(0)
+            make.height.equalTo()(self.selectedCategory.attributes.client_number.is_shown ? 0 : 44)
             make.width.equalTo()(self.productButton.mas_width)
         }
         
@@ -525,27 +591,18 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func didPressBuyButton() {
-        if(!self.isValidNumber(self.numberField.text!)) {
-            self.numberErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(22)
-            }
-        } else {
-            self.numberErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(0)
-            }
+        let isValidNumber = (!self.selectedCategory.attributes.client_number.is_shown || self.isValidNumber(self.numberField.text!))
+        
+        self.numberErrorLabel?.mas_updateConstraints { make in
+            make.height.equalTo()(!isValidNumber ? 22 : 0)
+        }
+
+        self.buttonErrorLabel.mas_updateConstraints { make in
+            make.height.equalTo()((self.productButton.hidden == false && !self.isValidNominal()) ? 22 : 0)
         }
         
-        if(self.productButton.hidden == false && !self.isValidNominal()) {
-            self.buttonErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(22)
-            }
-        } else {
-            self.buttonErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(0)
-            }
-        }
         
-        if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
+        if(self.isValidNominal() && isValidNumber) {
             self.hideErrors()
             
             self.userManager = UserAuthentificationManager()
@@ -553,16 +610,15 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                 self.didAskedForLogin!()
             } else {
                 //open scrooge
-                var pulsaUrl = "https://pulsa.tokopedia.com?action=init_data&client_number=" + self.numberField.text!
-                pulsaUrl += "&product_id=" + self.selectedProduct.id!
-                pulsaUrl += "&operator_id=" +  self.selectedOperator.id!
-                pulsaUrl += "&instant_checkout=" + (self.saldoSwitch.on ? "1" : "0")
-                pulsaUrl += "&utm_source=ios"
+                var clientNumber = ""
+                if numberField != nil {
+                    clientNumber = numberField.text!
+                }
                 
-                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-                var url = "https://js.tokopedia.com/wvlogin?uid=" + self.userManager.getUserId()
-                url += "&token=" + self.userManager.getMyDeviceToken()
-                url += "&url=" + pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+                let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoSwitch.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(self.selectedCategory.attributes.name)"
+                
+                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}& ").invertedSet
+                let url = "\(NSString.jsUrl())/wvlogin?uid=\(self.userManager.getUserId())&token=\(self.userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
                 
                 self.didSuccessPressBuy!(NSURL(string: url)!)
             }
@@ -600,7 +656,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     func didSwipeHomePage() {
-        self.numberField.resignFirstResponder()
+        self.numberField?.resignFirstResponder()
     }
     
     func setupStackViewFormat() {

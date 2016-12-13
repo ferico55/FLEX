@@ -9,6 +9,7 @@
 #import "OrderButton.h"
 
 @implementation OrderButton
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[
@@ -17,6 +18,8 @@
                       @"button_open_time_left",
                       @"button_res_center_go_to",
                       @"button_upload_proof",
+                      @"button_ask_seller",
+                      @"button_cancel_request"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

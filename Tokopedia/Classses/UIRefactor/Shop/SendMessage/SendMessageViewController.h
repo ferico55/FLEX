@@ -27,5 +27,7 @@
 @interface SendMessageViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary* data;
+@property (strong, nonatomic) NSString* subject;
+@property (strong, nonatomic) NSString* message;
 
 @end

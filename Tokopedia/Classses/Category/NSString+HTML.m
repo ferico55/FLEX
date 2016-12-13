@@ -69,9 +69,17 @@
         }
 
         // The following five are not in the 160+ range
-
+        // @"&bull;"
+        NSRange range = [self rangeOfString:@"&bull;"];
+        if (range.location != NSNotFound) {
+            [escaped replaceOccurrencesOfString:@"&bull;"
+                                        withString:@"•"
+                                        options:NSLiteralSearch
+                                          range:NSMakeRange(0, [escaped length])];
+        }
+        
         // @"&amp;"
-        NSRange range = [self rangeOfString:@"&amp;"];
+        range = [self rangeOfString:@"&amp;"];
         if (range.location != NSNotFound) {
             [escaped replaceOccurrencesOfString:@"&amp;"
                                      withString:[NSString stringWithFormat:@"%C", (unsigned short) 38]

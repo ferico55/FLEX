@@ -16,6 +16,8 @@
 #import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
 #import "DepositRequest.h"
+#import "WebViewController.h"
+#import "NavigateViewController.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;
@@ -59,17 +61,21 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
 
+
+@property (strong, nonatomic) IBOutlet UIView *headerDetailView;
 @property (strong, nonatomic) IBOutlet UILabel *saldoLabel;
 @property (strong, nonatomic) IBOutlet UIButton *withdrawalButton;
 @property (strong, nonatomic) IBOutlet UIButton *startDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *endDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *filterDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *infoButton;
+@property (strong, nonatomic) IBOutlet UIButton *topUpButton;
 
 @property (strong, nonatomic) IBOutlet UIView *infoReviewSaldo;
 @property (strong, nonatomic) IBOutlet UIView *filterDateArea;
 @property (strong, nonatomic) IBOutlet UILabel *reviewSaldo;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+
 
 - (void)cancelCurrentAction;
 - (void)loadData;
@@ -146,8 +152,8 @@
     _table.estimatedRowHeight = 138.0;
     _table.rowHeight = UITableViewAutomaticDimension;
     
-    _filterDateButton.layer.cornerRadius = 3.0;
-    _withdrawalButton.layer.cornerRadius = 3.0;
+    _filterDateButton.layer.cornerRadius = 5.0;
+    _withdrawalButton.layer.cornerRadius = 5.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
     
@@ -182,6 +188,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Deposit Summary Page"];
+    [self reloadListDeposit:nil];
+    [self updateSaldoTokopedia:nil];
 }
 
 
@@ -319,7 +327,7 @@
     if([result.summary.summary_hold_deposit integerValue] > 0) {
         _infoReviewSaldo.tag = 121;
         
-        if(! [_withdrawalButton viewWithTag:121]) {
+        if(! [_headerDetailView viewWithTag:121]) {
             [_reviewSaldo setText:_holdDepositByTokopedia];
             CGRect newFrame2 = _filterDateArea.frame;
             newFrame2.origin.y += 40;
@@ -329,11 +337,11 @@
             newFrame3.origin.y += 40;
             _table.frame = newFrame3;
             
-            [_withdrawalButton addSubview:_infoReviewSaldo];
+            [_headerDetailView addSubview:_infoReviewSaldo];
             CGRect newFrame4 = _infoReviewSaldo.frame;
-            newFrame4.origin.y += 47;
+            newFrame4.origin.y += 98;
             newFrame4.size.width = _header.frame.size.width;
-            newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
+            newFrame4.origin.x = -_headerDetailView.frame.origin.x;
             _infoReviewSaldo.frame = newFrame4;
             
             constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
@@ -381,6 +389,11 @@
 }
 
 #pragma mark - IBAction
+- (IBAction)topUpSaldoButtonTapped:(id)sender {    
+    [NavigateViewController navigateToSaldoTopupFromViewController:self];
+    [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"TopUp"];
+}
+
 -(IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
@@ -420,6 +433,7 @@
             case 10:
             {
                 DepositFormViewController *formViewController = [DepositFormViewController new];
+                [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_CLICK label:@"Withdraw"];
                 [self.navigationController pushViewController:formViewController animated:YES];
                 break;
             }

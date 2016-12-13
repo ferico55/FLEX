@@ -24,5 +24,7 @@
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, weak) id<MyShopNoteDetailDelegate> delegate;
 @property (nonatomic, strong) NotesList *noteList;
+@property (nonatomic, strong) NSString* shopDomain;
+
 
 @end

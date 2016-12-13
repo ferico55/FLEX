@@ -22,4 +22,6 @@ typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 @property (strong, nonatomic) InboxTicketDetailViewController* detailViewController;
 
+@property (nonatomic, copy) void(^onTapContactUsButton)();
+
 @end

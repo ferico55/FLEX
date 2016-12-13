@@ -136,9 +136,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone  || _isNeedRequestListDetail) {
-        [self doRequestDetail];
-    }
+    [self doRequestDetail];
     
     _inputConversation.layer.cornerRadius = 2;
     
@@ -347,17 +345,16 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
 }
 
 -(void)doRequestCancelComplain{
+    
+    __weak typeof(self) wself = self;
+    
     [RequestResolutionAction fetchCancelResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
-        if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
-            NSArray *viewControllers = self.navigationController.viewControllers;
-            UIViewController *destinationVC = viewControllers[viewControllers.count-3];
-            [self.navigationController popToViewController:destinationVC animated:YES];
+        
+        [wself.navigationController popViewControllerAnimated:YES];
+        if (wself.didCancelComplain) {
+            wself.didCancelComplain();
         }
-        else
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }
+        
     } failure:^(NSError *error) {
         
     }];
@@ -1104,14 +1101,6 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         if (data.detail.resolution_can_conversation == 1) {
             _replayConversationView.hidden = NO;
             _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
-        }
-        else
-        {
-            _replayConversationView.hidden = YES;
-            _tableView.contentInset = UIEdgeInsetsZero;
-        }
-        
-        if (data.detail.resolution_can_conversation == 1) {
             _addedLastConversation.flag_received = [data.detail.resolution_last.last_flag_received integerValue];
             _addedLastConversation.system_flag = 1;
             _addedLastConversation.action_by = [data.detail.resolution_last.last_action_by integerValue];
@@ -1123,6 +1112,11 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
             _addedLastConversation.solution_string = data.detail.resolution_last.last_solution_string;
             _addedLastConversation.trouble_string = data.detail.resolution_last.last_trouble_string;
             [_listResolutionConversation addObject:_addedLastConversation];
+        }
+        else
+        {
+            _replayConversationView.hidden = YES;
+            _tableView.contentInset = UIEdgeInsetsZero;
         }
         
         _tableView.tableHeaderView = _headerView;

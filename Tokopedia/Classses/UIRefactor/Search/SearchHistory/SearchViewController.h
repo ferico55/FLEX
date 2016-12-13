@@ -11,5 +11,7 @@
 @interface SearchViewController : GAITrackedViewController
 
 @property (strong, nonatomic, setter = setData:) NSDictionary *data;
+@property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) UIViewController* presentController;
 
 @end

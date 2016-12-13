@@ -99,7 +99,7 @@ class MyShopNoteRequest: NSObject {
                                             })
     }
     
-    func requestNoteDetail(shopId:NSNumber, noteId: NSNumber, terms:NSNumber, onSuccess:(NoteDetail, RKObjectRequestOperation) -> Void, onFailure:(NSError -> Void))
+    func requestNoteDetail(shopId:NSNumber, shopDomain: String, noteId: NSNumber, terms:NSNumber, onSuccess:(NoteDetail, RKObjectRequestOperation) -> Void, onFailure:(NSError -> Void))
     {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -107,7 +107,7 @@ class MyShopNoteRequest: NSObject {
         networkManager.requestWithBaseUrl(NSString.v4Url(),
                                           path: "/v4/notes/get_notes_detail.pl",
                                           method: .GET,
-                                          parameter: ["shop_id" : "\(shopId)", "note_id" : "\(noteId)", "terms" : "\(terms)"],
+                                          parameter: ["shop_id" : "\(shopId)", "shop_domain" : shopDomain, "note_id" : "\(noteId)", "terms" : "\(terms)"],
                                           mapping: NoteDetail.mapping(),
                                           onSuccess: { (successResult, operation) in
                                             let result : Dictionary = successResult.dictionary() as Dictionary

@@ -8,6 +8,7 @@
 
 #import "ResolutionCenterCreateResult.h"
 #import <BlocksKit/BlocksKit.h>
+#import "NSArray+BlocksKit.h"
 
 @implementation ResolutionCenterCreateResult
 -(instancetype)init{

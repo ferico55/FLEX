@@ -7,29 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TxOrderStatusList.h"
-#import "InboxResolutionCenterList.h"
-
-#pragma mark - Transaction Status Detail Delegate
-@protocol TxOrderStatusDetailViewControllerDelegate <NSObject>
-@required
--(void)confirmDeliveryAtIndexPath:(NSIndexPath *)indexPath;
--(void)delegateViewController:(UIViewController*)viewController;
--(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath;
--(void)complainOrder:(TxOrderStatusList *)order;
-- (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
--(void)complainAtIndexPath:(NSIndexPath *)indexPath;
-
-@end
+@class TxOrderStatusList;
 
 @interface TxOrderStatusDetailViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet id<TxOrderStatusDetailViewControllerDelegate> delegate;
 @property (nonatomic , strong) TxOrderStatusList *order;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *deliveredButton;
-@property (strong, nonatomic) IBOutlet UIButton *complainButton;
-@property (nonatomic) BOOL isComplain;
-@property (nonatomic) BOOL reOrder;
-@property (nonatomic) NSInteger buttonHeaderCount;
-@property (nonatomic) NSIndexPath *indexPath;
+
+@property (nonatomic, copy) void(^didReorder)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didReceivedOrder)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didComplaint)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didRequestCancel)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didCancelComplaint)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didCreateComplaint)(TxOrderStatusList *);
+
 @end

@@ -16,6 +16,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     var prefix: [String] = []
     var minimum_length: Int = 0
     var maximum_length: Int = 0
+    var rule: PulsaOperatorAttributeRule = PulsaOperatorAttributeRule()
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
@@ -30,9 +31,11 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
+        let ruleMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "rule", toKeyPath: "rule", withMapping: PulsaOperatorAttributeRule.mapping())
+        mapping.addPropertyMapping(ruleMapping)
         
         return mapping
     }
@@ -70,6 +73,10 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
         if let prefix = aDecoder.decodeObjectForKey("prefix") as? [String] {
             self.prefix = prefix
         }
+        
+        if let rule = aDecoder.decodeObjectForKey("rule") as? PulsaOperatorAttributeRule {
+            self.rule = rule
+        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -80,5 +87,6 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
         aCoder.encodeObject(prefix, forKey: "prefix")
         aCoder.encodeObject(minimum_length, forKey: "minimum_length")
         aCoder.encodeObject(maximum_length, forKey: "maximum_length")
+        aCoder.encodeObject(rule, forKey: "rule")
     }
 }

@@ -667,7 +667,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 }
 
 + (void)trackIfSelectedAddressChanged:(AddressFormList *)oldAddress to:(AddressFormList *)newAddress {
-    if (oldAddress != newAddress) {
+    if (oldAddress && newAddress && (oldAddress != newAddress)) {
         [self trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Change Address"];
     }
 }
@@ -698,6 +698,10 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 + (void)trackClickSales:(NSString *)label {
     [self trackEventName:@"clickSales" category:GA_EVENT_CATEGORY_SALES action:GA_EVENT_ACTION_CLICK label:label];
+}
+
++ (void)trackClickNavigateFromMore:(NSString *)page {
+    [self trackEventName:@"clickMore" category:@"More" action:GA_EVENT_ACTION_CLICK label:page];
 }
 
 @end

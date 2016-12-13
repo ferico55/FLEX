@@ -520,16 +520,6 @@
     [self doRequestList];
 }
 
-#pragma mark - Delegate
--(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath*)indexPath
-{
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:resolution forKey:DATA_SELECTED_RESOLUTION_KEY];
-    [object setObject:indexPath forKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
-    _objectCancelComplain = [object copy];
-    [self doRequestCancel];
-}
-
 #pragma mark - Request
 
 -(void)doRequestCancel{

@@ -242,17 +242,17 @@
     NSInteger totalNotif = [_notification.result.total_notif integerValue];
     CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
     if (totalNotif >= 10 && totalNotif < 100) {
-        badgeLabelFrame.origin.x = -11;
+        badgeLabelFrame.origin.x = 22;
         badgeLabelFrame.size.width = 30;
     } else if (totalNotif >= 100 && totalNotif < 1000) {
-        badgeLabelFrame.origin.x = -12;
+        badgeLabelFrame.origin.x = 22;
         badgeLabelFrame.size.width = 34;
     } else if (totalNotif >= 1000 && totalNotif < 10000) {
-        badgeLabelFrame.origin.x = -16;
+        badgeLabelFrame.origin.x = 22;
         badgeLabelFrame.size.width = 42;
         
     } else if (totalNotif >= 10000 && totalNotif < 100000) {
-        badgeLabelFrame.origin.x = -22;
+        badgeLabelFrame.origin.x = 22;
         badgeLabelFrame.size.width = 50;
     }
     _notificationButton.badgeLabel.frame = badgeLabelFrame;

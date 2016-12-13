@@ -140,7 +140,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 }
 
 
-+ (NSString*)pulsaUrl {
++ (NSString*)pulsaApiUrl {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
     NSDictionary* urls = @{
@@ -153,6 +153,34 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)pulsaUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://pulsa.tokopedia.com",
+                           @(TPUrlStaging) : @"https://pulsa-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://pulsa-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://pulsa.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString*)jsUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://js.tokopedia.com",
+                           @(TPUrlStaging) : @"https://js-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://js-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://js.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
+
+
 + (NSString*)kunyitUrl {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
@@ -161,6 +189,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                            @(TPUrlStaging) : @"https://inbox-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"https://inbox-alpha.tokopedia.com",
                            @(TPUrlDevelopment) : @"https://inbox.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString*)goldMerchantUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://goldmerchant.tokopedia.com",
+                           @(TPUrlStaging) : @"https://goldmerchants-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://goldmerchant.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://goldmerchant.tokopedia.com"
                            };
     
     return [urls objectForKey:TPUrlIndex];

@@ -26,8 +26,10 @@
 #import "Tokopedia-Swift.h"
 #import "UIAlertView+BlocksKit.h"
 #import "TransactionATCViewController.h"
+#import "RegisterViewController.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
+#import "NotificationManager.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
@@ -73,7 +75,9 @@ typedef enum TagRequest {
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    NoResultReusableView *_notLoggedInView;
     UserAuthentificationManager *_userManager;
+    NotificationManager *_notifManager;
 }
 
 #pragma mark - Initialization
@@ -81,6 +85,9 @@ typedef enum TagRequest {
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+        [self.navigationItem setTitleView:logo];
+        
         _isShowRefreshControl = NO;
         _isNoData = YES;
         _isFailRequest = NO;
@@ -99,15 +106,33 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
 }
 
+- (void)initNotLoggedInView {
+    __weak typeof(self) weakSelf = self;
+    
+    _notLoggedInView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _notLoggedInView.delegate = self;
+    [_notLoggedInView generateAllElements:@"icon_no_data_grey.png"
+                                 title:@"Anda belum login"
+                                  desc:@"Belum punya akun Tokopedia ?"
+                              btnTitle:@"Daftar disini!"];
+    _notLoggedInView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        
+        RegisterViewController* controller = [RegisterViewController new];
+        controller.onLoginSuccess = ^() {
+            [weakSelf.tabBarController setSelectedIndex:2];
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
+        };
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    [self initNotificationManager];
     
-    self.title = @"Wishlist";
     _userManager = [[UserAuthentificationManager alloc] init];
-    
-    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
-    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
     //todo with variable
     _product = [NSMutableArray new];
@@ -117,12 +142,13 @@ typedef enum TagRequest {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:TKPDUserDidLoginNotification object:nil];
-//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+
     
     //todo with view
     [self initNoResultView];
+    [self initNotLoggedInView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -149,9 +175,15 @@ typedef enum TagRequest {
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
     
-    [self loadProduct];
+    [self registerNib];
     
     [Localytics triggerInAppMessage:@"Wishlist Screen"];
+    if(![_userManager isLogin]) {
+        [_collectionView addSubview:_notLoggedInView];
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+    } else {
+        [self loadProduct];
+    }
 }
 
 - (void)loadProduct {
@@ -171,7 +203,8 @@ typedef enum TagRequest {
 }
 
 -(NSString *) getWishlistPath {
-    NSString *userId = [_userManager getUserId];
+    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
+    NSString *userId = [userManager getUserId];
     return [NSString stringWithFormat:@"/v1.0.2/users/%@/wishlist/products", userId];
 }
 
@@ -242,10 +275,13 @@ typedef enum TagRequest {
 }
 
 - (void)requestRemoveWishlist:(MyWishlistData*)list withIndexPath:(NSIndexPath*)indexPath {
+    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
+    NSString *userId = [userManager getUserId];
+    
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
     NSString *productId = list.id;
-    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : [_userManager getUserId]} parameter:nil mapping:[self actionRemoveWishlistMapping]
+    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : userId} parameter:nil mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         [_collectionView performBatchUpdates:^ {
                                             [_product removeObjectAtIndex:indexPath.row];
@@ -263,7 +299,7 @@ typedef enum TagRequest {
 
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    [self registerNib];
+    
     
     UICollectionReusableView *reusableView = nil;
     
@@ -287,7 +323,7 @@ typedef enum TagRequest {
                             category:GA_EVENT_CATEGORY_WISHLIST
                               action:GA_EVENT_ACTION_VIEW
                                label:product.name];
-    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[[NSNumberFormatter IDRFormatter] stringFromNumber:product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
+    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[NSString stringWithFormat:@"%@", product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
 }
 
 #pragma mark - Memory Management
@@ -399,7 +435,7 @@ typedef enum TagRequest {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
-    if(tag == 2) {
+    if(tag == 3) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
@@ -459,6 +495,66 @@ typedef enum TagRequest {
     
     return statusMapping;
 }
+
+- (void)userDidLogout {
+    [self setAsGuestView];
+    [self resetWishlist];
+}
+
+- (void)userDidLogin {
+    [self setAsBuyerView];
+    [self refreshView:nil];
+}
+
+- (void)setAsGuestView {
+    [_flowLayout setFooterReferenceSize:CGSizeZero];
+    [_collectionView addSubview:_notLoggedInView];
+    [_noResultView removeFromSuperview];
+    [self initNotificationManager];
+}
+
+- (void)setAsBuyerView {
+    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+    [_notLoggedInView removeFromSuperview];
+    [self initNotificationManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
+}
+
+- (void)resetWishlist {
+    _product = nil;
+    [_collectionView reloadData];
+}
+
+
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    _notifManager.delegate = self;
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController {
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+}
+
 
 
 @end

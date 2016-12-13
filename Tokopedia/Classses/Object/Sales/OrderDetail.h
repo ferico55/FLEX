@@ -43,4 +43,6 @@
 @property NSInteger detail_free_return;
 @property (strong, nonatomic) NSString *detail_free_return_msg;
 
+@property (strong, nonatomic) NSString *invoiceURLString;
+
 @end

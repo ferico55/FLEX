@@ -60,7 +60,6 @@
 #import "NSURL+Dictionary.h"
 #import "UIImage+Resize.h"
 #import <Masonry/Masonry.h>
-#import "CardIO.h"
 #import "WebViewController.h"
 #import "GAITrackedViewController.h"
 #import "LoginViewController.h"
@@ -78,7 +77,7 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
-#import "CategoryDataSource.h"
+#import "AnnouncementTickerView.h"
 
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
@@ -139,6 +138,10 @@
 #import "ShopPageHeader.h"
 #import "ShopTabView.h"
 #import "LogoutResult.h"
+#import "Shop.h"
+#import "HomeTabViewController.h"
+#import "RetryCollectionReusableView.h"
+#import "RequestOrderAction.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

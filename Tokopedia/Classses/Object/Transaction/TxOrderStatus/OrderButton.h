@@ -15,5 +15,9 @@
 @property (nonatomic) NSInteger button_open_time_left;
 @property (nonatomic) NSInteger button_res_center_go_to;
 @property (nonatomic) NSInteger button_upload_proof;
+@property (nonatomic) NSInteger button_track;
+@property (nonatomic) NSInteger button_ask_seller;
+@property (nonatomic) NSInteger button_cancel_request;
+
 
 @end

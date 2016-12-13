@@ -15,8 +15,9 @@
 #import "Tokopedia-Swift.h"
 
 #import "DBManager.h"
+#import "SearchViewController.h"
 
-@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate>{
+@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate, UISearchResultsUpdating, UISearchControllerDelegate>{
     UIView *_tabbar;
     NSArray *_buttons;
     NSInteger _unloadSelectedIndex;
@@ -32,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIView *tabView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabViewHeightConstraint;
+@property (strong, nonatomic) UISearchController* searchController;
+
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 
@@ -86,13 +89,10 @@
         _unloadSelectedIndex = -1;
         _unloadViewControllers = nil;
     }
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tapbutton:)];
-    backBarButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     if (![self isUseDynamicFilter]) {
         NSBundle* bundle = [NSBundle mainBundle];
@@ -122,15 +122,21 @@
                                                  name:@"changeNavigationTitle"
                                                object:nil];
     
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self setSearchBar];
     if (self.navigationTitle) {
         self.navigationItem.title = [self.navigationTitle capitalizedString];
+        self.searchController.searchBar.text = self.navigationTitle;
     }
     self.hidesBottomBarWhenPushed = YES;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -140,6 +146,10 @@
     self.hidesBottomBarWhenPushed = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if ([self isMovingFromParentViewController]){
+        [self didTapBackButton];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -169,6 +179,50 @@
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
         [_delegate tabBarController:self childControllerContentInset:inset];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    self.definesPresentationContext = NO;
+    [self.searchController setActive:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.definesPresentationContext = YES;
+    self.searchController.searchResultsController.view.hidden = YES;
+}
+
+- (void)setSearchBar {
+    SearchViewController* resultController = [[SearchViewController alloc] init];
+    resultController.presentController = self;
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.placeholder = @"Cari produk atau toko";
+    self.searchController.searchBar.tintColor = [UIColor blackColor];
+    self.searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.delegate = self;
+    
+    resultController.searchBar = self.searchController.searchBar;
+    [self.searchController.searchBar sizeToFit];
+    self.definesPresentationContext = YES;
+    
+    //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
+    UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
+    [searchWrapper setBackgroundColor:[UIColor clearColor]];
+    [searchWrapper addSubview:self.searchController.searchBar];
+    self.searchController.searchBar.layer.borderWidth = 1;
+    self.searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
+    
+    [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(searchWrapper);
+    }];
+    self.navigationItem.titleView = searchWrapper;
 }
 
 #pragma mark -
@@ -676,7 +730,28 @@
     if (title) {
         self.navigationTitle = [title capitalizedString];
         self.navigationItem.title = [title capitalizedString];
+        self.searchController.searchBar.text = title;
     }
+}
+
+#pragma mark - Search Controller Delegate
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        searchController.searchResultsController.view.hidden = NO;
+    });
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)didTapBackButton {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

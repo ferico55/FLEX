@@ -28,4 +28,6 @@ typedef enum {
 @property TypeReso *type;
 @property NSString *resolutionID;
 
+@property (nonatomic, copy) void(^didCreateComplaint)(TxOrderStatusList *);
+
 @end

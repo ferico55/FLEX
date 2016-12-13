@@ -45,7 +45,7 @@ class MyWishlistData: NSObject {
         if self.productModelView == nil {
             let productModelView = ProductModelView()
             productModelView.productName = self.name
-            productModelView.productPrice = NSNumberFormatter.IDRFormatter().stringFromNumber(self.price)
+            productModelView.productPrice = self.price_formatted
             productModelView.productShop = self.shop.name
             productModelView.productThumbUrl = self.image
             productModelView.isGoldShopProduct = self.shop.gold_merchant
