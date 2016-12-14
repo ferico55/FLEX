@@ -52,7 +52,6 @@
 #define kTKPDLOGIN_API_STATUS_KEY @"status"
 #define kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY @"msisdn_is_verified"
 #define kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY @"msisdn_show_dialog"
-#define kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY @"device_token_id"
 #define kTKPDLOGIN_API_HAS_TERM_KEY @"shop_has_terms"
 
 #define kTKPDLOGIN_API_APP_TYPE_KEY @"app_type"

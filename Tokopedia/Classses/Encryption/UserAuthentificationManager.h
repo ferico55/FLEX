@@ -27,7 +27,6 @@
 - (NSString*)getShopHasTerm;
 - (CategoryDetail *)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;
-- (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
 - (BOOL)isMyUser:(NSString*)userId;
 - (NSString *)addParameterAndConvertToString:(id)params;

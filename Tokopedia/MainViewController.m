@@ -567,7 +567,6 @@ typedef enum TagRequest {
 -(LogoutRequestParameter*) logoutObjectRequest{
     UserAuthentificationManager* auth = [UserAuthentificationManager new];
     LogoutRequestParameter *object = [LogoutRequestParameter new];
-    object.deviceTokenID = [auth getMyDeviceIdToken];
     object.deviceID = [auth getMyDeviceToken]; //token device from ios
     return object;
 }

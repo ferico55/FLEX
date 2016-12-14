@@ -55,7 +55,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     @IBAction func didTapReportButton(sender: UIButton) {
 
-        let currentDeviceId = userManager.getMyDeviceIdToken()
+        let currentDeviceId = userManager.getMyDeviceToken()
         let userID = userManager.getUserId()
         
         

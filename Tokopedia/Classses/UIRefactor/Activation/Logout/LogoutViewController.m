@@ -36,7 +36,6 @@
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *param =  @{
-             @"device_token_id" : [_userManager getMyDeviceIdToken],
              @"device_id" : [_userManager getMyDeviceToken] //token device from ios
              };
     
