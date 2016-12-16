@@ -24,7 +24,6 @@
                                              @"shop_avatar",
                                              @"shop_is_gold",
                                              @"user_id",
-                                             @"device_token_id",
                                              @"shop_has_terms",
                                              @"full_name",
                                              @"user_image",

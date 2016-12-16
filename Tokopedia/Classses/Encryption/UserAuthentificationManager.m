@@ -63,11 +63,6 @@
     }
 }
 
-//auto increment from database that had been saved in secure storage
-- (NSString*)getMyDeviceIdToken {
-    return [[self secureStorageDictionary] objectForKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY] ?: @"0";
-}
-
 - (NSString *)getShopId {
     if ([[self secureStorageDictionary] objectForKey:@"shop_id"]) {
         if ([[[self secureStorageDictionary] objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {

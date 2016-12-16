@@ -18,7 +18,6 @@ class LogoutRequest: NSObject {
     class func fetchLogout(objectRequest: LogoutRequestParameter, onSuccess: ((LogoutResult) -> Void)) {
         
         let param : [String : String] = [
-            "device_token_id"   : objectRequest.deviceTokenID,
             "device_id"         : objectRequest.deviceID
         ]
         
