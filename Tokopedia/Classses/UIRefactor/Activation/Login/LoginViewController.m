@@ -388,6 +388,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [self notifyUserDidLogin];
 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(didLoginSuccess:)]) {
+            [self.delegate didLoginSuccess:login];
+        }
+    });
 
     [self navigateToProperPage:login];
 

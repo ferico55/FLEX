@@ -1809,14 +1809,10 @@ TTTAttributedLabelDelegate
                                    label:@"Report"];
         [self goToReportProductViewController];
     } else {
-        LoginViewController *loginVC = [LoginViewController new];
-        loginVC.delegate = self;
-        loginVC.redirectViewController = self;
-        loginVC.isPresentedViewController = YES;
-        afterLoginRedirectTo = @"ReportProductViewController";
-        UINavigationController *loginNavController = [[UINavigationController alloc] initWithRootViewController:loginVC];
-        loginNavController.navigationBar.translucent = NO;
-        [self.navigationController presentViewController:loginNavController animated:YES completion:nil];
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationService sharedService] signInFromViewController:self onSignInSuccess:^(LoginResult * loginResult) {
+            [weakSelf goToReportProductViewController];
+        }];
     }
 }
 
@@ -2213,9 +2209,7 @@ TTTAttributedLabelDelegate
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
-    if ([afterLoginRedirectTo isEqualToString:@"ReportProductViewController"]) {
-        [self goToReportProductViewController];
-    }
+
 }
 
 - (void)cancelLoginView {
