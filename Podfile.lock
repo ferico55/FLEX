@@ -172,7 +172,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
+  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -200,6 +200,6 @@ SPEC CHECKSUMS:
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 7f18f4b00e198f5a110bcd39b09f68904014e4cc
+PODFILE CHECKSUM: 8cebf9cf744f62c9c1bdf319363e8e63cea58c3d
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.1.1

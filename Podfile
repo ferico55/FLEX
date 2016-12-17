@@ -15,7 +15,7 @@ def common_pods
     pod 'GoogleAppIndexing'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
-    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
+    #pod 'Reveal-iOS-SDK', :configurations => ['Debug']
     pod 'Rollout.io', '~> 1.7.1'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
@@ -47,6 +47,7 @@ end
 
 target "Tokopedia" do
     common_pods
+    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do
