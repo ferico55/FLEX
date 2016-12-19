@@ -74,27 +74,27 @@
 }
 
 +(CKButtonComponent*)buttonRequestCancelOrder{
-    return [self buttonWithTitle:@"Ajukan Pembatalan" imageName:@"icon_order_cancel-01.png" action:@selector(tapCancel)];
+    return [self buttonWithTitle:@"Ajukan Pembatalan" imageName:@"icon_order_cancel" action:@selector(tapCancel)];
 }
 
 +(CKButtonComponent*)buttonTrack{
-    return [self buttonWithTitle:@"Lacak" imageName:@"icon_track_grey.png" action:@selector(tapTracking)];
+    return [self buttonWithTitle:@"Lacak" imageName:@"icon_track_grey" action:@selector(tapTracking)];
 }
 
 +(CKButtonComponent*)buttonNotReceived{
-    return [self buttonWithTitle:@"Belum Terima" imageName:@"icon_order_cancel-01.png" action:@selector(tapComplaintNotReceived)];
+    return [self buttonWithTitle:@"Belum Terima" imageName:@"icon_order_cancel" action:@selector(tapComplaintNotReceived)];
 }
 
 +(CKButtonComponent*)buttonAccept{
-    return [self buttonWithTitle:@"Sudah Terima" imageName:@"icon_order_check-01.png" action:@selector(tapReceivedOrder)];
+    return [self buttonWithTitle:@"Sudah Terima" imageName:@"icon_order_check" action:@selector(tapReceivedOrder)];
 }
 
 +(CKButtonComponent*)buttonSeeComplaint{
-    return [self buttonWithTitle:@"Lihat Komplain" imageName:@"icon_lihat_komplain.png" action:@selector(tapSeeComplaint)];
+    return [self buttonWithTitle:@"Lihat Komplain" imageName:@"icon_lihat_komplain" action:@selector(tapSeeComplaint)];
 }
 
 +(CKButtonComponent*)buttonReorder{
-    return [self buttonWithTitle:@"Pesan Ulang" imageName:@"icon_pesan_ulang.png" action:@selector(tapReorder)];
+    return [self buttonWithTitle:@"Pesan Ulang" imageName:@"icon_pesan_ulang" action:@selector(tapReorder)];
 }
 
 +(CKButtonComponent *)buttonWithTitle:(NSString*)title imageName:(NSString*)imageName action:(SEL)action{

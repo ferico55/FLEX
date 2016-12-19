@@ -20,6 +20,8 @@
 		34E8A3081E028792004AE6DE /* Test.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34E89BDC1E02878A004AE6DE /* Test.xcassets */; };
 		34E8A3091E028792004AE6DE /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E89BE11E02878A004AE6DE /* Tokopedia-Info.plist */; };
 		34E8A30A1E028792004AE6DE /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34E89BE41E02878A004AE6DE /* Tokopedia.xcworkspace */; };
+		6255245E1E053A9E0005E0E5 /* CancelOrderShipmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255245C1E053A9E0005E0E5 /* CancelOrderShipmentViewController.swift */; };
+		6255245F1E053A9E0005E0E5 /* CancelOrderShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6255245D1E053A9E0005E0E5 /* CancelOrderShipmentViewController.xib */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -1836,7 +1838,6 @@
 		7A590DA41E0515930042A2A2 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5906841E05158A0042A2A2 /* MGSwipeTableCell.m */; };
 		7A590DA51E0515930042A2A2 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7A5906851E05158A0042A2A2 /* MGSwipeTableCell.podspec */; };
 		7A590DA61E0515930042A2A2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A5906861E05158A0042A2A2 /* README.md */; };
-		7A590DA71E0515930042A2A2 /* MMNumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5906891E05158A0042A2A2 /* MMNumberKeyboard.m */; };
 		7A590DA81E0515930042A2A2 /* EDStarRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59068C1E05158A0042A2A2 /* EDStarRating.m */; };
 		7A590DA91E0515930042A2A2 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A59068E1E05158A0042A2A2 /* vt-iOSlib-1.0.1.tar.gz */; };
 		7A590DAA1E0515930042A2A2 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A59068F1E05158A0042A2A2 /* vt-iOSlib-1.0.1.zip */; };
@@ -1922,6 +1923,8 @@
 		34E89BE21E02878A004AE6DE /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		34E89BE31E02878A004AE6DE /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		34E89BE41E02878A004AE6DE /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		6255245C1E053A9E0005E0E5 /* CancelOrderShipmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelOrderShipmentViewController.swift; sourceTree = "<group>"; };
+		6255245D1E053A9E0005E0E5 /* CancelOrderShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CancelOrderShipmentViewController.xib; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -3453,8 +3456,6 @@
 		7A5906841E05158A0042A2A2 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
 		7A5906851E05158A0042A2A2 /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		7A5906861E05158A0042A2A2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		7A5906881E05158A0042A2A2 /* MMNumberKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNumberKeyboard.h; sourceTree = "<group>"; };
-		7A5906891E05158A0042A2A2 /* MMNumberKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNumberKeyboard.m; sourceTree = "<group>"; };
 		7A59068B1E05158A0042A2A2 /* EDStarRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDStarRating.h; sourceTree = "<group>"; };
 		7A59068C1E05158A0042A2A2 /* EDStarRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDStarRating.m; sourceTree = "<group>"; };
 		7A59068E1E05158A0042A2A2 /* vt-iOSlib-1.0.1.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "vt-iOSlib-1.0.1.tar.gz"; sourceTree = "<group>"; };
@@ -6478,6 +6479,8 @@
 		7A5903E21E0515880042A2A2 /* ShipmentConfirmation */ = {
 			isa = PBXGroup;
 			children = (
+				6255245C1E053A9E0005E0E5 /* CancelOrderShipmentViewController.swift */,
+				6255245D1E053A9E0005E0E5 /* CancelOrderShipmentViewController.xib */,
 				7A5903E31E0515880042A2A2 /* BarCodeViewController.h */,
 				7A5903E41E0515880042A2A2 /* BarCodeViewController.m */,
 				7A5903E51E0515880042A2A2 /* CancelShipmentViewController.h */,
@@ -7567,7 +7570,6 @@
 				7A59067C1E05158A0042A2A2 /* MarqueeLabel.h */,
 				7A59067D1E05158A0042A2A2 /* MarqueeLabel.m */,
 				7A59067E1E05158A0042A2A2 /* MGSwipeTableCell */,
-				7A5906871E05158A0042A2A2 /* MMNumberKeyboard */,
 				7A59068A1E05158A0042A2A2 /* StarRate */,
 				7A59068D1E05158A0042A2A2 /* Veritrans */,
 				7A5906901E05158A0042A2A2 /* XYPieChart */,
@@ -7607,15 +7609,6 @@
 				7A5906841E05158A0042A2A2 /* MGSwipeTableCell.m */,
 			);
 			path = MGSwipeTableCell;
-			sourceTree = "<group>";
-		};
-		7A5906871E05158A0042A2A2 /* MMNumberKeyboard */ = {
-			isa = PBXGroup;
-			children = (
-				7A5906881E05158A0042A2A2 /* MMNumberKeyboard.h */,
-				7A5906891E05158A0042A2A2 /* MMNumberKeyboard.m */,
-			);
-			path = MMNumberKeyboard;
 			sourceTree = "<group>";
 		};
 		7A59068A1E05158A0042A2A2 /* StarRate */ = {
@@ -10705,6 +10698,7 @@
 				7A590A7C1E05158D0042A2A2 /* ResizeableImageCell.xib in Resources */,
 				7A590A9B1E05158E0042A2A2 /* MyWishlistViewController.xib in Resources */,
 				7A590C041E0515900042A2A2 /* RejectReasonEmptyVariantCell.xib in Resources */,
+				6255245F1E053A9E0005E0E5 /* CancelOrderShipmentViewController.xib in Resources */,
 				7A590D511E0515920042A2A2 /* TxOrderTabViewController.xib in Resources */,
 				7A590CA11E0515910042A2A2 /* ShopInfoAddressCell.xib in Resources */,
 				7A590B9A1E05158F0042A2A2 /* SegmentedReviewReputationViewController.xib in Resources */,
@@ -12326,6 +12320,7 @@
 				7A5907DE1E05158B0042A2A2 /* ProfileSettingsResult.m in Sources */,
 				7A590BCE1E05158F0042A2A2 /* ResolutionCenterCreatePOSTData.m in Sources */,
 				7A590A891E05158D0042A2A2 /* HomePageCategoryData.swift in Sources */,
+				6255245E1E053A9E0005E0E5 /* CancelOrderShipmentViewController.swift in Sources */,
 				7A59083F1E05158B0042A2A2 /* NoteDetail.swift in Sources */,
 				7A59094F1E05158C0042A2A2 /* ShareReplay1.swift in Sources */,
 				7A5909A91E05158C0042A2A2 /* VerifiedStatusMSISDN.m in Sources */,
@@ -12472,7 +12467,6 @@
 				7A5907481E05158A0042A2A2 /* GoogleDistanceMatrixElements.m in Sources */,
 				7A590C741E0515910042A2A2 /* SettingUserProfileRequest.swift in Sources */,
 				7A5906B51E05158A0042A2A2 /* NSDateHelper.swift in Sources */,
-				7A590DA71E0515930042A2A2 /* MMNumberKeyboard.m in Sources */,
 				7A5907001E05158A0042A2A2 /* ContactUsActionResultStatus.m in Sources */,
 				7A590B3A1E05158E0042A2A2 /* DetailProductDescriptionCell.m in Sources */,
 				7A590A5C1E05158D0042A2A2 /* FiltersController.swift in Sources */,
@@ -12817,7 +12811,10 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

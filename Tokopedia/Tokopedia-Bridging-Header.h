@@ -94,7 +94,6 @@
 #import "UIFont+Theme.h"
 #import "QueueImageDownloader.h"
 #import "ProductBadge.h"
-#import "MMNumberKeyboard.h"
 #import "NSStringCategory.h"
 #import "UIViewController+TKPAdditions.h"
 #import "TKPAppFlow.h"
@@ -142,6 +141,7 @@
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
 #import "RequestOrderAction.h"
+#import "OrderTransaction.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

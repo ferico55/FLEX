@@ -28,6 +28,7 @@
 
 #import <BlocksKit/BlocksKit.h>
 #import "UIAlertView+BlocksKit.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagRecipientName 1
 #define CTagAddress 2
@@ -645,11 +646,22 @@ typedef enum TagRequest {
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     if (button.tag == 1) {
+        __weak typeof(self) weakSelf = self;
         
-        CancelShipmentViewController *controller = [CancelShipmentViewController new];
-        controller.delegate = self;
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        CancelOrderShipmentViewController *controller = [[CancelOrderShipmentViewController alloc] initWithOrderTransaction:_transaction];
+        controller.onFinishRequestCancel = ^(BOOL isSuccess) {
+            if (isSuccess) {
+                [weakSelf.delegate refreshData];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
         navigationController.viewControllers = @[controller];
-        
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         
     } else if (button.tag == 2) {

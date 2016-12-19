@@ -27,6 +27,7 @@
                receiptNumber:(NSString *)receiptNumber
              rejectionReason:(NSString *)rejectionReason;
 - (void)successConfirmOrder:(OrderTransaction *)order;
+- (void)refreshData;
 
 @end
 
