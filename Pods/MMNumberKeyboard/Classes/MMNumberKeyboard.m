@@ -253,15 +253,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     // Handle backspace.
     else if (keyboardButton == MMNumberKeyboardButtonBackspace) {
-        BOOL shouldDeleteBackward = YES;
-		
-        if ([delegate respondsToSelector:@selector(numberKeyboardShouldDeleteBackward:)]) {
-            shouldDeleteBackward = [delegate numberKeyboardShouldDeleteBackward:self];
-        }
-		
-        if (shouldDeleteBackward) {
-            [keyInput deleteBackward];
-        }
+        [keyInput deleteBackward];
     }
     
     // Handle done.
@@ -736,8 +728,6 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
         buttonLayer.shadowOpacity = 1.0f;
         buttonLayer.shadowRadius = 0.0f;
     }
-
-    [self _updateButtonAppearance];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow

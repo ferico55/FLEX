@@ -307,15 +307,25 @@
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
+    
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    CancelShipmentViewController *controller = [CancelShipmentViewController new];
-    controller.delegate = self;
-    navigationController.viewControllers = @[controller];
+    __weak typeof(self) weakSelf = self;
+
+    CancelOrderShipmentViewController *controller = [[CancelOrderShipmentViewController alloc] initWithOrderTransaction:order];
+    controller.onFinishRequestCancel = ^(BOOL isSuccess) {
+        if (isSuccess) {
+            [weakSelf refreshData];
+        } else {
+            [weakSelf restoreData:order.order_detail.detail_order_id];
+        }
+    };
     
+    navigationController.viewControllers = @[controller];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -486,7 +496,6 @@
     object.shipmentPackageID = courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id;
     object.reason = rejectionReason;
 
-    
     // Add information about which transaction is in processing and at what index path
     OrderTransaction *order = _selectedOrder;
     

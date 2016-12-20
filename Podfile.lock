@@ -87,6 +87,7 @@ PODS:
   - JSQSystemSoundPlayer (2.0.1)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
+  - MMNumberKeyboard (0.1.5)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -143,6 +144,7 @@ DEPENDENCIES:
   - JSQMessagesViewController
   - Localytics
   - Masonry
+  - MMNumberKeyboard
   - NJKWebViewProgress
   - OAStackView (~> 1.0.1)
   - RestKit (~> 0.27.0)
@@ -186,6 +188,7 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
+  MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
@@ -200,6 +203,6 @@ SPEC CHECKSUMS:
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 7f18f4b00e198f5a110bcd39b09f68904014e4cc
+PODFILE CHECKSUM: 95cce922f959d8dd67ec22788a91f9215e44364f
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.1.1
