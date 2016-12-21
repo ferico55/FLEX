@@ -265,7 +265,7 @@
         
         if (status && [actionOrder.result.is_success boolValue]) {
             
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengubah nomor resi."] delegate:self];
             [alert show];
             
             _order.order_detail.detail_ship_ref_num = receiptNumber;
