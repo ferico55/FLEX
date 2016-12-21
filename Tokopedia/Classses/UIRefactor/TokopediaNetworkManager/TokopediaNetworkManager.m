@@ -331,9 +331,7 @@
         return;
     }
     
-    
-    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
-    [alert show];
+    [StickyAlertView showErrorMessage:errors];
 }
 
 - (void)requestWithBaseUrl:(NSString*)baseUrl
