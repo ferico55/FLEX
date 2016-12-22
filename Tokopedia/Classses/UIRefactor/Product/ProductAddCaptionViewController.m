@@ -278,7 +278,7 @@
         [_activeTextField resignFirstResponder];
     } else {
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
-            [ImagePickerController showImagePicker:self
+            [TKPImagePickerController showImagePicker:self
                                          assetType:DKImagePickerControllerAssetTypeallPhotos
                                allowMultipleSelect:YES
                                         showCancel:YES

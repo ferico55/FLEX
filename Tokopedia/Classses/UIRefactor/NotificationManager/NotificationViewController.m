@@ -17,7 +17,7 @@
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
 
-#import "TxOrderTabViewController.h"
+#import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
 
@@ -532,7 +532,7 @@
                                     category:GA_EVENT_CATEGORY_NOTIFICATION
                                       action:GA_EVENT_ACTION_CLICK
                                        label:@"Order Status"];
-            TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {

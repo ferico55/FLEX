@@ -21,8 +21,6 @@
 #import "TxOrderConfirmedButtonArrowCell.h"
 #import "TxOrderConfirmedButtonCell.h"
 
-#import "TxOrderPaymentViewController.h"
-
 #import "WebViewInvoiceViewController.h"
 
 #import "string_tx_order.h"
@@ -40,6 +38,7 @@
 
 #import "GalleryViewController.h"
 #import "RequestOrderData.h"
+#import "Tokopedia-Swift.h"
 
 @interface TxOrderConfirmedViewController ()
 <
@@ -63,6 +62,7 @@
     NSMutableDictionary *_dataInput;
     
     TxOrderConfirmedDetailOrder *_orderDetail;
+    TxOrderConfirmedList *_selectedOrder;
     
     TKPDPhotoPicker *_photoPicker;
     LoadingView *_loadingView;
@@ -81,6 +81,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = @"Status Pembayaran";
 
     _isNodata = NO;
     _list = [NSMutableArray new];
@@ -100,9 +102,11 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     [self doRequestList];
+    
+    _tableView.estimatedRowHeight = 40;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -114,7 +118,6 @@
     if (_isRefresh) {
         [self doRequestList];
         _isRefresh = NO;
-        [_delegate setIsRefresh:_isRefresh];
     }
     
     UIEdgeInsets inset = _tableView.contentInset;
@@ -132,8 +135,6 @@
 -(void)refreshRequest
 {
     _page = 1;
-    [_refreshControl beginRefreshing];
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [_act stopAnimating];
     [self doRequestList];
 
@@ -182,14 +183,9 @@
 #pragma mark - Table View Delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat rowHeight = 0;
-    
-    if (indexPath.row == 0) {
-        rowHeight = 137;
-    }
-    else if (indexPath.row == 1)
-        rowHeight = 130;
-    else
+    CGFloat rowHeight = UITableViewAutomaticDimension;
+
+    if (indexPath.row == 2)
     {
         rowHeight = 40;
     
@@ -212,12 +208,18 @@
 {
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     
-    //if (detailOrder.has_user_bank ==1) {
-    TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-    vc.isConfirmed = YES;
-    vc.paymentID = @[detailOrder.payment_id];
+    if (detailOrder.has_user_bank == 1) {
+        [self pushEditConfirmationForm:detailOrder];
+    }
+}
+
+-(void)pushEditConfirmationForm:(TxOrderConfirmedList *)order{
+    EditConfirmationViewController *vc = [EditConfirmationViewController new];
+    vc.paymentID = order.payment_id;
+    vc.didEditPayment = ^{
+        [self refreshRequest];
+    };
     [self.navigationController pushViewController:vc animated:YES];
-    //}
 }
 
 -(void)uploadProofAtIndexPath:(NSIndexPath *)indexPath
@@ -233,36 +235,20 @@
 -(void)didTapInvoiceButton:(UIButton *)button atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    //TODO:: Invoice
     [self doRequestDetailOrder:detailOrder];
 }
 
 -(void)didTapPaymentProofIndexPath:(NSIndexPath *)indexPath
 {
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailOrder.img_proof_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = [UIImageView new];
-    _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        _imageproof = image;
-        [self pushToGallery];
-#pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-        [self pushToGallery];
-    }];
+    _selectedOrder = _list[indexPath.section];
+    [self pushToGallery];
 }
 
 -(void)pushToGallery
 {
     GalleryViewController *gallery = [GalleryViewController new];
     gallery.canDownload = NO;
-    [gallery initWithPhotoSource:self withStartingIndex:0];
+    [gallery initWithPhotoSource:self withStartingIndex:0 usingNetwork:YES];
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
@@ -276,9 +262,8 @@
     return @"Bukti Pembayaran";
 }
 
-- (UIImage *)photoGallery:(NSUInteger)index {
-
-    return _imageproof;
+-(NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index{
+    return _selectedOrder.img_proof_url;
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -322,15 +307,10 @@
     if (cell == nil) {
         cell = [TxOrderConfirmedBankCell newCell];
     }
-    [cell.userNameLabel setCustomAttributedText:detailOrder.user_account_name?:@""];
-    [cell.bankNameLabel setCustomAttributedText:detailOrder.user_bank_name?:@""];
     NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
-    [cell.nomorRekLabel setCustomAttributedText:detailOrder.user_account_no?:@""];
     [cell.recieverNomorRekLabel setCustomAttributedText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber]];
-    
-    if ([cell.userNameLabel.text isEqualToString:@""]) {
-        cell.userNameLabel.text =@"-";
-    }
+
+    cell.userBankLabel.text = detailOrder.userBankFullName;
     
     return cell;
 }
@@ -383,13 +363,7 @@
     
     [RequestOrderData fetchListPaymentConfirmedSuccess:^(NSArray *list) {
         [_act stopAnimating];
-        
-        if(_refreshControl.isRefreshing) {
-            if (_page == 1||_page == 0) {
-                _tableView.contentOffset = CGPointZero;
-            }
-            [_refreshControl endRefreshing];
-        }
+        [_refreshControl endRefreshing];
         
         if (_page == 1||_page == 0) {
             _list = [list mutableCopy];
@@ -408,11 +382,9 @@
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         [_tableView reloadData];
     } failure:^(NSError *error) {
-        if (_page == 1) {
-            _tableView.contentOffset = CGPointZero;
-        }
-        [_refreshControl endRefreshing];
         [_act stopAnimating];
+        [_refreshControl endRefreshing];
+        
         _tableView.tableFooterView = _loadingView.view;
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
     }];
@@ -447,9 +419,6 @@
         }
         
         [invoiceAlert show];
-        
-        [_tableView reloadData];
-
         
     } failure:^(NSError *error) {
         

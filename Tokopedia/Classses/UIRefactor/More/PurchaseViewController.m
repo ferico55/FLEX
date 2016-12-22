@@ -8,7 +8,7 @@
 
 #import "PurchaseViewController.h"
 
-#import "TxOrderTabViewController.h"
+#import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
 
@@ -66,7 +66,7 @@
 }
 
 - (IBAction)paymentConfirmationDidTap:(id)sender {
-    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

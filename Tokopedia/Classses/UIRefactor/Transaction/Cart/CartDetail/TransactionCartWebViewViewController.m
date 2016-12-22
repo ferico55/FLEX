@@ -11,7 +11,7 @@
 #import "TxEmoney.h"
 #import "string_transaction.h"
 #import "RequestCart.h"
-#import "TxOrderTabViewController.h"
+#import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "RequestCart.h"
 #import "TransactionActionResult.h"
@@ -109,7 +109,7 @@
 
         NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
         if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-            TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([html rangeOfString:@"Status Pemesanan"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];

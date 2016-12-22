@@ -37,6 +37,8 @@ def common_pods
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
     
+    pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
+    
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
     pod 'AFNetworking', '~> 3.1.0'

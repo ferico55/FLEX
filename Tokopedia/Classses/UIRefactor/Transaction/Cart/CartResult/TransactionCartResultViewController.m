@@ -17,7 +17,7 @@
 
 #import "WebViewController.h"
 
-#import "TxOrderTabViewController.h"
+#import "TxOrderConfirmedViewController.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
 #import "TTTAttributedLabel.h"
@@ -839,7 +839,7 @@
 # pragma mark - Navigation 
 
 - (void) goToTxOrderTabViewController {
-    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
     
     [self.navigationController pushViewController:vc animated:YES];
 }
