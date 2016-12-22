@@ -26,6 +26,7 @@
     TKPDTabViewController *controller = [TKPDTabViewController new];
     controller.hidesBottomBarWhenPushed = YES;
     controller.splitVC = self;
+    controller.inboxType = InboxTypeTalk;
     
     InboxTalkViewController *allTalk = [InboxTalkViewController new];
     allTalk.inboxTalkType = InboxTalkTypeAll;

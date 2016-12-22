@@ -166,8 +166,15 @@
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
     [AnalyticsManager trackInboxTicketClickWithType:_inboxCustomerServiceType];
     InboxTicketDetailViewController *controller = self.detailViewController;
+    __weak typeof(self) weakSelf = self;
     if (self.detailViewController == nil) {
         controller = [InboxTicketDetailViewController new];
+        controller.onFinishRequestDetail = ^(InboxTicketList *ticket) {
+            if (indexPath.row < _tickets.count) {
+                [_tickets replaceObjectAtIndex:indexPath.row withObject:ticket];
+                [weakSelf reloadTableWhileRetainingSelection];
+            }
+        };
     }
     
     controller.inboxTicket = ticket;
