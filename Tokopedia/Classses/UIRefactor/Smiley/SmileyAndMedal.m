@@ -72,27 +72,27 @@ enum emoticonTag {
     switch (intSet) {
         case 0:
         {
-            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] : [SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] withCount:1];
+            tempImage = isArrayObject? [UIImage imageNamed:isLarge?@"icon_medal":@"icon_medal14"] : [SmileyAndMedal generateImage:[UIImage imageNamed:isLarge?@"icon_medal":@"icon_medal14"] withCount:1];
         }
             break;
         case 1:
         {
-            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_bronze":@"icon_medal_bronze14" ofType:@"png"]] : [SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_bronze":@"icon_medal_bronze14" ofType:@"png"]] withCount:intLevel];
+            tempImage = isArrayObject? [UIImage imageNamed:isLarge?@"icon_medal_bronze":@"icon_medal_bronze14"] : [SmileyAndMedal generateImage:[UIImage imageNamed:isLarge?@"icon_medal_bronze":@"icon_medal_bronze14"] withCount:intLevel];
         }
             break;
         case 2:
         {
-            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_silver":@"icon_medal_silver14" ofType:@"png"]] : [SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_silver":@"icon_medal_silver14" ofType:@"png"]] withCount:intLevel];
+            tempImage = isArrayObject? [UIImage imageNamed:isLarge?@"icon_medal_silver":@"icon_medal_silver14"] : [SmileyAndMedal generateImage:[UIImage imageNamed:isLarge?@"icon_medal_silver":@"icon_medal_silver14"] withCount:intLevel];
         }
             break;
         case 3:
         {
-            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_gold":@"icon_medal_gold14" ofType:@"png"]] : [SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_gold":@"icon_medal_gold14" ofType:@"png"]] withCount:intLevel];
+            tempImage = isArrayObject? [UIImage imageNamed:isLarge?@"icon_medal_gold":@"icon_medal_gold14"] : [SmileyAndMedal generateImage:[UIImage imageNamed:isLarge?@"icon_medal_gold":@"icon_medal_gold14"] withCount:intLevel];
         }
             break;
         default:
         {
-            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_diamond_one":@"icon_medal_diamond_one14" ofType:@"png"]] : [SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_diamond_one":@"icon_medal_diamond_one14" ofType:@"png"]] withCount:intLevel];
+            tempImage = isArrayObject? [UIImage imageNamed:isLarge?@"icon_medal_diamond_one":@"icon_medal_diamond_one14"] : [SmileyAndMedal generateImage:[UIImage imageNamed:isLarge?@"icon_medal_diamond_one":@"icon_medal_diamond_one14"] withCount:intLevel];
         }
             break;
     }
@@ -150,9 +150,9 @@ enum emoticonTag {
 - (void)showPopUpSmiley:(UIView *)viewContentPopUp andPadding:(int)paddingRightLeftContent withReputationNetral:(NSString *)strNetral withRepSmile:(NSString *)strGood withRepSad:(NSString *)strSad withDelegate:(id<SmileyDelegate>)delegate{
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:strSad withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:strNetral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:strGood withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:strSad withImage:[UIImage imageNamed:@"icon_sad"] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:strNetral withImage:[UIImage imageNamed:@"icon_netral"] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:strGood withImage:[UIImage imageNamed:@"icon_smile"] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;

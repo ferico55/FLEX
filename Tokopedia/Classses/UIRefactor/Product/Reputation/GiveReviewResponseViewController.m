@@ -208,9 +208,7 @@
         [_revieweeReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [_revieweeReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]
-                                                                        pathForResource:@"icon_smile_small"
-                                                                        ofType:@"png"]]
+        [_revieweeReputation setImage:[UIImage imageNamed:@"icon_smile_small"]
                              forState:UIControlStateNormal];
         [_revieweeReputation setTitle:[NSString stringWithFormat:@"%@%%", (_inbox.user_reputation==nil? @"0":_inbox.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }

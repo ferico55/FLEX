@@ -140,13 +140,13 @@
 
 - (void)setImageKualitas:(int)total {
     for(int i=0;i<arrImageKualitas.count;i++) {
-        ((UIImageView *) [arrImageKualitas objectAtIndex:i]).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<total)? @"icon_star_active":@"icon_star" ofType:@"png"]];
+        ((UIImageView *) [arrImageKualitas objectAtIndex:i]).image = [UIImage imageNamed:(i<total)? @"icon_star_active":@"icon_star"];
     }
 }
 
 - (void)setImageAkurasi:(int)total {
     for(int i=0;i<arrImageKualitas.count;i++) {
-        ((UIImageView *) [arrImageAkurasi objectAtIndex:i]).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<total)? @"icon_star_active":@"icon_star" ofType:@"png"]];
+        ((UIImageView *) [arrImageAkurasi objectAtIndex:i]).image = [UIImage imageNamed:(i<total)? @"icon_star_active":@"icon_star"];
     }
 }
 

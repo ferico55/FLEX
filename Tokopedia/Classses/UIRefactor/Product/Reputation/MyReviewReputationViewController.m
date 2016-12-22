@@ -451,7 +451,7 @@
         [cell.theirReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [cell.theirReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [cell.theirReputation setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
         [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     

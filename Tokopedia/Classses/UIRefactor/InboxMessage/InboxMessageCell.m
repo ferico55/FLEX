@@ -102,11 +102,11 @@ SmileyDelegate
     [thumb setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
     
     if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-        [self.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [self.btnReputasi setImage:[UIImage imageNamed:@"icon_neutral_smile_small"] forState:UIControlStateNormal];
         [self.btnReputasi setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [self.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [self.btnReputasi setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
         [self.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
     }
     

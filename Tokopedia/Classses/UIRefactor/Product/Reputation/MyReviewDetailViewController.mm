@@ -107,29 +107,29 @@
     
     _imageCache = [ImageStorage new];
     [_imageCache initImageStorage];
-    [_imageCache loadImageNamed:@"icon_toped_loading_grey.png" description:@"IconTopedLoadingGrey"];
-    [_imageCache loadImageNamed:@"icon_arrow_down.png" description:@"IconArrowDown"];
-    [_imageCache loadImageNamed:@"icon_profile_picture.jpeg" description:@"IconProfilePicture"];
-    [_imageCache loadImageNamed:@"icon_smile_small.png" description:@"IconSmileSmall"];
-    [_imageCache loadImageNamed:@"icon_medal14.png" description:@"IconMedal"];
-    [_imageCache loadImageNamed:@"icon_medal_bronze14.png" description:@"IconMedalBronze"];
-    [_imageCache loadImageNamed:@"icon_medal_silver14.png" description:@"IconMedalSilver"];
-    [_imageCache loadImageNamed:@"icon_medal_gold14.png" description:@"IconMedalGold"];
-    [_imageCache loadImageNamed:@"icon_medal_diamond_one14.png" description:@"IconMedalDiamond"];
-    [_imageCache loadImageNamed:@"icon_countdown.png" description:@"IconCountdown"];
-    [_imageCache loadImageNamed:@"icon_review_locked.png" description:@"IconReviewLocked"];
-    [_imageCache loadImageNamed:@"icon_sad_grey.png" description:@"IconSadGrey"];
-    [_imageCache loadImageNamed:@"icon_sad.png" description:@"IconSad"];
-    [_imageCache loadImageNamed:@"icon_neutral_grey.png" description:@"IconNeutralGrey"];
-    [_imageCache loadImageNamed:@"icon_netral.png" description:@"IconNeutral"];
-    [_imageCache loadImageNamed:@"icon_smile_grey.png" description:@"IconSmileGrey"];
-    [_imageCache loadImageNamed:@"icon_smile.png" description:@"IconSmile"];
-    [_imageCache loadImageNamed:@"icon_question_mark30.png" description:@"IconQuestionMark"];
-    [_imageCache loadImageNamed:@"icon_checklist.png" description:@"IconChecklist"];
-    [_imageCache loadImageNamed:@"icon_star_active.png" description:@"IconStarActive"];
-    [_imageCache loadImageNamed:@"icon_star.png" description:@"IconStar"];
-    [_imageCache loadImageNamed:@"icon_order_cancel-01.png" description:@"IconDelete"];
-    [_imageCache loadImageNamed:@"icon_default_shop.jpg" description:@"IconDefaultShop"];
+    [_imageCache loadImageNamed:@"icon_toped_loading_grey" description:@"IconTopedLoadingGrey"];
+    [_imageCache loadImageNamed:@"icon_arrow_down" description:@"IconArrowDown"];
+    [_imageCache loadImageNamed:@"icon_profile_picture" description:@"IconProfilePicture"];
+    [_imageCache loadImageNamed:@"icon_smile_small" description:@"IconSmileSmall"];
+    [_imageCache loadImageNamed:@"icon_medal14" description:@"IconMedal"];
+    [_imageCache loadImageNamed:@"icon_medal_bronze14" description:@"IconMedalBronze"];
+    [_imageCache loadImageNamed:@"icon_medal_silver14" description:@"IconMedalSilver"];
+    [_imageCache loadImageNamed:@"icon_medal_gold14" description:@"IconMedalGold"];
+    [_imageCache loadImageNamed:@"icon_medal_diamond_one14" description:@"IconMedalDiamond"];
+    [_imageCache loadImageNamed:@"icon_countdown" description:@"IconCountdown"];
+    [_imageCache loadImageNamed:@"icon_review_locked" description:@"IconReviewLocked"];
+    [_imageCache loadImageNamed:@"icon_sad_grey" description:@"IconSadGrey"];
+    [_imageCache loadImageNamed:@"icon_sad" description:@"IconSad"];
+    [_imageCache loadImageNamed:@"icon_neutral_grey" description:@"IconNeutralGrey"];
+    [_imageCache loadImageNamed:@"icon_netral" description:@"IconNeutral"];
+    [_imageCache loadImageNamed:@"icon_smile_grey" description:@"IconSmileGrey"];
+    [_imageCache loadImageNamed:@"icon_smile" description:@"IconSmile"];
+    [_imageCache loadImageNamed:@"icon_question_mark30" description:@"IconQuestionMark"];
+    [_imageCache loadImageNamed:@"icon_checklist" description:@"IconChecklist"];
+    [_imageCache loadImageNamed:@"icon_star_active" description:@"IconStarActive"];
+    [_imageCache loadImageNamed:@"icon_star" description:@"IconStar"];
+    [_imageCache loadImageNamed:@"icon_order_cancel" description:@"IconDelete"];
+    [_imageCache loadImageNamed:@"icon_default_shop" description:@"IconDefaultShop"];
     
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
