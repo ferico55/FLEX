@@ -618,10 +618,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                 
                 let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoSwitch.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(self.selectedCategory.attributes.name)"
                 
-                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}& ").invertedSet
-                let url = "\(NSString.jsUrl())/wvlogin?uid=\(self.userManager.getUserId())&token=\(self.userManager.getMyDeviceToken())&url=\(pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
-                
-                self.didSuccessPressBuy!(NSURL(string: url)!)
+                self.didSuccessPressBuy?(NSURL(string: self.userManager.webViewUrlFromUrl(pulsaUrl))!)
             }
         }
     }

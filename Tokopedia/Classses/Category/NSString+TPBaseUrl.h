@@ -24,6 +24,8 @@
 + (NSString*)kunyitUrl;
 + (NSString*)goldMerchantUrl;
 + (NSString*)pointUrl;
++ (NSString*)wvloginUrl;
++ (NSString*)tokopediaUrl;
 
 
 @end

@@ -170,7 +170,7 @@
     NSRange stringRange = NSMakeRange(0, string.length);
     NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
     
-    NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"&bull;" withString:@"*"];
+    NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"•" withString:@"*"];
     
     return replacedString;
 }

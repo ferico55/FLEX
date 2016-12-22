@@ -468,10 +468,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
                     let webViewController = WebViewController()
                     let userManager = UserAuthentificationManager()
-                    let userID = userManager.getUserId()
-                    let currentDeviceId = userManager.getMyDeviceToken()
-                    let jsTokopediaWebViewUrl = "https://js.tokopedia.com/wvlogin?uid=\(userID)&token=\(currentDeviceId)&url=" + layoutRow.url
-                    webViewController.strURL = jsTokopediaWebViewUrl
+                    
+                    webViewController.shouldAuthorizeRequest = true
+                    webViewController.strURL = userManager.webViewUrlFromUrl(layoutRow.url)
                     webViewController.onTapLinkWithUrl = { [weak self] (url) in
                         if let weakSelf = self {
                             if url.absoluteString == "https://www.tokopedia.com/" {

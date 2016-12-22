@@ -301,10 +301,9 @@ class TPRoutes: NSObject {
         let userManager = UserAuthentificationManager()
         
         var urlString = url.absoluteString
-        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-        urlString = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(urlString!.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
         
-        controller.strURL = urlString
+        controller.strURL = userManager.webViewUrlFromUrl(urlString)
+        controller.shouldAuthorizeRequest = true
         
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)

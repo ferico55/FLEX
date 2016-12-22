@@ -8,6 +8,8 @@
 
 #import "NJKWebViewProgressView.h"
 #import "WebViewController.h"
+#import "TkpdHMAC.h"
+#import "NSURL+Dictionary.h"
 
 @interface WebViewController ()
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
@@ -43,12 +45,9 @@
         progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
         [self.navigationController.navigationBar addSubview:progressView];
         
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
-        [request setURL:[NSURL URLWithString:strURL]];
-        [_webView loadRequest:request];
+        NSURL* url = [NSURL URLWithString:strURL];
+        [_webView loadRequest:[self requestForUrl:url]];
     }
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,5 +96,18 @@
 - (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
     [progressView setProgress:progress animated:YES];
+}
+
+- (NSMutableURLRequest*)requestForUrl:(NSURL*)url {
+    NSMutableURLRequest* request;
+    if(_shouldAuthorizeRequest) {
+        request = [NSMutableURLRequest requestWithAuthorizedHeader:url];
+    } else {
+        request = [[NSMutableURLRequest alloc] init];
+        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+        [request setURL:url];
+    }
+    
+    return request;
 }
 @end

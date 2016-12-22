@@ -245,7 +245,7 @@
 - (NSString *)webViewUrlFromUrl:(NSString *)url {
     NSString *userId = self.getUserId;
     NSString *deviceId = self.getMyDeviceToken;
-    NSString *jsUrl = [NSString stringWithFormat:@"https://js.tokopedia.com/wvlogin?uid=%@&token=%@&url=%@", userId, deviceId, url];
+    NSString *jsUrl = [NSString stringWithFormat:@"%@/seamless?uid=%@&token=%@&url=%@", [NSString jsUrl], userId, deviceId, [NSString encodeString:url]];
     return jsUrl;
 }
 

@@ -47,6 +47,7 @@
 
 #import "GalleryViewController.h"
 #import "ContactUsWebViewController.h"
+#import "TkpdHMAC.h"
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
@@ -58,18 +59,27 @@
     NSUInteger *_indexImage;
     NSArray *_imageDescriptions;
 }
-+(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
-{
++(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
-    NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:invoiceURL];
-    NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
-    NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
+    NSDictionary *invoiceDictionary = [[NSDictionary dictionaryFromURLString:invoiceURL] autoParameters];
+    
+    NSString *invoicePDF = invoiceDictionary[@"pdf"]?:@"";
+    NSString *invoiceID = invoiceDictionary[@"id"]?:@"";
+    NSString* deviceID = invoiceDictionary[@"device_id"]?:@"";
+    NSString* deviceTime = invoiceDictionary [@"device_time"]?:@"";
     NSString *userID = [auth getUserId];
-    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",[NSString basicUrl],invoicePDF,invoiceID,userID];
+    
+    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/v4/invoice.pl?id=%@&user_id=%@&tkpd=0&recharge=0&device_time=%@&device_id=%@&os_type=2&pdf=%@",
+                                 [NSString v4Url],
+                                 invoiceID,
+                                 userID,
+                                 deviceTime,
+                                 deviceID,
+                                 invoicePDF];
+    
     VC.urlAddress = invoiceURLforWS?:@"";
-    [viewController.navigationController pushViewController:VC animated:YES];
-}
+    [viewController.navigationController pushViewController:VC animated:YES];}
 
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
@@ -591,13 +601,11 @@
 
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userID = [auth getUserId];
-    NSString *deviceID = [auth getMyDeviceToken];
     NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
-    NSString *jsURL = @"https://js.tokopedia.com/wvlogin?uid=";
-    NSString *url = [[[[[jsURL stringByAppendingString:userID] stringByAppendingString:@"&token="] stringByAppendingString:deviceID] stringByAppendingString:@"&url="] stringByAppendingString:pulsaURL];
+    
     WebViewController *controller = [WebViewController new];
-    controller.strURL = url;
+    controller.strURL = [auth webViewUrlFromUrl:pulsaURL];
+    controller.shouldAuthorizeRequest = YES;
     controller.strTitle = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];

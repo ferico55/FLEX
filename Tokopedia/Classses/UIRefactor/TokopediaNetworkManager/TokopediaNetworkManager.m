@@ -370,27 +370,13 @@
     
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
-        NSString* date = [hmac getDate];
+        [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(method) path:path parameter:bindedParameters];
         
-        NSString* signature = [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(method) path:path parameter:bindedParameters date:date];
+        NSDictionary* authorizedHeaders = [hmac authorizedHeaders];
         
-        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentTypeWithBaseUrl:baseUrl]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:date];
-        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
-        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
-        
-        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-        NSString* userId = [userAuth getUserId];
-        NSString* sessionId = [userAuth getMyDeviceToken];
-        
-        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
-        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
-        [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
-        
-        [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
-        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        [authorizedHeaders bk_each:^(NSString* key, NSString* value) {
+             [_objectManager.HTTPClient setDefaultHeader:key value:value];
+        }];
         
         [header bk_each:^(NSString *key, NSString *value) {
             [_objectManager.HTTPClient setDefaultHeader:key value:value];

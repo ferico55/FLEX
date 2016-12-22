@@ -30,6 +30,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return TPUrlIndex;
 }
 
++ (NSString*)tokopediaUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"http://www.tokopedia.com",
+                           @(TPUrlStaging) : @"http://staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://www.ar-arief.ndvl"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 
 + (NSString*)basicUrl {
     NSNumber *TPUrlIndex = [NSString urlIndex];
