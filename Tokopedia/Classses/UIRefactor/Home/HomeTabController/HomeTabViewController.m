@@ -403,6 +403,7 @@
 {
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.tag = 2;
+    [self view];
     [_homeHeaderController tapButton:tempBtn];
 }
 
