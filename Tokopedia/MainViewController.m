@@ -299,6 +299,7 @@ typedef enum TagRequest {
                                   NSForegroundColorAttributeName: kTKPDNAVIGATION_TITLECOLOR,
                                   NSShadowAttributeName: shadow,
                                   };
+    proxy.translucent = NO;
 }
 
 -(void)initTabBar {
