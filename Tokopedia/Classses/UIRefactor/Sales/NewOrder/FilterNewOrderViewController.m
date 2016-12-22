@@ -24,14 +24,12 @@
     self.invoiceTextField.text = _filter;
 
     NSString *dueDate = @"Pilih";
-    if ([_dueDate isEqualToString:@"4"]) {
+    if ([_dueDate isEqualToString:@"3"]) {
         dueDate = @"Hari Ini";
-    } else if ([_dueDate isEqualToString:@"3"]) {
-        dueDate = @"Besok";
     } else if ([_dueDate isEqualToString:@"2"]) {
-        dueDate = @"2 Hari";
+        dueDate = @"Besok";
     } else if ([_dueDate isEqualToString:@"1"]) {
-        dueDate = @"3 Hari";
+        dueDate = @"2 Hari";
     }
     
     self.dueDateLabel.text = dueDate;
@@ -57,14 +55,12 @@
     if ([segue.identifier isEqualToString:@"SelectDueDate"]) {
 
         NSString *dueDate = @"Pilih";
-        if ([_dueDate isEqualToString:@"4"]) {
+        if ([_dueDate isEqualToString:@"3"]) {
             dueDate = @"Hari Ini";
-        } else if ([_dueDate isEqualToString:@"3"]) {
-            dueDate = @"Besok";
         } else if ([_dueDate isEqualToString:@"2"]) {
-            dueDate = @"2 Hari";
+            dueDate = @"Besok";
         } else if ([_dueDate isEqualToString:@"1"]) {
-            dueDate = @"3 Hari";
+            dueDate = @"2 Hari";
         }
 
         DueDateViewController *controller = segue.destinationViewController;
@@ -88,12 +84,10 @@
 - (void)didSelectDueDate:(NSString *)dueDate
 {
     if ([dueDate isEqualToString:@"Hari Ini"]) {
-        _dueDate = @"4";
-    } else if ([dueDate isEqualToString:@"Besok"]) {
         _dueDate = @"3";
-    } else if ([dueDate isEqualToString:@"2 Hari"]) {
+    } else if ([dueDate isEqualToString:@"Besok"]) {
         _dueDate = @"2";
-    } else if ([dueDate isEqualToString:@"3 Hari"]) {
+    } else if ([dueDate isEqualToString:@"2 Hari"]) {
         _dueDate = @"1";
     } else {
         _dueDate = @"0";
