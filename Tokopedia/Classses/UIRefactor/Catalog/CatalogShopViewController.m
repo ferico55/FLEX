@@ -148,7 +148,7 @@
     [_tableView addSubview:_refreshControl];
     
     [_catalog_shops removeAllObjects];
-    [_networkManager doRequest];
+    [self fetchDataCatalog];
     
     [self initNoResultView];
     [self setDefaultSort];
@@ -297,7 +297,7 @@
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@""] && _uriNext != 0) {
             NSLog(@"%@", NSStringFromSelector(_cmd));
-            [_networkManager doRequest];
+            [self fetchDataCatalog];
             [_tableView setTableFooterView:_footerView];
         }
     }
@@ -373,7 +373,7 @@
                                                                     _page = 0;
                                                                     
                                                                     [self setActiveSort:[self isActiveSorting]];
-                                                                    [_networkManager doRequest];
+                                                                    [self fetchDataCatalog];
                                                                     
                                                                 } onReceivedFilterDataOption:^(FilterData * filterResponse) {
                                                                     _filterResponse = filterResponse;
@@ -429,7 +429,7 @@
         [_activityIndicatorView startAnimating];
         _page = 0;
         
-        [_networkManager doRequest];
+        [self fetchDataCatalog];
         
     } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
@@ -446,11 +446,83 @@
 
 #pragma mark - Network manager delegate
 
-- (NSString *)getPath:(int)tag {
-    return @"/search/v1/catalog/product";
+-(void) fetchDataCatalog {
+    
+    if (_refreshControl.isRefreshing == NO) {
+        _tableView.tableFooterView = _footerView;
+        [_activityIndicatorView startAnimating];
+    }
+    NSString *baseURL = [NSString aceUrl];
+    NSString *path = @"/search/v1/catalog/product";
+    NSDictionary *parameters = [self parameters];
+    [_networkManager requestWithBaseUrl:baseURL
+                                   path:path
+                                 method:RKRequestMethodGET
+                              parameter:parameters
+                                mapping:[CatalogShopAWS objectMapping]
+                              onSuccess:^(RKMappingResult *mappingResult,
+                                          RKObjectRequestOperation *operation) {
+                                  [self didReceiveMappingResult:mappingResult];
+                              }
+                              onFailure:^(NSError *error) {
+                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
+                                  [alert show];
+                                  if (_page == 1) {
+                                      [_refreshControl endRefreshing];
+                                      [self.tableView setContentOffset:CGPointZero animated:YES];
+                                  }
+                              }];
 }
 
-- (NSDictionary *)getParameter:(int)tag {
+- (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
+    NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
+    CatalogShopAWS *shops = [result objectForKey:@""];
+    
+    NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
+    
+    [_noResultView removeFromSuperview];
+    _uriNext = shops.result.paging.uri_next;
+    if (shops.result.catalog_products.count > 0) {
+        if (_page == 0) {
+            [_catalog_shops removeAllObjects];
+        }
+        
+        [_catalog_shops addObjectsFromArray:shops.result.catalog_products];
+        
+        
+        
+        
+        if(![_uriNext isEqualToString:@""]){
+            _page++;
+        }
+        
+        [_tableView setTableFooterView:nil];
+        [_activityIndicatorView stopAnimating];
+        
+        
+    } else {
+        // no data at all
+        [_loadingView setHidden:YES];
+        [_footerView setHidden:YES];
+        [_tableView addSubview:_noResultView];
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    } else  {
+        
+    }
+    [_tableView reloadData];
+    
+}
+
+- (void)pressRetryButton {
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicatorView startAnimating];
+    [self fetchDataCatalog];
+}
+
+- (NSDictionary *)parameters {
     if ([self isUseDynamicFilter]) {
         return [self parameterDynamicFilter];
     } else {
@@ -507,166 +579,6 @@
     return @"1";
 }
 
-- (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient:[NSString aceUrl]];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[CatalogShopAWS class]];
-    [statusMapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"server_process_time"]];
-    //[statusMapping addAttributeMappingsFromDictionary:@{@"message_error":@"status"}];
-    
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[CatalogShopAWSResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[@"search_url", @"share_url", @"total_record"]];
-    
-    RKObjectMapping *catalogProductMapping = [RKObjectMapping mappingForClass:[CatalogShopAWSProductResult class]];
-    
-    RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[SearchAWSShop class]];
-    [shopMapping addAttributeMappingsFromArray:@[@"shop_id",
-                                                 @"shop_name",
-                                                 @"shop_domain",
-                                                 @"shop_url",
-                                                 @"shop_is_img",
-                                                 @"shop_image",
-                                                 @"shop_image_300",
-                                                 @"shop_description",
-                                                 @"shop_tag_line",
-                                                 @"shop_location",
-                                                 @"shop_total_transaction",
-                                                 @"shop_total_favorite",
-                                                 @"shop_gold_shop",
-                                                 @"shop_is_owner",
-                                                 @"shop_rate_speed",
-                                                 @"shop_rate_accuracy",
-                                                 @"shop_rate_service",
-                                                 @"shop_status",
-                                                 @"shop_lucky",
-                                                 @"reputation_image_uri",
-                                                 @"reputation_score"
-                                                 ]];
-    
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    [productMapping addAttributeMappingsFromArray:@[@"product_url",
-                                                    @"product_name",
-                                                    @"product_id",
-                                                    @"product_image_full",
-                                                    @"product_image",
-                                                    @"product_price",
-                                                    @"product_wholesale",
-                                                    @"shop_location",
-                                                    @"shop_url",
-                                                    @"shop_gold_status",
-                                                    @"shop_name",
-                                                    @"rate",
-                                                    @"product_sold_count",
-                                                    @"product_review_count",
-                                                    @"product_talk_count",
-                                                    @"is_owner",
-                                                    @"shop_lucky",
-                                                    @"shop_id",
-                                                    @"condition"
-                                                    ]];
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-    
-    //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_products" toKeyPath:@"catalog_products" withMapping:catalogProductMapping]];
-    [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop" toKeyPath:@"shop" withMapping:shopMapping]];
-    [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:productMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:[self getRequestMethod:0]
-                                                                                       pathPattern:[self getPath:0]
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    //add response description to object manager
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    SearchAWS *list = stat;
-    
-    return list.status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    self.tableView.tableFooterView = _footerView;
-    [self.activityIndicatorView startAnimating];
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    CatalogShopAWS *shops = [result objectForKey:@""];
-    
-    NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
-    
-    [_noResultView removeFromSuperview];
-    _uriNext = shops.result.paging.uri_next;
-    if (shops.result.catalog_products.count > 0) {
-        if (_page == 0) {
-            [_catalog_shops removeAllObjects];
-        }
-        
-        [_catalog_shops addObjectsFromArray:shops.result.catalog_products];
-        
-        
-        
-        
-        if(![_uriNext isEqualToString:@""]){
-            _page++;
-        }
-        
-        [_tableView setTableFooterView:nil];
-        [_activityIndicatorView stopAnimating];
-        
-        
-    } else {
-        // no data at all
-        [_loadingView setHidden:YES];
-        [_footerView setHidden:YES];
-        [_tableView addSubview:_noResultView];
-    }
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-    } else  {
-        
-    }
-    [_tableView reloadData];
-    
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-    CGRect frame = CGRectMake(0, 0, width, 60);
-    _loadingView = [[LoadingView alloc] initWithFrame:frame];
-    _loadingView.delegate = self;
-    _tableView.tableFooterView = _loadingView;
-    [_refreshControl endRefreshing];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    [_refreshControl endRefreshing];
-}
-
-- (void)pressRetryButton {
-    _tableView.tableFooterView = _footerView;
-    [_activityIndicatorView startAnimating];
-    [_networkManager doRequest];
-}
-
 #pragma mark - General table delegate
 
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
@@ -683,7 +595,7 @@
 	_orderBy = sort;
     _page = 0;
     
-    [_networkManager doRequest];
+    [self fetchDataCatalog];
 }
 
 #pragma mark - Filter delegate
@@ -702,12 +614,12 @@
     _condition = condition;
     _page = 0;
     
-    [_networkManager doRequest];
+    [self fetchDataCatalog];
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    [_networkManager doRequest];
+    [self fetchDataCatalog];
 }
 
 #pragma mark - Method
@@ -788,6 +700,7 @@
     controller.product_list = catalogShop.products;
     [self.navigationController pushViewController:controller animated:YES];
 }
+
 
 
 @end

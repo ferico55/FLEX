@@ -40,5 +40,6 @@
 
 @property (nonatomic, strong) SearchShopModelView* modelView;
 
++ (RKObjectMapping*)mapping;
 
 @end
