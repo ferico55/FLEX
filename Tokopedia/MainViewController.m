@@ -209,48 +209,37 @@ typedef enum TagRequest {
                                              forState:UIControlStateSelected];
 
     _swipevc = [[HomeTabViewController alloc] init];
-    UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
-    [swipevcNav.navigationBar setTranslucent:NO];
     _swipevc.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 2 **/
     HotlistViewController *categoryvc = [HotlistViewController new];
-    UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
-
-    [categoryNavBar.navigationBar setTranslucent:NO];
     categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 3 **/
     MyWishlistViewController *wishlistController = [MyWishlistViewController new];
-    
-    UINavigationController *wishlistNavbar = [[UINavigationController alloc]initWithRootViewController:wishlistController];
-    wishlistNavbar.navigationBar.translucent = NO;
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         wishlistController.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
     /** TAB BAR INDEX 4 **/
     TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
-    UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
-    [cartNavBar.navigationBar setTranslucent:NO];
     cart.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 5 **/
-    UINavigationController *moreNavBar;
+    UIViewController *moreVC;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
-        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
-        
+        moreVC = more;
         if (_page == MainViewControllerPageRegister) {
-            [more navigateToRegister];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [more navigateToRegister];
+            });
         }
     }
     else{
         MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
-        moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
+        moreVC = controller;
     }
-
-    [moreNavBar.navigationBar setTranslucent:NO];
     
     /** for ios 7 need to set automatically adjust scrooll view inset **/
     if([self respondsToSelector:@selector(setExtendedLayoutIncludesOpaqueBars:)])
@@ -259,13 +248,28 @@ typedef enum TagRequest {
         categoryvc.extendedLayoutIncludesOpaqueBars = YES;
         wishlistController.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
-        moreNavBar.extendedLayoutIncludesOpaqueBars = YES;
-        [moreNavBar.navigationBar setTranslucent:NO];
+        moreVC.extendedLayoutIncludesOpaqueBars = YES;
     }
     
-    NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, wishlistNavbar, cartNavBar, moreNavBar, nil];
-    _tabBarController.viewControllers = controllers;
-    _tabBarController.delegate = self;
+    NSArray* viewControllers = [NSArray arrayWithObjects:_swipevc, categoryvc, wishlistController, cart, moreVC, nil];
+    
+    A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
+    __block NSUInteger idx = 0;
+    [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
+        
+        if (idx == tabBarController.selectedIndex) {
+            if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
+                [viewControllers[tabBarController.selectedIndex] scrollToTop];
+            }
+        } else {
+            idx = tabBarController.selectedIndex;
+        }
+    }];
+    
+    _tabBarController.viewControllers = [viewControllers bk_map:^UIViewController *(UIViewController *vc) {
+        return [[UINavigationController alloc] initWithRootViewController:vc];
+    }];
+    _tabBarController.delegate = delegate;
     //tabBarController.tabBarItem.title = nil;
     
     NSInteger pageIndex = [self pageIndex];
