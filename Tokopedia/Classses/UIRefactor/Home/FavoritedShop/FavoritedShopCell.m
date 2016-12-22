@@ -7,6 +7,7 @@
 //
 
 #import "FavoritedShopCell.h"
+#import "Tokopedia-Swift.h"
 
 @implementation FavoritedShopCell
 
@@ -53,7 +54,7 @@
                 [_delegate FavoritedShopCell:self withindexpath:_indexpath withimageview:_shopimageview];
                 break;
             }
-            
+                
             default:
                 break;
         }
@@ -65,12 +66,15 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    [_delegate removeFavoritedRow:_indexpath];
+    [_delegate didFollowPromotedShop:_promoResult];
 }
 
-
-
-
-
+- (void)setupButtonIsFavorited:(BOOL)isFavorited {
+    [_isfavoritedshop setImage:[UIImage imageNamed:isFavorited?@"icon_follow_check":@"icon_follow_plus"] forState:UIControlStateNormal];
+    [_isfavoritedshop setTitle:isFavorited?@"Mengikuti":@"Ikuti" forState:UIControlStateNormal];
+    [_isfavoritedshop setTitleColor:isFavorited?[UIColor fromHexString:@"#42B549"]:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_isfavoritedshop setBackgroundColor:isFavorited?[UIColor whiteColor]:[UIColor fromHexString:@"#42B549"]];
+    _isfavoritedshop.enabled = isFavorited ? NO : YES;
+}
 
 @end
