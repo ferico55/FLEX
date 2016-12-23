@@ -229,8 +229,8 @@ class MessageViewController: JSQMessagesViewController {
                                method: .POST,
                                parameter: ["reply_message" : text, "message_id" : self.messageId],
                                mapping: InboxMessageAction.mapping(),
-                               onSuccess: { [unowned self] (result, operation) in
-                                
+                               onSuccess: { [weak self] (result, operation) in
+                                    guard let `self` = self else { return }
                                     let result = result.dictionary()[""] as! InboxMessageAction
                                     if(result.data.is_success == "1") {
                                         self.onMessagePosted(text)
@@ -239,7 +239,8 @@ class MessageViewController: JSQMessagesViewController {
                                     }
                                },
                                onFailure: {  [weak self] (error) in
-                                    self!.receiveErrorSendMessage([])
+                                    guard let `self` = self else { return }
+                                    self.receiveErrorSendMessage([])
                                }
                 
         )
