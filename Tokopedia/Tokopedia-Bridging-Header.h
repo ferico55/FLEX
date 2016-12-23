@@ -142,7 +142,13 @@
 #import "RetryCollectionReusableView.h"
 #import "StyledPageControl.h"
 #import "RequestOrderAction.h"
+#import "EDStarRating.h"
+#import "DetailReputationReview.h"
+#import "ReviewImageAttachment.h"
+#import "DetailReviewReputationViewModel.h"
 #import "OrderTransaction.h"
+#import "AuthenticationService.h"
+#import "DetailReviewReputationViewModel.h"
 #import "Slide.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
@@ -154,4 +160,3 @@
 @import EAIntroView;
 @import DownPicker;
 @import BlocksKit;
-#import "AuthenticationService.h"

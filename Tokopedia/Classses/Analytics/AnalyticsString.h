@@ -73,6 +73,7 @@
 #define GA_EVENT_ACTION_ABANDON @"Abandon"
 #define GA_EVENT_ACTION_EDIT @"Edit"
 #define GA_EVENT_ACTION_COPY @"Copy"
+#define GA_EVENT_ACTION_SUCCESS @"Success"
 #define GA_EVENT_ACTION_REGISTER_SUCCESS @"Register Success"
 #define GA_EVENT_ACTION_REGISTER_ERROR @"Register Error"
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"

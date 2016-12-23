@@ -34,6 +34,7 @@
 #import "ProductReputationSimpleCell.h"
 #import "HelpfulReviewRequest.h"
 #import "ReviewRequest.h"
+#import "Tokopedia-Swift.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
@@ -77,6 +78,8 @@ static NSInteger userViewHeight = 70;
     
     [self initTable];
     tableContent.backgroundColor = [UIColor clearColor];
+    tableContent.estimatedRowHeight = 282;
+    tableContent.rowHeight = UITableViewAutomaticDimension;
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
@@ -118,8 +121,8 @@ static NSInteger userViewHeight = 70;
         [_filterView setAlpha:0.95];
     }
     
-    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
-    [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationTableViewCell" bundle:nil];
+    [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationTableViewCellIdentifier"];
     
     reviewRequest = [ReviewRequest new];
     
@@ -128,6 +131,10 @@ static NSInteger userViewHeight = 70;
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     animationHasShown = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -329,79 +336,16 @@ static NSInteger userViewHeight = 70;
     }
     return header;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *footer;
-    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
-        footer = _helpfulReviewFooter;
-    }
-    return footer;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         return 50;
     }
     return 10;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
-        return 10;
-    }
-    return 0;
-}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (filterStar == 0 && helpfulReviews.count > 0) {
-        if (indexPath.section == 1) {
-            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
-        } else {
-            if (!isShowingMore && indexPath.row == 1) {
-                //"load more" cell
-                if (helpfulReviews.count > 1) {
-                    return 30;
-                } else {
-                    return 0;
-                }
-            } else if (isShowingMore && indexPath.row == helpfulReviews.count) {
-                return 30;
-            } else {
-                return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
-            }
-            
-        }
-    } else {
-        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
-    }
-    
-    return 0;
-}
-- (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
-    //don't auto calculate cell for performance in iOS 7
-    /*
-    DetailReputationReview *reputationDetail = arr[indexPath.row];
-    UILabel *messageLabel = [[UILabel alloc] init];
-    
-    [messageLabel setText:reputationDetail.review_message];
-    [messageLabel sizeToFit];
-    
-    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                           context:nil];
-    messageLabel.frame = sizeOfMessage;
-    
-    CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
-    return height;
-     */
-    
-    if (((DetailReputationReview*)arr[indexPath.row]).review_image_attachment.count > 0) {
-        return 253;
-    } else {
-        return 160;
-    }
-    
-    
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -417,44 +361,27 @@ static NSInteger userViewHeight = 70;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(filterStar == 0 && helpfulReviews.count > 0){
-        if(indexPath.section == 1){
-            ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-            cell.isHelpful = NO;
-            cell.delegate = self;
-            cell.indexPath = indexPath;
-            
-            DetailReputationReview *reputationDetail = arrList[indexPath.row];
-            [cell setReputationModelView:reputationDetail.viewModel];
+    if (filterStar == 0 && helpfulReviews.count > 0) {
+        if(indexPath.section == 1) {
+            DetailReputationReview *reviewDetail = arrList[indexPath.row];
+            ProductReputationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationTableViewCellIdentifier"];
+            cell.viewModel = reviewDetail.viewModel;
             return cell;
-        }else{
+        } else {
             NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
             if(indexPath.row < limit){
-                ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-                helpfulCell.isHelpful = YES;
-                helpfulCell.delegate = self;
-                helpfulCell.indexPath = indexPath;
-                
-                DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
-                [helpfulCell setReputationModelView:reputationDetail.viewModel];
-                
-                CGRect newFrame = helpfulCell.leftBorderView.frame;
-                newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
-                newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
-                [helpfulCell.leftBorderView setFrame:newFrame];
-                return helpfulCell;
-            }else{
+                DetailReputationReview *reviewDetail = helpfulReviews[indexPath.row];
+                ProductReputationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationTableViewCellIdentifier"];
+                cell.viewModel = reviewDetail.viewModel;
+                return cell;
+            } else {
                 return _helpfulReviewLoadMoreCell;
             }
         }
-    }else{
-        ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-        cell.isHelpful = NO;
-        cell.delegate = self;
-        cell.indexPath = indexPath;
-        
-        DetailReputationReview *reputationDetail = arrList[indexPath.row];
-        [cell setReputationModelView:reputationDetail.viewModel];
+    } else {
+        DetailReputationReview *reviewDetail = arrList[indexPath.row];
+        ProductReputationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationTableViewCellIdentifier"];
+        cell.viewModel = reviewDetail.viewModel;
         return cell;
     }
 }
@@ -484,7 +411,7 @@ static NSInteger userViewHeight = 70;
 
     }
 }
-- (BOOL) isLastCellInSectionZero:(NSIndexPath *)indexPath{
+- (BOOL)isLastCellInSectionZero:(NSIndexPath *)indexPath{
     if (isShowingMore){
         return indexPath.row == helpfulReviews.count ? YES : NO;
     }else{

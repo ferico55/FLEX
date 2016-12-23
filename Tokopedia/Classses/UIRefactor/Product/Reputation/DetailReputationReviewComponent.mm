@@ -200,7 +200,9 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
 }
 
 - (void)didTapHeader:(id)sender {
-    [_delegate didTapProductWithReview:_review];
+    if ([_delegate respondsToSelector:@selector(didTapProductWithReview:)]) {
+        [_delegate didTapProductWithReview:_review];
+    }    
 }
 
 - (void)didTapToGiveReview:(id)sender {

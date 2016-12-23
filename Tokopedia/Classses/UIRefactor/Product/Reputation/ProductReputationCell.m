@@ -323,24 +323,24 @@
 }
 
 - (void)enableLikeButton{
-    [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnLike setImage:[UIImage imageNamed:@"icon_like_active"] forState:UIControlStateNormal];
 }
 
 - (void)disableLikeButton{
-    [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnLike setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
 }
 
 - (void)resetLikeDislikeButton{
-    [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-    [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnLike setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+    [btnDislike setImage:[UIImage imageNamed:@"icon_dislike"] forState:UIControlStateNormal];
 }
 
 - (void)enableDislikeButton{
-    [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnDislike setImage:[UIImage imageNamed:@"icon_dislike_active"] forState:UIControlStateNormal];
 }
 
 -(void)disableDislikeButton{
-    [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnDislike setImage:[UIImage imageNamed:@"icon_dislike"] forState:UIControlStateNormal];
 }
 
 - (void)disableTouchLikeDislikeButton{

@@ -1825,6 +1825,8 @@
 		347321C81E0CCB4F0018FDDC /* Test.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34731AA81E0CCB470018FDDC /* Test.xcassets */; };
 		347321C91E0CCB4F0018FDDC /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34731AAD1E0CCB470018FDDC /* Tokopedia-Info.plist */; };
 		347321CA1E0CCB4F0018FDDC /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34731AB01E0CCB470018FDDC /* Tokopedia.xcworkspace */; };
+		622DA7E11E0CE68600D77D3B /* ProductReputationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622DA7DF1E0CE68600D77D3B /* ProductReputationTableViewCell.swift */; };
+		622DA7E21E0CE68600D77D3B /* ProductReputationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622DA7E01E0CE68600D77D3B /* ProductReputationTableViewCell.xib */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -4859,6 +4861,8 @@
 		34731AAE1E0CCB470018FDDC /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		34731AAF1E0CCB470018FDDC /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		34731AB01E0CCB470018FDDC /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		622DA7DF1E0CE68600D77D3B /* ProductReputationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductReputationTableViewCell.swift; sourceTree = "<group>"; };
+		622DA7E01E0CE68600D77D3B /* ProductReputationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationTableViewCell.xib; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -8850,6 +8854,8 @@
 		347316F01E0CCB440018FDDC /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				622DA7DF1E0CE68600D77D3B /* ProductReputationTableViewCell.swift */,
+				622DA7E01E0CE68600D77D3B /* ProductReputationTableViewCell.xib */,
 				347316F11E0CCB440018FDDC /* AttachedPicture.h */,
 				347316F21E0CCB440018FDDC /* AttachedPicture.m */,
 				347316F31E0CCB440018FDDC /* DetailReputationReviewComponent.h */,
@@ -10580,6 +10586,7 @@
 				34731DFC1E0CCB4A0018FDDC /* StickyAlertView.xib in Resources */,
 				34731DF81E0CCB4A0018FDDC /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				347320461E0CCB4C0018FDDC /* CancelShipmentViewController.xib in Resources */,
+				622DA7E21E0CE68600D77D3B /* ProductReputationTableViewCell.xib in Resources */,
 				3473207C1E0CCB4D0018FDDC /* SettingAddressEditViewController.xib in Resources */,
 				34731EDC1E0CCB4B0018FDDC /* InboxMessageDetailViewController.xib in Resources */,
 				34731E4A1E0CCB4A0018FDDC /* ContactUsFormViewController.xib in Resources */,
@@ -11558,6 +11565,7 @@
 				34731C811E0CCB480018FDDC /* City.m in Sources */,
 				34731C291E0CCB480018FDDC /* OrderOrder.m in Sources */,
 				34731E5B1E0CCB4A0018FDDC /* NoResult.m in Sources */,
+				622DA7E11E0CE68600D77D3B /* ProductReputationTableViewCell.swift in Sources */,
 				34731F621E0CCB4B0018FDDC /* DetailProductRequest.swift in Sources */,
 				34731CE31E0CCB490018FDDC /* TxOrderPaymentEdit.m in Sources */,
 				34731EDB1E0CCB4B0018FDDC /* InboxMessageDetailViewController.m in Sources */,

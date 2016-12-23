@@ -247,7 +247,7 @@
                                                                   if (!action.message_error) {
                                                                       if ([action.data.is_success isEqualToString:@"1"]) {
                                                                           [AnalyticsManager localyticsTrackWithdraw:YES];
-                                                                          [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Withdraw"];
+                                                                          [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_SUCCESS label:@"Withdraw"];
                                                                           [self.navigationController popViewControllerAnimated:YES];
                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
                                                                           
