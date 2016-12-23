@@ -18,12 +18,12 @@
     CGFloat _totalOffset;
     NSInteger _viewControllerIndex;
     BOOL _isAbleToSwipe;
-    BOOL _loggedIn;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) OAStackView *stackView;
 @property (nonatomic) CGFloat maxXInScrollView;
+@property (strong, nonatomic) UserAuthentificationManager *userAuthManager;
 
 @end
 
@@ -54,12 +54,18 @@
         
         return button;
     };
-    _stackView = [[OAStackView alloc] initWithArrangedSubviews:
+    if (_userAuthManager.isLogin){
+        _stackView = [[OAStackView alloc] initWithArrangedSubviews:
                   @[createButton(@"HOME", 1),
                     createButton(@"FEED", 2),
                     createButton(@"PROMO", 3),
                     createButton(@"TERAKHIR DILIHAT", 4),
                     createButton(@"FAVORIT", 5)]];
+    } else {
+        _stackView = [[OAStackView alloc] initWithArrangedSubviews:
+                      @[createButton(@"HOME", 1),
+                        createButton(@"PROMO", 2)]];
+    }
     _stackView.axis = UILayoutConstraintAxisHorizontal;
     _stackView.alignment = OAStackViewAlignmentFill;
     _stackView.layoutMarginsRelativeArrangement = YES;
@@ -80,9 +86,9 @@
     _scrollView.frame = newFrame;
     if(IS_IPAD) {
         [_scrollView setScrollEnabled:NO];
-        _stackView.distribution = OAStackViewDistributionEqualSpacing;
+        _stackView.distribution = [self stackViewDistributionIpad];
         _stackView.spacing = 0.0;
-        [_stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(self.view);
         }];
     } else {
@@ -90,7 +96,7 @@
         _stackView.spacing = 35.0;
         [_stackView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.height.mas_equalTo(_scrollView);
-            if (!_loggedIn){
+            if (!_userAuthManager.isLogin){
                 make.width.mas_equalTo(_scrollView);
             }
         }];
@@ -102,20 +108,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNotificationCenter];
-
+    
     _scrollView.delegate = self;
     _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _scrollView.bounces = NO;
     
+    _userAuthManager = [[UserAuthentificationManager alloc] init];
+    
     [self initButton];
-    
-    UserAuthentificationManager *manager = [[UserAuthentificationManager alloc] init];
-    _loggedIn = YES;
-    if (![manager isLogin]) {
-        [self userDidLogout:nil];
-        _loggedIn = NO;
-    }
-    
     [self.view.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [self.view.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [self.view.layer setShadowRadius:1];
@@ -124,26 +124,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (!_loggedIn) {
-        [_scrollView setContentOffset:CGPointMake(0, _scrollView.contentOffset.y)];
-        [self tap:1];
-        [self setActiveButton];
-    }
     [self adjustConstraints];
 }
 
 - (void)userDidLogin:(NSNotification *)notification {
-    [_scrollView setScrollEnabled:YES];
-    [_stackView removeFromSuperview];
-    [self initButton];
-    _loggedIn = YES;
+    [self refreshTabBarHeader];
 }
 
 - (void)userDidLogout:(NSNotification *)notification {
-    [self removeButton];
-    [_scrollView setScrollEnabled:NO];
-    _loggedIn = NO;
+    [self refreshTabBarHeader];
 }
 
 #pragma mark _ Tap Action
@@ -158,26 +147,24 @@
 - (void)tapButton:(UIButton*)button {
     [self tap:button.tag];
     
-    NSString *name = @"";
+    NSDictionary<NSNumber *, NSString *> *buttonNameByTagLogin = @{
+                                                             @(1): @"Home",
+                                                             @(2): @"Product Feed",
+                                                             @(3): @"Promo",
+                                                             @(4): @"Last Seen",
+                                                             @(5): @"Favorite"
+                                                             };
     
-    switch (button.tag) {
-        case 1:
-            name = @"Home";
-            break;
-        case 2:
-            name = @"Product Feed";
-            break;
-        case 3:
-            name = @"Promo";
-            break;
-        case 4:
-            name = @"Last Seen";
-            break;
-        case 5:
-            name = @"Favorite";
-            break;
-        default:
-            break;
+    NSDictionary<NSNumber *, NSString *> *buttonNameByTagNotLogin = @{
+                                                                   @(1): @"Home",
+                                                                   @(2): @"Promo"
+                                                                   };
+    
+    NSString *name = @"";
+    if (_userAuthManager.isLogin){
+        name = [buttonNameByTagLogin objectForKey:@(button.tag)];
+    } else {
+        name = [buttonNameByTagNotLogin objectForKey:@(button.tag)];
     }
     
     [AnalyticsManager trackEventName:@"clickHomepage"
@@ -198,22 +185,24 @@
 
 - (void)tap:(int)page {
     [self.view layoutIfNeeded];
-    NSInteger xInScrollView = [self xInScrollViewFormula: page];
-    switch (page) {
-        case 1 :{
-            _totalOffset = 0;
-            break;
+    if (_userAuthManager.isLogin){
+        NSInteger xInScrollView = [self xInScrollViewFormula: page];
+        switch (page) {
+            case 1 :{
+                _totalOffset = 0;
+                break;
+            }
+            case 5 :{
+                _totalOffset = _maxXInScrollView;
+                break;
+            }
+            default:
+                _totalOffset = [self totalOffsetFormula:xInScrollView page:page];
+                break;
         }
-        case 5 :{
-            _totalOffset = _maxXInScrollView;
-            break;
-        }
-        default:
-            _totalOffset = [self totalOffsetFormula:xInScrollView page:page];
-            break;
+        [self tapButtonAnimate:_totalOffset];
     }
     _viewControllerIndex = page;
-    [self tapButtonAnimate:_totalOffset];
 }
 
 - (NSInteger) xInScrollViewFormula: (NSInteger)page {
@@ -241,19 +230,22 @@
     }
 }
 
-- (void)removeButton {
-    for (UIButton *button in _stackView.arrangedSubviews) {
-        if(button.tag > 1) {
-            [_stackView removeArrangedSubview:button];
-        }
-    }
+- (void) refreshTabBarHeader {
+    [_stackView removeFromSuperview];
+    [self initButton];
 }
-
-
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_scrollView setDelegate:nil];
+}
+
+- (OAStackViewDistribution)stackViewDistributionIpad {
+    if (_userAuthManager.isLogin) {
+        return OAStackViewDistributionEqualSpacing;
+    } else {
+        return OAStackViewDistributionFillEqually;
+    }
 }
 
 @end

@@ -11,13 +11,11 @@
 
 @interface AnnouncementTickerView : UIView <TTTAttributedLabelDelegate>
 
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet TTTAttributedLabel *messageLabel;
 
 @property (copy) void(^onTapMessageWithUrl)(NSURL *url);
 
 + (id)newView;
-- (void)setTitle:(NSString *)text;
 - (void)setMessage:(NSString *)text;
 
 @end

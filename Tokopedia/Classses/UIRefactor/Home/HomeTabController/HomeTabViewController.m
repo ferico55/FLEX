@@ -48,7 +48,6 @@
 {
     NotificationManager *_notifManager;
     NSInteger _page;
-    BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
@@ -58,7 +57,7 @@
 @property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
-@property (strong, nonatomic) PromoView *promoView;
+@property (strong, nonatomic) PromoViewController *promoViewController;
 @property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
@@ -66,6 +65,7 @@
 @property (strong, nonatomic) MyWishlistViewController *wishListViewController;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *homeHeaderView;
+@property (strong, nonatomic) NSArray<UIViewController*> *viewControllers;
 
 @end
 
@@ -101,22 +101,24 @@
     
     _productFeedController = [ProductFeedViewController new];
     
+    _promoViewController = [PromoViewController new];
+    
     _historyController = [HistoryProductViewController new];
     _shopViewController = [FavoritedShopViewController new];
     
     _homeHeaderController = [HomeTabHeaderViewController new];
-    
-    _wishListViewController = [MyWishlistViewController new];
 
     _redirectHandler = [RedirectHandler new];
     
     _navigate = [NavigateViewController new];
-
+    
+    _userManager = [UserAuthentificationManager new];
+    
+    [self instantiateViewControllers];
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setPagingEnabled:YES];
     
     //this code to prevent user lose their hometabheader being hided by scrollview if they already loggedin from previous version
@@ -246,18 +248,11 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
-    
-    _userManager = [UserAuthentificationManager new];
+    [self goToPage:_page];
     if([_userManager isLogin]) {
-        [self goToPage:_page];
-        _isAbleToSwipe = YES;
         [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
-        [_scrollView setPagingEnabled:YES];
     } else {
-        [self goToPage:0];
-        _isAbleToSwipe = NO;
-        [_scrollView setContentSize:CGSizeMake(300, 300)];
-        [_scrollView setPagingEnabled:NO];
+        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*2, 300)];
     }
     [self initNotificationManager];
     
@@ -309,8 +304,6 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if(!_isAbleToSwipe) return;
-    
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
     [self goToPage:page];
@@ -329,51 +322,15 @@
 }
 
 - (void)goToPage:(NSInteger)page {
-    if(page == 0) {
-        CGRect frame = _homePageController.view.frame;
-        frame.origin.x = 0;
-        _homePageController.view.frame = frame;
-        
-        [self addChildViewController:_homePageController];
-        [self.scrollView addSubview:_homePageController.view];
-        [_homePageController didMoveToParentViewController:self];
-    } else if(page == 1) {
-        CGRect frame = _productFeedController.view.frame;
-        frame.origin.x = _scrollView.frame.size.width;
-        frame.size.height = _scrollView.frame.size.height;
-        _productFeedController.view.frame = frame;
-        
-        [self addChildViewController:_productFeedController];
-        [self.scrollView addSubview:_productFeedController.view];
-        [_productFeedController didMoveToParentViewController:self];
-    } else if(page == 2) {
-        if (_promoView == nil){
-            _promoView = [[PromoView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _scrollView.frame.size.height)];
-            _promoView.viewControllerToNavigate = self;
-            CGRect frame = _promoView.frame;
-            frame.origin.x = _scrollView.frame.size.width*page;
-            frame.size.height = _scrollView.frame.size.height;
-            frame.size.width = [UIScreen mainScreen].bounds.size.width;
-            _promoView.frame = frame;
-            [self.scrollView addSubview:_promoView];
-        }
-    } else if(page == 3) {
-        CGRect frame = _historyController.view.frame;
-        frame.origin.x = _scrollView.frame.size.width*page;
-        frame.size.height = _scrollView.frame.size.height;
-        _historyController.view.frame = frame;
-        [self addChildViewController:_historyController];
-        [self.scrollView addSubview:_historyController.view];
-        [_historyController didMoveToParentViewController:self];
-    } else if(page == 4) {
-        CGRect frame = _shopViewController.view.frame;
-        frame.origin.x = _scrollView.frame.size.width*page;
-        frame.size.height = _scrollView.frame.size.height;
-        _shopViewController.view.frame = frame;
-        [self addChildViewController:_shopViewController];
-        [self.scrollView addSubview:_shopViewController.view];
-        [_shopViewController didMoveToParentViewController:self];
-    }
+    CGRect frame = _viewControllers[page].view.frame;
+    frame.origin.x = _scrollView.frame.size.width*page;
+    frame.size.height = _scrollView.frame.size.height;
+    frame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _viewControllers[page].view.frame = frame;
+    
+    [self addChildViewController:_viewControllers[page]];
+    [self.scrollView addSubview:_viewControllers[page].view];
+    [_viewControllers[page] didMoveToParentViewController:self];
     
     NSDictionary *userInfo = @{@"tag" : @(page)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomeTab" object:nil userInfo:userInfo];
@@ -404,6 +361,13 @@
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.tag = 2;
     [self view];
+    [_homeHeaderController tapButton:tempBtn];
+}
+
+- (void)redirectToHome {
+    _page = 0;
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.tag = 1;
     [_homeHeaderController tapButton:tempBtn];
 }
 
@@ -529,11 +493,21 @@
 
 - (void)userDidLogin:(NSNotification*)notification {
     [self setSearchByImage];
+    [self instantiateViewControllers];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
+    [self redirectToHome];
     [self setSearchByImage];
+    [self instantiateViewControllers];
 }
 
+- (void) instantiateViewControllers {
+    if (_userManager.isLogin) {
+        _viewControllers = @[_homePageController, _productFeedController, _promoViewController, _historyController, _shopViewController];
+    } else {
+        _viewControllers = @[_homePageController, _promoViewController];
+    }
+}
 
 @end

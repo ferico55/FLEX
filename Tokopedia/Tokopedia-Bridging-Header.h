@@ -140,8 +140,10 @@
 #import "Shop.h"
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
+#import "StyledPageControl.h"
 #import "RequestOrderAction.h"
 #import "OrderTransaction.h"
+#import "Slide.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
