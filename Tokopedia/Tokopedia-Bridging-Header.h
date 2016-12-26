@@ -137,11 +137,13 @@
 #import "ShopPageHeader.h"
 #import "ShopTabView.h"
 #import "LogoutResult.h"
+#import "TKPStoreManager.h"
 #import "Shop.h"
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
 #import "StyledPageControl.h"
 #import "RequestOrderAction.h"
+#import "NoResultReusableView.h"
 #import "EDStarRating.h"
 #import "DetailReputationReview.h"
 #import "ReviewImageAttachment.h"
@@ -150,6 +152,7 @@
 #import "AuthenticationService.h"
 #import "DetailReviewReputationViewModel.h"
 #import "Slide.h"
+#import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

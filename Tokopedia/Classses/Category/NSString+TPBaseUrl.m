@@ -233,4 +233,17 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString *)wvloginUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary *urls = @{
+                           @(TPUrlProduction) : @"https://js.tokopedia.com/wvlogin",
+                           @(TPUrlStaging) : @"https://js-staging.tokopedia.com/wvlogin",
+                           @(TPUrlAlpha) : @"https://ajax-alpha.tokopedia.com/wvlogin",
+                           @(TPUrlDevelopment) : @"http://192.168.56.101:9000/js/wvlogin"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 @end

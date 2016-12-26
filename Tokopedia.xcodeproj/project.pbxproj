@@ -1827,6 +1827,7 @@
 		347321CA1E0CCB4F0018FDDC /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34731AB01E0CCB470018FDDC /* Tokopedia.xcworkspace */; };
 		622DA7E11E0CE68600D77D3B /* ProductReputationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622DA7DF1E0CE68600D77D3B /* ProductReputationTableViewCell.swift */; };
 		622DA7E21E0CE68600D77D3B /* ProductReputationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622DA7E01E0CE68600D77D3B /* ProductReputationTableViewCell.xib */; };
+		622DA7E41E0CFF4900D77D3B /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622DA7E31E0CFF4900D77D3B /* WKWebViewController.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -4863,6 +4864,7 @@
 		34731AB01E0CCB470018FDDC /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		622DA7DF1E0CE68600D77D3B /* ProductReputationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductReputationTableViewCell.swift; sourceTree = "<group>"; };
 		622DA7E01E0CE68600D77D3B /* ProductReputationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationTableViewCell.xib; sourceTree = "<group>"; };
+		622DA7E31E0CFF4900D77D3B /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -8559,6 +8561,7 @@
 		3473162D1E0CCB430018FDDC /* More */ = {
 			isa = PBXGroup;
 			children = (
+				622DA7E31E0CFF4900D77D3B /* WKWebViewController.swift */,
 				3473162E1E0CCB430018FDDC /* ActivatePushInstructionViewController.swift */,
 				3473162F1E0CCB430018FDDC /* ActivatePushInstructionViewController.xib */,
 				347316301E0CCB430018FDDC /* ActivatePushInstructionViewController7.xib */,
@@ -11480,6 +11483,7 @@
 				347321C01E0CCB4E0018FDDC /* MGSwipeButton.m in Sources */,
 				34731C6B1E0CCB480018FDDC /* Shop.m in Sources */,
 				34731ADC1E0CCB470018FDDC /* TextMenu.m in Sources */,
+				622DA7E41E0CFF4900D77D3B /* WKWebViewController.swift in Sources */,
 				34731C011E0CCB480018FDDC /* BankAccountFormList.m in Sources */,
 				347321C31E0CCB4E0018FDDC /* README.md in Sources */,
 				34731B451E0CCB480018FDDC /* Review.m in Sources */,

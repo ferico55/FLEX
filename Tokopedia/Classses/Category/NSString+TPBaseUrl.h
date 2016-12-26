@@ -27,5 +27,4 @@
 + (NSString*)wvloginUrl;
 + (NSString*)tokopediaUrl;
 
-
 @end

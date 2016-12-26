@@ -593,9 +593,10 @@
 }
 
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
-    ContactUsWebViewController *controller = [ContactUsWebViewController new];
-    controller.title = @"Hubungi Kami";
-    controller.hidesBottomBarWhenPushed = YES;
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *contactUsURL = @"https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios";
+    WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
+    controller.title = @"Tokopedia Contact";
     [viewController.navigationController pushViewController:controller animated:YES];
 }
 

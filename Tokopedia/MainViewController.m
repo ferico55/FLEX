@@ -189,9 +189,8 @@ typedef enum TagRequest {
     [self createtabbarController];
     
     _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[self presentViewController:_tabBarController animated:YES completion:^{
-
-	}];
+    
+    [[UIApplication sharedApplication] keyWindow].rootViewController = _tabBarController;
 }
 
 -(void)createtabbarController

@@ -31,6 +31,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private var categoryPlaceholder: OAStackView!
     private var homePageCategoryData: HomePageCategoryData?
     private var pulsaActiveCategories: [PulsaCategory]?
+    private var storeManager = TKPStoreManager()
     
     @IBOutlet private var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
@@ -83,7 +84,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
+        let bannersStore = self.storeManager.homeBannerStore
         bannersStore.stopBannerRequest()
     }
     
@@ -342,7 +343,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     private func requestBanner() {
-        let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
+        let bannersStore = self.storeManager.homeBannerStore
         
         let backgroundColor = self.backgroundColor
         isRequestingBanner = true
