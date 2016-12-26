@@ -90,8 +90,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearAllHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
-    [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
@@ -380,6 +378,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         _requestManager = [TokopediaNetworkManager new];
         _requestManager.isUsingHmac = YES;
         [self getUserSearchSuggestionDataWithQuery:searchText];
+        [self scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -567,4 +566,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
 }
+
+- (void)scrollToTop
+{
+    UICollectionView *collectionView = self.collectionView;
+    UIEdgeInsets collectionInset = collectionView.contentInset;
+    [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top) animated:YES];
+}
+
 @end
