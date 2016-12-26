@@ -348,7 +348,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         isRequestingBanner = true
         bannersStore.fetchBannerWithCompletion({[unowned self] (banner, error) in
             self.isRequestingBanner = false
-            
+            guard banner != nil else {
+                return
+            }
             let homeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! HomeSliderView
             homeSliderView.generateSliderView(withBanner: banner, withNavigationController: self.navigationController!)
             
@@ -357,6 +359,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             homeSliderView.mas_makeConstraints { make in
                 make.edges.mas_equalTo()(self.sliderPlaceholder)
             }
+            
             })
     }
     
