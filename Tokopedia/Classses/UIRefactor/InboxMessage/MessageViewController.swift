@@ -11,6 +11,7 @@ import JSQMessagesViewController
 import JLRoutes
 
 class MessageViewController: JSQMessagesViewController {
+    var hideInputMessage: Bool = false
     var messageTitle = ""
     var messageSubtitle = ""
     var messageId: String!
@@ -55,7 +56,7 @@ class MessageViewController: JSQMessagesViewController {
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
         
         self.topContentAdditionalInset = 30
-        
+        if (self.hideInputMessage) {inputToolbar.hidden = true}
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
@@ -367,7 +368,6 @@ class MessageViewController: JSQMessagesViewController {
     private func didReceiveMessages(messages: [InboxMessageDetailList]) {
         messages.forEach({ (message) in
             let message = message
-
             let dateString = message.message_reply_time.formatted
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"

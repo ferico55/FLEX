@@ -33,7 +33,6 @@ SmileyDelegate
     return nil;
 }
 
-
 #pragma mark - Initialization
 
 - (void)awakeFromNib {
@@ -65,8 +64,7 @@ SmileyDelegate
 
 - (IBAction)actionSmile:(id)sender {
     InboxMessageList *list = _message;
-    
-    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
+    if (list.user_label_id != Administrator) {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
         
@@ -86,31 +84,34 @@ SmileyDelegate
     }
 }
 
-- (void)setMessage:(InboxMessageList *)list {
-    self.message_title.text = list.user_full_name;
-    self.message_create_time.text =list.message_create_time;
-    self.message_reply.text = list.message_reply;
-    [self.message_title setLabelBackground:list.user_label];
+- (void)setMessage:(InboxMessageList *)message {
+    self.message_title.text = message.user_full_name;
+    self.message_create_time.text =message.message_create_time;
+    self.message_reply.text = message.message_reply;
+    [self.message_title setLabelBackground:message.user_label];
     
     
-    NSURL* userImageUrl = [NSURL URLWithString:list.user_image];
+    NSURL* userImageUrl = [NSURL URLWithString:message.user_image];
     
     UIImageView *thumb = self.userimageview;
     thumb = [UIImageView circleimageview:thumb];
     thumb.image = nil;
     
     [thumb setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
-    
-    if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-        [self.btnReputasi setImage:[UIImage imageNamed:@"icon_neutral_smile_small"] forState:UIControlStateNormal];
-        [self.btnReputasi setTitle:@"" forState:UIControlStateNormal];
-    }
-    else {
+    if(message.user_label_id == Administrator){
         [self.btnReputasi setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
-        [self.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+        [self.btnReputasi setTitle:@"" forState:UIControlStateNormal];
+    }else{
+        if(message.user_reputation.no_reputation!=nil && [message.user_reputation.no_reputation isEqualToString:@"1"]) {
+            [self.btnReputasi setImage:[UIImage imageNamed:@"icon_neutral_smile_small"] forState:UIControlStateNormal];
+            [self.btnReputasi setTitle:@"" forState:UIControlStateNormal];
+        }else {
+            [self.btnReputasi setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
+            [self.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", message.user_reputation.positive_percentage] forState:UIControlStateNormal];
+        }
     }
     
-    if([list.message_read_status isEqualToString:@"1"]) {
+    if([message.message_read_status isEqualToString:@"1"]) {
         self.is_unread.hidden = YES;
     } else if (_displaysUnreadIndicator) {
         self.is_unread.hidden = NO;

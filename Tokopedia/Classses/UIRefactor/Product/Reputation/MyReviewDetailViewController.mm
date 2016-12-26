@@ -137,7 +137,6 @@
                                                                   imageCache:_imageCache
                                                                     delegate:self];
     
-    
     _collectionView.delegate = self;
     _collectionView.alwaysBounceVertical = YES;
     
@@ -153,7 +152,6 @@
                         action:@selector(refreshData)
               forControlEvents:UIControlEventValueChanged];
     [_header addSubview:_refreshControl];
-
     _reviewRequest = [ReviewRequest new];
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
@@ -182,7 +180,6 @@
                                                              [self getLoadingView];
                                                          }];
     
-    
     _navigator = [NavigateViewController new];
     
     if ([_detailMyInboxReputation.role isEqualToString:@"1"]) {
@@ -201,7 +198,6 @@
     [_pageTitleView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(tapToInvoice)]];
     self.navigationItem.titleView = _pageTitleView;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshDataWithNotification:)
                                                  name:@"RefreshData"
@@ -483,6 +479,9 @@
     [self initPopUp:strText atView:view withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 
+-(void)dealloc{
+    _collectionView.delegate = nil;
+}
 
 #pragma mark - Header Delegate
 - (void)didTapRevieweeNameWithID:(NSString *)revieweeID {
