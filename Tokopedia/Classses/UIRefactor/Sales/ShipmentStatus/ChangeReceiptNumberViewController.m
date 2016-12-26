@@ -8,6 +8,7 @@
 
 #import "ChangeReceiptNumberViewController.h"
 #import "StickyAlertView.h"
+#import "ActionOrder.h"
 
 @interface ChangeReceiptNumberViewController ()
 
@@ -16,7 +17,9 @@
 
 @end
 
-@implementation ChangeReceiptNumberViewController
+@implementation ChangeReceiptNumberViewController{
+    UIBarButtonItem *_doneButton;
+}
 
 - (void)viewDidLoad {
     
@@ -26,20 +29,18 @@
 
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 1;
+                                                                    action:@selector(tapDismiss:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
-                                                                   style:UIBarButtonItemStyleBordered
+    _doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                                   style:UIBarButtonItemStylePlain
                                                                   target:self
-                                                                  action:@selector(tap:)];
-    doneButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = doneButton;
+                                                                  action:@selector(tapSave:)];
+    self.navigationItem.rightBarButtonItem = _doneButton;
 
-    _currentReceiptNumberLabel.text = _order.order_detail.detail_ship_ref_num;
+    _currentReceiptNumberLabel.text = _receiptNumber;
 
 }
 
@@ -58,47 +59,62 @@
     [super didReceiveMemoryWarning];
 }
 
-- (IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 1) {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else if (button.tag == 2) {
-            if (_textField.text.length >=7 && _textField.text.length <=17) {
-                if ([self.delegate respondsToSelector:@selector(changeReceiptNumber:orderHistory:)]) {
-                    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_TRACKING action:GA_EVENT_ACTION_EDIT label:@"Receipt Number"];
-                    NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
-                                                 self.order.order_detail.detail_ship_ref_num,
-                                                 _textField.text];
-                    
-                    NSDate *now = [NSDate date];
+-(void)tapDismiss:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
-                    NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
-                    [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
-                    
-                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+-(void)tapSave:(id)sender{
+    [self requestChangeReceiptNumber];
+}
 
-                    OrderHistory *history = [OrderHistory new];
-                    history.history_status_date = [dateFormat stringFromDate:now];
-                    history.history_status_date_full = [dateFormatFull stringFromDate:now];
-                    history.history_order_status = @"530";
-                    history.history_comments = historyComments;
-                    history.history_action_by = @"Seller";
-                    history.history_buyer_status = @"Perubahan nomor resi pengiriman";
-                    history.history_seller_status = @"Perubahan nomor resi pengiriman";
-                    
-                    [self.delegate changeReceiptNumber:_textField.text orderHistory:history];
-                }
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]
-                                                                               delegate:self];
-                [alert show];
-            }
-        }
+- (void)requestChangeReceiptNumber{
+    
+    [_doneButton setEnabled:NO];
+    
+    if (!_textField.text || [_textField.text isEqualToString:@""]) {
+        [StickyAlertView showErrorMessage:@[@"Nomor Resi belum diisi."]];
+        return;
     }
+    
+    NSDictionary *parameters = @{
+                                 @"order_id"            : _orderID,
+                                 @"shipping_ref"        : _textField.text,
+                                 };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                 path:@"/v4/action/myshop-order/edit_shipping_ref.pl"
+                               method:RKRequestMethodPOST
+                            parameter:parameters
+                              mapping:[ActionOrder mapping]
+                            onSuccess:^(RKMappingResult *mappingResult,
+                                        RKObjectRequestOperation *operation) {
+                                
+                                ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
+                                
+                                if (actionOrder.message_status.count>0) {
+                                    [StickyAlertView showSuccessMessage:actionOrder.message_status];
+                                }
+                                
+                                if (actionOrder.message_error.count > 0) {
+                                    [StickyAlertView showErrorMessage:actionOrder.message_error];
+                                }
+                                
+                                if ([actionOrder.result.is_success isEqualToString:@"1"]) {
+                                    if(_didSuccessEditReceipt){
+                                        _didSuccessEditReceipt(_textField.text);
+                                    }
+                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                }
+                                
+                                [_doneButton setEnabled:YES];
+                                
+                            } onFailure:^(NSError *errorResult) {
+                                
+                                [_doneButton setEnabled:YES];
+                                
+                            }];
 }
 
 @end

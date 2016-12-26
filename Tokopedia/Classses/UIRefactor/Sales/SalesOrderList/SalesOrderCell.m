@@ -7,16 +7,19 @@
 //
 
 #import "SalesOrderCell.h"
+#import "Tokopedia-Swift.h"
 
 @interface SalesOrderCell ()
 
-@property (weak, nonatomic) IBOutlet UIView *priceView;
+@property (weak, nonatomic) IBOutlet OrderButtonView *buttonsView;
 
 @end
 
 @implementation SalesOrderCell
 
 - (void)awakeFromNib {
+    
+    [super awakeFromNib];
     
     self.remainingDaysLabel.layer.cornerRadius = 1;
 
@@ -42,6 +45,52 @@
     [_priceView addGestureRecognizer:priceViewTap];
 }
 
+-(void)removeAllButtons{
+    [_buttonsView removeAllButtons];
+}
+
+-(void)showAcceptButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addAcceptButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showRejectButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addRejectButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showPickUpButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addPickupButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showChangeCourierButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addChangeCourierButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showConfirmButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addConfirmButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showCancelButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addCancelButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showAskBuyerButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addAskBuyerButton:^{
+        onTap(_order);
+    }];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
@@ -50,14 +99,7 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
-            [self.delegate tableViewCell:self rejectOrderAtIndexPath:self.indexPath];
-        } else if (button.tag == 2) {
-            [self.delegate tableViewCell:self acceptOrderAtIndexPath:self.indexPath];        
-        } else if (button.tag == 3) {
-            [self.delegate tableViewCell:self changeCourierAtIndexPath:self.indexPath];
-        }
+
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         [self.delegate tableViewCell:self didSelectPriceAtIndexPath:self.indexPath];
     } else {

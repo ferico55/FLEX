@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="BSN-dH-Ryl" customClass="OrderDetailDropshipView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="165"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dropship" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yi-F2-Zhs">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="bQi-nw-ger"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Pengirim" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rui-xo-Maa">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="zhv-HF-hdg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.55089282989999999" green="0.55087631940000004" blue="0.55088567730000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uin-QU-orM" customClass="LabelMenu">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="fKs-bw-4aK"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. Telepon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99f-vb-6jR">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="WR8-4N-gI5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.55089282989999999" green="0.55087631940000004" blue="0.55088567730000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" tag="7" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dn1-4I-zkE" customClass="LabelMenu">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Ufj-0x-ws4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhb-Au-wm7" userLabel="Horizontal Border">
+                    <color key="backgroundColor" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="hqa-Zf-WmQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.9707897902" green="0.97687983509999998" blue="0.76137745379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="dn1-4I-zkE" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" constant="14" id="2zn-iK-lgV"/>
+                <constraint firstItem="0yi-F2-Zhs" firstAttribute="top" secondItem="BSN-dH-Ryl" secondAttribute="top" constant="14" id="3l8-uO-FmR"/>
+                <constraint firstAttribute="trailing" secondItem="0yi-F2-Zhs" secondAttribute="trailing" constant="14" id="6yV-JT-u2h"/>
+                <constraint firstItem="dn1-4I-zkE" firstAttribute="top" secondItem="99f-vb-6jR" secondAttribute="bottom" id="7iL-xA-89o"/>
+                <constraint firstAttribute="trailing" secondItem="99f-vb-6jR" secondAttribute="trailing" constant="14" id="Eiu-QJ-Boa"/>
+                <constraint firstItem="uin-QU-orM" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" constant="14" id="NiP-86-65v"/>
+                <constraint firstAttribute="trailing" secondItem="rui-xo-Maa" secondAttribute="trailing" constant="14" id="QYg-FZ-uIb"/>
+                <constraint firstItem="0yi-F2-Zhs" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" constant="14" id="Rpi-ge-enZ"/>
+                <constraint firstItem="rhb-Au-wm7" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" id="STx-Ux-blU"/>
+                <constraint firstItem="99f-vb-6jR" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" constant="14" id="Uoo-gJ-roH"/>
+                <constraint firstAttribute="trailing" secondItem="dn1-4I-zkE" secondAttribute="trailing" constant="14" id="cUJ-xS-2K6"/>
+                <constraint firstAttribute="trailing" secondItem="uin-QU-orM" secondAttribute="trailing" constant="14" id="day-ao-5mG"/>
+                <constraint firstItem="uin-QU-orM" firstAttribute="top" secondItem="rui-xo-Maa" secondAttribute="bottom" id="fA5-x8-CUw"/>
+                <constraint firstItem="rui-xo-Maa" firstAttribute="leading" secondItem="BSN-dH-Ryl" secondAttribute="leading" constant="14" id="rQz-33-i4K"/>
+                <constraint firstItem="99f-vb-6jR" firstAttribute="top" secondItem="uin-QU-orM" secondAttribute="bottom" constant="11" id="sBd-gS-TIf"/>
+                <constraint firstAttribute="bottom" secondItem="rhb-Au-wm7" secondAttribute="bottom" id="tVd-NZ-I9M"/>
+                <constraint firstItem="rui-xo-Maa" firstAttribute="top" secondItem="0yi-F2-Zhs" secondAttribute="bottom" constant="9" id="vPD-51-Pib"/>
+                <constraint firstAttribute="trailing" secondItem="rhb-Au-wm7" secondAttribute="trailing" id="xe6-TT-UhZ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="dropshipperName" destination="uin-QU-orM" id="gOL-Tn-P8M"/>
+                <outlet property="dropshipperPhone" destination="dn1-4I-zkE" id="c8I-by-m5B"/>
+            </connections>
+            <point key="canvasLocation" x="78.5" y="-668.5"/>
+        </view>
+    </objects>
+</document>

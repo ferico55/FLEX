@@ -152,7 +152,10 @@
 #import "AuthenticationService.h"
 #import "DetailReviewReputationViewModel.h"
 #import "Slide.h"
-#import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
+#import "LabelMenu.h"
+#import "OrderTransaction.h"
+#import "OrderBookingResponse.h"
+#import "ActionOrder.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

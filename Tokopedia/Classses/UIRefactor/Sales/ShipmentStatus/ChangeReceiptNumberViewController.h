@@ -7,18 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OrderTransaction.h"
-#import "OrderHistory.h"
-
-@protocol ChangeReceiptNumberDelegate <NSObject>
-
-- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history;
-
-@end
 
 @interface ChangeReceiptNumberViewController : UIViewController
 
-@property (strong, nonatomic) OrderTransaction *order;
-@property (weak, nonatomic) id<ChangeReceiptNumberDelegate> delegate;
+@property (strong, nonatomic) NSString *orderID;
+@property (strong, nonatomic) NSString *receiptNumber;
+@property (nonatomic, copy) void(^didSuccessEditReceipt)(NSString *receipt);
 
 @end

@@ -33,7 +33,6 @@
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
     FilterShipmentStatusDelegate,
-    ChangeReceiptNumberDelegate,
     TrackOrderViewControllerDelegate,
     DetailShipmentStatusDelegate
 >
@@ -105,6 +104,9 @@
 
     self.actionNetworkManager = [TokopediaNetworkManager new];
     self.actionNetworkManager.isUsingHmac = YES;
+    
+    _tableView.estimatedRowHeight = 218;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -115,7 +117,7 @@
 
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:nil];
     return button;
@@ -123,7 +125,7 @@
 
 - (UIBarButtonItem *)filterBarButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(tap:)];
     return button;
@@ -172,25 +174,39 @@
     cell.dateFinishLabel.hidden = YES;
     cell.finishLabel.hidden = YES;
     
+    cell.order = order;
+    
     if (order.order_detail.detail_ship_ref_num) {
+        
+        [cell hideAllButton];
+        
         if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
-            [cell showTrackButton];
+            [cell showTrackButtonOnTap:^(OrderTransaction *order) {
+                [self didTapTrackOrder:order];
+            }];
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING) {
             if(order.order_is_pickup == 1) {
-                [cell showTrackButton];
-            } else {
-                [cell showAllButton];
+                [cell showTrackButtonOnTap:^(OrderTransaction *order) {
+                    [self didTapTrackOrder:order];
+                }];
             }
+            
+            [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                [self didTapReceiptOrder:order];
+            }];
             
         } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
-            [cell showAllButton];
-        } else {
-            [cell hideAllButton];
+            [cell showTrackButtonOnTap:^(OrderTransaction *order) {
+                [self didTapTrackOrder:order];
+            }];
+            [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                [self didTapReceiptOrder:order];
+            }];
         }
-        
+            
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
             cell.dateFinishLabel.hidden = NO;
             cell.finishLabel.hidden = NO;
@@ -238,22 +254,6 @@
     } else {
         self.tableView.tableFooterView = nil;
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
-    if (order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-            order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
-            return tableView.rowHeight;
-        } else {
-            return tableView.rowHeight - 45;
-        }
-    }
-    return tableView.rowHeight - 45;
 }
 
 #pragma mark - Reskit methods
@@ -322,66 +322,12 @@
     [self fetchOrderData];
 }
 
-#pragma mark - Reskit action methods
-
-- (void)requestChangeReceiptNumber:(NSString *)receiptNumber
-                      orderHistory:(OrderHistory *)orderHistory {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSDictionary *parameters = @{
-        API_USER_ID_KEY             : auth.getUserId,
-        API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
-        API_SHIPMENT_REF_KEY        : receiptNumber,
-    };
-    [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                             path:@"/v4/action/myshop-order/edit_shipping_ref.pl"
-                                           method:RKRequestMethodPOST
-                                        parameter:parameters
-                                          mapping:[ActionOrder mapping]
-                                        onSuccess:^(RKMappingResult *mappingResult,
-                                                    RKObjectRequestOperation *operation) {
-                                            [self didReceiveMappingResult:mappingResult
-                                                         forReceiptNumber:receiptNumber
-                                                             orderHistory:orderHistory];
-                                        } onFailure:^(NSError *errorResult) {
-                                            
-                                        }];
-}
-
-- (void)didReceiveMappingResult:(RKMappingResult *)mappingResult
-               forReceiptNumber:(NSString *)receiptNumber
-                   orderHistory:(OrderHistory *)orderHistory {
-    ActionOrder *response = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [response.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status && [response.result.is_success boolValue]) {
-
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengubah nomor resi."] delegate:self];
-        [alert show];
-
-        _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
-
-        if (orderHistory) {
-            NSMutableArray *history = [NSMutableArray arrayWithArray:_selectedOrder.order_history];
-            [history insertObject:orderHistory atIndex:0];
-            _selectedOrder.order_history = history;
-        }
-
-        [self.tableView reloadData];
-
-    } else if (response.message_error) {
-        NSArray *errorMessages = response.message_error?:@[@"Proses mengubah nomor resi gagal."];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-        [alert show];
-    }
-}
 
 #pragma mark - Cell delegate
 
-- (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
+- (void)didTapTrackOrder:(OrderTransaction *)order{
     [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Track"];
-    OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
-    
-    _selectedIndexPath = indexPath;
     
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
@@ -391,23 +337,59 @@
     [self.navigationController pushViewController:controller animated:YES];
 }   
 
-- (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
-    OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
+- (void)didTapReceiptOrder:(OrderTransaction *)order {
     _selectedOrder = order;
     
-    _selectedIndexPath = indexPath;
-
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
-    controller.delegate = self;
-    controller.order = _selectedOrder;
+    controller.orderID = _selectedOrder.order_detail.detail_order_id;
+    controller.receiptNumber = _selectedOrder.order_detail.detail_ship_ref_num;
+    
+    __weak typeof(self) wself = self;
+    controller.didSuccessEditReceipt = ^(NSString *newReceipt){
+        [wself didSuccessEditReceiptWithNewReceipt:newReceipt];
+    };
+    
     navigationController.viewControllers = @[controller];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)didSuccessEditReceiptWithNewReceipt:(NSString*)newReceipt{
+    
+    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_TRACKING action:GA_EVENT_ACTION_EDIT label:@"Receipt Number"];
+    
+    NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
+                                 _selectedOrder.order_detail.detail_ship_ref_num,
+                                 newReceipt];
+    
+    NSDate *now = [NSDate date];
+    
+    NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
+    [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+    
+    OrderHistory *newHistory = [OrderHistory new];
+    newHistory.history_status_date = [dateFormat stringFromDate:now];
+    newHistory.history_status_date_full = [dateFormatFull stringFromDate:now];
+    newHistory.history_order_status = @"530";
+    newHistory.history_comments = historyComments;
+    newHistory.history_action_by = @"Seller";
+    newHistory.history_buyer_status = @"Perubahan nomor resi pengiriman";
+    newHistory.history_seller_status = @"Perubahan nomor resi pengiriman";
+    
+    NSMutableArray *history = [NSMutableArray arrayWithArray:_selectedOrder.order_history];
+    [history insertObject:newHistory atIndex:0];
+    _selectedOrder.order_detail.detail_ship_ref_num = newReceipt;
+    _selectedOrder.order_history = history;
+    
+    [self.tableView reloadData];
 }
 
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath {
@@ -455,12 +437,6 @@
     [self.tableView reloadData];
     
     [self fetchOrderData];
-}
-
-#pragma mark - Change receipt number delegate
-
-- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history {
-    [self requestChangeReceiptNumber:receiptNumber orderHistory:history];
 }
 
 #pragma mark - Track order delegate
