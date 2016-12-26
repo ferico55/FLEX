@@ -240,16 +240,6 @@ typedef enum TagRequest {
         moreVC = controller;
     }
     
-    /** for ios 7 need to set automatically adjust scrooll view inset **/
-    if([self respondsToSelector:@selector(setExtendedLayoutIncludesOpaqueBars:)])
-    {
-        _swipevc.extendedLayoutIncludesOpaqueBars = YES;
-        categoryvc.extendedLayoutIncludesOpaqueBars = YES;
-        wishlistController.extendedLayoutIncludesOpaqueBars = YES;
-        cart.extendedLayoutIncludesOpaqueBars = YES;
-        moreVC.extendedLayoutIncludesOpaqueBars = YES;
-    }
-    
     NSArray* viewControllers = [NSArray arrayWithObjects:_swipevc, categoryvc, wishlistController, cart, moreVC, nil];
     
     A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
