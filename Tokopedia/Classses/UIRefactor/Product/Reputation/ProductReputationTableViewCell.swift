@@ -132,7 +132,7 @@ import TTTAttributedLabel
         qualityRating.starHighlightedImage = starActiveImage
         qualityRating.maxRating = 5
         qualityRating.horizontalMargin = 1.0
-        qualityRating.rating = Float(accuracy)!
+        qualityRating.rating = Float(quality)!
         qualityRating.displayMode = UInt(EDStarRatingDisplayAccurate)
     }
     

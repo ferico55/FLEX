@@ -229,12 +229,20 @@ static NSInteger userViewHeight = 70;
     width1 = width1>width5? width1: width5;
     constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = width1;
     
-    
+    float productRatingValue = [reviewResult.advance_review.product_rating_point floatValue];
     
     //Set header rate
     for(int i=0;i<arrImageHeaderRating.count;i++) {
+        NSString *imageName = @"";
+        
+        if (i < ceilf(productRatingValue)) {
+            imageName = @"icon_star_active";
+        } else {
+            imageName = @"icon_star";
+        }
+        
         UIImageView *tempImageView = arrImageHeaderRating[i];
-        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([reviewResult.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
+        tempImageView.image = [UIImage imageNamed:imageName];
     }
     
     lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [reviewResult.advance_review.product_rating_point floatValue]];

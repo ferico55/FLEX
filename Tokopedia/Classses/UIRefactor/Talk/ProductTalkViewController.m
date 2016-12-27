@@ -131,7 +131,7 @@
     if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
         NSBundle *bundle = [NSBundle mainBundle];
         UIBarButtonItem *addButton;
-        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
+        UIImage *imgadd = [UIImage imageNamed:@"icon_shop_addproduct"];
 
         UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         addButton = [[UIBarButtonItem alloc] initWithImage:image
