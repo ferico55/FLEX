@@ -28,8 +28,8 @@ class PulsaCache: NSObject {
     
     func storeCategories(category: PulsaCategoryRoot) {
         let data = NSKeyedArchiver.archivedDataWithRootObject(category)
-        self.cache .
-            storeData(data,
+        
+        self.cache.storeData(data,
               forKey: "categories", ttl: 24*60*60,
               locked: false,
               withCallback: { (response: SPTPersistentCacheResponse) in
@@ -39,8 +39,7 @@ class PulsaCache: NSObject {
     }
     
     func loadCategories(loadCategoryCallBack: (category: PulsaCategoryRoot?) -> ()) {
-        self.cache .
-            loadDataForKey("categories",
+        self.cache.loadDataForKey("categories",
                withCallback: { (response: SPTPersistentCacheResponse) in
                     if(response.record.data.length != 0) {
                         let category = NSKeyedUnarchiver.unarchiveObjectWithData(response.record.data) as! PulsaCategoryRoot
@@ -55,8 +54,7 @@ class PulsaCache: NSObject {
     
     func storeOperators(op: PulsaOperatorRoot) {
         let data = NSKeyedArchiver.archivedDataWithRootObject(op)
-        self.cache .
-            storeData(data,
+        self.cache.storeData(data,
                       forKey: "operators", ttl: 24*60*60,
                       locked: false,
                       withCallback: { (response: SPTPersistentCacheResponse) in
@@ -66,14 +64,38 @@ class PulsaCache: NSObject {
     }
     
     func loadOperators(loadOperatorCallBack: (op: PulsaOperatorRoot?) -> ()) {
-        self.cache .
-            loadDataForKey("operators",
+        self.cache.loadDataForKey("operators",
                            withCallback: { (response: SPTPersistentCacheResponse) in
                             if(response.record.data.length != 0) {
                                 let operators = NSKeyedUnarchiver.unarchiveObjectWithData(response.record.data) as! PulsaOperatorRoot
                                 return loadOperatorCallBack(op: operators)
                             } else {
                                 return loadOperatorCallBack(op: nil)
+                            }
+                            
+                },
+                           onQueue: dispatch_get_main_queue())
+    }
+    
+    func storeProducts(product: PulsaProductRoot) {
+        let data = NSKeyedArchiver.archivedDataWithRootObject(product)
+        self.cache.storeData(data,
+                      forKey: "products", ttl: 1*60*60,
+                      locked: false,
+                      withCallback: { (response: SPTPersistentCacheResponse) in
+                        
+                },
+                      onQueue: dispatch_get_main_queue())
+    }
+    
+    func loadProducts(loadProductCallBack: (product: PulsaProductRoot?) -> ()) {
+        self.cache.loadDataForKey("products",
+                           withCallback: { (response: SPTPersistentCacheResponse) in
+                            if(response.record.data.length != 0) {
+                                let products = NSKeyedUnarchiver.unarchiveObjectWithData(response.record.data) as! PulsaProductRoot
+                                return loadProductCallBack(product: products)
+                            } else {
+                                return loadProductCallBack(product: nil)
                             }
                             
                 },

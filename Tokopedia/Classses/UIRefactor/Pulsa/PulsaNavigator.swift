@@ -7,62 +7,67 @@
 //
 
 import Foundation
+import ContactsUI
+import AddressBookUI
 
-class PulsaNavigator: NSObject {
+class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
     var controller: UIViewController!
     var loginDelegate: LoginViewDelegate?
     var pulsaView: PulsaView!
     
     override init() {
         super.init()
-        
     }
     
     func navigateToAddressBook() {
-        let controller = AddressBookViewController()
+        UINavigationBar.appearance().translucent = false
+        if #available(iOS 9.0, *) {
+            let contactPicker = CNContactPickerViewController()
+            
+            contactPicker.delegate = self
+            contactPicker.displayedPropertyKeys = [CNContactPhoneNumbersKey]
+            
+            self.controller.presentViewController(contactPicker, animated: true, completion: nil)
 
-        controller.didTapContact = { [unowned self] contact in
-            var phoneNumber = contact
-            phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
-            
-            //replace 2 first characters if 62 with 0
-            if(phoneNumber.characters.count >= 2) {
-                let firstTwoCharacter = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0) ..< phoneNumber.startIndex.advancedBy(2))
-                if(firstTwoCharacter == "62") {
-                    phoneNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex ..< phoneNumber.startIndex.advancedBy(2), withString: "0")
-                }
-            }
-            
-            self.pulsaView.numberField.text = phoneNumber
-            
-            if(phoneNumber.characters.count >= 4) {
-                self.pulsaView.checkInputtedNumber()
-            }
+        } else {
+            // Fallback on earlier versions
+            let contactPicker = ABPeoplePickerNavigationController()
+            contactPicker.peoplePickerDelegate = self
+
+            self.controller.presentViewController(contactPicker, animated: true, completion: nil)
         }
         
-        controller.hidesBottomBarWhenPushed = true
-        self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
     func navigateToPulsaProduct(products: [PulsaProduct], selectedOperator: PulsaOperator) {
         let controller = PulsaProductViewController()
-        var activeProducts: [PulsaProduct] = []
         
-        products.map { product in
-            activeProducts.append(product)
-        }
-        
-        activeProducts.sortInPlace({
+        controller.products = products.sort({
             $0.attributes.weight < $1.attributes.weight
         })
         
-        controller.products = activeProducts
         controller.didSelectProduct = { [unowned self] product in
             self.pulsaView.selectedProduct = product
             self.pulsaView.hideErrors()
             self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
         }
         controller.selectedOperator = selectedOperator
+        
+        controller.hidesBottomBarWhenPushed = true
+        self.controller.navigationController!.pushViewController(controller, animated: true)
+    }
+    
+    func navigateToPulsaOperator(operators: [PulsaOperator]) {
+        let controller = PulsaOperatorViewController()
+        
+        
+        controller.didTapOperator = { [unowned self] (selectedOperator) in
+            self.pulsaView.buildViewByOperator(selectedOperator)
+        }
+        
+        controller.operators = operators.sort({
+            $0.attributes.weight < $1.attributes.weight
+        })
         
         controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
@@ -103,5 +108,55 @@ class PulsaNavigator: NSObject {
         }
         
         self.controller.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    private func didSelectContact(contact: String) {
+        var phoneNumber = contact
+        phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
+        phoneNumber = self.replaceAreaNumber(phoneNumber)
+        
+        self.pulsaView.numberField.text = phoneNumber
+        self.pulsaView.checkInputtedNumber()
+    }
+    
+    private func showInvalidNumberError() {
+        StickyAlertView.showErrorMessage(["Nomor yang Anda pilih tidak valid."])
+    }
+    
+    private func replaceAreaNumber(phoneNumber: String) -> String {
+        var phone = ""
+        
+        if phoneNumber != "" {
+            phone = phoneNumber.stringByReplacingOccurrencesOfString("62", withString: "0", options: .LiteralSearch, range: phoneNumber.startIndex ..< phoneNumber.startIndex.advancedBy(2))
+        }
+        
+        return phone
+    }
+    
+    
+    //MARK : CNContactPickerdelegate
+    @available(iOS 9.0, *)
+    func contactPicker(picker: CNContactPickerViewController, didSelectContactProperty contactProperty: CNContactProperty) {
+        if contactProperty.key == CNContactPhoneNumbersKey {
+            guard let phoneNumber = contactProperty.value else { return }
+            
+            let phone = phoneNumber as! CNPhoneNumber
+            self.didSelectContact(phone.stringValue)
+        } else {
+            showInvalidNumberError()
+        }
+    }
+
+    //MARK : ABPeoplePickerNavigationControllerDelegate
+    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
+        let phones: ABMultiValueRef = ABRecordCopyValue(person, kABPersonPhoneProperty).takeRetainedValue()
+        if ABMultiValueGetCount(phones) > 0 {
+            let index = Int(identifier) as CFIndex
+            let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as! String
+            
+            self.didSelectContact(phoneNumber)
+        } else {
+            showInvalidNumberError()
+        }
     }
 }

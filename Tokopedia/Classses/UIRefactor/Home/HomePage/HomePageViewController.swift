@@ -400,6 +400,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.navigator.navigateToPulsaProduct(products, selectedOperator: self.pulsaView.selectedOperator)
             }
             
+            self.pulsaView.didTapOperator = { [unowned self] (operators) in
+                self.navigator.navigateToPulsaOperator(operators)
+            }
+            
             self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
                 self.navigator.navigateToSuccess(url)
             }
