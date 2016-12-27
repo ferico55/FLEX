@@ -240,8 +240,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    
+
     self.navigationController.title = @"Home";
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -360,7 +359,6 @@
 {
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.tag = 2;
-    [self view];
     [_homeHeaderController tapButton:tempBtn];
 }
 
@@ -492,15 +490,20 @@
 
 
 - (void)userDidLogin:(NSNotification*)notification {
-    [self setSearchByImage];
+    // [self view] gunanya adalah memanggil viewDidLoad dari background. Dipakai di sini untuk ketika untuk mencegah bug crash saat user login langsung dari onboarding.
+    [self view];
     [self instantiateViewControllers];
+    [self setSearchByImage];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
+    [self view];
+    [self instantiateViewControllers];
     [self redirectToHome];
     [self setSearchByImage];
-    [self instantiateViewControllers];
 }
+    
+#pragma mark - Method
 
 - (void) instantiateViewControllers {
     if (_userManager.isLogin) {
