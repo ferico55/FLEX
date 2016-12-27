@@ -39,6 +39,10 @@ class PulsaCache: NSObject {
     }
     
     func loadCategories(loadCategoryCallBack: (category: PulsaCategoryRoot?) -> ()) {
+        if (!PulsaTweaks.shouldCacheRequest()) {
+            self.cache.prune()
+        }
+        
         self.cache.loadDataForKey("categories",
                withCallback: { (response: SPTPersistentCacheResponse) in
                     if(response.record.data.length != 0) {
@@ -64,6 +68,10 @@ class PulsaCache: NSObject {
     }
     
     func loadOperators(loadOperatorCallBack: (op: PulsaOperatorRoot?) -> ()) {
+        if (!PulsaTweaks.shouldCacheRequest()) {
+            self.cache.prune()
+        }
+        
         self.cache.loadDataForKey("operators",
                            withCallback: { (response: SPTPersistentCacheResponse) in
                             if(response.record.data.length != 0) {
@@ -89,6 +97,10 @@ class PulsaCache: NSObject {
     }
     
     func loadProducts(loadProductCallBack: (product: PulsaProductRoot?) -> ()) {
+        if (!PulsaTweaks.shouldCacheRequest()) {
+            self.cache.prune()
+        }
+        
         self.cache.loadDataForKey("products",
                            withCallback: { (response: SPTPersistentCacheResponse) in
                             if(response.record.data.length != 0) {

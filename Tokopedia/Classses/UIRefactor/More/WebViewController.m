@@ -24,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _shouldAuthorizeRequest = YES;
     
     self.navigationItem.title = strTitle;
     

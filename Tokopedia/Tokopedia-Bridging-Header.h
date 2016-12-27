@@ -157,6 +157,8 @@
 #import "OrderTransaction.h"
 #import "OrderBookingResponse.h"
 #import "ActionOrder.h"
+#import "PulsaTweaks.h"
+#import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
