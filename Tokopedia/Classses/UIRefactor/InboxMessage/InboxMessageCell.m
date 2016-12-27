@@ -89,10 +89,8 @@ SmileyDelegate
     self.message_create_time.text =message.message_create_time;
     self.message_reply.text = message.message_reply;
     [self.message_title setLabelBackground:message.user_label];
-    
-    
+    _message = message;
     NSURL* userImageUrl = [NSURL URLWithString:message.user_image];
-    
     UIImageView *thumb = self.userimageview;
     thumb = [UIImageView circleimageview:thumb];
     thumb.image = nil;
