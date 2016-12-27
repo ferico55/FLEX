@@ -125,6 +125,7 @@
     self.filterController.delegate = self;
     
     [self fetchShipmentConfirmationData];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -243,20 +244,64 @@
     
     cell.paymentAmountLabel.text = transaction.order_detail.detail_open_amount_idr;
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_shipping_due_date];
+    cell.priceView.hidden = NO;
+    cell.statusView.hidden = YES;
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
     
+    cell.order = transaction;
+    
+    [cell removeAllButtons];
+    
+    __weak typeof(self) wself = self;
+    
+    [cell showCancelButtonOnTap:^(OrderTransaction *order) {
+    	__weak typeof(self) weakSelf = self;
+		
+    	CancelOrderShipmentViewController *controller = [[CancelOrderShipmentViewController alloc] initWithOrderTransaction:order];
+    	controller.onFinishRequestCancel = ^(BOOL isSuccess) {
+    	    if (isSuccess) {
+    	        [weakSelf refreshData];
+    	    } else {
+    	        [weakSelf restoreData:order.order_detail.detail_order_id];
+    	    }
+    	};
+    	
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }];
+    
+    
     if (transaction.order_is_pickup == 1) {
-        [cell.acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
-        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check.png"] forState:UIControlStateNormal];
-        cell.acceptButton.tag = 2;
+        [cell showPickUpButtonOnTap:^(OrderTransaction *order) {
+            SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+            controller.delegate = wself;
+            controller.shipmentCouriers = _shipmentCouriers;
+            controller.order = transaction;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }];
     } else if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
-        [cell.acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
-        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
-        cell.acceptButton.tag = 3;
+        [cell showChangeCourierButtonOnTap:^(OrderTransaction *order) {
+            ChangeCourierViewController *controller = [ChangeCourierViewController new];
+            controller.delegate = wself;
+            controller.shipmentCouriers = _shipmentCouriers;
+            controller.order = order;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            [wself.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }];
     } else {
-        [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
-        cell.acceptButton.tag = 2;
+        [cell showConfirmButtonOnTap:^(OrderTransaction *order) {
+            SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+            controller.delegate = wself;
+            controller.shipmentCouriers = _shipmentCouriers;
+            controller.order = order;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            [wself.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }];
     }
     
     return cell;
@@ -269,66 +314,6 @@
 }
 
 #pragma mark - Cell delegate
-
-- (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectedOrder = [_orders objectAtIndex:indexPath.row];
-    self.selectedIndexPath = indexPath;
-    
-    SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
-    controller.delegate = self;
-    controller.shipmentCouriers = _shipmentCouriers;
-    controller.order = _selectedOrder;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)tableViewCell:(UITableViewCell *)cell changeCourierAtIndexPath:(NSIndexPath *)indexPath {
-    _selectedOrder = [_orders objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    ChangeCourierViewController *controller = [ChangeCourierViewController new];
-    controller.delegate = self;
-    controller.shipmentCouriers = _shipmentCouriers;
-    controller.order = _selectedOrder;
-    navigationController.viewControllers = @[controller];
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
-    _selectedOrder = [_orders objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
-    
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    __weak typeof(self) weakSelf = self;
-
-    CancelOrderShipmentViewController *controller = [[CancelOrderShipmentViewController alloc] initWithOrderTransaction:order];
-    controller.onFinishRequestCancel = ^(BOOL isSuccess) {
-        if (isSuccess) {
-            [weakSelf refreshData];
-        } else {
-            [weakSelf restoreData:order.order_detail.detail_order_id];
-        }
-    };
-    
-    navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
@@ -339,6 +324,7 @@
     controller.shipmentCouriers = _shipmentCouriers;
     controller.booking = _orderBooking;
     controller.shouldRequestIDropCode = [_selectedOrder.order_shipment.shipment_package_id isEqualToString:IDropShipmentPackageID];
+    controller.isDetailShipmentConfirmation = YES;
     
     [self.navigationController pushViewController:controller animated:YES];
 }

@@ -20,5 +20,6 @@
 @property(copy) void(^onTapLinkWithUrl)(NSURL* url);
 
 @property BOOL isLPWebView;
+@property BOOL shouldAuthorizeRequest;
 
 @end

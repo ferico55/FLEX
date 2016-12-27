@@ -9,6 +9,11 @@
 #import "OrderShipment.h"
 
 @implementation OrderShipment
+
+-(BOOL)isIDrop{
+    return [self.shipment_package_id isEqualToString:@"19"];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[

@@ -15,4 +15,6 @@
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;
 
+- (void) scrollToTop;
+
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderBookingData : NSObject
+@interface OrderBookingData : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *booking_id;
 @property (nonatomic, strong) NSString *type;

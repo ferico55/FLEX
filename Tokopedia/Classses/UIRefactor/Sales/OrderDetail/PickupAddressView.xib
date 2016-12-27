@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dr3-kT-dGk" userLabel="Pickup" customClass="PickupAddressView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1000" height="130"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat Pickup" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-bk-j54">
+                    <rect key="frame" x="15" y="15" width="970" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="4uv-1Q-F84"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wor-OE-coZ">
+                    <rect key="frame" x="15" y="50" width="970" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="9DI-7k-9ny"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.55089282989999999" green="0.55087631940000004" blue="0.55088567730000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" tag="8" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfp-2b-hcX">
+                    <rect key="frame" x="15" y="74" width="970" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="JP1-2h-1yu"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pub-LK-W5g" userLabel="Horizontal Border">
+                    <rect key="frame" x="0.0" y="129" width="1000" height="1"/>
+                    <color key="backgroundColor" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="ovP-Cl-qh4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Qfp-2b-hcX" firstAttribute="top" secondItem="wor-OE-coZ" secondAttribute="bottom" constant="3" id="04p-4b-Idf"/>
+                <constraint firstAttribute="trailing" secondItem="Pub-LK-W5g" secondAttribute="trailing" id="1kK-Jk-zCc"/>
+                <constraint firstAttribute="trailing" secondItem="wor-OE-coZ" secondAttribute="trailing" constant="15" id="212-TT-JnN"/>
+                <constraint firstItem="5Py-bk-j54" firstAttribute="top" secondItem="Dr3-kT-dGk" secondAttribute="top" constant="15" id="5OK-vl-FsY"/>
+                <constraint firstItem="Qfp-2b-hcX" firstAttribute="leading" secondItem="Dr3-kT-dGk" secondAttribute="leading" constant="15" id="748-BS-XrT"/>
+                <constraint firstAttribute="bottom" secondItem="Pub-LK-W5g" secondAttribute="bottom" id="J5B-Wh-GfF"/>
+                <constraint firstAttribute="trailing" secondItem="5Py-bk-j54" secondAttribute="trailing" constant="15" id="MQ1-U6-Rh3"/>
+                <constraint firstItem="Pub-LK-W5g" firstAttribute="leading" secondItem="Dr3-kT-dGk" secondAttribute="leading" id="bjC-rU-NCa"/>
+                <constraint firstItem="5Py-bk-j54" firstAttribute="leading" secondItem="Dr3-kT-dGk" secondAttribute="leading" constant="15" id="cmy-NW-kTN"/>
+                <constraint firstAttribute="trailing" secondItem="Qfp-2b-hcX" secondAttribute="trailing" constant="15" id="g04-0E-SJg"/>
+                <constraint firstItem="wor-OE-coZ" firstAttribute="top" secondItem="5Py-bk-j54" secondAttribute="bottom" constant="5" id="rD9-NV-gcu"/>
+                <constraint firstItem="wor-OE-coZ" firstAttribute="leading" secondItem="Dr3-kT-dGk" secondAttribute="leading" constant="15" id="wIK-Be-XvV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addressLabel" destination="Qfp-2b-hcX" id="T3i-mr-DwE"/>
+            </connections>
+            <point key="canvasLocation" x="1337" y="-1064"/>
+        </view>
+    </objects>
+</document>

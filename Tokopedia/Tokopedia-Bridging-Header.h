@@ -137,11 +137,25 @@
 #import "ShopPageHeader.h"
 #import "ShopTabView.h"
 #import "LogoutResult.h"
+#import "TKPStoreManager.h"
 #import "Shop.h"
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
+#import "StyledPageControl.h"
 #import "RequestOrderAction.h"
+#import "NoResultReusableView.h"
+#import "EDStarRating.h"
+#import "DetailReputationReview.h"
+#import "ReviewImageAttachment.h"
+#import "DetailReviewReputationViewModel.h"
 #import "OrderTransaction.h"
+#import "AuthenticationService.h"
+#import "DetailReviewReputationViewModel.h"
+#import "Slide.h"
+#import "LabelMenu.h"
+#import "OrderTransaction.h"
+#import "OrderBookingResponse.h"
+#import "ActionOrder.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
@@ -152,4 +166,3 @@
 @import EAIntroView;
 @import DownPicker;
 @import BlocksKit;
-#import "AuthenticationService.h"

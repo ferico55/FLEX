@@ -325,7 +325,7 @@
 
 - (IBAction)tapImage:(UITapGestureRecognizer*)sender {
     if ([self image:((UIImageView*)_attachedImagesArray[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
-        [ImagePickerController showImagePicker:self
+        [TKPImagePickerController showImagePicker:self
                                      assetType:DKImagePickerControllerAssetTypeallPhotos
                            allowMultipleSelect:YES
                                     showCancel:YES

@@ -135,6 +135,7 @@
 
 @property (nonatomic, strong) NSArray *review_image_attachment;
 @property (nonatomic, strong) NSString *review_create_time_fmt;
+@property BOOL review_is_helpful;
 
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;

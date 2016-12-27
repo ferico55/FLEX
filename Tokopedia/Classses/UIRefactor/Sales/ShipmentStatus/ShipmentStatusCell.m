@@ -8,16 +8,20 @@
 
 #import "ShipmentStatusCell.h"
 
+#import "Tokopedia-Swift.h"
+
 @interface ShipmentStatusCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *userView;
+@property (weak, nonatomic) IBOutlet OrderButtonView *buttonsView;
 
 @end
 
 @implementation ShipmentStatusCell
 
-- (void)awakeFromNib
-{    
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
     _oneButtonView.hidden = YES;
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -64,6 +68,18 @@
     [super setSelected:selected animated:animated];
 }
 
+-(void)showTrackButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addTrackButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showEditResiButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addChangeResiButton:^{
+        onTap(_order);
+    }];
+}
+
 - (void)showAllButton
 {
     _twoButtonsView.hidden = NO;
@@ -91,10 +107,8 @@
 }
 
 
-- (void)hideAllButton
-{
-    _oneButtonView.hidden = YES;
-    _twoButtonsView.hidden = YES;
+- (void)hideAllButton{
+    [_buttonsView removeAllButtons];
 }
 
 - (IBAction)tap:(id)sender {

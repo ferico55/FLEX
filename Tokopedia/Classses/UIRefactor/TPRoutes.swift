@@ -288,9 +288,12 @@ class TPRoutes: NSObject {
             let utmSource = params["utm_source"] as! String
             let utmMedium = params["utm_medium"] as! String
             let utmCampaign = params["utm_campaign"] as! String
+            let utmContent = params["utm_content"] as? String ?? ""
+            let utmTerm = params["utm_term"] as? String ?? ""
             
-            return "/?utm_source=" + utmSource + "&utm_medium=" + utmMedium + "&utm_campaign=" + utmCampaign
+            let utmString = "/?utm_source=" + utmSource + "&utm_medium=" + utmMedium + "&utm_campaign=" + utmCampaign
             
+            return utmString + "&utm_content=" + utmContent + "&utm_term=" + utmTerm
         } else {
             return ""
         }
@@ -301,10 +304,9 @@ class TPRoutes: NSObject {
         let userManager = UserAuthentificationManager()
         
         var urlString = url.absoluteString
-        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-        urlString = "https://js.tokopedia.com/wvlogin?uid=\(userManager.getUserId())&token=\(userManager.getMyDeviceToken())&url=\(urlString!.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!)"
         
-        controller.strURL = urlString
+        controller.strURL = userManager.webViewUrlFromUrl(urlString)
+        controller.shouldAuthorizeRequest = true
         
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)
@@ -313,8 +315,7 @@ class TPRoutes: NSObject {
     static func redirectContactUs() {
         let userManager = UserAuthentificationManager()
         if(userManager.isLogin) {
-            let dependencies = TPContactUsDependencies()
-            dependencies.pushContactUsViewControllerFromNavigation(UIApplication.topViewController()?.navigationController!)
+            NavigateViewController.navigateToContactUsFromViewController(UIApplication.topViewController())
         }
     }
     

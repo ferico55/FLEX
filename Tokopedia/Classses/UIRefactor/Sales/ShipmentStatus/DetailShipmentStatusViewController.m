@@ -23,8 +23,7 @@
     LabelMenuDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
-    OrderDetailDelegate,
-    ChangeReceiptNumberDelegate
+    OrderDetailDelegate
 >
 {
     RKObjectManager *_actionObjectManager;
@@ -34,7 +33,6 @@
     NSOperationQueue *_operationQueue;
     
     NSArray *_history;
-    NSString *_currentReceiptNumber;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -54,7 +52,7 @@
     [super viewDidLoad];
     
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                  style:UIBarButtonItemStyleBordered
+                                                                  style:UIBarButtonItemStylePlain
                                                                  target:nil
                                                                  action:nil];
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
@@ -106,7 +104,6 @@
     }
     
     _history = _order.order_history;
-    _currentReceiptNumber = self.order.order_detail.detail_ship_ref_num;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -116,7 +113,7 @@
     self.title = @"Detail Status";
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -145,9 +142,14 @@
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
             
             ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
-            controller.delegate = self;
-            controller.order = _order;
+            controller.receiptNumber = _order.order_detail.detail_ship_ref_num;
+            controller.orderID = _order.order_detail.detail_order_id;
             navigationController.viewControllers = @[controller];
+            
+            __weak typeof(self) wself = self;
+            controller.didSuccessEditReceipt = ^(NSString *newReceipt){
+                [wself didSuccessEditReceiptWithNewReceipt:newReceipt];
+            };
             
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         
@@ -237,96 +239,43 @@
     [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
 }
 
-- (void)requestChangeReceiptNumber:(NSString *)receiptNumber
-{
-    [self configureActionReskit];
+-(void)didSuccessEditReceiptWithNewReceipt:(NSString *)newReceipt{
+    [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_TRACKING action:GA_EVENT_ACTION_EDIT label:@"Receipt Number"];
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
+    labelReceiptNumber.text = newReceipt;
     
-    NSDictionary *param = @{
-                            API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
-                            API_USER_ID_KEY             : [[auth objectForKey:API_USER_ID_KEY] stringValue],
-                            API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
-                            API_SHIPMENT_REF_KEY        : receiptNumber,
-                            };
+    NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
+                                 _order.order_detail.detail_ship_ref_num,
+                                 newReceipt];
     
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                method:RKRequestMethodPOST
-                                                                                  path:API_NEW_ORDER_ACTION_PATH
-                                                                            parameters:[param encrypt]];
-    [_operationQueue addOperation:_actionRequest];
+    NSDate *now = [NSDate date];
     
-    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        NSDictionary *result = ((RKMappingResult *) mappingResult).dictionary;
-        ActionOrder *actionOrder = [result objectForKey:@""];
-        BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status && [actionOrder.result.is_success boolValue]) {
-            
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
-            [alert show];
-            
-            _order.order_detail.detail_ship_ref_num = receiptNumber;
-            labelReceiptNumber.text = receiptNumber;
-            
-            if ([self.delegate respondsToSelector:@selector(successChangeReceiptWithOrderHistory:)]) {
-
-                NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
-                                             _currentReceiptNumber,
-                                             receiptNumber];
-
-                NSDate *now = [NSDate date];
-                
-                NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
-                [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
-                
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
-                
-                OrderHistory *history = [OrderHistory new];
-                history.history_status_date = [dateFormat stringFromDate:now];
-                history.history_status_date_full = [dateFormatFull stringFromDate:now];
-                history.history_order_status = @"530";
-                history.history_comments = historyComments;
-                history.history_action_by = @"Seller";
-                history.history_buyer_status = @"Perubahan nomor resi pengiriman";
-                history.history_seller_status = @"Perubahan nomor resi pengiriman";
-
-                NSMutableArray *histories = [NSMutableArray arrayWithArray:_history];
-                [histories insertObject:history atIndex:0];
-                _history = histories;
-
-                [self.tableView reloadData];
-
-                [self.delegate successChangeReceiptWithOrderHistory:history];
-                
-                _currentReceiptNumber = receiptNumber;
-            }
-            
-        } else if (actionOrder.message_error) {
-
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
-                                                                           delegate:self];
-            [alert show];
-            
-        } else {
-            
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."]
-                                                                           delegate:self];
-            [alert show];
-        
-        }
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."] delegate:self];
-        [alert show];
-        
-    }];
+    NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
+    [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+    
+    OrderHistory *history = [OrderHistory new];
+    history.history_status_date = [dateFormat stringFromDate:now];
+    history.history_status_date_full = [dateFormatFull stringFromDate:now];
+    history.history_order_status = @"530";
+    history.history_comments = historyComments;
+    history.history_action_by = @"Seller";
+    history.history_buyer_status = @"Perubahan nomor resi pengiriman";
+    history.history_seller_status = @"Perubahan nomor resi pengiriman";
+    
+    NSMutableArray *histories = [NSMutableArray arrayWithArray:_history];
+    [histories insertObject:history atIndex:0];
+    _history = histories;
+    
+    [self.tableView reloadData];
+    
+    if ([self.delegate respondsToSelector:@selector(successChangeReceiptWithOrderHistory:)]) {
+        _order.order_detail.detail_ship_ref_num = newReceipt;
+        [self.delegate successChangeReceiptWithOrderHistory:history];
+    }
 }
-
 
 #pragma mark - Method
 - (void)longPress:(UILongPressGestureRecognizer *)sender
@@ -341,15 +290,6 @@
         [menu setMenuVisible:YES animated:YES];
     }
 }
-
-
-#pragma mark - Change receipt number delegate
-
-- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history
-{
-    [self requestChangeReceiptNumber:receiptNumber];
-}
-
 
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag

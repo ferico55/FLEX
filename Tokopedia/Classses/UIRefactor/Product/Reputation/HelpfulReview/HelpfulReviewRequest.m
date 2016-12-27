@@ -79,6 +79,7 @@
                                  for(DetailReputationReview *detailReputation in reviewResult.list){
                                      detailReputation.product_id = _productId;
                                      detailReputation.review_product_id = _productId;
+                                     detailReputation.review_is_helpful = YES;
                                  }
                                  
                                  [_delegate didReceiveHelpfulReview:reviewResult.list];

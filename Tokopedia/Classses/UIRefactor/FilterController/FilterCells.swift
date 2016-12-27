@@ -86,8 +86,8 @@ class FilterTableViewCell: UITableViewCell
         arrowImageView.contentMode = .ScaleAspectFit
         selectedImageView.contentMode = .ScaleAspectFit
         selectedImageView.hidden = true
-        selectedImageView.image = UIImage.init(named: "icon_circle.png")
-        arrowImageView.image = UIImage.init(named: "icon_arrow_down.png")
+        selectedImageView.image = UIImage.init(named: "icon_circle")
+        arrowImageView.image = UIImage.init(named: "icon_arrow_down")
         
         self.addSubview(selectedImageView)
         self.addSubview(arrowImageView)
@@ -106,17 +106,17 @@ class FilterTableViewCell: UITableViewCell
     
     func setArrowDirection(direction:DirectionArrow) {
         if (direction == .Up) {
-            arrowImageView.image = UIImage.init(named: "icon_arrow_up.png")
+            arrowImageView.image = UIImage.init(named: "icon_arrow_up")
         } else if (direction == .Down) {
-            arrowImageView.image = UIImage.init(named: "icon_arrow_down.png")
+            arrowImageView.image = UIImage.init(named: "icon_arrow_down")
         }
     }
     
     override func setSelected(selected: Bool, animated: Bool){
         if (selected) {
-            selectedImageView.image = UIImage.init(named: "icon_checkmark_green-01.png")
+            selectedImageView.image = UIImage.init(named: "icon_checkmark_green")
         } else {
-            selectedImageView.image = UIImage.init(named: "icon_circle.png")
+            selectedImageView.image = UIImage.init(named: "icon_circle")
         }
     }
     

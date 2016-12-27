@@ -81,7 +81,6 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self->textField.text = [dataArray objectAtIndex:row];
-    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;

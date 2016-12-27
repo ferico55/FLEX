@@ -9,6 +9,7 @@
 #import "InboxTicketSplitViewController.h"
 #import "InboxTicketViewController.h"
 #import "InboxTicketDetailViewController.h"
+#import "NavigateViewController.h"
 
 @interface InboxTicketSplitViewController () <UISplitViewControllerDelegate>
 
@@ -23,19 +24,28 @@
 
     TKPDTabViewController *controller = [TKPDTabViewController new];
     controller.hidesBottomBarWhenPushed = YES;
-    controller.inboxType = @"Ticket";
+    controller.inboxType = InboxTypeTicket;
     
     InboxTicketViewController *allInbox = [InboxTicketViewController new];
     allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
     allInbox.delegate = controller;
+    allInbox.onTapContactUsButton = ^{
+        [NavigateViewController navigateToContactUsFromViewController:self];
+    };
     
     InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
     unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
     unreadInbox.delegate = controller;
+    unreadInbox.onTapContactUsButton = ^{
+        [NavigateViewController navigateToContactUsFromViewController:self];
+    };
     
     InboxTicketViewController *closedInbox = [InboxTicketViewController new];
     closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
     closedInbox.delegate = controller;
+    closedInbox.onTapContactUsButton = ^{
+        [NavigateViewController navigateToContactUsFromViewController:self];
+    };
     
     controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
     controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];

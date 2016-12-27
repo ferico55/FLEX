@@ -15,4 +15,7 @@
 @property (nonatomic, strong) NSString *message_error;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) CatalogShopAWSResult *result;
+
++ (RKObjectMapping *)objectMapping;
+
 @end

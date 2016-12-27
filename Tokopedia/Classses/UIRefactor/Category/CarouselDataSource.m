@@ -9,21 +9,27 @@
 #import "CarouselDataSource.h"
 #import "Slide.h"
 #import "WebViewController.h"
+#import "Tokopedia-Swift.h"
 
 NSInteger const bannerIpadWidth = 450;
+
+@interface CarouselDataSource ()
+    
+@property(nullable, nonatomic, weak) StyledPageControl *pageControl;
+@end
 
 @implementation CarouselDataSource {
     NSArray *_banners;
 }
 
-- (instancetype)initWithBanner:(NSArray<Slide *> *)banners {
+- (instancetype)initWithBanner:(NSArray <Slide*>*)banners withPageControl: (StyledPageControl*) pageControl{
     self = [super init];
     if(!self) {
         return nil;
     }
     
     _banners = banners;
-    
+    _pageControl = pageControl;
     return self;
 }
 
@@ -69,8 +75,14 @@ NSInteger const bannerIpadWidth = 450;
     webViewController.strTitle = @"Promo";
     webViewController.strURL = banner.redirect_url;
 
-    if(_delegate != nil) {
-        [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
+    if(_navigationDelegate != nil) {
+        [_navigationDelegate pushViewController:webViewController animated:YES];
+    }
+}
+
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
+    if (_pageControl != nil){
+        _pageControl.currentPage = carousel.currentItemIndex;
     }
 }
 

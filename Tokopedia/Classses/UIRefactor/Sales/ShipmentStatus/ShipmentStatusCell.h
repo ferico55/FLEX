@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class OrderTransaction;
+
 @protocol ShipmentStatusCellDelegate <NSObject>
 
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath;
@@ -40,9 +42,11 @@
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 
+@property (strong, nonatomic) IBOutlet OrderTransaction *order;
+
 - (void)hideDayLeftInformation;
-- (void)showTrackButton;
-- (void)showAllButton;
+- (void)showTrackButtonOnTap:(void(^)(OrderTransaction *))onTap;
+- (void)showEditResiButtonOnTap:(void(^)(OrderTransaction *))onTap;
 - (void)hideAllButton;
 - (void)setStatusLabelText:(NSString *)text;
 

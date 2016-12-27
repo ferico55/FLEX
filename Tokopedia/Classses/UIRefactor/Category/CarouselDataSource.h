@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "iCarousel.h"
+#import "StyledPageControl.h"
 
 @class BannerList;
 @class Slide;
+@class HomeSliderView;
 
 @interface CarouselDataSource : NSObject <iCarouselDataSource, iCarouselDelegate>
 
-- (instancetype)initWithBanner:(NSArray <Slide*>*)banners;
+- (instancetype)initWithBanner:(NSArray <Slide*>*)banners withPageControl: (StyledPageControl*) pageControl;
 
-@property(nonatomic, weak) UIViewController *delegate;
+@property(nonatomic, weak) UINavigationController *navigationDelegate;
 
 @end

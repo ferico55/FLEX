@@ -1,9 +1,6 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-# use old specs for cocoapods 0.39.0
-source "https://github.com/CocoaPods/Old-Specs"
-
 use_frameworks!
 
 def common_pods
@@ -39,6 +36,8 @@ def common_pods
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
+    
+    pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

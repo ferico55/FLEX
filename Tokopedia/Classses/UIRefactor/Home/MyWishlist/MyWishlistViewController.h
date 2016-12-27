@@ -13,4 +13,7 @@
 }
 
 @property NSInteger index;
+
+- (void) scrollToTop;
+
 @end

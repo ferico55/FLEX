@@ -15,4 +15,6 @@
 @property (nonatomic, strong) SearchAWSShop* shop;
 @property (nonatomic, strong) NSArray* products;
 
++ (RKObjectMapping*)objectMapping;
+
 @end

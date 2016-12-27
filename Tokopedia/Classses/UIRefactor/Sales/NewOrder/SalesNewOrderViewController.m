@@ -38,6 +38,8 @@
 #import <BlocksKit/BlocksKit.h>
 #import "UIAlertView+BlocksKit.h"
 
+#import "SendMessageViewController.h"
+
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -45,7 +47,6 @@
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
     FilterDelegate,
-    ProductQuantityDelegate,
     OrderDetailDelegate
 >
 {
@@ -56,6 +57,7 @@
     RKManagedObjectRequestOperation *_warehouseRequest;
     
     NSOperationQueue *_operationQueueAction;
+    BOOL _showAskBuyer;
 }
 
 @property (strong, nonatomic) NSMutableArray *orders;
@@ -132,6 +134,9 @@
     self.alertLabel.attributedText = self.alertAttributedString;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
     [self fetchLatestOrderData];
+    
+    _tableView.estimatedRowHeight = 237;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -183,7 +188,7 @@
 
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
     return backBarButtonItem;
@@ -191,7 +196,7 @@
 
 - (UIBarButtonItem *)filterBarButton {
     UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
-                                                                        style:UIBarButtonItemStyleBordered
+                                                                        style:UIBarButtonItemStylePlain
                                                                        target:self
                                                                        action:@selector(didTapFilterButton:)];
     return filterBarButton;
@@ -308,15 +313,83 @@
     
     cell.paymentAmountLabel.text = order.order_detail.detail_open_amount_idr;
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", order.order_payment.payment_process_due_date];
+    cell.lastStatusLabel.attributedText = order.order_detail.detail_cancel_request.reasonFormattedString;
     
-    // Reset button style
-    [cell.acceptButton.titleLabel setFont:[UIFont microTheme]];
-    [cell.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    BOOL cancelRequest = ([order.order_detail.detail_cancel_request.cancel_request isEqualToString:@"1"]);
+    cell.priceView.hidden = cancelRequest;
+    cell.statusView.hidden = !cancelRequest;
     
-    [cell.rejectButton.titleLabel setFont:[UIFont microTheme]];
-    [cell.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    cell.order = order;
+    [cell removeAllButtons];
+    
+    __weak typeof(self) wself = self;
+
+    [cell showRejectButtonOnTap:^(OrderTransaction * order) {
+        _selectedIndexPath = indexPath;
+        
+        [wself doRejectOrder:order];
+    }];
+    
+    if (_showAskBuyer) {
+        [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+            [wself doAskBuyerWithOrder:order];
+        }];
+    }
+    
+    [cell showAcceptButtonOnTap:^(OrderTransaction *order) {
+        _selectedIndexPath = indexPath;
+        
+        [wself doAcceptOrder:order];
+    }];
+    
 
     return cell;
+}
+
+-(void)doRejectOrder:(OrderTransaction*)order{
+    _selectedOrder = order;
+
+    [AnalyticsManager trackEventName:@"clickNewOrder"
+                            category:GA_EVENT_CATEGORY_NEW_ORDER
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Reject Order"];
+    
+    if ([self buyerCanAcceptPartial]) {
+        [self showAlertViewRejectPartialConfirmation];
+    } else {
+        [self showRejectReason];
+        
+    }
+}
+
+-(void)doAcceptOrder:(OrderTransaction*)order{
+    _selectedOrder = order;
+
+    [AnalyticsManager trackEventName:@"clickNewOrder"
+                            category:GA_EVENT_CATEGORY_NEW_ORDER
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Accept Order"];
+    
+    if ([self isOrderNotExpired]) {
+        if ([self buyerCanAcceptPartial]) {
+            [self showAlertViewAcceptPartialConfirmation];
+        } else {
+            [self showAlertViewAcceptConfirmation];
+        }
+    } else {
+        [self showAlertViewAcceptExpiredConfirmation];
+    }
+}
+
+-(void)doAskBuyerWithOrder:(OrderTransaction*)order{
+    SendMessageViewController *messageController = [SendMessageViewController new];
+    messageController.data = @{
+                               @"user_id":order.order_customer.customer_id?:@"",
+                               @"shop_name":order.order_customer.customer_name?:@""
+                               };
+    messageController.subject = order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    [self.navigationController pushViewController:messageController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -335,47 +408,11 @@
     controller.dueDate = _deadline;
     controller.filter = _filter;
     
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];    
     [self.navigationController presentViewController:navigation animated:YES completion:nil];
 }
 
 #pragma mark - Cell delegate
-
-- (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath {
-    _selectedOrder = [_orders objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
-    [AnalyticsManager trackEventName:@"clickNewOrder"
-                            category:GA_EVENT_CATEGORY_NEW_ORDER
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"Accept Order"];
-    if ([self isOrderNotExpired]) {
-        if ([self isBuyerAcceptPartial]) {
-            [self showAlertViewAcceptPartialConfirmation];
-        } else {
-            [self showAlertViewAcceptConfirmation];
-        }
-    } else {
-        [self showAlertViewAcceptExpiredConfirmation];
-    }
-}
-
-- (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
-    _selectedOrder = [_orders objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
-    
-    [AnalyticsManager trackEventName:@"clickNewOrder"
-                            category:GA_EVENT_CATEGORY_NEW_ORDER
-                              action:GA_EVENT_ACTION_CLICK
-                               label:@"Reject Order"];
-    
-    if ([self isBuyerAcceptPartial]) {
-        [self showAlertViewRejectPartialConfirmation];
-    } else {
-        [self showRejectReason];
-    }
-}
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
@@ -388,8 +425,22 @@
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
     controller.transaction = [_orders objectAtIndex:indexPath.row];
     controller.delegate = self;
+    controller.isDetailNewOrder = YES;
+
+    __weak typeof(self) wself = self;
+    controller.didAcceptOrder = ^(){
+        [wself refreshOrderList];
+    };
+    
+    
+    controller.showAskBuyer = _showAskBuyer;
 
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)refreshOrderList{
+    _page = 1;
+    [self fetchLatestOrderData];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath {
@@ -420,15 +471,6 @@
             productQuantity:nil];
 }
 
-
-#pragma mark - Product quantity delegate
-
-- (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation {
-    [self requestActionType:ProceedTypePartial
-                     reason:explanation
-                   products:nil
-            productQuantity:productQuantity];
-}
 
 #pragma mark - Filter delegate
 
@@ -511,23 +553,18 @@
     ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
     OrderTransaction *order = [_orders objectAtIndex:_selectedIndexPath.row];
     controller.products = order.order_products;
-    controller.delegate = self;
+    controller.orderID = _selectedOrder.order_detail.detail_order_id;
+    controller.shippingLeft = _selectedOrder.order_last.last_est_shipping_left;
+    
+    __weak typeof(self) wself = self;
+    controller.didAcceptOrder = ^(){
+        [wself refreshOrderList];
+    };
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
 
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)showRejectOrderPage {
-    OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.navigationController presentViewController:navigationController
-                                            animated:YES
-                                          completion:nil];
 }
 
 #pragma mark - Reskit methods
@@ -550,6 +587,7 @@
                                       Order *response = mappingResult.dictionary[@""];
                                       OrderResult *result = response.result;
                                       if ([response.status isEqualToString:@"OK"]) {
+                                          [self setShowAskBuyerWithData:result];
                                           if (_page == 1) {
                                               [_orders removeAllObjects];
                                           }
@@ -581,6 +619,10 @@
                                       [alert show];
                                   }];
     
+}
+
+-(void)setShowAskBuyerWithData:(OrderResult*)data{
+    _showAskBuyer = ([data.is_allow_manage_tx isEqualToString:@"1"]);
 }
 
 #pragma mark - Reskit Actions
@@ -736,22 +778,11 @@
     return _selectedOrder.order_payment.payment_process_day_left >= 0;
 }
 
-- (BOOL)isBuyerAcceptPartial{
+- (BOOL)buyerCanAcceptPartial{
     return _selectedOrder.order_detail.detail_partial_order == 1;
 }
 
 #pragma mark - Order detail delegate
-
-- (void)didReceiveActionType:(ProceedType)actionType
-                      reason:(NSString *)reason
-                    products:(NSArray *)products
-             productQuantity:(NSArray *)productQuantity {
-    [self requestActionType:actionType
-                     reason:reason
-                   products:products
-            productQuantity:productQuantity];
-    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1];
-}
 
 - (NSString*)announcementString {
     return @"Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon (2 hari) setelah order di verifikasi";

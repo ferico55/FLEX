@@ -284,12 +284,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         cell.delegate = self;
     }
     
-    InboxTicketDetail *ticket;
-    if (self.inboxTicket.ticket_show_more_messages) {
-        ticket = [[_messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    } else {
-        ticket = _messages[indexPath.row];
-    }
+    InboxTicketDetail *ticket = [[_messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
     [cell setViewModel:ticket.viewModel];
 
@@ -411,12 +406,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     [_refreshControl endRefreshing];
     
-    if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
+    if (_onFinishRequestDetail) {
         NSInteger total = [_ticketInformation.ticket_total_message integerValue];
         self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%ld", (long)total];
         self.inboxTicket.ticket_status = _ticketInformation.ticket_status;
         self.inboxTicket.ticket_read_status = _ticketInformation.ticket_read_status;
-        [self.delegate updateInboxTicket:self.inboxTicket];
+        _onFinishRequestDetail(self.inboxTicket);
     }
 
     if (_page == 0) {
@@ -430,8 +425,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             _canLoadMore = NO;
         }
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
 }
 
 #pragma mark - Cell delegate

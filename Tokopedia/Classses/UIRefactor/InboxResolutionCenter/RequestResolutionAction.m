@@ -962,10 +962,10 @@ static failedCompletionBlock failedRequest;
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];
                                  
                                  if (response.data.is_success != 0) {
-                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil merubah resi."]];
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil mengubah resi."]];
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal merubah resi"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal mengubah resi"]];
                                      failure(nil);
                                  }
                                  

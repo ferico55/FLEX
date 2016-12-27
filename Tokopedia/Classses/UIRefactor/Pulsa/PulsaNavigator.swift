@@ -87,6 +87,7 @@ class PulsaNavigator: NSObject {
     func navigateToSuccess(url: NSURL) {
         let controller = WebViewController()
         controller.strURL = url.absoluteString
+        controller.shouldAuthorizeRequest = true
         
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }

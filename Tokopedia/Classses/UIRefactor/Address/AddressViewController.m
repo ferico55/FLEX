@@ -195,17 +195,17 @@
     switch (_type) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            return _addressObj.result.provinces.count;
+            return _addressObj.data.provinces.count;
             break;
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
-            return _addressObj.result.cities.count;
+            return _addressObj.data.cities.count;
             break;
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            return _addressObj.result.districts.count;
+            return _addressObj.data.districts.count;
             break;
         }
         default:
@@ -229,7 +229,7 @@
     switch (_type) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            AddressProvince *province = _addressObj.result.provinces[indexPath.row];
+            AddressProvince *province = _addressObj.data.provinces[indexPath.row];
             dataCell = @{@"Name":province.province_name,
                          @"ID" :province.province_id};
             isHiddenCeckmark = ([province.province_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
@@ -237,7 +237,7 @@
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
-            AddressCity *city = _addressObj.result.cities[indexPath.row];
+            AddressCity *city = _addressObj.data.cities[indexPath.row];
             dataCell = @{@"Name":city.city_name,
                          @"ID" :city.city_id};
             isHiddenCeckmark = ([city.city_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
@@ -245,7 +245,7 @@
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            AddressDistrict *district = _addressObj.result.districts[indexPath.row];
+            AddressDistrict *district = _addressObj.data.districts[indexPath.row];
             dataCell = @{@"Name":district.district_name,
                          @"ID" :district.district_id};
             isHiddenCeckmark = ([district.district_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;

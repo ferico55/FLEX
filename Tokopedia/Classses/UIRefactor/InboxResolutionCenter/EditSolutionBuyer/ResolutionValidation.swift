@@ -62,7 +62,7 @@ class ResolutionValidation: NSObject {
         }
         
         guard postObject.replyMessage != "" else {
-            throw Errors.errorMessage("Alasan merubah solusi belum diisi.")
+            throw Errors.errorMessage("Alasan mengubah solusi belum diisi.")
         }
     }
     

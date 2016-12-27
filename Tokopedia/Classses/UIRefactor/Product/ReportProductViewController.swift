@@ -54,20 +54,16 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     }
     
     @IBAction func didTapReportButton(sender: UIButton) {
-
-        let currentDeviceId = userManager.getMyDeviceToken()
-        let userID = userManager.getUserId()
-        
-        
+        let userManager = UserAuthentificationManager()
         let appVersion = UIApplication.getAppVersionStringWithoutDot()
         let webViewVC = WebViewController()
         
         let webViewURL = (self.reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)" as NSString).kv_encodeHTMLCharacterEntities()
         
-        let jsTokopediaWebViewUrl = "https://js.tokopedia.com/wvlogin?uid=\(userID)&token=\(currentDeviceId)&url=" + webViewURL
         
-        webViewVC.strURL = jsTokopediaWebViewUrl
+        webViewVC.strURL = userManager.webViewUrlFromUrl(webViewURL)
         webViewVC.strTitle = "Laporkan Produk"
+        webViewVC.shouldAuthorizeRequest = true
         webViewVC.onTapLinkWithUrl = { (url) in
             if (url.absoluteString == "https://www.tokopedia.com/") {
                 self.navigationController?.popViewControllerAnimated(true)

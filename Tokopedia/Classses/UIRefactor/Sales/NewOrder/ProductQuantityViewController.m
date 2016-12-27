@@ -12,6 +12,8 @@
 #import "UITextView+UITextView_Placeholder.h"
 #import "DetailProductViewController.h"
 #import "NavigateViewController.h"
+#import "ActionOrder.h"
+#import "Tokopedia-Swift.h"
 
 @interface ProductQuantityViewController ()
 <
@@ -29,12 +31,14 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITextView *explanationTextView;
+@property (weak, nonatomic) IBOutlet RSKPlaceholderTextView *explanationTextView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 
 @end
 
-@implementation ProductQuantityViewController
+@implementation ProductQuantityViewController{
+    UIBarButtonItem *_doneButton;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,26 +47,19 @@
 
     _TKPDNavigator = [NavigateViewController new];
     
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    backBarButton.tag = 1;
-    self.navigationItem.backBarButtonItem = backBarButton;
-    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
     self.navigationItem.leftBarButtonItem = cancelButton;
 
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+    _doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                    style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
-    doneButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = doneButton;
+    _doneButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = _doneButton;
     
     _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
     _tableView.tableFooterView = _footerView;
@@ -81,6 +78,7 @@
     }
 
     [_explanationTextView setText:@"Terima sebagian"];
+    [_explanationTextView setPlaceholder:@"Tulis Keterangan"];
     _explanationTextView.delegate = self;
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -201,6 +199,10 @@
     for (OrderProduct *product in _products) {
         for (NSDictionary *dict in _productQuantity) {
             if ([dict objectForKey:@"order_detail_id"] == product.order_detail_id) {
+                if ([[dict objectForKey:@"product_quantity"] integerValue] == 0) {
+                    valid = NO;
+                    errorMessage = @"Jumlah barang yang akan dikirim harus diisi";
+                }
                 if ([[dict objectForKey:@"product_quantity"] integerValue] > product.product_quantity) {
                     valid = NO;
                     errorMessage = @"Anda memasukkan jumlah terlalu banyak";
@@ -208,14 +210,16 @@
             }
         }
     }
+    if ([_explanationTextView.text isEqualToString:@""]) {
+        valid = NO;
+        errorMessage = @"Keterangan harus diisi";
+    }
     if ([_originQuantity isEqualToArray:_updateQuantity]) {
         valid = NO;
         errorMessage = @"Silahkan menggunakan pilihan 'Terima Pesanan' apabila Anda menerima semua barang.";
     }
     if (valid) {
-        [self.delegate didUpdateProductQuantity:_productQuantity
-                                    explanation:_explanationTextView.text];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self requestAcceptPartial];
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
         [alert show];
@@ -248,11 +252,26 @@
     [self.tableView scrollRectToVisible:rect animated:YES];
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:@""]) {
-        [textView setPlaceholder:@"Keterangan"];
-    }
+- (void)requestAcceptPartial{
+    
+    [_doneButton setEnabled:false];
+    
+    __weak typeof(self) wself = self;
+    [RequestSales fetchAcceptOrderPartial:_products
+                        productQuantities:_productQuantity
+                                  orderID:_orderID
+                             shippingLeft:_shippingLeft
+                                   reason:_explanationTextView.text?:@""
+                                onSuccess:^() {
+                                    
+                                    if (wself.didAcceptOrder) {
+                                        wself.didAcceptOrder();
+                                    }
+                                    [wself dismissViewControllerAnimated:YES completion:nil];
+                                    
+                                } onFailure:^() {
+                                    [_doneButton setEnabled:YES];
+                                }];
 }
 
 @end

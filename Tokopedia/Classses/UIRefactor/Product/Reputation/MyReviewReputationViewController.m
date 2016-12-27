@@ -451,7 +451,7 @@
         [cell.theirReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [cell.theirReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [cell.theirReputation setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
         [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
@@ -661,33 +661,6 @@
 
     }
 }
-
-- (void)actionInvoice:(id)sender
-{
-    if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-
-        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            UserAuthentificationManager *auth = [UserAuthentificationManager new];
-            WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
-            NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:tempObj.invoice_uri];
-            NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
-            NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
-            NSString *userID = [auth getUserId];
-            NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@", kTkpdBaseURLString, invoicePDF, invoiceID, userID];
-            VC.urlAddress = invoiceURLforWS?:@"";
-            
-            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:VC];
-        }
-        else {
-            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-                [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
-            }
-        }
-    }
-}
-
-
 
 - (void)actionFlagReview:(id)sender {
     DetailMyInboxReputation *object = arrList[((UIView *)sender).tag];
