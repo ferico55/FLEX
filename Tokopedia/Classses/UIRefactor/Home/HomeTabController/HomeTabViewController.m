@@ -305,7 +305,9 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
-    [self goToPage:page];
+    if (page > 0 && page < _viewControllers.count) {
+        [self goToPage:page];
+    }
 }
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
