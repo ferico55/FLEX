@@ -133,11 +133,11 @@
     [_userNameLabel setHidden:NO];
 
     if(_profile.result.user_info.user_reputation.no_reputation!=nil && [_profile.result.user_info.user_reputation.no_reputation isEqualToString:@"1"]) {
-        [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnRate setImage:[UIImage imageNamed:@"icon_neutral_smile_small"] forState:UIControlStateNormal];
         [btnRate setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnRate setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
         [btnRate setTitle:[NSString stringWithFormat:@"%@%% Positif", _profile.result.user_info.user_reputation.positive_percentage] forState:UIControlStateNormal];
     }
 //    CGSize tempSize = [btnRate sizeThatFits:CGSizeMake(self.view.bounds.size.width-20, btnRate.bounds.size.height)];

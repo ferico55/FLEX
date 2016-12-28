@@ -150,17 +150,19 @@
     } else {
         _qualityRate = (_review.product_rating_point==nil || _review.product_rating_point.length==0)? 0:[_review.product_rating_point intValue];
         [self setQualityLabel];
+        NSString *iconName = @"";
         for (int ii = 0; ii < _qualityStarsArray.count; ii++) {
             UIImageView *temp = [_qualityStarsArray objectAtIndex:ii];
-            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _qualityRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+            iconName = (ii < _qualityRate)? @"icon_star_active":@"icon_star";
+            temp.image = [UIImage imageNamed:iconName];
         }
-        
         
         _accuracyRate = (_review.product_accuracy_point==nil || _review.product_accuracy_point.length==0)? 0:[_review.product_accuracy_point intValue];
         [self setAccuracyLabel];
         for (int ii = 0; ii < _accuracyStarsArray.count; ii++) {
             UIImageView *temp = [_accuracyStarsArray objectAtIndex:ii];
-            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _accuracyRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+            iconName = (ii < _accuracyRate)? @"icon_star_active":@"icon_star";
+            temp.image = [UIImage imageNamed:iconName];
         }
     }
 }
