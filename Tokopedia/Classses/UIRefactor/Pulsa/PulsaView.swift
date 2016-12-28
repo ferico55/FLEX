@@ -173,8 +173,11 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         if(shouldShowProduct) {
             self.setDefaultProductWithOperatorId(self.selectedOperator.id!)
         } else {
-            self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
-            self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+            if !self.selectedCategory.attributes.validate_prefix {
+                self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
+                self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+            }
+            
         }
         
     }
@@ -505,6 +508,10 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         self.buttonErrorLabel?.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
+        
+        self.operatorErrorLabel?.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
     }
     
     private func findPrefix(inputtedString: String) -> Prefix {
@@ -670,7 +677,20 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
     }
     
-    func isValidNumber(number: String) -> Bool{
+    private func isValidNumber(number: String) -> Bool{
+        guard self.selectedOperator.id != nil else {
+            if(self.selectedCategory.attributes.validate_prefix) {
+                return self.isValidNumberLength(number)
+            }
+            
+            return true
+        }
+        
+        return self.isValidNumberLength(number)
+        
+    }
+    
+    private func isValidNumberLength(number: String) -> Bool {
         if self.selectedOperator.attributes.maximum_length > 0 {
             if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
                 self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
@@ -687,7 +707,16 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         return true
     }
     
-    func isValidNominal() -> Bool {
+    private func isValidOperator() -> Bool {
+        if(self.operatorButton?.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedCategory.attributes.show_operator == true) {
+            operatorErrorLabel.text = "Pilih operator terlebih dahulu"
+            return false
+        }
+        
+        return true
+    }
+    
+    private func isValidProduct() -> Bool {
         if(self.productButton.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedOperator.attributes.rule.show_product == true) {
             buttonErrorLabel.text = "Pilih nominal terlebih dahulu"
             return false
@@ -733,11 +762,15 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
 
         self.buttonErrorLabel.mas_updateConstraints { make in
-            make.height.equalTo()((self.productButton.hidden == false && !self.isValidNominal()) ? 22 : 0)
+            make.height.equalTo()((self.productButton.hidden == false && !self.isValidProduct()) ? 22 : 0)
+        }
+        
+        self.operatorErrorLabel?.mas_updateConstraints { make in
+            make.height.equalTo()((!self.operatorButton.hidden && !self.isValidOperator()) ? 22 : 0)
         }
         
         
-        if(self.isValidNominal() && isValidNumber) {
+        if(isValidOperator() && self.isValidProduct() && isValidNumber) {
             self.hideErrors()
             
             self.userManager = UserAuthentificationManager()
