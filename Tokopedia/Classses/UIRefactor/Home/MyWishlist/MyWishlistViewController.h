@@ -13,6 +13,7 @@
 }
 
 @property NSInteger index;
+@property(strong, nonatomic) NSString* url;
 
 - (void) scrollToTop;
 

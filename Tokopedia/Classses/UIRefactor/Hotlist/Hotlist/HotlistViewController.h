@@ -14,6 +14,7 @@
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;
+@property(strong, nonatomic) NSString* url;
 
 - (void) scrollToTop;
 

@@ -38,6 +38,39 @@ def common_pods
     pod 'youtube-ios-player-helper', '~> 0.1.6'
     
     pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
+
+    pod 'UICKeyChainStore'
+  pod 'TWMessageBarManager'
+  pod 'AFNetworking'
+  pod 'SWTableViewCell', :git => "https://github.com/gliechtenstein/SWTableViewCell.git"
+  pod 'APAddressBook'
+  pod 'TTTAttributedLabel'
+  pod 'BBBadgeBarButtonItem'
+  pod 'IQAudioRecorderController', :git => 'https://github.com/hackiftekhar/IQAudioRecorderController.git'
+  pod 'REMenu'
+  pod 'JDStatusBarNotification'
+  pod 'HMSegmentedControl'
+  pod "SWFrameButton"
+  pod 'libPhoneNumber-iOS'
+  pod "NSGIF", "~> 1.0"
+  pod 'INTULocationManager'
+  pod "AHKActionSheet"
+  pod 'TDOAuth'
+  pod "AFOAuth2Manager"
+  pod "CYRTextView"
+  pod 'FreeStreamer', :git => "https://github.com/muhku/FreeStreamer.git"
+  pod 'SDWebImage', :git => "https://github.com/rs/SDWebImage.git"
+  pod 'SZTextView'
+  pod 'SBJson'
+  pod 'DHSmartScreenshot'
+  pod 'NSHash'
+  pod 'JSCoreBom', '~> 1.1.1'
+  pod "RMDateSelectionViewController"
+  pod 'DTCoreText'
+  pod 'PBJVision'
+  pod 'PHFComposeBarView'
+  pod 'DAKeyboardControl'
+  pod 'SVPullToRefresh', :git => 'https://github.com/samvermette/SVPullToRefresh.git', :branch => 'master'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

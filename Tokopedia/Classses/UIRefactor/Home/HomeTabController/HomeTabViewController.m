@@ -34,6 +34,7 @@
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
 #import "SearchViewController.h"
+#import "JasonViewController.h"
 
 @interface HomeTabViewController ()
 <
@@ -54,7 +55,7 @@
     NSURL *_deeplinkUrl;
 }
 
-@property (strong, nonatomic) HomePageViewController *homePageController;
+@property (strong, nonatomic) JasonViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) PromoViewController *promoViewController;
@@ -97,7 +98,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _homePageController = [HomePageViewController new];
+    _homePageController = [JasonViewController new];
+    _homePageController.url = @"https://www.jasonbase.com/things/Emo.json";
     
     _productFeedController = [ProductFeedViewController new];
     

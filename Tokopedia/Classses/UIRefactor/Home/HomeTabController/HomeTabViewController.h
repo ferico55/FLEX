@@ -10,6 +10,8 @@
 
 @interface HomeTabViewController : UIViewController
 
+@property(strong, nonatomic) NSString* url;
+
 - (void)setIndexPage:(int)idxPage;
 - (void)redirectToProductFeed;
 - (void)redirectToWishList;

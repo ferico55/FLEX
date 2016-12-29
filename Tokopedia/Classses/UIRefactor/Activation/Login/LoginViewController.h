@@ -27,6 +27,7 @@
 @property (weak, nonatomic) id<LoginViewDelegate> delegate;
 @property (weak, nonatomic) id redirectViewController;
 @property BOOL triggerPhoneVerification;
+@property(strong, nonatomic) NSString* url;
 
 - (void)navigateToRegister;
 

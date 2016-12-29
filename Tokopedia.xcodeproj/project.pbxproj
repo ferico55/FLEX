@@ -1857,6 +1857,66 @@
 		7A2A7BDF1E124E1C00A21960 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A74B31E124E1500A21960 /* vt-iOSlib-1.0.1.tar.gz */; };
 		7A2A7BE01E124E1C00A21960 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A74B41E124E1500A21960 /* vt-iOSlib-1.0.1.zip */; };
 		7A2A7BE11E124E1C00A21960 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A74B71E124E1500A21960 /* XYPieChart.m */; };
+		7A2A7C481E14C48F00A21960 /* csv.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE31E14C48F00A21960 /* csv.js */; };
+		7A2A7C491E14C48F00A21960 /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE41E14C48F00A21960 /* ding.wav */; };
+		7A2A7C4A1E14C48F00A21960 /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE51E14C48F00A21960 /* icon-error.png */; };
+		7A2A7C4B1E14C48F00A21960 /* icon-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE61E14C48F00A21960 /* icon-error@2x.png */; };
+		7A2A7C4C1E14C48F00A21960 /* icon-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE71E14C48F00A21960 /* icon-info.png */; };
+		7A2A7C4D1E14C48F00A21960 /* icon-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE81E14C48F00A21960 /* icon-info@2x.png */; };
+		7A2A7C4E1E14C48F00A21960 /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BE91E14C48F00A21960 /* icon-success.png */; };
+		7A2A7C4F1E14C48F00A21960 /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BEA1E14C48F00A21960 /* icon-success@2x.png */; };
+		7A2A7C501E14C48F00A21960 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7BEB1E14C48F00A21960 /* Info.plist */; };
+		7A2A7C511E14C48F00A21960 /* Jason.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BED1E14C48F00A21960 /* Jason.m */; };
+		7A2A7C521E14C48F00A21960 /* JasonAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BEF1E14C48F00A21960 /* JasonAction.m */; };
+		7A2A7C531E14C48F00A21960 /* JasonAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BF21E14C48F00A21960 /* JasonAppDelegate.m */; };
+		7A2A7C541E14C48F00A21960 /* JasonAudioAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BF41E14C48F00A21960 /* JasonAudioAction.m */; };
+		7A2A7C551E14C48F00A21960 /* JasonButtonComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BF61E14C48F00A21960 /* JasonButtonComponent.m */; };
+		7A2A7C561E14C48F00A21960 /* JasonCacheAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BF81E14C48F00A21960 /* JasonCacheAction.m */; };
+		7A2A7C571E14C48F00A21960 /* JasonComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BFA1E14C48F00A21960 /* JasonComponent.m */; };
+		7A2A7C581E14C48F00A21960 /* JasonComponentFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BFC1E14C48F00A21960 /* JasonComponentFactory.m */; };
+		7A2A7C591E14C48F00A21960 /* JasonConvertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7BFF1E14C48F00A21960 /* JasonConvertAction.m */; };
+		7A2A7C5A1E14C48F00A21960 /* JasonGeoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C011E14C48F00A21960 /* JasonGeoAction.m */; };
+		7A2A7C5B1E14C48F00A21960 /* JasonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C031E14C48F00A21960 /* JasonHelper.m */; };
+		7A2A7C5C1E14C48F00A21960 /* JasonHorizontalSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C051E14C48F00A21960 /* JasonHorizontalSection.m */; };
+		7A2A7C5D1E14C48F00A21960 /* JasonHorizontalSection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C061E14C48F00A21960 /* JasonHorizontalSection.xib */; };
+		7A2A7C5E1E14C48F00A21960 /* JasonHorizontalSectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C081E14C48F00A21960 /* JasonHorizontalSectionItem.m */; };
+		7A2A7C5F1E14C48F00A21960 /* JasonHorizontalSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C091E14C48F00A21960 /* JasonHorizontalSectionItem.xib */; };
+		7A2A7C601E14C48F00A21960 /* JasonHtmlComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C0B1E14C48F00A21960 /* JasonHtmlComponent.m */; };
+		7A2A7C611E14C48F00A21960 /* JasonImageComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C0D1E14C48F00A21960 /* JasonImageComponent.m */; };
+		7A2A7C621E14C48F00A21960 /* JasonLabelComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C0F1E14C48F00A21960 /* JasonLabelComponent.m */; };
+		7A2A7C631E14C48F00A21960 /* JasonLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C111E14C48F00A21960 /* JasonLayer.m */; };
+		7A2A7C641E14C48F00A21960 /* JasonLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C131E14C48F00A21960 /* JasonLayout.m */; };
+		7A2A7C651E14C48F00A21960 /* JasonMapComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C151E14C48F00A21960 /* JasonMapComponent.m */; };
+		7A2A7C661E14C48F00A21960 /* JasonMediaAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C171E14C48F00A21960 /* JasonMediaAction.m */; };
+		7A2A7C671E14C48F00A21960 /* JasonMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C191E14C48F00A21960 /* JasonMemory.m */; };
+		7A2A7C681E14C48F00A21960 /* JasonNetworkAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C1B1E14C48F00A21960 /* JasonNetworkAction.m */; };
+		7A2A7C691E14C48F00A21960 /* JasonOauthAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C1D1E14C48F00A21960 /* JasonOauthAction.m */; };
+		7A2A7C6A1E14C48F00A21960 /* JasonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C1F1E14C48F00A21960 /* JasonParser.m */; };
+		7A2A7C6B1E14C48F00A21960 /* JasonPortraitPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C211E14C48F00A21960 /* JasonPortraitPicker.m */; };
+		7A2A7C6C1E14C48F00A21960 /* JasonSessionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C231E14C48F00A21960 /* JasonSessionAction.m */; };
+		7A2A7C6D1E14C48F00A21960 /* JasonSliderComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C251E14C48F00A21960 /* JasonSliderComponent.m */; };
+		7A2A7C6E1E14C48F00A21960 /* JasonSpaceComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C271E14C48F00A21960 /* JasonSpaceComponent.m */; };
+		7A2A7C6F1E14C48F00A21960 /* JasonStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C291E14C48F00A21960 /* JasonStack.m */; };
+		7A2A7C701E14C48F00A21960 /* JasonTextareaComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C2B1E14C48F00A21960 /* JasonTextareaComponent.m */; };
+		7A2A7C711E14C48F00A21960 /* JasonTextfieldComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C2D1E14C48F00A21960 /* JasonTextfieldComponent.m */; };
+		7A2A7C721E14C48F00A21960 /* JasonTimerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C2F1E14C48F00A21960 /* JasonTimerAction.m */; };
+		7A2A7C731E14C48F00A21960 /* JasonUtilAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C311E14C48F00A21960 /* JasonUtilAction.m */; };
+		7A2A7C741E14C48F00A21960 /* JasonVerticalSectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C331E14C48F00A21960 /* JasonVerticalSectionItem.m */; };
+		7A2A7C751E14C48F00A21960 /* JasonVerticalSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C341E14C48F00A21960 /* JasonVerticalSectionItem.xib */; };
+		7A2A7C761E14C48F00A21960 /* JasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C361E14C48F00A21960 /* JasonViewController.m */; };
+		7A2A7C771E14C48F00A21960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C371E14C48F00A21960 /* LaunchScreen.storyboard */; };
+		7A2A7C791E14C48F00A21960 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C391E14C48F00A21960 /* Media.xcassets */; };
+		7A2A7C7A1E14C48F00A21960 /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3A1E14C48F00A21960 /* more@2x.png */; };
+		7A2A7C7B1E14C48F00A21960 /* Next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3B1E14C48F00A21960 /* Next@2x.png */; };
+		7A2A7C7C1E14C48F00A21960 /* parser.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3C1E14C48F00A21960 /* parser.js */; };
+		7A2A7C7D1E14C48F00A21960 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3D1E14C48F00A21960 /* placeholder@2x.png */; };
+		7A2A7C7E1E14C48F00A21960 /* placeholderr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3E1E14C48F00A21960 /* placeholderr@2x.png */; };
+		7A2A7C7F1E14C48F00A21960 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C3F1E14C48F00A21960 /* Podfile */; };
+		7A2A7C801E14C48F00A21960 /* pop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C401E14C48F00A21960 /* pop.wav */; };
+		7A2A7C811E14C48F00A21960 /* rss.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C411E14C48F00A21960 /* rss.js */; };
+		7A2A7C821E14C48F00A21960 /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A7C431E14C48F00A21960 /* settings.plist */; };
+		7A2A7C831E14C48F00A21960 /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C451E14C48F00A21960 /* UIBarButtonItem+Badge.m */; };
+		7A2A7C841E14C48F00A21960 /* UIView+JasonComponentPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C471E14C48F00A21960 /* UIView+JasonComponentPayload.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -4920,6 +4980,107 @@
 		7A2A74B41E124E1500A21960 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A2A74B61E124E1500A21960 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		7A2A74B71E124E1500A21960 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7A2A7BE31E14C48F00A21960 /* csv.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = csv.js; sourceTree = "<group>"; };
+		7A2A7BE41E14C48F00A21960 /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		7A2A7BE51E14C48F00A21960 /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
+		7A2A7BE61E14C48F00A21960 /* icon-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error@2x.png"; sourceTree = "<group>"; };
+		7A2A7BE71E14C48F00A21960 /* icon-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info.png"; sourceTree = "<group>"; };
+		7A2A7BE81E14C48F00A21960 /* icon-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info@2x.png"; sourceTree = "<group>"; };
+		7A2A7BE91E14C48F00A21960 /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
+		7A2A7BEA1E14C48F00A21960 /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
+		7A2A7BEB1E14C48F00A21960 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A2A7BEC1E14C48F00A21960 /* Jason.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jason.h; sourceTree = "<group>"; };
+		7A2A7BED1E14C48F00A21960 /* Jason.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Jason.m; sourceTree = "<group>"; };
+		7A2A7BEE1E14C48F00A21960 /* JasonAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAction.h; sourceTree = "<group>"; };
+		7A2A7BEF1E14C48F00A21960 /* JasonAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAction.m; sourceTree = "<group>"; };
+		7A2A7BF01E14C48F00A21960 /* JasonActionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonActionProtocol.h; sourceTree = "<group>"; };
+		7A2A7BF11E14C48F00A21960 /* JasonAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAppDelegate.h; sourceTree = "<group>"; };
+		7A2A7BF21E14C48F00A21960 /* JasonAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAppDelegate.m; sourceTree = "<group>"; };
+		7A2A7BF31E14C48F00A21960 /* JasonAudioAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAudioAction.h; sourceTree = "<group>"; };
+		7A2A7BF41E14C48F00A21960 /* JasonAudioAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAudioAction.m; sourceTree = "<group>"; };
+		7A2A7BF51E14C48F00A21960 /* JasonButtonComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonButtonComponent.h; sourceTree = "<group>"; };
+		7A2A7BF61E14C48F00A21960 /* JasonButtonComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonButtonComponent.m; sourceTree = "<group>"; };
+		7A2A7BF71E14C48F00A21960 /* JasonCacheAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonCacheAction.h; sourceTree = "<group>"; };
+		7A2A7BF81E14C48F00A21960 /* JasonCacheAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonCacheAction.m; sourceTree = "<group>"; };
+		7A2A7BF91E14C48F00A21960 /* JasonComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponent.h; sourceTree = "<group>"; };
+		7A2A7BFA1E14C48F00A21960 /* JasonComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonComponent.m; sourceTree = "<group>"; };
+		7A2A7BFB1E14C48F00A21960 /* JasonComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponentFactory.h; sourceTree = "<group>"; };
+		7A2A7BFC1E14C48F00A21960 /* JasonComponentFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonComponentFactory.m; sourceTree = "<group>"; };
+		7A2A7BFD1E14C48F00A21960 /* JasonComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponentProtocol.h; sourceTree = "<group>"; };
+		7A2A7BFE1E14C48F00A21960 /* JasonConvertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonConvertAction.h; sourceTree = "<group>"; };
+		7A2A7BFF1E14C48F00A21960 /* JasonConvertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonConvertAction.m; sourceTree = "<group>"; };
+		7A2A7C001E14C48F00A21960 /* JasonGeoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonGeoAction.h; sourceTree = "<group>"; };
+		7A2A7C011E14C48F00A21960 /* JasonGeoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonGeoAction.m; sourceTree = "<group>"; };
+		7A2A7C021E14C48F00A21960 /* JasonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHelper.h; sourceTree = "<group>"; };
+		7A2A7C031E14C48F00A21960 /* JasonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHelper.m; sourceTree = "<group>"; };
+		7A2A7C041E14C48F00A21960 /* JasonHorizontalSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHorizontalSection.h; sourceTree = "<group>"; };
+		7A2A7C051E14C48F00A21960 /* JasonHorizontalSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHorizontalSection.m; sourceTree = "<group>"; };
+		7A2A7C061E14C48F00A21960 /* JasonHorizontalSection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonHorizontalSection.xib; sourceTree = "<group>"; };
+		7A2A7C071E14C48F00A21960 /* JasonHorizontalSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHorizontalSectionItem.h; sourceTree = "<group>"; };
+		7A2A7C081E14C48F00A21960 /* JasonHorizontalSectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHorizontalSectionItem.m; sourceTree = "<group>"; };
+		7A2A7C091E14C48F00A21960 /* JasonHorizontalSectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonHorizontalSectionItem.xib; sourceTree = "<group>"; };
+		7A2A7C0A1E14C48F00A21960 /* JasonHtmlComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHtmlComponent.h; sourceTree = "<group>"; };
+		7A2A7C0B1E14C48F00A21960 /* JasonHtmlComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHtmlComponent.m; sourceTree = "<group>"; };
+		7A2A7C0C1E14C48F00A21960 /* JasonImageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonImageComponent.h; sourceTree = "<group>"; };
+		7A2A7C0D1E14C48F00A21960 /* JasonImageComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonImageComponent.m; sourceTree = "<group>"; };
+		7A2A7C0E1E14C48F00A21960 /* JasonLabelComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLabelComponent.h; sourceTree = "<group>"; };
+		7A2A7C0F1E14C48F00A21960 /* JasonLabelComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLabelComponent.m; sourceTree = "<group>"; };
+		7A2A7C101E14C48F00A21960 /* JasonLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLayer.h; sourceTree = "<group>"; };
+		7A2A7C111E14C48F00A21960 /* JasonLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLayer.m; sourceTree = "<group>"; };
+		7A2A7C121E14C48F00A21960 /* JasonLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLayout.h; sourceTree = "<group>"; };
+		7A2A7C131E14C48F00A21960 /* JasonLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLayout.m; sourceTree = "<group>"; };
+		7A2A7C141E14C48F00A21960 /* JasonMapComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMapComponent.h; sourceTree = "<group>"; };
+		7A2A7C151E14C48F00A21960 /* JasonMapComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMapComponent.m; sourceTree = "<group>"; };
+		7A2A7C161E14C48F00A21960 /* JasonMediaAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMediaAction.h; sourceTree = "<group>"; };
+		7A2A7C171E14C48F00A21960 /* JasonMediaAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMediaAction.m; sourceTree = "<group>"; };
+		7A2A7C181E14C48F00A21960 /* JasonMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMemory.h; sourceTree = "<group>"; };
+		7A2A7C191E14C48F00A21960 /* JasonMemory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMemory.m; sourceTree = "<group>"; };
+		7A2A7C1A1E14C48F00A21960 /* JasonNetworkAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonNetworkAction.h; sourceTree = "<group>"; };
+		7A2A7C1B1E14C48F00A21960 /* JasonNetworkAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonNetworkAction.m; sourceTree = "<group>"; };
+		7A2A7C1C1E14C48F00A21960 /* JasonOauthAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonOauthAction.h; sourceTree = "<group>"; };
+		7A2A7C1D1E14C48F00A21960 /* JasonOauthAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonOauthAction.m; sourceTree = "<group>"; };
+		7A2A7C1E1E14C48F00A21960 /* JasonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonParser.h; sourceTree = "<group>"; };
+		7A2A7C1F1E14C48F00A21960 /* JasonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonParser.m; sourceTree = "<group>"; };
+		7A2A7C201E14C48F00A21960 /* JasonPortraitPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonPortraitPicker.h; sourceTree = "<group>"; };
+		7A2A7C211E14C48F00A21960 /* JasonPortraitPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonPortraitPicker.m; sourceTree = "<group>"; };
+		7A2A7C221E14C48F00A21960 /* JasonSessionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSessionAction.h; sourceTree = "<group>"; };
+		7A2A7C231E14C48F00A21960 /* JasonSessionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSessionAction.m; sourceTree = "<group>"; };
+		7A2A7C241E14C48F00A21960 /* JasonSliderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSliderComponent.h; sourceTree = "<group>"; };
+		7A2A7C251E14C48F00A21960 /* JasonSliderComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSliderComponent.m; sourceTree = "<group>"; };
+		7A2A7C261E14C48F00A21960 /* JasonSpaceComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSpaceComponent.h; sourceTree = "<group>"; };
+		7A2A7C271E14C48F00A21960 /* JasonSpaceComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSpaceComponent.m; sourceTree = "<group>"; };
+		7A2A7C281E14C48F00A21960 /* JasonStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonStack.h; sourceTree = "<group>"; };
+		7A2A7C291E14C48F00A21960 /* JasonStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonStack.m; sourceTree = "<group>"; };
+		7A2A7C2A1E14C48F00A21960 /* JasonTextareaComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTextareaComponent.h; sourceTree = "<group>"; };
+		7A2A7C2B1E14C48F00A21960 /* JasonTextareaComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTextareaComponent.m; sourceTree = "<group>"; };
+		7A2A7C2C1E14C48F00A21960 /* JasonTextfieldComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTextfieldComponent.h; sourceTree = "<group>"; };
+		7A2A7C2D1E14C48F00A21960 /* JasonTextfieldComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTextfieldComponent.m; sourceTree = "<group>"; };
+		7A2A7C2E1E14C48F00A21960 /* JasonTimerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTimerAction.h; sourceTree = "<group>"; };
+		7A2A7C2F1E14C48F00A21960 /* JasonTimerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTimerAction.m; sourceTree = "<group>"; };
+		7A2A7C301E14C48F00A21960 /* JasonUtilAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonUtilAction.h; sourceTree = "<group>"; };
+		7A2A7C311E14C48F00A21960 /* JasonUtilAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonUtilAction.m; sourceTree = "<group>"; };
+		7A2A7C321E14C48F00A21960 /* JasonVerticalSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonVerticalSectionItem.h; sourceTree = "<group>"; };
+		7A2A7C331E14C48F00A21960 /* JasonVerticalSectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonVerticalSectionItem.m; sourceTree = "<group>"; };
+		7A2A7C341E14C48F00A21960 /* JasonVerticalSectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonVerticalSectionItem.xib; sourceTree = "<group>"; };
+		7A2A7C351E14C48F00A21960 /* JasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonViewController.h; sourceTree = "<group>"; };
+		7A2A7C361E14C48F00A21960 /* JasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonViewController.m; sourceTree = "<group>"; };
+		7A2A7C371E14C48F00A21960 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7A2A7C381E14C48F00A21960 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7A2A7C391E14C48F00A21960 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		7A2A7C3A1E14C48F00A21960 /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
+		7A2A7C3B1E14C48F00A21960 /* Next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Next@2x.png"; sourceTree = "<group>"; };
+		7A2A7C3C1E14C48F00A21960 /* parser.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = parser.js; sourceTree = "<group>"; };
+		7A2A7C3D1E14C48F00A21960 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
+		7A2A7C3E1E14C48F00A21960 /* placeholderr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholderr@2x.png"; sourceTree = "<group>"; };
+		7A2A7C3F1E14C48F00A21960 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		7A2A7C401E14C48F00A21960 /* pop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop.wav; sourceTree = "<group>"; };
+		7A2A7C411E14C48F00A21960 /* rss.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rss.js; sourceTree = "<group>"; };
+		7A2A7C421E14C48F00A21960 /* RussianDollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RussianDollView.h; sourceTree = "<group>"; };
+		7A2A7C431E14C48F00A21960 /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = settings.plist; sourceTree = "<group>"; };
+		7A2A7C441E14C48F00A21960 /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
+		7A2A7C451E14C48F00A21960 /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
+		7A2A7C461E14C48F00A21960 /* UIView+JasonComponentPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+JasonComponentPayload.h"; sourceTree = "<group>"; };
+		7A2A7C471E14C48F00A21960 /* UIView+JasonComponentPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JasonComponentPayload.m"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -7226,6 +7387,7 @@
 		7A2A6CDE1E124E1200A21960 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				7A2A7BE21E14C48F00A21960 /* Jasonette */,
 				7A2A6CDF1E124E1200A21960 /* DKImagePicker */,
 				7A2A6CED1E124E1200A21960 /* FBTweak */,
 				7A2A6D0B1E124E1200A21960 /* iCarousel.h */,
@@ -10460,6 +10622,114 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		7A2A7BE21E14C48F00A21960 /* Jasonette */ = {
+			isa = PBXGroup;
+			children = (
+				7A2A7BE31E14C48F00A21960 /* csv.js */,
+				7A2A7BE41E14C48F00A21960 /* ding.wav */,
+				7A2A7BE51E14C48F00A21960 /* icon-error.png */,
+				7A2A7BE61E14C48F00A21960 /* icon-error@2x.png */,
+				7A2A7BE71E14C48F00A21960 /* icon-info.png */,
+				7A2A7BE81E14C48F00A21960 /* icon-info@2x.png */,
+				7A2A7BE91E14C48F00A21960 /* icon-success.png */,
+				7A2A7BEA1E14C48F00A21960 /* icon-success@2x.png */,
+				7A2A7BEB1E14C48F00A21960 /* Info.plist */,
+				7A2A7BEC1E14C48F00A21960 /* Jason.h */,
+				7A2A7BED1E14C48F00A21960 /* Jason.m */,
+				7A2A7BEE1E14C48F00A21960 /* JasonAction.h */,
+				7A2A7BEF1E14C48F00A21960 /* JasonAction.m */,
+				7A2A7BF01E14C48F00A21960 /* JasonActionProtocol.h */,
+				7A2A7BF11E14C48F00A21960 /* JasonAppDelegate.h */,
+				7A2A7BF21E14C48F00A21960 /* JasonAppDelegate.m */,
+				7A2A7BF31E14C48F00A21960 /* JasonAudioAction.h */,
+				7A2A7BF41E14C48F00A21960 /* JasonAudioAction.m */,
+				7A2A7BF51E14C48F00A21960 /* JasonButtonComponent.h */,
+				7A2A7BF61E14C48F00A21960 /* JasonButtonComponent.m */,
+				7A2A7BF71E14C48F00A21960 /* JasonCacheAction.h */,
+				7A2A7BF81E14C48F00A21960 /* JasonCacheAction.m */,
+				7A2A7BF91E14C48F00A21960 /* JasonComponent.h */,
+				7A2A7BFA1E14C48F00A21960 /* JasonComponent.m */,
+				7A2A7BFB1E14C48F00A21960 /* JasonComponentFactory.h */,
+				7A2A7BFC1E14C48F00A21960 /* JasonComponentFactory.m */,
+				7A2A7BFD1E14C48F00A21960 /* JasonComponentProtocol.h */,
+				7A2A7BFE1E14C48F00A21960 /* JasonConvertAction.h */,
+				7A2A7BFF1E14C48F00A21960 /* JasonConvertAction.m */,
+				7A2A7C001E14C48F00A21960 /* JasonGeoAction.h */,
+				7A2A7C011E14C48F00A21960 /* JasonGeoAction.m */,
+				7A2A7C021E14C48F00A21960 /* JasonHelper.h */,
+				7A2A7C031E14C48F00A21960 /* JasonHelper.m */,
+				7A2A7C041E14C48F00A21960 /* JasonHorizontalSection.h */,
+				7A2A7C051E14C48F00A21960 /* JasonHorizontalSection.m */,
+				7A2A7C061E14C48F00A21960 /* JasonHorizontalSection.xib */,
+				7A2A7C071E14C48F00A21960 /* JasonHorizontalSectionItem.h */,
+				7A2A7C081E14C48F00A21960 /* JasonHorizontalSectionItem.m */,
+				7A2A7C091E14C48F00A21960 /* JasonHorizontalSectionItem.xib */,
+				7A2A7C0A1E14C48F00A21960 /* JasonHtmlComponent.h */,
+				7A2A7C0B1E14C48F00A21960 /* JasonHtmlComponent.m */,
+				7A2A7C0C1E14C48F00A21960 /* JasonImageComponent.h */,
+				7A2A7C0D1E14C48F00A21960 /* JasonImageComponent.m */,
+				7A2A7C0E1E14C48F00A21960 /* JasonLabelComponent.h */,
+				7A2A7C0F1E14C48F00A21960 /* JasonLabelComponent.m */,
+				7A2A7C101E14C48F00A21960 /* JasonLayer.h */,
+				7A2A7C111E14C48F00A21960 /* JasonLayer.m */,
+				7A2A7C121E14C48F00A21960 /* JasonLayout.h */,
+				7A2A7C131E14C48F00A21960 /* JasonLayout.m */,
+				7A2A7C141E14C48F00A21960 /* JasonMapComponent.h */,
+				7A2A7C151E14C48F00A21960 /* JasonMapComponent.m */,
+				7A2A7C161E14C48F00A21960 /* JasonMediaAction.h */,
+				7A2A7C171E14C48F00A21960 /* JasonMediaAction.m */,
+				7A2A7C181E14C48F00A21960 /* JasonMemory.h */,
+				7A2A7C191E14C48F00A21960 /* JasonMemory.m */,
+				7A2A7C1A1E14C48F00A21960 /* JasonNetworkAction.h */,
+				7A2A7C1B1E14C48F00A21960 /* JasonNetworkAction.m */,
+				7A2A7C1C1E14C48F00A21960 /* JasonOauthAction.h */,
+				7A2A7C1D1E14C48F00A21960 /* JasonOauthAction.m */,
+				7A2A7C1E1E14C48F00A21960 /* JasonParser.h */,
+				7A2A7C1F1E14C48F00A21960 /* JasonParser.m */,
+				7A2A7C201E14C48F00A21960 /* JasonPortraitPicker.h */,
+				7A2A7C211E14C48F00A21960 /* JasonPortraitPicker.m */,
+				7A2A7C221E14C48F00A21960 /* JasonSessionAction.h */,
+				7A2A7C231E14C48F00A21960 /* JasonSessionAction.m */,
+				7A2A7C241E14C48F00A21960 /* JasonSliderComponent.h */,
+				7A2A7C251E14C48F00A21960 /* JasonSliderComponent.m */,
+				7A2A7C261E14C48F00A21960 /* JasonSpaceComponent.h */,
+				7A2A7C271E14C48F00A21960 /* JasonSpaceComponent.m */,
+				7A2A7C281E14C48F00A21960 /* JasonStack.h */,
+				7A2A7C291E14C48F00A21960 /* JasonStack.m */,
+				7A2A7C2A1E14C48F00A21960 /* JasonTextareaComponent.h */,
+				7A2A7C2B1E14C48F00A21960 /* JasonTextareaComponent.m */,
+				7A2A7C2C1E14C48F00A21960 /* JasonTextfieldComponent.h */,
+				7A2A7C2D1E14C48F00A21960 /* JasonTextfieldComponent.m */,
+				7A2A7C2E1E14C48F00A21960 /* JasonTimerAction.h */,
+				7A2A7C2F1E14C48F00A21960 /* JasonTimerAction.m */,
+				7A2A7C301E14C48F00A21960 /* JasonUtilAction.h */,
+				7A2A7C311E14C48F00A21960 /* JasonUtilAction.m */,
+				7A2A7C321E14C48F00A21960 /* JasonVerticalSectionItem.h */,
+				7A2A7C331E14C48F00A21960 /* JasonVerticalSectionItem.m */,
+				7A2A7C341E14C48F00A21960 /* JasonVerticalSectionItem.xib */,
+				7A2A7C351E14C48F00A21960 /* JasonViewController.h */,
+				7A2A7C361E14C48F00A21960 /* JasonViewController.m */,
+				7A2A7C371E14C48F00A21960 /* LaunchScreen.storyboard */,
+				7A2A7C381E14C48F00A21960 /* main.m */,
+				7A2A7C391E14C48F00A21960 /* Media.xcassets */,
+				7A2A7C3A1E14C48F00A21960 /* more@2x.png */,
+				7A2A7C3B1E14C48F00A21960 /* Next@2x.png */,
+				7A2A7C3C1E14C48F00A21960 /* parser.js */,
+				7A2A7C3D1E14C48F00A21960 /* placeholder@2x.png */,
+				7A2A7C3E1E14C48F00A21960 /* placeholderr@2x.png */,
+				7A2A7C3F1E14C48F00A21960 /* Podfile */,
+				7A2A7C401E14C48F00A21960 /* pop.wav */,
+				7A2A7C411E14C48F00A21960 /* rss.js */,
+				7A2A7C421E14C48F00A21960 /* RussianDollView.h */,
+				7A2A7C431E14C48F00A21960 /* settings.plist */,
+				7A2A7C441E14C48F00A21960 /* UIBarButtonItem+Badge.h */,
+				7A2A7C451E14C48F00A21960 /* UIBarButtonItem+Badge.m */,
+				7A2A7C461E14C48F00A21960 /* UIView+JasonComponentPayload.h */,
+				7A2A7C471E14C48F00A21960 /* UIView+JasonComponentPayload.m */,
+			);
+			path = Jasonette;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -10676,6 +10946,8 @@
 				7A2A78361E124E1700A21960 /* FilterCategoryViewCell.xib in Resources */,
 				7A2A7A721E124E1900A21960 /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				7A2A77FC1E124E1700A21960 /* AlertVerifyOTP.xib in Resources */,
+				7A2A7C501E14C48F00A21960 /* Info.plist in Resources */,
+				7A2A7C7F1E14C48F00A21960 /* Podfile in Resources */,
 				7A2A7BC71E124E1C00A21960 /* icon_login@3x.png in Resources */,
 				7A2A7AA11E124E1A00A21960 /* SettingAddressExpandedCell.xib in Resources */,
 				7A2A7A3A1E124E1900A21960 /* RejectReasonEmptyVariantViewController.xib in Resources */,
@@ -10698,6 +10970,7 @@
 				7A2A793C1E124E1800A21960 /* MyShopEtalaseEditViewController.xib in Resources */,
 				7A2A7A321E124E1900A21960 /* RejectReasonEditPriceViewController.xib in Resources */,
 				7A2A7B9A1E124E1B00A21960 /* UserProfileBiodataViewController.xib in Resources */,
+				7A2A7C771E14C48F00A21960 /* LaunchScreen.storyboard in Resources */,
 				7A2A7BD01E124E1C00A21960 /* icon_wishlist@2x.png in Resources */,
 				7A2A79EB1E124E1900A21960 /* PulsaProductCell.xib in Resources */,
 				7A2A79D61E124E1900A21960 /* PromoInfoAlertView.xib in Resources */,
@@ -10707,6 +10980,7 @@
 				7A2A7A8B1E124E1A00A21960 /* SearchViewController.xib in Resources */,
 				7A2A77411E124E1600A21960 /* NAryDisposable.tt in Resources */,
 				7A2A78381E124E1700A21960 /* CategoryResultViewController.xib in Resources */,
+				7A2A7C481E14C48F00A21960 /* csv.js in Resources */,
 				7A2A7B3E1E124E1B00A21960 /* TransactionShipmentATCViewController.xib in Resources */,
 				7A2A798C1E124E1900A21960 /* ProductEditImageViewController.xib in Resources */,
 				7A2A7A151E124E1900A21960 /* ResolutionCenterCreateViewController.xib in Resources */,
@@ -10717,6 +10991,7 @@
 				7A2A77E31E124E1700A21960 /* AlertDatePickerView.xib in Resources */,
 				7A2A7A0A1E124E1900A21960 /* ResolutionCenterCreateStepOneCell.xib in Resources */,
 				7A2A782F1E124E1700A21960 /* CatalogViewController.xib in Resources */,
+				7A2A7C821E14C48F00A21960 /* settings.plist in Resources */,
 				7A2A78661E124E1700A21960 /* NoResultView.xib in Resources */,
 				7A2A78521E124E1700A21960 /* ContactUsFormViewController.xib in Resources */,
 				7A2A79FE1E124E1900A21960 /* ResolutionCenterChooseSolutionViewController.xib in Resources */,
@@ -10745,6 +11020,7 @@
 				7A2A7B421E124E1B00A21960 /* TransactionCartCell.xib in Resources */,
 				7A2A79461E124E1800A21960 /* CourierAvailabilityViewCell.xib in Resources */,
 				7A2A7B011E124E1A00A21960 /* ShopNotesPageViewController.xib in Resources */,
+				7A2A7C4E1E14C48F00A21960 /* icon-success.png in Resources */,
 				7A2A7AF61E124E1A00A21960 /* ShopSettingViewController.xib in Resources */,
 				7A2A78271E124E1700A21960 /* CatalogSectionHeaderView.xib in Resources */,
 				7A2A7BCB1E124E1C00A21960 /* icon_more@3x.png in Resources */,
@@ -10754,6 +11030,7 @@
 				7A2A77FA1E124E1700A21960 /* AlertShipmentCodeView.xib in Resources */,
 				7A2A7B581E124E1B00A21960 /* TransactionCartResultPaymentCell.xib in Resources */,
 				7A2A79161E124E1800A21960 /* InboxTalkSplitViewController.xib in Resources */,
+				7A2A7C791E14C48F00A21960 /* Media.xcassets in Resources */,
 				7A2A7AAE1E124E1A00A21960 /* SettingBankEditViewController.xib in Resources */,
 				7A2A7B501E124E1B00A21960 /* TransactionCartWebViewViewController.xib in Resources */,
 				7A2A79681E124E1800A21960 /* DetailProductDescriptionCell.xib in Resources */,
@@ -10784,6 +11061,7 @@
 				7A2A77CB1E124E1700A21960 /* LoginViewController.xib in Resources */,
 				7A2A77EF1E124E1700A21960 /* AlertListView.xib in Resources */,
 				7A2A7B961E124E1B00A21960 /* UserContainerViewController.xib in Resources */,
+				7A2A7C7E1E14C48F00A21960 /* placeholderr@2x.png in Resources */,
 				7A2A79291E124E1800A21960 /* ActivatePushInstructionViewController.xib in Resources */,
 				7A2A78771E124E1700A21960 /* DepositListBankCell.xib in Resources */,
 				7A2A7BB71E124E1B00A21960 /* badge_official_small@3x.png in Resources */,
@@ -10850,10 +11128,12 @@
 				7A2A7A401E124E1900A21960 /* RejectReasonWrongPriceCell.xib in Resources */,
 				7A2A796F1E124E1800A21960 /* DetailProductVideoCollectionViewCell.xib in Resources */,
 				7A2A7B921E124E1B00A21960 /* ProfileFavoriteShopViewController.xib in Resources */,
+				7A2A7C4F1E14C48F00A21960 /* icon-success@2x.png in Resources */,
 				7A2A7A741E124E1900A21960 /* ChangeReceiptNumberViewController.xib in Resources */,
 				7A2A78431E124E1700A21960 /* ContactUsViewController.xib in Resources */,
 				7A2A7BBB1E124E1C00A21960 /* loading-icon.gif in Resources */,
 				7A2A79381E124E1800A21960 /* MyShopAddressViewController.xib in Resources */,
+				7A2A7C5D1E14C48F00A21960 /* JasonHorizontalSection.xib in Resources */,
 				7A2A7AF41E124E1A00A21960 /* SendMessageViewController.xib in Resources */,
 				7A2A78931E124E1800A21960 /* GeneralCheckmarkCell.xib in Resources */,
 				7A2A7AD41E124E1A00A21960 /* CloseShopViewController.xib in Resources */,
@@ -10864,10 +11144,12 @@
 				7A2A79341E124E1800A21960 /* MyShopAddressDetailViewController.xib in Resources */,
 				7A2A78E21E124E1800A21960 /* InboxMessageDetailCell.xib in Resources */,
 				7A2A79851E124E1800A21960 /* ProductAddCaptionViewController.xib in Resources */,
+				7A2A7C4A1E14C48F00A21960 /* icon-error.png in Resources */,
 				7A2A7B3C1E124E1B00A21960 /* TransactionShipmentATCTableViewController.xib in Resources */,
 				7A2A79551E124E1800A21960 /* ShipmentLocationViewCell.xib in Resources */,
 				7A2A7A6D1E124E1900A21960 /* FilterShipmentConfirmationViewController.xib in Resources */,
 				7A2A7BB61E124E1B00A21960 /* badge_official_small@2x.png in Resources */,
+				7A2A7C801E14C48F00A21960 /* pop.wav in Resources */,
 				7A2A7A641E124E1900A21960 /* SalesTransactionListViewController.xib in Resources */,
 				7A2A7BD91E124E1C00A21960 /* LICENSE in Resources */,
 				7A2A79411E124E1800A21960 /* MyShopNoteViewController.xib in Resources */,
@@ -10906,6 +11188,7 @@
 				7A2A77FE1E124E1700A21960 /* CustomNotificationView.xib in Resources */,
 				7A2A79181E124E1800A21960 /* InboxTalkViewController.xib in Resources */,
 				7A2A7B901E124E1B00A21960 /* ProfileFavoriteShopCell.xib in Resources */,
+				7A2A7C811E14C48F00A21960 /* rss.js in Resources */,
 				7A2A7AA81E124E1A00A21960 /* SettingBankNameViewController.xib in Resources */,
 				7A2A79CE1E124E1900A21960 /* ProductReputationSimpleCell.xib in Resources */,
 				7A2A79811E124E1800A21960 /* ProductTalkDetailViewController.xib in Resources */,
@@ -10951,6 +11234,7 @@
 				7A2A7BA81E124E1B00A21960 /* TalkProductCell.xib in Resources */,
 				7A2A79FC1E124E1900A21960 /* ResolutionCenterChooseProblemViewController.xib in Resources */,
 				7A2A7B7E1E124E1B00A21960 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
+				7A2A7C4D1E14C48F00A21960 /* icon-info@2x.png in Resources */,
 				7A2A79A81E124E1900A21960 /* GiveReviewResponseViewController.xib in Resources */,
 				7A2A77F31E124E1700A21960 /* AlertLuckyView.xib in Resources */,
 				7A2A7A691E124E1900A21960 /* CancelShipmentViewController.xib in Resources */,
@@ -10970,6 +11254,7 @@
 				7A2A794B1E124E1800A21960 /* CourierNoteViewCell.xib in Resources */,
 				7A2A7A3E1E124E1900A21960 /* RejectReasonViewController.xib in Resources */,
 				7A2A7AFC1E124E1A00A21960 /* EtalaseViewController.xib in Resources */,
+				7A2A7C4C1E14C48F00A21960 /* icon-info.png in Resources */,
 				7A2A7BCD1E124E1C00A21960 /* icon_more_active@2x.png in Resources */,
 				7A2A78331E124E1700A21960 /* CatalogSellerViewController.xib in Resources */,
 				7A2A7ADD1E124E1A00A21960 /* EditShopTypeViewCell.xib in Resources */,
@@ -10981,6 +11266,7 @@
 				7A2A78311E124E1700A21960 /* CatalogSellerCell.xib in Resources */,
 				7A2A79601E124E1800A21960 /* IntroViewController.xib in Resources */,
 				7A2A7AAC1E124E1A00A21960 /* SettingBankDetailViewController.xib in Resources */,
+				7A2A7C7C1E14C48F00A21960 /* parser.js in Resources */,
 				7A2A77F71E124E1700A21960 /* AlertPickerView.xib in Resources */,
 				7A2A7A7C1E124E1A00A21960 /* ShipmentStatusCell.xib in Resources */,
 				7A2A78171E124E1700A21960 /* DetailedImageCell.xib in Resources */,
@@ -11000,6 +11286,7 @@
 				7A2A794D1E124E1800A21960 /* CourierOptionViewCell.xib in Resources */,
 				7A2A7ADB1E124E1A00A21960 /* EditShopNoteViewCell.xib in Resources */,
 				7A2A7A7A1E124E1A00A21960 /* FilterShipmentStatusViewController.xib in Resources */,
+				7A2A7C5F1E14C48F00A21960 /* JasonHorizontalSectionItem.xib in Resources */,
 				7A2A79141E124E1800A21960 /* InboxTalkCell.xib in Resources */,
 				7A2A794F1E124E1800A21960 /* CourierProductViewCell.xib in Resources */,
 				7A2A7B941E124E1B00A21960 /* PenilaianUserCell.xib in Resources */,
@@ -11007,6 +11294,7 @@
 				7A2A786C1E124E1700A21960 /* StarsRateView.xib in Resources */,
 				7A2A7A9D1E124E1A00A21960 /* SettingAddressDetailViewController.xib in Resources */,
 				7A2A7AB21E124E1A00A21960 /* SettingNotificationViewController.xib in Resources */,
+				7A2A7C7B1E14C48F00A21960 /* Next@2x.png in Resources */,
 				7A2A77E91E124E1700A21960 /* AlertListBankCell.xib in Resources */,
 				7A2A79531E124E1800A21960 /* ShipmentLocationPickupViewCell.xib in Resources */,
 				7A2A7AEC1E124E1A00A21960 /* ShopInfoAddressView.xib in Resources */,
@@ -11040,6 +11328,7 @@
 				7A2A7BC01E124E1C00A21960 /* icon_cart_active@3x.png in Resources */,
 				7A2A7B251E124E1A00A21960 /* TKPMapView.xib in Resources */,
 				7A2A79FA1E124E1900A21960 /* PulsaViewController.xib in Resources */,
+				7A2A7C751E14C48F00A21960 /* JasonVerticalSectionItem.xib in Resources */,
 				7A2A7BBD1E124E1C00A21960 /* notifikasi@2x.png in Resources */,
 				7A2A7B231E124E1A00A21960 /* TKPInfoWindowMapView.xib in Resources */,
 				7A2A782B1E124E1700A21960 /* CatalogShopViewController.xib in Resources */,
@@ -11047,6 +11336,8 @@
 				7A2A790D1E124E1800A21960 /* ResolutionCenterDetailViewController.xib in Resources */,
 				7A2A7B8A1E124E1B00A21960 /* ProfileBiodataCell.xib in Resources */,
 				7A2A7BC81E124E1C00A21960 /* icon_login_active.png in Resources */,
+				7A2A7C4B1E14C48F00A21960 /* icon-error@2x.png in Resources */,
+				7A2A7C7D1E14C48F00A21960 /* placeholder@2x.png in Resources */,
 				7A2A78981E124E1800A21960 /* GeneralProductCollectionViewCell.xib in Resources */,
 				7A2A77E11E124E1700A21960 /* AlertCameraView.xib in Resources */,
 				7A2A791C1E124E1800A21960 /* InboxTicketDetailViewController.xib in Resources */,
@@ -11062,6 +11353,7 @@
 				7A2A78EC1E124E1800A21960 /* FilterComplainViewController.xib in Resources */,
 				7A2A7B381E124E1B00A21960 /* TransactionATCViewController.xib in Resources */,
 				7A2A7ACA1E124E1A00A21960 /* OpenShopSuccessViewController.xib in Resources */,
+				7A2A7C7A1E14C48F00A21960 /* more@2x.png in Resources */,
 				7A2A7A211E124E1900A21960 /* NoResultReusableView.xib in Resources */,
 				7A2A7AAA1E124E1A00A21960 /* SettingBankAccountViewController.xib in Resources */,
 				7A2A7A831E124E1A00A21960 /* SearchAutoCompleteCell.xib in Resources */,
@@ -11081,6 +11373,7 @@
 				7A2A7BCA1E124E1C00A21960 /* icon_login_active@3x.png in Resources */,
 				34E8A2D21E028792004AE6DE /* Images.xcassets in Resources */,
 				7A2A79661E124E1800A21960 /* PriceAlertViewController.xib in Resources */,
+				7A2A7C491E14C48F00A21960 /* ding.wav in Resources */,
 				7A2A7A7E1E124E1A00A21960 /* ShipmentStatusViewController.xib in Resources */,
 				7A2A7BBE1E124E1C00A21960 /* notifikasi@3x.png in Resources */,
 				7A2A79D41E124E1900A21960 /* PromoCollectionReusableView.xib in Resources */,
@@ -11529,6 +11822,7 @@
 				7A2A7ACB1E124E1A00A21960 /* OpenShopViewController.swift in Sources */,
 				7A2A7AD11E124E1A00A21960 /* CloseShopResponse.m in Sources */,
 				7A2A796E1E124E1800A21960 /* DetailProductVideoCollectionViewCell.swift in Sources */,
+				7A2A7C661E14C48F00A21960 /* JasonMediaAction.m in Sources */,
 				7A2A7A5F1E124E1900A21960 /* SalesOrderCell.m in Sources */,
 				7A2A796B1E124E1800A21960 /* DetailProductRequest.swift in Sources */,
 				7A2A75621E124E1500A21960 /* FavoritedShopList.m in Sources */,
@@ -11573,6 +11867,7 @@
 				7A2A760D1E124E1600A21960 /* NotificationFormNotif.m in Sources */,
 				7A2A797E1E124E1800A21960 /* GalleryViewController.m in Sources */,
 				7A2A767D1E124E1600A21960 /* AddProductPicture.m in Sources */,
+				7A2A7C701E14C48F00A21960 /* JasonTextareaComponent.m in Sources */,
 				7A2A781A1E124E1700A21960 /* ImageThumbnailCell.swift in Sources */,
 				7A2A75191E124E1500A21960 /* CatalogResult.m in Sources */,
 				7A2A7B221E124E1A00A21960 /* TKPInfoWindowMapView.swift in Sources */,
@@ -11607,6 +11902,7 @@
 				7A2A79B31E124E1900A21960 /* MyReviewDetailHeaderSmileyComponent.mm in Sources */,
 				7A2A7ADA1E124E1A00A21960 /* EditShopNoteViewCell.m in Sources */,
 				7A2A78CD1E124E1800A21960 /* Slide.m in Sources */,
+				7A2A7C6F1E14C48F00A21960 /* JasonStack.m in Sources */,
 				7A2A7A511E124E1900A21960 /* OrderDetailReceiverView.swift in Sources */,
 				7A2A7A531E124E1900A21960 /* OrderDetailViewController.m in Sources */,
 				7A2A75681E124E1500A21960 /* GeneralAction.m in Sources */,
@@ -11615,6 +11911,7 @@
 				7A2A75FC1E124E1600A21960 /* ProfileEditResult.m in Sources */,
 				7A2A76571E124E1600A21960 /* ShipmentProvinceData.m in Sources */,
 				7A2A75CD1E124E1600A21960 /* ManageProduct.m in Sources */,
+				7A2A7C591E14C48F00A21960 /* JasonConvertAction.m in Sources */,
 				7A2A75E01E124E1600A21960 /* Note.m in Sources */,
 				7A2A77131E124E1600A21960 /* TKPImagePickerController.swift in Sources */,
 				7A2A79081E124E1800A21960 /* RequestResolutionData.m in Sources */,
@@ -11660,6 +11957,7 @@
 				7A2A76BB1E124E1600A21960 /* TransactionCartGateway.m in Sources */,
 				7A2A77311E124E1600A21960 /* SynchronizedOnType.swift in Sources */,
 				7A2A779B1E124E1700A21960 /* TailRecursiveSink.swift in Sources */,
+				7A2A7C6D1E14C48F00A21960 /* JasonSliderComponent.m in Sources */,
 				7A2A76651E124E1600A21960 /* NoteActionResult.swift in Sources */,
 				7A2A75411E124E1500A21960 /* CountRatingResult.m in Sources */,
 				7A2A77191E124E1600A21960 /* _FBTweakCollectionViewController.m in Sources */,
@@ -11670,6 +11968,7 @@
 				7A2A756A1E124E1500A21960 /* GoogleDistanceMatrix.m in Sources */,
 				7A2A778E1E124E1700A21960 /* Zip.swift in Sources */,
 				7A2A77591E124E1700A21960 /* CombineLatest.swift in Sources */,
+				7A2A7C641E14C48F00A21960 /* JasonLayout.m in Sources */,
 				7A2A761F1E124E1600A21960 /* ShopBadgeLevel.m in Sources */,
 				7A2A79D01E124E1900A21960 /* ProductDataSource.swift in Sources */,
 				7A2A77C01E124E1700A21960 /* TKPGooglePlaceDetailProductStore.m in Sources */,
@@ -11696,12 +11995,15 @@
 				7A2A77391E124E1600A21960 /* Disposable.swift in Sources */,
 				7A2A7B191E124E1A00A21960 /* SortViewController.m in Sources */,
 				7A2A78261E124E1700A21960 /* CatalogSectionHeaderView.m in Sources */,
+				7A2A7C611E14C48F00A21960 /* JasonImageComponent.m in Sources */,
 				7A2A7BAB1E124E1B00A21960 /* VTBaseTransactionMethod.m in Sources */,
 				7A2A76C11E124E1600A21960 /* TransactionEditAddressFormResult.m in Sources */,
 				7A2A76731E124E1600A21960 /* Shop.m in Sources */,
 				7A2A76A91E124E1600A21960 /* LuckyDealData.m in Sources */,
 				7A2A777E1E124E1700A21960 /* SubscribeOn.swift in Sources */,
+				7A2A7C511E14C48F00A21960 /* Jason.m in Sources */,
 				7A2A7A241E124E1900A21960 /* DueDateViewController.m in Sources */,
+				7A2A7C621E14C48F00A21960 /* JasonLabelComponent.m in Sources */,
 				7A2A75831E124E1500A21960 /* HotlistDetailResult.m in Sources */,
 				7A2A78071E124E1700A21960 /* TKPDAlertView.m in Sources */,
 				7A2A76B21E124E1600A21960 /* TransactionATCForm.m in Sources */,
@@ -11728,6 +12030,7 @@
 				7A2A76841E124E1600A21960 /* SettingLocationResult.m in Sources */,
 				7A2A7A2A1E124E1900A21960 /* ProductQuantityViewController.m in Sources */,
 				7A2A797D1E124E1800A21960 /* GalleryPhotoView.m in Sources */,
+				7A2A7C5A1E14C48F00A21960 /* JasonGeoAction.m in Sources */,
 				7A2A79621E124E1800A21960 /* PriceAlertCell.m in Sources */,
 				7A2A77111E124E1600A21960 /* DKImageResource.swift in Sources */,
 				7A2A75001E124E1500A21960 /* LogoutResult.m in Sources */,
@@ -11752,6 +12055,7 @@
 				7A2A77C81E124E1700A21960 /* CreatePasswordViewController.m in Sources */,
 				7A2A7A391E124E1900A21960 /* RejectReasonEmptyVariantViewController.m in Sources */,
 				7A2A74D81E124E1500A21960 /* ImageDownloader.m in Sources */,
+				7A2A7C581E14C48F00A21960 /* JasonComponentFactory.m in Sources */,
 				7A2A76311E124E1600A21960 /* OrderPayment.m in Sources */,
 				7A2A77381E124E1600A21960 /* Queue.swift in Sources */,
 				7A2A75C31E124E1500A21960 /* LikeDislikePost.m in Sources */,
@@ -11761,6 +12065,7 @@
 				7A2A77991E124E1700A21960 /* AnonymousObserver.swift in Sources */,
 				7A2A75E11E124E1600A21960 /* Notification.m in Sources */,
 				7A2A76031E124E1600A21960 /* ProfileSettings.m in Sources */,
+				7A2A7C841E14C48F00A21960 /* UIView+JasonComponentPayload.m in Sources */,
 				7A2A74FF1E124E1500A21960 /* Logout.m in Sources */,
 				7A2A74EE1E124E1500A21960 /* ViewLabelUser.m in Sources */,
 				7A2A78A61E124E1800A21960 /* RedirectHandler.m in Sources */,
@@ -11773,6 +12078,7 @@
 				7A2A7B1F1E124E1A00A21960 /* ProductTalkViewController.m in Sources */,
 				7A2A783D1E124E1700A21960 /* ContactUsDataManager.m in Sources */,
 				7A2A776D1E124E1700A21960 /* Producer.swift in Sources */,
+				7A2A7C561E14C48F00A21960 /* JasonCacheAction.m in Sources */,
 				7A2A756B1E124E1500A21960 /* GoogleDistanceMatrixDetail.m in Sources */,
 				7A2A76AA1E124E1600A21960 /* LuckyDealWord.m in Sources */,
 				7A2A74D91E124E1500A21960 /* LabelCopyable.swift in Sources */,
@@ -11830,6 +12136,7 @@
 				7A2A790E1E124E1800A21960 /* ResolutionCenterInputViewController.m in Sources */,
 				7A2A778B1E124E1700A21960 /* Zip+arity.swift in Sources */,
 				7A2A788D1E124E1800A21960 /* searchObject.swift in Sources */,
+				7A2A7C691E14C48F00A21960 /* JasonOauthAction.m in Sources */,
 				7A2A79AB1E124E1900A21960 /* HelpfulReviewResult.m in Sources */,
 				7A2A79221E124E1800A21960 /* InboxTicketViewController.m in Sources */,
 				7A2A77B41E124E1700A21960 /* SchedulerType.swift in Sources */,
@@ -11852,9 +12159,11 @@
 				7A2A781B1E124E1700A21960 /* RequestUploadImageHelper.m in Sources */,
 				7A2A7BB21E124E1B00A21960 /* VTToken.m in Sources */,
 				7A2A76FF1E124E1600A21960 /* UploadImageImage.m in Sources */,
+				7A2A7C5C1E14C48F00A21960 /* JasonHorizontalSection.m in Sources */,
 				7A2A78EB1E124E1800A21960 /* FilterComplainViewController.m in Sources */,
 				7A2A77DE1E124E1700A21960 /* AlertBaseUrl.m in Sources */,
 				7A2A76B81E124E1600A21960 /* TransactionCalculatePrice.m in Sources */,
+				7A2A7C571E14C48F00A21960 /* JasonComponent.m in Sources */,
 				7A2A76431E124E1600A21960 /* SearchAutoCompleteCatalog.m in Sources */,
 				7A2A753B1E124E1500A21960 /* CatalogShops.m in Sources */,
 				7A2A760B1E124E1600A21960 /* BankAccountGetDefaultFormResult.m in Sources */,
@@ -11875,9 +12184,12 @@
 				7A2A75951E124E1500A21960 /* InboxResolutionPendingAmount.m in Sources */,
 				7A2A76D41E124E1600A21960 /* TransactionVoucher.m in Sources */,
 				7A2A76F61E124E1600A21960 /* GeneratedHost.m in Sources */,
+				7A2A7C601E14C48F00A21960 /* JasonHtmlComponent.m in Sources */,
 				7A2A75511E124E1500A21960 /* ShopInfo.m in Sources */,
 				7A2A75361E124E1500A21960 /* CatalogInfo.m in Sources */,
+				7A2A7C5B1E14C48F00A21960 /* JasonHelper.m in Sources */,
 				7A2A779C1E124E1700A21960 /* ObserverType.swift in Sources */,
+				7A2A7C651E14C48F00A21960 /* JasonMapComponent.m in Sources */,
 				7A2A74E51E124E1500A21960 /* TKPDStackView.m in Sources */,
 				7A2A77791E124E1700A21960 /* Sink.swift in Sources */,
 				7A2A78B51E124E1800A21960 /* HomePageViewController.swift in Sources */,
@@ -12016,6 +12328,7 @@
 				7A2A79E81E124E1900A21960 /* PulsaProduct.swift in Sources */,
 				7A2A787D1E124E1700A21960 /* DepositSummaryViewController.m in Sources */,
 				7A2A75661E124E1500A21960 /* FavoriteShopAction.m in Sources */,
+				7A2A7C631E14C48F00A21960 /* JasonLayer.m in Sources */,
 				7A2A75931E124E1500A21960 /* InboxResolutionCenterList.m in Sources */,
 				7A2A798A1E124E1800A21960 /* ProductCellSize.swift in Sources */,
 				7A2A7BA31E124E1B00A21960 /* ProductThumbCell.m in Sources */,
@@ -12026,6 +12339,7 @@
 				7A2A77001E124E1600A21960 /* UploadImageParams.m in Sources */,
 				7A2A76781E124E1600A21960 /* ShopInfoResult.m in Sources */,
 				7A2A7B1D1E124E1A00A21960 /* ProductTalkFormViewController.m in Sources */,
+				7A2A7C731E14C48F00A21960 /* JasonUtilAction.m in Sources */,
 				7A2A775E1E124E1700A21960 /* DelaySubscription.swift in Sources */,
 				7A2A7A6C1E124E1900A21960 /* FilterShipmentConfirmationViewController.m in Sources */,
 				7A2A7B5B1E124E1B00A21960 /* RequestCart.m in Sources */,
@@ -12060,9 +12374,11 @@
 				7A2A76701E124E1600A21960 /* Payment.m in Sources */,
 				7A2A771B1E124E1600A21960 /* _FBTweakTableViewCell.m in Sources */,
 				7A2A7A081E124E1900A21960 /* ResolutionCenterCreateSolutionList.m in Sources */,
+				7A2A7C541E14C48F00A21960 /* JasonAudioAction.m in Sources */,
 				34E8A2D61E028792004AE6DE /* MainViewController.m in Sources */,
 				7A2A761A1E124E1600A21960 /* PromoteResult.m in Sources */,
 				7A2A77AD1E124E1700A21960 /* MainScheduler.swift in Sources */,
+				7A2A7C531E14C48F00A21960 /* JasonAppDelegate.m in Sources */,
 				7A2A79CF1E124E1900A21960 /* ProductReputationViewModel.m in Sources */,
 				7A2A7A201E124E1900A21960 /* NoResultReusableView.m in Sources */,
 				7A2A74F71E124E1500A21960 /* CreatePasswordResult.m in Sources */,
@@ -12099,6 +12415,7 @@
 				7A2A76EE1E124E1600A21960 /* TxOrderPaymentEditMethod.m in Sources */,
 				7A2A76AB1E124E1600A21960 /* TransactionAction.m in Sources */,
 				7A2A770E1E124E1600A21960 /* DKAssetGroupVC.swift in Sources */,
+				7A2A7C6C1E14C48F00A21960 /* JasonSessionAction.m in Sources */,
 				7A2A78D01E124E1800A21960 /* HomeFlowLayout.m in Sources */,
 				7A2A74D61E124E1500A21960 /* DBManager.m in Sources */,
 				7A2A79AF1E124E1900A21960 /* MedalComponent.mm in Sources */,
@@ -12117,6 +12434,7 @@
 				7A2A79971E124E1900A21960 /* ProductRequest.m in Sources */,
 				7A2A7BB31E124E1B00A21960 /* VTTransactionDetails.m in Sources */,
 				7A2A74F61E124E1500A21960 /* CreatePassword.m in Sources */,
+				7A2A7C6E1E14C48F00A21960 /* JasonSpaceComponent.m in Sources */,
 				7A2A7AC11E124E1A00A21960 /* OpenShopDomainViewCell.m in Sources */,
 				7A2A7A441E124E1900A21960 /* SalesNewOrderViewController.m in Sources */,
 				7A2A78711E124E1700A21960 /* DepositBankRequest.swift in Sources */,
@@ -12140,6 +12458,7 @@
 				7A2A75C41E124E1500A21960 /* LikeDislikePostResult.m in Sources */,
 				7A2A7AD61E124E1A00A21960 /* EditShopDescriptionViewCell.m in Sources */,
 				7A2A7A591E124E1900A21960 /* OrderTotalView.swift in Sources */,
+				7A2A7C711E14C48F00A21960 /* JasonTextfieldComponent.m in Sources */,
 				7A2A78691E124E1700A21960 /* RateView.m in Sources */,
 				7A2A7AE91E124E1A00A21960 /* ShopInfoAddressCell.m in Sources */,
 				7A2A79F51E124E1900A21960 /* PulsaStatus.swift in Sources */,
@@ -12175,6 +12494,7 @@
 				7A2A7A001E124E1900A21960 /* ResolutionCenterCreateForm.m in Sources */,
 				7A2A7B6E1E124E1B00A21960 /* ListOrderInvoiceComponent.mm in Sources */,
 				7A2A75221E124E1500A21960 /* CategoryResult.swift in Sources */,
+				7A2A7C671E14C48F00A21960 /* JasonMemory.m in Sources */,
 				7A2A777B1E124E1700A21960 /* SkipUntil.swift in Sources */,
 				7A2A79BA1E124E1900A21960 /* ProductDetailReputationViewController.m in Sources */,
 				7A2A78941E124E1800A21960 /* GeneralList1GestureCell.m in Sources */,
@@ -12200,6 +12520,7 @@
 				7A2A79E91E124E1900A21960 /* PulsaProductAttribute.swift in Sources */,
 				7A2A78561E124E1700A21960 /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				7A2A755A1E124E1500A21960 /* TheOtherProduct.m in Sources */,
+				7A2A7C5E1E14C48F00A21960 /* JasonHorizontalSectionItem.m in Sources */,
 				7A2A773F1E124E1600A21960 /* DisposeBase.swift in Sources */,
 				7A2A752D1E124E1500A21960 /* DepositForm.m in Sources */,
 				7A2A7B6A1E124E1B00A21960 /* DetailOrderButtonsView.mm in Sources */,
@@ -12216,6 +12537,7 @@
 				7A2A76291E124E1600A21960 /* OrderBookingResponse.m in Sources */,
 				7A2A7B201E124E1A00A21960 /* InfoAddressView.swift in Sources */,
 				7A2A7B0F1E124E1A00A21960 /* FilterConditionViewController.m in Sources */,
+				7A2A7C741E14C48F00A21960 /* JasonVerticalSectionItem.m in Sources */,
 				7A2A759B1E124E1500A21960 /* EditResolutionFormData.swift in Sources */,
 				7A2A78CF1E124E1800A21960 /* SliderObject.m in Sources */,
 				7A2A75321E124E1500A21960 /* DepositSummaryList.m in Sources */,
@@ -12245,6 +12567,7 @@
 				7A2A75D81E124E1600A21960 /* ProductOwner.m in Sources */,
 				7A2A7B151E124E1A00A21960 /* FilterLocationViewController.m in Sources */,
 				7A2A7A901E124E1A00A21960 /* SearchResultCell.m in Sources */,
+				7A2A7C521E14C48F00A21960 /* JasonAction.m in Sources */,
 				7A2A79371E124E1800A21960 /* MyShopAddressViewController.m in Sources */,
 				7A2A77351E124E1600A21960 /* Bag.swift in Sources */,
 				7A2A770B1E124E1600A21960 /* DKCamera.swift in Sources */,
@@ -12365,6 +12688,7 @@
 				7A2A76EB1E124E1600A21960 /* TxOrderPaymentEdit.m in Sources */,
 				7A2A758F1E124E1500A21960 /* InboxMessageResult.m in Sources */,
 				7A2A7A491E124E1900A21960 /* OrderDateView.swift in Sources */,
+				7A2A7C761E14C48F00A21960 /* JasonViewController.m in Sources */,
 				7A2A74DC1E124E1500A21960 /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				7A2A79A21E124E1900A21960 /* DetailReputationReviewHeaderComponent.mm in Sources */,
 				7A2A76111E124E1600A21960 /* PrivacyFormResult.m in Sources */,
@@ -12479,6 +12803,7 @@
 				7A2A78551E124E1700A21960 /* TKPDTabBarNavigationController.m in Sources */,
 				7A2A79301E124E1800A21960 /* WebViewController.m in Sources */,
 				7A2A777F1E124E1700A21960 /* Switch.swift in Sources */,
+				7A2A7C721E14C48F00A21960 /* JasonTimerAction.m in Sources */,
 				7A2A76941E124E1600A21960 /* ShippingInfoShipmentPackage.m in Sources */,
 				7A2A78B31E124E1800A21960 /* HomePageCategoryLayoutSection.swift in Sources */,
 				7A2A77D31E124E1700A21960 /* RegisterViewController.m in Sources */,
@@ -12497,6 +12822,7 @@
 				7A2A79AA1E124E1900A21960 /* HelpfulReviewResponse.m in Sources */,
 				7A2A757E1E124E1500A21960 /* DepartmentChild2.m in Sources */,
 				7A2A76E51E124E1600A21960 /* MethodList.m in Sources */,
+				7A2A7C6B1E14C48F00A21960 /* JasonPortraitPicker.m in Sources */,
 				7A2A7B1B1E124E1A00A21960 /* ProductTalkDetailHeaderView.mm in Sources */,
 				7A2A75091E124E1500A21960 /* SecurityQuestion.m in Sources */,
 				7A2A76881E124E1600A21960 /* ShopSettingsResult.m in Sources */,
@@ -12505,6 +12831,8 @@
 				7A2A75551E124E1500A21960 /* TalkComment.m in Sources */,
 				7A2A77171E124E1600A21960 /* _FBTweakBindObserver.m in Sources */,
 				7A2A75131E124E1500A21960 /* AnnouncementTicker.swift in Sources */,
+				7A2A7C831E14C48F00A21960 /* UIBarButtonItem+Badge.m in Sources */,
+				7A2A7C551E14C48F00A21960 /* JasonButtonComponent.m in Sources */,
 				7A2A74FD1E124E1500A21960 /* LoginResult.m in Sources */,
 				7A2A75FA1E124E1600A21960 /* ProfileEditFormResult.m in Sources */,
 				7A2A78FD1E124E1800A21960 /* ReplayConversationPostData.swift in Sources */,
@@ -12559,6 +12887,7 @@
 				7A2A75591E124E1500A21960 /* TalkResult.m in Sources */,
 				7A2A76CA1E124E1600A21960 /* CCFee.m in Sources */,
 				7A2A75561E124E1500A21960 /* TalkCommentList.m in Sources */,
+				7A2A7C681E14C48F00A21960 /* JasonNetworkAction.m in Sources */,
 				7A2A786B1E124E1700A21960 /* StarsRateView.m in Sources */,
 				7A2A784E1E124E1700A21960 /* ContactUsFormMainCategoryCell.m in Sources */,
 				7A2A76481E124E1600A21960 /* SearchAutoCompleteObject.m in Sources */,
@@ -12594,6 +12923,7 @@
 				7A2A76B11E124E1600A21960 /* ShipmentAvailable.m in Sources */,
 				7A2A75F81E124E1600A21960 /* DataUser.m in Sources */,
 				7A2A77681E124E1700A21960 /* Merge.swift in Sources */,
+				7A2A7C6A1E14C48F00A21960 /* JasonParser.m in Sources */,
 				7A2A77EA1E124E1700A21960 /* AlertListBankView.m in Sources */,
 				7A2A78901E124E1800A21960 /* GeneralAlertCell.m in Sources */,
 				7A2A79231E124E1800A21960 /* LoginSecurity.m in Sources */,
