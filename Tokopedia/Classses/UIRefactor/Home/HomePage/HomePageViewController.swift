@@ -409,6 +409,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
+                AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Click Phonebook Icon")
                 self.navigator.navigateToAddressBook()
             }
             

@@ -137,6 +137,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     //MARK : CNContactPickerdelegate
     @available(iOS 9.0, *)
     func contactPicker(picker: CNContactPickerViewController, didSelectContactProperty contactProperty: CNContactProperty) {
+        AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if contactProperty.key == CNContactPhoneNumbersKey {
             guard let phoneNumber = contactProperty.value else { return }
             
@@ -150,6 +151,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     //MARK : ABPeoplePickerNavigationControllerDelegate
     func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
         let phones: ABMultiValueRef = ABRecordCopyValue(person, kABPersonPhoneProperty).takeRetainedValue()
+        AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if ABMultiValueGetCount(phones) > 0 {
             let index = Int(identifier) as CFIndex
             let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as! String
