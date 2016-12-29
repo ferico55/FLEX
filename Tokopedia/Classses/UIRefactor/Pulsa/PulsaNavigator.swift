@@ -33,6 +33,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             // Fallback on earlier versions
             let contactPicker = ABPeoplePickerNavigationController()
             contactPicker.peoplePickerDelegate = self
+            contactPicker.displayedProperties = [NSNumber(int: kABPersonPhoneProperty)]
 
             self.controller.presentViewController(contactPicker, animated: true, completion: nil)
         }
@@ -126,7 +127,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     private func replaceAreaNumber(phoneNumber: String) -> String {
         var phone = ""
         
-        if phoneNumber != "" {
+        if phoneNumber.characters.count > 2 {
             phone = phoneNumber.stringByReplacingOccurrencesOfString("62", withString: "0", options: .LiteralSearch, range: phoneNumber.startIndex ..< phoneNumber.startIndex.advancedBy(2))
         }
         
