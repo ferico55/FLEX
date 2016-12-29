@@ -12,6 +12,7 @@ class PulsaProduct: NSObject, NSCoding {
     var id : String?
     var type : String?
     var attributes : PulsaProductAttribute = PulsaProductAttribute()
+    var relationships : PulsaRelationships = PulsaRelationships()
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
@@ -19,12 +20,15 @@ class PulsaProduct: NSObject, NSCoding {
             "type" : "type",
         ]
     }
-    
+
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "attributes", toKeyPath: "attributes", withMapping: PulsaProductAttribute.mapping())
+        let attributesMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "attributes", toKeyPath: "attributes", withMapping: PulsaProductAttribute.mapping())
+        mapping.addPropertyMapping(attributesMapping)
+        
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "relationships", toKeyPath: "relationships", withMapping: PulsaRelationships.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -47,12 +51,17 @@ class PulsaProduct: NSObject, NSCoding {
         if let attributes = aDecoder.decodeObjectForKey("attributes") as? PulsaProductAttribute {
             self.attributes = attributes
         }
+        
+        if let relationships = aDecoder.decodeObjectForKey("relationships") as? PulsaRelationships {
+            self.relationships = relationships
+        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(id, forKey: "id")
         aCoder.encodeObject(type, forKey: "type")
         aCoder.encodeObject(attributes, forKey: "attributes")
+        aCoder.encodeObject(relationships, forKey: "relationships")
     }
 
 }

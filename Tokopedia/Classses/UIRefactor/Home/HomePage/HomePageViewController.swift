@@ -400,11 +400,16 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.navigator.navigateToPulsaProduct(products, selectedOperator: self.pulsaView.selectedOperator)
             }
             
+            self.pulsaView.didTapOperator = { [unowned self] (operators) in
+                self.navigator.navigateToPulsaOperator(operators)
+            }
+            
             self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
                 self.navigator.navigateToSuccess(url)
             }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
+                AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Click Phonebook Icon")
                 self.navigator.navigateToAddressBook()
             }
             

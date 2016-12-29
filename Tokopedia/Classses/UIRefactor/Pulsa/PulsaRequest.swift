@@ -84,7 +84,14 @@ class PulsaRequest: NSObject {
     }
     
     func requestProduct(operatorId: String, categoryId: String) {
-        self.requestProductFromNetwork(operatorId, categoryId: categoryId)
+        self.cache.loadProducts{ (cachedProduct) in
+            if(cachedProduct == nil) {
+                self.requestProductFromNetwork(operatorId,  categoryId: categoryId)
+            } else {
+                let products = self.filterProductBy(cachedProduct!.data, operatorId: operatorId, categoryId: categoryId)
+                self.didReceiveProduct(products)
+            }
+        }
     }
     
     private func requestProductFromNetwork(operatorId: String, categoryId: String) {
@@ -94,17 +101,36 @@ class PulsaRequest: NSObject {
             requestWithBaseUrl(NSString.pulsaApiUrl(),
                                path: "/v1.1/product/list",
                                method: .GET,
-                               parameter: ["operator_id" : operatorId, "category_id" : categoryId, "device" : "ios"],
+                               parameter: ["device" : "ios"],
                                mapping: PulsaProductRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot
-                                self.didReceiveProduct(productRoot.data)
+                                self.cache.storeProducts(productRoot)
+                                
+                                var products = [PulsaProduct]()
+                                if(categoryId != "" || operatorId != "") {
+                                    products = self.filterProductBy(productRoot.data, operatorId: operatorId, categoryId: categoryId)
+                                } else {
+                                    products = productRoot.data
+                                }
+                                
+                                self.didReceiveProduct(products)
                                 
                 },
                                onFailure: { (errors) -> Void in
                                 
             });
 
+    }
+    
+    private func filterProductBy(products: [PulsaProduct], operatorId: String, categoryId: String) -> [PulsaProduct] {
+        let filteredProducts = products.filter({ (product) -> Bool in
+            categoryId != "" ? product.relationships.relationCategory.data.id == categoryId : true
+        }).filter({ (product) -> Bool in
+            operatorId != "" ? product.relationships.relationOperator.data.id == operatorId : true
+        })
+        
+        return filteredProducts
     }
     
     private func checkMaintenanceStatus(didReceiveMaintenanceStatus: (PulsaStatus -> Void)!) {

@@ -16,6 +16,8 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     var prefix: [String] = []
     var minimum_length: Int = 0
     var maximum_length: Int = 0
+    var default_product_id : String = ""
+    
     var rule: PulsaOperatorAttributeRule = PulsaOperatorAttributeRule()
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
@@ -27,6 +29,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
             "prefix" : "prefix",
             "minimum_length" : "minimum_length",
             "maximum_length" : "maximum_length",
+            "default_product_id" : "default_product_id"
         ]
     }
     
@@ -74,6 +77,10 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
             self.prefix = prefix
         }
         
+        if let default_product_id = aDecoder.decodeObjectForKey("default_product_id") as? String {
+            self.default_product_id = default_product_id
+        }
+        
         if let rule = aDecoder.decodeObjectForKey("rule") as? PulsaOperatorAttributeRule {
             self.rule = rule
         }
@@ -87,6 +94,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
         aCoder.encodeObject(prefix, forKey: "prefix")
         aCoder.encodeObject(minimum_length, forKey: "minimum_length")
         aCoder.encodeObject(maximum_length, forKey: "maximum_length")
+        aCoder.encodeObject(default_product_id, forKey: "default_product_id")
         aCoder.encodeObject(rule, forKey: "rule")
     }
 }

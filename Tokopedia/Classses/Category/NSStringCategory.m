@@ -233,7 +233,7 @@
 }
 
 + (NSString*)encodeString:(NSString *)string {
-    NSCharacterSet* customAllowedSet = [NSCharacterSet characterSetWithCharactersInString:@"=\"#%/<>?@\\^`{|}&"].invertedSet;
+    NSCharacterSet* customAllowedSet = [NSCharacterSet characterSetWithCharactersInString:@"=\"#%/<>?@\\^`{|}& "].invertedSet;
     
     NSString* encodedString = [string stringByAddingPercentEncodingWithAllowedCharacters:customAllowedSet];
     

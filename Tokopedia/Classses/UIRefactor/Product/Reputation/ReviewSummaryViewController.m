@@ -102,15 +102,17 @@ TokopediaNetworkManagerDelegate
     
     _reviewMessageTextView.text = _reviewMessage;
     
-    
+    NSString *iconName = @"";
     for (int ii = 0; ii < _qualityStarsArray.count; ii++) {
         UIImageView *temp = [_qualityStarsArray objectAtIndex:ii];
-        temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _qualityRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+        iconName = (ii < _qualityRate)? @"icon_star_active":@"icon_star";
+        temp.image = [UIImage imageNamed:iconName];
     }
     
     for (int ii = 0; ii < _accuracyStarsArray.count; ii++) {
         UIImageView *temp = [_accuracyStarsArray objectAtIndex:ii];
-        temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _accuracyRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+        iconName = (ii < _accuracyRate)? @"icon_star_active":@"icon_star";
+        temp.image = [UIImage imageNamed:iconName];
     }
     
     [self setQualityLabel];
