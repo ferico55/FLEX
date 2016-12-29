@@ -22,7 +22,12 @@ class ShopHomeViewController: UIViewController {
     
     let url: String
     
-    private let webView = WKWebView()
+    private let webView = WKWebView(frame: CGRectZero, configuration: {
+        let config: WKWebViewConfiguration = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        
+        return config
+    }())
     
     private let router = JLRoutes()
     
@@ -172,6 +177,8 @@ extension ShopHomeViewController: WKNavigationDelegate {
         if router.routeURL(navigationAction.request.URL!) {
             decisionHandler(.Cancel)
         } else if navigationAction.request.URL!.absoluteString! == self.url {
+            decisionHandler(.Allow)
+        } else if let targetFrame = navigationAction.targetFrame where !targetFrame.mainFrame {
             decisionHandler(.Allow)
         } else {
             let webViewController = WebViewController()
