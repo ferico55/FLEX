@@ -46,6 +46,7 @@ PODS:
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
+  - Eureka (1.7.0)
   - FBSDKCoreKit (4.11.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.11.0):
@@ -117,7 +118,7 @@ PODS:
   - Rollout.io (1.7.1)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
-  - TPKeyboardAvoiding (1.3)
+  - TPKeyboardAvoiding (1.3.1)
   - TransitionKit (2.2.1)
   - TTTAttributedLabel (1.13.4)
   - UITableView+FDTemplateLayoutCell (1.4)
@@ -132,6 +133,7 @@ DEPENDENCIES:
   - ComponentKit (~> 0.14)
   - DownPicker
   - EAIntroView (~> 2.8.0)
+  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `swift2.3`)
   - FBSDKLoginKit
   - FLEX (~> 2.0)
   - GoogleAppIndexing
@@ -151,10 +153,20 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.7.1)
   - SPTPersistentCache (~> 1.0)
-  - TPKeyboardAvoiding (~> 1.3)
+  - TPKeyboardAvoiding
   - TTTAttributedLabel
   - UITableView+FDTemplateLayoutCell (~> 1.4)
   - youtube-ios-player-helper (~> 0.1.6)
+
+EXTERNAL SOURCES:
+  Eureka:
+    :branch: swift2.3
+    :git: https://github.com/xmartlabs/Eureka.git
+
+CHECKOUT OPTIONS:
+  Eureka:
+    :commit: be9e11baaba4092c36373e8c8ba774fddd6788cc
+    :git: https://github.com/xmartlabs/Eureka.git
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -168,6 +180,7 @@ SPEC CHECKSUMS:
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
+  Eureka: 2020d9faeef7b7e9adeb9e3d8af779e5931c1897
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
   FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
@@ -197,12 +210,12 @@ SPEC CHECKSUMS:
   Rollout.io: 4a178b5020f33162de7309087ceabcefa7d0c5f2
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
-  TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
+  TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: d12574c0e0b3c9b44422b1b11267713b51f23010
+PODFILE CHECKSUM: a15b140b500df4a99a2327a21dfe5df621200a63
 
 COCOAPODS: 1.1.1

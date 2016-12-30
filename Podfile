@@ -28,7 +28,7 @@ def common_pods
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
-    pod 'TPKeyboardAvoiding', '~> 1.3'
+    pod 'TPKeyboardAvoiding'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
