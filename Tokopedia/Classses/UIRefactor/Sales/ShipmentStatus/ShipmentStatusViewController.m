@@ -185,16 +185,15 @@
                 [self didTapTrackOrder:order];
             }];
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING) {
-            if(order.order_is_pickup == 1) {
-                [cell showTrackButtonOnTap:^(OrderTransaction *order) {
-                    [self didTapTrackOrder:order];
-                }];
-            }
-            
-            [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
-                [self didTapReceiptOrder:order];
+            [cell showTrackButtonOnTap:^(OrderTransaction *order) {
+                [self didTapTrackOrder:order];
             }];
             
+            if (order.order_is_pickup != 1) {
+                [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                    [self didTapReceiptOrder:order];
+                }];
+            }
         } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
