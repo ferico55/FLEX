@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecurityQuestionViewController" customModule="Tokopedia" customModuleProvider="target">
@@ -13,7 +17,7 @@
                 <outlet property="otpInfoLabel" destination="GeT-6j-7wr" id="ogZ-OH-sZo"/>
                 <outlet property="questionTitle" destination="7YU-C3-gGf" id="O6c-Vg-Gn6"/>
                 <outlet property="questionViewType1" destination="fb3-X1-Rgf" id="lgK-VN-m5o"/>
-                <outlet property="questionViewType2" destination="cvf-SG-bcO" id="Fp2-VA-YDH"/>
+                <outlet property="questionViewType2" destination="jCv-eP-wbJ" id="ruX-HR-aoi"/>
                 <outlet property="requestOTPButton" destination="jJ8-vA-Ww9" id="9Aj-BV-9oz"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NnD-FN-Ljw"/>
             </connections>
@@ -22,7 +26,7 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view tag="11" contentMode="scaleToFill" id="fb3-X1-Rgf">
@@ -36,7 +40,7 @@
                         <constraint firstAttribute="height" constant="21" id="XFd-hg-1gF"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2i9-xJ-Zt0">
@@ -55,7 +59,7 @@
                     </constraints>
                     <string key="text">Hi Toppers, mohon kesediaannya menjawab pertanyaan berikut untuk membantu kami memastikan bahwa Anda adalah pemilik akun Tokopedia ini.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <variation key="default">
                         <mask key="constraints">
@@ -70,11 +74,11 @@
                     </constraints>
                     <string key="text">Hi Topper, mohon kesediaannya menjawab pertanyaan berikut untuk membantu kami memastikan bahwa Anda adalah pemilik akun Tokopedia ini.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Vil-ej-5Hb" secondAttribute="trailing" constant="24" id="0bM-S8-5fj"/>
                 <constraint firstAttribute="trailing" secondItem="2i9-xJ-Zt0" secondAttribute="trailing" constant="24" id="2zq-g4-sJK"/>
@@ -106,86 +110,97 @@
             </variation>
             <point key="canvasLocation" x="333.5" y="1212.5"/>
         </view>
-        <view contentMode="scaleToFill" id="cvf-SG-bcO">
+        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jCv-eP-wbJ" customClass="TPKeyboardAvoidingScrollView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeT-6j-7wr">
-                    <rect key="frame" x="24" y="54" width="326" height="54"/>
-                    <string key="text">Hi Toppers, mohon kesediaannya mengisi kode OTP berikut untuk membantu kami memastikan bahwa Anda adalah pemilik akun Tokopedia ini.</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJ8-vA-Ww9">
-                    <rect key="frame" x="24" y="125" width="325" height="40"/>
-                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cvf-SG-bcO">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeT-6j-7wr">
+                            <rect key="frame" x="24" y="54" width="326" height="54"/>
+                            <string key="text">Hi Toppers, mohon kesediaannya mengisi kode OTP berikut untuk membantu kami memastikan bahwa Anda adalah pemilik akun Tokopedia ini.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJ8-vA-Ww9">
+                            <rect key="frame" x="24" y="125" width="325" height="40"/>
+                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="7GU-8L-efc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <state key="normal" title="OTP">
+                                <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didTapRequestOTP:" destination="-1" eventType="touchUpInside" id="6Q8-D6-pL1"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Masukkan Kode OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="no8-Br-byW">
+                            <rect key="frame" x="25" y="220" width="326" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="qbt-Nn-brl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode OTP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhP-Nl-24X">
+                            <rect key="frame" x="25" y="25" width="325" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="coP-3o-QBz"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="7GU-8L-efc"/>
+                        <constraint firstAttribute="trailing" secondItem="GeT-6j-7wr" secondAttribute="trailing" constant="25" id="1Kr-PP-CUU"/>
+                        <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="jJ8-vA-Ww9" secondAttribute="bottom" constant="55" id="4cX-ZY-ecd"/>
+                        <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="209" id="5gN-Gn-hka"/>
+                        <constraint firstItem="GeT-6j-7wr" firstAttribute="top" secondItem="EhP-Nl-24X" secondAttribute="bottom" constant="8" id="DbI-yn-5Sy"/>
+                        <constraint firstItem="EhP-Nl-24X" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="F6L-7x-44c"/>
+                        <constraint firstItem="GeT-6j-7wr" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="Iqj-H0-LmF"/>
+                        <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="no8-Br-byW" secondAttribute="bottom" constant="23" id="R7R-hH-g2y"/>
+                        <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="17" id="Svo-9j-RHq"/>
+                        <constraint firstAttribute="trailing" secondItem="jJ8-vA-Ww9" secondAttribute="trailing" constant="26" id="Thh-s3-IY0"/>
+                        <constraint firstItem="jJ8-vA-Ww9" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="YlW-9P-IKg"/>
+                        <constraint firstItem="no8-Br-byW" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="bq2-Sl-vAW"/>
+                        <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="24" id="df0-Da-skt"/>
+                        <constraint firstItem="EhP-Nl-24X" firstAttribute="top" secondItem="cvf-SG-bcO" secondAttribute="top" constant="25" id="ebH-A5-bZl"/>
+                        <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="20" id="jz2-pg-JPi"/>
+                        <constraint firstAttribute="trailing" secondItem="EhP-Nl-24X" secondAttribute="trailing" constant="25" id="rNJ-RW-oH1"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                    <state key="normal" title="OTP">
-                        <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                             <real key="value" value="5"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didTapRequestOTP:" destination="-1" eventType="touchUpInside" id="6Q8-D6-pL1"/>
-                    </connections>
-                </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Masukkan Kode OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="no8-Br-byW">
-                    <rect key="frame" x="25" y="220" width="326" height="30"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="qbt-Nn-brl"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode OTP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhP-Nl-24X">
-                    <rect key="frame" x="25" y="25" width="325" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="coP-3o-QBz"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="R7R-hH-g2y"/>
+                            <exclude reference="5gN-Gn-hka"/>
+                            <exclude reference="jz2-pg-JPi"/>
+                        </mask>
+                    </variation>
+                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="GeT-6j-7wr" secondAttribute="trailing" constant="25" id="1Kr-PP-CUU"/>
-                <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="jJ8-vA-Ww9" secondAttribute="bottom" constant="55" id="4cX-ZY-ecd"/>
-                <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="209" id="5gN-Gn-hka"/>
-                <constraint firstItem="GeT-6j-7wr" firstAttribute="top" secondItem="EhP-Nl-24X" secondAttribute="bottom" constant="8" id="DbI-yn-5Sy"/>
-                <constraint firstItem="EhP-Nl-24X" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="F6L-7x-44c"/>
-                <constraint firstItem="GeT-6j-7wr" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="Iqj-H0-LmF"/>
-                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="no8-Br-byW" secondAttribute="bottom" constant="23" id="R7R-hH-g2y"/>
-                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="17" id="Svo-9j-RHq"/>
-                <constraint firstAttribute="trailing" secondItem="jJ8-vA-Ww9" secondAttribute="trailing" constant="26" id="Thh-s3-IY0"/>
-                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="YlW-9P-IKg"/>
-                <constraint firstItem="no8-Br-byW" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="bq2-Sl-vAW"/>
-                <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="24" id="df0-Da-skt"/>
-                <constraint firstItem="EhP-Nl-24X" firstAttribute="top" secondItem="cvf-SG-bcO" secondAttribute="top" constant="25" id="ebH-A5-bZl"/>
-                <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="20" id="jz2-pg-JPi"/>
-                <constraint firstAttribute="trailing" secondItem="EhP-Nl-24X" secondAttribute="trailing" constant="25" id="rNJ-RW-oH1"/>
+                <constraint firstItem="cvf-SG-bcO" firstAttribute="top" secondItem="jCv-eP-wbJ" secondAttribute="top" id="AdY-5d-Il3"/>
+                <constraint firstAttribute="trailing" secondItem="cvf-SG-bcO" secondAttribute="trailing" id="BFS-fB-pgu"/>
+                <constraint firstItem="cvf-SG-bcO" firstAttribute="centerY" secondItem="jCv-eP-wbJ" secondAttribute="centerY" id="JdL-Xz-5wS"/>
+                <constraint firstItem="cvf-SG-bcO" firstAttribute="leading" secondItem="jCv-eP-wbJ" secondAttribute="leading" id="OH7-Ro-vux"/>
+                <constraint firstAttribute="bottom" secondItem="cvf-SG-bcO" secondAttribute="bottom" id="a9d-Y1-X8y"/>
+                <constraint firstItem="cvf-SG-bcO" firstAttribute="centerX" secondItem="jCv-eP-wbJ" secondAttribute="centerX" id="vaX-eK-f7n"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="5"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="R7R-hH-g2y"/>
-                    <exclude reference="5gN-Gn-hka"/>
-                    <exclude reference="jz2-pg-JPi"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="756.5" y="1212.5"/>
-        </view>
+        </scrollView>
     </objects>
 </document>
