@@ -1919,6 +1919,7 @@
 		7A2A7C841E14C48F00A21960 /* UIView+JasonComponentPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A7C471E14C48F00A21960 /* UIView+JasonComponentPayload.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7ABAE4671E1B507E00FA68E5 /* JasonBannerComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABAE4661E1B507E00FA68E5 /* JasonBannerComponent.m */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -5083,6 +5084,8 @@
 		7A2A7C471E14C48F00A21960 /* UIView+JasonComponentPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JasonComponentPayload.m"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7ABAE4651E1B507E00FA68E5 /* JasonBannerComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonBannerComponent.h; sourceTree = "<group>"; };
+		7ABAE4661E1B507E00FA68E5 /* JasonBannerComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonBannerComponent.m; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -7773,6 +7776,7 @@
 		7A2A6DCE1E124E1200A21960 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7ABAE4621E1B4BFD00FA68E5 /* JasonetteComponents */,
 				7A2A6DCF1E124E1200A21960 /* Activation */,
 				7A2A6DF41E124E1200A21960 /* Address */,
 				7A2A6DFF1E124E1200A21960 /* Alert */,
@@ -10730,6 +10734,15 @@
 			path = Jasonette;
 			sourceTree = "<group>";
 		};
+		7ABAE4621E1B4BFD00FA68E5 /* JasonetteComponents */ = {
+			isa = PBXGroup;
+			children = (
+				7ABAE4651E1B507E00FA68E5 /* JasonBannerComponent.h */,
+				7ABAE4661E1B507E00FA68E5 /* JasonBannerComponent.m */,
+			);
+			name = JasonetteComponents;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12215,6 +12228,7 @@
 				7A2A76D51E124E1600A21960 /* TransactionVoucherData.m in Sources */,
 				7A2A797F1E124E1800A21960 /* ProductGalleryViewController.m in Sources */,
 				7A2A77C61E124E1700A21960 /* ActivationRequest.m in Sources */,
+				7ABAE4671E1B507E00FA68E5 /* JasonBannerComponent.m in Sources */,
 				7A2A75A61E124E1500A21960 /* ResolutionLast.m in Sources */,
 				7A2A74F91E124E1500A21960 /* DiscoverResponse.swift in Sources */,
 				7A2A785F1E124E1700A21960 /* CollectionScrollAndSwipe.m in Sources */,
