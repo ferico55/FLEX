@@ -1163,7 +1163,7 @@ TTTAttributedLabelDelegate
                                   path:@"/v4/product/get_detail.pl"
                                 method:RKRequestMethodGET
                              parameter:@{
-                                         @"product_id" : [_data objectForKey:@"product_id"]?:@"0",
+                                         @"product_id" : self.jason[@"product_id"]?:_data[@"product_id"],
                                          @"product_key" : [_data objectForKey:@"product_key"]?:@"",
                                          @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                                          }
