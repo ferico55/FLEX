@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 enum RequestError : ErrorType {
     case networkError

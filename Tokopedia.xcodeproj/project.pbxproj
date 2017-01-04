@@ -653,149 +653,6 @@
 		7A2A77281E124E1600A21960 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D161E124E1200A21960 /* README.md */; };
 		7A2A77291E124E1600A21960 /* RSKGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D171E124E1200A21960 /* RSKGrowingTextView.swift */; };
 		7A2A772A1E124E1600A21960 /* RSKPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D181E124E1200A21960 /* RSKPlaceholderTextView.swift */; };
-		7A2A772B1E124E1600A21960 /* AnyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D1A1E124E1200A21960 /* AnyObserver.swift */; };
-		7A2A772C1E124E1600A21960 /* Cancelable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D1B1E124E1200A21960 /* Cancelable.swift */; };
-		7A2A772D1E124E1600A21960 /* AsyncLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D1D1E124E1200A21960 /* AsyncLock.swift */; };
-		7A2A772E1E124E1600A21960 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D1E1E124E1200A21960 /* Lock.swift */; };
-		7A2A772F1E124E1600A21960 /* LockOwnerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D1F1E124E1200A21960 /* LockOwnerType.swift */; };
-		7A2A77301E124E1600A21960 /* SynchronizedDisposeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D201E124E1200A21960 /* SynchronizedDisposeType.swift */; };
-		7A2A77311E124E1600A21960 /* SynchronizedOnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D211E124E1200A21960 /* SynchronizedOnType.swift */; };
-		7A2A77321E124E1600A21960 /* SynchronizedSubscribeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D221E124E1200A21960 /* SynchronizedSubscribeType.swift */; };
-		7A2A77331E124E1600A21960 /* SynchronizedUnsubscribeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D231E124E1200A21960 /* SynchronizedUnsubscribeType.swift */; };
-		7A2A77341E124E1600A21960 /* ConnectableObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D241E124E1200A21960 /* ConnectableObservableType.swift */; };
-		7A2A77351E124E1600A21960 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D261E124E1200A21960 /* Bag.swift */; };
-		7A2A77361E124E1600A21960 /* InfiniteSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D271E124E1200A21960 /* InfiniteSequence.swift */; };
-		7A2A77371E124E1600A21960 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D281E124E1200A21960 /* PriorityQueue.swift */; };
-		7A2A77381E124E1600A21960 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D291E124E1200A21960 /* Queue.swift */; };
-		7A2A77391E124E1600A21960 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D2A1E124E1200A21960 /* Disposable.swift */; };
-		7A2A773A1E124E1600A21960 /* AnonymousDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D2C1E124E1200A21960 /* AnonymousDisposable.swift */; };
-		7A2A773B1E124E1600A21960 /* BinaryDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D2D1E124E1200A21960 /* BinaryDisposable.swift */; };
-		7A2A773C1E124E1600A21960 /* BooleanDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D2E1E124E1200A21960 /* BooleanDisposable.swift */; };
-		7A2A773D1E124E1600A21960 /* CompositeDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D2F1E124E1200A21960 /* CompositeDisposable.swift */; };
-		7A2A773E1E124E1600A21960 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D301E124E1200A21960 /* DisposeBag.swift */; };
-		7A2A773F1E124E1600A21960 /* DisposeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D311E124E1200A21960 /* DisposeBase.swift */; };
-		7A2A77401E124E1600A21960 /* NAryDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D321E124E1200A21960 /* NAryDisposable.swift */; };
-		7A2A77411E124E1600A21960 /* NAryDisposable.tt in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A6D331E124E1200A21960 /* NAryDisposable.tt */; };
-		7A2A77421E124E1600A21960 /* NopDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D341E124E1200A21960 /* NopDisposable.swift */; };
-		7A2A77431E124E1600A21960 /* RefCountDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D351E124E1200A21960 /* RefCountDisposable.swift */; };
-		7A2A77441E124E1600A21960 /* ScheduledDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D361E124E1200A21960 /* ScheduledDisposable.swift */; };
-		7A2A77451E124E1600A21960 /* SerialDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D371E124E1200A21960 /* SerialDisposable.swift */; };
-		7A2A77461E124E1600A21960 /* SingleAssignmentDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D381E124E1200A21960 /* SingleAssignmentDisposable.swift */; };
-		7A2A77471E124E1600A21960 /* StableCompositeDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D391E124E1200A21960 /* StableCompositeDisposable.swift */; };
-		7A2A77481E124E1600A21960 /* SubscriptionDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D3A1E124E1200A21960 /* SubscriptionDisposable.swift */; };
-		7A2A77491E124E1600A21960 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D3B1E124E1200A21960 /* Errors.swift */; };
-		7A2A774A1E124E1600A21960 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D3C1E124E1200A21960 /* Event.swift */; };
-		7A2A774B1E124E1600A21960 /* String+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D3E1E124E1200A21960 /* String+Rx.swift */; };
-		7A2A774C1E124E1600A21960 /* ImmediateSchedulerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D3F1E124E1200A21960 /* ImmediateSchedulerType.swift */; };
-		7A2A774D1E124E1600A21960 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A6D401E124E1200A21960 /* Info.plist */; };
-		7A2A774E1E124E1600A21960 /* Observable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D411E124E1200A21960 /* Observable+Extensions.swift */; };
-		7A2A774F1E124E1600A21960 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D421E124E1200A21960 /* Observable.swift */; };
-		7A2A77501E124E1600A21960 /* ObservableConvertibleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D431E124E1200A21960 /* ObservableConvertibleType.swift */; };
-		7A2A77511E124E1600A21960 /* AddRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D461E124E1200A21960 /* AddRef.swift */; };
-		7A2A77521E124E1700A21960 /* Amb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D471E124E1200A21960 /* Amb.swift */; };
-		7A2A77531E124E1700A21960 /* AnonymousObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D481E124E1200A21960 /* AnonymousObservable.swift */; };
-		7A2A77541E124E1700A21960 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D491E124E1200A21960 /* Buffer.swift */; };
-		7A2A77551E124E1700A21960 /* Catch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4A1E124E1200A21960 /* Catch.swift */; };
-		7A2A77561E124E1700A21960 /* CombineLatest+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4B1E124E1200A21960 /* CombineLatest+arity.swift */; };
-		7A2A77571E124E1700A21960 /* CombineLatest+arity.tt in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4C1E124E1200A21960 /* CombineLatest+arity.tt */; };
-		7A2A77581E124E1700A21960 /* CombineLatest+CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4D1E124E1200A21960 /* CombineLatest+CollectionType.swift */; };
-		7A2A77591E124E1700A21960 /* CombineLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4E1E124E1200A21960 /* CombineLatest.swift */; };
-		7A2A775A1E124E1700A21960 /* Concat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D4F1E124E1200A21960 /* Concat.swift */; };
-		7A2A775B1E124E1700A21960 /* ConnectableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D501E124E1200A21960 /* ConnectableObservable.swift */; };
-		7A2A775C1E124E1700A21960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D511E124E1200A21960 /* Debug.swift */; };
-		7A2A775D1E124E1700A21960 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D521E124E1200A21960 /* Deferred.swift */; };
-		7A2A775E1E124E1700A21960 /* DelaySubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D531E124E1200A21960 /* DelaySubscription.swift */; };
-		7A2A775F1E124E1700A21960 /* DistinctUntilChanged.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D541E124E1200A21960 /* DistinctUntilChanged.swift */; };
-		7A2A77601E124E1700A21960 /* Do.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D551E124E1200A21960 /* Do.swift */; };
-		7A2A77611E124E1700A21960 /* ElementAt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D561E124E1200A21960 /* ElementAt.swift */; };
-		7A2A77621E124E1700A21960 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D571E124E1200A21960 /* Empty.swift */; };
-		7A2A77631E124E1700A21960 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D581E124E1200A21960 /* Error.swift */; };
-		7A2A77641E124E1700A21960 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D591E124E1200A21960 /* Filter.swift */; };
-		7A2A77651E124E1700A21960 /* Generate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5A1E124E1200A21960 /* Generate.swift */; };
-		7A2A77661E124E1700A21960 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5B1E124E1200A21960 /* Just.swift */; };
-		7A2A77671E124E1700A21960 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5C1E124E1200A21960 /* Map.swift */; };
-		7A2A77681E124E1700A21960 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5D1E124E1200A21960 /* Merge.swift */; };
-		7A2A77691E124E1700A21960 /* Multicast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5E1E124E1200A21960 /* Multicast.swift */; };
-		7A2A776A1E124E1700A21960 /* Never.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D5F1E124E1200A21960 /* Never.swift */; };
-		7A2A776B1E124E1700A21960 /* ObserveOn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D601E124E1200A21960 /* ObserveOn.swift */; };
-		7A2A776C1E124E1700A21960 /* ObserveOnSerialDispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D611E124E1200A21960 /* ObserveOnSerialDispatchQueue.swift */; };
-		7A2A776D1E124E1700A21960 /* Producer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D621E124E1200A21960 /* Producer.swift */; };
-		7A2A776E1E124E1700A21960 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D631E124E1200A21960 /* Range.swift */; };
-		7A2A776F1E124E1700A21960 /* Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D641E124E1200A21960 /* Reduce.swift */; };
-		7A2A77701E124E1700A21960 /* RefCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D651E124E1200A21960 /* RefCount.swift */; };
-		7A2A77711E124E1700A21960 /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D661E124E1200A21960 /* Repeat.swift */; };
-		7A2A77721E124E1700A21960 /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D671E124E1200A21960 /* RetryWhen.swift */; };
-		7A2A77731E124E1700A21960 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D681E124E1200A21960 /* Sample.swift */; };
-		7A2A77741E124E1700A21960 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D691E124E1200A21960 /* Scan.swift */; };
-		7A2A77751E124E1700A21960 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6A1E124E1200A21960 /* Sequence.swift */; };
-		7A2A77761E124E1700A21960 /* ShareReplay1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6B1E124E1200A21960 /* ShareReplay1.swift */; };
-		7A2A77771E124E1700A21960 /* ShareReplay1WhileConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6C1E124E1200A21960 /* ShareReplay1WhileConnected.swift */; };
-		7A2A77781E124E1700A21960 /* SingleAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6D1E124E1200A21960 /* SingleAsync.swift */; };
-		7A2A77791E124E1700A21960 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6E1E124E1200A21960 /* Sink.swift */; };
-		7A2A777A1E124E1700A21960 /* Skip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D6F1E124E1200A21960 /* Skip.swift */; };
-		7A2A777B1E124E1700A21960 /* SkipUntil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D701E124E1200A21960 /* SkipUntil.swift */; };
-		7A2A777C1E124E1700A21960 /* SkipWhile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D711E124E1200A21960 /* SkipWhile.swift */; };
-		7A2A777D1E124E1700A21960 /* StartWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D721E124E1200A21960 /* StartWith.swift */; };
-		7A2A777E1E124E1700A21960 /* SubscribeOn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D731E124E1200A21960 /* SubscribeOn.swift */; };
-		7A2A777F1E124E1700A21960 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D741E124E1200A21960 /* Switch.swift */; };
-		7A2A77801E124E1700A21960 /* Take.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D751E124E1200A21960 /* Take.swift */; };
-		7A2A77811E124E1700A21960 /* TakeLast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D761E124E1200A21960 /* TakeLast.swift */; };
-		7A2A77821E124E1700A21960 /* TakeUntil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D771E124E1200A21960 /* TakeUntil.swift */; };
-		7A2A77831E124E1700A21960 /* TakeWhile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D781E124E1200A21960 /* TakeWhile.swift */; };
-		7A2A77841E124E1700A21960 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D791E124E1200A21960 /* Throttle.swift */; };
-		7A2A77851E124E1700A21960 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7A1E124E1200A21960 /* Timeout.swift */; };
-		7A2A77861E124E1700A21960 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7B1E124E1200A21960 /* Timer.swift */; };
-		7A2A77871E124E1700A21960 /* ToArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7C1E124E1200A21960 /* ToArray.swift */; };
-		7A2A77881E124E1700A21960 /* Using.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7D1E124E1200A21960 /* Using.swift */; };
-		7A2A77891E124E1700A21960 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7E1E124E1200A21960 /* Window.swift */; };
-		7A2A778A1E124E1700A21960 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D7F1E124E1200A21960 /* WithLatestFrom.swift */; };
-		7A2A778B1E124E1700A21960 /* Zip+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D801E124E1200A21960 /* Zip+arity.swift */; };
-		7A2A778C1E124E1700A21960 /* Zip+arity.tt in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A6D811E124E1200A21960 /* Zip+arity.tt */; };
-		7A2A778D1E124E1700A21960 /* Zip+CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D821E124E1200A21960 /* Zip+CollectionType.swift */; };
-		7A2A778E1E124E1700A21960 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D831E124E1200A21960 /* Zip.swift */; };
-		7A2A778F1E124E1700A21960 /* Observable+Aggregate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D841E124E1200A21960 /* Observable+Aggregate.swift */; };
-		7A2A77901E124E1700A21960 /* Observable+Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D851E124E1200A21960 /* Observable+Binding.swift */; };
-		7A2A77911E124E1700A21960 /* Observable+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D861E124E1200A21960 /* Observable+Concurrency.swift */; };
-		7A2A77921E124E1700A21960 /* Observable+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D871E124E1200A21960 /* Observable+Creation.swift */; };
-		7A2A77931E124E1700A21960 /* Observable+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D881E124E1200A21960 /* Observable+Debug.swift */; };
-		7A2A77941E124E1700A21960 /* Observable+Multiple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D891E124E1200A21960 /* Observable+Multiple.swift */; };
-		7A2A77951E124E1700A21960 /* Observable+Single.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D8A1E124E1200A21960 /* Observable+Single.swift */; };
-		7A2A77961E124E1700A21960 /* Observable+StandardSequenceOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D8B1E124E1200A21960 /* Observable+StandardSequenceOperators.swift */; };
-		7A2A77971E124E1700A21960 /* Observable+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D8C1E124E1200A21960 /* Observable+Time.swift */; };
-		7A2A77981E124E1700A21960 /* ObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D8D1E124E1200A21960 /* ObservableType.swift */; };
-		7A2A77991E124E1700A21960 /* AnonymousObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D8F1E124E1200A21960 /* AnonymousObserver.swift */; };
-		7A2A779A1E124E1700A21960 /* ObserverBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D901E124E1200A21960 /* ObserverBase.swift */; };
-		7A2A779B1E124E1700A21960 /* TailRecursiveSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D911E124E1200A21960 /* TailRecursiveSink.swift */; };
-		7A2A779C1E124E1700A21960 /* ObserverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D921E124E1200A21960 /* ObserverType.swift */; };
-		7A2A779D1E124E1700A21960 /* Platform.Darwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D941E124E1200A21960 /* Platform.Darwin.swift */; };
-		7A2A779E1E124E1700A21960 /* Platform.Linux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D951E124E1200A21960 /* Platform.Linux.swift */; };
-		7A2A779F1E124E1700A21960 /* Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D961E124E1200A21960 /* Rx.swift */; };
-		7A2A77A01E124E1700A21960 /* RxMutableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D971E124E1200A21960 /* RxMutableBox.swift */; };
-		7A2A77A11E124E1700A21960 /* ConcurrentDispatchQueueScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D991E124E1200A21960 /* ConcurrentDispatchQueueScheduler.swift */; };
-		7A2A77A21E124E1700A21960 /* ConcurrentMainScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9A1E124E1200A21960 /* ConcurrentMainScheduler.swift */; };
-		7A2A77A31E124E1700A21960 /* CurrentThreadScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9B1E124E1200A21960 /* CurrentThreadScheduler.swift */; };
-		7A2A77A41E124E1700A21960 /* DispatchQueueSchedulerQOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9C1E124E1200A21960 /* DispatchQueueSchedulerQOS.swift */; };
-		7A2A77A51E124E1700A21960 /* HistoricalScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9D1E124E1200A21960 /* HistoricalScheduler.swift */; };
-		7A2A77A61E124E1700A21960 /* HistoricalSchedulerTimeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9E1E124E1200A21960 /* HistoricalSchedulerTimeConverter.swift */; };
-		7A2A77A71E124E1700A21960 /* ImmediateScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6D9F1E124E1200A21960 /* ImmediateScheduler.swift */; };
-		7A2A77A81E124E1700A21960 /* AnonymousInvocable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA11E124E1200A21960 /* AnonymousInvocable.swift */; };
-		7A2A77A91E124E1700A21960 /* InvocableScheduledItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA21E124E1200A21960 /* InvocableScheduledItem.swift */; };
-		7A2A77AA1E124E1700A21960 /* InvocableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA31E124E1200A21960 /* InvocableType.swift */; };
-		7A2A77AB1E124E1700A21960 /* ScheduledItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA41E124E1200A21960 /* ScheduledItem.swift */; };
-		7A2A77AC1E124E1700A21960 /* ScheduledItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA51E124E1200A21960 /* ScheduledItemType.swift */; };
-		7A2A77AD1E124E1700A21960 /* MainScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA61E124E1200A21960 /* MainScheduler.swift */; };
-		7A2A77AE1E124E1700A21960 /* OperationQueueScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA71E124E1200A21960 /* OperationQueueScheduler.swift */; };
-		7A2A77AF1E124E1700A21960 /* RecursiveScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA81E124E1200A21960 /* RecursiveScheduler.swift */; };
-		7A2A77B01E124E1700A21960 /* SchedulerServices+Emulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DA91E124E1200A21960 /* SchedulerServices+Emulation.swift */; };
-		7A2A77B11E124E1700A21960 /* SerialDispatchQueueScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DAA1E124E1200A21960 /* SerialDispatchQueueScheduler.swift */; };
-		7A2A77B21E124E1700A21960 /* VirtualTimeConverterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DAB1E124E1200A21960 /* VirtualTimeConverterType.swift */; };
-		7A2A77B31E124E1700A21960 /* VirtualTimeScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DAC1E124E1200A21960 /* VirtualTimeScheduler.swift */; };
-		7A2A77B41E124E1700A21960 /* SchedulerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DAD1E124E1200A21960 /* SchedulerType.swift */; };
-		7A2A77B51E124E1700A21960 /* BehaviorSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DAF1E124E1200A21960 /* BehaviorSubject.swift */; };
-		7A2A77B61E124E1700A21960 /* PublishSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB01E124E1200A21960 /* PublishSubject.swift */; };
-		7A2A77B71E124E1700A21960 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB11E124E1200A21960 /* ReplaySubject.swift */; };
-		7A2A77B81E124E1700A21960 /* SubjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB21E124E1200A21960 /* SubjectType.swift */; };
-		7A2A77B91E124E1700A21960 /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB31E124E1200A21960 /* Variable.swift */; };
 		7A2A77BA1E124E1700A21960 /* StyledPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB51E124E1200A21960 /* StyledPageControl.m */; };
 		7A2A77BB1E124E1700A21960 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB71E124E1200A21960 /* Info.plist */; };
 		7A2A77BC1E124E1700A21960 /* SwiftOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A6DB91E124E1200A21960 /* SwiftOverlays.swift */; };
@@ -3143,149 +3000,6 @@
 		7A2A6D161E124E1200A21960 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7A2A6D171E124E1200A21960 /* RSKGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSKGrowingTextView.swift; sourceTree = "<group>"; };
 		7A2A6D181E124E1200A21960 /* RSKPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSKPlaceholderTextView.swift; sourceTree = "<group>"; };
-		7A2A6D1A1E124E1200A21960 /* AnyObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyObserver.swift; sourceTree = "<group>"; };
-		7A2A6D1B1E124E1200A21960 /* Cancelable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cancelable.swift; sourceTree = "<group>"; };
-		7A2A6D1D1E124E1200A21960 /* AsyncLock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncLock.swift; sourceTree = "<group>"; };
-		7A2A6D1E1E124E1200A21960 /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
-		7A2A6D1F1E124E1200A21960 /* LockOwnerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockOwnerType.swift; sourceTree = "<group>"; };
-		7A2A6D201E124E1200A21960 /* SynchronizedDisposeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedDisposeType.swift; sourceTree = "<group>"; };
-		7A2A6D211E124E1200A21960 /* SynchronizedOnType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedOnType.swift; sourceTree = "<group>"; };
-		7A2A6D221E124E1200A21960 /* SynchronizedSubscribeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedSubscribeType.swift; sourceTree = "<group>"; };
-		7A2A6D231E124E1200A21960 /* SynchronizedUnsubscribeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedUnsubscribeType.swift; sourceTree = "<group>"; };
-		7A2A6D241E124E1200A21960 /* ConnectableObservableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectableObservableType.swift; sourceTree = "<group>"; };
-		7A2A6D261E124E1200A21960 /* Bag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
-		7A2A6D271E124E1200A21960 /* InfiniteSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteSequence.swift; sourceTree = "<group>"; };
-		7A2A6D281E124E1200A21960 /* PriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriorityQueue.swift; sourceTree = "<group>"; };
-		7A2A6D291E124E1200A21960 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		7A2A6D2A1E124E1200A21960 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
-		7A2A6D2C1E124E1200A21960 /* AnonymousDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D2D1E124E1200A21960 /* BinaryDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D2E1E124E1200A21960 /* BooleanDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooleanDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D2F1E124E1200A21960 /* CompositeDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompositeDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D301E124E1200A21960 /* DisposeBag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
-		7A2A6D311E124E1200A21960 /* DisposeBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposeBase.swift; sourceTree = "<group>"; };
-		7A2A6D321E124E1200A21960 /* NAryDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NAryDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D331E124E1200A21960 /* NAryDisposable.tt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NAryDisposable.tt; sourceTree = "<group>"; };
-		7A2A6D341E124E1200A21960 /* NopDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NopDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D351E124E1200A21960 /* RefCountDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefCountDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D361E124E1200A21960 /* ScheduledDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D371E124E1200A21960 /* SerialDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerialDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D381E124E1200A21960 /* SingleAssignmentDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleAssignmentDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D391E124E1200A21960 /* StableCompositeDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StableCompositeDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D3A1E124E1200A21960 /* SubscriptionDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionDisposable.swift; sourceTree = "<group>"; };
-		7A2A6D3B1E124E1200A21960 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		7A2A6D3C1E124E1200A21960 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		7A2A6D3E1E124E1200A21960 /* String+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Rx.swift"; sourceTree = "<group>"; };
-		7A2A6D3F1E124E1200A21960 /* ImmediateSchedulerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmediateSchedulerType.swift; sourceTree = "<group>"; };
-		7A2A6D401E124E1200A21960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Info.plist; sourceTree = "<group>"; };
-		7A2A6D411E124E1200A21960 /* Observable+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Extensions.swift"; sourceTree = "<group>"; };
-		7A2A6D421E124E1200A21960 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		7A2A6D431E124E1200A21960 /* ObservableConvertibleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableConvertibleType.swift; sourceTree = "<group>"; };
-		7A2A6D461E124E1200A21960 /* AddRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRef.swift; sourceTree = "<group>"; };
-		7A2A6D471E124E1200A21960 /* Amb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Amb.swift; sourceTree = "<group>"; };
-		7A2A6D481E124E1200A21960 /* AnonymousObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousObservable.swift; sourceTree = "<group>"; };
-		7A2A6D491E124E1200A21960 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
-		7A2A6D4A1E124E1200A21960 /* Catch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Catch.swift; sourceTree = "<group>"; };
-		7A2A6D4B1E124E1200A21960 /* CombineLatest+arity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CombineLatest+arity.swift"; sourceTree = "<group>"; };
-		7A2A6D4C1E124E1200A21960 /* CombineLatest+arity.tt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CombineLatest+arity.tt"; sourceTree = "<group>"; };
-		7A2A6D4D1E124E1200A21960 /* CombineLatest+CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CombineLatest+CollectionType.swift"; sourceTree = "<group>"; };
-		7A2A6D4E1E124E1200A21960 /* CombineLatest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombineLatest.swift; sourceTree = "<group>"; };
-		7A2A6D4F1E124E1200A21960 /* Concat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Concat.swift; sourceTree = "<group>"; };
-		7A2A6D501E124E1200A21960 /* ConnectableObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectableObservable.swift; sourceTree = "<group>"; };
-		7A2A6D511E124E1200A21960 /* Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
-		7A2A6D521E124E1200A21960 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
-		7A2A6D531E124E1200A21960 /* DelaySubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelaySubscription.swift; sourceTree = "<group>"; };
-		7A2A6D541E124E1200A21960 /* DistinctUntilChanged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistinctUntilChanged.swift; sourceTree = "<group>"; };
-		7A2A6D551E124E1200A21960 /* Do.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Do.swift; sourceTree = "<group>"; };
-		7A2A6D561E124E1200A21960 /* ElementAt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementAt.swift; sourceTree = "<group>"; };
-		7A2A6D571E124E1200A21960 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
-		7A2A6D581E124E1200A21960 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		7A2A6D591E124E1200A21960 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
-		7A2A6D5A1E124E1200A21960 /* Generate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generate.swift; sourceTree = "<group>"; };
-		7A2A6D5B1E124E1200A21960 /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
-		7A2A6D5C1E124E1200A21960 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		7A2A6D5D1E124E1200A21960 /* Merge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
-		7A2A6D5E1E124E1200A21960 /* Multicast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Multicast.swift; sourceTree = "<group>"; };
-		7A2A6D5F1E124E1200A21960 /* Never.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Never.swift; sourceTree = "<group>"; };
-		7A2A6D601E124E1200A21960 /* ObserveOn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveOn.swift; sourceTree = "<group>"; };
-		7A2A6D611E124E1200A21960 /* ObserveOnSerialDispatchQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveOnSerialDispatchQueue.swift; sourceTree = "<group>"; };
-		7A2A6D621E124E1200A21960 /* Producer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Producer.swift; sourceTree = "<group>"; };
-		7A2A6D631E124E1200A21960 /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
-		7A2A6D641E124E1200A21960 /* Reduce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reduce.swift; sourceTree = "<group>"; };
-		7A2A6D651E124E1200A21960 /* RefCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefCount.swift; sourceTree = "<group>"; };
-		7A2A6D661E124E1200A21960 /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
-		7A2A6D671E124E1200A21960 /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
-		7A2A6D681E124E1200A21960 /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
-		7A2A6D691E124E1200A21960 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
-		7A2A6D6A1E124E1200A21960 /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
-		7A2A6D6B1E124E1200A21960 /* ShareReplay1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareReplay1.swift; sourceTree = "<group>"; };
-		7A2A6D6C1E124E1200A21960 /* ShareReplay1WhileConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareReplay1WhileConnected.swift; sourceTree = "<group>"; };
-		7A2A6D6D1E124E1200A21960 /* SingleAsync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleAsync.swift; sourceTree = "<group>"; };
-		7A2A6D6E1E124E1200A21960 /* Sink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
-		7A2A6D6F1E124E1200A21960 /* Skip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skip.swift; sourceTree = "<group>"; };
-		7A2A6D701E124E1200A21960 /* SkipUntil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkipUntil.swift; sourceTree = "<group>"; };
-		7A2A6D711E124E1200A21960 /* SkipWhile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkipWhile.swift; sourceTree = "<group>"; };
-		7A2A6D721E124E1200A21960 /* StartWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartWith.swift; sourceTree = "<group>"; };
-		7A2A6D731E124E1200A21960 /* SubscribeOn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeOn.swift; sourceTree = "<group>"; };
-		7A2A6D741E124E1200A21960 /* Switch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
-		7A2A6D751E124E1200A21960 /* Take.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Take.swift; sourceTree = "<group>"; };
-		7A2A6D761E124E1200A21960 /* TakeLast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakeLast.swift; sourceTree = "<group>"; };
-		7A2A6D771E124E1200A21960 /* TakeUntil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakeUntil.swift; sourceTree = "<group>"; };
-		7A2A6D781E124E1200A21960 /* TakeWhile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakeWhile.swift; sourceTree = "<group>"; };
-		7A2A6D791E124E1200A21960 /* Throttle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
-		7A2A6D7A1E124E1200A21960 /* Timeout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
-		7A2A6D7B1E124E1200A21960 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
-		7A2A6D7C1E124E1200A21960 /* ToArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToArray.swift; sourceTree = "<group>"; };
-		7A2A6D7D1E124E1200A21960 /* Using.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Using.swift; sourceTree = "<group>"; };
-		7A2A6D7E1E124E1200A21960 /* Window.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
-		7A2A6D7F1E124E1200A21960 /* WithLatestFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
-		7A2A6D801E124E1200A21960 /* Zip+arity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zip+arity.swift"; sourceTree = "<group>"; };
-		7A2A6D811E124E1200A21960 /* Zip+arity.tt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Zip+arity.tt"; sourceTree = "<group>"; };
-		7A2A6D821E124E1200A21960 /* Zip+CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Zip+CollectionType.swift"; sourceTree = "<group>"; };
-		7A2A6D831E124E1200A21960 /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
-		7A2A6D841E124E1200A21960 /* Observable+Aggregate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Aggregate.swift"; sourceTree = "<group>"; };
-		7A2A6D851E124E1200A21960 /* Observable+Binding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Binding.swift"; sourceTree = "<group>"; };
-		7A2A6D861E124E1200A21960 /* Observable+Concurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Concurrency.swift"; sourceTree = "<group>"; };
-		7A2A6D871E124E1200A21960 /* Observable+Creation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Creation.swift"; sourceTree = "<group>"; };
-		7A2A6D881E124E1200A21960 /* Observable+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Debug.swift"; sourceTree = "<group>"; };
-		7A2A6D891E124E1200A21960 /* Observable+Multiple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Multiple.swift"; sourceTree = "<group>"; };
-		7A2A6D8A1E124E1200A21960 /* Observable+Single.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Single.swift"; sourceTree = "<group>"; };
-		7A2A6D8B1E124E1200A21960 /* Observable+StandardSequenceOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+StandardSequenceOperators.swift"; sourceTree = "<group>"; };
-		7A2A6D8C1E124E1200A21960 /* Observable+Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Time.swift"; sourceTree = "<group>"; };
-		7A2A6D8D1E124E1200A21960 /* ObservableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableType.swift; sourceTree = "<group>"; };
-		7A2A6D8F1E124E1200A21960 /* AnonymousObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousObserver.swift; sourceTree = "<group>"; };
-		7A2A6D901E124E1200A21960 /* ObserverBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverBase.swift; sourceTree = "<group>"; };
-		7A2A6D911E124E1200A21960 /* TailRecursiveSink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailRecursiveSink.swift; sourceTree = "<group>"; };
-		7A2A6D921E124E1200A21960 /* ObserverType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverType.swift; sourceTree = "<group>"; };
-		7A2A6D941E124E1200A21960 /* Platform.Darwin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.Darwin.swift; sourceTree = "<group>"; };
-		7A2A6D951E124E1200A21960 /* Platform.Linux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.Linux.swift; sourceTree = "<group>"; };
-		7A2A6D961E124E1200A21960 /* Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rx.swift; sourceTree = "<group>"; };
-		7A2A6D971E124E1200A21960 /* RxMutableBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxMutableBox.swift; sourceTree = "<group>"; };
-		7A2A6D991E124E1200A21960 /* ConcurrentDispatchQueueScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentDispatchQueueScheduler.swift; sourceTree = "<group>"; };
-		7A2A6D9A1E124E1200A21960 /* ConcurrentMainScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentMainScheduler.swift; sourceTree = "<group>"; };
-		7A2A6D9B1E124E1200A21960 /* CurrentThreadScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentThreadScheduler.swift; sourceTree = "<group>"; };
-		7A2A6D9C1E124E1200A21960 /* DispatchQueueSchedulerQOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueSchedulerQOS.swift; sourceTree = "<group>"; };
-		7A2A6D9D1E124E1200A21960 /* HistoricalScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricalScheduler.swift; sourceTree = "<group>"; };
-		7A2A6D9E1E124E1200A21960 /* HistoricalSchedulerTimeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricalSchedulerTimeConverter.swift; sourceTree = "<group>"; };
-		7A2A6D9F1E124E1200A21960 /* ImmediateScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmediateScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DA11E124E1200A21960 /* AnonymousInvocable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousInvocable.swift; sourceTree = "<group>"; };
-		7A2A6DA21E124E1200A21960 /* InvocableScheduledItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvocableScheduledItem.swift; sourceTree = "<group>"; };
-		7A2A6DA31E124E1200A21960 /* InvocableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvocableType.swift; sourceTree = "<group>"; };
-		7A2A6DA41E124E1200A21960 /* ScheduledItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledItem.swift; sourceTree = "<group>"; };
-		7A2A6DA51E124E1200A21960 /* ScheduledItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduledItemType.swift; sourceTree = "<group>"; };
-		7A2A6DA61E124E1200A21960 /* MainScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DA71E124E1200A21960 /* OperationQueueScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueueScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DA81E124E1200A21960 /* RecursiveScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecursiveScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DA91E124E1200A21960 /* SchedulerServices+Emulation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SchedulerServices+Emulation.swift"; sourceTree = "<group>"; };
-		7A2A6DAA1E124E1200A21960 /* SerialDispatchQueueScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerialDispatchQueueScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DAB1E124E1200A21960 /* VirtualTimeConverterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualTimeConverterType.swift; sourceTree = "<group>"; };
-		7A2A6DAC1E124E1200A21960 /* VirtualTimeScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualTimeScheduler.swift; sourceTree = "<group>"; };
-		7A2A6DAD1E124E1200A21960 /* SchedulerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchedulerType.swift; sourceTree = "<group>"; };
-		7A2A6DAF1E124E1200A21960 /* BehaviorSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorSubject.swift; sourceTree = "<group>"; };
-		7A2A6DB01E124E1200A21960 /* PublishSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublishSubject.swift; sourceTree = "<group>"; };
-		7A2A6DB11E124E1200A21960 /* ReplaySubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
-		7A2A6DB21E124E1200A21960 /* SubjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectType.swift; sourceTree = "<group>"; };
-		7A2A6DB31E124E1200A21960 /* Variable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
 		7A2A6DB41E124E1200A21960 /* StyledPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledPageControl.h; sourceTree = "<group>"; };
 		7A2A6DB51E124E1200A21960 /* StyledPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyledPageControl.m; sourceTree = "<group>"; };
 		7A2A6DB71E124E1200A21960 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -7253,7 +6967,6 @@
 				7A2A6D0E1E124E1200A21960 /* MHVerticalTabBarController */,
 				7A2A6D171E124E1200A21960 /* RSKGrowingTextView.swift */,
 				7A2A6D181E124E1200A21960 /* RSKPlaceholderTextView.swift */,
-				7A2A6D191E124E1200A21960 /* RxSwift */,
 				7A2A6DB41E124E1200A21960 /* StyledPageControl.h */,
 				7A2A6DB51E124E1200A21960 /* StyledPageControl.m */,
 				7A2A6DB61E124E1200A21960 /* SwiftOverlays */,
@@ -7354,244 +7067,6 @@
 				7A2A6D161E124E1200A21960 /* README.md */,
 			);
 			path = MHVerticalTabBarController;
-			sourceTree = "<group>";
-		};
-		7A2A6D191E124E1200A21960 /* RxSwift */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D1A1E124E1200A21960 /* AnyObserver.swift */,
-				7A2A6D1B1E124E1200A21960 /* Cancelable.swift */,
-				7A2A6D1C1E124E1200A21960 /* Concurrency */,
-				7A2A6D241E124E1200A21960 /* ConnectableObservableType.swift */,
-				7A2A6D251E124E1200A21960 /* DataStructures */,
-				7A2A6D2A1E124E1200A21960 /* Disposable.swift */,
-				7A2A6D2B1E124E1200A21960 /* Disposables */,
-				7A2A6D3B1E124E1200A21960 /* Errors.swift */,
-				7A2A6D3C1E124E1200A21960 /* Event.swift */,
-				7A2A6D3D1E124E1200A21960 /* Extensions */,
-				7A2A6D3F1E124E1200A21960 /* ImmediateSchedulerType.swift */,
-				7A2A6D401E124E1200A21960 /* Info.plist */,
-				7A2A6D411E124E1200A21960 /* Observable+Extensions.swift */,
-				7A2A6D421E124E1200A21960 /* Observable.swift */,
-				7A2A6D431E124E1200A21960 /* ObservableConvertibleType.swift */,
-				7A2A6D441E124E1200A21960 /* Observables */,
-				7A2A6D8D1E124E1200A21960 /* ObservableType.swift */,
-				7A2A6D8E1E124E1200A21960 /* Observers */,
-				7A2A6D921E124E1200A21960 /* ObserverType.swift */,
-				7A2A6D931E124E1200A21960 /* Platform */,
-				7A2A6D961E124E1200A21960 /* Rx.swift */,
-				7A2A6D971E124E1200A21960 /* RxMutableBox.swift */,
-				7A2A6D981E124E1200A21960 /* Schedulers */,
-				7A2A6DAD1E124E1200A21960 /* SchedulerType.swift */,
-				7A2A6DAE1E124E1200A21960 /* Subjects */,
-			);
-			path = RxSwift;
-			sourceTree = "<group>";
-		};
-		7A2A6D1C1E124E1200A21960 /* Concurrency */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D1D1E124E1200A21960 /* AsyncLock.swift */,
-				7A2A6D1E1E124E1200A21960 /* Lock.swift */,
-				7A2A6D1F1E124E1200A21960 /* LockOwnerType.swift */,
-				7A2A6D201E124E1200A21960 /* SynchronizedDisposeType.swift */,
-				7A2A6D211E124E1200A21960 /* SynchronizedOnType.swift */,
-				7A2A6D221E124E1200A21960 /* SynchronizedSubscribeType.swift */,
-				7A2A6D231E124E1200A21960 /* SynchronizedUnsubscribeType.swift */,
-			);
-			path = Concurrency;
-			sourceTree = "<group>";
-		};
-		7A2A6D251E124E1200A21960 /* DataStructures */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D261E124E1200A21960 /* Bag.swift */,
-				7A2A6D271E124E1200A21960 /* InfiniteSequence.swift */,
-				7A2A6D281E124E1200A21960 /* PriorityQueue.swift */,
-				7A2A6D291E124E1200A21960 /* Queue.swift */,
-			);
-			path = DataStructures;
-			sourceTree = "<group>";
-		};
-		7A2A6D2B1E124E1200A21960 /* Disposables */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D2C1E124E1200A21960 /* AnonymousDisposable.swift */,
-				7A2A6D2D1E124E1200A21960 /* BinaryDisposable.swift */,
-				7A2A6D2E1E124E1200A21960 /* BooleanDisposable.swift */,
-				7A2A6D2F1E124E1200A21960 /* CompositeDisposable.swift */,
-				7A2A6D301E124E1200A21960 /* DisposeBag.swift */,
-				7A2A6D311E124E1200A21960 /* DisposeBase.swift */,
-				7A2A6D321E124E1200A21960 /* NAryDisposable.swift */,
-				7A2A6D331E124E1200A21960 /* NAryDisposable.tt */,
-				7A2A6D341E124E1200A21960 /* NopDisposable.swift */,
-				7A2A6D351E124E1200A21960 /* RefCountDisposable.swift */,
-				7A2A6D361E124E1200A21960 /* ScheduledDisposable.swift */,
-				7A2A6D371E124E1200A21960 /* SerialDisposable.swift */,
-				7A2A6D381E124E1200A21960 /* SingleAssignmentDisposable.swift */,
-				7A2A6D391E124E1200A21960 /* StableCompositeDisposable.swift */,
-				7A2A6D3A1E124E1200A21960 /* SubscriptionDisposable.swift */,
-			);
-			path = Disposables;
-			sourceTree = "<group>";
-		};
-		7A2A6D3D1E124E1200A21960 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D3E1E124E1200A21960 /* String+Rx.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		7A2A6D441E124E1200A21960 /* Observables */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D451E124E1200A21960 /* Implementations */,
-				7A2A6D841E124E1200A21960 /* Observable+Aggregate.swift */,
-				7A2A6D851E124E1200A21960 /* Observable+Binding.swift */,
-				7A2A6D861E124E1200A21960 /* Observable+Concurrency.swift */,
-				7A2A6D871E124E1200A21960 /* Observable+Creation.swift */,
-				7A2A6D881E124E1200A21960 /* Observable+Debug.swift */,
-				7A2A6D891E124E1200A21960 /* Observable+Multiple.swift */,
-				7A2A6D8A1E124E1200A21960 /* Observable+Single.swift */,
-				7A2A6D8B1E124E1200A21960 /* Observable+StandardSequenceOperators.swift */,
-				7A2A6D8C1E124E1200A21960 /* Observable+Time.swift */,
-			);
-			path = Observables;
-			sourceTree = "<group>";
-		};
-		7A2A6D451E124E1200A21960 /* Implementations */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D461E124E1200A21960 /* AddRef.swift */,
-				7A2A6D471E124E1200A21960 /* Amb.swift */,
-				7A2A6D481E124E1200A21960 /* AnonymousObservable.swift */,
-				7A2A6D491E124E1200A21960 /* Buffer.swift */,
-				7A2A6D4A1E124E1200A21960 /* Catch.swift */,
-				7A2A6D4B1E124E1200A21960 /* CombineLatest+arity.swift */,
-				7A2A6D4C1E124E1200A21960 /* CombineLatest+arity.tt */,
-				7A2A6D4D1E124E1200A21960 /* CombineLatest+CollectionType.swift */,
-				7A2A6D4E1E124E1200A21960 /* CombineLatest.swift */,
-				7A2A6D4F1E124E1200A21960 /* Concat.swift */,
-				7A2A6D501E124E1200A21960 /* ConnectableObservable.swift */,
-				7A2A6D511E124E1200A21960 /* Debug.swift */,
-				7A2A6D521E124E1200A21960 /* Deferred.swift */,
-				7A2A6D531E124E1200A21960 /* DelaySubscription.swift */,
-				7A2A6D541E124E1200A21960 /* DistinctUntilChanged.swift */,
-				7A2A6D551E124E1200A21960 /* Do.swift */,
-				7A2A6D561E124E1200A21960 /* ElementAt.swift */,
-				7A2A6D571E124E1200A21960 /* Empty.swift */,
-				7A2A6D581E124E1200A21960 /* Error.swift */,
-				7A2A6D591E124E1200A21960 /* Filter.swift */,
-				7A2A6D5A1E124E1200A21960 /* Generate.swift */,
-				7A2A6D5B1E124E1200A21960 /* Just.swift */,
-				7A2A6D5C1E124E1200A21960 /* Map.swift */,
-				7A2A6D5D1E124E1200A21960 /* Merge.swift */,
-				7A2A6D5E1E124E1200A21960 /* Multicast.swift */,
-				7A2A6D5F1E124E1200A21960 /* Never.swift */,
-				7A2A6D601E124E1200A21960 /* ObserveOn.swift */,
-				7A2A6D611E124E1200A21960 /* ObserveOnSerialDispatchQueue.swift */,
-				7A2A6D621E124E1200A21960 /* Producer.swift */,
-				7A2A6D631E124E1200A21960 /* Range.swift */,
-				7A2A6D641E124E1200A21960 /* Reduce.swift */,
-				7A2A6D651E124E1200A21960 /* RefCount.swift */,
-				7A2A6D661E124E1200A21960 /* Repeat.swift */,
-				7A2A6D671E124E1200A21960 /* RetryWhen.swift */,
-				7A2A6D681E124E1200A21960 /* Sample.swift */,
-				7A2A6D691E124E1200A21960 /* Scan.swift */,
-				7A2A6D6A1E124E1200A21960 /* Sequence.swift */,
-				7A2A6D6B1E124E1200A21960 /* ShareReplay1.swift */,
-				7A2A6D6C1E124E1200A21960 /* ShareReplay1WhileConnected.swift */,
-				7A2A6D6D1E124E1200A21960 /* SingleAsync.swift */,
-				7A2A6D6E1E124E1200A21960 /* Sink.swift */,
-				7A2A6D6F1E124E1200A21960 /* Skip.swift */,
-				7A2A6D701E124E1200A21960 /* SkipUntil.swift */,
-				7A2A6D711E124E1200A21960 /* SkipWhile.swift */,
-				7A2A6D721E124E1200A21960 /* StartWith.swift */,
-				7A2A6D731E124E1200A21960 /* SubscribeOn.swift */,
-				7A2A6D741E124E1200A21960 /* Switch.swift */,
-				7A2A6D751E124E1200A21960 /* Take.swift */,
-				7A2A6D761E124E1200A21960 /* TakeLast.swift */,
-				7A2A6D771E124E1200A21960 /* TakeUntil.swift */,
-				7A2A6D781E124E1200A21960 /* TakeWhile.swift */,
-				7A2A6D791E124E1200A21960 /* Throttle.swift */,
-				7A2A6D7A1E124E1200A21960 /* Timeout.swift */,
-				7A2A6D7B1E124E1200A21960 /* Timer.swift */,
-				7A2A6D7C1E124E1200A21960 /* ToArray.swift */,
-				7A2A6D7D1E124E1200A21960 /* Using.swift */,
-				7A2A6D7E1E124E1200A21960 /* Window.swift */,
-				7A2A6D7F1E124E1200A21960 /* WithLatestFrom.swift */,
-				7A2A6D801E124E1200A21960 /* Zip+arity.swift */,
-				7A2A6D811E124E1200A21960 /* Zip+arity.tt */,
-				7A2A6D821E124E1200A21960 /* Zip+CollectionType.swift */,
-				7A2A6D831E124E1200A21960 /* Zip.swift */,
-			);
-			path = Implementations;
-			sourceTree = "<group>";
-		};
-		7A2A6D8E1E124E1200A21960 /* Observers */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D8F1E124E1200A21960 /* AnonymousObserver.swift */,
-				7A2A6D901E124E1200A21960 /* ObserverBase.swift */,
-				7A2A6D911E124E1200A21960 /* TailRecursiveSink.swift */,
-			);
-			path = Observers;
-			sourceTree = "<group>";
-		};
-		7A2A6D931E124E1200A21960 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D941E124E1200A21960 /* Platform.Darwin.swift */,
-				7A2A6D951E124E1200A21960 /* Platform.Linux.swift */,
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		7A2A6D981E124E1200A21960 /* Schedulers */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6D991E124E1200A21960 /* ConcurrentDispatchQueueScheduler.swift */,
-				7A2A6D9A1E124E1200A21960 /* ConcurrentMainScheduler.swift */,
-				7A2A6D9B1E124E1200A21960 /* CurrentThreadScheduler.swift */,
-				7A2A6D9C1E124E1200A21960 /* DispatchQueueSchedulerQOS.swift */,
-				7A2A6D9D1E124E1200A21960 /* HistoricalScheduler.swift */,
-				7A2A6D9E1E124E1200A21960 /* HistoricalSchedulerTimeConverter.swift */,
-				7A2A6D9F1E124E1200A21960 /* ImmediateScheduler.swift */,
-				7A2A6DA01E124E1200A21960 /* Internal */,
-				7A2A6DA61E124E1200A21960 /* MainScheduler.swift */,
-				7A2A6DA71E124E1200A21960 /* OperationQueueScheduler.swift */,
-				7A2A6DA81E124E1200A21960 /* RecursiveScheduler.swift */,
-				7A2A6DA91E124E1200A21960 /* SchedulerServices+Emulation.swift */,
-				7A2A6DAA1E124E1200A21960 /* SerialDispatchQueueScheduler.swift */,
-				7A2A6DAB1E124E1200A21960 /* VirtualTimeConverterType.swift */,
-				7A2A6DAC1E124E1200A21960 /* VirtualTimeScheduler.swift */,
-			);
-			path = Schedulers;
-			sourceTree = "<group>";
-		};
-		7A2A6DA01E124E1200A21960 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6DA11E124E1200A21960 /* AnonymousInvocable.swift */,
-				7A2A6DA21E124E1200A21960 /* InvocableScheduledItem.swift */,
-				7A2A6DA31E124E1200A21960 /* InvocableType.swift */,
-				7A2A6DA41E124E1200A21960 /* ScheduledItem.swift */,
-				7A2A6DA51E124E1200A21960 /* ScheduledItemType.swift */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		7A2A6DAE1E124E1200A21960 /* Subjects */ = {
-			isa = PBXGroup;
-			children = (
-				7A2A6DAF1E124E1200A21960 /* BehaviorSubject.swift */,
-				7A2A6DB01E124E1200A21960 /* PublishSubject.swift */,
-				7A2A6DB11E124E1200A21960 /* ReplaySubject.swift */,
-				7A2A6DB21E124E1200A21960 /* SubjectType.swift */,
-				7A2A6DB31E124E1200A21960 /* Variable.swift */,
-			);
-			path = Subjects;
 			sourceTree = "<group>";
 		};
 		7A2A6DB61E124E1200A21960 /* SwiftOverlays */ = {
@@ -10583,8 +10058,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
-				F56FC4FB40F35D09EADD27C8 /* Rollout.io pre-build */,
 				9852790493753292549B327E /* [CP] Check Pods Manifest.lock */,
+				F56FC4FB40F35D09EADD27C8 /* Rollout.io pre-build */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
@@ -10651,7 +10126,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */;
+			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -10705,7 +10180,6 @@
 				7A2A7B8C1E124E1B00A21960 /* ProfileBiodataShopCell.xib in Resources */,
 				7A2A78EA1E124E1800A21960 /* MessageViewController.xib in Resources */,
 				7A2A7B211E124E1A00A21960 /* InfoAddressView.xib in Resources */,
-				7A2A774D1E124E1600A21960 /* Info.plist in Resources */,
 				7A2A7BC91E124E1C00A21960 /* icon_login_active@2x.png in Resources */,
 				7A2A77F11E124E1700A21960 /* AlertListViewCell.xib in Resources */,
 				7A2A7A6B1E124E1900A21960 /* ChangeCourierViewController.xib in Resources */,
@@ -10725,7 +10199,6 @@
 				7A2A799F1E124E1900A21960 /* ReportProductViewController.xib in Resources */,
 				7A2A78791E124E1700A21960 /* DepositListBankViewController.xib in Resources */,
 				7A2A7A8B1E124E1A00A21960 /* SearchViewController.xib in Resources */,
-				7A2A77411E124E1600A21960 /* NAryDisposable.tt in Resources */,
 				7A2A78381E124E1700A21960 /* CategoryResultViewController.xib in Resources */,
 				7A2A7B3E1E124E1B00A21960 /* TransactionShipmentATCViewController.xib in Resources */,
 				7A2A798C1E124E1900A21960 /* ProductEditImageViewController.xib in Resources */,
@@ -10850,7 +10323,6 @@
 				7A2A7AC41E124E1A00A21960 /* OpenShopImageViewCell.xib in Resources */,
 				7A2A78131E124E1700A21960 /* CameraCollectionViewController.xib in Resources */,
 				7A2A7AF01E124E1A00A21960 /* ShopInfoShipmentCell.xib in Resources */,
-				7A2A77571E124E1700A21960 /* CombineLatest+arity.tt in Resources */,
 				7A2A79511E124E1800A21960 /* CourierViewCell.xib in Resources */,
 				7A2A78641E124E1700A21960 /* NoResult.xib in Resources */,
 				7A2A79311E124E1800A21960 /* WebViewController.xib in Resources */,
@@ -11033,7 +10505,6 @@
 				7A2A7A5A1E124E1900A21960 /* OrderTotalView.xib in Resources */,
 				7A2A7B2F1E124E1B00A21960 /* TrackOrderHistoryCell.xib in Resources */,
 				7A2A78E41E124E1800A21960 /* InboxMessageDetailViewController.xib in Resources */,
-				7A2A778C1E124E1700A21960 /* Zip+arity.tt in Resources */,
 				7A2A7B9F1E124E1B00A21960 /* ProductCell.xib in Resources */,
 				7A2A7B691E124E1B00A21960 /* CancelOrderViewController.xib in Resources */,
 				7A2A7B271E124E1A00A21960 /* TKPPlacePickerViewController.xib in Resources */,
@@ -11246,35 +10717,28 @@
 			files = (
 				7A2A78C21E124E1800A21960 /* MyWishlistShop.swift in Sources */,
 				7A2A7B071E124E1A00A21960 /* ShopReviewPageViewController.m in Sources */,
-				7A2A77911E124E1700A21960 /* Observable+Concurrency.swift in Sources */,
 				7A2A7A891E124E1A00A21960 /* SearchSuggestionItem.swift in Sources */,
 				7A2A76061E124E1600A21960 /* AddressFormList.m in Sources */,
 				7A2A78991E124E1800A21960 /* GeneralSwitchCell.m in Sources */,
 				7A2A7AEF1E124E1A00A21960 /* ShopInfoShipmentCell.m in Sources */,
-				7A2A77741E124E1700A21960 /* Scan.swift in Sources */,
 				7A2A7B661E124E1B00A21960 /* SystemBank.swift in Sources */,
-				7A2A77781E124E1700A21960 /* SingleAsync.swift in Sources */,
 				7A2A7BB11E124E1B00A21960 /* VTItemDetails.m in Sources */,
 				7A2A75671E124E1500A21960 /* FavoriteShopActionResult.m in Sources */,
 				7A2A750C1E124E1500A21960 /* SecurityRequestOTPResult.m in Sources */,
-				7A2A77981E124E1700A21960 /* ObservableType.swift in Sources */,
 				7A2A765A1E124E1600A21960 /* ShipmentServiceData.m in Sources */,
 				7A2A7B931E124E1B00A21960 /* PenilaianUserCell.m in Sources */,
 				7A2A79F91E124E1900A21960 /* PulsaView.swift in Sources */,
 				7A2A7A181E124E1900A21960 /* ResolutionCenterSellerEditViewController.m in Sources */,
 				7A2A751D1E124E1500A21960 /* CategoryData.swift in Sources */,
-				7A2A778D1E124E1700A21960 /* Zip+CollectionType.swift in Sources */,
 				7A2A79D81E124E1900A21960 /* Debouncer.swift in Sources */,
 				7A2A7AA71E124E1A00A21960 /* SettingBankNameViewController.m in Sources */,
 				7A2A7B881E124E1B00A21960 /* RequestOrderData.m in Sources */,
-				7A2A77621E124E1700A21960 /* Empty.swift in Sources */,
 				7A2A75461E124E1500A21960 /* ProductDetail.m in Sources */,
 				7A2A77D81E124E1700A21960 /* AddressCell.m in Sources */,
 				7A2A76861E124E1600A21960 /* SettingPaymentResult.m in Sources */,
 				7A2A78F11E124E1800A21960 /* EditProductTroubleCell.swift in Sources */,
 				7A2A7AC91E124E1A00A21960 /* OpenShopSuccessViewController.swift in Sources */,
 				7A2A78A51E124E1800A21960 /* TagManagerHandler.m in Sources */,
-				7A2A77A71E124E1700A21960 /* ImmediateScheduler.swift in Sources */,
 				7A2A791D1E124E1800A21960 /* InboxTicketReplyViewController.m in Sources */,
 				7A2A7A251E124E1900A21960 /* FilterNewOrderViewController.m in Sources */,
 				7A2A760E1E124E1600A21960 /* NotificationFormResult.m in Sources */,
@@ -11284,7 +10748,6 @@
 				7A2A75AF1E124E1500A21960 /* InboxReviewResult.m in Sources */,
 				7A2A75E41E124E1600A21960 /* NotificationResult.m in Sources */,
 				7A2A753C1E124E1500A21960 /* CatalogSpecs.m in Sources */,
-				7A2A77A81E124E1700A21960 /* AnonymousInvocable.swift in Sources */,
 				7A2A74C11E124E1500A21960 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				7A2A76401E124E1600A21960 /* ImageSearchResponseData.m in Sources */,
 				7A2A74C81E124E1500A21960 /* UIButtonCategory.swift in Sources */,
@@ -11310,11 +10773,8 @@
 				7A2A76361E124E1600A21960 /* OrderShipment.m in Sources */,
 				7A2A78031E124E1700A21960 /* StickyAlertView.m in Sources */,
 				7A2A78E51E124E1800A21960 /* InboxMessageViewController.m in Sources */,
-				7A2A775B1E124E1700A21960 /* ConnectableObservable.swift in Sources */,
-				7A2A77851E124E1700A21960 /* Timeout.swift in Sources */,
 				7A2A76BD1E124E1600A21960 /* TransactionCartResult.m in Sources */,
 				7A2A79791E124E1800A21960 /* DetailProductWholesaleTableCell.m in Sources */,
-				7A2A77A01E124E1700A21960 /* RxMutableBox.swift in Sources */,
 				7A2A76F81E124E1600A21960 /* GenerateHostResult.m in Sources */,
 				7A2A76F91E124E1600A21960 /* ImageResult.m in Sources */,
 				7A2A7A811E124E1A00A21960 /* GetSearchSuggestionGeneralResponse.swift in Sources */,
@@ -11370,7 +10830,6 @@
 				7A2A7B7B1E124E1B00A21960 /* TxOrderConfirmedBankCell.m in Sources */,
 				7A2A7A4F1E124E1900A21960 /* OrderDetailProductInformationCell.m in Sources */,
 				7A2A758D1E124E1500A21960 /* InboxMessageReplyTime.m in Sources */,
-				7A2A77701E124E1700A21960 /* RefCount.swift in Sources */,
 				7A2A79201E124E1800A21960 /* InboxTicketSplitViewController.m in Sources */,
 				7A2A77D51E124E1700A21960 /* SignInProviderListView.swift in Sources */,
 				7A2A7BDE1E124E1C00A21960 /* EDStarRating.m in Sources */,
@@ -11395,9 +10854,7 @@
 				7A2A7B241E124E1A00A21960 /* TKPMapView.swift in Sources */,
 				7A2A7A981E124E1A00A21960 /* SpellCheckResponse.m in Sources */,
 				7A2A77C71E124E1700A21960 /* AuthenticationService.m in Sources */,
-				7A2A77501E124E1600A21960 /* ObservableConvertibleType.swift in Sources */,
 				7A2A77251E124E1600A21960 /* MHVerticalTabBar.m in Sources */,
-				7A2A772D1E124E1600A21960 /* AsyncLock.swift in Sources */,
 				7A2A7A701E124E1900A21960 /* ShipmentRequest.swift in Sources */,
 				7A2A7B711E124E1B00A21960 /* OrderCellContext.mm in Sources */,
 				7A2A7A7F1E124E1A00A21960 /* ImagePickerCategoryController.m in Sources */,
@@ -11411,7 +10868,6 @@
 				7A2A7B281E124E1A00A21960 /* MaintenanceViewController.m in Sources */,
 				7A2A75DA1E124E1600A21960 /* ResponseCommentResult.m in Sources */,
 				7A2A7B6C1E124E1B00A21960 /* ListOrderButtonsComponent.mm in Sources */,
-				7A2A77881E124E1700A21960 /* Using.swift in Sources */,
 				7A2A78C91E124E1800A21960 /* ProductInfoTableViewController.m in Sources */,
 				7A2A7B6F1E124E1B00A21960 /* ListOrderShopComponent.mm in Sources */,
 				7A2A755C1E124E1500A21960 /* TheOtherProductResult.m in Sources */,
@@ -11427,7 +10883,6 @@
 				7A2A77181E124E1600A21960 /* _FBTweakCategoryViewController.m in Sources */,
 				7A2A78D31E124E1800A21960 /* HotlistCollectionCell.m in Sources */,
 				7A2A75CF1E124E1600A21960 /* ManageProductResult.m in Sources */,
-				7A2A77521E124E1700A21960 /* Amb.swift in Sources */,
 				7A2A761C1E124E1600A21960 /* ReputationDetail.m in Sources */,
 				7A2A754D1E124E1500A21960 /* ReviewList.m in Sources */,
 				7A2A76C51E124E1600A21960 /* TxOrderConfirmation.m in Sources */,
@@ -11461,14 +10916,11 @@
 				7A2A762F1E124E1600A21960 /* OrderLast.m in Sources */,
 				7A2A76E61E124E1600A21960 /* OrderDetailForm.m in Sources */,
 				7A2A75731E124E1500A21960 /* GoogleplaceDetailResult.m in Sources */,
-				7A2A776F1E124E1700A21960 /* Reduce.swift in Sources */,
 				7A2A75F21E124E1600A21960 /* ProductTalkCommentAction.m in Sources */,
 				7A2A74C01E124E1500A21960 /* NSDictionaryCategory.m in Sources */,
 				7A2A7A851E124E1A00A21960 /* SearchAutoCompleteViewController.m in Sources */,
-				7A2A77951E124E1700A21960 /* Observable+Single.swift in Sources */,
 				7A2A770A1E124E1600A21960 /* TPSpotlight.m in Sources */,
 				7A2A74F51E124E1500A21960 /* UserData.m in Sources */,
-				7A2A77861E124E1700A21960 /* Timer.swift in Sources */,
 				7A2A79F61E124E1900A21960 /* PulsaStatusAttribute.swift in Sources */,
 				7A2A76B31E124E1600A21960 /* TransactionATCFormDetail.m in Sources */,
 				7A2A76F41E124E1600A21960 /* TxOrderStatusList.m in Sources */,
@@ -11477,7 +10929,6 @@
 				7A2A77231E124E1600A21960 /* iCarousel.m in Sources */,
 				7A2A753D1E124E1500A21960 /* DetailCatalogResult.m in Sources */,
 				7A2A75D61E124E1600A21960 /* MyReviewReputationResult.m in Sources */,
-				7A2A77B51E124E1700A21960 /* BehaviorSubject.swift in Sources */,
 				7A2A75841E124E1500A21960 /* HotlistList.m in Sources */,
 				7A2A78B41E124E1800A21960 /* HomePageCategoryResponse.swift in Sources */,
 				7A2A75231E124E1500A21960 /* ContactUsActionResponse.m in Sources */,
@@ -11491,14 +10942,11 @@
 				7A2A786A1E124E1700A21960 /* ScrollViewSimultaneousGesture.m in Sources */,
 				7A2A7A4B1E124E1900A21960 /* OrderDetailDropshipView.swift in Sources */,
 				7A2A751F1E124E1500A21960 /* CategoryList.m in Sources */,
-				7A2A77A31E124E1700A21960 /* CurrentThreadScheduler.swift in Sources */,
 				7A2A75631E124E1500A21960 /* FavoritedShopResult.m in Sources */,
 				7A2A76AE1E124E1600A21960 /* TransactionAddressShippingForm.m in Sources */,
 				7A2A7B1C1E124E1A00A21960 /* ProductTalkDetailViewController.m in Sources */,
-				7A2A77651E124E1700A21960 /* Generate.swift in Sources */,
 				7A2A7BB01E124E1B00A21960 /* VTiOSAPI.m in Sources */,
 				7A2A7B4F1E124E1B00A21960 /* TransactionCartWebViewViewController.m in Sources */,
-				7A2A77331E124E1600A21960 /* SynchronizedUnsubscribeType.swift in Sources */,
 				7A2A792E1E124E1800A21960 /* SalesViewController.m in Sources */,
 				7A2A76511E124E1600A21960 /* ShipmentCourier.m in Sources */,
 				7A2A752C1E124E1500A21960 /* DepositResult.m in Sources */,
@@ -11524,8 +10972,6 @@
 				7A2A79041E124E1800A21960 /* InboxResolutionCenterOpenViewController.m in Sources */,
 				7A2A796C1E124E1800A21960 /* DetailProductVideo.swift in Sources */,
 				7A2A78121E124E1700A21960 /* CameraCollectionViewController.m in Sources */,
-				7A2A77631E124E1700A21960 /* Error.swift in Sources */,
-				7A2A776E1E124E1700A21960 /* Range.swift in Sources */,
 				7A2A754B1E124E1500A21960 /* RatingList.m in Sources */,
 				7A2A78631E124E1700A21960 /* NoResult.m in Sources */,
 				7A2A76D01E124E1600A21960 /* TransactionSummaryBCAParam.m in Sources */,
@@ -11536,12 +10982,9 @@
 				7A2A76991E124E1600A21960 /* Track.m in Sources */,
 				7A2A7AFA1E124E1A00A21960 /* EtalaseRequest.m in Sources */,
 				7A2A79EE1E124E1900A21960 /* PulsaProductViewController.swift in Sources */,
-				7A2A77471E124E1600A21960 /* StableCompositeDisposable.swift in Sources */,
 				7A2A783F1E124E1700A21960 /* ContactUsPresenter.m in Sources */,
 				7A2A7B511E124E1B00A21960 /* TransactionCCDetailViewController.m in Sources */,
 				7A2A7B2B1E124E1B00A21960 /* TokopediaNetworkManager.m in Sources */,
-				7A2A77931E124E1700A21960 /* Observable+Debug.swift in Sources */,
-				7A2A77A11E124E1700A21960 /* ConcurrentDispatchQueueScheduler.swift in Sources */,
 				7A2A7A7D1E124E1A00A21960 /* ShipmentStatusViewController.m in Sources */,
 				7A2A79E01E124E1900A21960 /* PulsaOperator.swift in Sources */,
 				7A2A76A51E124E1600A21960 /* RateResponse.m in Sources */,
@@ -11556,8 +10999,6 @@
 				7A2A74FE1E124E1500A21960 /* OAuthToken.swift in Sources */,
 				7A2A76DB1E124E1600A21960 /* TxOrderCancelPaymentFormForm.m in Sources */,
 				7A2A75DB1E124E1600A21960 /* ReviewImageAttachment.m in Sources */,
-				7A2A77961E124E1700A21960 /* Observable+StandardSequenceOperators.swift in Sources */,
-				7A2A77671E124E1700A21960 /* Map.swift in Sources */,
 				7A2A766E1E124E1600A21960 /* DetailShopResult.m in Sources */,
 				7A2A75E91E124E1600A21960 /* PriceAlertResult.m in Sources */,
 				7A2A797B1E124E1800A21960 /* OtherProductDataSource.m in Sources */,
@@ -11572,8 +11013,6 @@
 				7A2A762A1E124E1600A21960 /* OrderCustomer.m in Sources */,
 				7A2A78D11E124E1800A21960 /* HotlistCell.m in Sources */,
 				7A2A7B6B1E124E1B00A21960 /* HeaderInvoiceComponent.mm in Sources */,
-				7A2A77B81E124E1700A21960 /* SubjectType.swift in Sources */,
-				7A2A77B61E124E1700A21960 /* PublishSubject.swift in Sources */,
 				7A2A7B7F1E124E1B00A21960 /* TxOrderConfirmedButtonCell.m in Sources */,
 				7A2A79DE1E124E1900A21960 /* PulsaCategoryView.swift in Sources */,
 				7A2A79CB1E124E1900A21960 /* RequestAddEditProduct.swift in Sources */,
@@ -11584,7 +11023,6 @@
 				7A2A74D51E124E1500A21960 /* CMPopTipView.m in Sources */,
 				7A2A7B411E124E1B00A21960 /* TransactionCartCell.m in Sources */,
 				7A2A7B351E124E1B00A21960 /* ShippingOptionsViewController.m in Sources */,
-				7A2A77491E124E1600A21960 /* Errors.swift in Sources */,
 				7A2A75251E124E1500A21960 /* ContactUsActionResultError.m in Sources */,
 				7A2A756C1E124E1500A21960 /* GoogleDistanceMatrixDuration.m in Sources */,
 				7A2A75111E124E1500A21960 /* AddressProvince.m in Sources */,
@@ -11601,12 +11039,10 @@
 				7A2A75A21E124E1500A21960 /* ResolutionConversation.m in Sources */,
 				7A2A77FD1E124E1700A21960 /* CustomNotificationView.m in Sources */,
 				7A2A791F1E124E1800A21960 /* InboxTicketRequest.swift in Sources */,
-				7A2A77AE1E124E1700A21960 /* OperationQueueScheduler.swift in Sources */,
 				7A2A76D21E124E1600A21960 /* TransactionSummaryResult.m in Sources */,
 				7A2A769B1E124E1600A21960 /* TrackOrderDetail.m in Sources */,
 				7A2A78461E124E1700A21960 /* TPContactUsDependencies.m in Sources */,
 				7A2A78201E124E1700A21960 /* TKPDPhotoPicker.m in Sources */,
-				7A2A77A51E124E1700A21960 /* HistoricalScheduler.swift in Sources */,
 				7A2A76C71E124E1600A21960 /* TxOrderConfirmationListOrder.m in Sources */,
 				7A2A79CC1E124E1900A21960 /* RequestMoveTo.m in Sources */,
 				7A2A76E41E124E1600A21960 /* TxOrderConfirmedDetailResult.m in Sources */,
@@ -11614,15 +11050,12 @@
 				7A2A76161E124E1600A21960 /* PromoResult.m in Sources */,
 				7A2A75911E124E1500A21960 /* ResolutionActionResult.m in Sources */,
 				7A2A765F1E124E1600A21960 /* OpenShopPictureResult.m in Sources */,
-				7A2A773D1E124E1600A21960 /* CompositeDisposable.swift in Sources */,
 				7A2A7AFD1E124E1A00A21960 /* ShopContainerViewController.m in Sources */,
 				7A2A769E1E124E1600A21960 /* CartEditShipmentResponse.swift in Sources */,
 				7A2A79DD1E124E1900A21960 /* PulsaCategoryRoot.swift in Sources */,
 				7A2A7B0A1E124E1A00A21960 /* ShopTalkPageViewController.m in Sources */,
 				7A2A75CB1E124E1600A21960 /* LoyaltyPointMerchant.m in Sources */,
 				7A2A78881E124E1700A21960 /* ListFilter.swift in Sources */,
-				7A2A77A21E124E1700A21960 /* ConcurrentMainScheduler.swift in Sources */,
-				7A2A774F1E124E1600A21960 /* Observable.swift in Sources */,
 				7A2A7B331E124E1B00A21960 /* RequestATC.m in Sources */,
 				7A2A79B31E124E1900A21960 /* MyReviewDetailHeaderSmileyComponent.mm in Sources */,
 				7A2A7ADA1E124E1A00A21960 /* EditShopNoteViewCell.m in Sources */,
@@ -11639,14 +11072,12 @@
 				7A2A77131E124E1600A21960 /* TKPImagePickerController.swift in Sources */,
 				7A2A79081E124E1800A21960 /* RequestResolutionData.m in Sources */,
 				7A2A76691E124E1600A21960 /* Notes.swift in Sources */,
-				7A2A77581E124E1700A21960 /* CombineLatest+CollectionType.swift in Sources */,
 				7A2A763F1E124E1600A21960 /* ImageSearchResponse.m in Sources */,
 				7A2A78851E124E1700A21960 /* FiltersListDataSource.swift in Sources */,
 				7A2A76371E124E1600A21960 /* OrderTransaction.m in Sources */,
 				7A2A79151E124E1800A21960 /* InboxTalkSplitViewController.m in Sources */,
 				7A2A7AC61E124E1A00A21960 /* OpenShopNameViewCell.m in Sources */,
 				7A2A7AF11E124E1A00A21960 /* ShopInfoViewController.m in Sources */,
-				7A2A77661E124E1700A21960 /* Just.swift in Sources */,
 				7A2A79261E124E1800A21960 /* MiniSlideData.m in Sources */,
 				7A2A764A1E124E1600A21960 /* SearchItem.m in Sources */,
 				7A2A75BC1E124E1500A21960 /* InboxTicketResultDetail.m in Sources */,
@@ -11659,7 +11090,6 @@
 				7A2A7A5D1E124E1900A21960 /* SalesOrderRequest.swift in Sources */,
 				7A2A7A0B1E124E1900A21960 /* ResolutionCenterCreateStepOneViewController.m in Sources */,
 				7A2A762C1E124E1600A21960 /* OrderDestination.m in Sources */,
-				7A2A774B1E124E1600A21960 /* String+Rx.swift in Sources */,
 				7A2A75521E124E1500A21960 /* ShopStats.m in Sources */,
 				7A2A78391E124E1700A21960 /* RequestCategory.m in Sources */,
 				7A2A75D51E124E1600A21960 /* MyReviewReputation.m in Sources */,
@@ -11678,24 +11108,17 @@
 				7A2A76491E124E1600A21960 /* SearchData.m in Sources */,
 				7A2A75181E124E1500A21960 /* CatalogList.m in Sources */,
 				7A2A76BB1E124E1600A21960 /* TransactionCartGateway.m in Sources */,
-				7A2A77311E124E1600A21960 /* SynchronizedOnType.swift in Sources */,
-				7A2A779B1E124E1700A21960 /* TailRecursiveSink.swift in Sources */,
 				7A2A76651E124E1600A21960 /* NoteActionResult.swift in Sources */,
 				7A2A75411E124E1500A21960 /* CountRatingResult.m in Sources */,
 				7A2A77191E124E1600A21960 /* _FBTweakCollectionViewController.m in Sources */,
 				7A2A74E21E124E1500A21960 /* RKObjectManagerCategory.m in Sources */,
-				7A2A77AF1E124E1700A21960 /* RecursiveScheduler.swift in Sources */,
 				7A2A76FE1E124E1600A21960 /* UploadImageHelperResult.m in Sources */,
-				7A2A77461E124E1600A21960 /* SingleAssignmentDisposable.swift in Sources */,
 				7A2A756A1E124E1500A21960 /* GoogleDistanceMatrix.m in Sources */,
-				7A2A778E1E124E1700A21960 /* Zip.swift in Sources */,
-				7A2A77591E124E1700A21960 /* CombineLatest.swift in Sources */,
 				7A2A761F1E124E1600A21960 /* ShopBadgeLevel.m in Sources */,
 				7A2A79D01E124E1900A21960 /* ProductDataSource.swift in Sources */,
 				7A2A77C01E124E1700A21960 /* TKPGooglePlaceDetailProductStore.m in Sources */,
 				7A2A75201E124E1500A21960 /* CategoryObj.m in Sources */,
 				7A2A787B1E124E1700A21960 /* DepositSummaryCell.m in Sources */,
-				7A2A77801E124E1700A21960 /* Take.swift in Sources */,
 				7A2A7AE71E124E1A00A21960 /* DetailStatisticViewController.m in Sources */,
 				7A2A77081E124E1600A21960 /* WishListObjectList.m in Sources */,
 				7A2A7AB51E124E1A00A21960 /* SettingPrivacyCell.m in Sources */,
@@ -11711,22 +11134,18 @@
 				7A2A795B1E124E1800A21960 /* NotificationBarButton.m in Sources */,
 				7A2A74EC1E124E1500A21960 /* DelayedActionManager.swift in Sources */,
 				7A2A79BC1E124E1900A21960 /* ProductReputationCell.m in Sources */,
-				7A2A77361E124E1600A21960 /* InfiniteSequence.swift in Sources */,
 				7A2A756E1E124E1500A21960 /* GoogleDistanceMatrixElements.m in Sources */,
-				7A2A77391E124E1600A21960 /* Disposable.swift in Sources */,
 				7A2A7B191E124E1A00A21960 /* SortViewController.m in Sources */,
 				7A2A78261E124E1700A21960 /* CatalogSectionHeaderView.m in Sources */,
 				7A2A7BAB1E124E1B00A21960 /* VTBaseTransactionMethod.m in Sources */,
 				7A2A76C11E124E1600A21960 /* TransactionEditAddressFormResult.m in Sources */,
 				7A2A76731E124E1600A21960 /* Shop.m in Sources */,
 				7A2A76A91E124E1600A21960 /* LuckyDealData.m in Sources */,
-				7A2A777E1E124E1700A21960 /* SubscribeOn.swift in Sources */,
 				7A2A7A241E124E1900A21960 /* DueDateViewController.m in Sources */,
 				7A2A75831E124E1500A21960 /* HotlistDetailResult.m in Sources */,
 				7A2A78071E124E1700A21960 /* TKPDAlertView.m in Sources */,
 				7A2A76B21E124E1600A21960 /* TransactionATCForm.m in Sources */,
 				7A2A74EA1E124E1500A21960 /* UIScrollViewCategory.swift in Sources */,
-				7A2A774A1E124E1600A21960 /* Event.swift in Sources */,
 				7A2A75ED1E124E1600A21960 /* ProductEditInfo.swift in Sources */,
 				7A2A78011E124E1700A21960 /* StickyAlert.m in Sources */,
 				7A2A7A5B1E124E1900A21960 /* PickupAddressView.swift in Sources */,
@@ -11736,7 +11155,6 @@
 				7A2A7A631E124E1900A21960 /* SalesTransactionListViewController.m in Sources */,
 				7A2A78221E124E1700A21960 /* CatalogProductCell.m in Sources */,
 				7A2A76741E124E1600A21960 /* ShopCloseDetail.m in Sources */,
-				7A2A77921E124E1700A21960 /* Observable+Creation.swift in Sources */,
 				7A2A76801E124E1600A21960 /* AddProductSubmitResult.m in Sources */,
 				7A2A78A71E124E1800A21960 /* FavoritedShopCell.m in Sources */,
 				7A2A75301E124E1500A21960 /* DepositSummary.m in Sources */,
@@ -11755,7 +11173,6 @@
 				7A2A7B9D1E124E1B00A21960 /* CatalogModelView.m in Sources */,
 				7A2A75431E124E1500A21960 /* Info.m in Sources */,
 				7A2A75011E124E1500A21960 /* SendOTP.m in Sources */,
-				7A2A77551E124E1700A21960 /* Catch.swift in Sources */,
 				7A2A78E11E124E1800A21960 /* InboxMessageDetailCell.m in Sources */,
 				7A2A7A8E1E124E1A00A21960 /* ProductBadge.m in Sources */,
 				7A2A75871E124E1500A21960 /* InboxMessageAction.m in Sources */,
@@ -11766,19 +11183,16 @@
 				7A2A74FB1E124E1500A21960 /* AccountInfo.swift in Sources */,
 				7A2A799D1E124E1900A21960 /* ReportProductSubmitResult.swift in Sources */,
 				7A2A75F41E124E1600A21960 /* ProductTalkForm.m in Sources */,
-				7A2A77AC1E124E1700A21960 /* ScheduledItemType.swift in Sources */,
 				7A2A75761E124E1500A21960 /* HistoryProduct.m in Sources */,
 				7A2A75F11E124E1600A21960 /* ProductFeedResult.m in Sources */,
 				7A2A77C81E124E1700A21960 /* CreatePasswordViewController.m in Sources */,
 				7A2A7A391E124E1900A21960 /* RejectReasonEmptyVariantViewController.m in Sources */,
 				7A2A74D81E124E1500A21960 /* ImageDownloader.m in Sources */,
 				7A2A76311E124E1600A21960 /* OrderPayment.m in Sources */,
-				7A2A77381E124E1600A21960 /* Queue.swift in Sources */,
 				7A2A75C31E124E1500A21960 /* LikeDislikePost.m in Sources */,
 				7A2A767F1E124E1600A21960 /* AddProductSubmit.m in Sources */,
 				7A2A75531E124E1500A21960 /* Statistic.m in Sources */,
 				7A2A74E11E124E1500A21960 /* RequestUtils.m in Sources */,
-				7A2A77991E124E1700A21960 /* AnonymousObserver.swift in Sources */,
 				7A2A75E11E124E1600A21960 /* Notification.m in Sources */,
 				7A2A76031E124E1600A21960 /* ProfileSettings.m in Sources */,
 				7A2A74FF1E124E1500A21960 /* Logout.m in Sources */,
@@ -11786,13 +11200,10 @@
 				7A2A78A61E124E1800A21960 /* RedirectHandler.m in Sources */,
 				7A2A75421E124E1500A21960 /* DetailProductResult.m in Sources */,
 				7A2A79541E124E1800A21960 /* ShipmentLocationViewCell.m in Sources */,
-				7A2A77321E124E1600A21960 /* SynchronizedSubscribeType.swift in Sources */,
 				7A2A7B3D1E124E1B00A21960 /* TransactionShipmentATCViewController.m in Sources */,
-				7A2A776A1E124E1700A21960 /* Never.swift in Sources */,
 				7A2A762E1E124E1600A21960 /* OrderHistory.m in Sources */,
 				7A2A7B1F1E124E1A00A21960 /* ProductTalkViewController.m in Sources */,
 				7A2A783D1E124E1700A21960 /* ContactUsDataManager.m in Sources */,
-				7A2A776D1E124E1700A21960 /* Producer.swift in Sources */,
 				7A2A756B1E124E1500A21960 /* GoogleDistanceMatrixDetail.m in Sources */,
 				7A2A76AA1E124E1600A21960 /* LuckyDealWord.m in Sources */,
 				7A2A74D91E124E1500A21960 /* LabelCopyable.swift in Sources */,
@@ -11800,16 +11211,12 @@
 				7A2A74BD1E124E1500A21960 /* NSArray+PerformSelector.m in Sources */,
 				7A2A78F51E124E1800A21960 /* EditSolutionBuyerViewController.swift in Sources */,
 				7A2A77CE1E124E1700A21960 /* PhoneVerifViewController.m in Sources */,
-				7A2A77831E124E1700A21960 /* TakeWhile.swift in Sources */,
 				7A2A7AAB1E124E1A00A21960 /* SettingBankDetailViewController.m in Sources */,
-				7A2A77901E124E1700A21960 /* Observable+Binding.swift in Sources */,
 				7A2A79B21E124E1900A21960 /* MyReviewDetailHeaderComponent.mm in Sources */,
 				7A2A78D81E124E1800A21960 /* HotlistViewModel.m in Sources */,
 				7A2A77041E124E1600A21960 /* UploadImageValidation.m in Sources */,
 				7A2A78491E124E1700A21960 /* ContactUsFormCategoryCell.m in Sources */,
-				7A2A77341E124E1600A21960 /* ConnectableObservableType.swift in Sources */,
 				7A2A75281E124E1500A21960 /* ContactUsResponse.m in Sources */,
-				7A2A77561E124E1700A21960 /* CombineLatest+arity.swift in Sources */,
 				7A2A77C31E124E1700A21960 /* TKPMappingManager.m in Sources */,
 				7A2A76041E124E1600A21960 /* ProfileSettingsResult.m in Sources */,
 				7A2A79471E124E1800A21960 /* CourierInfoViewCell.m in Sources */,
@@ -11848,11 +11255,9 @@
 				7A2A77CD1E124E1700A21960 /* PhoneVerifRequest.m in Sources */,
 				7A2A7B8F1E124E1B00A21960 /* ProfileFavoriteShopCell.m in Sources */,
 				7A2A790E1E124E1800A21960 /* ResolutionCenterInputViewController.m in Sources */,
-				7A2A778B1E124E1700A21960 /* Zip+arity.swift in Sources */,
 				7A2A788D1E124E1800A21960 /* searchObject.swift in Sources */,
 				7A2A79AB1E124E1900A21960 /* HelpfulReviewResult.m in Sources */,
 				7A2A79221E124E1800A21960 /* InboxTicketViewController.m in Sources */,
-				7A2A77B41E124E1700A21960 /* SchedulerType.swift in Sources */,
 				7A2A78DF1E124E1800A21960 /* InboxMessageCell.m in Sources */,
 				7A2A74D31E124E1500A21960 /* AFNetworkingImageDownloader.mm in Sources */,
 				7A2A788A1E124E1700A21960 /* RequestFilter.swift in Sources */,
@@ -11868,7 +11273,6 @@
 				7A2A784B1E124E1700A21960 /* ContactUsFormDataCollector.m in Sources */,
 				7A2A78831E124E1700A21960 /* FilterResponse.swift in Sources */,
 				7A2A792F1E124E1800A21960 /* TopPointRequest.swift in Sources */,
-				7A2A77601E124E1700A21960 /* Do.swift in Sources */,
 				7A2A781B1E124E1700A21960 /* RequestUploadImageHelper.m in Sources */,
 				7A2A7BB21E124E1B00A21960 /* VTToken.m in Sources */,
 				7A2A76FF1E124E1600A21960 /* UploadImageImage.m in Sources */,
@@ -11885,7 +11289,6 @@
 				7A2A76A41E124E1600A21960 /* RateProduct.m in Sources */,
 				7A2A76FD1E124E1600A21960 /* UploadImageHelper.m in Sources */,
 				7A2A7A471E124E1900A21960 /* OrderBuyerView.swift in Sources */,
-				7A2A775F1E124E1700A21960 /* DistinctUntilChanged.swift in Sources */,
 				7A2A74DB1E124E1500A21960 /* NSDateHelper.swift in Sources */,
 				7A2A76151E124E1600A21960 /* PromoResponse.m in Sources */,
 				7A2A768C1E124E1600A21960 /* JNE.m in Sources */,
@@ -11897,21 +11300,16 @@
 				7A2A76F61E124E1600A21960 /* GeneratedHost.m in Sources */,
 				7A2A75511E124E1500A21960 /* ShopInfo.m in Sources */,
 				7A2A75361E124E1500A21960 /* CatalogInfo.m in Sources */,
-				7A2A779C1E124E1700A21960 /* ObserverType.swift in Sources */,
 				7A2A74E51E124E1500A21960 /* TKPDStackView.m in Sources */,
-				7A2A77791E124E1700A21960 /* Sink.swift in Sources */,
 				7A2A78B51E124E1800A21960 /* HomePageViewController.swift in Sources */,
 				7A2A78D51E124E1800A21960 /* HotlistDataSource.m in Sources */,
 				7A2A76BE1E124E1600A21960 /* TransactionCC.m in Sources */,
 				7A2A754E1E124E1500A21960 /* ReviewProductOwner.m in Sources */,
 				7A2A77E21E124E1700A21960 /* AlertDatePickerView.m in Sources */,
-				7A2A77AA1E124E1700A21960 /* InvocableType.swift in Sources */,
 				7A2A757C1E124E1500A21960 /* HotlistBannerResult.m in Sources */,
-				7A2A77611E124E1700A21960 /* ElementAt.swift in Sources */,
 				7A2A74E31E124E1500A21960 /* TextMenu.m in Sources */,
 				7A2A77211E124E1600A21960 /* FBTweakStore.m in Sources */,
 				7A2A75271E124E1500A21960 /* ContactUsQuery.m in Sources */,
-				7A2A77431E124E1600A21960 /* RefCountDisposable.swift in Sources */,
 				7A2A7AD21E124E1A00A21960 /* CloseShopResult.m in Sources */,
 				7A2A74C91E124E1500A21960 /* UIFont+Theme.m in Sources */,
 				7A2A75DC1E124E1600A21960 /* SkipReview.m in Sources */,
@@ -11928,7 +11326,6 @@
 				7A2A785F1E124E1700A21960 /* CollectionScrollAndSwipe.m in Sources */,
 				7A2A76301E124E1600A21960 /* OrderOrder.m in Sources */,
 				7A2A79C01E124E1900A21960 /* ProductReputationViewController.m in Sources */,
-				7A2A77B91E124E1700A21960 /* Variable.swift in Sources */,
 				7A2A758B1E124E1500A21960 /* InboxMessageDetailList.m in Sources */,
 				7A2A79F71E124E1900A21960 /* PulsaStatusRoot.swift in Sources */,
 				7A2A74F01E124E1500A21960 /* NSString+MD5.m in Sources */,
@@ -11939,12 +11336,9 @@
 				7A2A75DF1E124E1600A21960 /* SubmitReviewResult.m in Sources */,
 				7A2A76AF1E124E1600A21960 /* TransactionAddressShippingResult.m in Sources */,
 				7A2A77CC1E124E1700A21960 /* LogoutViewController.m in Sources */,
-				7A2A77401E124E1600A21960 /* NAryDisposable.swift in Sources */,
 				7A2A79DA1E124E1900A21960 /* PulsaCategory.swift in Sources */,
 				7A2A7B671E124E1B00A21960 /* MappingLDExtension.m in Sources */,
 				7A2A7B131E124E1A00A21960 /* FilterLocationViewCell.m in Sources */,
-				7A2A77841E124E1700A21960 /* Throttle.swift in Sources */,
-				7A2A77771E124E1700A21960 /* ShareReplay1WhileConnected.swift in Sources */,
 				7A2A74EB1E124E1500A21960 /* UISplitViewControllerCategory.swift in Sources */,
 				7A2A7A611E124E1900A21960 /* FilterSalesTransactionListViewController.m in Sources */,
 				7A2A77E81E124E1700A21960 /* AlertListBankCell.m in Sources */,
@@ -11964,14 +11358,12 @@
 				7A2A74E61E124E1500A21960 /* TopAlignedLabel.m in Sources */,
 				7A2A79D11E124E1900A21960 /* ProfileContactViewController.m in Sources */,
 				7A2A794C1E124E1800A21960 /* CourierOptionViewCell.m in Sources */,
-				7A2A77B01E124E1700A21960 /* SchedulerServices+Emulation.swift in Sources */,
 				7A2A79281E124E1800A21960 /* ActivatePushInstructionViewController.swift in Sources */,
 				7A2A79271E124E1800A21960 /* MiniSlideObject.m in Sources */,
 				7A2A7B641E124E1B00A21960 /* PaymentConfirmation.swift in Sources */,
 				7A2A76CC1E124E1600A21960 /* IndomaretData.m in Sources */,
 				7A2A781C1E124E1700A21960 /* RequestUploadImageSteps.m in Sources */,
 				7A2A76541E124E1600A21960 /* ShipmentData.m in Sources */,
-				7A2A77721E124E1700A21960 /* RetryWhen.swift in Sources */,
 				7A2A7A8F1E124E1A00A21960 /* ProductLabel.m in Sources */,
 				7A2A769D1E124E1600A21960 /* TrackOrderResult.m in Sources */,
 				7A2A78B11E124E1800A21960 /* HomePageCategoryData.swift in Sources */,
@@ -12032,7 +11424,6 @@
 				7A2A7AD31E124E1A00A21960 /* CloseShopViewController.m in Sources */,
 				7A2A768A1E124E1600A21960 /* District.m in Sources */,
 				7A2A7A5E1E124E1900A21960 /* RequestSales.swift in Sources */,
-				7A2A772E1E124E1600A21960 /* Lock.swift in Sources */,
 				7A2A79E81E124E1900A21960 /* PulsaProduct.swift in Sources */,
 				7A2A787D1E124E1700A21960 /* DepositSummaryViewController.m in Sources */,
 				7A2A75661E124E1500A21960 /* FavoriteShopAction.m in Sources */,
@@ -12046,10 +11437,8 @@
 				7A2A77001E124E1600A21960 /* UploadImageParams.m in Sources */,
 				7A2A76781E124E1600A21960 /* ShopInfoResult.m in Sources */,
 				7A2A7B1D1E124E1A00A21960 /* ProductTalkFormViewController.m in Sources */,
-				7A2A775E1E124E1700A21960 /* DelaySubscription.swift in Sources */,
 				7A2A7A6C1E124E1900A21960 /* FilterShipmentConfirmationViewController.m in Sources */,
 				7A2A7B5B1E124E1B00A21960 /* RequestCart.m in Sources */,
-				7A2A779D1E124E1700A21960 /* Platform.Darwin.swift in Sources */,
 				7A2A75AD1E124E1500A21960 /* InboxReviewProductOwner.m in Sources */,
 				7A2A79C81E124E1900A21960 /* SegmentedReviewReputationViewController.m in Sources */,
 				7A2A77DD1E124E1700A21960 /* RequestAddress.m in Sources */,
@@ -12074,7 +11463,6 @@
 				7A2A7AC51E124E1A00A21960 /* OpenShopInfo.m in Sources */,
 				7A2A78FA1E124E1800A21960 /* EditSolutionSellerViewController.swift in Sources */,
 				7A2A7B2E1E124E1B00A21960 /* TrackOrderHistoryCell.m in Sources */,
-				7A2A776B1E124E1700A21960 /* ObserveOn.swift in Sources */,
 				7A2A76661E124E1600A21960 /* NoteDetail.swift in Sources */,
 				7A2A7A951E124E1A00A21960 /* SearchResultViewController.m in Sources */,
 				7A2A76701E124E1600A21960 /* Payment.m in Sources */,
@@ -12082,7 +11470,6 @@
 				7A2A7A081E124E1900A21960 /* ResolutionCenterCreateSolutionList.m in Sources */,
 				34E8A2D61E028792004AE6DE /* MainViewController.m in Sources */,
 				7A2A761A1E124E1600A21960 /* PromoteResult.m in Sources */,
-				7A2A77AD1E124E1700A21960 /* MainScheduler.swift in Sources */,
 				7A2A79CF1E124E1900A21960 /* ProductReputationViewModel.m in Sources */,
 				7A2A7A201E124E1900A21960 /* NoResultReusableView.m in Sources */,
 				7A2A74F71E124E1500A21960 /* CreatePasswordResult.m in Sources */,
@@ -12090,7 +11477,6 @@
 				7A2A79F41E124E1900A21960 /* PulsaRequest.swift in Sources */,
 				7A2A76071E124E1600A21960 /* AddressFormResult.m in Sources */,
 				7A2A77C41E124E1700A21960 /* TKPStoreManager.m in Sources */,
-				7A2A77441E124E1600A21960 /* ScheduledDisposable.swift in Sources */,
 				7A2A7B891E124E1B00A21960 /* ProfileBiodataCell.m in Sources */,
 				7A2A758C1E124E1500A21960 /* InboxMessageDetailResult.m in Sources */,
 				7A2A7AF51E124E1A00A21960 /* ShopSettingViewController.m in Sources */,
@@ -12108,7 +11494,6 @@
 				7A2A788C1E124E1800A21960 /* RequestShippingCity.swift in Sources */,
 				7A2A7B6D1E124E1B00A21960 /* ListOrderComponent.mm in Sources */,
 				7A2A7A041E124E1900A21960 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
-				7A2A773C1E124E1600A21960 /* BooleanDisposable.swift in Sources */,
 				7A2A7A0F1E124E1900A21960 /* ResolutionCenterCreateStepTwoCell.m in Sources */,
 				7A2A79421E124E1800A21960 /* MyShopPaymentCell.m in Sources */,
 				7A2A7B651E124E1B00A21960 /* PaymentConfirmationForm.swift in Sources */,
@@ -12133,7 +11518,6 @@
 				7A2A76181E124E1600A21960 /* PromoShopImage.m in Sources */,
 				7A2A79981E124E1900A21960 /* ProductWishlistCell.swift in Sources */,
 				7A2A78C41E124E1800A21960 /* MyWishlistViewController.m in Sources */,
-				7A2A77711E124E1700A21960 /* Repeat.swift in Sources */,
 				7A2A79971E124E1900A21960 /* ProductRequest.m in Sources */,
 				7A2A7BB31E124E1B00A21960 /* VTTransactionDetails.m in Sources */,
 				7A2A74F61E124E1500A21960 /* CreatePassword.m in Sources */,
@@ -12167,19 +11551,16 @@
 				7A2A77E61E124E1700A21960 /* AlertInfoView.m in Sources */,
 				7A2A755F1E124E1500A21960 /* FavoritedResult.m in Sources */,
 				7A2A76E31E124E1600A21960 /* TxOrderConfirmedDetailPayment.m in Sources */,
-				7A2A77511E124E1600A21960 /* AddRef.swift in Sources */,
 				7A2A75BA1E124E1500A21960 /* InboxTicketReply.m in Sources */,
 				7A2A78181E124E1700A21960 /* GenerateHostObservable.swift in Sources */,
 				7A2A78B21E124E1800A21960 /* HomePageCategoryLayoutRow.swift in Sources */,
 				7A2A75A71E124E1500A21960 /* ResolutionOrder.m in Sources */,
 				7A2A74DF1E124E1500A21960 /* NSUserDefaultCategory.m in Sources */,
 				7A2A79C51E124E1900A21960 /* ReviewResponseComponent.mm in Sources */,
-				7A2A77B71E124E1700A21960 /* ReplaySubject.swift in Sources */,
 				7A2A75071E124E1500A21960 /* SecurityAnswer.m in Sources */,
 				7A2A75DD1E124E1600A21960 /* SkipReviewResult.m in Sources */,
 				7A2A7A971E124E1A00A21960 /* SearchShopModelView.swift in Sources */,
 				7A2A79321E124E1800A21960 /* WKWebViewController.swift in Sources */,
-				7A2A77301E124E1600A21960 /* SynchronizedDisposeType.swift in Sources */,
 				7A2A75AA1E124E1500A21960 /* InboxReviewAction.m in Sources */,
 				7A2A7A9C1E124E1A00A21960 /* SettingAddressDetailViewController.m in Sources */,
 				7A2A79931E124E1900A21960 /* ProductListMyShopFilterViewController.m in Sources */,
@@ -12187,7 +11568,6 @@
 				7A2A74B81E124E1500A21960 /* AnalyticsManager.m in Sources */,
 				7A2A77EC1E124E1700A21960 /* AlertListFilterView.m in Sources */,
 				7A2A7B971E124E1B00A21960 /* UserPageHeader.m in Sources */,
-				7A2A77AB1E124E1700A21960 /* ScheduledItem.swift in Sources */,
 				7A2A79731E124E1800A21960 /* DetailProductVideoTableViewCell.swift in Sources */,
 				7A2A75151E124E1500A21960 /* AnnouncementTickerObject.swift in Sources */,
 				7A2A79AD1E124E1900A21960 /* InboxReviewCell.m in Sources */,
@@ -12195,10 +11575,8 @@
 				7A2A7A001E124E1900A21960 /* ResolutionCenterCreateForm.m in Sources */,
 				7A2A7B6E1E124E1B00A21960 /* ListOrderInvoiceComponent.mm in Sources */,
 				7A2A75221E124E1500A21960 /* CategoryResult.swift in Sources */,
-				7A2A777B1E124E1700A21960 /* SkipUntil.swift in Sources */,
 				7A2A79BA1E124E1900A21960 /* ProductDetailReputationViewController.m in Sources */,
 				7A2A78941E124E1800A21960 /* GeneralList1GestureCell.m in Sources */,
-				7A2A77731E124E1700A21960 /* Sample.swift in Sources */,
 				7A2A753E1E124E1500A21960 /* ProductList.m in Sources */,
 				7A2A7AFF1E124E1A00A21960 /* ShopHomeViewController.swift in Sources */,
 				7A2A771F1E124E1600A21960 /* FBTweakInline.m in Sources */,
@@ -12220,7 +11598,6 @@
 				7A2A79E91E124E1900A21960 /* PulsaProductAttribute.swift in Sources */,
 				7A2A78561E124E1700A21960 /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				7A2A755A1E124E1500A21960 /* TheOtherProduct.m in Sources */,
-				7A2A773F1E124E1600A21960 /* DisposeBase.swift in Sources */,
 				7A2A752D1E124E1500A21960 /* DepositForm.m in Sources */,
 				7A2A7B6A1E124E1B00A21960 /* DetailOrderButtonsView.mm in Sources */,
 				7A2A76561E124E1600A21960 /* ShipmentOrder.m in Sources */,
@@ -12266,7 +11643,6 @@
 				7A2A7B151E124E1A00A21960 /* FilterLocationViewController.m in Sources */,
 				7A2A7A901E124E1A00A21960 /* SearchResultCell.m in Sources */,
 				7A2A79371E124E1800A21960 /* MyShopAddressViewController.m in Sources */,
-				7A2A77351E124E1600A21960 /* Bag.swift in Sources */,
 				7A2A770B1E124E1600A21960 /* DKCamera.swift in Sources */,
 				7A2A79B41E124E1900A21960 /* MyReviewDetailViewController.mm in Sources */,
 				7A2A78761E124E1700A21960 /* DepositListBankCell.m in Sources */,
@@ -12276,7 +11652,6 @@
 				7A2A765C1E124E1600A21960 /* AddShop.m in Sources */,
 				7A2A7AA21E124E1A00A21960 /* SettingAddressViewController.m in Sources */,
 				7A2A74CA1E124E1500A21960 /* UIImage+ImageEffects.m in Sources */,
-				7A2A779A1E124E1700A21960 /* ObserverBase.swift in Sources */,
 				7A2A772A1E124E1600A21960 /* RSKPlaceholderTextView.swift in Sources */,
 				7A2A78611E124E1700A21960 /* LoadingView.m in Sources */,
 				7A2A783C1E124E1700A21960 /* ContactUsDataCollector.m in Sources */,
@@ -12285,7 +11660,6 @@
 				7A2A79E21E124E1900A21960 /* PulsaOperatorAttributeRule.swift in Sources */,
 				7A2A757B1E124E1500A21960 /* HotlistBannerQuery.m in Sources */,
 				7A2A74CE1E124E1500A21960 /* UITableView+LoadingView.m in Sources */,
-				7A2A779E1E124E1700A21960 /* Platform.Linux.swift in Sources */,
 				7A2A74CD1E124E1500A21960 /* UITableView+IndexPath.m in Sources */,
 				7A2A79121E124E1800A21960 /* ResolutionInputReceiptViewController.m in Sources */,
 				7A2A76021E124E1600A21960 /* UserInfo.m in Sources */,
@@ -12295,8 +11669,6 @@
 				7A2A793D1E124E1800A21960 /* MyShopNoteDetailViewController.m in Sources */,
 				7A2A76E81E124E1600A21960 /* TxOrderConfirmPaymentForm.m in Sources */,
 				7A2A75371E124E1500A21960 /* CatalogLocation.m in Sources */,
-				7A2A776C1E124E1700A21960 /* ObserveOnSerialDispatchQueue.swift in Sources */,
-				7A2A774E1E124E1600A21960 /* Observable+Extensions.swift in Sources */,
 				7A2A75901E124E1500A21960 /* ResolutionAction.m in Sources */,
 				7A2A78DC1E124E1800A21960 /* HotlistResultViewController.m in Sources */,
 				7A2A7A261E124E1900A21960 /* OrderRejectExplanationViewController.m in Sources */,
@@ -12339,12 +11711,8 @@
 				7A2A7B631E124E1B00A21960 /* EditConfirmationViewController.swift in Sources */,
 				7A2A759D1E124E1500A21960 /* ProductTrouble.swift in Sources */,
 				7A2A7A4D1E124E1900A21960 /* OrderDetailProductCell.m in Sources */,
-				7A2A773B1E124E1600A21960 /* BinaryDisposable.swift in Sources */,
 				7A2A758A1E124E1500A21960 /* InboxMessageDetailBetween.m in Sources */,
 				7A2A77101E124E1600A21960 /* DKImagePickerController.swift in Sources */,
-				7A2A773E1E124E1600A21960 /* DisposeBag.swift in Sources */,
-				7A2A775A1E124E1700A21960 /* Concat.swift in Sources */,
-				7A2A779F1E124E1700A21960 /* Rx.swift in Sources */,
 				7A2A78C31E124E1800A21960 /* MyWishlistShopReputation.swift in Sources */,
 				7A2A76E01E124E1600A21960 /* TxOrderConfirmedDetail.m in Sources */,
 				7A2A77D61E124E1700A21960 /* WebViewSignInViewController.swift in Sources */,
@@ -12358,9 +11726,7 @@
 				7A2A7B401E124E1B00A21960 /* CartValidation.m in Sources */,
 				7A2A76011E124E1600A21960 /* ProfileInfoResult.m in Sources */,
 				7A2A753A1E124E1500A21960 /* CatalogReview.m in Sources */,
-				7A2A77891E124E1700A21960 /* Window.swift in Sources */,
 				7A2A76FC1E124E1600A21960 /* UploadImage.m in Sources */,
-				7A2A77481E124E1600A21960 /* SubscriptionDisposable.swift in Sources */,
 				7A2A78421E124E1700A21960 /* ContactUsViewController.m in Sources */,
 				7A2A75BE1E124E1500A21960 /* InboxTicketUserInvolve.m in Sources */,
 				7A2A76BC1E124E1600A21960 /* TransactionCartList.m in Sources */,
@@ -12369,14 +11735,10 @@
 				7A2A76A11E124E1600A21960 /* ListRekeningBank.m in Sources */,
 				7A2A76611E124E1600A21960 /* EtalaseList.m in Sources */,
 				7A2A76341E124E1600A21960 /* OrderResult.m in Sources */,
-				7A2A778F1E124E1700A21960 /* Observable+Aggregate.swift in Sources */,
 				7A2A788E1E124E1800A21960 /* ForgotPasswordViewController.m in Sources */,
 				7A2A75721E124E1500A21960 /* GooglePlaceDetailLocation.m in Sources */,
 				7A2A79BE1E124E1900A21960 /* ProductReputationTableViewCell.swift in Sources */,
 				7A2A76221E124E1600A21960 /* Quality.m in Sources */,
-				7A2A77421E124E1600A21960 /* NopDisposable.swift in Sources */,
-				7A2A77871E124E1700A21960 /* ToArray.swift in Sources */,
-				7A2A772B1E124E1600A21960 /* AnyObserver.swift in Sources */,
 				7A2A799A1E124E1900A21960 /* ReportProductGetTypeResponse.swift in Sources */,
 				7A2A7B391E124E1B00A21960 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				7A2A76551E124E1600A21960 /* ShipmentDistrictData.m in Sources */,
@@ -12393,9 +11755,7 @@
 				7A2A78C01E124E1800A21960 /* MyWishlistLabel.swift in Sources */,
 				7A2A7AD51E124E1A00A21960 /* EditShopDataSource.m in Sources */,
 				7A2A7A3B1E124E1900A21960 /* RejectReasonProductDescriptionViewController.m in Sources */,
-				7A2A77641E124E1700A21960 /* Filter.swift in Sources */,
 				7A2A76DC1E124E1600A21960 /* TxOrderCancelPaymentResult.m in Sources */,
-				7A2A777C1E124E1700A21960 /* SkipWhile.swift in Sources */,
 				7A2A756D1E124E1500A21960 /* GoogleDistanceMatrixElement.m in Sources */,
 				7A2A785A1E124E1700A21960 /* TKPDTabNavigationController.m in Sources */,
 				7A2A76851E124E1600A21960 /* SettingPayment.m in Sources */,
@@ -12404,15 +11764,12 @@
 				7A2A75B11E124E1500A21960 /* InboxTalkList.m in Sources */,
 				7A2A75501E124E1500A21960 /* ReviewResult.m in Sources */,
 				7A2A7A051E124E1900A21960 /* ResolutionCenterCreatePOSTResponse.m in Sources */,
-				7A2A77821E124E1700A21960 /* TakeUntil.swift in Sources */,
 				7A2A784D1E124E1700A21960 /* ContactUsFormInteractor.m in Sources */,
 				7A2A7A9A1E124E1A00A21960 /* SecurityQuestionViewController.swift in Sources */,
 				7A2A7B951E124E1B00A21960 /* UserContainerViewController.m in Sources */,
 				7A2A79071E124E1800A21960 /* RequestResolutionAction.m in Sources */,
 				7A2A7A6E1E124E1900A21960 /* ShipmentConfirmationViewController.m in Sources */,
-				7A2A77941E124E1700A21960 /* Observable+Multiple.swift in Sources */,
 				7A2A761D1E124E1600A21960 /* ReputationList.m in Sources */,
-				7A2A77B31E124E1700A21960 /* VirtualTimeScheduler.swift in Sources */,
 				7A2A76191E124E1600A21960 /* Promote.m in Sources */,
 				7A2A7B681E124E1B00A21960 /* CancelOrderViewController.swift in Sources */,
 				7A2A763C1E124E1600A21960 /* SearchAWSResult.m in Sources */,
@@ -12432,7 +11789,6 @@
 				7A2A75E61E124E1600A21960 /* Paging.m in Sources */,
 				7A2A755D1E124E1500A21960 /* WholesalePrice.m in Sources */,
 				7A2A7B7D1E124E1B00A21960 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
-				7A2A77B21E124E1700A21960 /* VirtualTimeConverterType.swift in Sources */,
 				7A2A75D01E124E1600A21960 /* DetailMyInboxReputation.m in Sources */,
 				7A2A79FB1E124E1900A21960 /* ResolutionCenterChooseProblemViewController.m in Sources */,
 				7A2A79E31E124E1900A21960 /* PulsaOperatorCell.swift in Sources */,
@@ -12441,7 +11797,6 @@
 				7A2A78E31E124E1800A21960 /* InboxMessageDetailViewController.m in Sources */,
 				7A2A7B771E124E1B00A21960 /* TxOrderTransactionDetailViewController.m in Sources */,
 				7A2A7AAD1E124E1A00A21960 /* SettingBankEditViewController.m in Sources */,
-				7A2A77971E124E1700A21960 /* Observable+Time.swift in Sources */,
 				7A2A7B8D1E124E1B00A21960 /* GoldShopView.m in Sources */,
 				7A2A750A1E124E1500A21960 /* SecurityQuestionResult.m in Sources */,
 				7A2A7B531E124E1B00A21960 /* TransactionCCViewController.m in Sources */,
@@ -12495,16 +11850,12 @@
 				7A2A76751E124E1600A21960 /* ShopEditInfo.m in Sources */,
 				7A2A7AEB1E124E1A00A21960 /* ShopInfoAddressView.m in Sources */,
 				7A2A767A1E124E1600A21960 /* ShopProductPageList.m in Sources */,
-				7A2A77541E124E1700A21960 /* Buffer.swift in Sources */,
 				7A2A78551E124E1700A21960 /* TKPDTabBarNavigationController.m in Sources */,
 				7A2A79301E124E1800A21960 /* WebViewController.m in Sources */,
-				7A2A777F1E124E1700A21960 /* Switch.swift in Sources */,
 				7A2A76941E124E1600A21960 /* ShippingInfoShipmentPackage.m in Sources */,
 				7A2A78B31E124E1800A21960 /* HomePageCategoryLayoutSection.swift in Sources */,
 				7A2A77D31E124E1700A21960 /* RegisterViewController.m in Sources */,
-				7A2A77371E124E1600A21960 /* PriorityQueue.swift in Sources */,
 				34E8A2D41E028792004AE6DE /* main.m in Sources */,
-				7A2A77811E124E1700A21960 /* TakeLast.swift in Sources */,
 				7A2A76451E124E1600A21960 /* SearchAutoCompleteDomains.m in Sources */,
 				7A2A76391E124E1600A21960 /* WarehouseResult.m in Sources */,
 				7A2A7B591E124E1B00A21960 /* TransactionCartResultViewController.m in Sources */,
@@ -12537,14 +11888,10 @@
 				7A2A77291E124E1600A21960 /* RSKGrowingTextView.swift in Sources */,
 				7A2A7B991E124E1B00A21960 /* UserProfileBiodataViewController.m in Sources */,
 				7A2A75601E124E1500A21960 /* ListFavorited.m in Sources */,
-				7A2A77751E124E1700A21960 /* Sequence.swift in Sources */,
 				7A2A74BC1E124E1500A21960 /* ALAsset+Date.m in Sources */,
-				7A2A775D1E124E1700A21960 /* Deferred.swift in Sources */,
-				7A2A774C1E124E1600A21960 /* ImmediateSchedulerType.swift in Sources */,
 				7A2A78021E124E1700A21960 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				7A2A75C01E124E1500A21960 /* ReplyInboxTicketResult.m in Sources */,
 				7A2A76091E124E1600A21960 /* BankAccountFormResult.m in Sources */,
-				7A2A77531E124E1700A21960 /* AnonymousObservable.swift in Sources */,
 				7A2A76101E124E1600A21960 /* PrivacyFormPrivacy.m in Sources */,
 				7A2A79391E124E1800A21960 /* MyShopEtalaseDetailViewController.m in Sources */,
 				7A2A75121E124E1500A21960 /* AddressResult.m in Sources */,
@@ -12569,11 +11916,8 @@
 				7A2A7B701E124E1B00A21960 /* ListOrderStatusComponent.mm in Sources */,
 				7A2A7AF71E124E1A00A21960 /* ShopRequest.swift in Sources */,
 				7A2A780E1E124E1700A21960 /* CameraAlbumListViewController.m in Sources */,
-				7A2A77A41E124E1700A21960 /* DispatchQueueSchedulerQOS.swift in Sources */,
 				7A2A76141E124E1600A21960 /* PromoProductImage.m in Sources */,
-				7A2A77761E124E1700A21960 /* ShareReplay1.swift in Sources */,
 				7A2A795F1E124E1800A21960 /* IntroViewController.swift in Sources */,
-				7A2A77A61E124E1700A21960 /* HistoricalSchedulerTimeConverter.swift in Sources */,
 				34E89BE51E02878A004AE6DE /* AppDelegate.m in Sources */,
 				7A2A755B1E124E1500A21960 /* TheOtherProductList.m in Sources */,
 				7A2A75591E124E1500A21960 /* TalkResult.m in Sources */,
@@ -12582,13 +11926,11 @@
 				7A2A786B1E124E1700A21960 /* StarsRateView.m in Sources */,
 				7A2A784E1E124E1700A21960 /* ContactUsFormMainCategoryCell.m in Sources */,
 				7A2A76481E124E1600A21960 /* SearchAutoCompleteObject.m in Sources */,
-				7A2A773A1E124E1600A21960 /* AnonymousDisposable.swift in Sources */,
 				7A2A79ED1E124E1900A21960 /* PulsaProductRoot.swift in Sources */,
 				7A2A79491E124E1800A21960 /* CourierInfoViewController.m in Sources */,
 				7A2A75821E124E1500A21960 /* HotlistData.m in Sources */,
 				7A2A79441E124E1800A21960 /* ShopPaymentViewController.m in Sources */,
 				7A2A751B1E124E1500A21960 /* CatalogShopAWSProductResult.m in Sources */,
-				7A2A77451E124E1600A21960 /* SerialDisposable.swift in Sources */,
 				7A2A75D11E124E1600A21960 /* DetailReputationReview.m in Sources */,
 				7A2A757A1E124E1500A21960 /* HotlistBannerInfo.m in Sources */,
 				7A2A78D61E124E1800A21960 /* HotlistViewController.m in Sources */,
@@ -12599,8 +11941,6 @@
 				7A2A75C61E124E1600A21960 /* TotalLikeDislike.m in Sources */,
 				7A2A794E1E124E1800A21960 /* CourierProductViewCell.m in Sources */,
 				7A2A78811E124E1700A21960 /* FilterCells.swift in Sources */,
-				7A2A77A91E124E1700A21960 /* InvocableScheduledItem.swift in Sources */,
-				7A2A777D1E124E1700A21960 /* StartWith.swift in Sources */,
 				7A2A74C61E124E1500A21960 /* NSURL+Dictionary.m in Sources */,
 				7A2A7A2D1E124E1900A21960 /* RejectReason.m in Sources */,
 				7A2A77D21E124E1700A21960 /* VerifiedStatusResult.m in Sources */,
@@ -12610,16 +11950,13 @@
 				7A2A79E61E124E1900A21960 /* PulsaOperatorViewController.swift in Sources */,
 				7A2A769F1E124E1600A21960 /* CartShipmentData.swift in Sources */,
 				7A2A7A841E124E1A00A21960 /* SearchAutoCompleteHeaderView.m in Sources */,
-				7A2A77B11E124E1700A21960 /* SerialDispatchQueueScheduler.swift in Sources */,
 				7A2A76B11E124E1600A21960 /* ShipmentAvailable.m in Sources */,
 				7A2A75F81E124E1600A21960 /* DataUser.m in Sources */,
-				7A2A77681E124E1700A21960 /* Merge.swift in Sources */,
 				7A2A77EA1E124E1700A21960 /* AlertListBankView.m in Sources */,
 				7A2A78901E124E1800A21960 /* GeneralAlertCell.m in Sources */,
 				7A2A79231E124E1800A21960 /* LoginSecurity.m in Sources */,
 				7A2A7A351E124E1900A21960 /* RejectReasonEmptyStockViewController.m in Sources */,
 				7A2A754A1E124E1500A21960 /* AdvanceReview.m in Sources */,
-				7A2A772C1E124E1600A21960 /* Cancelable.swift in Sources */,
 				7A2A79521E124E1800A21960 /* ShipmentLocationPickupViewCell.m in Sources */,
 				7A2A75061E124E1500A21960 /* RegisterResult.m in Sources */,
 				7A2A795C1E124E1800A21960 /* NotificationManager.m in Sources */,
@@ -12648,15 +11985,12 @@
 				7A2A79D91E124E1900A21960 /* PulsaCache.swift in Sources */,
 				7A2A7A371E124E1900A21960 /* RejectReasonEmptyVariantCell.m in Sources */,
 				7A2A76ED1E124E1600A21960 /* TxOrderPaymentEditForm.m in Sources */,
-				7A2A772F1E124E1600A21960 /* LockOwnerType.swift in Sources */,
 				7A2A75F91E124E1600A21960 /* ProfileEditForm.m in Sources */,
 				7A2A74E81E124E1500A21960 /* UIColorCategory.swift in Sources */,
-				7A2A775C1E124E1700A21960 /* Debug.swift in Sources */,
 				7A2A74C51E124E1500A21960 /* NSStringCategory.m in Sources */,
 				7A2A74D01E124E1500A21960 /* UITextView+UITextView_Placeholder.m in Sources */,
 				7A2A750B1E124E1500A21960 /* SecurityRequestOTP.m in Sources */,
 				7A2A74CF1E124E1500A21960 /* UITableView+RefreshControl.m in Sources */,
-				7A2A77691E124E1700A21960 /* Multicast.swift in Sources */,
 				7A2A75D21E124E1600A21960 /* DetailReviewReputationViewModel.m in Sources */,
 				7A2A7A821E124E1A00A21960 /* SearchAutoCompleteCell.m in Sources */,
 				7A2A75741E124E1500A21960 /* GooglePlaceDetailResults.m in Sources */,
@@ -12670,10 +12004,8 @@
 				7A2A79F11E124E1900A21960 /* PulsaRelationData.swift in Sources */,
 				7A2A74DA1E124E1500A21960 /* LabelMenu.m in Sources */,
 				7A2A76321E124E1600A21960 /* OrderProduct.m in Sources */,
-				7A2A777A1E124E1700A21960 /* Skip.swift in Sources */,
 				7A2A786F1E124E1700A21960 /* TKPDTextView.m in Sources */,
 				7A2A75BF1E124E1500A21960 /* ReplyInboxTicket.m in Sources */,
-				7A2A778A1E124E1700A21960 /* WithLatestFrom.swift in Sources */,
 				7A2A78B91E124E1800A21960 /* LayoutRowType.swift in Sources */,
 				7A2A7A221E124E1900A21960 /* RetryCollectionReusableView.m in Sources */,
 				7A2A78341E124E1700A21960 /* CarouselDataSource.m in Sources */,
@@ -12972,7 +12304,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */ = {
+		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC36DFAD19B0656400AF74C1 /* Debug */,

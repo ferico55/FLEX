@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 @objc enum InboxTicketFilterType :Int {
     case All, Unread

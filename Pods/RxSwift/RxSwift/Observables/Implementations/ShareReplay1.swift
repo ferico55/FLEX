@@ -1,15 +1,15 @@
 //
-//  ShareReplay1WhileConnected.swift
+//  ShareReplay1.swift
 //  Rx
 //
-//  Created by Krunoslav Zaher on 12/6/15.
+//  Created by Krunoslav Zaher on 10/10/15.
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
 import Foundation
 
 // optimized version of share replay for most common case
-final class ShareReplay1WhileConnected<Element>
+final class ShareReplay1<Element>
     : Observable<Element>
     , ObserverType
     , SynchronizedUnsubscribeType {
@@ -22,6 +22,8 @@ final class ShareReplay1WhileConnected<Element>
 
     private var _connection: SingleAssignmentDisposable?
     private var _element: Element?
+    private var _stopped = false
+    private var _stopEvent = nil as Event<Element>?
     private var _observers = Bag<AnyObserver<Element>>()
 
     init(source: Observable<Element>) {
@@ -36,6 +38,11 @@ final class ShareReplay1WhileConnected<Element>
     func _synchronized_subscribe<O : ObserverType where O.E == E>(observer: O) -> Disposable {
         if let element = self._element {
             observer.on(.Next(element))
+        }
+
+        if let stopEvent = self._stopEvent {
+            observer.on(stopEvent)
+            return NopDisposable.instance
         }
 
         let initialCount = self._observers.count
@@ -66,27 +73,29 @@ final class ShareReplay1WhileConnected<Element>
         if _observers.count == 0 {
             _connection?.dispose()
             _connection = nil
-            _element = nil
         }
     }
 
     func on(event: Event<E>) {
-        _lock.lock(); defer { _lock.unlock() }
-        _synchronized_on(event)
+        _synchronized_on(event).on(event)
     }
 
-    func _synchronized_on(event: Event<E>) {
+    func _synchronized_on(event: Event<E>) -> Bag<AnyObserver<Element>> {
+        _lock.lock(); defer { _lock.unlock() }
+        if _stopped {
+            return Bag()
+        }
+
         switch event {
         case .Next(let element):
             _element = element
-            _observers.on(event)
         case .Error, .Completed:
-            _element = nil
+            _stopEvent = event
+            _stopped = true
             _connection?.dispose()
             _connection = nil
-            let observers = _observers
-            _observers = Bag()
-            observers.on(event)
         }
+
+        return _observers
     }
 }

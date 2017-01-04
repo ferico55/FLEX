@@ -35,6 +35,7 @@ def common_pods
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
+    pod 'RxSwift', '~> 2.6.1'
     
     pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
     

@@ -116,6 +116,7 @@ PODS:
   - Reveal-iOS-SDK (1.6.2)
   - RKValueTransformers (1.1.3)
   - Rollout.io (1.10.0)
+  - RxSwift (2.6.1)
   - SOCKit (1.1)
   - SPTPersistentCache (1.0.0)
   - TPKeyboardAvoiding (1.3.1)
@@ -152,6 +153,7 @@ DEPENDENCIES:
   - RestKit (~> 0.27.0)
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.10.0)
+  - RxSwift (~> 2.6.1)
   - SPTPersistentCache (~> 1.0)
   - TPKeyboardAvoiding
   - TTTAttributedLabel
@@ -208,6 +210,7 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
   Rollout.io: 00fff26ab67dd724fa8598fe89ef3261d391fb98
+  RxSwift: 0147fbf94e65c6085da9540de92848189ac1c3f6
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
@@ -216,6 +219,6 @@ SPEC CHECKSUMS:
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 36a559c202966ba74c77d71da5f6957c3406e238
+PODFILE CHECKSUM: 879be6c1eea8ec1c5e0de2131d7a7c6ff2524751
 
 COCOAPODS: 1.1.1
