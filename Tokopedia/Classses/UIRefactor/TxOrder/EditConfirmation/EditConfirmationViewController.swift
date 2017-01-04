@@ -185,11 +185,11 @@ class EditConfirmationViewController: FormViewController {
         }
         
         guard let userAccountNumber = valuesDictionary[EditConfirmationRowTag.AccountNumber.rawValue]  as? String else {
-            StickyAlertView.showErrorMessage(["Nomer rekening harus diisi"])
+            StickyAlertView.showErrorMessage(["Nomor rekening harus diisi"])
             return
         }
         
-        let comment = valuesDictionary[EditConfirmationRowTag.Comment.rawValue] as! String
+        let comment = valuesDictionary[EditConfirmationRowTag.Comment.rawValue] as? String ?? ""
         
         postObject.system_bank_id   = "\(selectedSystemBank.bankId)"
         postObject.user_acc_name    = userAccountName
