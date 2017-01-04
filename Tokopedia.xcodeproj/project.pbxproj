@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11236B17B14C2FE1F670E2B3 /* RolloutGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA74BEEF5C4536E25A36061 /* RolloutGenerated.swift */; };
 		34E89BE51E02878A004AE6DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E88F041E028782004AE6DE /* AppDelegate.m */; };
 		34E8A2D01E028792004AE6DE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34E89B841E028789004AE6DE /* InfoPlist.strings */; };
 		34E8A2D11E028792004AE6DE /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 34E89B861E028789004AE6DE /* GTM-NCTWRP */; };
@@ -19,9 +20,11 @@
 		34E8A2D81E028792004AE6DE /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E89B8F1E02878A004AE6DE /* MoreWrapperViewController.m */; };
 		34E8A3091E028792004AE6DE /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E89BE11E02878A004AE6DE /* Tokopedia-Info.plist */; };
 		34E8A30A1E028792004AE6DE /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 34E89BE41E02878A004AE6DE /* Tokopedia.xcworkspace */; };
+		4721B7779D7F8855EA879E21 /* RolloutSwiftCompilerInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
+		647AD0B4F53476E3BA98E272 /* RolloutMayPatchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7980B6415A92F099E00FDB92 /* RolloutMayPatchFilter.swift */; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A2A74B81E124E1500A21960 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A67E71E124E1100A21960 /* AnalyticsManager.m */; };
 		7A2A74B91E124E1500A21960 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A67EB1E124E1100A21960 /* URLCacheAlert.m */; };
@@ -1882,6 +1885,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		B715641F0F836AA3DB6B5D6B /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -1940,6 +1944,7 @@
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		7980B6415A92F099E00FDB92 /* RolloutMayPatchFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutMayPatchFilter.swift; path = Pods/Rollout.io/RolloutSwift/RolloutMayPatchFilter.swift; sourceTree = "<group>"; };
 		7A2A67E61E124E1100A21960 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		7A2A67E71E124E1100A21960 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		7A2A67E81E124E1100A21960 /* AnalyticsString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsString.h; sourceTree = "<group>"; };
@@ -4946,9 +4951,12 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DBA74BEEF5C4536E25A36061 /* RolloutGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutGenerated.swift; path = Pods/Rollout.io/RolloutSwift/RolloutGenerated.swift; sourceTree = "<group>"; };
+		DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftCompilerInitiator.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftCompilerInitiator.swift; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5056,6 +5064,17 @@
 				34E89BE41E02878A004AE6DE /* Tokopedia.xcworkspace */,
 			);
 			path = Tokopedia;
+			sourceTree = "<group>";
+		};
+		7801174A94D679368F6C6A6C /* Rollout */ = {
+			isa = PBXGroup;
+			children = (
+				DBA74BEEF5C4536E25A36061 /* RolloutGenerated.swift */,
+				DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */,
+				93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */,
+				7980B6415A92F099E00FDB92 /* RolloutMayPatchFilter.swift */,
+			);
+			name = Rollout;
 			sourceTree = "<group>";
 		};
 		7A2A67E41E124E1100A21960 /* Classses */ = {
@@ -10479,6 +10498,7 @@
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
 				E1A48FC656B05056B45251AD /* Pods */,
+				7801174A94D679368F6C6A6C /* Rollout */,
 			);
 			sourceTree = "<group>";
 		};
@@ -10563,14 +10583,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
+				F56FC4FB40F35D09EADD27C8 /* Rollout.io pre-build */,
 				9852790493753292549B327E /* [CP] Check Pods Manifest.lock */,
-				2CF2B541200CAF980F511E39 /* Rollout.io pre-build */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
-				338C907D262C7B5D63075DF2 /* Rollout.io post-build */,
+				D82E8EEA83AEC3DBD6A71193 /* Rollout.io post-build */,
 			);
 			buildRules = (
 			);
@@ -10631,7 +10651,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */;
+			buildConfigurationList = FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -11129,34 +11149,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2CF2B541200CAF980F511E39 /* Rollout.io pre-build */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rollout.io pre-build";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=8 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 580495d0c8d2937468";
-		};
-		338C907D262C7B5D63075DF2 /* Rollout.io post-build */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rollout.io post-build";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=8 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 580495d0c8d2937468";
-		};
 		7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -11202,6 +11194,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		D82E8EEA83AEC3DBD6A71193 /* Rollout.io post-build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Rollout.io post-build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=9 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
+		};
 		E69AA1A952B2C8DACAC50186 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -11216,6 +11222,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		F56FC4FB40F35D09EADD27C8 /* Rollout.io pre-build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Rollout.io pre-build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=9 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -12657,6 +12677,10 @@
 				7A2A78B91E124E1800A21960 /* LayoutRowType.swift in Sources */,
 				7A2A7A221E124E1900A21960 /* RetryCollectionReusableView.m in Sources */,
 				7A2A78341E124E1700A21960 /* CarouselDataSource.m in Sources */,
+				11236B17B14C2FE1F670E2B3 /* RolloutGenerated.swift in Sources */,
+				4721B7779D7F8855EA879E21 /* RolloutSwiftCompilerInitiator.swift in Sources */,
+				B715641F0F836AA3DB6B5D6B /* RolloutSwiftInjectionBridge.swift in Sources */,
+				647AD0B4F53476E3BA98E272 /* RolloutMayPatchFilter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12827,6 +12851,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EXEC = "$(SRCROOT)/Pods/Rollout.io/lib/swift_wrapper/swiftc";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
@@ -12881,6 +12906,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EXEC = "$(SRCROOT)/Pods/Rollout.io/lib/swift_wrapper/swiftc";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -12946,7 +12972,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */ = {
+		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia.xcodeproj.rollouttemp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC36DFAD19B0656400AF74C1 /* Debug */,
