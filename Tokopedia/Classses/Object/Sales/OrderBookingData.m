@@ -9,5 +9,18 @@
 #import "OrderBookingData.h"
 
 @implementation OrderBookingData
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"booking_id",
+                                             @"type",
+                                             @"status",
+                                             @"order_id",
+                                             @"tiket_code"
+                                             ]
+     ];
+
+    return mapping;
+}
 
 @end

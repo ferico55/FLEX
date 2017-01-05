@@ -46,7 +46,7 @@
                            method:(NSString*)method
                              path:(NSString*)path
                         parameter:(NSDictionary*)parameter
-                             date:(NSString*)date {
+                              {
     
     NSDictionary *secretsByUrls = @{
                                     [NSString v4Url]: @"web_service_v4",
@@ -63,6 +63,7 @@
     
     NSString *output;
     NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
+    NSString* date = [self getDate];
     
     //set request method
     [self setRequestMethod:method];
@@ -70,6 +71,7 @@
     [self setTkpdPath:path];
     [self setSecret:secret];
     
+  
     NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
                               date, [self getTkpdPath]];
     
@@ -80,6 +82,10 @@
     CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
     NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
     output = [self base64forData:HMAC];
+    
+    _baseUrl = url;
+    _date = date;
+    _signature = output;
     
     return output;
 }
@@ -206,6 +212,26 @@
 
 - (void)setSecret:(NSString*)secret {
     _secret = secret;
+}
+
+- (NSDictionary*)authorizedHeaders {
+    UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+    
+    NSDictionary* headers = @{
+                              @"Request-Method" : [self getRequestMethod],
+                              @"Content-MD5" : [self getParameterMD5],
+                              @"Content-Type" : [self getContentTypeWithBaseUrl:_baseUrl],
+                              @"Date" : _date,
+                              @"X-Tkpd-Path" : [self getTkpdPath],
+                              @"X-Method" : [self getRequestMethod],
+                              @"Tkpd-UserId" : [userManager getUserId],
+                              @"Tkpd-SessionId" : [userManager getMyDeviceToken],
+                              @"X-Device" : @"ios",
+                              @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
+                              @"X-Tkpd-Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
+                              };
+    
+    return headers;
 }
 
 @end

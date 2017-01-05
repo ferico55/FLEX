@@ -43,6 +43,7 @@
 #import "ShopPageRequest.h"
 #import "NSString+TPBaseUrl.h"
 #import "ShopTabView.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
@@ -187,10 +188,11 @@
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     
-    
     _table.delegate = self;
     _table.dataSource = self;
     _table.allowsSelection = YES;
+    _table.estimatedRowHeight = 250;
+    _table.rowHeight = UITableViewAutomaticDimension;
     
     _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabReview];
     _shopPageHeader.delegate = self;
@@ -212,8 +214,8 @@
         _isNoData = NO;
     }
     
-    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
-    [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationTableViewCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationTableViewCellIdentifier"];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -565,30 +567,21 @@
     return _isNoData ? 0 : _list.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailReputationReview *review = _list[indexPath.row];
-    if (review.review_image_attachment.count == 0) {
-        return 200;
-    } else {
-        return 263;
-    }
-    
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self redirectToProductDetailReputation:_list[indexPath.row] withIndexPath:indexPath];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
     DetailReputationReview *list = _list[indexPath.row];
-    [cell setShopReputationModelView:list];
-    cell.isHelpful = NO;
-    cell.delegate = self;
-    cell.indexPath = indexPath;
-    [cell.leftBorderView setHidden:YES];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    ProductReputationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationTableViewCellIdentifier"];
+    cell.viewModel = list.viewModel;
+    cell.onTapProductName = ^(NSString *productName, NSString *productID){
+        [NavigateViewController navigateToProductFromViewController:weakSelf withName:productName withPrice:nil withId:productID withImageurl:nil withShopName:nil];
+    };
     
     return cell;
 }

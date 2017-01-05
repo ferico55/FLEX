@@ -193,14 +193,15 @@ FavoriteShopRequestDelegate
         cell.shoplocation.text = promoShop.location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:promoShop.image_shop.s_url]
                            placeholderImage:[UIImage imageNamed:@"icon_default_shops.jpg"]];
-        [cell.isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        cell.promoResult = _promoShops[indexPath.row];
+        [cell setupButtonIsFavorited:NO];
     }else{
         FavoritedShopList *favoritedShop = _shops[indexPath.row];
-        cell.shopname.text = favoritedShop.shop_name;
+        cell.shopname.text = [favoritedShop.shop_name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = favoritedShop.shop_location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:favoritedShop.shop_image]
                            placeholderImage:[UIImage imageNamed:@"icon_default_shops.jpg"]];
-        [cell.isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+        [cell setupButtonIsFavorited:YES];
     }
     cell.indexpath = indexPath;
     return cell;
@@ -260,58 +261,58 @@ FavoriteShopRequestDelegate
     }
 }
 
-
--(void)removeFavoritedRow:(NSIndexPath*)indexpath{
+- (void)didFollowPromotedShop:(PromoResult *)promoResult {
     is_already_updated = YES;
-    if(indexpath.section == 0) {
-        PromoResult *promoResult = _promoShops[indexpath.row];
-        _selectedPromoShop = promoResult;
-        
-        FavoritedShopList* favoritedShop = [FavoritedShopList new];
-        favoritedShop.shop_id = promoResult.shop.shop_id;
-        favoritedShop.shop_name = promoResult.shop.name;
-        favoritedShop.shop_location = promoResult.shop.location;
-        favoritedShop.shop_image = promoResult.shop.image_shop.s_url;
-        
-        [_shops insertObject:favoritedShop atIndex:0];
-        [_promoShops removeObjectAtIndex:indexpath.row];
-        
+    _selectedPromoShop = promoResult;
+    
+    FavoritedShopList* favoritedShop = [FavoritedShopList new];
+    favoritedShop.shop_id = promoResult.shop.shop_id;
+    favoritedShop.shop_name = promoResult.shop.name;
+    favoritedShop.shop_location = promoResult.shop.location;
+    favoritedShop.shop_image = promoResult.shop.image_shop.s_url;
+    
+    [_shops insertObject:favoritedShop atIndex:0];
+    if ([_promoShops containsObject:promoResult]) {
         NSArray *insertIndexPaths = [NSArray arrayWithObjects:
                                      [NSIndexPath indexPathForRow:0 inSection:1],nil
                                      ];
-        
+
         NSArray *deleteIndexPaths = [NSArray arrayWithObjects:
-                                     [NSIndexPath indexPathForRow:indexpath.row inSection:0], nil
+                                     [NSIndexPath indexPathForRow:[_promoShops indexOfObject:promoResult] inSection:0], nil
                                      ];
         
-        [self pressFavoriteAction:promoResult.shop.shop_id withIndexPath:indexpath];
+        [_promoShops removeObject:promoResult];
+        [self pressFavoriteAction:promoResult.shop.shop_id];
         
         [_table beginUpdates];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
         [_table endUpdates];
-        
-        if(_promoShops.count == 0) {
-            NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
-            [section addIndex:0];
-            [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
-        }
+    }
+    
+    if (_promoShops.count == 0) {
+        NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
+        [section addIndex:0];
+        [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
--(void)pressFavoriteAction:(NSString*)shopid withIndexPath:(NSIndexPath*)indexpath{
+-(void)pressFavoriteAction:(NSString*)shopid {
     strTempShopID = shopid;
-    [FavoriteShopRequest requestActionButtonFavoriteShop:shopid withAdKey:_selectedPromoShop.ad_ref_key onSuccess:^(FavoriteShopActionResult *data) {
-        
-        [self resetAllState];
-        [_table reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
-        
-    } onFailure:^{
-        
-        [self failToRequestActionButtonFavoriteShopConfirmation];
-        
-    }];
+    [FavoriteShopRequest requestActionButtonFavoriteShop:shopid
+                                               withAdKey:_selectedPromoShop.ad_ref_key
+                                               onSuccess:^(FavoriteShopActionResult *data) {
+                                                   
+                                                   [self resetAllState];
+                                                   [_table reloadData];
+                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
+                                                   
+                                               }
+                                               onFailure:^{
+                                                   
+                                                   [self failToRequestActionButtonFavoriteShopConfirmation];
+                                                   
+                                               }];
 }
 
 

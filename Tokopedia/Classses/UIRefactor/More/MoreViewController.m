@@ -433,15 +433,12 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {
-        NSString  *currentDeviceId = [_auth objectForKey:@"device_token"];
-        NSString *userID = [_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY];
-        NSString *url_ = _LPResult.uri;
-        NSURL *url = [NSURL URLWithString:url_];
+        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
         WebViewController *webViewController = [WebViewController new];
-        NSString *webViewStrUrl =[NSString stringWithFormat:@"https://js.tokopedia.com/wvlogin?uid=%@&token=%@&url=%@?%@", userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
-//        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", @"http", @"m.tokopedia.com",userID,currentDeviceId,@"/lp.pl",@"flag_app=1"]; //[url scheme], [url host]
+
         webViewController.isLPWebView = YES;
-        webViewController.strURL = webViewStrUrl;
+        webViewController.shouldAuthorizeRequest = YES;
+        webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
         webViewController.strTitle = @"TopPoints";
         [AnalyticsManager trackScreenName:@"Top Points Page"];
         [AnalyticsManager trackClickNavigateFromMore:@"TopPoints"];
@@ -586,11 +583,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     else if (indexPath.section == 6) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Contact Us"];
-            ContactUsWebViewController *controller = [ContactUsWebViewController new];
-            controller.title = @"Hubungi Kami";
-            controller.hidesBottomBarWhenPushed = YES;
-            [wrapperController.navigationController pushViewController:controller animated:YES];
-            
+            [NavigateViewController navigateToContactUsFromViewController:wrapperController];
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"App Suggestion"];
             [self pushIOSFeedback];
@@ -710,10 +703,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 //    [_notifManager tapWindowBar];
 //}
 
-- (void)navigateToContactUs:(NSNotification*)notification{
-    ContactUsWebViewController *controller = [ContactUsWebViewController new];
-    controller.hidesBottomBarWhenPushed = YES;
-    [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+- (void)navigateToContactUs:(NSNotification*)notification{    
+    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
 }
 
 #pragma mark - Notification delegate

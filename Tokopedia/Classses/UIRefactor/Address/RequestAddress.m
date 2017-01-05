@@ -15,9 +15,7 @@
 
 @implementation RequestAddress
 {
-    TokopediaNetworkManager *_provinceNetworkManager;
-    TokopediaNetworkManager *_cityNetworkManager;
-    TokopediaNetworkManager *_districtNetworkManager;
+    TokopediaNetworkManager *_networkManager;
     
     AddressObj *_address;
     
@@ -26,33 +24,17 @@
     URLCacheController *_cacheController;
 }
 
--(TokopediaNetworkManager*)setNetworkManagerWithTag:(int)tag {
-    TokopediaNetworkManager* networkManager = [TokopediaNetworkManager new];
-    networkManager.tagRequest = tag;
-    [self initCache];
+-(TokopediaNetworkManager*)networkManager {
+    if (!_networkManager) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.isUsingHmac = YES;
+    }
     
-    return networkManager;
+    [self initCache];
+    return _networkManager;
 }
 
 -(void)doRequestProvinces
-{
-    _provinceNetworkManager = [self setNetworkManagerWithTag:TagRequestGetProvince];
-    [self doRequestNetworkManager:_provinceNetworkManager];
-}
-
--(void)doRequestCities
-{
-    _cityNetworkManager = [self setNetworkManagerWithTag:TagRequestGetCity];
-    [self doRequestNetworkManager:_cityNetworkManager];
-}
-
--(void)doRequestDistricts
-{
-    _districtNetworkManager = [self setNetworkManagerWithTag:TagRequestGetDistrict];
-    [self doRequestNetworkManager:_districtNetworkManager];
-}
-
--(void)doRequestNetworkManager:(TokopediaNetworkManager*)networkManager;
 {
     RKMappingResult* cacheMappingResult = [self getFromCache];
     
@@ -61,10 +43,10 @@
         _address = [resultDict objectForKey:@""];
         [_delegate successRequestAddress:self withResultObj:_address];
     } else {
-        [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                      path:@"address.pl"
+        [[self networkManager] requestWithBaseUrl:[NSString v4Url]
+                                      path:@"/v4/address/get_province.pl"
                                     method:RKRequestMethodPOST
-                                 parameter:[self parameters:networkManager.tagRequest]
+                                 parameter:nil
                                    mapping:[AddressObj mapping]
                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                      [self actionAfterSuccessfulRequestWithResult:successResult withOperation:operation];
@@ -75,29 +57,54 @@
     }
 }
 
-#pragma mark - requestWithBaseUrl Methods
--(NSDictionary *)parameters:(int)tag
+-(void)doRequestCities
 {
-    NSDictionary *param =@{};
-    if (tag == TagRequestGetProvince) {
-        param = @{ @"action" : @"get_province"
-                   };
-    }
+    RKMappingResult* cacheMappingResult = [self getFromCache];
     
-    if (tag == TagRequestGetCity) {
-        param = @{ @"action" : @"get_city",
-                   @"province_id" : _provinceID?:@""
-                 };
+    if(cacheMappingResult) {
+        NSDictionary *resultDict = cacheMappingResult.dictionary;
+        _address = [resultDict objectForKey:@""];
+        [_delegate successRequestAddress:self withResultObj:_address];
+    } else {
+        [[self networkManager] requestWithBaseUrl:[NSString v4Url]
+                                             path:@"/v4/address/get_city.pl"
+                                           method:RKRequestMethodPOST
+                                        parameter:@{ @"province_id" : _provinceID?:@"" }
+                                          mapping:[AddressObj mapping]
+                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                            [self actionAfterSuccessfulRequestWithResult:successResult withOperation:operation];
+                                        }
+                                        onFailure:^(NSError *errorResult) {
+                                            [self actionAfterError:errorResult];
+                                        }];
+    }
+}
+
+-(void)doRequestDistricts
+{
+    RKMappingResult* cacheMappingResult = [self getFromCache];
+    
+    if(cacheMappingResult) {
+        NSDictionary *resultDict = cacheMappingResult.dictionary;
+        _address = [resultDict objectForKey:@""];
+        [_delegate successRequestAddress:self withResultObj:_address];
+    } else {
+        [[self networkManager] requestWithBaseUrl:[NSString v4Url]
+                                             path:@"/v4/address/get_district.pl"
+                                           method:RKRequestMethodPOST
+                                        parameter:@{ @"city_id" : _cityID?:@""}
+                                          mapping:[AddressObj mapping]
+                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                            [self actionAfterSuccessfulRequestWithResult:successResult withOperation:operation];
+                                        }
+                                        onFailure:^(NSError *errorResult) {
+                                            [self actionAfterError:errorResult];
+                                        }];
     }
 
-    if (tag == TagRequestGetDistrict) {
-        param = @{ @"action" : @"get_district",
-                   @"city_id" : _cityID?:@"",
-                   };
-    }
-    
-    return param;
 }
+
+#pragma mark - requestWithBaseUrl Methods
 
 -(void)actionAfterSuccessfulRequestWithResult:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation *)operation
 {

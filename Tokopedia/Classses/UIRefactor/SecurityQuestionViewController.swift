@@ -29,7 +29,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet var answerField: UITextField!
     @IBOutlet var infoLabel: UILabel!
     
-    @IBOutlet var questionViewType2: UIView!
+    @IBOutlet var questionViewType2: UIScrollView!
     @IBOutlet var requestOTPButton: UIButton!
     @IBOutlet var otpField: UITextField!
     @IBOutlet var otpInfoLabel: UILabel!

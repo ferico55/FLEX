@@ -27,4 +27,35 @@
     return _modelView;
 }
 
++ (RKObjectMapping *)mapping {
+    
+    RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[SearchAWSShop class]];
+    [shopMapping addAttributeMappingsFromArray:@[@"shop_id",
+                                                 @"shop_name",
+                                                 @"shop_domain",
+                                                 @"shop_url",
+                                                 @"shop_is_img",
+                                                 @"shop_image",
+                                                 @"shop_image_300",
+                                                 @"shop_description",
+                                                 @"shop_tag_line",
+                                                 @"shop_location",
+                                                 @"shop_total_transaction",
+                                                 @"shop_total_favorite",
+                                                 @"shop_gold_shop",
+                                                 @"shop_is_owner",
+                                                 @"shop_rate_speed",
+                                                 @"shop_rate_accuracy",
+                                                 @"shop_rate_service",
+                                                 @"shop_status",
+                                                 @"shop_lucky",
+                                                 @"reputation_image_uri",
+                                                 @"reputation_score"
+                                                 ]];
+    
+    return shopMapping;
+}
+
+
+
 @end

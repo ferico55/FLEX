@@ -64,6 +64,7 @@
 #define GA_EVENT_CATEGORY_TRANSACTION_LIST @"Transaction"
 #define GA_EVENT_CATEGORY_RECEIVED @"Received"
 #define GA_EVENT_CATEGORY_TRACKING @"Tracking"
+#define GA_EVENT_CATEGORY_PULSA @"Pulsa"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
@@ -73,6 +74,7 @@
 #define GA_EVENT_ACTION_ABANDON @"Abandon"
 #define GA_EVENT_ACTION_EDIT @"Edit"
 #define GA_EVENT_ACTION_COPY @"Copy"
+#define GA_EVENT_ACTION_SUCCESS @"Success"
 #define GA_EVENT_ACTION_REGISTER_SUCCESS @"Register Success"
 #define GA_EVENT_ACTION_REGISTER_ERROR @"Register Error"
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"

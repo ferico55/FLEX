@@ -18,5 +18,6 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) OrderOrder *order;
 @property (nonatomic, strong) OrderBooking *booking;
+@property (nonatomic, strong) NSString *is_allow_manage_tx;
 
 @end

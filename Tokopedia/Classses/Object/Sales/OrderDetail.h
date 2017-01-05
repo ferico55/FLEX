@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OrderRequestCancel.h"
+
 @interface OrderDetail : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *detail_insurance_price;
@@ -42,7 +44,11 @@
 @property (strong, nonatomic) NSString *detail_dropship_telp;
 @property NSInteger detail_free_return;
 @property (strong, nonatomic) NSString *detail_free_return_msg;
-
+@property (strong, nonatomic) OrderRequestCancel *detail_cancel_request;
 @property (strong, nonatomic) NSString *invoiceURLString;
+
+@property (strong, nonatomic) NSString *partialString;
+@property (strong, nonatomic) NSString *additionalFeeTitle;
+@property (strong, nonatomic) NSString *additionalFee;
 
 @end

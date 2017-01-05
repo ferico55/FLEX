@@ -27,6 +27,7 @@
                receiptNumber:(NSString *)receiptNumber
              rejectionReason:(NSString *)rejectionReason;
 - (void)successConfirmOrder:(OrderTransaction *)order;
+- (void)refreshData;
 
 @end
 
@@ -36,7 +37,12 @@
 @property (weak, nonatomic) id<OrderDetailDelegate> delegate;
 @property (strong, nonatomic) NSArray *shipmentCouriers;
 @property (strong, nonatomic) OrderBooking *booking;
-
+@property BOOL showAskBuyer;
 @property BOOL shouldRequestIDropCode;
+
+@property BOOL isDetailNewOrder;
+@property BOOL isDetailShipmentConfirmation;
+
+@property (copy, nonatomic) void(^didAcceptOrder)();
 
 @end

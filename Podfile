@@ -1,9 +1,6 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-# use old specs for cocoapods 0.39.0
-source "https://github.com/CocoaPods/Old-Specs"
-
 use_frameworks!
 
 def common_pods
@@ -15,8 +12,7 @@ def common_pods
     pod 'GoogleAppIndexing'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
-    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-    pod 'Rollout.io', '~> 1.7.1'
+    pod 'Rollout.io', '~> 1.10.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
@@ -31,14 +27,17 @@ def common_pods
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
-    pod 'TPKeyboardAvoiding', '~> 1.3'
+    pod 'TPKeyboardAvoiding'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
-    
+    pod 'MMNumberKeyboard'
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
+    pod 'RxSwift', '~> 2.6.1'
+    
+    pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -47,6 +46,7 @@ end
 
 target "Tokopedia" do
     common_pods
+    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do

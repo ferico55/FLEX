@@ -18,4 +18,6 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray<CatalogShopAWSProductResult*>* catalog_products;
 
++ (RKObjectMapping*)objectMapping;
+
 @end

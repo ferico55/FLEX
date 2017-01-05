@@ -42,7 +42,6 @@
 #import "NoResultReusableView.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-#import "TxOrderTabViewController.h"
 #import "SwiftOverlays.h"
 #import "CustomNotificationView.h"
 

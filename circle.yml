@@ -1,0 +1,14 @@
+machine:
+  xcode:
+    version: 8.0
+
+#deployment:
+#  beta_distribution:
+#    branch: circleci
+#    commands:
+#      - gym --scheme "Tokopedia"
+#      - ipa distribute:crashlytics
+#          --crashlytics_path Crashlytics.framework
+#          --api_token    "$CRASHLYTICS_API_KEY"
+#          --build_secret "$CRASHLYTICS_SECRET"
+

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,19 +12,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HRE-IP-MWo" id="V0R-aL-kwT">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                <frame key="frameInset" width="320" height="63.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SEh-Nm-NRH" userLabel="Horizontal Border">
-                        <rect key="frame" x="15" y="0.0" width="290" height="1"/>
-                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="HXD-Re-bfc"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="amU-22-OX1"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Warna hijau" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-IC-rgi">
-                        <rect key="frame" x="15" y="37" width="290" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="SbE-bX-x3j"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="nRH-2a-Ydj"/>
@@ -32,21 +31,19 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AAr-BK-rES" userLabel="Bottom border">
-                        <rect key="frame" x="0.0" y="62" width="320" height="1"/>
-                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="qiZ-9f-0Jb"/>
                             <constraint firstAttribute="height" constant="1" id="ygT-kJ-H3x"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BG6-M0-6C6">
-                        <rect key="frame" x="15" y="14" width="290" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="0Ty-du-Vv1"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="f7B-6a-TiI"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.55089282989501953" green="0.55087631940841675" blue="0.55088567733764648" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -65,11 +62,16 @@
                     <constraint firstAttribute="trailing" secondItem="SEh-Nm-NRH" secondAttribute="trailing" constant="15" id="xYW-uD-eeq"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.97037827968597412" green="0.97034925222396851" blue="0.97036570310592651" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="productInformationLabel" destination="IVa-IC-rgi" id="ouZ-m3-NQW"/>
             </connections>
             <point key="canvasLocation" x="482" y="260.5"/>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>

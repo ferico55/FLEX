@@ -190,7 +190,7 @@ import UIKit
     
     private func navigateToPhotoPicker(){
         
-        ImagePickerController.showImagePicker(self,
+        TKPImagePickerController.showImagePicker(self,
                                               assetType: .allPhotos,
                                               allowMultipleSelect: true,
                                               showCancel: true,

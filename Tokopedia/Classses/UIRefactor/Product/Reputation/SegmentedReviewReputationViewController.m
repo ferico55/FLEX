@@ -130,7 +130,7 @@
     }
     
     if(arrowImage == nil) {
-        arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_triangle_down_white" ofType:@"png"]];
+        arrowImage = [UIImage imageNamed:@"icon_triangle_down_white"];
         CGRect rect = CGRectMake(0, 0, 10 ,7);
         UIGraphicsBeginImageContext( rect.size );
         [arrowImage drawInRect:rect];
@@ -186,8 +186,8 @@
 
 - (void)hiddenShadowFilter:(BOOL)isHidden {
     viewShadow.hidden = viewContentAction.hidden = isHidden;
-    
-    arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(isHidden? @"icon_triangle_down_white":@"icon_triangle_up_white") ofType:@"png"]];
+    NSString *iconName = isHidden? @"icon_triangle_down_white":@"icon_triangle_up_white";
+    arrowImage = [UIImage imageNamed:iconName];
     CGRect rect = CGRectMake(0, 0, 10 ,7);
     UIGraphicsBeginImageContext( rect.size );
     [arrowImage drawInRect:rect];

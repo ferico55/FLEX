@@ -10,8 +10,6 @@ import UIKit
 import WebKit
 
 class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
-    
-    weak var viewControllerToNavigate: UIViewController!
     private static let PROMO_URL = "https://m.tokopedia.com/promo?flag_app=1"
     private var refreshControl: UIRefreshControl!
     private var activityIndicator: UIActivityIndicatorView!
@@ -20,8 +18,11 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
         return NSURLRequest(URL: NSURL(string: PromoView.PROMO_URL)!)
     }
     
-    init(frame: CGRect) {
-        super.init(frame: frame, configuration: WKWebViewConfiguration())
+    var didTapPromoDetail: ((webViewController: WebViewController) -> Void)?
+    var onTapLinkWithUrl: ((url: NSURL) -> Void)?
+    
+    init() {
+        super.init(frame: CGRectZero, configuration: WKWebViewConfiguration())
         generateRefreshControl()
         generateRetryButton()
         self.UIDelegate = self
@@ -51,11 +52,9 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
                 let webViewController = WebViewController()
                 webViewController.strURL = navigationAction.request.URL?.absoluteString
                 webViewController.onTapLinkWithUrl = { [unowned self] url in
-                    if url.absoluteString == "https://www.tokopedia.com/" {
-                        self.viewControllerToNavigate.navigationController?.popViewControllerAnimated(true)
-                    }
+                    self.onTapLinkWithUrl?(url: url)
                 }
-                viewControllerToNavigate.navigationController?.pushViewController(webViewController, animated: true)
+                didTapPromoDetail?(webViewController: webViewController)
                 decisionHandler(.Cancel)
                 return
             }
@@ -111,10 +110,12 @@ class PromoView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     func generateActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.center.x = self.bounds.midX
-        activityIndicator.frame.origin.y = 15
-        activityIndicator.startAnimating()
         self.addSubview(activityIndicator)
+        activityIndicator.mas_makeConstraints { (make) in
+            make.centerX.mas_equalTo()(self)
+            make.top.mas_equalTo()(15)
+        }
+        activityIndicator.startAnimating()
     }
     
     //MARK: Common Method

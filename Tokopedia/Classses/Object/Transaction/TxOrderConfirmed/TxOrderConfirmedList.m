@@ -9,6 +9,29 @@
 #import "TxOrderConfirmedList.h"
 
 @implementation TxOrderConfirmedList
+
+-(BOOL)isToppayConfirmation{
+    return ([self.button[@"button_edit_toppay"] integerValue] == 1);
+}
+
+
+-(NSString *)userBankFullName{
+    NSString *bankString = @"";
+    if (![_user_bank_name isEqualToString:@""]) {
+        bankString = [bankString stringByAppendingFormat:@"%@\n",_user_bank_name];
+    }
+    
+    if (![_user_account_name isEqualToString:@""]) {
+        bankString = [bankString stringByAppendingFormat:@"%@\n",_user_account_name];
+    }
+    
+    if (![_user_account_no isEqualToString:@""] && ![_user_account_no isEqualToString:@"0"]) {
+        bankString = [bankString stringByAppendingString:_user_account_no];
+    }
+    
+    return bankString;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[

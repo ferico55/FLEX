@@ -378,7 +378,7 @@
 -(void)doSelectPhotos{
     [_messageTextView resignFirstResponder];
     __weak typeof(self) wself = self;
-    [ImagePickerController showImagePicker:self
+    [TKPImagePickerController showImagePicker:self
                                  assetType:DKImagePickerControllerAssetTypeallPhotos
                        allowMultipleSelect:YES
                                 showCancel:YES

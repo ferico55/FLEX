@@ -24,4 +24,8 @@
 @property (nonatomic, strong) NSString *payment_amount;
 @property (nonatomic, strong) NSString *img_proof_url;
 
+@property (nonatomic, strong) NSString *userBankFullName;
+
+-(BOOL)isToppayConfirmation;
+
 @end

@@ -355,7 +355,6 @@
     if (indexPath) {
         InboxMessageList *list = _messages[indexPath.row];
         list.message_read_status = @"1";
-        
         __weak typeof(self) weakSelf = self;
         
         MessageViewController *vc = [[MessageViewController alloc] init];
@@ -367,7 +366,7 @@
         vc.onMessagePosted = ^(NSString* replyMessage) {
             [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
         };
-        
+        vc.hideInputMessage = list.user_label_id==Administrator?YES:NO;
         [AnalyticsManager trackEventName:@"clickMessage"
                                 category:GA_EVENT_CATEGORY_INBOX_MESSAGE
                                   action:GA_EVENT_ACTION_VIEW
@@ -393,7 +392,6 @@
 - (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row >= _messages.count) return;
     InboxMessageList *list = _messages[indexPath.row];
-
     list.message_reply = message;
     [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -530,7 +528,6 @@
     if(readStatus) {
         if (_messages.count > indexpath.row) {
             InboxMessageList *list = _messages[indexpath.row];
-            
             list.message_read_status = readStatus;
             [_table reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
             [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -701,8 +698,6 @@
         
         CGFloat padding = 15;
         NSIndexPath *indexPath = [_table indexPathForCell:cell];
-        InboxMessageList *list = _messages[indexPath.row];
-
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
             [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE indexPaths:@[indexPath]];

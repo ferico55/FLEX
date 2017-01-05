@@ -10,6 +10,18 @@
 
 @implementation OrderDetail
 
+-(NSString *)additionalFee{
+    return ([self.detail_additional_fee integerValue]==0)?self.detail_insurance_price_idr:self.detail_total_add_fee_idr;
+}
+
+-(NSString *)additionalFeeTitle{
+    return ([self.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+}
+
+-(NSString *)partialString{
+    return self.detail_partial_order?@"Ya":@"Tidak";
+}
+
 -(NSString *)detail_free_return_msg {
     return [_detail_free_return_msg kv_decodeHTMLCharacterEntities];
 }
@@ -67,6 +79,8 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"detail_cancel_request" toKeyPath:@"detail_cancel_request" withMapping:[OrderRequestCancel mapping]]];
+    
     return mapping;
 }
 

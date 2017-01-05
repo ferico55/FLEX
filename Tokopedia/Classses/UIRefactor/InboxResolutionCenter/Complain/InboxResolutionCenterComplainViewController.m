@@ -262,11 +262,11 @@
     }else {
         if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
             [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
-            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageNamed:@"icon_neutral_smile_small"] forState:UIControlStateNormal];
         }
         else {
             [cell.btnReputation setTitle:[NSString stringWithFormat:@" %@%%", resolution.resolution_customer.customer_reputation.positive_percentage] forState:UIControlStateNormal];
-            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageNamed:@"icon_smile_small"] forState:UIControlStateNormal];
         }
     }
     

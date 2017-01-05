@@ -8,9 +8,10 @@
 
 import UIKit
 import JSQMessagesViewController
+import JLRoutes
 
 class MessageViewController: JSQMessagesViewController {
-    
+    var hideInputMessage: Bool = false
     var messageTitle = ""
     var messageSubtitle = ""
     var messageId: String!
@@ -32,6 +33,7 @@ class MessageViewController: JSQMessagesViewController {
     private var incomingBubbleImageView: JSQMessagesBubbleImage!
     private var nextPage: String?
     private var indicator = UIActivityIndicatorView()
+    private let route = JLRoutes()
     
     lazy var fetchMessageManager : TokopediaNetworkManager = {
        var manager = TokopediaNetworkManager()
@@ -54,12 +56,27 @@ class MessageViewController: JSQMessagesViewController {
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
         
         self.topContentAdditionalInset = 30
-        
+        if (self.hideInputMessage) {inputToolbar.hidden = true}
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
         setupTitle()
+        setupRoute()
         fetchMessages("1")
+    }
+    
+    private func setupRoute(){
+        route.addRoute("/invoice.pl") { [unowned self] dictionary in
+            
+            guard let pdf = dictionary["pdf"] else {return false}
+            guard let id = dictionary["id"] else {return false}
+            
+            let url = "\(NSString.tokopediaUrl())/invoice.pl?pdf=\(pdf)&id=\(id)"
+            
+            NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: url)
+            
+            return true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -213,8 +230,8 @@ class MessageViewController: JSQMessagesViewController {
                                method: .POST,
                                parameter: ["reply_message" : text, "message_id" : self.messageId],
                                mapping: InboxMessageAction.mapping(),
-                               onSuccess: { [unowned self] (result, operation) in
-                                
+                               onSuccess: { [weak self] (result, operation) in
+                                    guard let `self` = self else { return }
                                     let result = result.dictionary()[""] as! InboxMessageAction
                                     if(result.data.is_success == "1") {
                                         self.onMessagePosted(text)
@@ -223,7 +240,8 @@ class MessageViewController: JSQMessagesViewController {
                                     }
                                },
                                onFailure: {  [weak self] (error) in
-                                    self!.receiveErrorSendMessage([])
+                                    guard let `self` = self else { return }
+                                    self.receiveErrorSendMessage([])
                                }
                 
         )
@@ -243,6 +261,9 @@ class MessageViewController: JSQMessagesViewController {
     //MARK: TextView Delegate
     override func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         var urlString : String!
+        
+        guard !route.routeURL(URL) else {return false}
+        
         if(URL.scheme?.lowercaseString == "http" || URL.scheme?.lowercaseString == "https") {
             if(URL.host == "www.tokopedia.com") {
                 urlString = URL.absoluteString!
@@ -347,7 +368,6 @@ class MessageViewController: JSQMessagesViewController {
     private func didReceiveMessages(messages: [InboxMessageDetailList]) {
         messages.forEach({ (message) in
             let message = message
-
             let dateString = message.message_reply_time.formatted
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
@@ -381,8 +401,11 @@ class MessageViewController: JSQMessagesViewController {
         let controller = WebViewController()
         controller.strURL = url
         controller.strTitle = url
-        controller.onTapLinkWithUrl = {[unowned self] tappedUrl in
-            if(tappedUrl.absoluteString == "https://www.tokopedia.com/") {
+        controller.shouldAuthorizeRequest = true
+        controller.onTapLinkWithUrl = {[weak self] tappedUrl in
+            guard let `self` = self else { return }
+            
+            if(tappedUrl?.absoluteString == "https://www.tokopedia.com/") {
                 self.navigationController!.popViewControllerAnimated(true)
             }
         }

@@ -1064,7 +1064,7 @@ typedef enum
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:nil failure:nil];
+    [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"] success:nil failure:nil];
     [_productDescriptionLabel setText:_selectedProduct.product_name];
 }
 

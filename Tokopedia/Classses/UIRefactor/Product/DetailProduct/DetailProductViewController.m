@@ -357,26 +357,18 @@ TTTAttributedLabelDelegate
     
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
-        //        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_active.png"] forState:UIControlStateNormal];
-        [_favButton.layer setBorderWidth:0];
-        _favButton.tintColor = [UIColor whiteColor];
-        [UIView animateWithDuration:0.3 animations:^(void) {
-            [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-            //            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        }];
-        
+        [_favButton setImage:[UIImage imageNamed:@"icon_follow_check"] forState:UIControlStateNormal];
+        [_favButton setTitle:@"Mengikuti" forState:UIControlStateNormal];
+        [_favButton setTitleColor:[UIColor fromHexString:@"#42B549"] forState:UIControlStateNormal];
+        [_favButton setBackgroundColor:[UIColor whiteColor]];
     }
     else {
         _favButton.tag = 17;
-        //        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_nonactive.png"] forState:UIControlStateNormal];
-        [_favButton.layer setBorderWidth:1];
-        _favButton.tintColor = [UIColor lightGrayColor];
-        [UIView animateWithDuration:0.3 animations:^(void) {
-            [_favButton setBackgroundColor:[UIColor whiteColor]];
-            //            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
-        }];
+        [_favButton setImage:[UIImage imageNamed:@"icon_follow_plus"] forState:UIControlStateNormal];
+        [_favButton setTitle:@"Ikuti" forState:UIControlStateNormal];
+        [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_favButton setBackgroundColor:[UIColor fromHexString:@"#42B549"]];
+
     }
 }
 
@@ -393,11 +385,7 @@ TTTAttributedLabelDelegate
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    _favButton.layer.cornerRadius = 3;
-    _favButton.layer.borderWidth = 1;
-    _favButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
     _favButton.enabled = YES;
-    _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     
     if (_isnodata || _product.data.shop_info.shop_id == nil) {
         
@@ -445,13 +433,13 @@ TTTAttributedLabelDelegate
 - (void)setBackgroundWishlist:(BOOL)isWishList
 {
     if(isWishList) {
-        [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_active.png"] forState:UIControlStateNormal];
-        btnWishList.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
+        [btnWishList setImage:[UIImage imageNamed:@"icon_wishlist_filled"] forState:UIControlStateNormal];
+        btnWishList.backgroundColor = [UIColor fromHexString:@"#F33960"];
         [btnWishList setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         btnWishList.layer.borderWidth = 0;
     }
     else {
-        [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_nonactive.png"] forState:UIControlStateNormal];
+        [btnWishList setImage:[UIImage imageNamed:@"icon_wishlist_outline"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor whiteColor];
         [btnWishList setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnWishList.layer.borderWidth = 1.0f;
@@ -1809,14 +1797,10 @@ TTTAttributedLabelDelegate
                                    label:@"Report"];
         [self goToReportProductViewController];
     } else {
-        LoginViewController *loginVC = [LoginViewController new];
-        loginVC.delegate = self;
-        loginVC.redirectViewController = self;
-        loginVC.isPresentedViewController = YES;
-        afterLoginRedirectTo = @"ReportProductViewController";
-        UINavigationController *loginNavController = [[UINavigationController alloc] initWithRootViewController:loginVC];
-        loginNavController.navigationBar.translucent = NO;
-        [self.navigationController presentViewController:loginNavController animated:YES completion:nil];
+        __weak __typeof(self) weakSelf = self;
+        [[AuthenticationService sharedService] signInFromViewController:self onSignInSuccess:^(LoginResult * loginResult) {
+            [weakSelf goToReportProductViewController];
+        }];
     }
 }
 
@@ -1967,7 +1951,6 @@ TTTAttributedLabelDelegate
     NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.data.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
     _shoplocation.attributedText = myString;
-    //_shoplocation.text = _product.data.shop_info.shop_location?:@"";
     
     if(_product.data.shop_info.shop_is_gold == 1 || _product.data.shop_info.official) {
         _goldShop.hidden = NO;
@@ -1982,37 +1965,8 @@ TTTAttributedLabelDelegate
     _constraintBadgeGoldWidth.constant = (_product.data.shop_info.shop_is_gold == 1)?20:0;
     _constraintBadgeLuckySpace.constant = (_product.data.shop_info.shop_is_gold == 1)?4:0;
     
-    
-    UIImageView *thumb = _shopthumb;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.data.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
-    
-    thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
-    thumb.layer.cornerRadius = thumb.layer.frame.size.width/2;
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image];
-        
-#pragma clang diagnostic pop
-        [merchantActivityIndicator removeFromSuperview];
-        [merchantActivityIndicator stopAnimating];
-        merchantActivityIndicator = nil;
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
-    }];
-    
-    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.data.shop_info.shop_lucky] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [self.luckyBadgeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        self.luckyBadgeImageView.image = image;
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        self.luckyBadgeImageView.image = [UIImage imageNamed:@""];
-    }];
+    _shopthumb.layer.cornerRadius = _shopthumb.layer.frame.size.width/2;
+    [_shopthumb setImageWithURL:[NSURL URLWithString:_product.data.shop_info.shop_avatar] placeholderImage:[UIImage imageNamed:@"icon_default_shop"]];
 }
 
 -(void)setOtherProducts {
@@ -2213,9 +2167,7 @@ TTTAttributedLabelDelegate
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
-    if ([afterLoginRedirectTo isEqualToString:@"ReportProductViewController"]) {
-        [self goToReportProductViewController];
-    }
+
 }
 
 - (void)cancelLoginView {

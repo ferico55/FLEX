@@ -30,7 +30,6 @@
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
     FilterSalesTransactionListDelegate,
-    ChangeReceiptNumberDelegate,
     TrackOrderViewControllerDelegate,
     NoResultDelegate
 >
@@ -109,11 +108,14 @@
     
     self.filterViewController = [FilterSalesTransactionListViewController new];
     self.filterViewController.delegate = self;
+    
+    _tableView.estimatedRowHeight = 218;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
     return backBarButtonItem;
@@ -121,7 +123,7 @@
 
 - (UIBarButtonItem *)filterBarButton {
     UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
-                                                                        style:UIBarButtonItemStyleBordered
+                                                                        style:UIBarButtonItemStylePlain
                                                                        target:self
                                                                        action:@selector(didTapFilterButton:)];
     return filterBarButton;
@@ -139,21 +141,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_orders count];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    if ([self.response.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
-            return tableView.rowHeight;
-        } else {
-            return tableView.rowHeight - 50;
-        }
-    }
-    return tableView.rowHeight - 50;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -190,15 +177,48 @@
     cell.dateFinishLabel.hidden = YES;
     cell.finishLabel.hidden = YES;
     
+    cell.order = order;
     if ([self.response.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
 
+        [cell hideAllButton];
+        
         if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
-            [cell showAllButton];
-        } else {
-            [cell hideAllButton];
+            
+            [cell showTrackButtonOnTap:^(OrderTransaction *order) {
+                [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_CLICK label:@"Track"];
+                _selectedOrder = order;
+                
+                TrackOrderViewController *controller = [TrackOrderViewController new];
+                controller.order = _selectedOrder;
+                controller.hidesBottomBarWhenPushed = YES;
+                controller.delegate = self;
+                
+                [self.navigationController pushViewController:controller animated:YES];
+            }];
+            
+            [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                _selectedOrder = order;
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                
+                ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
+                controller.receiptNumber = _selectedOrder.order_detail.detail_ship_ref_num;
+                controller.orderID = _selectedOrder.order_detail.detail_order_id;
+                
+                controller.didSuccessEditReceipt = ^(NSString *newReceipt){
+                    _selectedOrder.order_detail.detail_ship_ref_num = newReceipt;
+                };
+                
+                navigationController.viewControllers = @[controller];
+                
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }];
         }
         
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
@@ -233,24 +253,6 @@
 }
 
 #pragma mark - Cell delegate
-
-- (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    _selectedOrder = order;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
-    controller.delegate = self;
-    controller.order = _selectedOrder;
-    navigationController.viewControllers = @[controller];
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath {
     [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_VIEW label:@"Detail"];
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
@@ -262,29 +264,10 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath {
-    [AnalyticsManager trackEventName:@"clickTransaction" category:GA_EVENT_CATEGORY_TRANSACTION action:GA_EVENT_ACTION_CLICK label:@"Track"];
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    _selectedOrder = order;
-    
-    TrackOrderViewController *controller = [TrackOrderViewController new];
-    controller.order = _selectedOrder;
-    controller.hidesBottomBarWhenPushed = YES;
-    controller.delegate = self;
-    
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     NavigateViewController *controller = [NavigateViewController new];
     [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
-}
-
-#pragma mark - Change receipt delegate
-
-- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history {
-    [self requestActionReceiptNumber:receiptNumber];
 }
 
 #pragma mark - Rest Kit Methods
@@ -358,50 +341,6 @@
 - (void)refreshData {
     self.page = @"1";
     [self request];
-}
-
-#pragma mark - Reskit action methods
-
-- (void)requestActionReceiptNumber:(NSString *)receiptNumber {
-    if (self.actionNetworkManager == nil) {
-        self.actionNetworkManager = [TokopediaNetworkManager new];
-        self.actionNetworkManager.isUsingHmac = YES;
-    }
-    NSDictionary *parameters = @{
-        @"order_id"     : _selectedOrder.order_detail.detail_order_id,
-        @"shipping_ref" : receiptNumber,
-    };
-    [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                             path:@"/v4/action/myshop-order/edit_shipping_ref.pl"
-                                           method:RKRequestMethodPOST
-                                        parameter:parameters
-                                          mapping:[ActionOrder mapping]
-                                        onSuccess:^(RKMappingResult *mappingResult,
-                                                    RKObjectRequestOperation *operation) {
-                                            [self didReceiveActionMappingResult:mappingResult forReceiptNumber:receiptNumber];
-                                        } onFailure:^(NSError *errorResult) {
-                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses mengubah nomor resi gagal."] delegate:self];
-                                            [alert show];
-                                        }];
-}
-
-- (void)didReceiveActionMappingResult:(RKMappingResult *)mappingResult forReceiptNumber:(NSString *)receiptNumber {
-    ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
-        [alert show];
-        _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
-    } else {
-        if (actionOrder.message_error) {
-            NSArray *errorMessages = actionOrder.message_error?:@[@"Proses mengubah nomor resi gagal."];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi tidak valid."] delegate:self];
-            [alert show];
-        }
-    }
 }
 
 #pragma mark - Actions

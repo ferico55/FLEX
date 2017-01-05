@@ -32,6 +32,7 @@
 @property (nonatomic, weak) NSString *review_rate_quality;
 @property (nonatomic, weak) NSString *product_status;
 @property (nonatomic, weak) NSString *product_id;
+@property BOOL review_is_helpful;
 
 @property (nonatomic, weak) ReviewResponse *review_response;
 @property (nonatomic, weak) NSArray *review_image_attachment;

@@ -49,8 +49,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     GIDSignInDelegate
 >
 {
-    NSMutableDictionary *_activation;
-
     UIBarButtonItem *_barbuttonsignin;
 
     UserAuthentificationManager *_userManager;
@@ -78,7 +76,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (strong, nonatomic) IBOutlet UIView *formContainer;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
+
+@property (nonatomic) NSDictionary *loginData;
+
 @end
+
+#define EMAIL_PASSWORD(email, password) (@{ @"email":email, @"password":password }): email
 
 @implementation LoginViewController
 
@@ -89,9 +92,28 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 #pragma mark - Life Cycle
 
+- (void)setLoginData:(NSDictionary *)loginData {
+    _emailTextField.text = loginData[@"email"];
+    _passwordTextField.text = loginData[@"password"];
+}
+
+- (void)setupDefaultUsers {
+    FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
+                (@{
+                   (@{}): @"-Blank-",
+                   EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
+                   })
+                );
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupDefaultUsers];
     
     __weak typeof(self) weakSelf = self;
     
@@ -124,8 +146,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         cancelButton.tintColor = [UIColor whiteColor];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
-
-    _activation = [NSMutableDictionary new];
     
     [self updateFormViewAppearance];
 
@@ -219,8 +239,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                             category:GA_EVENT_CATEGORY_LOGIN
                               action:GA_EVENT_ACTION_CLICK
                                label:@"CTA"];
-    NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-    NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+    NSString *email = _emailTextField.text;
+    NSString *pass = _passwordTextField.text;
     NSMutableArray *messages = [NSMutableArray new];
     BOOL valid = NO;
     NSString *message;
@@ -388,6 +408,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [self notifyUserDidLogin];
 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(didLoginSuccess:)]) {
+            [self.delegate didLoginSuccess:login];
+        }
+    });
 
     [self navigateToProperPage:login];
 
@@ -440,7 +465,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
     [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
     [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-    [secureStorage setKeychainWithValue:login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
     [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
 
@@ -462,11 +486,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _emailTextField) {
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
-    } else if (textField == _passwordTextField){
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
-    }
 }
 
 

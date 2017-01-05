@@ -32,10 +32,6 @@
     return nil;
 }
 
-- (void)setTitle:(NSString *)text {
-    _titleLabel.text = text;
-}
-
 - (void)setMessage:(NSString *)text {
     NSAttributedString *attString = [self attributedMessage:text];
     NSArray *matches = [NSString getStringsBetweenAhrefTagWithString:text];
@@ -48,7 +44,7 @@
     _messageLabel.delegate = self;
     _messageLabel.linkAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithRed:49/255.0 green:140/255.0 blue:47/255.0 alpha:1.0],
                                      NSUnderlineStyleAttributeName : @(NSUnderlineStyleNone),
-                                     NSFontAttributeName : [UIFont largeTheme]};
+                                     NSFontAttributeName : [UIFont microTheme]};
     
     for (NSTextCheckingResult* match in matches) {
         NSRange matchRange = [match rangeAtIndex:1];
@@ -60,17 +56,15 @@
         NSRange range = [attString.string rangeOfString:mutArray[ii]];
         [_messageLabel addLinkToURL:url withRange:range];
     }
-    
-    [_messageLabel sizeToFit];
 }
 
 - (NSAttributedString *)attributedMessage:(NSString *)text {
-    UIFont *font = [UIFont title2Theme];
+    UIFont *font = [UIFont microTheme];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
+    style.alignment = NSTextAlignmentCenter;
     
-    NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor blackColor],
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [[UIColor alloc] initWithRed:67/255.0 green:66/255.0 blue:66/255.0 alpha:1],
                                  NSFontAttributeName : font,
                                  NSParagraphStyleAttributeName : style};
     NSString *string = [NSString extracTKPMEUrl:text];

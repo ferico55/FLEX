@@ -198,7 +198,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     
     UIImageView *thumb = _buyerThumbView;
     thumb.image = nil;
-    NSString *placeholderImageName = @"icon_profile_picture.jpeg";
+    NSString *placeholderImageName = @"icon_profile_picture";
     //if (_resolutionDetail.resolution_by.by_seller == 1)
     //    placeholderImageName = @"icon_default_shop.jpg";
     //else placeholderImageName = @"icon_profile_picture.jpeg";
@@ -652,7 +652,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     UIImageView *thumb = cell.buyerProfileImageView;
     thumb.image = nil;
     
-    UIImage *placeholderImage = (conversation.action_by == ACTION_BY_SELLER)?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"];
+    UIImage *placeholderImage = (conversation.action_by == ACTION_BY_SELLER)?[UIImage imageNamed:@"icon_default_shop"]:[UIImage imageNamed:@"icon_profile_picture"];
     
     [thumb setImageWithURLRequest:request placeholderImage:placeholderImage success:nil failure:nil];
     
@@ -674,7 +674,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
         UIImage *btnImage;
         if ([self isShowCancelComplainButton:conversation]) {
             [cell.oneButton setTitle:BUTTON_TITLE_CANCEL_COMPLAIN forState:UIControlStateNormal];
-            btnImage = [UIImage imageNamed:@"icon_cancel_grey.png"];
+            btnImage = [UIImage imageNamed:@"icon_cancel_grey"];
             [cell.oneButton setImage:btnImage forState:UIControlStateNormal];
         }
         cell.isShowAttachment = [self isShowAttachment:conversation];
@@ -857,7 +857,7 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
             UIImageView *thumb = cell.attachmentImages[i];
             thumb.image = nil;
             [thumb setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
+                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -1040,41 +1040,41 @@ NSString *const FREE_RETURNS_INFO_LINK = @"https://www.tokopedia.com/bantuan/sep
     NSString *imageName = @"";
     
     if ([titleButton isEqualToString:BUTTON_TITLE_CANCEL_COMPLAIN]) {
-        imageName = @"icon_order_cancel-01.png";
+        imageName = @"icon_order_cancel";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_TRACK]) {
-        imageName = @"icon_track_grey.png";
+        imageName = @"icon_track_grey";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_EDIT_RESI]) {
-        imageName = @"icon_edit_grey.png";
+        imageName = @"icon_edit_grey";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_INPUT_RESI]) {
-        imageName = @"icon_edit_grey.png";
+        imageName = @"icon_edit_grey";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
-        imageName = @"icon_edit_grey.png";
+        imageName = @"icon_edit_grey";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
-        imageName = @"icon_order_check-01.png";
+        imageName = @"icon_order_check";
     }
     if ([titleButton isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
-        imageName = @"icon_edit_grey.png";
+        imageName = @"icon_edit_grey";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
-        imageName = @"icon_order_check-01.png";
+        imageName = @"icon_order_check";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
-        imageName = @"icon_order_check-01.png";
+        imageName = @"icon_order_check";
     }
     if ([titleButton isEqualToString:BUTTON_TITLE_APPEAL]) {
-        imageName = @"icon_track_grey.png";
+        imageName = @"icon_track_grey";
     }
     
     return imageName;

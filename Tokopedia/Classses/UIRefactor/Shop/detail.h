@@ -204,7 +204,7 @@ typedef enum
 #define kTKPDDETAIL_APIQUERYKEY @"query"
 
 #define SUCCESSMESSAGE_ADD_LOCATION @"Anda telah berhasil menambah lokasi."
-#define SUCCESSMESSAGE_EDIT_LOCATION @"Anda telah berhasil merubah lokasi."
+#define SUCCESSMESSAGE_EDIT_LOCATION @"Anda telah berhasil mengubah lokasi."
 
 
 #define kTKPDDETAILPRODUCT_APIPRODUCTCOUNTREVIEWKEY @"product_count_review"

@@ -12,11 +12,13 @@ class PulsaOperatorAttributeRule: NSObject {
 
     var product_text : String?
     var show_price : Bool = false
+    var show_product : Bool = false
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
             "product_text"  : "product_text",
             "show_price" : "show_price",
+            "show_product" : "show_product"
         ]
     }
     
@@ -40,11 +42,15 @@ class PulsaOperatorAttributeRule: NSObject {
         if let show_price = aDecoder.decodeObjectForKey("show_price") as? Bool {
             self.show_price = show_price
         }
+        
+        if let show_product = aDecoder.decodeObjectForKey("show_product") as? Bool {
+            self.show_product = show_product
+        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(product_text, forKey: "product_text")
         aCoder.encodeObject(show_price, forKey: "show_price")
-        
+        aCoder.encodeObject(show_product, forKey: "show_product")
     }
 }

@@ -193,7 +193,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     int maxCountSelectImage = 5;
     
     __weak typeof(self) wself = self;
-    [ImagePickerController
+    [TKPImagePickerController
      showImagePicker:self
      assetType:DKImagePickerControllerAssetTypeallPhotos
      allowMultipleSelect:YES

@@ -15,6 +15,7 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
     var is_new : Bool = false
     var status : Int = 1
     var use_phonebook : Bool = false
+    var show_operator : Bool = false
     var validate_prefix : Bool = false
     var instant_checkout_available : Bool = false
     var default_operator_id : String = ""
@@ -30,6 +31,7 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
             "is_new" : "is_new",
             "status" : "status",
             "use_phonebook" : "use_phonebook",
+            "show_operator" : "show_operator",
             "validate_prefix" : "validate_prefix",
             "default_operator_id" : "default_operator_id",
             "instant_checkout_available" : "instant_checkout_available"
@@ -81,6 +83,10 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
             self.use_phonebook = use_phonebook
         }
         
+        if let show_operator = aDecoder.decodeObjectForKey("show_operator") as? Bool {
+            self.show_operator = show_operator
+        }
+        
         if let default_operator_id = aDecoder.decodeObjectForKey("default_operator_id") as? String {
             self.default_operator_id = default_operator_id
         }
@@ -101,6 +107,7 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
         aCoder.encodeObject(is_new, forKey: "is_new")
         aCoder.encodeObject(status, forKey: "status")
         aCoder.encodeObject(use_phonebook, forKey: "use_phonebook")
+        aCoder.encodeObject(show_operator, forKey: "show_operator")
         aCoder.encodeObject(validate_prefix, forKey: "validate_prefix")
         aCoder.encodeObject(default_operator_id, forKey: "default_operator_id")
         aCoder.encodeObject(client_number, forKey: "client_number")

@@ -30,6 +30,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return TPUrlIndex;
 }
 
++ (NSString*)tokopediaUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"http://www.tokopedia.com",
+                           @(TPUrlStaging) : @"http://staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://www.ar-arief.ndvl"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 
 + (NSString*)basicUrl {
     NSNumber *TPUrlIndex = [NSString urlIndex];
@@ -215,6 +228,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                            @(TPUrlStaging) : @"https://points-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"https://points-alpha.tokopedia.com",
                            @(TPUrlDevelopment) : @"https://points.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString *)wvloginUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary *urls = @{
+                           @(TPUrlProduction) : @"https://js.tokopedia.com/wvlogin",
+                           @(TPUrlStaging) : @"https://js-staging.tokopedia.com/wvlogin",
+                           @(TPUrlAlpha) : @"https://ajax-alpha.tokopedia.com/wvlogin",
+                           @(TPUrlDevelopment) : @"http://192.168.56.101:9000/js/wvlogin"
                            };
     
     return [urls objectForKey:TPUrlIndex];

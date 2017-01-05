@@ -12,4 +12,7 @@
 
 +(NSMutableURLRequest*)requestUploadImageData:(NSData*)imageData withName:(NSString*)name andFileName:(NSString*)fileName withRequestParameters:(NSDictionary*)parameters uploadHost:(NSString*)uploadHost;
 
+
++ (NSMutableURLRequest*)requestWithAuthorizedHeader:(NSURL*)url;
+
 @end

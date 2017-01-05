@@ -8,6 +8,9 @@
 
 #import "camera.h"
 #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
+#import "TkpdHMAC.h"
+#import "NSURL+Dictionary.h"
+#import "Tokopedia-Swift.h"
 
 @implementation NSMutableURLRequest (TKPDURLRequestUploadImage)
 
@@ -58,6 +61,25 @@
     NSString *urlString = [NSString stringWithFormat:@"http://%@/%@",uploadHost,@"ws/action/upload-image.pl"];
     
     [request setURL:[NSURL URLWithString:urlString]];
+    
+    return request;
+}
+
++ (NSMutableURLRequest*)requestWithAuthorizedHeader:(NSURL*)url {
+    TkpdHMAC *hmac = [TkpdHMAC new];
+    
+    NSString* baseUrl = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
+    [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(RKRequestMethodGET) path:url.path parameter:[url parameters]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    
+    [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+    
+    NSDictionary* authorizedHeaders = [hmac authorizedHeaders];
+    [authorizedHeaders bk_each:^(NSString* key, NSString* value) {
+        [request setValue:value forHTTPHeaderField:key];
+    }];
     
     return request;
 }

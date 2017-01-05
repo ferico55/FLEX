@@ -329,8 +329,8 @@
             
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
-            if (textField.text.length < 7 || textField.text.length > 17) {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"] delegate:self];
+            if (textField.text.length == 0) {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi harus diisi"] delegate:self];
                 [alert show];
             }else if(_selectedCourier == nil || [_selectedCourier.shipment_id isEqualToString:@""]){
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Agen Kurir harus disi"] delegate:self];

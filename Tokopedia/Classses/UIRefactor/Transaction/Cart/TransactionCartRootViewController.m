@@ -105,8 +105,8 @@
 {
     [super viewWillAppear:animated];
     
-    MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    _auth = rootController.auth;
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    _auth = [userManager getUserLoginData];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if(!_isLogin) {
         [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];

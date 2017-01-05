@@ -63,11 +63,6 @@
     }
 }
 
-//auto increment from database that had been saved in secure storage
-- (NSString*)getMyDeviceIdToken {
-    return [[self secureStorageDictionary] objectForKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY] ?: @"0";
-}
-
 - (NSString *)getShopId {
     if ([[self secureStorageDictionary] objectForKey:@"shop_id"]) {
         if ([[[self secureStorageDictionary] objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
@@ -250,7 +245,7 @@
 - (NSString *)webViewUrlFromUrl:(NSString *)url {
     NSString *userId = self.getUserId;
     NSString *deviceId = self.getMyDeviceToken;
-    NSString *jsUrl = [NSString stringWithFormat:@"https://js.tokopedia.com/wvlogin?uid=%@&token=%@&url=%@", userId, deviceId, url];
+    NSString *jsUrl = [NSString stringWithFormat:@"%@/seamless?uid=%@&token=%@&url=%@", [NSString jsUrl], userId, deviceId, [NSString encodeString:url]];
     return jsUrl;
 }
 

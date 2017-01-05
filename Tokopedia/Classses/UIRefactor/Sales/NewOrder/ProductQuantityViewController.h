@@ -8,15 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ProductQuantityDelegate <NSObject>
-
-- (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation;
-
-@end
-
 @interface ProductQuantityViewController : UIViewController
 
 @property (strong, nonatomic) NSArray *products;
-@property (weak, nonatomic) id<ProductQuantityDelegate> delegate;
+@property (strong, nonatomic) NSString *orderID;
+@property (strong, nonatomic) NSString *shippingLeft;
+
+@property (copy, nonatomic) void(^didAcceptOrder)();
 
 @end

@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                    placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
 
     [_productImageView setImageWithURL:[NSURL URLWithString:modelView.productImage]
-                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]];
     
     _productNameLabel.text = modelView.productName;
 
@@ -137,16 +137,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     if(modelView.userReputation.no_reputation != nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
         [self.reputationButton setTitle:@"" forState:UIControlStateNormal];
 
-        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]
-                pathForResource:@"icon_neutral_smile_small" ofType:@"png"]]
+        [self.reputationButton setImage:[UIImage imageNamed:@"icon_neutral_smile_small"]
                                forState:UIControlStateNormal];
     } else {
         [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage]
                                forState:UIControlStateNormal];
 
-        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]
-                        pathForResource:@"icon_smile_small"
-                                 ofType:@"png"]]
+        [self.reputationButton setImage:[UIImage imageNamed:@"icon_smile_small"]
                                forState:UIControlStateNormal];
     }
 }

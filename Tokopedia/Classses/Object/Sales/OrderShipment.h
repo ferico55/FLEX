@@ -16,4 +16,6 @@
 @property (strong, nonatomic) NSString *shipment_product;
 @property (strong, nonatomic) NSString *shipment_name;
 
+@property (nonatomic) BOOL isIDrop;
+
 @end

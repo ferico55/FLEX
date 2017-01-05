@@ -79,6 +79,7 @@
 #import "CarouselDataSource.h"
 #import "AnnouncementTickerView.h"
 
+
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
@@ -94,7 +95,6 @@
 #import "UIFont+Theme.h"
 #import "QueueImageDownloader.h"
 #import "ProductBadge.h"
-#import "MMNumberKeyboard.h"
 #import "NSStringCategory.h"
 #import "UIViewController+TKPAdditions.h"
 #import "TKPAppFlow.h"
@@ -138,10 +138,27 @@
 #import "ShopPageHeader.h"
 #import "ShopTabView.h"
 #import "LogoutResult.h"
+#import "TKPStoreManager.h"
 #import "Shop.h"
 #import "HomeTabViewController.h"
 #import "RetryCollectionReusableView.h"
+#import "StyledPageControl.h"
 #import "RequestOrderAction.h"
+#import "NoResultReusableView.h"
+#import "EDStarRating.h"
+#import "DetailReputationReview.h"
+#import "ReviewImageAttachment.h"
+#import "DetailReviewReputationViewModel.h"
+#import "OrderTransaction.h"
+#import "AuthenticationService.h"
+#import "DetailReviewReputationViewModel.h"
+#import "Slide.h"
+#import "LabelMenu.h"
+#import "OrderTransaction.h"
+#import "OrderBookingResponse.h"
+#import "ActionOrder.h"
+#import "PulsaTweaks.h"
+#import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;

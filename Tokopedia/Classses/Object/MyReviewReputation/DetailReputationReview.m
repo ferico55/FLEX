@@ -15,7 +15,7 @@
     if(_viewModel == nil) {
         DetailReviewReputationViewModel *tempViewModel = [DetailReviewReputationViewModel new];
         tempViewModel.product_rating_point = _product_rating_point;
-        tempViewModel.product_name = _product_name;
+        tempViewModel.product_name = _product_name ?: _review_product_name;
         tempViewModel.product_rating_point = _product_rating_point;
         tempViewModel.review_create_time = _review_create_time;
         tempViewModel.review_is_skipable = _review_is_skipable;
@@ -30,8 +30,9 @@
         tempViewModel.review_update_time = _review_update_time;
         tempViewModel.product_status = _product_status;
         tempViewModel.review_rate_accuracy = _review_rate_accuracy;
-        tempViewModel.review_rate_quality = _review_rate_product;
+        tempViewModel.review_rate_quality = _review_rate_product ?: _review_rate_quality;
         tempViewModel.product_id = _review_product_id;
+        tempViewModel.review_is_helpful = _review_is_helpful;
         if(_review_user_name != nil){
             //if coming from product review and shop page
             tempViewModel.review_user_name = _review_user_name;
