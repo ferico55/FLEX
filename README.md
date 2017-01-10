@@ -1,6 +1,4 @@
-# Tokopedia App for iOS
-
-[![CircleCI](https://circleci.com/gh/tokopedia/ios-tokopedia/tree/release.svg?style=svg)](https://circleci.com/gh/tokopedia/ios-tokopedia/tree/release)
+# Tokopedia App for iOS [![CircleCI](https://circleci.com/gh/tokopedia/ios-tokopedia/tree/release.svg?style=svg&circle-token=e16e246e6d5038964cb45316646cfc069f836e40)](https://circleci.com/gh/tokopedia/ios-tokopedia/tree/release)
 
 Welcome to Tokopedia!
 https://itunes.apple.com/id/app/tokopedia/id1001394201?mt=8
