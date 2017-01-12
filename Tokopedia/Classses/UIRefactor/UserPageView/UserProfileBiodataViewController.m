@@ -425,4 +425,10 @@
 {
     [self dismissAllPopTipViews];
 }
+
+-(void) setHeaderData: (ProfileInfo*) profile {
+    _profile = profile;
+    [_userHeader setHeaderProfile:_profile];
+}
+
 @end

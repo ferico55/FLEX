@@ -57,32 +57,17 @@
 }
 
 
-- (void)initNotificationCenter {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setHeaderProfilePage:)
-                                                 name:@"setHeaderProfilePage"
-                                               object:nil];
-}
-
-
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     _userManager = [UserAuthentificationManager new];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(changeProfilePicture:)
-                                                 name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
-                                               object:nil];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    
-    [self initNotificationCenter];
     _userManager = [UserAuthentificationManager new];
     
     
@@ -97,11 +82,15 @@
     self.scrollView.delegate = self;
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
-    
     _profileImage = [UIImageView circleimageview:_profileImage];
     
     //Set icon rate
     btnRate.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeProfilePicture:)
+                                                 name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,11 +134,9 @@
     btnRate.contentEdgeInsets = UIEdgeInsetsMake(0, -btnRate.imageView.image.size.width/4.0f, 0, 0);
 }
 
-- (void)setHeaderProfilePage:(NSNotification*)notification {
-    id userinfo = notification.userInfo;
-    
-    _profile = [userinfo objectForKey:@"profile"];
-    [self.delegate didReceiveProfile:_profile];
+- (void)setHeaderProfile:(ProfileInfo *) profile {
+    _profile = profile;
+    [self.delegate didReceiveProfile: _profile];
     if(_profile) {
         [self setHeaderData];
     }
