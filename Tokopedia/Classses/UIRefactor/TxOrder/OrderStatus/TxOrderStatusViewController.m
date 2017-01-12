@@ -13,7 +13,7 @@
 #import "TxOrderStatusDetailViewController.h"
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
-#import "TransactionCartRootViewController.h"
+#import "TransactionCartViewController.h"
 #import "ResolutionCenterDetailViewController.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
@@ -515,7 +515,7 @@
 -(void)doRequestReorder:(TxOrderStatusList*)order{
     [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         [_act stopAnimating];
-        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        TransactionCartViewController *vc = [TransactionCartViewController new];
         [self.navigationController pushViewController:vc animated:YES];
         
     } failure:^(NSError *error, TxOrderStatusList *order) {

@@ -19,7 +19,7 @@
 
 #import "DetailShipmentStatusCell.h"
 #import "InboxResolutionCenterOpenViewController.h"
-#import "TransactionCartRootViewController.h"
+#import "TransactionCartViewController.h"
 
 #import "ResolutionCenterDetailViewController.h"
 
@@ -287,7 +287,7 @@
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         
-        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        TransactionCartViewController *vc = [TransactionCartViewController new];
         if (weakSelf.didReorder){
             weakSelf.didReorder(order);
         }

@@ -37,7 +37,7 @@
 @property NSString *paymentID;
 @property NSString *callbackURL;
 
-+(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName;
++(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data;
 
 @end
 

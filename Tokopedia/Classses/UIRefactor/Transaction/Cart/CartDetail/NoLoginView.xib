@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="SQA-mb-8ge" customClass="NoLoginView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g7t-CE-fKW">
+                    <rect key="frame" x="32" y="208" width="312" height="252"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda belum login." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tee-OL-iDK">
+                            <rect key="frame" x="97" y="119" width="119" height="17"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belum punya akun Tokopedia ? " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IGl-X9-1VS">
+                            <rect key="frame" x="12" y="133" width="288" height="42"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="C2k-16-qWK">
+                            <rect key="frame" x="121" y="40" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="588-O7-hx9"/>
+                                <constraint firstAttribute="height" constant="70" id="jGr-a6-BJB"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldQ-qS-hrM">
+                            <rect key="frame" x="36" y="130" width="240" height="82"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                            <state key="normal" title="Daftar Disini">
+                                <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="tapRegister:" destination="SQA-mb-8ge" eventType="touchUpInside" id="RcQ-AE-Vv1"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="C2k-16-qWK" firstAttribute="centerX" secondItem="IGl-X9-1VS" secondAttribute="centerX" id="1mp-AM-Apn"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="312" id="2UH-ky-QJO"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="252" id="2jw-8B-M0k"/>
+                        <constraint firstItem="ldQ-qS-hrM" firstAttribute="top" secondItem="C2k-16-qWK" secondAttribute="bottom" constant="20" id="43U-uV-jKi"/>
+                        <constraint firstItem="C2k-16-qWK" firstAttribute="centerX" secondItem="ldQ-qS-hrM" secondAttribute="centerX" id="BxV-fh-RYc"/>
+                        <constraint firstItem="IGl-X9-1VS" firstAttribute="leading" secondItem="g7t-CE-fKW" secondAttribute="leading" constant="12" id="IeL-a3-EmI"/>
+                        <constraint firstAttribute="centerX" secondItem="C2k-16-qWK" secondAttribute="centerX" id="K9V-bt-FKc"/>
+                        <constraint firstItem="ldQ-qS-hrM" firstAttribute="leading" secondItem="g7t-CE-fKW" secondAttribute="leading" constant="36" id="Rz3-EP-Ht6"/>
+                        <constraint firstAttribute="bottom" secondItem="IGl-X9-1VS" secondAttribute="bottom" constant="77" id="UdW-Ai-QRv"/>
+                        <constraint firstAttribute="bottom" secondItem="ldQ-qS-hrM" secondAttribute="bottom" constant="40" id="aue-WJ-Oop"/>
+                        <constraint firstItem="C2k-16-qWK" firstAttribute="top" secondItem="g7t-CE-fKW" secondAttribute="top" constant="40" id="eDn-rh-s28"/>
+                        <constraint firstItem="tee-OL-iDK" firstAttribute="top" secondItem="C2k-16-qWK" secondAttribute="bottom" constant="9" id="fVC-Hz-aEc"/>
+                        <constraint firstItem="IGl-X9-1VS" firstAttribute="top" secondItem="C2k-16-qWK" secondAttribute="bottom" constant="23" id="vTI-hs-eGc"/>
+                        <constraint firstItem="C2k-16-qWK" firstAttribute="centerX" secondItem="tee-OL-iDK" secondAttribute="centerX" id="xMv-R5-QtA"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="g7t-CE-fKW" secondAttribute="centerX" id="C9K-0J-nRx"/>
+                <constraint firstAttribute="centerY" secondItem="g7t-CE-fKW" secondAttribute="centerY" id="fdS-5b-2MP"/>
+            </constraints>
+            <point key="canvasLocation" x="426" y="79"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_no_data_grey.png" width="90" height="90"/>
+    </resources>
+</document>

@@ -17,11 +17,8 @@
 #import "TransactionCart.h"
 #import "TransactionAction.h"
 #import "TransactionSummary.h"
-#import "TransactionBuy.h"
 #import "TransactionVoucher.h"
 #import "TransactionSummaryBCAParam.h"
-#import "TransactionCC.h"
-#import "CCFee.h"
 
 @interface TransactionObjectMapping : NSObject
 

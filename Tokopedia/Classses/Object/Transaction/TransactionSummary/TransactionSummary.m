@@ -94,9 +94,6 @@
                                                         ]];
     
     RKObjectMapping *listMapping        = [TransactionCartList mapping];
-    RKObjectMapping *ccMapping          = [CCData mapping];
-    RKObjectMapping *veritransMapping   = [Veritrans mapping];
-    RKObjectMapping *ccFeeMapping       = [CCFee mapping];
     RKObjectMapping *indomaretMapping   = [IndomaretData mapping];
     
     RKObjectMapping *installmentBankMapping =[InstallmentBank mapping];
@@ -116,17 +113,6 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY
                                                                                   toKeyPath:API_TRANSACTION_SUMMARY_KEY
                                                                                 withMapping:transactionMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card_data"
-                                                                                  toKeyPath:@"credit_card_data"
-                                                                                withMapping:ccMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"veritrans"
-                                                                                  toKeyPath:@"veritrans"
-                                                                                withMapping:veritransMapping]];
-    if(_gatewayID == TYPE_GATEWAY_CC){
-        [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
-                                                                                           toKeyPath:@"credit_card"
-                                                                                         withMapping:ccFeeMapping]];
-    }
     if(_gatewayID == TYPE_GATEWAY_INDOMARET){
         [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret"
                                                                                            toKeyPath:@"indomaret"
