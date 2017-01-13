@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *productShop;
 @property (strong, nonatomic) NSString *shopLocation;
 @property (strong, nonatomic) NSString *productThumbUrl;
+@property (strong, nonatomic) NSString *productLargeUrl;
+@property (strong, nonatomic) NSString *singleGridImageUrl;
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
 @property (strong, nonatomic) NSString *luckyMerchantImageURL;

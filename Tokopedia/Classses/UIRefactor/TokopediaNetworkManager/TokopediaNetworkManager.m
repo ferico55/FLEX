@@ -215,13 +215,12 @@
 }
 
 - (void)requestMaintenance  {
-    //TODO:: Create MaintenanceViewController
     MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
-    UIViewController *vc = _delegate;
+    UIViewController* vc = [UIApplication topViewController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
     
-    if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
-        return;
-    [vc.navigationController pushViewController:maintenanceController animated:YES];
+    if(vc.navigationController != nil) {
+        [vc.navigationController pushViewController:maintenanceController animated:YES];
+    }
 }
 
 - (void)requestRetryWithButton  {
@@ -425,6 +424,8 @@
             } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
                 //TODO :: Need to handle this status.
             } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
+                [self requestMaintenance];
+            } else if ([status isEqualToString:@"TOO_MANY_REQUEST"]) {
                 [self requestMaintenance];
             } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
                 NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");

@@ -35,7 +35,7 @@
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
     
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.singleGridImageUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
     [self setBadges:viewModel.badges];

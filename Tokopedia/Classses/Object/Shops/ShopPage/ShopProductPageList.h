@@ -35,6 +35,7 @@
 //@property(nonatomic, strong) NSString* product_preorder;
 @property(nonatomic, strong) NSString* product_normal_price;
 @property(nonatomic, strong) NSString* product_image_300;
+@property(nonatomic, strong) NSString* product_image_700;
 @property(nonatomic, strong) NSString* shop_name;
 @property(nonatomic, strong) NSString* product_review_count;
 @property(nonatomic, strong) NSString* shop_is_owner;

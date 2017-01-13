@@ -44,6 +44,7 @@
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setBadges:self.badges];
         [viewModel setLabels:self.labels];
+        [viewModel setProductLargeUrl:self.product_image_700];
         _viewModel = viewModel;
     }
     
@@ -80,9 +81,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:self];
     //product
-    [listMapping addAttributeMappingsFromArray:@[ @"product_url", @"product_name", @"product_id", @"product_image_full", @"product_image", @"product_price", @"product_wholesale", @"shop_location", @"shop_url",  @"shop_gold_status", @"shop_name", @"rate", @"product_sold_count", @"product_review_count", @"product_talk_count", @"is_owner", @"shop_lucky", @"shop_id", @"condition", @"product_preorder", @"product_shop", @"product_image_700"]];
-
-    
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky", @"product_preorder", @"product_wholesale", @"product_image_700" ]];
     //catalog
     [listMapping addAttributeMappingsFromArray:@[@"catalog_id", @"catalog_name", @"catalog_price", @"catalog_uri", @"catalog_image", @"catalog_image_300", @"catalog_description", @"catalog_count_product"]];
     

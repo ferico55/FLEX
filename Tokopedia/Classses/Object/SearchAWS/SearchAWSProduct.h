@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *product_id;
 @property (nonatomic, strong) NSString *product_image_full;
+@property (nonatomic, strong) NSString *product_image_700;
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_price;
 //@property (nonatomic, strong) NSString *product_wholesale;
