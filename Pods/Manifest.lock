@@ -123,6 +123,7 @@ PODS:
   - TransitionKit (2.2.1)
   - TTTAttributedLabel (1.13.4)
   - UITableView+FDTemplateLayoutCell (1.4)
+  - VMaskTextField (1.0.8)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -158,6 +159,7 @@ DEPENDENCIES:
   - TPKeyboardAvoiding
   - TTTAttributedLabel
   - UITableView+FDTemplateLayoutCell (~> 1.4)
+  - VMaskTextField
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
@@ -217,8 +219,9 @@ SPEC CHECKSUMS:
   TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
+  VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 879be6c1eea8ec1c5e0de2131d7a7c6ff2524751
+PODFILE CHECKSUM: beedd01c528d5b45a4068015d97029b8e5c0335d
 
 COCOAPODS: 1.1.1

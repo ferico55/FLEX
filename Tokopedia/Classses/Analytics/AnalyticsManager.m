@@ -166,7 +166,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     }
     
     [manager.dataLayer push:@{@"event" : @"openScreen",
-                              @"screenName" : name?:@""}];
+                              @"screenName" : name?:@"",
+                              @"appsflyerID" : [[AppsFlyerTracker sharedTracker] getAppsFlyerUID]?:@""}];
     
     [Localytics tagScreen:name];
 }

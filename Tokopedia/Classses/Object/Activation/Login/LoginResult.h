@@ -37,6 +37,11 @@
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 
+// for SecurityQuestion purpose
+
+@property (nonatomic, strong) NSString *phoneNumber;
+
+
 + (RKObjectMapping *)mapping;
 
 @property (nonatomic, strong) NSString *seller_status;

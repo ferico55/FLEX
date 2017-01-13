@@ -11,6 +11,7 @@
 #import "Login.h"
 #import "SecurityAnswer.h"
 #import "CreatePasswordViewController.h"
+#import "SecurityQuestionTweaks.h"
 
 @implementation AuthenticationService {
 }
@@ -29,24 +30,25 @@
     return @{@"Authorization": @"Basic dzFIWXBpZFNocmU6dllYdmQwcXRxVUFSSnNmajRWSWdTeFNrckF5NHBjeXE="};
 }
 
-- (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
+- (void)verifyLogin:(Login *)login withPhoneNumber:(NSString *)phoneNumber token:(OAuthToken *)token onPhoneNumberVerified:(void (^)())verifiedCallback {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 
-    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-    controller.questionType1 = login.result.security.user_check_security_1;
-    controller.questionType2 = login.result.security.user_check_security_2;
-
-    controller.userID = login.result.user_id;
-    controller.deviceID = [UserAuthentificationManager new].getMyDeviceToken;
+    SecurityQuestionViewController* controller = [[SecurityQuestionViewController alloc] initWithName:login.result.full_name phoneNumber:phoneNumber userID:login.result.user_id deviceID:[UserAuthentificationManager new].getMyDeviceToken token:token];
+    
+    if ([SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
+        controller.questionType1 = @"0";
+        controller.questionType2 = @"2";
+    } else {
+        controller.questionType1 = login.result.security.user_check_security_1;
+        controller.questionType2 = login.result.security.user_check_security_2;
+    }
+    
     controller.successAnswerCallback = ^(SecurityAnswer* answer) {
         [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
         verifiedCallback();
     };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [_viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    [_viewController.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
@@ -79,9 +81,10 @@
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  Login *login = successResult.dictionary[@""];
                                  login.result.email = accountInfo.email;
+                                 login.result.full_name = accountInfo.name;
                                  
-                                 if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                     [self verifyPhoneNumber:login onPhoneNumberVerified:^{
+                                 if ((login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) ||[SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
+                                     [self verifyLogin:login withPhoneNumber: accountInfo.phoneNumber token:oAuthToken onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                     onAuthenticationSuccess:successCallback

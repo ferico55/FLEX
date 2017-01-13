@@ -592,9 +592,14 @@
     [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 
++ (NSString *)contactUsURL {
+    NSString *appVersion = [UIApplication getAppVersionStringWithoutDot];
+    return [NSString stringWithFormat:@"%@/contact-us?flag_app=1&utm_source=ios&app_version=%@", [NSString tokopediaUrl], appVersion];
+}
+
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *contactUsURL = @"https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios";
+    NSString *contactUsURL = [self contactUsURL];
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
     controller.title = @"Tokopedia Contact";
     [viewController.navigationController pushViewController:controller animated:YES];

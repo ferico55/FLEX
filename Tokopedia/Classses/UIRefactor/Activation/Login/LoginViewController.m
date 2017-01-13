@@ -102,7 +102,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 (@{
                    (@{}): @"-Blank-",
                    EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
                    })
@@ -225,6 +228,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {
     [super viewWillDisappear:animated];
     [self showLoginUi];
+    [self unsetLoggingInState];
 }
 
 - (void)navigateToRegister {
@@ -391,7 +395,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)setLoggingInState {
-    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
+    [_loginButton setTitle:@"Loading..." forState:UIControlStateNormal];
 }
 
 - (void)unsetLoggingInState {

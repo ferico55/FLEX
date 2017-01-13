@@ -38,6 +38,7 @@ def common_pods
     pod 'RxSwift', '~> 2.6.1'
     
     pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
+    pod 'VMaskTextField'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

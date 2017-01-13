@@ -79,5 +79,8 @@
 #define GA_EVENT_ACTION_REGISTER_ERROR @"Register Error"
 #define GA_EVENT_ACTION_LOGIN_SUCCESS @"Login Success"
 #define GA_EVENT_ACTION_LOGIN_ERROR @"Login Error"
+#define GA_EVENT_ACTION_OTP_VERIFY @"OTP Verify"
+#define GA_EVENT_ACTION_OTP_ON_CALL @"OTP On Call"
+#define GA_EVENT_ACTION_OTP_SMS @"OTP SMS"
 
 #endif /* AnalyticsString_h */

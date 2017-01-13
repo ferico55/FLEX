@@ -125,6 +125,7 @@
         
         NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         if (pushNotificationData) {
+            
             [self handlePushNotificationWithData:pushNotificationData];
         }
     });
@@ -139,6 +140,11 @@
 }
 
 - (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {
+    if ([pushNotificationData objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"url_deeplink"]];
+        [TPRoutes routeURL:url];
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
                                                         object:nil
                                                       userInfo:pushNotificationData];
@@ -177,11 +183,15 @@
                                    notifier:self];
 }
 
+- (BOOL)shouldShowLocalyticsTab {
+    return FBTweakValue(@"Localytics Tab", @"General", @"Show Localytics Tab", NO);
+}
+
 - (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
     [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
                 launchOptions:launchOptions];
 #ifdef DEBUG
-    [Localytics setTestModeEnabled:YES];
+    [Localytics setTestModeEnabled:[self shouldShowLocalyticsTab]];
     [Localytics tagEvent:@"Developer Options"];
 #endif
 }
