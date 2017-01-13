@@ -554,12 +554,9 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
             
             let prefixImage = UIImageView(frame: CGRectMake(0, 0, 60, 30))
-            self.prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
             self.prefixView!.addSubview(prefixImage)
-            
-            prefixImage.contentMode = .ScaleAspectFill
             prefixImage.setImageWithURL((NSURL(string: self.selectedOperator.attributes.image)))
-            self.numberField.rightView = prefixView
+            
             self.numberField.rightViewMode = .Always
             self.numberField.clearButtonMode = .Always
 

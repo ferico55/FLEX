@@ -430,6 +430,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         }
+        self.requestManager.didNotSuccessReceiveCategory = {
+            self.isRequestingPulsaWidget = false
+        }
     }
     
     private func requestTicker() {
@@ -441,7 +444,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 if self.tickerView == nil {
                     self.tickerView = AnnouncementTickerView.newView()
                     self.tickerPlaceholder.addSubview((self.tickerView)!)
-                    
                     
                     self.tickerView.onTapMessageWithUrl = {[weak self] (url) in
                         self!.navigator.navigateToWebTicker(url)
@@ -467,7 +469,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.tickerView.setMessage(tick.message)
             }
         }) { (error) in
-            
+            self.isRequestingTicker = false
         }
     }
     
