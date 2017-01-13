@@ -332,7 +332,7 @@
             if (textField.text.length == 0) {
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi harus diisi"] delegate:self];
                 [alert show];
-            }else if(_selectedCourier == nil || [_selectedCourier.shipment_id isEqualToString:@""]){
+            }else if(_changeCourier && (_selectedCourier == nil || [_selectedCourier.shipment_id isEqualToString:@""])){
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Agen Kurir harus disi"] delegate:self];
                 [alert show];
             }else{
