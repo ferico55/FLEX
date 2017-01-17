@@ -99,7 +99,7 @@
 
     NoResultReusableView *_noResultView;
     NoResultReusableView *_noInternetConnectionView;
-    NoLoginView *_noLoginView;
+    NoResultReusableView *_noLoginView;
     
     NSMutableArray *_errorMessages;
     NotificationManager *_notifManager;
@@ -266,21 +266,26 @@
     _noInternetConnectionView.button.tag = 2;
 }
 
--(void)initNoLoginView{
-    _noLoginView = [NoLoginView newView];
-    __weak typeof(self) wself= self;
-    _noLoginView.onTapRegister = ^(){
+- (void)initNoLoginView {
+    __weak typeof(self) weakSelf = self;
+    
+    _noLoginView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noLoginView.delegate = self;
+    [_noLoginView generateAllElements:@"icon_no_data_grey.png"
+                                    title:@"Anda belum login"
+                                     desc:@"Belum punya akun Tokopedia ?"
+                                 btnTitle:@"Daftar disini!"];
+    _noLoginView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _noLoginView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        
         RegisterViewController* controller = [RegisterViewController new];
         controller.onLoginSuccess = ^() {
-            [wself.tabBarController setSelectedIndex:3];
+            [weakSelf.tabBarController setSelectedIndex:2];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
         };
-        [wself.navigationController pushViewController:controller animated:YES];
+        [weakSelf.navigationController pushViewController:controller animated:YES];
     };
     [self.view addSubview:_noLoginView];
-    [_noLoginView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -359,7 +364,6 @@
     UITableViewCell* cell = nil;
 
     NSInteger shopCount = _list.count;
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
