@@ -17,12 +17,23 @@
 
 @end
 
-@implementation InboxResolSplitViewController
+@implementation InboxResolSplitViewController{
+    int _tapIndex;
+}
+
+-(instancetype)initWithSelectedIndex:(int)index{
+    self = [super init];
+    if(self){
+        _tapIndex = index;
+    }
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    InboxResolutionCenterTabViewController *masterVC = [InboxResolutionCenterTabViewController new];
+    InboxResolutionCenterTabViewController *masterVC = [[InboxResolutionCenterTabViewController alloc] initWithSelectedIndex:_tapIndex];
     masterVC.splitVC = self;
     
     UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];

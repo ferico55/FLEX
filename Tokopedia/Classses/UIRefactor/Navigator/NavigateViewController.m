@@ -337,6 +337,20 @@
     }
 }
 
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController atIndex:(int)index
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxResolSplitViewController *controller = [[InboxResolSplitViewController alloc] initWithSelectedIndex:index];
+        controller.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxResolutionCenterTabViewController *controller = [[InboxResolutionCenterTabViewController alloc] initWithSelectedIndex:index];
+        controller.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
 

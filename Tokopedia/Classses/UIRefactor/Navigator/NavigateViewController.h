@@ -53,6 +53,7 @@
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster;
 - (void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController atIndex:(int)index;
 - (void)navigateToInboxPriceAlertFromViewController:(UIViewController*)viewController;
 
 @end

@@ -45,7 +45,25 @@
 
 @end
 
-@implementation InboxResolutionCenterTabViewController
+@implementation InboxResolutionCenterTabViewController{
+    int selectedIndex;
+}
+
+-(instancetype)init{
+    self = [super init];
+    if(self){
+        _index = 0;
+    }
+    return self;
+}
+
+-(instancetype)initWithSelectedIndex:(int)index{
+    self = [super init];
+    if(self){
+        _index = index;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -72,8 +90,8 @@
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
-    _segmentControl.selectedSegmentIndex = 0;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    _segmentControl.selectedSegmentIndex = _index;
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [[_pageController view] setFrame:_containerView.frame];
     
@@ -159,15 +177,21 @@
 
 - (IBAction)tap:(UISegmentedControl*)sender {
     [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
+
+    [self showComplaintForIndex:(int)sender.selectedSegmentIndex];
+}
+
+-(void)showComplaintForIndex:(int)index{
+
     UIPageViewControllerNavigationDirection direction;
-    if (_index>sender.selectedSegmentIndex)
+    if (_index>index)
         direction = UIPageViewControllerNavigationDirectionReverse;
     else
         direction = UIPageViewControllerNavigationDirectionForward;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:sender.selectedSegmentIndex]] direction:direction animated:YES completion:nil];
-    _index = sender.selectedSegmentIndex;
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:index]] direction:direction animated:YES completion:nil];
+    _index = index;
     
-    switch (sender.selectedSegmentIndex) {
+    switch (index) {
         case 2:
         {
             self.navigationItem.rightBarButtonItem = nil;
@@ -176,7 +200,6 @@
         default:
             break;
     }
-
 }
 
 -(IBAction)tapFilterRead:(id)sender

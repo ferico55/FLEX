@@ -10,4 +10,6 @@
 
 @interface InboxResolSplitViewController : UIViewController
 
+-(instancetype)initWithSelectedIndex:(int)index;
+
 @end

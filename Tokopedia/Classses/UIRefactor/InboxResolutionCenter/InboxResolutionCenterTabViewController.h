@@ -16,4 +16,6 @@
 @property (strong, nonatomic)UIViewController *splitVC;
 @property (strong, nonatomic)ResolutionCenterDetailViewController *detailViewController;
 
+-(instancetype)initWithSelectedIndex:(int)index;
+
 @end
