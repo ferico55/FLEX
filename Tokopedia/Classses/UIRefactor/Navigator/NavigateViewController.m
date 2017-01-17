@@ -70,13 +70,13 @@
     NSString* deviceTime = invoiceDictionary [@"device_time"]?:@"";
     NSString *userID = [auth getUserId];
     
-    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/v4/invoice.pl?id=%@&user_id=%@&tkpd=0&recharge=0&device_time=%@&device_id=%@&os_type=2&pdf=%@",
+    NSString* invoiceURLforWS = [NSString stringWithFormat:@"%@/v4/invoice.pl?device_id=%@&device_time=%@&id=%@&os_type=2&pdf=%@&recharge=0&tkpd=0&user_id=%@",
                                  [NSString v4Url],
-                                 invoiceID,
-                                 userID,
-                                 deviceTime,
                                  deviceID,
-                                 invoicePDF];
+                                 deviceTime,
+                                 invoiceID,
+                                 invoicePDF,
+                                 userID];
     
     VC.urlAddress = invoiceURLforWS?:@"";
     [viewController.navigationController pushViewController:VC animated:YES];}
