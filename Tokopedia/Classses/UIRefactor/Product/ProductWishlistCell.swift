@@ -131,6 +131,10 @@ class ProductWishlistCell : UICollectionViewCell {
                     }
                 })
             }
+            
+            locationLabel.mas_makeConstraints({ (make) in
+                make.trailing.equalTo()(self.badgesView.mas_leading)
+            })
 
         }
         

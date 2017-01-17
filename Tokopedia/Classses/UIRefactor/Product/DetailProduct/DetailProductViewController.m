@@ -357,17 +357,18 @@ TTTAttributedLabelDelegate
     
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
-        [_favButton setImage:[UIImage imageNamed:@"icon_follow_check"] forState:UIControlStateNormal];
-        [_favButton setTitle:@"Mengikuti" forState:UIControlStateNormal];
-        [_favButton setTitleColor:[UIColor fromHexString:@"#42B549"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_check_favorited"] forState:UIControlStateNormal];
+        [_favButton setTitle:@" Favorited" forState:UIControlStateNormal];
+        [_favButton setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53] forState:UIControlStateNormal];
         [_favButton setBackgroundColor:[UIColor whiteColor]];
-    }
-    else {
+        [_favButton setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53]];
+    } else {
         _favButton.tag = 17;
         [_favButton setImage:[UIImage imageNamed:@"icon_follow_plus"] forState:UIControlStateNormal];
-        [_favButton setTitle:@"Ikuti" forState:UIControlStateNormal];
+        [_favButton setTitle:@"Favorit" forState:UIControlStateNormal];
         [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_favButton setBackgroundColor:[UIColor fromHexString:@"#42B549"]];
+        [_favButton setBorderColor:[UIColor fromHexString:@"#42B549"]];
 
     }
 }
@@ -1551,22 +1552,10 @@ TTTAttributedLabelDelegate
 - (void)gotToSearchWithDepartment:(NSInteger)index {
     NSArray *breadcrumbs = _product.data.breadcrumb;
     Breadcrumb *breadcrumb = breadcrumbs[index-10];
-    
-    SearchResultViewController *vc = [SearchResultViewController new];
     NSString *deptid = breadcrumb.department_id;
-    vc.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
     
-    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    
-    [c setSelectedIndex:0];
-    [c setViewControllers:viewcontrollers];
-    [c setNavigationTitle:breadcrumb.department_name];
-    [self.navigationController pushViewController:c animated:YES];
+    NavigateViewController *navigateViewController = [NavigateViewController new];
+    [navigateViewController navigateToCategoryFromViewController:self withCategoryId:deptid categoryName:@""];
 }
 
 -(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index {

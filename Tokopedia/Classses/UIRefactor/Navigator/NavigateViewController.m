@@ -607,12 +607,10 @@
 
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
+    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/?utm_source=ios";
     
-    WebViewController *controller = [WebViewController new];
-    controller.strURL = [auth webViewUrlFromUrl:pulsaURL];
-    controller.shouldAuthorizeRequest = YES;
-    controller.strTitle = @"Top Up Saldo";
+    WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:pulsaURL] shouldAuthorizeRequest:YES];
+    controller.title = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];
 }

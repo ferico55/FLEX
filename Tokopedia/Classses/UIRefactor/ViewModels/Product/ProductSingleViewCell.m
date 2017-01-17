@@ -100,6 +100,11 @@
                 }];
             }
         }
+        
+    }];
+    
+    [_shopLocation mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(_badgesView.mas_leading);
     }];
 
 }

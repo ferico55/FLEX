@@ -581,7 +581,7 @@ ImageSearchRequestDelegate
     NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.product_name];
+        [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.catalog_name];
         CatalogViewController *vc = [CatalogViewController new];
         vc.catalogID = product.catalog_id;
         vc.catalogName = product.catalog_name;
