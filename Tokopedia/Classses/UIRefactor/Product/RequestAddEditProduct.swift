@@ -245,7 +245,7 @@ enum RequestError : ErrorType {
                 "product_photo_default"     : pictureDefault,
                 "product_price"             : product.product_price,
                 "product_price_currency"    : product.product_currency_id,
-                "product_returnable"        : product.product_returnable,
+                "product_returnable"        : form.info.product_returnable,
                 "product_upload_to"         : uploadTo,
                 "product_weight"            : product.product_weight,
                 "product_weight_unit"       : product.product_weight_unit,
@@ -391,7 +391,7 @@ enum RequestError : ErrorType {
                 "product_etalase_id"    : product.product_etalase_id,
                 "product_etalase_name"  : product.product_etalase,
                 "product_condition"     : product.product_condition,
-                "product_returnable"    : product.product_returnable,
+                "product_returnable"    : form.info.product_returnable,
                 //"po_process_type -> value type 1 = day , 2 = week , 3 = month
                 //"po_process_value -> for processing value
             ]
@@ -494,7 +494,7 @@ enum RequestError : ErrorType {
             "product_etalase_id"    : product.product_etalase_id,
             "product_etalase_name"  : product.product_etalase,
             "product_condition"     : product.product_condition,
-            "product_returnable"    : product.product_returnable
+            "product_returnable"    : form.info.product_returnable
             //"po_process_type -> value type 1 = day , 2 = week , 3 = month
             //"po_process_value -> for processing value
         ]
