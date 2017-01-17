@@ -86,6 +86,8 @@
     NSURL *_deeplinkUrl;
     
     BOOL _shouldDisplayPushNotificationCell;
+    BOOL _shouldDisplayWalletCell;
+    NSString* _walletUrl;
     
     CGRect _defaultTableFrame;
 }
@@ -105,6 +107,9 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
 @property (weak, nonatomic) IBOutlet UILabel *LPointLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
 @end
 
 @implementation MoreViewController
@@ -156,6 +161,7 @@
 {
     [super viewDidLoad];
     
+    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -199,7 +205,6 @@
     
     _request = [DepositRequest new];
     
-    [self updateSaldoTokopedia];
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
@@ -211,6 +216,51 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 }
+
+- (void)requestWallet {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    __weak typeof(self) weakSelf = self;
+    
+    [WalletRequest fetchStatusWithUserId:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
+        if(wallet.isExpired) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+            return;
+        }
+        
+        if(wallet.shouldShowWallet) {
+            [weakSelf showWalletCell:wallet];
+        } else {
+            if(wallet.shouldShowActivation) {
+                [weakSelf showWalletCell:wallet];
+                [weakSelf showActivationButton:wallet];
+            } else {
+                [weakSelf hideWalletCell];
+            }
+        }
+    } onFailure:^(NSError * error) {
+        [weakSelf hideWalletCell];
+    }];
+}
+
+- (void)showActivationButton:(WalletStore*)wallet {
+    [_walletActivationButton setHidden:NO];
+    [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
+}
+
+- (void)showWalletCell:(WalletStore*)wallet {
+    _walletNameLabel.text = wallet.data.text;
+    _walletBalanceLabel.text = wallet.data.balance;
+    _walletUrl = wallet.walletFullUrl;
+    
+    _shouldDisplayWalletCell = YES;
+    [self.tableView reloadData];
+}
+
+- (void)hideWalletCell {
+    _shouldDisplayWalletCell = NO;
+    [self.tableView reloadData];
+}
+
 
 - (void)appDidResume {
     [self togglePushNotificationCellVisibility];
@@ -334,15 +384,11 @@
 
 #pragma mark - Table view data source
 
-- (BOOL)shouldShowTopupSaldo {
-    return FBTweakValue(@"More", @"Topup Saldo", @"Show Topup", YES);
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
         case 0:{
-            return [self shouldShowTopupSaldo]?2: 1;
+            return _shouldDisplayWalletCell ? 2 : 1;
             break;
         }
         
@@ -428,8 +474,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [AnalyticsManager trackClickNavigateFromMore:@"Saldo"];
             }
         } else if (indexPath.row == 1) {
-            [NavigateViewController navigateToSaldoTopupFromViewController:_wrapperViewController];
-            [AnalyticsManager trackClickNavigateFromMore:@"Top Up Saldo"];
+            WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:_walletUrl shouldAuthorizeRequest:NO];
+            controller.title = _walletNameLabel.text;
+            
+            _wrapperViewController.hidesBottomBarWhenPushed = YES;
+            [_wrapperViewController.navigationController pushViewController:controller animated:YES];
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -741,6 +790,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)updateSaldoTokopedia {
+    [self requestWallet];
     [_request requestGetDepositOnSuccess:^(DepositResult *result) {
         _depositLabel.text = result.deposit_total;
         _depositLabel.hidden = NO;

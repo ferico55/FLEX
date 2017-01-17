@@ -94,6 +94,7 @@
                                      TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
                                      [storage setKeychainWithValue:oAuthToken.accessToken withKey:@"oAuthToken.accessToken"];
                                      [storage setKeychainWithValue:oAuthToken.refreshToken withKey:@"oAuthToken.refreshToken"];
+                                     [storage setKeychainWithValue:oAuthToken.tokenType withKey:@"oAuthToken.tokenType"];
                                      
                                      successCallback(login);
                                  }
