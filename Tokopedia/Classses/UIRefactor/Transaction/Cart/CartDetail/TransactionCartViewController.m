@@ -251,7 +251,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 50, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     _noResultView.delegate = self;
     _noResultView.button.tag = 1;
     [_noResultView generateAllElements:@"Keranjang.png"
@@ -261,7 +261,7 @@
 }
 
 - (void)initNoInternetConnectionView {
-    _noInternetConnectionView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    _noInternetConnectionView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 50, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     _noInternetConnectionView.delegate = self;
     _noInternetConnectionView.button.tag = 2;
 }
