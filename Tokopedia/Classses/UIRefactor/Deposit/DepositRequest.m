@@ -60,6 +60,11 @@
                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                            NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                            DepositSummary *obj = [result objectForKey:@""];
+                                           
+                                           if (obj.message_error && obj.message_error.count > 0) {
+                                               [StickyAlertView showErrorMessage:obj.message_error];
+                                           }
+                                           
                                            successCallback(obj.data);
                                        }
                                        onFailure:^(NSError *errorResult) {

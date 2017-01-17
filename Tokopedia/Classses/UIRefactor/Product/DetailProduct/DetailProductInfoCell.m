@@ -111,6 +111,7 @@
 - (void)hiddenViewRetur
 {
     constraintHeightViewRetur.constant = 0;
+    returImageHeightConstraint.constant = 0;
 }
 
 - (TTTAttributedLabel *)getLblRetur

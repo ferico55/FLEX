@@ -33,7 +33,8 @@
 }
 
 - (void)setMessage:(NSString *)text {
-    NSAttributedString *attString = [self attributedMessage:text];
+    NSString *tickerMessage = [NSString convertHTML:text];
+    NSAttributedString *attString = [self attributedMessage:tickerMessage];
     NSArray *matches = [NSString getStringsBetweenAhrefTagWithString:text];
     NSArray <NSString *> *links = [NSString getLinksBetweenAhrefTagWithString:text];
     NSMutableArray *mutArray = [NSMutableArray new];

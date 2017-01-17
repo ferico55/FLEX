@@ -14,7 +14,8 @@
     RKObjectMapping *depositSummaryMapping = [RKObjectMapping mappingForClass:[DepositSummary class]];
     
     [depositSummaryMapping addAttributeMappingsFromArray:@[@"status",
-                                                           @"server_process_time"]];
+                                                           @"server_process_time",
+                                                           @"message_error"]];
     
     [depositSummaryMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                           toKeyPath:@"data"
