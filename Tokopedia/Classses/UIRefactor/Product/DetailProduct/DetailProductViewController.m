@@ -1067,13 +1067,33 @@ TTTAttributedLabelDelegate
 #pragma mark - Request
 -(void)requestPromote{
     NSString *productID = _product.data.info.product_id?:@"0";
-
+    __block NSString *message = [[NSString alloc] init];
+    __weak typeof(self) weakSelf = self;
+    
     [DetailProductRequest fetchPromoteProduct:productID onSuccess:^(PromoteResult * data) {
         
         [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
         [_dinkButton setEnabled:YES];
         
+        message = [NSString stringWithFormat:@"%@ %@ %@", @"Promo pada produk", data.product_name, @"telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."];
+        
+        [weakSelf presentViewController: [weakSelf popUpMessagesOk:message] animated:YES completion:nil];
+        
+    } onFailure: ^(PromoteResult * data){
+        message = [NSString stringWithFormat:@"%@ %@ %@ %@", @"Anda belum dapat menggunakan Fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko. Promo masih aktif untuk produk", data.product_name, @"berlaku sampai", data.time_expired];
+        
+        [weakSelf presentViewController: [weakSelf popUpMessagesOk:message] animated:YES completion:nil];
+        
     }];
+}
+
+- (UIAlertController*) popUpMessagesOk:(NSString *)message {
+    UIAlertController *alertController;
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    alertController = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:actionOk];
+    return alertController;
 }
 
 -(void)requestOtherProduct{
