@@ -121,7 +121,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [self setTitleView];
         [self setCategoryView];
         self.tableView.hidden = NO;
-        
+        [_loadMoreButton setUserInteractionEnabled:YES];
     } onFailure:^{
         [self requestFailed];
     }];
@@ -348,9 +348,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         
         NSString *ticketCategoryId = self.inboxTicket.ticket_category_id;
         if ([ticketCategoryId isEqualToString:@"0"]) {
-            _ticketDetail.ticket_detail_is_cs = @"1";
-        } else {
             _ticketDetail.ticket_detail_is_cs = @"0";
+        } else {
+            _ticketDetail.ticket_detail_is_cs = @"1";
         }
     }
     
@@ -381,20 +381,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     // Ticket closed
     else if ([_ticketInformation.ticket_status isEqualToString:@"2"]) {
-        
-        // Ticket closed and replied by cs
-        if ([_ticketInformation.ticket_is_replied boolValue]) {
-            
-            // Ticket closed, replied, not yet rate the ticket
-            if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
-                
-                [self hideAllView];
-            }
-        } else {
-            // Ticket closed without cs reply the ticket
-            [self showView:_ticketClosedView];
-        }
-
+        [self showView:_ticketClosedView];
     }
     
     [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
@@ -415,8 +402,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 
     if (_page == 0) {
-        if (_messages[1].count < [data.ticket_reply.ticket_reply_total_data integerValue]){
-            _canLoadMore = YES;
+        if ([_messages[1] count] > 0) {
+            if (_messages[1].count < [data.ticket_reply.ticket_reply_total_data integerValue]){
+                _canLoadMore = YES;
+            }
         }
     } else {
         if (_page < [data.ticket_reply.ticket_reply_total_page integerValue]){
@@ -463,6 +452,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
     _page++;
+    [_loadMoreButton setUserInteractionEnabled:NO];
     [self requestDetailTicket];
 }
 

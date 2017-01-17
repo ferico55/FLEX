@@ -166,7 +166,7 @@
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
     [AnalyticsManager trackInboxTicketClickWithType:_inboxCustomerServiceType];
     InboxTicketDetailViewController *controller = self.detailViewController;
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self; 
     if (self.detailViewController == nil) {
         controller = [InboxTicketDetailViewController new];
         controller.onFinishRequestDetail = ^(InboxTicketList *ticket) {
@@ -264,9 +264,10 @@
         if (_tickets.count > 0) {
             _uriNext =  data.paging.uri_next;
             self.tableView.tableFooterView = nil;
-            
+            [self.tableView setScrollEnabled:YES];
         } else {
             [self setNoResultViewAppearance];
+            [self.tableView setScrollEnabled:NO];
         }
         
         [self.tableView reloadData];
