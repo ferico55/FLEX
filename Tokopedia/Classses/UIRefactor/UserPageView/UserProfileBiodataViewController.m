@@ -372,13 +372,6 @@
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
     [self determineOtherScrollView:scrollView];
 }
 

@@ -201,7 +201,7 @@
     [self addChildViewController:self.pageController];
 
     [self.view addSubview:[self.pageController view]];
-    [self.view setBackgroundColor:[UIColor colorWithRed:(231/255.0) green:(231/255.0) blue:(231/255.0) alpha:1]];
+    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     if(IS_IPAD) {
         [self.pageController.view HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
     }
