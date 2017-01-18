@@ -344,6 +344,7 @@ TTTAttributedLabelDelegate
     afterLoginRedirectTo = @"";
     [self unsetWarehouse];
     _detailProductVideoDataArray = [NSArray<DetailProductVideo*> new];
+    self.navigationItem.title = @"";
 }
 
 - (void)initNotification {
@@ -1388,6 +1389,9 @@ TTTAttributedLabelDelegate
         
         _formattedProductDescription = [NSString convertHTML:_product.data.info.product_description]?:@"-";
         _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.data.info.product_name];
+        if (_product.data.info.product_name == nil) {
+            _formattedProductTitle = @"";
+        }
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -1834,31 +1838,32 @@ TTTAttributedLabelDelegate
 -(void)setHeaderviewData{
     NSString *productName = _formattedProductTitle?:@"";
     
+    // calculate text width
+    NSDictionary *textTitleOptions = [NSDictionary dictionaryWithObjectsAndKeys:  [UIFont title1ThemeMedium], NSFontAttributeName, nil];
+    CGSize requestedTitleSize = [productName sizeWithAttributes:textTitleOptions];
+    CGFloat titleWidth = MIN(self.view.frame.size.width, requestedTitleSize.width);
     
-    CGRect labelCGRectFrame = CGRectMake(self.navigationItem.titleView.frame.origin.x, 0, [UIScreen mainScreen].bounds.size.width, 44);
+    CGRect labelCGRectFrame = CGRectMake(0, 0, titleWidth, 44);
     MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
-    
     productLabel.backgroundColor = [UIColor clearColor];
-    productLabel.numberOfLines = 2;
     UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
     
     NSDictionary *productLabelAtts = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSFontAttributeName: productLabelFont,
-                                       NSParagraphStyleAttributeName: productLabelStyle,
-                                       };
+                                        NSFontAttributeName: productLabelFont,
+                                        NSParagraphStyleAttributeName: productLabelStyle,
+                                        };
     
     NSAttributedString *productNameLabeAttributedText = [[NSAttributedString alloc] initWithString:productName
                                                                                         attributes:productLabelAtts];
     
     productLabel.attributedText = productNameLabeAttributedText;
-    productLabel.textAlignment = NSTextAlignmentLeft;
-    
+    productLabel.textAlignment = NSTextAlignmentCenter;
+    
     self.navigationItem.titleView = productLabel;
-    
     
     //Update header view
     _pricelabel.text = _product.data.info.product_price;
