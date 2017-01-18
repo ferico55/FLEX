@@ -51,7 +51,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Atur Toko";
+        self.title = @"Informasi";
         self.navigationItem.backBarButtonItem = self.backButton;
         self.navigationItem.rightBarButtonItem = self.loadingView;
         self.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];

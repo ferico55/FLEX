@@ -35,14 +35,12 @@
 #import "string_inbox_talk.h"
 #import "string_inbox_review.h"
 #import "detail.h"
-#import "ShopPageHeader.h"
 #import "TokopediaNetworkManager.h"
 #import "NoResultReusableView.h"
 #import "URLCacheController.h"
 #import "ProductReputationSimpleCell.h"
 #import "ShopPageRequest.h"
 #import "NSString+TPBaseUrl.h"
-#import "ShopTabView.h"
 #import "Tokopedia-Swift.h"
 
 #define CTagGetTotalLike 1
@@ -60,23 +58,21 @@
     ReportViewControllerDelegate,
     UIActionSheetDelegate,
     productReputationDelegate,
-    ShopPageHeaderDelegate,
     SmileyDelegate,
     UIScrollViewDelegate,
     UIAlertViewDelegate,
     NoResultDelegate,
-    ProductReputationSimpleDelegate
+    ProductReputationSimpleDelegate,
+    ShopTabChild
 >
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UIView *stickyTab;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSMutableArray *list;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) Shop *shop;
 
 @end
 
@@ -135,8 +131,16 @@
     return self;
 }
 
+- (instancetype)initWithShop:(Shop *)shop {
+    if (self = [super init]) {
+        _shop = shop;
+    }
+    
+    return self;
+}
+
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai ulasan"
@@ -148,10 +152,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTotalReviewComment:)
                                                  name:@"updateTotalReviewComment" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateReviewHeaderPosition:)
-                                                 name:@"updateReviewHeaderPosition" object:nil];
 }
 
 #pragma mark - Life Cycle
@@ -193,19 +193,6 @@
     _table.allowsSelection = YES;
     _table.estimatedRowHeight = 250;
     _table.rowHeight = UITableViewAutomaticDimension;
-    
-    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabReview];
-    _shopPageHeader.delegate = self;
-    _shopPageHeader.onTabSelected = self.onTabSelected;
-    _shopPageHeader.data = _data;
-    _shopPageHeader.showHomeTab = self.showHomeTab;
-    
-    _header = _shopPageHeader.view;
-    
-    _stickyTab = [(UIView *)_header viewWithTag:18];
-    
-    _table.tableFooterView = _footer;
-    //_table.tableHeaderView = _header;
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -286,42 +273,7 @@
                               }];
     
     [self initNotification];
-    
-    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabReview];
-    shopTabView.showHomeTab = self.showHomeTab;
-    [self.view addSubview:shopTabView];
-    
-    shopTabView.onTabSelected = self.onTabSelected;
-    
-    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@40);
-    }];
-    
-    _fakeStickyTab = shopTabView;
-    _fakeStickyTab.hidden = YES;
-    
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    _header.frame = CGRectMake(0,
-                               -_header.frame.size.height,
-                               self.view.bounds.size.width,
-                               _header.frame.size.height);
-    
-    [_header layoutIfNeeded];
-    
-    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
-    
-    [_table addSubview:_header];
-}
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -636,6 +588,10 @@
 
 
 #pragma mark - Refresh View
+- (void)refreshContent {
+    [self refreshView:nil];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
@@ -719,37 +675,6 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
-    [self determineOtherScrollView:scrollView];
-    
-}
-
-
-- (void)determineOtherScrollView:(UIScrollView *)scrollView {
-    NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
-}
-
-- (void)updateReviewHeaderPosition:(NSNotification *)notification
-{
-    if (notification.object != self) {
-        id userinfo = notification.userInfo;
-        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-        
-        CGPoint cgpoint = CGPointMake(0, ypos);
-        _table.contentOffset = cgpoint;
-    }
-}
-
 
 #pragma mark - Shop header delegate
 

@@ -31,6 +31,7 @@ def common_pods
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
+    pod 'MXSegmentedPager', '~> 3.2.0'    
     pod 'MMNumberKeyboard'
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'

@@ -15,6 +15,7 @@
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "TKPDTabViewController.h"
+#import "ProductAddEditViewController.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,

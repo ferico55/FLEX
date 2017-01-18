@@ -16,6 +16,7 @@ extension AuthenticationService: LoginViewDelegate {
     
     public func didLoginSuccess(loginResult: LoginResult) {
         loginSuccessBlock(loginResult)
+        loginSuccessBlock = nil
     }
     
     func signInFromViewController(viewController: UIViewController, onSignInSuccess: (loginResult: LoginResult!) -> Void){
@@ -31,6 +32,16 @@ extension AuthenticationService: LoginViewDelegate {
         viewController.presentViewController(navigationController, animated: true, completion: nil)
         loginSuccessBlock = { loginResult in
             onSignInSuccess(loginResult: loginResult)
+        }
+    }
+    
+    func ensureLoggedInFromViewController(viewController: UIViewController, onSuccess: () -> ()) {
+        if UserAuthentificationManager().isLogin {
+            onSuccess()
+        } else {
+            self.signInFromViewController(viewController) { result in
+                onSuccess()
+            }
         }
     }
     

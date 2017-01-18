@@ -11,8 +11,9 @@
 @implementation MedalComponent
 
 + (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage *)imageCache selector:(SEL)sel {
-    NSInteger intLevel = level;
     NSInteger intSet = set;
+    NSInteger intLevel = set == 0? 1 : level; //need to show at least one medal
+    
     std::vector<CKStackLayoutComponentChild> medal;
     UIImage *medalImage;
     

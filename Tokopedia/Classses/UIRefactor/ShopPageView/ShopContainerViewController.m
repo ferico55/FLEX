@@ -539,6 +539,7 @@
     return [_pageController.viewControllers lastObject];
 }
 
+//toggle favorite button
 - (void)setFavoriteRightButtonItem
 {
     StickyAlertView *stickyAlertView;

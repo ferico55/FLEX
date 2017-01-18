@@ -22,13 +22,11 @@
 #import "generalcell.h"
 
 #import "URLCacheController.h"
-#import "ShopPageHeader.h"
 #import "ShopPageRequest.h"
 
 #import "NoResultReusableView.h"
 
 #import "Tokopedia-Swift.h"
-#import "ShopTabView.h"
 
 @interface ShopNotesPageViewController ()
 <
@@ -36,15 +34,13 @@
     UITableViewDelegate,
     UIAlertViewDelegate,
     TKPDTabInboxTalkNavigationControllerDelegate,
-    ShopPageHeaderDelegate,
     MGSwipeTableCellDelegate,
     MyShopNoteDetailDelegate,
-    NoResultDelegate
+    NoResultDelegate,
+    ShopTabChild
 >
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSMutableArray *list;
@@ -136,21 +132,9 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-    
-    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabNote];
-    _shopPageHeader.delegate = self;
-    _shopPageHeader.onTabSelected = self.onTabSelected;
-    _shopPageHeader.data = _data;
-    _shopPageHeader.showHomeTab = self.showHomeTab;
-    
-    _header = _shopPageHeader.view;
-    
     _shopPageRequest = [[ShopPageRequest alloc]init];
-    
-    _stickyTab = [(UIView *)_header viewWithTag:18];
-    
     _table.tableFooterView = _footer;
-    //_table.tableHeaderView = _header;
+
     [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -163,25 +147,6 @@
     [_refreshControl endRefreshing];
     [self initNotification];
     [self requestNotes];
-    
-    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabDiscussion];
-    shopTabView.showHomeTab = self.showHomeTab;
-    [self.view addSubview:shopTabView];
-    
-    shopTabView.onTabSelected = self.onTabSelected;
-    
-    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@40);
-    }];
-    
-    _fakeStickyTab = shopTabView;
-    _fakeStickyTab.hidden = YES;
-    
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
 
 
@@ -205,17 +170,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - TableView Delegate
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _header;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return _header.frame.size.height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -341,6 +295,10 @@
     [_table reloadData];
     /** request data **/
     [self requestNotes];
+}
+
+- (void)refreshContent {
+    [self refreshView:nil];
 }
 
 #pragma mark - Memory Management

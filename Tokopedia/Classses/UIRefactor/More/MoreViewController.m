@@ -41,7 +41,6 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
-#import "ShopContainerViewController.h"
 #import "UserContainerViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
@@ -516,11 +515,13 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 3) {
         if(indexPath.row == 0) {
+            UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
+            
             [AnalyticsManager trackClickNavigateFromMore:@"Shop"];
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-            container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+            ShopViewController *container = [[ShopViewController alloc] init];
+            container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
                                MORE_AUTH : _auth,
-                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                               MORE_SHOP_NAME : authenticationManager.getShopName
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {

@@ -24,7 +24,6 @@
 #import "detail.h"
 #import "generalcell.h"
 #import "GeneralAlertCell.h"
-#import "ShopPageHeader.h"
 
 #import "URLCacheController.h"
 #import "SortViewController.h"
@@ -47,7 +46,6 @@
 #import "ShopProductPageResult.h"
 #import "ShopProductPageList.h"
 #import "ShopPageRequest.h"
-#import "ShopTabView.h"
 
 #import "EtalaseViewController.h"
 
@@ -69,11 +67,11 @@ UIAlertViewDelegate,
 UISearchBarDelegate,
 LoadingViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
-ShopPageHeaderDelegate,
 SortViewControllerDelegate,
 NoResultDelegate,
 RetryViewDelegate,
-EtalaseViewControllerDelegate
+EtalaseViewControllerDelegate,
+ShopTabChild
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -83,7 +81,6 @@ EtalaseViewControllerDelegate
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (nonatomic) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 
@@ -115,7 +112,6 @@ EtalaseViewControllerDelegate
     NSInteger _requestDeleteCount;
     
     NSTimer *_timer;
-    UISearchBar *_searchbar;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     SearchItem *_searchitem;
@@ -145,7 +141,6 @@ EtalaseViewControllerDelegate
     NSTimeInterval _timeinterval;
     NSMutableArray<ShopProductPageList*> *_product;
     NSArray *_tmpProduct;
-    Shop *_shop;
     NoResultReusableView *_noResultView;
     NSString *_nextPageUri;
     NSString *_tmpNextPageUri;
@@ -184,12 +179,9 @@ EtalaseViewControllerDelegate
                               btnTitle:nil];
 }
 
-- (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateProductHeaderPosition:)
-                                                 name:@"updateProductHeaderPosition" object:nil];
+- (void)refreshContent {
+    [self refreshView:nil];
 }
-
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
@@ -217,20 +209,10 @@ EtalaseViewControllerDelegate
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     
-    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabProduct];
-    _shopPageHeader.delegate = self;
-    _shopPageHeader.onTabSelected = self.onTabSelected;
-    _shopPageHeader.data = _data;
-    _shopPageHeader.showHomeTab = self.showHomeTab;
-    
     _searchBar = [[UISearchBar alloc] init];
     _searchBar.delegate = self;
     
     _navigationBarIsAnimating = NO;
-    
-    _header = _shopPageHeader.view;
-    
-    _stickyTab = [(UIView *)_header viewWithTag:18];
     
     [self initNoResultView];
     
@@ -245,9 +227,6 @@ EtalaseViewControllerDelegate
     if (_list.count > 0) {
         _isNoData = NO;
     }
-    
-    [self initNotification];
-    
     
     [_refreshControl endRefreshing];
     _shopPageRequest = [[ShopPageRequest alloc]init];
@@ -302,36 +281,6 @@ EtalaseViewControllerDelegate
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
     [self requestProduct];
-    
-    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabProduct];
-    shopTabView.showHomeTab = self.showHomeTab;
-    [self.view addSubview:shopTabView];
-    
-    shopTabView.onTabSelected = self.onTabSelected;
-    
-    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@40);
-    }];
-    
-    _fakeStickyTab = shopTabView;
-    _fakeStickyTab.hidden = YES;
-    
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    _collectionView.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
-    
-    _header.frame = CGRectMake(0, -_header.frame.size.height,
-                               self.view.bounds.size.width, _header.frame.size.height);
-    [_header layoutIfNeeded];
-    [_collectionView addSubview:_header];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -346,7 +295,7 @@ EtalaseViewControllerDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(collectionView.bounds.size.width, _shopPageHeader.searchView.frame.size.height);
+    return CGSizeMake(collectionView.bounds.size.width, 40);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
@@ -476,43 +425,12 @@ EtalaseViewControllerDelegate
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
-    [self determineOtherScrollView:scrollView];
-    [self determineNavTitle:scrollView];
-}
-
-- (void)determineNavTitle:(UIScrollView*)scrollView {
-    if(scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationShopTitle" object:nil userInfo:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationShopTitle" object:nil userInfo:nil];
-    }
-}
-
 - (void)determineOtherScrollView:(UIScrollView *)scrollView {
     NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition"
                                                         object:self
                                                       userInfo:userInfo];
-}
-
-- (void)updateProductHeaderPosition:(NSNotification *)notification {
-    id userinfo = notification.userInfo;
-    
-    if (notification.object != self) {
-        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-        
-        CGPoint cgpoint = CGPointMake(0, ypos);
-        _collectionView.contentOffset = cgpoint;
-    }
 }
 
 #pragma mark - SearchBar Delegate
@@ -649,7 +567,7 @@ EtalaseViewControllerDelegate
 
 - (void)clearSearchQuery {
     _searchBar.text = @"";
-    [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    _detailfilter = [NSMutableDictionary new];
 }
 
 - (void)showProductsWithEtalaseId:(NSString *)etalaseId {
@@ -664,6 +582,7 @@ EtalaseViewControllerDelegate
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
     _page = 1;
+    _collectionView.contentOffset = CGPointMake(0, 0);
     [_detailfilter setObject:selectedEtalase forKey:DATA_ETALASE_KEY];
     [self requestProduct];
 }
@@ -751,6 +670,15 @@ EtalaseViewControllerDelegate
     [_collectionView reloadData];
 }
 
+- (void)showProductsWithFilter:(NSDictionary *)filter {
+    _searchBar.text = filter[@"query"];
+    
+    _detailfilter = [[NSMutableDictionary alloc] initWithDictionary:filter];
+    _page = [filter[@"page"] intValue];
+    
+    [self requestProduct];
+}
+
 #pragma mark - ShopPageRequest
 -(void)requestProduct{
     NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
@@ -811,7 +739,6 @@ EtalaseViewControllerDelegate
                                                                [_collectionView addSubview:_noResultView];
                                                                [_collectionView sendSubviewToBack:_noResultView];
                                                                [_collectionView sendSubviewToBack:_footer];
-                                                               [_collectionView bringSubviewToFront:_header];
                                                                
                                                                [_refreshControl endRefreshing];
                                                                [_refreshControl setHidden:YES];

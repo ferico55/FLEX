@@ -31,8 +31,8 @@
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
 #import "SettingUserProfileViewController.h"
-#import "ShopContainerViewController.h"
 #import "UIView+HVDLayout.h"
+#import "Tokopedia-Swift.h"
 
 
 @interface UserContainerViewController ()
@@ -450,7 +450,7 @@
         }
             
         case 16 : {
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            ShopViewController *container = [[ShopViewController alloc] init];
             
             container.data = @{kTKPDDETAIL_APISHOPIDKEY:_profile.result.shop_info.shop_id?:@"0"};
             [self.navigationController pushViewController:container animated:YES];

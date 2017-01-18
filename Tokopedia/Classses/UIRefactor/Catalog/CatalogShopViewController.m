@@ -18,7 +18,6 @@
 #import "DetailProductViewController.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
-#import "ShopContainerViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
@@ -675,7 +674,7 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
-    ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
+    ShopViewController *controller = [[ShopViewController alloc] init];
     CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
     controller.data = @{@"shop_id" : catalogShop.shop.shop_id, @"shop_name" : catalogShop.shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];

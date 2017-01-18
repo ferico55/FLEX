@@ -38,7 +38,7 @@
     [super viewDidLoad];
     self.title = @"Pengaturan Toko";
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
-    _menus = @[@"Atur Toko", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
+    _menus = @[@"Informasi", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStylePlain

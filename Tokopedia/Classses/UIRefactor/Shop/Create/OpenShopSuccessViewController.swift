@@ -125,7 +125,7 @@ import UIKit
     
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (indexPath.section == 0) {
-            let container = ShopContainerViewController()
+            let container = ShopViewController()
             container.data = ["shop_domain": shopDomain]
             navigationController?.pushViewController(container, animated: true)
         }
@@ -133,8 +133,8 @@ import UIKit
 
     @IBAction func didTapAddProductButton(sender: UIButton) {
         let controller = ProductAddEditViewController()
-        controller.type = 1
-        let navigation = UINavigationController.init(rootViewController: controller)
+        controller.type = .ADD
+        let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.translucent = false
         navigationController?.presentViewController(navigation, animated: true, completion:nil)
         navigationController?.popToRootViewControllerAnimated(true)

@@ -22,7 +22,9 @@
 
 @property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
 @property BOOL showHomeTab;
+@property (nonatomic) Shop *shop;
 
 - (void)showProductsWithEtalaseId:(NSString *)etalaseId;
+- (void)showProductsWithFilter:(NSDictionary *)filter;
 
 @end

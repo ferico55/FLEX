@@ -11,7 +11,6 @@
 #import "UserAuthentificationManager.h"
 
 #import "WebViewInvoiceViewController.h"
-#import "ShopContainerViewController.h"
 #import "string_more.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "UserContainerViewController.h"
@@ -83,7 +82,7 @@
 
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
@@ -91,7 +90,7 @@
 
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
@@ -352,7 +351,7 @@
 }
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
 
     container.data = @{
                        @"shop_domain" : shopName

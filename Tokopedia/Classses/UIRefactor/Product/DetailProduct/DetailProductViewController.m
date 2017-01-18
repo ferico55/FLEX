@@ -47,7 +47,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "TransactionATCViewController.h"
-#import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
 
 #import "URLCacheController.h"
@@ -635,7 +634,7 @@ TTTAttributedLabelDelegate
                 }
                 else{
                     
-                    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                    ShopViewController *container = [[ShopViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
                                        kTKPDDETAIL_APISHOPNAMEKEY:_product.data.shop_info.shop_name,
@@ -1586,7 +1585,7 @@ TTTAttributedLabelDelegate
             // Etalase
             if(_product.data.info.product_etalase_id != nil && [self isProductActive]) {
                 
-                ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                ShopViewController *container = [[ShopViewController alloc] init];
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
@@ -2211,7 +2210,7 @@ TTTAttributedLabelDelegate
 }
 
 - (void)tapShop {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     if(!_product.data.shop_info.shop_id) {
         return;
     }
