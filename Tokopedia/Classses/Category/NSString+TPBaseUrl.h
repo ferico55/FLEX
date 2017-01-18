@@ -27,5 +27,6 @@
 + (NSString*)wvloginUrl;
 + (NSString*)tokopediaUrl;
 + (NSString*)walletUrl;
++ (NSString*)mobileSiteUrl;
 
 @end

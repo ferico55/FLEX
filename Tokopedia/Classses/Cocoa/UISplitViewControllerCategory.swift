@@ -13,4 +13,9 @@ extension UISplitViewController {
         let masterViewController = viewControllers.first!
         viewControllers = [masterViewController, viewController]
     }
+    
+    func getDetailViewController()->UIViewController {
+        let detailViewController = viewControllers.last!
+        return detailViewController;
+    }
 }

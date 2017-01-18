@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ResolutionCenterDetailViewController;
+@class ResolutionWebViewController;
 
 @protocol ResolutionComplainDelegate <NSObject>
 
@@ -25,7 +25,6 @@
 
 
 @property (strong, nonatomic) id<ResolutionComplainDelegate> delegate;
-@property (strong, nonatomic) ResolutionCenterDetailViewController *detailViewController;
 
 typedef enum {
     TypeComplaintAll = 2,

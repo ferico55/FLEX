@@ -21,8 +21,6 @@
 #import "InboxResolutionCenterOpenViewController.h"
 #import "TransactionCartViewController.h"
 
-#import "ResolutionCenterDetailViewController.h"
-
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "DetailOrderButtonsView.h"
@@ -31,7 +29,7 @@
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"
 
-@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
+@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
 {
     NavigateViewController *_navigate;
 }
@@ -374,21 +372,15 @@
 }
 
 -(void)tapSeeComplaintOrder:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView*)view{
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+    
     NSString *resolutionID = [queries objectForKey:@"id"];
-    vc.resolutionID = resolutionID;
-    vc.delegate = self;
-    __weak typeof(self) weakSelf = self;
-    vc.didCancelComplain = ^(){
-        if(weakSelf.didCancelComplaint){
-            weakSelf.didCancelComplaint(order);
-        }
-        
-        [view removeSeeComplaintButton];
-    };
+    
+    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 - (IBAction)tapDetailTransaction:(id)sender {
     TxOrderTransactionDetailViewController *vc = [TxOrderTransactionDetailViewController new];
     vc.order = _order;

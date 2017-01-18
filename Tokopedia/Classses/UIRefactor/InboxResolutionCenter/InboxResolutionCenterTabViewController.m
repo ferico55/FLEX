@@ -281,12 +281,10 @@
 
 -(void)setDataAtViewController:(InboxResolutionCenterComplainViewController*)viewController
 {
-    _detailViewController.delegate = viewController;
     viewController.delegate = self;
     viewController.filterSort = [_selectedFilterSort[@"filter_value"] integerValue];
     viewController.filterProcess = [_selectedFilterProcess[@"filter_value"] integerValue];
     viewController.filterRead = [_selectedFilterRead[@"filter_value"] integerValue];
-    viewController.detailViewController = _detailViewController;
 }
 
 #pragma mark - UIPageViewController Delegate

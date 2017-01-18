@@ -14,7 +14,6 @@
 #import "InboxResolutionCenterComplainCell.h"
 #import "FilterComplainViewController.h"
 
-#import "ResolutionCenterDetailViewController.h"
 #import "TxOrderStatusViewController.h"
 
 #import "GeneralTableViewController.h"
@@ -33,6 +32,7 @@
 #import "NavigationHelper.h"
 
 #import "RequestResolutionData.h"
+#import "Tokopedia-Swift.h"
 
 #define COLOR_BLUE_DEFAULT [UIColor colorWithRed:0.f/255.f green:122.f/255.f blue:255.f/255.f alpha:1]
 #define COLOR_PENDING_AMOUNT [UIColor colorWithRed:255.f/255.f green:85.f/255.f blue:0.f/255.f alpha:1]
@@ -45,7 +45,6 @@
     UITableViewDelegate,
     SmileyDelegate,
     GeneralTableViewControllerDelegate,
-    ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
     CMPopTipViewDelegate,
@@ -227,11 +226,6 @@
     return _isNodata ? 0 : _list.count;
 }
 
--(void)finishComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
-{
-    [self refreshRequest];
-}
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     InboxResolutionCenterComplainCell* cell = nil;
@@ -337,7 +331,7 @@
 #pragma mark - Cell Delegate
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
+    UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?[self.splitViewController getDetailViewController]:self;
     
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     [NavigateViewController navigateToInvoiceFromViewController:sourceViewController
@@ -387,20 +381,13 @@
     _selectedDetailIndexPath = indexPath;
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+
+    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
+
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        if (![resolution isEqual:_detailViewController.resolution]) {
-            _detailViewController.delegate = self;
-            [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
-        }
-        
-    }
-    else
-    {
-        ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
-        vc.indexPath = indexPath;
-        vc.resolution = resolution;
-        vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-        vc.delegate = self;
+        UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:vc];
+        [self.splitViewController replaceDetailViewController:detailNav];
+    } else {
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -408,6 +395,7 @@
     InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     cell.unreadBorderView.hidden = YES;
     cell.unreadIconImageView.hidden = YES;
+    [cell setSelected:true animated:false];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -521,38 +509,6 @@
 }
 
 #pragma mark - Request
-
--(void)doRequestCancel{
-    InboxResolutionCenterList *resolution = [_objectCancelComplain objectForKey:DATA_SELECTED_RESOLUTION_KEY];
-    [_list removeObject:resolution];
-    [_tableView reloadData];
-    [_allObjectCancelComplain addObject:_objectCancelComplain];
-    
-    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue]?:@"";
-    
-    [RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
-
-        [_allObjectCancelComplain removeObject:_objectCancelComplain];
-        [[NSNotificationCenter defaultCenter] postNotificationName:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME object:nil];
-        _selectedDetailIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
-            if (indexPath.row < _list.count) {
-                InboxResolutionCenterList *resolution = _list[indexPath.row];
-                NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-                if (![resolution isEqual:_detailViewController.resolution]) {
-                    [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-                    _detailViewController.delegate = self;
-                    [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
-                }
-            }
-        }
-    } failure:^(NSError *error) {
-        [self requestFailureCancelComplain:_objectCancelComplain];
-        [self requestProcessCancelComplain];
-    }];
-}
-
 -(void)doRequestList{
     [RequestResolutionData fetchDataResolutionType:[NSString stringWithFormat:@"%zd",_typeComplaint]
                                               page:[NSString stringWithFormat:@"%zd",_page]
@@ -571,18 +527,17 @@
                } else _tableView.tableHeaderView = nil;
                
                [_list addObjectsFromArray:data.list];
+               [_tableView reloadData];
+
+               if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _page <= 1) {
+                   [self goToResolutionDetailAtIndexPath:_selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0]];
+               }
+               
                _isNodata = NO;
                _URINext =  uriNext;
                _page = [nextPage integerValue];
                _tableView.tableFooterView = nil;
                
-               if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _page <= 1) {
-                   NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
-                   InboxResolutionCenterList *resolution = _list[indexPath.row];
-                   if (![resolution isEqual:_detailViewController.resolution]) {
-                       [self goToResolutionDetailAtIndexPath:indexPath];
-                   }
-               }
            }
            else
            {
@@ -598,9 +553,9 @@
                    [_noResultView setNoResultTitle:@"Tidak ada komplain"];
                }
                _tableView.tableFooterView = _noResultView;
+               [_tableView reloadData];
            }
            
-           [_tableView reloadData];
            [_refreshControl endRefreshing];
            [_act stopAnimating];
                                                
@@ -609,7 +564,6 @@
         [_act stopAnimating];
     }];
 }
-
 
 -(void)adjustHeaderFilterDaysReso:(InboxResolutionCenterResult*)reso
 {
@@ -636,23 +590,6 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     [self doRequestList];
-}
-
--(void)requestFailureCancelComplain:(NSDictionary*)object
-{
-    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
-    NSIndexPath *indexPathResolution = [object objectForKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
-    [_list insertObject:resolution atIndex:indexPathResolution.row];
-    [_allObjectCancelComplain removeObject:object];
-    [_tableView reloadData];
-}
-
--(void)requestProcessCancelComplain
-{
-    if (_allObjectCancelComplain.count>0) {
-        _objectCancelComplain = [_allObjectCancelComplain firstObject];
-        [self doRequestCancel];
-    }
 }
 
 #pragma mark - Memory Management

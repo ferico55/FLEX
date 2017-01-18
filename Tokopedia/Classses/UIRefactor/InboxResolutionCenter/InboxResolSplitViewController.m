@@ -9,7 +9,7 @@
 #import "InboxResolSplitViewController.h"
 
 #import "InboxResolutionCenterTabViewController.h"
-#import "ResolutionCenterDetailViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxResolSplitViewController ()
 
@@ -34,29 +34,17 @@
     [super viewDidLoad];
     
     InboxResolutionCenterTabViewController *masterVC = [[InboxResolutionCenterTabViewController alloc] initWithSelectedIndex:_tapIndex];
+    UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
     masterVC.splitVC = self;
     
-    UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
-    masterNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    masterNav.navigationBar.translucent = NO;
-    masterNav.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
-    //Grab a reference to the LeftViewController and get the first monster in the list.
-    ResolutionCenterDetailViewController *detailVC = [ResolutionCenterDetailViewController new];
-    detailVC.masterViewController = masterVC;
-    
+    UIViewController *detailVC = [UIViewController new];
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
-    detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    detailNav.navigationBar.translucent = NO;
-    detailNav.navigationBar.tintColor = [UIColor whiteColor];
     
     masterVC.detailViewController = detailVC;
     
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = detailVC;
     self.splitViewController.viewControllers = [NSArray arrayWithObjects:masterNav, detailNav, nil];
     
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {

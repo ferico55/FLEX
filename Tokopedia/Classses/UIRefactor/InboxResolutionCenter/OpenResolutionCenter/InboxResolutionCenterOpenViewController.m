@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionCenterDetailViewController.h"
 #import "ResolutionCenterInputViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"

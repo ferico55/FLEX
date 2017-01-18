@@ -14,7 +14,6 @@
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartViewController.h"
-#import "ResolutionCenterDetailViewController.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -46,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
+@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
 {
     NSString *_URINext;
     
@@ -538,16 +537,11 @@
 }
 
 -(void)tapSeeComplaintDetailOrder:(TxOrderStatusList *)order{
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
-    vc.delegate = self;
-    vc.isNeedRequestListDetail = YES;
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+
     NSString *resolutionID = [queries objectForKey:@"id"];
-    vc.resolutionID = resolutionID;
-    __weak typeof(self) weakSelf = self;
-    vc.didCancelComplain = ^(){
-        [weakSelf refreshRequest];
-    };
+    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
