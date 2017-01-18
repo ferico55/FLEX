@@ -143,7 +143,7 @@
 #define HEIGHT_VIEW_SUBTOTAL 156
 #define HEIGHT_VIEW_TOTAL_DEPOSIT 30
 #define DEFAULT_ROW_HEIGHT 44
-#define CELL_PRODUCT_ROW_HEIGHT 126
+#define CELL_PRODUCT_ROW_HEIGHT 150
 
 #define NOT_SELECT_GATEWAY -1
 
@@ -614,7 +614,7 @@
     if ([product.product_error_msg isEqualToString:@""] ||
         [product.product_error_msg isEqualToString:@"0"] ||
         product.product_error_msg == nil ) {
-        [NavigateViewController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -626,7 +626,7 @@
     ProductDetail *product = listProducts[indexProduct];
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
-        [NavigateViewController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
     }
 }
 

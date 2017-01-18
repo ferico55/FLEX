@@ -11,6 +11,7 @@
 #import "ProductBadge.h"
 #import "ProductLabel.h"
 
+@class ProductPreorder;
 @interface ProductModelView : NSObject
 
 @property (strong, nonatomic) NSString *productName;
@@ -36,7 +37,7 @@
 
 @property (strong, nonatomic) NSArray<Errors *> *productErrors;
 @property (strong, nonatomic) NSArray<Errors *> *cartErrors;
-
+@property (strong, nonatomic) ProductPreorder *preorder;
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;
 @property BOOL isWholesale;

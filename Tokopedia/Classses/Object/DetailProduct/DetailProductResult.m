@@ -8,7 +8,6 @@
 
 #import "DetailProductResult.h"
 #import "NSString+URLEncoding.h"
-#import "Tokopedia-Swift.h"
 
 @implementation DetailProductResult
 
@@ -32,7 +31,7 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"other_product" toKeyPath:@"other_product" withMapping:[OtherProduct mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_images" toKeyPath:@"product_images" withMapping:[ProductImages mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price" toKeyPath:@"wholesale_price" withMapping:[WholesalePrice mapping]]];
-    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"preorder" toKeyPath:@"preorder" withMapping:[PreorderDetail mapping]]];
     [mapping addAttributeMappingsFromDictionary:@{
                                                   @"cashback.product_cashback": @"cashback"
                                                   }];

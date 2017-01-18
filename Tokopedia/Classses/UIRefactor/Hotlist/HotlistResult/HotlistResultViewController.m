@@ -804,8 +804,7 @@ static NSString const *rows = @"12";
                             category:GA_EVENT_CATEGORY_HOTLIST
                               action:GA_EVENT_ACTION_CLICK
                                label:list.product_name];
-    NavigateViewController *navigator = [NavigateViewController new];
-    [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self withProduct:list];
 }
 
 #pragma mark - Promo request delegate

@@ -8,11 +8,15 @@
 
 #import "TransactionCartCell.h"
 #import "Errors.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TransactionCartCell
 {
     CartModelView *_viewModelCart;
     ProductModelView *_viewModelProduct;
+    IBOutlet UILabel *_preorderTimeProcessLabel;
+    IBOutlet UIButton *_preorderButton;
+    IBOutlet NSLayoutConstraint *_preorderButtonHeightNSLayoutConstraint;
 }
 
 #pragma mark - Factory methods
@@ -29,7 +33,10 @@
 }
 
 - (void)awakeFromNib {
-    
+    [super awakeFromNib];
+    [_preorderButton setHidden:YES];
+    [_preorderTimeProcessLabel setHidden:YES];
+    [_preorderButtonHeightNSLayoutConstraint setConstant:-20.0];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -100,8 +107,17 @@
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
-    
     _viewModelProduct = viewModel;
+    if (viewModel.preorder.process_time > 0) {
+        [_preorderButton setHidden:NO];
+        [_preorderTimeProcessLabel setHidden:NO];
+        [_preorderButtonHeightNSLayoutConstraint setConstant:15];
+        _preorderTimeProcessLabel.text = [NSString stringWithFormat:@"Waktu Proses: %zd  %@", viewModel.preorder.process_time, viewModel.preorder.process_time_type_string];
+    }else{
+        [_preorderButton setHidden:YES];
+        [_preorderTimeProcessLabel setHidden:YES];
+        [_preorderButtonHeightNSLayoutConstraint setConstant:-20.0];
+    }
     
     self.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1];
     
@@ -110,50 +126,33 @@
     }
     
     self.productNameLabel.text = viewModel.productName;
-    
-    
     NSString *priceIsChangedString = [NSString stringWithFormat:@"%@ (Sebelumnya %@)", viewModel.productPriceIDR, viewModel.productPriceBeforeChange];
-    
     NSString *productSebelumnya = [NSString stringWithFormat:@"(Sebelumnya %@)", viewModel.productPriceBeforeChange];
-    
     NSString *priceString = viewModel.productPriceIDR;
-    
-    
-    
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:priceIsChangedString];
     
     [attributedString addAttribute:NSFontAttributeName
-     
                              value:[UIFont microTheme]
-     
                              range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:255/255.0 green:59/255.0 blue:48/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
     if ( [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] != 0)
-        
         self.productPriceLabel.attributedText = attributedString;
-    
     else
-        
         self.productPriceLabel.text = priceString;
-    
-    
     
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",viewModel.productQuantity, viewModel.productTotalWeight];
     
     attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
     
     [attributedString addAttribute:NSFontAttributeName
-     
                              value:[UIFont microTheme]
-     
                              range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",viewModel.productTotalWeight]]];
     
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",viewModel.productTotalWeight]]];
     
     self.quantityLabel.attributedText = attributedString;
-    
     
     NSString *productNotes = [viewModel.productNotes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
     if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
@@ -161,26 +160,18 @@
     }
     
     [self.remarkLabel setCustomAttributedText:productNotes?:@"-"];
-    
-    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
     
     UIImageView *thumb = self.productThumbImageView;
     
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        
         [thumb setImage:image];
         [thumb setContentMode:UIViewContentModeScaleAspectFill];
-        
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
         thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan.png"];
-        
     }];
     
     self.editButton.hidden = (_indexPage == 1);
-    
     if (viewModel.productErrors.count > 0) {
         Errors *error = viewModel.productErrors[0];
         
@@ -196,7 +187,6 @@
     } else {
         _errorViewHeightConstraint.constant = 0;
     }
-    
 }
 
 @end

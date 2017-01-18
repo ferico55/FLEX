@@ -18,10 +18,8 @@
 #import "NavigateViewController.h"
 #import "RequestATC.h"
 #import "MMNumberKeyboard.h"
-
+#import "PreorderDetail.h"
 #import "NSNumberFormatter+IDRFormater.h"
-
-#import "Tokopedia-Swift.h"
 
 @import GoogleMaps;
 
@@ -65,7 +63,7 @@ typedef enum
     MMNumberKeyboardDelegate
 >
 {
-    BOOL _isnodata;
+    BOOL _isnodata, _isProductPreorder;
     BOOL _isFinishRequesting;
 
     UIRefreshControl *_refreshControl;
@@ -75,17 +73,17 @@ typedef enum
     AddressFormList *_selectedAddress;
     ProductDetail *_selectedProduct;
     TransactionATCFormResult *_ATCForm;
-    
+    DetailProductResult* _detailProduct;
     NSArray<RateAttributes*> *_shipments;
     
     DelayedActionManager *requestPriceDelayedActionManager;
     DelayedActionManager *quantityDelayedActionManager;
 }
-
+@property (weak, nonatomic) IBOutlet UIButton *preorderButton;
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBuyButton;
-
+@property (strong, nonatomic) IBOutlet UILabel *waktuProsesLabel;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewProductCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewShipmentCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewPaymentDetailCell;
@@ -124,7 +122,11 @@ typedef enum
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _detailProduct = (DetailProductResult*)[_data valueForKeyPath:@"product"];
+    _isProductPreorder = _detailProduct.preorder.preorder_status;
+    [_preorderButton setHidden:!_isProductPreorder];
+    [_waktuProsesLabel setHidden:!_isProductPreorder];
+    if (_isProductPreorder) [_buyButton setTitle:@"Pesan Preorder" forState:UIControlStateNormal];
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -675,7 +677,7 @@ typedef enum
         case 0:
             cell = _tableViewProductCell[indexPath.row];
             if (indexPath.row == 1) {
-                return 73;
+                return _isProductPreorder?93:73;
             }
             if (indexPath.row == 3) {
                 return 163;
@@ -1065,6 +1067,8 @@ typedef enum
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"] success:nil failure:nil];
     [_productDescriptionLabel setText:_selectedProduct.product_name];
+    NSString* timeProsessString = [NSString stringWithFormat:@"Waktu Proses:  %zd %@", _detailProduct.preorder.preorder_process_time, _detailProduct.preorder.preorder_process_time_type_string];
+    [_waktuProsesLabel setText:timeProsessString];
 }
 
 -(void)setAddress:(AddressFormList*)address

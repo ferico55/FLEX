@@ -40,6 +40,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     lblMessageRetur.linkAttributes = @{
                                        (id)kCTForegroundColorAttributeName:[
                                                                             UIColor colorWithRed:10/255.0f
@@ -80,14 +81,14 @@
     lblMessageRetur.text = strText;
 }
 
-- (void)setLblDescriptionToko:(NSString *)strText withImageURL:(NSString *)url withBGColor:(UIColor *)color{
+- (void)setLblDescriptionToko:(NSString *)strText withImageURL:(NSString *)url withBGColor:(UIColor *)color withReturnableId:(NSString*)returnableID{
     float labelHeight = 50;
     
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
     UIFont *font = [UIFont microTheme];
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
                                  NSFontAttributeName: font};
-    
+        
     NSString *string = [NSString stringReplaceAhrefWithUrl:strText];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
     lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
@@ -100,11 +101,12 @@
     NSTextCheckingResult* firstMatch = [linkDetector firstMatchInString:attributedString.string options:0 range:NSMakeRange(0, [attributedString length])];
     
     NSString* replaceString = @"Pelajari lebih lanjut.";
+    if ([returnableID isEqualToString:@"2"]) replaceString = @"";
+    
     [attributedString replaceCharactersInRange:firstMatch.range withString:replaceString];
     NSRange range = NSMakeRange(firstMatch.range.location, replaceString.length);
     lblMessageRetur.attributedText = attributedString;
     [lblMessageRetur addLinkToURL:firstMatch.URL withRange:range];
-    
     [imgRetur setImageWithURL:[NSURL URLWithString:url]];
 }
 
@@ -121,6 +123,20 @@
 - (float)getHeightReturView
 {
     return constraintHeightViewRetur.constant;
+}
+
+- (void)hidePreorderView{
+    [preorderView setHidden:YES];
+    constraintHeightPreorderView.constant = 0;
+}
+
+- (void)showPreorderView{
+    [preorderView setHidden:NO];
+   constraintHeightPreorderView.constant = 30;
+}
+
+- (void)setTextPreorderPeriodLabel:(NSString*)strPreorderPeriodText{
+    _preorderPeriodLabel.text = strPreorderPeriodText;
 }
 
 #pragma mark - TTTAttributedDelegate

@@ -7,7 +7,7 @@
 //
 
 #import "NavigateViewController.h"
-
+#import "ShopProductPageList.h"
 #import "UserAuthentificationManager.h"
 
 #import "WebViewInvoiceViewController.h"
@@ -193,6 +193,81 @@
     productController.data = @{@"product_id" : productId?:@""};
     productController.hidesBottomBarWhenPushed = YES;
     
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName{
+    NSDictionary *loadedData;
+    DetailProductViewController *productController = [DetailProductViewController new];
+    if([objProduct isKindOfClass:[ProductDetail class]]) {
+        ProductDetail *product = (ProductDetail *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_url?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : shopName?:@"",
+                       @"pre_order"       : @(product.product_preorder.process_day>0?YES:NO)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }
+
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct{
+    NSDictionary *loadedData;
+    DetailProductViewController *productController = [DetailProductViewController new];
+    
+    if([objProduct isKindOfClass:[SearchAWSProduct class]]) {
+        SearchAWSProduct *product = (SearchAWSProduct *) objProduct;
+        loadedData = @{@"product_id"        : product.product_id?:@"",
+                         @"product_name"    : product.product_name?:@"",
+                         @"product_image"   : product.product_url?:@"",
+                         @"product_price"   : product.product_price?:@"",
+                         @"shop_name"       : product.shop_name?:@"",
+                         @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[HistoryProductList class]]) {
+        HistoryProductList *product = (HistoryProductList *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[List class]]) {
+        List *product = (List *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[MyWishlistData class]]) {
+        MyWishlistData *product = (MyWishlistData *) objProduct;
+        loadedData = @{@"product_id"      : product.id?:@"",
+                       @"product_name"    : product.name?:@"",
+                       @"product_image"   : product.image?:@"",
+                       @"product_price"   : product.price?:@"",
+                       @"shop_name"       : product.shop.name?:@"",
+                       @"pre_order"       : @(product.preorder)};
+        productController.data = @{@"product_id" : product.id?:@""};
+    }else if([objProduct isKindOfClass:[ShopProductPageList class]]) {
+        ShopProductPageList *product = (ShopProductPageList *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }
+    
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 

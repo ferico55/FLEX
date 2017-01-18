@@ -162,7 +162,8 @@
 
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error{
     
-    NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
+    NSInteger productCartID = [product.product_cart_id integerValue];
+    if(!product.product_preorder.isPreorder) productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
     NSString *shopID = cart.cart_shop.shop_id?:@"";
     NSString *addressID = cart.cart_destination.address_id?:@"";
     NSString *shipmentID = cart.cart_shipments.shipment_id?:@"";

@@ -24,7 +24,7 @@ class MessageViewController: JSQMessagesViewController {
         "4" : UIColor(red: 42.0/255.0, green: 180.0/255.0, blue: 194.0/255.0, alpha: 1.0), //pembeli
         "5" : UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0) // system
     ]
-    
+
     private var messages = [JSQMessage]()
     private var avatars = Dictionary<String, JSQMessagesAvatarImage>()
     private var userLabelColors = Dictionary<String, UIColor>()
@@ -375,6 +375,10 @@ class MessageViewController: JSQMessagesViewController {
             
             let dateObj = dateFormatter.dateFromString(dateString)!
             let messageReply = NSString.extracTKPMEUrl(message.message_reply)
+
+            if (message.user_label_id == String(UserLabelMessage.Administrator)){
+                inputToolbar.hidden = true
+            }
             
             if(message.user_id == self.senderId) {
                 self.addMessage(self.senderId, text: messageReply , senderName: "",date: dateObj)
@@ -417,6 +421,4 @@ class MessageViewController: JSQMessagesViewController {
         super.didReceiveMemoryWarning()
     }
     
-
-
 }

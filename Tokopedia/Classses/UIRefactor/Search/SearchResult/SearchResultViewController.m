@@ -593,12 +593,7 @@ ImageSearchRequestDelegate
         if (_isFromImageSearch) {
             [navigateController navigateToProductFromViewController:self withProduct:product];
         } else {
-            [navigateController navigateToProductFromViewController:self
-                                                           withName:product.product_name
-                                                          withPrice:product.product_price
-                                                             withId:product.product_id
-                                                       withImageurl:product.product_image
-                                                       withShopName:product.shop_name];
+            [NavigateViewController navigateToProductFromViewController:self withProduct:product];
         }
     }
 }
@@ -1485,7 +1480,8 @@ ImageSearchRequestDelegate
             @"product_name"     : promoResult.product.name?:@"",
             @"product_image"    : promoResult.product.image.s_url?:@"",
             @"product_price"    : promoResult.product.price_format?:@"",
-            @"shop_name"        : promoResult.shop.name?:@""
+            @"shop_name"        : promoResult.shop.name?:@"",
+            @"pre_order"        : [NSNumber numberWithBool:promoResult.product.product_preorder]
         };
 
         PromoRequestSourceType source;

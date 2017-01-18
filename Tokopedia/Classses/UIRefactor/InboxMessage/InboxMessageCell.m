@@ -36,11 +36,18 @@ SmileyDelegate
 #pragma mark - Initialization
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     if (self.isEditing) {
         [super setSelected:selected animated:animated];
+        if (selected) {
+            self.contentView.backgroundColor = [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1];
+             [self.message_title setLabelBackground:_message.user_label];
+        } else {
+            self.contentView.backgroundColor = [UIColor clearColor];
+        }
     } else {
         if (selected) {
             self.contentView.backgroundColor = [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1];

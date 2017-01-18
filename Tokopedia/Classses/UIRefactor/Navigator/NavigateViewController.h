@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import "HistoryProduct.h"
 
 @class AddressViewModel;
 @class TKPPlacePickerViewController;
@@ -20,7 +21,6 @@
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
-
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key;
 
@@ -46,6 +46,8 @@
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID;
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController;
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)product;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
@@ -55,5 +57,4 @@
 - (void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController atIndex:(int)index;
 - (void)navigateToInboxPriceAlertFromViewController:(UIViewController*)viewController;
-
 @end

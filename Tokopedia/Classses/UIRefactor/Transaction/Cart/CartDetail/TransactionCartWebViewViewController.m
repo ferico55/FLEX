@@ -13,7 +13,6 @@
 #import "RequestCart.h"
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
-#import "RequestCart.h"
 #import "TransactionActionResult.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>

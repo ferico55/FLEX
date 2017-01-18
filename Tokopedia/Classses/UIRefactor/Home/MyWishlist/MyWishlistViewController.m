@@ -316,14 +316,13 @@ typedef enum TagRequest {
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     MyWishlistData *product = [_product objectAtIndex:indexPath.row];
     [AnalyticsManager trackProductClick:product];
     [AnalyticsManager trackEventName:@"clickWishlist"
                             category:GA_EVENT_CATEGORY_WISHLIST
                               action:GA_EVENT_ACTION_VIEW
                                label:product.name];
-    [navigateController navigateToProductFromViewController:self withName:product.name withPrice:[NSString stringWithFormat:@"%@", product.price] withId:product.id withImageurl:product.image withShopName:product.shop.name];
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
 
 #pragma mark - Memory Management

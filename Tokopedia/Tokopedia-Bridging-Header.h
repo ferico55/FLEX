@@ -79,7 +79,7 @@
 #import "CarouselDataSource.h"
 #import "AnnouncementTickerView.h"
 
-
+#import "InboxMessageList.h"
 #import "Breadcrumb.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"

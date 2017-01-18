@@ -19,7 +19,8 @@
                                                          @"relative_uri",
                                                          @"price_format",
                                                          @"count_talk_format",
-                                                         @"count_review_format"
+                                                         @"count_review_format",
+                                                         @"product_preorder"
                                                          ]];
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
                                                                                         toKeyPath:@"category"

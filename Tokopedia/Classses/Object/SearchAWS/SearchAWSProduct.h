@@ -43,7 +43,7 @@
 // this is happen because product_wholesale from API is integer format
 // we have to fix API Spec first
 @property NSInteger product_wholesale;
-@property NSInteger product_preorder;
+@property NSUInteger product_preorder;
 
 @property (nonatomic, assign) BOOL is_product_preorder;
 @property (nonatomic, assign) BOOL is_product_wholesale;

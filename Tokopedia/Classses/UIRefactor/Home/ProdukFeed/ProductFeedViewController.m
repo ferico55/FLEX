@@ -194,14 +194,13 @@ FavoriteShopRequestDelegate
     
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
     [AnalyticsManager trackProductClick:product];
     [AnalyticsManager trackEventName:@"clickFeed"
                             category:GA_EVENT_CATEGORY_FEED
                               action:GA_EVENT_ACTION_CLICK
                                label:product.product_name];
-    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section

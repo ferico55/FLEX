@@ -26,12 +26,9 @@
 @property (strong, nonatomic) NSMutableArray<WholesalePrice*> *wholesale_price;
 @property (strong, nonatomic) PromoProductImage *image;
 @property (strong, nonatomic) NSArray<ProductLabel*> *labels;
-
-
-
+@property (nonatomic) BOOL product_preorder;
 
 - (NSDictionary *)productFieldObjects;
-
 + (RKObjectMapping *)mapping;
 
 @end

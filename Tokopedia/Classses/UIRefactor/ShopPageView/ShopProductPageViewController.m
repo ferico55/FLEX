@@ -387,8 +387,8 @@ ShopTabChild
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
         shopName = [_data objectForKey:@"shop_name"];
     }
-
-    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:shopName];
+    
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -659,8 +659,8 @@ ShopTabChild
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
         shopName = [_data objectForKey:@"shop_name"];
     }
-    
-    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:shopName];
+
+    [NavigateViewController navigateToProductFromViewController:self withProduct:list];
 }
 
 #pragma mark - LoadingView Delegate

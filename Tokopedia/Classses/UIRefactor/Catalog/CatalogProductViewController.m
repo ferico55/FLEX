@@ -78,10 +78,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SearchAWSProduct *product = [_product_list objectAtIndex:[indexPath row]];
-    
-    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
-    
-
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
 
 @end
