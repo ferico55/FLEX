@@ -134,6 +134,10 @@
     _table.dataSource = self;
     _shopPageRequest = [[ShopPageRequest alloc]init];
     _table.tableFooterView = _footer;
+    
+    // hack to fix y offset
+    UIView *dummy = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    _table.tableHeaderView = dummy;
 
     [self initNoResultView];
     

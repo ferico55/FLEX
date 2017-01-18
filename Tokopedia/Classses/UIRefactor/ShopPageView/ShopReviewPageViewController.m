@@ -201,6 +201,10 @@
         _isNoData = NO;
     }
     
+    // hack to fix y offset
+    UIView *dummy = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    _table.tableHeaderView = dummy;
+    
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationTableViewCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationTableViewCellIdentifier"];
     
@@ -608,6 +612,7 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
+    
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
                               parameter:@{@"page": @(_page),

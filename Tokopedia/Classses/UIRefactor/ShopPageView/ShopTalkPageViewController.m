@@ -161,6 +161,10 @@ ShopTabChild>
     
     _table.tableFooterView = _footer;
     
+    // hack to fix y offset
+    UIView *dummy = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    _table.tableHeaderView = dummy;
+    
     [_refreshControl addTarget:self
                         action:@selector(refreshView:)
               forControlEvents:UIControlEventValueChanged];
