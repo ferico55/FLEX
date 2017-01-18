@@ -88,7 +88,7 @@
     btnRate.imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(changeProfilePicture:)
+                                             selector:@selector(updateProfilePicture:)
                                                  name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
 }
@@ -179,9 +179,11 @@
 }
 
 #pragma mark - Change profile pic notif
-
-- (void)changeProfilePicture:(NSNotification *)notification {
-    self.profileImage.image = [[notification userInfo] objectForKey:@"profile_img"];
+- (void)updateProfilePicture:(NSNotification *)notification
+{
+    NSString *strAvatar = [notification.userInfo objectForKey:@"file_th"]?:@"";
+    _profile.result.user_info.user_image = strAvatar;
+    [self setHeaderData];
 }
 
 @end
