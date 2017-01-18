@@ -84,7 +84,7 @@
                                  login.result.full_name = accountInfo.name;
                                  
                                  if ((login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) ||[SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
-                                     [self verifyLogin:login withPhoneNumber: accountInfo.phoneNumber token:oAuthToken onPhoneNumberVerified:^{
+                                     [self verifyLogin:login withPhoneNumber: accountInfo.phoneMasked token:oAuthToken onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                     onAuthenticationSuccess:successCallback

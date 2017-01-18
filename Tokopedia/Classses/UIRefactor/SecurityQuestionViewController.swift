@@ -68,10 +68,18 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet private var resendOTPButton: UIButton!
     private var resendOTPTimer: NSTimer!
     
+    @IBOutlet private var verifyButton: UIButton!
+    
     private var resendOTPSecondsLeftDefault: Int = 90
     private var resendOTPSecondsLeftIfFailed: Int = 5
     
     private var isOTPOnCallEnabled = false
+    
+    private var activityIndicator : UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        
+        return activityIndicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,6 +123,17 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         
         self.otpInputField.delegate = self
         self.otpInputField.mask = "# # # # # #"
+        
+        let halfButtonHeight = verifyButton.bounds.size.height / 2
+        let buttonWidth = verifyButton.bounds.size.width
+        
+        activityIndicator.center = CGPointMake(buttonWidth - halfButtonHeight, halfButtonHeight)
+        
+        verifyButton.addSubview(activityIndicator)
+        activityIndicator.mas_makeConstraints({ (make) in
+            make.centerX.equalTo()(self.verifyButton.mas_centerX)
+            make.centerY.equalTo()(self.verifyButton.mas_centerY)
+        })
     }
     
     private func setupInfoLabel() {
@@ -131,14 +150,6 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         infoAttributedString.addAttributes([NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : UIColor.blackColor().colorWithAlphaComponent(0.54)], range: NSMakeRange(0, infoAttributedString.length))
         
         self.phoneNumberLabel.attributedText = infoAttributedString
-    }
-    
-    private func setLabelSpacing (label : UILabel) {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 5
-        let attrString = NSMutableAttributedString(string: label.text!)
-        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
-        label.attributedText = attrString
     }
     
     //MARK: Request Security Question Form
@@ -161,8 +172,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         _securityQuestion = securityQuestion
         
         if((_securityQuestion.message_error) != nil) {
-            let stickyAlert = StickyAlertView.init(errorMessages: _securityQuestion.message_error, delegate: self)
-            stickyAlert.show()
+            StickyAlertView.showErrorMessage(_securityQuestion.message_error)
         } else {
             if questionType1 == "0" {
                 self.view.addSubview(questionViewType2)
@@ -252,9 +262,18 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Verify OTP Button Methods
+    private func showVerificationButtonIsLoading(isLoading: Bool) {
+        isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+        verifyButton.enabled = !isLoading
+        verifyButton.setTitle(isLoading ? "" : "Verifikasi", forState: .Normal)
+    }
+    
     @IBAction private func didSubmitOTP(sender: AnyObject?) {
+        showVerificationButtonIsLoading(true)
+        
         guard let text = otpInputField.text where !text.isEmpty else {
-            StickyAlertView.showErrorMessage(["Harap isi Kode OTP terlebih dahulu."])
+            StickyAlertView.showErrorMessage(["Kode Verifikasi Tidak Boleh Kosong."])
+            showVerificationButtonIsLoading(false)
             return
         }
         
@@ -263,34 +282,36 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     private func submitSecurityAnswer(answer : String) {
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
-                                           path: "/v4/action/interrupt/answer_question.pl",
-                                           method: .GET,
-                                           parameter: ["question" : _securityQuestion.data.question, "answer" : answer, "user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID],
-                                           mapping: SecurityAnswer .mapping(),
-                                           onSuccess: { (mappingResult, operation) -> Void in
-                                            let answer = mappingResult.dictionary()[""] as! SecurityAnswer
-                                            self.didReceiveAnswerRespond(answer)
+        networkManager.requestWithBaseUrl(
+            NSString.v4Url(),
+            path: "/v4/action/interrupt/answer_question.pl",
+            method: .GET,
+            parameter: ["question" : _securityQuestion.data.question, "answer" : answer, "user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID],
+            mapping: SecurityAnswer .mapping(),
+            onSuccess: { (mappingResult, operation) -> Void in
+                let answer = mappingResult.dictionary()[""] as! SecurityAnswer
+                self.didReceiveAnswerRespond(answer)
             },
-                                           onFailure: nil)
+            onFailure: { (error) in
+                self.showVerificationButtonIsLoading(false)
+        })
     }
     
     private func didReceiveAnswerRespond(answer : SecurityAnswer) {
         if answer.message_error != nil {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Failed")
-            let stickyAlert = StickyAlertView.init(errorMessages: answer.message_error, delegate: self)
-            stickyAlert.show()
+            StickyAlertView.showErrorMessage(answer.message_error)
+            showVerificationButtonIsLoading(false)
         } else if answer.data.error == "1" {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Failed")
-            let stickyAlert = StickyAlertView.init(errorMessages: ["Kode OTP hanya boleh diisi dengan 6 angka."], delegate: self)
-            stickyAlert.show()
+            StickyAlertView.showErrorMessage(["Kode Verifikasi Tidak Sesuai."])
+            showVerificationButtonIsLoading(false)
         }
         
         if answer.data.allow_login == "1" {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Success")
             self.stopTimer()
             self.successAnswerCallback(answer)
-            self.navigationController?.popViewControllerAnimated(true)
         }
     }
     
@@ -335,7 +356,13 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                                             
                                             if otp.data.is_success != nil && otp.data.is_success == "1" {
                                                 AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Success")
-                                                StickyAlertView.showSuccessMessage(["Kode OTP telah terkirim."])
+                                                
+                                                if otp.message_status != nil && otp.message_status.count > 0 {
+                                                    StickyAlertView.showSuccessMessage(otp.message_status)
+                                                } else {
+                                                    StickyAlertView.showSuccessMessage(["Kode Verifikasi Telah Terkirim."])
+                                                }
+                                                
                                                 
                                                 self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftDefault)
                                                 self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftDefault)

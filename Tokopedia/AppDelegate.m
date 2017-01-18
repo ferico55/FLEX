@@ -64,6 +64,7 @@
     
     [self startAppsee];
     [self hideTitleBackButton];
+    [JLRoutes setShouldDecodePlusSymbols:NO];
     
     UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
