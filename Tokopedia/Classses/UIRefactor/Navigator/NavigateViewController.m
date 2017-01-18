@@ -399,6 +399,7 @@
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
+        vc.isFromDirectory = YES;
         vc.delegate = viewController;
         NSMutableDictionary *datas = [NSMutableDictionary new];
         [datas addEntriesFromDictionary:data];

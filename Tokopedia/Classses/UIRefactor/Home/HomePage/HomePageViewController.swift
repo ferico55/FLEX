@@ -31,6 +31,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private var categoryPlaceholder: OAStackView!
     private var homePageCategoryData: HomePageCategoryData?
     private var pulsaActiveCategories: [PulsaCategory]?
+    
+    private var topPicksPlaceholder = UIView()
+    private var isTopPicksDataEmpty = true
+
     private var storeManager = TKPStoreManager()
     
     @IBOutlet private var homePageScrollView: UIScrollView!
@@ -79,6 +83,19 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         if homePageCategoryData == nil && isRequestingCategory == false {
             self.requestCategory()
         }
+        
+        if isTopPicksDataEmpty {
+            let topPicksWidgetViewController = TopPicksWidgetViewController()
+            topPicksWidgetViewController.didGetTopPicksData = { [unowned self] in
+                self.isTopPicksDataEmpty = false
+            }
+            self.addChildViewController(topPicksWidgetViewController)
+            self.topPicksPlaceholder.addSubview(topPicksWidgetViewController.view)
+            topPicksWidgetViewController.view.mas_makeConstraints { (make) in
+                make.edges.mas_equalTo()(self.topPicksPlaceholder)
+            }
+        }
+    
         AnalyticsManager.trackScreenName("Top Category")
     }
     
@@ -117,14 +134,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     private func setCategoryTitleLabel(title: String) {
-        let categoryTitlelabel: UILabel = UILabel()
-        categoryTitlelabel.text = title
-        categoryTitlelabel.font = UIFont.largeTheme()
-        categoryTitlelabel.textColor = UIColor(red: 75.0/255, green: 75.0/255, blue: 75.0/255, alpha: 1.0)
-        categoryTitlelabel.mas_makeConstraints({ (make) in
-            make.height.equalTo()(38)
-        })
-        categoryVerticalView.addArrangedSubview(categoryTitlelabel)
+        HomePageHeaderSectionStyle.setHeaderTitle(forStackView: categoryVerticalView, title: title)
     }
     
     private func setIconImageContainerToIconStackView(iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
@@ -197,7 +207,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 categoryNameContainer.addSubview(verticalIconSeparator)
                 verticalIconSeparator.mas_makeConstraints({ (make) in
                     make.width.mas_equalTo()(1)
-                    make.right.mas_equalTo()(categoryNameContainer).with().offset()(15)
+                    make.right.mas_equalTo()(categoryNameContainer).with().offset()(self.horizontalStackViewSpacing / 2)
                     make.top.mas_equalTo()(categoryNameContainer).with().offset()(5)
                     make.bottom.mas_equalTo()(categoryNameContainer).with().offset()(-5)
                 })
@@ -231,20 +241,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     private func setCategoryUpperSeparator() {
-        let upperSeparatorView = UIView()
-        upperSeparatorView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(2)
-        })
-        let tinyOrangeView = UIView()
-        tinyOrangeView.backgroundColor = UIColor(red: 255.0/255, green: 87.0/255, blue: 34.0/255, alpha: 1.0)
-        tinyOrangeView.frame = CGRect(x: 0, y: 0, width: 20, height: 2)
-        upperSeparatorView.addSubview(tinyOrangeView)
-        categoryVerticalView.addArrangedSubview(upperSeparatorView)
-        let topEmptyView = UIView()
-        topEmptyView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(15)
-        })
-        categoryVerticalView.addArrangedSubview(topEmptyView)
+        HomePageHeaderSectionStyle.setHeaderUpperSeparator(forStackView: categoryVerticalView)
     }
     
     private func setOuterCategorySeparatorView() {
@@ -274,6 +271,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             
             self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
+        setOuterCategorySeparatorView()
     }
     
     private func initViewLayout() {
@@ -295,6 +293,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         // init category
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
+        
+        // init top picks
+        self.outerStackView.addArrangedSubview(self.topPicksPlaceholder)
     }
     
     private func refreshHorizontalStackView() -> OAStackView {
