@@ -1862,7 +1862,6 @@ TTTAttributedLabelDelegate
     
     productLabel.attributedText = productNameLabeAttributedText;
     productLabel.textAlignment = NSTextAlignmentCenter;
-    
     self.navigationItem.titleView = productLabel;
     
     //Update header view
