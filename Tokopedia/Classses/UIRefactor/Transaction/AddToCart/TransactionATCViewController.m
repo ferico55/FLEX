@@ -1162,8 +1162,6 @@ typedef enum
         } else {
             insurance = 1;
         };
-    } else if (shipmentID == 4) {
-        insurance = 1;
     } else if (shipmentID == 7) {
         if (productPrice <= 299999) {
             insurance = 0;
