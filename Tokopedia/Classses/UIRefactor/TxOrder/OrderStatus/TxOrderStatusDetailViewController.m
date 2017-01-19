@@ -103,6 +103,10 @@
 
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 10;
+}
+
 -(void)tapInvoiceOrder:(TxOrderStatusList*)order{
     [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
 }
@@ -367,7 +371,7 @@
     if (indexPath.row == (_order.order_history.count-1)) {
         [cell hideLine];
     }
-    
+    cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }
 
