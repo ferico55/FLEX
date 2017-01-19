@@ -355,6 +355,9 @@ class TPRoutes: NSObject {
 
 extension UIApplication {
     class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+        if let search = base as? UISearchController {
+            return search.presentingViewController
+        }
         if let nav = base as? UINavigationController {
             return topViewController(nav.visibleViewController)
         }
