@@ -32,6 +32,8 @@ import JLRoutes
         return progressView
     }()
     
+    private var onRefreshRequested : (()->Void)?
+    
     private init(stringUrl:String) {
         super.init(nibName: nil, bundle: nil)
         self.stringUrl = stringUrl;
@@ -80,9 +82,22 @@ import JLRoutes
             self.navigationController?.pushViewController(vc, animated: true)
             return true
         }
+        
+        route.addRoute(":scheme") { dictionary in
+            guard let canGoBack = dictionary["back"] as? String else {return false}
+            guard canGoBack == "1" else {return false}
+            self.onRefreshRequested?()
+            self.navigationController?.popViewControllerAnimated(true)
+            return true
+        }
 
         guard stringUrl != nil else { return }
         self.loadWebWiewWithStringUrl(self.stringUrl)
+    }
+    
+    private func reloadWebView(){
+        guard let url = self.stringUrl else { return }
+        self.loadWebWiewWithStringUrl(url)
     }
     
     private func loadWebWiewWithStringUrl(stringUrl:String!){
@@ -96,10 +111,6 @@ import JLRoutes
         }
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         progressView.hidden = false
-    }
-    
-    func popToRootViewController(){
-        self.navigationController?.popToRootViewControllerAnimated(false)
     }
     
     private func urlStringDetailWithResolutionId(resolutionId: String)->String{
@@ -116,18 +127,21 @@ extension ResolutionWebViewController: WKNavigationDelegate {
                  decidePolicyForNavigationAction navigationAction: WKNavigationAction,
                                                  decisionHandler: (WKNavigationActionPolicy) -> Void) {
         
-        guard !(navigationAction.request.URL!.absoluteString!.containsString("/resolution-center.pl?action=detail")) else {
-            decisionHandler(.Allow)
-            return
-        }
-        
         guard !route.routeURL(navigationAction.request.URL) else {
             decisionHandler(.Cancel)
             return
         }
         
+        guard !(navigationAction.request.URL!.absoluteString!.containsString("/resolution-center.pl?action=detail")) else {
+            decisionHandler(.Allow)
+            return
+        }
+        
         if navigationAction.navigationType == .LinkActivated {
             let vc = ResolutionWebViewController(stringUrl: navigationAction.request.URL!.absoluteString!)
+            vc.onRefreshRequested = {
+                self.reloadWebView()
+            }
             self.navigationController?.pushViewController(vc, animated: true)
             decisionHandler(.Cancel)
         } else {
