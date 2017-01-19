@@ -1741,6 +1741,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		927656851E309AA5000493B9 /* ShopProductFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927656841E309AA5000493B9 /* ShopProductFilter.swift */; };
 		B715641F0F836AA3DB6B5D6B /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4651,6 +4652,7 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		927656841E309AA5000493B9 /* ShopProductFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopProductFilter.swift; sourceTree = "<group>"; };
 		93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9231,6 +9233,7 @@
 				5B8FB6181E2F827D005CDB00 /* ShopTalkPageViewController.m */,
 				5B8FB6191E2F827D005CDB00 /* ShopTalkPageViewController.xib */,
 				5B8FB61A1E2F827D005CDB00 /* ShopViewController.swift */,
+				927656841E309AA5000493B9 /* ShopProductFilter.swift */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -11100,6 +11103,7 @@
 				5B8FB8621E2F827F005CDB00 /* HotlistBannerQuery.m in Sources */,
 				5B8FB85A1E2F827E005CDB00 /* GoogleplaceDetailResult.m in Sources */,
 				5B8FBC171E2F8281005CDB00 /* RatingComponent.mm in Sources */,
+				927656851E309AA5000493B9 /* ShopProductFilter.swift in Sources */,
 				5B8FB9621E2F827F005CDB00 /* ShopInfoResult.m in Sources */,
 				5B8FBCD61E2F8282005CDB00 /* GetSearchSuggestionGeneralResponse.swift in Sources */,
 				5B8FB8D61E2F827F005CDB00 /* ProductEditImages.swift in Sources */,

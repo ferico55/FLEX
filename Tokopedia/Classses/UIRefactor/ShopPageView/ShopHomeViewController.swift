@@ -14,7 +14,7 @@ import JLRoutes
 class ShopHomeViewController: UIViewController {
 
     var onEtalaseSelected: ((String, String) -> Void)?
-    var onFilterSelected: ([NSObject: AnyObject] -> Void)?
+    var onFilterSelected: (ShopProductFilter -> Void)?
     var onTabSelected: ((ShopPageTab) -> Void)?
     var onProductSelected: ((String) -> Void)?
     var data: [NSObject: AnyObject]?
@@ -45,10 +45,7 @@ class ShopHomeViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         router.addRoute("/shop/:shopDomain/etalase/:etalaseId") { [unowned self] dictionary in
-            let shopDomain = dictionary["shopDomain"] as! String
-            let etalaseId = dictionary["etalaseId"] as! String
-            
-            self.onEtalaseSelected?(shopDomain, etalaseId)
+            self.onFilterSelected?(ShopProductFilter.fromUrlQuery(dictionary))
             return true
         }
         
@@ -60,11 +57,7 @@ class ShopHomeViewController: UIViewController {
         }
         
         router.addRoute("/shop/:shopDomain") { [unowned self] dictionary in
-            self.onFilterSelected?([
-                "query": dictionary["keyword"] ?? "",
-                "order_by": dictionary["sort"] ?? "",
-                "page": dictionary["page"] as? Int ?? 1
-            ])
+            self.onFilterSelected?(ShopProductFilter.fromUrlQuery(dictionary))
             return true
         }
     }

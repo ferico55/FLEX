@@ -570,14 +570,26 @@ ShopTabChild
     _detailfilter = [NSMutableDictionary new];
 }
 
-- (void)showProductsWithEtalaseId:(NSString *)etalaseId {
-    [self clearSearchQuery];
+- (void)showProductsWithFilter:(ShopProductFilter *)filter {
+    _collectionView.contentOffset = CGPointMake(0, 0);
     
-    EtalaseList *etalase = [self etalaseWithId:etalaseId];
+    _searchBar.text = filter.query;
     
-    // used to show correct etalase after navigating from official store
+    _detailfilter = [[NSMutableDictionary alloc] initWithDictionary:
+                     @{
+                       @"query": filter.query,
+                       @"order_by": filter.orderBy,
+                       @"page": @(filter.page)
+                       }];
+    _page = filter.page;
+    
+    EtalaseList *etalase = [EtalaseList new];
+    etalase.etalase_id = filter.etalaseId;
+    
+    _detailfilter[DATA_ETALASE_KEY] = etalase;
     self.initialEtalase = etalase;
-    [self didSelectEtalase:etalase];
+    
+    [self requestProduct];
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
@@ -668,15 +680,6 @@ ShopTabChild
     [self requestProduct];
     _isFailRequest = NO;
     [_collectionView reloadData];
-}
-
-- (void)showProductsWithFilter:(NSDictionary *)filter {
-    _searchBar.text = filter[@"query"];
-    
-    _detailfilter = [[NSMutableDictionary alloc] initWithDictionary:filter];
-    _page = [filter[@"page"] intValue];
-    
-    [self requestProduct];
 }
 
 #pragma mark - ShopPageRequest

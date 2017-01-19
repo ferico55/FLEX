@@ -187,12 +187,6 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
         let noteViewController = ShopNotesPageViewController()
         noteViewController.data = data
         
-        homeViewController.onEtalaseSelected = { [unowned self] shopDomain, etalaseId in
-            self.segmentedPagerController.segmentedPager.pager.showPageAtIndex(1, animated: true)
-            
-            productViewController.showProductsWithEtalaseId(etalaseId)
-        }
-        
         homeViewController.onProductSelected = { [unowned self] productId in
             self.segmentedPagerController.segmentedPager.pager.showPageAtIndex(1, animated: true)
             

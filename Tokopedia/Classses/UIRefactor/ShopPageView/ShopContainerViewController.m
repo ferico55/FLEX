@@ -244,7 +244,6 @@
 }
 
 - (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
-    [_shopProductViewController showProductsWithEtalaseId:etalaseId];
     [self displayViewController:_shopProductViewController];
 }
 
