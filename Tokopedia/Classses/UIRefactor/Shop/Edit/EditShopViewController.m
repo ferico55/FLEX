@@ -294,8 +294,6 @@
         DATA_SELECTED_IMAGE_VIEW_KEY : imageViewCell.shopImageView,
     };
     
-    imageViewCell.shopImageView.image = [[userInfo objectForKey:@"photo"] objectForKey:@"photo"];
-    
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     [uploadImage requestActionUploadObject:object
                              generatedHost:_generatedHost
