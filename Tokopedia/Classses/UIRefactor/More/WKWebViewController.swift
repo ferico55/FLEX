@@ -29,7 +29,6 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-back"), style: .Plain, target: self, action: #selector(WKWebViewController.didTapBackButton))
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), forControlEvents: UIControlEvents.ValueChanged)
         webView.scrollView.addSubview(refreshControl)
@@ -139,15 +138,4 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         }
         refreshWebView()
     }
-    
-    //MARK: BackButton Function
-    func didTapBackButton() {
-        if webView.canGoBack {
-            webView.goBack()
-        } else {
-            self.navigationController?.popViewControllerAnimated(true)
-        }
-    }
-
-
 }
