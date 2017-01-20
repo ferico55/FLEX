@@ -251,7 +251,7 @@
         loadedData = @{@"product_id"      : product.id?:@"",
                        @"product_name"    : product.name?:@"",
                        @"product_image"   : product.image?:@"",
-                       @"product_price"   : product.price?:@"",
+                       @"product_price"   : [product.price stringValue]?:@"",
                        @"shop_name"       : product.shop.name?:@"",
                        @"pre_order"       : @(product.preorder)};
         productController.data = @{@"product_id" : product.id?:@""};
