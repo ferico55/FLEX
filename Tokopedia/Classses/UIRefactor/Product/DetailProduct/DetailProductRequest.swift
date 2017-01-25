@@ -10,7 +10,7 @@ import UIKit
 
 class DetailProductRequest: NSObject {
     
-    class func fetchPromoteProduct(productID:String, onSuccess: ((PromoteResult) -> Void)) {
+    class func fetchPromoteProduct(productID:String, onSuccess: ((PromoteResult) -> Void), onFailure:((PromoteResult) -> Void)) {
 
         let param :[String:String] = [
             "product_id" : productID
@@ -30,10 +30,9 @@ class DetailProductRequest: NSObject {
                                             let data = response.data as! PromoteResult
                                             
                                             if data.is_dink == "1" {
-                                                StickyAlertView.showSuccessMessage(["Promo pada product \(data.product_name) telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
                                                 onSuccess(data)
                                             } else {
-                                                StickyAlertView.showErrorMessage(["Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
+                                                onFailure(data)
                                             }
                                             
         }) { (error) in

@@ -88,17 +88,17 @@ static failedCompletionBlock onFailure;
                             @"order_id" : order.order_detail.detail_order_id};
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    //network.isUsingHmac = YES;
-    [network requestWithBaseUrl:[NSString basicUrl] //[NSString v4Url]
-                           path:@"action/tx-order.pl" //@"/v4/action/tx-order/reorder.pl"
-                         method:RKRequestMethodPOST//RKRequestMethodGET
+    network.isUsingHmac = YES;
+    [network requestWithBaseUrl:[NSString v4Url]
+                           path:@"/v4/action/tx-order/reorder.pl"
+                         method:RKRequestMethodGET
                       parameter:param
                         mapping:[TransactionAction mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         TransactionAction *response = [successResult.dictionary objectForKey:@""];
         
-        if (response.result.is_success == 1) {
+        if (response.data.is_success == 1) {
             success(order,response.result);
         }
         else

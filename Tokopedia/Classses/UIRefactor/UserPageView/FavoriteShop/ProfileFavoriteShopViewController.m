@@ -16,7 +16,6 @@
 
 #import "URLCacheController.h"
 #import "UserPageHeader.h"
-#import "ShopContainerViewController.h"
 #import "NoResultReusableView.h"
 #import "Tokopedia-Swift.h"
 
@@ -289,7 +288,7 @@
 {
     ListFavoriteShop *list = _list[indexpath.row];
     
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
     [self.navigationController pushViewController:container animated:YES];
@@ -300,7 +299,7 @@
 {
     ListFavoriteShop *list = _list[indexPath.row];
     
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
     [self.navigationController pushViewController:container animated:YES];
@@ -327,13 +326,6 @@
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
     [self determineOtherScrollView:scrollView];
 }
 
@@ -357,6 +349,11 @@
     CGPoint cgpoint = CGPointMake(0, ypos);
     _table.contentOffset = cgpoint;
     
+}
+
+-(void) setHeaderData: (ProfileInfo*) profile {
+    _profile = profile;
+    [_userHeader setHeaderProfile:_profile];
 }
 
 @end

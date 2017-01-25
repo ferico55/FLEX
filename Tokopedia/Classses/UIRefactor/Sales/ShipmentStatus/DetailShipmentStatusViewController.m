@@ -205,7 +205,7 @@
     if (indexPath.row == (_history.count-1)) {
         [cell hideLine];
     }
-    
+    cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }
 

@@ -19,9 +19,7 @@
 
 #import "DetailShipmentStatusCell.h"
 #import "InboxResolutionCenterOpenViewController.h"
-#import "TransactionCartRootViewController.h"
-
-#import "ResolutionCenterDetailViewController.h"
+#import "TransactionCartViewController.h"
 
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
@@ -31,7 +29,7 @@
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"
 
-@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
+@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
 {
     NavigateViewController *_navigate;
 }
@@ -103,6 +101,10 @@
     
     _tableView.tableHeaderView = headerView;
 
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 10;
 }
 
 -(void)tapInvoiceOrder:(TxOrderStatusList*)order{
@@ -287,7 +289,7 @@
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         
-        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        TransactionCartViewController *vc = [TransactionCartViewController new];
         if (weakSelf.didReorder){
             weakSelf.didReorder(order);
         }
@@ -369,26 +371,20 @@
     if (indexPath.row == (_order.order_history.count-1)) {
         [cell hideLine];
     }
-    
+    cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }
 
 -(void)tapSeeComplaintOrder:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView*)view{
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+    
     NSString *resolutionID = [queries objectForKey:@"id"];
-    vc.resolutionID = resolutionID;
-    vc.delegate = self;
-    __weak typeof(self) weakSelf = self;
-    vc.didCancelComplain = ^(){
-        if(weakSelf.didCancelComplaint){
-            weakSelf.didCancelComplaint(order);
-        }
-        
-        [view removeSeeComplaintButton];
-    };
+    
+    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 - (IBAction)tapDetailTransaction:(id)sender {
     TxOrderTransactionDetailViewController *vc = [TxOrderTransactionDetailViewController new];
     vc.order = _order;

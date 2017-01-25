@@ -15,6 +15,7 @@
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "TKPDTabViewController.h"
+#import "ProductAddEditViewController.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -166,7 +167,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     }
     
     [manager.dataLayer push:@{@"event" : @"openScreen",
-                              @"screenName" : name?:@""}];
+                              @"screenName" : name?:@"",
+                              @"appsflyerID" : [[AppsFlyerTracker sharedTracker] getAppsFlyerUID]?:@""}];
     
     [Localytics tagScreen:name];
 }

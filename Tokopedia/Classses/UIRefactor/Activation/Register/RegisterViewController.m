@@ -22,7 +22,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <AppsFlyer/AppsFlyer.h>
 #import "WebViewController.h"
-#import "TransactionCartRootViewController.h"
 
 #import "TAGDataLayer.h"
 

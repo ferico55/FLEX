@@ -240,6 +240,9 @@
                                               [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
  
                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
+                                              
+                                              [AnalyticsManager trackEventName:@"createShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_SUCCESS label:@"Shop Created"];
+                                              
                                               OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];                                              
                                               controller.shopName = [_parameters objectForKey:@"shop_name"];
                                               controller.shopDomain = [_parameters objectForKey:@"shop_domain"];

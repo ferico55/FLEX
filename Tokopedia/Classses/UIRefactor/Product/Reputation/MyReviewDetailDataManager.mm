@@ -76,9 +76,15 @@
 
 - (void)removeAllReviews {
     CKArrayControllerInputItems items;
-    for (NSInteger index = 0; index < _reviews.count; index++) {
-        items.remove({0, index});
+    
+    if (_reviews.count > 0) {
+        for (NSInteger index = 0; index < _reviews.count; index++) {
+            items.remove({0, index});
+        }
+        
+        _reviews = [NSArray new];
     }
+    
     
     [_dataSource enqueueChangeset:items
                   constrainedSize:[_sizeRangeProvider sizeRangeForBoundingSize:_dataSource.collectionView.bounds.size]];

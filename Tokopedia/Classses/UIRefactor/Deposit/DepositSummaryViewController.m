@@ -160,20 +160,7 @@
     _page = 1;
     [self disableButtonWithdraw];
     
-    NSDateFormatter *dateFormat = [NSDateFormatter new];
-    [dateFormat setDateFormat:@" dd/MM/yyyy"];
-    
-    _now = [NSDate date];
-    NSCalendar *calendar = [[NSCalendar alloc]
-                            initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *components = [[NSDateComponents alloc] init];
-    [components setMonth:-1];
-    _oneMonthBeforeNow = [calendar dateByAddingComponents:components
-                                                   toDate:_now
-                                                  options:0];
-    
-    [_startDateButton setTitle:[dateFormat stringFromDate:_oneMonthBeforeNow] forState:UIControlStateNormal];
-    [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
+    [self resetDates];
     
     _depositRequest = [DepositRequest new];
     
@@ -188,6 +175,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Deposit Summary Page"];
+    [self resetDates];
     [self reloadListDeposit:nil];
     [self updateSaldoTokopedia:nil];
 }
@@ -195,6 +183,24 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+}
+
+- (void)resetDates {
+    NSDateFormatter *dateFormat = [NSDateFormatter new];
+    [dateFormat setDateFormat:@" dd/MM/yyyy"];
+    
+    _now = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setMonth:-1];
+    _oneMonthBeforeNow = [calendar dateByAddingComponents:components
+                                                   toDate:_now
+                                                  options:0];
+    
+    [_startDateButton setTitle:[dateFormat stringFromDate:_oneMonthBeforeNow] forState:UIControlStateNormal];
+    [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
+    _currentStartDate = nil;
+    _currentEndDate = nil;
 }
 
 #pragma mark - DataSource Delegate

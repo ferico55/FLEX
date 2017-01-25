@@ -12,7 +12,8 @@
 #import "Talk.h"
 #import "Review.h"
 #import "Shop.h"
-#import "Tokopedia-Swift.h"
+
+@class Notes;
 
 @interface ShopPageRequest : NSObject
 

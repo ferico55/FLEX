@@ -16,6 +16,7 @@ class AccountInfo: NSObject {
     var name = ""
     var requiredFields = [String]()
     var phoneNumber = ""
+    var phoneMasked = ""
     var error: String?
     var errorDescription: String?
 
@@ -28,6 +29,7 @@ class AccountInfo: NSObject {
             "name":"name",
             "create_password_list": "requiredFields",
             "phone": "phoneNumber",
+            "phone_masked" : "phoneMasked",
             "error": "error",
             "error_description": "errorDescription"
         ])

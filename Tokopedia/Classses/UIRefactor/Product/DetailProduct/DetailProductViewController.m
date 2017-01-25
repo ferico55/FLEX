@@ -47,7 +47,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "TransactionATCViewController.h"
-#import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
 
 #import "URLCacheController.h"
@@ -71,11 +70,10 @@
 #import "EtalaseList.h"
 
 #import "UIActivityViewController+Extensions.h"
-
 #import "NoResultReusableView.h"
 
 #import "OtherProductDataSource.h"
-
+#import "PreorderDetail.h"
 #import "Tokopedia-Swift.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "FavoriteShopRequest.h"
@@ -226,12 +224,12 @@ TTTAttributedLabelDelegate
 {
     IBOutlet UIView *viewContentTokoTutup;
     BOOL hasSetTokoTutup;
-    NSString *_formattedProductDescription;
+    NSString *_formattedProductDescription, *_preorderPeriod;
     NSString *_formattedProductTitle;
     
     NSArray *_constraint;
     EtalaseList *selectedEtalase;
-    
+    BOOL _isPreorder;
     NSString *afterLoginRedirectTo;
 }
 
@@ -258,7 +256,8 @@ TTTAttributedLabelDelegate
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
     fontDesc = [UIFont smallTheme];
-    
+    _isPreorder = [[_loadedData objectForKey:@"pre_order"] boolValue];
+    if(_isPreorder) [_buyButton setTitle:@"Preorder" forState:UIControlStateNormal];
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
@@ -344,6 +343,7 @@ TTTAttributedLabelDelegate
     afterLoginRedirectTo = @"";
     [self unsetWarehouse];
     _detailProductVideoDataArray = [NSArray<DetailProductVideo*> new];
+    self.navigationItem.title = @"";
 }
 
 - (void)initNotification {
@@ -357,17 +357,18 @@ TTTAttributedLabelDelegate
     
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
-        [_favButton setImage:[UIImage imageNamed:@"icon_follow_check"] forState:UIControlStateNormal];
-        [_favButton setTitle:@"Mengikuti" forState:UIControlStateNormal];
-        [_favButton setTitleColor:[UIColor fromHexString:@"#42B549"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_check_favorited"] forState:UIControlStateNormal];
+        [_favButton setTitle:@" Favorited" forState:UIControlStateNormal];
+        [_favButton setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53] forState:UIControlStateNormal];
         [_favButton setBackgroundColor:[UIColor whiteColor]];
-    }
-    else {
+        [_favButton setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53]];
+    } else {
         _favButton.tag = 17;
         [_favButton setImage:[UIImage imageNamed:@"icon_follow_plus"] forState:UIControlStateNormal];
-        [_favButton setTitle:@"Ikuti" forState:UIControlStateNormal];
+        [_favButton setTitle:@"Favorit" forState:UIControlStateNormal];
         [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_favButton setBackgroundColor:[UIColor fromHexString:@"#42B549"]];
+        [_favButton setBorderColor:[UIColor fromHexString:@"#42B549"]];
 
     }
 }
@@ -375,9 +376,7 @@ TTTAttributedLabelDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
     [AnalyticsManager trackScreenName:@"Product Information"];
-    
     self.hidesBottomBarWhenPushed = YES;
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 20;
@@ -633,7 +632,7 @@ TTTAttributedLabelDelegate
                 }
                 else{
                     
-                    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                    ShopViewController *container = [[ShopViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
                                        kTKPDDETAIL_APISHOPNAMEKEY:_product.data.shop_info.shop_name,
@@ -805,7 +804,8 @@ TTTAttributedLabelDelegate
         [bt setTitle:PRODUCT_INFO  forState: UIControlStateNormal];
     } else if (section == 1 && !_isnodatawholesale) {
         [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
-    } else if (section == [_table numberOfSections] - 2) {
+    }
+    else if (section == [_table numberOfSections] - 2) {
         [bt removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
         [bt setTitle: @"Video Produk" forState: UIControlStateNormal];
         [expandCollapseButton removeFromSuperview];
@@ -813,7 +813,7 @@ TTTAttributedLabelDelegate
         [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
         CGRect rectLblDesc = CGRectZero;
         CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
-        
+
         if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
         {
             rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
@@ -824,8 +824,7 @@ TTTAttributedLabelDelegate
             rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
             [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
         }
-        
-        
+
         if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC)
         {
             btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
@@ -840,7 +839,6 @@ TTTAttributedLabelDelegate
         [mView addSubview:bt];
         return mView;
     }
-    
     [mView addSubview:bt];
     
     // Add border bottom if view header section is collapse
@@ -889,16 +887,14 @@ TTTAttributedLabelDelegate
 {
     BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:indexPath.section]];
     if (sectionIsExanded) {
-        if (indexPath.section == 0) {
-            return _informationHeight+50;
-        }
+        if (indexPath.section == 0) return _isPreorder?_informationHeight+80:_informationHeight+50;
         
         if (!_isnodatawholesale) {
             if (indexPath.section == 1) {
                 return (44*2) + (_product.data.wholesale_price.count*44);//44 is standart height of uitableviewcell
             }
         }
-        
+
         if (_detailProductVideoDataArray.count > 0) {
             if (indexPath.section == [_table numberOfSections] - 2) {
                 return VIDEO_CELL_HEIGHT;
@@ -909,9 +905,7 @@ TTTAttributedLabelDelegate
             return _descriptionHeight+50;
         }
     }
-    
     return 0;
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -939,7 +933,6 @@ TTTAttributedLabelDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
-    
     if (indexPath.section == [_table numberOfSections] - 1){
         return [self getDetailProductDescriptionTableViewCell];
     }
@@ -955,13 +948,14 @@ TTTAttributedLabelDelegate
         }
         [productInfoCell layoutIfNeeded];
         [self productinfocell:productInfoCell withtableview:tableView];
+        [self setPreorderInfo:productInfoCell];
         
         //Check product returnable
         BOOL isProductReturnable = _product.data.info.return_info && ![_product.data.info.return_info.content isEqualToString:@""];
         if(isProductReturnable) {
             NSArray* rgbArray = [_product.data.info.return_info.color_rgb componentsSeparatedByString:@","];
             UIColor* color = [UIColor colorWithRed:([rgbArray[0] integerValue]/255.0) green:([rgbArray[1] integerValue]/255.0) blue:([rgbArray[2] integerValue]/255.0) alpha:0.2];
-            [productInfoCell setLblDescriptionToko:_product.data.info.return_info.content withImageURL:_product.data.info.return_info.icon withBGColor:color]
+            [productInfoCell setLblDescriptionToko:_product.data.info.return_info.content withImageURL:_product.data.info.return_info.icon withBGColor:color withReturnableId:_product.data.info.product_returnable];
             ;
             productInfoCell.didTapReturnableInfo = ^(NSURL* url) {
                 WebViewController* web = [[WebViewController alloc] init];
@@ -1037,6 +1031,15 @@ TTTAttributedLabelDelegate
     }
 }
 
+- (void)setPreorderInfo:(DetailProductInfoCell*)cell{
+    if(_isPreorder){
+        [cell showPreorderView];
+        cell.preorderPeriodLabel.text = [NSString stringWithFormat:@"%ld %@",(long)_product.data.preorder.preorder_process_time,_product.data.preorder.preorder_process_time_type_string];
+    }else{
+        [cell hidePreorderView];
+    }
+}
+
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
     ((DetailProductInfoCell*)cell).minorderlabel.text = _product.data.info.product_min_order;
@@ -1067,13 +1070,33 @@ TTTAttributedLabelDelegate
 #pragma mark - Request
 -(void)requestPromote{
     NSString *productID = _product.data.info.product_id?:@"0";
-
+    __block NSString *message = [[NSString alloc] init];
+    __weak typeof(self) weakSelf = self;
+    
     [DetailProductRequest fetchPromoteProduct:productID onSuccess:^(PromoteResult * data) {
         
         [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
         [_dinkButton setEnabled:YES];
         
+        message = [NSString stringWithFormat:@"%@ %@ %@", @"Promo pada produk", data.product_name, @"telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."];
+        
+        [weakSelf presentViewController: [weakSelf popUpMessagesOk:message] animated:YES completion:nil];
+        
+    } onFailure: ^(PromoteResult * data){
+        message = [NSString stringWithFormat:@"%@ %@ %@ %@", @"Anda belum dapat menggunakan Fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko. Promo masih aktif untuk produk", data.product_name, @"berlaku sampai", data.time_expired];
+        
+        [weakSelf presentViewController: [weakSelf popUpMessagesOk:message] animated:YES completion:nil];
+        
     }];
+}
+
+- (UIAlertController*) popUpMessagesOk:(NSString *)message {
+    UIAlertController *alertController;
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    alertController = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:actionOk];
+    return alertController;
 }
 
 -(void)requestOtherProduct{
@@ -1187,6 +1210,11 @@ TTTAttributedLabelDelegate
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
+    
+    _isPreorder = _product.data.preorder.preorder_status;
+    if(_isPreorder) [_buyButton setTitle:@"Preorder" forState:UIControlStateNormal];
+    [self.table reloadData];
+    
     if ([self isAbleToLoadVideo]) {
         [self getVideoData];
     } else {
@@ -1367,6 +1395,9 @@ TTTAttributedLabelDelegate
         
         _formattedProductDescription = [NSString convertHTML:_product.data.info.product_description]?:@"-";
         _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.data.info.product_name];
+        if (_product.data.info.product_name == nil) {
+            _formattedProductTitle = @"";
+        }
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -1531,22 +1562,10 @@ TTTAttributedLabelDelegate
 - (void)gotToSearchWithDepartment:(NSInteger)index {
     NSArray *breadcrumbs = _product.data.breadcrumb;
     Breadcrumb *breadcrumb = breadcrumbs[index-10];
-    
-    SearchResultViewController *vc = [SearchResultViewController new];
     NSString *deptid = breadcrumb.department_id;
-    vc.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
     
-    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    
-    [c setSelectedIndex:0];
-    [c setViewControllers:viewcontrollers];
-    [c setNavigationTitle:breadcrumb.department_name];
-    [self.navigationController pushViewController:c animated:YES];
+    NavigateViewController *navigateViewController = [NavigateViewController new];
+    [navigateViewController navigateToCategoryFromViewController:self withCategoryId:deptid categoryName:@""];
 }
 
 -(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index {
@@ -1573,7 +1592,7 @@ TTTAttributedLabelDelegate
             // Etalase
             if(_product.data.info.product_etalase_id != nil && [self isProductActive]) {
                 
-                ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                ShopViewController *container = [[ShopViewController alloc] init];
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
@@ -1825,31 +1844,32 @@ TTTAttributedLabelDelegate
 -(void)setHeaderviewData{
     NSString *productName = _formattedProductTitle?:@"";
     
+    // calculate text width
+    NSDictionary *textTitleOptions = [NSDictionary dictionaryWithObjectsAndKeys:  [UIFont title1ThemeMedium], NSFontAttributeName, nil];
+    CGSize requestedTitleSize = [productName sizeWithAttributes:textTitleOptions];
+    CGFloat titleWidth = MIN(self.view.frame.size.width, requestedTitleSize.width);
     
-    CGRect labelCGRectFrame = CGRectMake(self.navigationItem.titleView.frame.origin.x, 0, [UIScreen mainScreen].bounds.size.width, 44);
+    CGRect labelCGRectFrame = CGRectMake(0, 0, titleWidth, 44);
     MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
-    
     productLabel.backgroundColor = [UIColor clearColor];
-    productLabel.numberOfLines = 2;
     UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
     
     NSDictionary *productLabelAtts = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSFontAttributeName: productLabelFont,
-                                       NSParagraphStyleAttributeName: productLabelStyle,
-                                       };
+                                        NSFontAttributeName: productLabelFont,
+                                        NSParagraphStyleAttributeName: productLabelStyle,
+                                        };
     
     NSAttributedString *productNameLabeAttributedText = [[NSAttributedString alloc] initWithString:productName
                                                                                         attributes:productLabelAtts];
     
     productLabel.attributedText = productNameLabeAttributedText;
-    productLabel.textAlignment = NSTextAlignmentLeft;
+    productLabel.textAlignment = NSTextAlignmentCenter;
     
     self.navigationItem.titleView = productLabel;
-    
     
     //Update header view
     _pricelabel.text = _product.data.info.product_price;
@@ -2198,7 +2218,7 @@ TTTAttributedLabelDelegate
 }
 
 - (void)tapShop {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     if(!_product.data.shop_info.shop_id) {
         return;
     }
@@ -2368,13 +2388,7 @@ TTTAttributedLabelDelegate
 
 - (void)didSelectOtherProduct:(SearchAWSProduct *)product {
     [AnalyticsManager trackProductClick:product];
-    NavigateViewController *navigateController = [NavigateViewController new];
-    [navigateController navigateToProductFromViewController:self
-                                                   withName:product.product_name
-                                                  withPrice:product.product_price
-                                                     withId:product.product_id
-                                               withImageurl:product.product_image
-                                               withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
 
 - (BOOL)isProductActive {

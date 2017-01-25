@@ -16,6 +16,7 @@
 @implementation GeneralTalkCommentCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     self.user_image.layer.cornerRadius = self.user_image.frame.size.width/2;
 }
 

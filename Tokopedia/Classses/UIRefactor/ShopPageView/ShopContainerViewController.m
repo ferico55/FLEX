@@ -244,7 +244,6 @@
 }
 
 - (void)showProductsWithShopDomain:(NSString *)shopDomain etalaseId:(NSString *)etalaseId {
-    [_shopProductViewController showProductsWithEtalaseId:etalaseId];
     [self displayViewController:_shopProductViewController];
 }
 
@@ -539,6 +538,7 @@
     return [_pageController.viewControllers lastObject];
 }
 
+//toggle favorite button
 - (void)setFavoriteRightButtonItem
 {
     StickyAlertView *stickyAlertView;

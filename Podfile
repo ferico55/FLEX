@@ -31,13 +31,17 @@ def common_pods
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
+    pod 'MXSegmentedPager', '~> 3.2.0'    
     pod 'MMNumberKeyboard'
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
     pod 'RxSwift', '~> 2.6.1'
+    pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
+    pod 'BEMCheckBox' , '~>1.2.0'
     
     pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
+    pod 'VMaskTextField'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

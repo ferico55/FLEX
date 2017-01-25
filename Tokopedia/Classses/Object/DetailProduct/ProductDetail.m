@@ -8,7 +8,7 @@
 
 #import "ProductDetail.h"
 #import "Tokopedia-Swift.h"
-
+#import "PreorderDetail.h"
 
 @implementation ProductDetail
 
@@ -24,7 +24,7 @@
         tempViewModel.productNotes = _product_notes;
         tempViewModel.productErrorMessage = _product_error_msg;
         tempViewModel.productErrors = _errors;
-        
+        tempViewModel.preorder = _product_preorder;
         _viewModel = tempViewModel;
     }
     
@@ -128,10 +128,11 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"return_info" toKeyPath:@"return_info" withMapping:[ProductReturnInfo mapping]]];
-    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"preorder" toKeyPath:@"preorder" withMapping:[PreorderDetail mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_preorder" toKeyPath:@"product_preorder" withMapping:[ProductPreorder mapping]]];
     RKRelationshipMapping *errorMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"errors" toKeyPath:@"errors" withMapping:[Errors mapping]];
     [mapping addPropertyMapping:errorMapping];
-
+    
     return mapping;
 }
 

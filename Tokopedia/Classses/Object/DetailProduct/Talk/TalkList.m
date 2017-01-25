@@ -68,6 +68,7 @@
         [viewModel setTalkOwnerStatus:self.talk_own];
         [viewModel setProductStatus:self.talk_product_status];
         [viewModel setUserReputation:self.talk_user_reputation];
+        [viewModel setTalkShopId:self.talk_shop_id];
         
         _viewModel = viewModel;
     }

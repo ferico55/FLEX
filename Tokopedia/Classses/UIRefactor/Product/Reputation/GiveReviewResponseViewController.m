@@ -148,7 +148,7 @@
 - (IBAction)didTapSendButton:(id)sender {
     NSString *message = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if (message.length > 5) {
+    if (message.length >= 5) {
         [_reviewRequest requestInsertReputationReviewResponseWithReputationID:_review.reputation_id
                                                               responseMessage:_textView.text
                                                                      reviewID:_review.review_id

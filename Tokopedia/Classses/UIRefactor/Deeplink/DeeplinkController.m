@@ -16,7 +16,7 @@
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "MyWishlistViewController.h"
 #import "ProductAddEditViewController.h"
-#import "TransactionCartRootViewController.h"
+#import "TransactionCartViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
 #import "LoginViewController.h"
@@ -295,7 +295,7 @@
 - (void)redirectToCart {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.getUserId) {
-        TransactionCartRootViewController *controller = [TransactionCartRootViewController new];
+        TransactionCartViewController *controller = [TransactionCartViewController new];
         self.activeController.hidesBottomBarWhenPushed = YES;
         [self.activeController.navigationController pushViewController:controller animated:YES];
         self.activeController.hidesBottomBarWhenPushed = NO;

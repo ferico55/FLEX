@@ -29,7 +29,6 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), forControlEvents: UIControlEvents.ValueChanged)
         webView.scrollView.addSubview(refreshControl)
@@ -131,7 +130,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         progressView.hidden = true
         refreshControl.endRefreshing()
     }
-    
+        
     //MARK: No Result Delegate
     func buttonDidTapped(sender: AnyObject!) {
         if noInternetView.isDescendantOfView(webView) {
@@ -139,6 +138,4 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         }
         refreshWebView()
     }
-
-
 }

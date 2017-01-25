@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+
+@class Shop;
+
 @protocol CustomTxtViewProtocol <NSObject>
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView;
@@ -29,5 +32,8 @@
 @property (strong, nonatomic) NSDictionary* data;
 @property (strong, nonatomic) NSString* subject;
 @property (strong, nonatomic) NSString* message;
+
+- (instancetype)initToShop:(nonnull Shop *)shop;
+- (void)displayFromViewController:(UIViewController *)viewController;
 
 @end

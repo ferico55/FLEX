@@ -12,6 +12,8 @@
 #import "StickyAlert.h"
 #import "InboxMessageAction.h"
 #import "GeneralAction.h"
+#import "Shop.h"
+#import "Tokopedia-Swift.h"
 
 @implementation MessageTextView
 @synthesize del;
@@ -135,8 +137,18 @@
     NSTimer *_timer;
     NSOperationQueue *_operationQueue;
     
+    AuthenticationService *_authenticationService;
 }
 
+- (instancetype)initToShop:(Shop *)shop {
+    if (self = [super init]) {
+        self.data = @{
+                      @"shop_id": shop.result.info.shop_id,
+                      @"shop_name": shop.result.info.shop_name
+                      };
+    }
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -144,6 +156,7 @@
     self.title = kTKPDTITLE_SEND_MESSAGE;
     if (self) {
         _isnodata = YES;
+        _authenticationService = [AuthenticationService new];
     }
     return self;
 }
@@ -297,5 +310,18 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     return YES;
 }
+
+- (void)displayFromViewController:(UIViewController *)viewController {
+    if ([UserAuthentificationManager new].isLogin) {
+        [viewController.navigationController pushViewController:self animated:YES];
+    } else {
+        [_authenticationService signInFromViewController:viewController
+                                        onSignInSuccess:^(LoginResult *result) {
+                                            [viewController.navigationController pushViewController:self
+                                                                                           animated:YES];
+                                        }];
+    }
+}
+
 
 @end

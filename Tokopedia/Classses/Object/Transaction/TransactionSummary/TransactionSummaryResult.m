@@ -24,10 +24,6 @@
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"transaction" toKeyPath:@"transaction" withMapping:[TransactionSummaryDetail mapping]]];
     
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card_data" toKeyPath:@"credit_card_data" withMapping:[CCData mapping]]];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"veritrans" toKeyPath:@"veritrans" withMapping:[Veritrans mapping]]];
-
     return mapping;
 }
 

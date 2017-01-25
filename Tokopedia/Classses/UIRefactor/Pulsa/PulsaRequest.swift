@@ -14,13 +14,14 @@ class PulsaRequest: NSObject {
     var didReceiveCategory: (([PulsaCategory]) -> Void)!
     var didReceiveOperator: (([PulsaOperator]) -> Void)!
     var didReceiveProduct: ([PulsaProduct] -> Void)!
+    var didNotSuccessReceiveCategory: (() -> Void)!
     
     override init() {
         
     }
     
     func requestCategory() {
-        self.checkMaintenanceStatus { (status) in
+        self.checkMaintenanceStatus(didReceiveMaintenanceStatus: { (status) in
             if(!status.attributes.is_maintenance) {
                 self.cache.loadCategories { (cachedCategory) in
                     if(cachedCategory == nil) {
@@ -29,9 +30,12 @@ class PulsaRequest: NSObject {
                         self.didReceiveCategory(cachedCategory!.data)
                     }
                 }
+            } else {
+                self.didNotSuccessReceiveCategory()
             }
-        }
-        
+        }, onFailure: {
+            self.didNotSuccessReceiveCategory()
+        })
     }
     
     private func requestCategoryFromNetwork() {
@@ -49,7 +53,7 @@ class PulsaRequest: NSObject {
                                 self.cache .storeCategories(category)
                 },
                                onFailure: { (errors) -> Void in
-                                
+                                self.didNotSuccessReceiveCategory()
             });
     }
     
@@ -133,7 +137,7 @@ class PulsaRequest: NSObject {
         return filteredProducts
     }
     
-    private func checkMaintenanceStatus(didReceiveMaintenanceStatus: (PulsaStatus -> Void)!) {
+    private func checkMaintenanceStatus(didReceiveMaintenanceStatus didReceiveMaintenanceStatus: (PulsaStatus -> Void)!, onFailure: (() -> Void)!) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
@@ -149,7 +153,7 @@ class PulsaRequest: NSObject {
                                 
                 },
                                onFailure: { (errors) -> Void in
-                                
+                                onFailure()
             });
     }
 }

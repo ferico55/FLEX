@@ -9,7 +9,7 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-#import "TransactionCartRootViewController.h"   
+#import "TransactionCartViewController.h"
 #import "MoreViewController.h"
 
 
@@ -221,7 +221,7 @@ typedef enum TagRequest {
     }
     
     /** TAB BAR INDEX 4 **/
-    TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
+    TransactionCartViewController *cart = [TransactionCartViewController new];
     cart.edgesForExtendedLayout = UIRectEdgeNone;
     
     /** TAB BAR INDEX 5 **/
@@ -726,12 +726,12 @@ typedef enum TagRequest {
 
 - (void) reinitCartTabBar {
     UINavigationController *transactionCartRootNavController = [_tabBarController.viewControllers objectAtIndex: 3];
-    if ([[transactionCartRootNavController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartRootViewController class]]) {
-        TransactionCartRootViewController *transactionCartRootVC = (TransactionCartRootViewController *)[transactionCartRootNavController.viewControllers objectAtIndex:0];
+    if ([[transactionCartRootNavController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartViewController class]]) {
+        TransactionCartViewController *transactionCartRootVC = (TransactionCartViewController *)[transactionCartRootNavController.viewControllers objectAtIndex:0];
         
         // Pakai remove observer karena iOS 7 tidak mau otomatis remove observer ketika TransactionCartRootVC dealloc
         [[NSNotificationCenter defaultCenter]removeObserver:transactionCartRootVC];
-        [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartRootViewController new]]];
+        [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartViewController new]]];
     }
 }
 

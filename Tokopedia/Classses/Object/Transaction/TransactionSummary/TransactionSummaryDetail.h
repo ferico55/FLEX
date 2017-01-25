@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "TransactionCartList.h"
 #import "TransactionSummaryBCAParam.h"
-#import "CCFee.h"
 #import "IndomaretData.h"
 #import "InstallmentBank.h"
 
@@ -60,7 +59,6 @@
 @property (nonatomic,strong) NSString *transaction_code;
 @property (nonatomic,strong) NSString *bri_website_link;
 
-@property (nonatomic,strong) CCFee *credit_card;
 @property (nonatomic, strong) IndomaretData *indomaret;
 @property (nonatomic,strong) NSString *klikbca_user;
 

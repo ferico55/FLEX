@@ -31,8 +31,8 @@
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
 #import "SettingUserProfileViewController.h"
-#import "ShopContainerViewController.h"
 #import "UIView+HVDLayout.h"
+#import "Tokopedia-Swift.h"
 
 
 @interface UserContainerViewController ()
@@ -201,7 +201,7 @@
     [self addChildViewController:self.pageController];
 
     [self.view addSubview:[self.pageController view]];
-    [self.view setBackgroundColor:[UIColor colorWithRed:(231/255.0) green:(231/255.0) blue:(231/255.0) alpha:1]];
+    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     if(IS_IPAD) {
         [self.pageController.view HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
     }
@@ -368,21 +368,21 @@
             case 10:
             {
                 [_pageController setViewControllers:@[_favoriteShopController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetProfileHeader];
+                [_favoriteShopController setHeaderData:_profile];
                 break;
             }
             case 11:
             {
                 [_pageController setViewControllers:@[_contactViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetProfileHeader];
+                [_contactViewController setHeaderData:_profile];
                 break;
             }
                 
-            case 13:
+            case 13: 
             {
                 
                 [_pageController setViewControllers:@[_biodataController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetProfileHeader];
+                [_biodataController setHeaderData:_profile];
                 break;
             }
             default:
@@ -415,21 +415,14 @@
                                   _profile = [successResult.dictionary objectForKey:@""];
                                   _profile.result.user_info.user_name = [_profile.result.user_info.user_name kv_decodeHTMLCharacterEntities];
                                   if (_profile.status) {
-                                      [self postNotificationSetProfileHeader];
+                                      [_biodataController setHeaderData: _profile];
+                                      [_favoriteShopController setHeaderData: _profile];
                                   }
                               }
                               onFailure:^(NSError *errorResult) {
                                   
                                   
                               }];
-}
-
-#pragma mark - Notification
-- (void)postNotificationSetProfileHeader {
-    if(_profile) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];
-    }
-
 }
 
 
@@ -457,7 +450,7 @@
         }
             
         case 16 : {
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            ShopViewController *container = [[ShopViewController alloc] init];
             
             container.data = @{kTKPDDETAIL_APISHOPIDKEY:_profile.result.shop_info.shop_id?:@"0"};
             [self.navigationController pushViewController:container animated:YES];

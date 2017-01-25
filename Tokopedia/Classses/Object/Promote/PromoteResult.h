@@ -13,5 +13,7 @@
 
 @property (nonatomic, strong) NSString *is_dink;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *uri;
+@property (nonatomic, strong) NSString *time_expired;
 
 @end

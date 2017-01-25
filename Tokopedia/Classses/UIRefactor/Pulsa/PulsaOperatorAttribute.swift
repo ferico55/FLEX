@@ -15,6 +15,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     var status : Int = 1
     var prefix: [String] = []
     var minimum_length: Int = 0
+    // 14 is longest phone number existed
     var maximum_length: Int = 0
     var default_product_id : String = ""
     

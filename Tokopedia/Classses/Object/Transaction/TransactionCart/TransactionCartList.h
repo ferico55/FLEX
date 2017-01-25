@@ -12,9 +12,9 @@
 #import "AddressFormList.h"
 #import "ShopInfo.h"
 #import "Errors.h"
-
 #import "CartModelView.h"
 
+@class ProductPreorder;
 @interface TransactionCartList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *cart_total_logistic_fee;

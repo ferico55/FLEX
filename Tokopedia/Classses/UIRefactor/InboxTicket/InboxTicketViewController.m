@@ -167,6 +167,9 @@
     [AnalyticsManager trackInboxTicketClickWithType:_inboxCustomerServiceType];
     InboxTicketDetailViewController *controller = self.detailViewController;
     __weak typeof(self) weakSelf = self;
+    if (IS_IPAD) {
+        [self.tableView setAllowsSelection:NO];
+    }
     if (self.detailViewController == nil) {
         controller = [InboxTicketDetailViewController new];
         controller.onFinishRequestDetail = ^(InboxTicketList *ticket) {
@@ -184,6 +187,9 @@
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         [self.detailViewController updateTicket:ticket];
+        self.detailViewController.onFinishRequestDetail = ^ (InboxTicketList *ticket) {
+            [weakSelf.tableView setAllowsSelection:YES];
+        };
     } else if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
     }
@@ -264,9 +270,10 @@
         if (_tickets.count > 0) {
             _uriNext =  data.paging.uri_next;
             self.tableView.tableFooterView = nil;
-            
+            [self.tableView setScrollEnabled:YES];
         } else {
             [self setNoResultViewAppearance];
+            [self.tableView setScrollEnabled:NO];
         }
         
         [self.tableView reloadData];

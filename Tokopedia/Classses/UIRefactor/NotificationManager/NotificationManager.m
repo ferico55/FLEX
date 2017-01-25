@@ -73,24 +73,6 @@
     [_notificationRequest deleteCache];
 }
 
-- (void)selectViewControllerToOpen:(NSString *)notificationCode{
-    NSDictionary *userInfo = nil;
-    if ([notificationCode integerValue] == STATE_NEW_MESSAGE) {
-        userInfo = @{@"state" : @(STATE_NEW_MESSAGE)};
-    } else if ([notificationCode integerValue] == STATE_NEW_TALK) {
-        userInfo = @{@"state" : @(STATE_NEW_TALK)};
-    } else if ([notificationCode integerValue] == STATE_NEW_ORDER) {
-        userInfo = @{@"state" : @(STATE_NEW_ORDER)};
-    } else if ([notificationCode integerValue] == STATE_NEW_REPSYS ||
-               [notificationCode integerValue] == STATE_EDIT_REPSYS ||
-               [notificationCode integerValue] == STATE_EDIT_REVIEW ||
-               [notificationCode integerValue] == STATE_NEW_REVIEW ||
-               [notificationCode integerValue] == STATE_REPLY_REVIEW) {
-        userInfo = @{@"state" : @(STATE_NEW_REPSYS)};
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectAfterNotification" object:self userInfo:userInfo];
-}
-
 - (void)setViewController:(UIViewController*)vc {
     _attachedViewController = vc;    
     if([_userManager isLogin]) {

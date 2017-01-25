@@ -23,7 +23,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
-#import "ShopContainerViewController.h"
+#import "Tokopedia-Swift.h"
 #import "SpellCheckRequest.h"
 
 static NSString const *rows = @"12";
@@ -167,7 +167,7 @@ static NSString const *rows = @"12";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SearchAWSShop *shop = _shops[indexPath.row];
     
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     
     NSIndexPath* sortIndexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     

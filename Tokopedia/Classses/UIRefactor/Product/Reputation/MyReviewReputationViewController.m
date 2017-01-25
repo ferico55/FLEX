@@ -22,7 +22,6 @@
 #import "SmileyAndMedal.h"
 #import "String_Reputation.h"
 #import "ShopBadgeLevel.h"
-#import "ShopContainerViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
@@ -605,7 +604,7 @@
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[indexPath.row];
         UserContainerViewController *container;
-        ShopContainerViewController *containerShop;
+        ShopViewController *containerShop;
         
         
         if([tempObj.role isEqualToString:@"2"]) {//2 is seller
@@ -626,7 +625,7 @@
             }
         }
         else {
-            containerShop = [[ShopContainerViewController alloc] init];
+            containerShop = [[ShopViewController alloc] init];
             TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
             NSDictionary *auth = [secureStorage keychainDictionary];
             

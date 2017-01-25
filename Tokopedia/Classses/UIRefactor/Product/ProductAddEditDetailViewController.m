@@ -40,14 +40,10 @@ NSString * const ProductStatusWarehouse = @"3";
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4TableViewCell;
-@property (strong, nonatomic) IBOutlet UIView *section0FooterView;
 @property (strong, nonatomic) IBOutlet UIView *section3FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
-@property (weak, nonatomic) IBOutlet UILabel *pengembalianProductLabel;
-
-- (IBAction)tap:(id)sender;
 
 @end
 
@@ -99,17 +95,6 @@ NSString * const ProductStatusWarehouse = @"3";
         [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_EDIT label:@"Product"];
         [self fetchEditProduct];
     }
-}
--(IBAction)tap:(id)sender
-{
-    MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-    vc.data = @{kTKPDDETAIL_DATATYPEKEY : @(NOTES_RETURNABLE_PRODUCT)
-                };
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 -(void)fetchAddProduct{
@@ -230,17 +215,6 @@ NSString * const ProductStatusWarehouse = @"3";
                 NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]>0)?[product.product_must_insurance integerValue]:0]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productMustInsurance;
             }
-            if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
-                if (![_form.info.shop_has_terms isEqualToString:@""]) {
-                    cell.detailTextLabel.textColor = TEXT_COLOUR_ENABLE;
-                    cell.userInteractionEnabled = true;
-                } else {
-                    cell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
-                    cell.userInteractionEnabled = false;
-                }
-                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[product.product_returnable integerValue]]objectForKey:DATA_NAME_KEY];
-                cell.detailTextLabel.text = productReturnable;
-            }
             break;
         case 1:
             cell = _section1TableViewCell[indexPath.row];
@@ -280,18 +254,14 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - Table View Delegate
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 0)
-        return _section0FooterView;
-    else if (section == 3)
+    if (section == 3)
         return _section3FooterView;
     return nil;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 0)
-        return _section0FooterView.frame.size.height;
-    else if(section == 3)
+    if(section == 3)
         return _section3FooterView.frame.size.height;
     return 0;
 }
@@ -335,17 +305,6 @@ NSString * const ProductStatusWarehouse = @"3";
                     alertView.delegate = self;
                     alertView.pickerData = ARRAY_PRODUCT_INSURACE;
                     [alertView show];
-                    break;
-                }
-                case BUTTON_PRODUCT_RETURNABLE:
-                {
-                    if (_form.info.shop_has_terms) {
-                        AlertPickerView *alertView = [AlertPickerView newview];
-                        alertView.tag = 13;
-                        alertView.delegate = self;
-                        alertView.pickerData = ARRAY_PRODUCT_RETURNABLE;
-                        [alertView show];
-                    }
                     break;
                 }
             }
@@ -495,14 +454,6 @@ NSString * const ProductStatusWarehouse = @"3";
             [_tableView reloadData];
             break;
         }
-        case 13:
-        {
-            NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [[ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY] stringValue];
-            _form.product.product_returnable = value;
-            [_tableView reloadData];
-            break;
-        }
         default:
             break;
     }
@@ -533,7 +484,6 @@ NSString * const ProductStatusWarehouse = @"3";
     _form.info.shop_has_terms = shopHasTerm;
     
     [self adjustBarButton];
-    [self adjustReturnableNotesLabel];
     
     [_tableView reloadData];
 }
@@ -553,22 +503,6 @@ NSString * const ProductStatusWarehouse = @"3";
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
 }
 
--(void)adjustReturnableNotesLabel
-{
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 5.0;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_pengembalianProductLabel.text];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont microTheme] range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
-    [attributedString addAttribute:NSForegroundColorAttributeName
-                             value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                             range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
-    
-    [attributedString addAttribute:NSParagraphStyleAttributeName
-                             value:style
-                             range:[_pengembalianProductLabel.text rangeOfString:_pengembalianProductLabel.text]];
-    
-    _pengembalianProductLabel.attributedText = attributedString;
-}
 
 -(void)didUpdateShopHasTerms:(NSNotification*)notification
 {

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "PreorderDetail.h"
 #import "ProductDetail.h"
 #import "Statistic.h"
 #import "ShopInfo.h"
@@ -31,9 +31,10 @@
 @property (nonatomic, strong) NSArray *product_images;
 @property (nonatomic, strong) NSString *cashback;
 @property (nonatomic, strong) ProductDetail *info;
-
+@property (nonatomic, strong) PreorderDetail *preorder;
 //code tambal sulam
 @property (nonatomic, strong) ProductDetail *product;
+
 
 + (RKObjectMapping*)mapping;
 

@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) ShopStats *shop_stats;
 @property (nonatomic) NSInteger shop_already_favorited;
+@property (nonatomic, getter=isFavorite) BOOL favorite;
 @property (nonatomic, strong) NSString *shop_has_terms;
 @property (nonatomic, strong) NSString *shop_description;
 @property (nonatomic, strong) NSString *shop_avatar;        //shop_image (cart)

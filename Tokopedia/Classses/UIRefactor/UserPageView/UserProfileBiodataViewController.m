@@ -76,8 +76,6 @@
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
-    [nc addObserver:self selector:@selector(updateProfilePicture:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -366,20 +364,6 @@
     [_table reloadData];
 }
 
-- (void)updateProfilePicture:(NSNotification *)notification
-{
-    UIImageView *thumb = _userHeader.profileImage;
-    thumb = [UIImageView circleimageview:thumb];
-    thumb.image = nil;
-    
-    NSString *strAvatar = [notification.userInfo objectForKey:@"file_th"]?:@"";
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:strAvatar withKey:@"user_image"];
-    
-    UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
-    thumb.image = profilePicture;
-}
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -388,13 +372,6 @@
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
     [self determineOtherScrollView:scrollView];
 }
 
@@ -425,4 +402,10 @@
 {
     [self dismissAllPopTipViews];
 }
+
+-(void) setHeaderData: (ProfileInfo*) profile {
+    _profile = profile;
+    [_userHeader setHeaderProfile:_profile];
+}
+
 @end

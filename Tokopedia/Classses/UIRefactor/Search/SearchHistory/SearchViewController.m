@@ -143,7 +143,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [AnalyticsManager trackScreenName:@"Search Page"];
     
     self.hidesBottomBarWhenPushed = NO;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -153,6 +154,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
     [self.searchBar resignFirstResponder];
 }
 
@@ -237,7 +240,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
                     [weakSelf.searchSuggestionDataArray removeAllObjects];
                     _searchSuggestionDataArray = [[NSMutableArray alloc] init];
                     GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
-                    
                     NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
                     for (SearchSuggestionData* data in searchSuggestionDatas) {
                         if (data.items.count > 0) {
@@ -346,24 +348,18 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
     SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
     
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
-    
+
     if ([searchSuggestionData.id isEqual: @"hotlist"]){
-        NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
-        
-        HotlistResultViewController *controller = [HotlistResultViewController new];
-        NSString *hotListUrl = [keys lastObject]; // hotListValue example: iphone-5s?source=jahe . But we only need 'iphone-5s' value, so we need to cut ?source=jahe
-        
-        NSString *hotListName = [[hotListUrl componentsSeparatedByString:@"?"] objectAtIndex: 0];
-        controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
-        controller.isFromAutoComplete = YES;
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [self.presentingViewController.navigationController pushViewController:controller animated:YES];
+        NSString *url = searchSuggestionItem.redirectUrl;
+        if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
+            url = searchSuggestionItem.url;
+        }
+        NSArray *keys = [url componentsSeparatedByString:@"/"];
+        [TPRoutes routeURL:[NSURL URLWithString:url]];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -448,7 +444,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     
-    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {

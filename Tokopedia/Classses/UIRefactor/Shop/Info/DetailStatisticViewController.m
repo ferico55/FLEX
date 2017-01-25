@@ -190,7 +190,7 @@
     //Set star
     for(int i=0;i<arrImageHeader.count;i++) {
         UIImageView *tempImage = arrImageHeader[i];
-        NSString *iconName = i < (int)ceilf([tempQuality.average floatValue]) ? @"icon_star_active" : @"icon_star";
+        NSString *iconName = i < (int)roundf([tempQuality.average floatValue]) ? @"icon_star_active" : @"icon_star";
         tempImage.image = [UIImage imageNamed:iconName];
     }
 }

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProfileInfo.h"
 
 @interface ProfileContactViewController : UIViewController
 
@@ -15,6 +16,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelmobile;
 
 @property (strong, nonatomic) NSDictionary *data;
-
+-(void) setHeaderData:(ProfileInfo*) profile;
 
 @end

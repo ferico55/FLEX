@@ -119,7 +119,12 @@
                                        id stat = [result objectForKey:@""];
                                        UploadImage *images = stat;
                                        BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                       
+                                       if (error == nil && images.message_error.count > 0) { // intialize error if get response from server, error = nil
+                                           error = [NSError errorWithDomain:@"upload_image" code:200
+                                                                   userInfo:@{
+                                                                              NSLocalizedDescriptionKey:images.message_error[0]
+                                                                              }];
+                                       }
                                        if (status) {
                                            if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
                                                success(imageObject,images);
@@ -139,6 +144,9 @@
                                    }
                                    else
                                    {
+                                       if (error == nil) {
+                                           error = mappingError;
+                                       }
                                        [self showErrorMessages:@[]];
                                        failure(imageObject, error);
                                    }
