@@ -205,6 +205,11 @@
                 [self didTapReceiptOrder:order];
             }];
         }
+        
+        __weak typeof(self) wself = self;
+        [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+            [wself doAskBuyerWithOrder:order];
+        }];
             
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
             cell.dateFinishLabel.hidden = NO;
@@ -244,6 +249,17 @@
           (long)order.order_deadline.deadline_finish_day_left);
     
     return cell;
+}
+
+-(void)doAskBuyerWithOrder:(OrderTransaction*)order{
+    SendMessageViewController *messageController = [SendMessageViewController new];
+    messageController.data = @{
+                               @"user_id":order.order_customer.customer_id?:@"",
+                               @"shop_name":order.order_customer.customer_name?:@""
+                               };
+    messageController.subject = order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    [self.navigationController pushViewController:messageController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

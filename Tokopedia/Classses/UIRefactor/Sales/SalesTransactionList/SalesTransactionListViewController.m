@@ -23,6 +23,7 @@
 #import "NavigateViewController.h"
 #import "NoResultReusableView.h"
 #import "UITableView+IndexPath.h"
+#import "SendMessageViewController.h"
 
 @interface SalesTransactionListViewController ()
 <
@@ -182,6 +183,7 @@
 
         [cell hideAllButton];
         
+        __weak typeof(self) wself = self;
         if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
@@ -197,6 +199,10 @@
                 controller.delegate = self;
                 
                 [self.navigationController pushViewController:controller animated:YES];
+            }];
+            
+            [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+                [wself doAskBuyerWithOrder:order];
             }];
             
             [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
@@ -219,6 +225,10 @@
                 
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }];
+        } else {
+            [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+                [wself doAskBuyerWithOrder:order];
+            }];
         }
         
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
@@ -240,6 +250,17 @@
     }
 
     return cell;
+}
+
+-(void)doAskBuyerWithOrder:(OrderTransaction*)order{
+    SendMessageViewController *messageController = [SendMessageViewController new];
+    messageController.data = @{
+                               @"user_id":order.order_customer.customer_id?:@"",
+                               @"shop_name":order.order_customer.customer_name?:@""
+                               };
+    messageController.subject = order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    [self.navigationController pushViewController:messageController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -47,6 +47,7 @@
 - (void)hideDayLeftInformation;
 - (void)showTrackButtonOnTap:(void(^)(OrderTransaction *))onTap;
 - (void)showEditResiButtonOnTap:(void(^)(OrderTransaction *))onTap;
+- (void)showAskBuyerButtonOnTap:(void (^)(OrderTransaction *))onTap;
 - (void)hideAllButton;
 - (void)setStatusLabelText:(NSString *)text;
 

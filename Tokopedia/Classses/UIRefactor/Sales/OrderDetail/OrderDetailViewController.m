@@ -304,11 +304,9 @@
             }
         }];
         
-        if (_showAskBuyer) {
-            [buttonView addAskBuyerButton:^{
-                [wself doAskBuyer];
-            }];
-        }
+        [buttonView addAskBuyerButton:^{
+            [wself doAskBuyer];
+        }];
         
         [buttonView addAcceptButton:^{
             if ([wself isOrderNotExpired]) {
@@ -341,6 +339,10 @@
         	[weakSelf.navigationController presentViewController:navigationController animated:YES completion:nil];
         
 
+        }];
+        
+        [buttonView addAskBuyerButton:^{
+            [wself doAskBuyer];
         }];
         
         if (_transaction.order_is_pickup == 1) {

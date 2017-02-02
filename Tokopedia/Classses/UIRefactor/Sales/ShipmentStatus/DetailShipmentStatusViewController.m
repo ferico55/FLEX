@@ -202,9 +202,9 @@
     
     [cell setColorThemeForActionBy:history.history_action_by];
     
-    if (indexPath.row == (_history.count-1)) {
-        [cell hideLine];
-    }
+    BOOL isLastRow = (indexPath.row == (_order.order_history.count-1));
+    cell.lineHidden = isLastRow;
+    
     cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }

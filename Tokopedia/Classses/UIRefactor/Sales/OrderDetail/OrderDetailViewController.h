@@ -37,7 +37,6 @@
 @property (weak, nonatomic) id<OrderDetailDelegate> delegate;
 @property (strong, nonatomic) NSArray *shipmentCouriers;
 @property (strong, nonatomic) OrderBooking *booking;
-@property BOOL showAskBuyer;
 @property BOOL shouldRequestIDropCode;
 
 @property BOOL isDetailNewOrder;

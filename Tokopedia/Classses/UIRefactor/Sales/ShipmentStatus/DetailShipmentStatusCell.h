@@ -14,10 +14,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
+@property (nonatomic) BOOL lineHidden;
+
 - (void)setColorThemeForActionBy:(NSString *)subject;
 - (void)setSubjectLabelText:(NSString *)text;
 - (void)setStatusLabelText:(NSString *)text;
-- (void)hideLine;
 
 + (CGFloat)maxTextWidth;
 + (CGSize)messageSize:(NSString*)message;

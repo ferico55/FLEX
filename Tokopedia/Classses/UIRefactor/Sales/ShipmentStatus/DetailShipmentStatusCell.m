@@ -60,9 +60,8 @@
     [_subjectLabel sizeToFit];
 }
 
-- (void)hideLine
-{
-    _verticalLine.hidden = YES;
+- (void)setLineHidden:(BOOL)lineHidden{
+    _verticalLine.hidden = lineHidden;
 }
 
 + (CGFloat)maxTextWidth {
