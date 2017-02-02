@@ -115,12 +115,6 @@
     [super viewWillAppear:animated];
 
     [AnalyticsManager trackScreenName:@"Profile - Favorited Shop"];
-    
-    if (!_isrefreshview) {
-        if (_isnodata && _profile) {
-            [self loadData];
-        }
-    }
 }
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
