@@ -17,7 +17,8 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[RegisterResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDREGISTER_APIISACTIVEKEY:kTKPDREGISTER_APIISACTIVEKEY,
-                                                        kTKPDREGISTER_APIUIKEY:kTKPDREGISTER_APIUIKEY
+                                                        kTKPDREGISTER_APIUIKEY:kTKPDREGISTER_APIUIKEY,
+                                                        @"action":@"action"
                                                         }];
     return resultMapping;
 }

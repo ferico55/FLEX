@@ -13,6 +13,7 @@
 #import "stringregister.h"
 #import "RegisterViewController.h"
 #import "CreatePasswordViewController.h"
+#import "ForgotPasswordViewController.h"
 
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
@@ -32,6 +33,12 @@
 #import "MMNumberKeyboard.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
+
+typedef NS_ENUM(NSInteger, RegisterActionType) {
+    RegisterActionTypeActivation = 1,
+    RegisterActionTypeLogin,
+    RegisterActionTypeResetPassword
+};
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -256,7 +263,7 @@ MMNumberKeyboardDelegate
     [FBSDKAccessToken setCurrentAccessToken:nil];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.title = @"";
@@ -274,7 +281,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
+- (IBAction)tap:(id)sender
 {
     [self.view endEditing:YES];
     
@@ -330,7 +337,7 @@ MMNumberKeyboardDelegate
                     phone.length >= 6 &&
                     pass.length >= 6 &&
                     isagree) {
-                    [self LoadDataAction:_datainput];
+                    [self doRegisterRequest:_datainput];
                 }
                 else
                 {
@@ -427,7 +434,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+- (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 - (void)didReceiveMemoryWarning
@@ -437,12 +444,12 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Request + Mapping
--(void)cancel
+- (void)cancel
 {
     _loadingView.hidden = YES;
 }
 
--(void)LoadDataAction:(NSDictionary *)data
+- (void)doRegisterRequest:(NSDictionary *)data
 {
     _act.hidden = NO;
     [_act startAnimating];
@@ -478,11 +485,16 @@ MMNumberKeyboardDelegate
                               }];
 }
 
--(void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
-{
+- (void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation {
     _register = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [_register.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
+    
+    if (_register.result.action == RegisterActionTypeActivation) {
+        [self displayActivationAlert];
+    } else if (_register.result.action == RegisterActionTypeLogin) {
+        [self loginExistingUser];
+    } else if (_register.result.action == RegisterActionTypeResetPassword) {
+        [self redirectToForgetPasswordPage];
+    } else {
         if (_register.message_error) {
             StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:_register.message_error
                                                                                delegate:self];
@@ -508,6 +520,7 @@ MMNumberKeyboardDelegate
             self.navigationItem.leftBarButtonItem = nil;
         }
     }
+    
     _texfieldfullname.enabled = YES;
 }
 
@@ -519,13 +532,51 @@ MMNumberKeyboardDelegate
     _texfieldfullname.enabled = YES;
 }
 
--(void)requesttimeout
+- (void)requesttimeout
 {
     [self cancel];
 }
 
+- (void)displayActivationAlert {
+    __weak typeof(self) weakSelf = self;
+    NSString *defaultText = [NSString stringWithFormat:@"Petunjuk aktivasi akun Tokopedia telah kami kirimkan ke email %@. Silakan periksa email Anda.", _textfieldemail.text];
+    TKPDAlert *alert = [TKPDAlert newview];
+    alert.text = _register.message_error?[_register.message_error firstObject]:defaultText;
+    alert.delegate = self;
+    alert.didTapActionButton = ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"4"];
+        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+    };
+    [alert show];
+}
+
+- (void)loginExistingUser {
+    AuthenticationService *authService = [AuthenticationService new];
+    [authService loginWithEmail:[_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]
+                       password:[_datainput objectForKey:kTKPDREGISTER_APIPASSKEY]
+             fromViewController:self
+                successCallback:^(Login *login) {
+                    [AnalyticsManager trackLogin:login];
+                    [authService storeCredentialToKeychain:login];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
+                    
+                    [self navigateToProperPage];
+                }
+                failureCallback:^(NSError *error) {
+                    
+                }];
+}
+
+- (void)redirectToForgetPasswordPage {
+    NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]?:@"";
+    ResetPasswordSuccessViewController *controller = [[ResetPasswordSuccessViewController alloc] initWithEmail:email];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - Text Field Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     if (textField == _textfielddob) {
         // display datepicker
@@ -552,27 +603,27 @@ MMNumberKeyboardDelegate
     return YES;
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
-    if(textField == _texfieldfullname){
+    if (textField == _texfieldfullname) {
         [_textfieldphonenumber becomeFirstResponder];
         _activetextfield = _textfieldphonenumber;
     }
-    else if (textField ==_textfieldemail){
+    else if (textField ==_textfieldemail) {
         [_textfieldemail resignFirstResponder];
     }
-    else if (textField ==_textfieldpassword){
+    else if (textField ==_textfieldpassword) {
         [_textfieldconfirmpass becomeFirstResponder];
         _activetextfield = _textfieldconfirmpass;
     }
-    else if (textField ==_textfieldconfirmpass){
+    else if (textField ==_textfieldconfirmpass) {
         [_textfieldconfirmpass resignFirstResponder];
     }
     return YES;
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     if (textField == _texfieldfullname) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIFULLNAMEKEY];
@@ -619,7 +670,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Alert View Delegate
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
         case 10:
@@ -661,7 +712,7 @@ MMNumberKeyboardDelegate
     }
 }
 
--(void)alertViewCancel:(TKPDAlertView *)alertView
+- (void)alertViewCancel:(TKPDAlertView *)alertView
 {
     switch (alertView.tag) {
         case 11:
@@ -837,14 +888,14 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
     
     
-    if(login.result.user_image != nil) {
+    if (login.result.user_image != nil) {
         [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
     }
     
     [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
     [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
     
-    if(login.result.shop_avatar != nil) {
+    if (login.result.shop_avatar != nil) {
         [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
     }
     
@@ -854,7 +905,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
     [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
     
-    if(login.result.user_reputation != nil) {
+    if (login.result.user_reputation != nil) {
         ReputationDetail *reputation = login.result.user_reputation;
         [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
         [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
@@ -869,7 +920,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
     
-    [self storeCredentialToKeychain:login];
+    AuthenticationService *authService = [AuthenticationService new];
+    [authService storeCredentialToKeychain:login];
     [self navigateToProperPage];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];

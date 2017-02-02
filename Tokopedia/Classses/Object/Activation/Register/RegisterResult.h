@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *is_active;
 @property (nonatomic, strong) NSString *u_id;
+@property NSInteger action;
 
 + (RKObjectMapping *)mapping;
 @end

@@ -1714,6 +1714,8 @@
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
+		627561711E360DF700AFBFDF /* ResetPasswordSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6275616F1E360DF700AFBFDF /* ResetPasswordSuccessViewController.swift */; };
+		627561721E360DF700AFBFDF /* ResetPasswordSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 627561701E360DF700AFBFDF /* ResetPasswordSuccessViewController.xib */; };
 		647AD0B4F53476E3BA98E272 /* RolloutMayPatchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7980B6415A92F099E00FDB92 /* RolloutMayPatchFilter.swift */; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -4625,6 +4627,8 @@
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		6275616F1E360DF700AFBFDF /* ResetPasswordSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordSuccessViewController.swift; sourceTree = "<group>"; };
+		627561701E360DF700AFBFDF /* ResetPasswordSuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetPasswordSuccessViewController.xib; sourceTree = "<group>"; };
 		7980B6415A92F099E00FDB92 /* RolloutMayPatchFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutMayPatchFilter.swift; path = Pods/Rollout.io/RolloutSwift/RolloutMayPatchFilter.swift; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -7672,6 +7676,8 @@
 				5B8FB2051E2F827B005CDB00 /* ForgotPasswordViewController.h */,
 				5B8FB2061E2F827B005CDB00 /* ForgotPasswordViewController.m */,
 				5B8FB2071E2F827B005CDB00 /* ForgotPasswordViewController.xib */,
+				6275616F1E360DF700AFBFDF /* ResetPasswordSuccessViewController.swift */,
+				627561701E360DF700AFBFDF /* ResetPasswordSuccessViewController.xib */,
 			);
 			path = ForgotPassword;
 			sourceTree = "<group>";
@@ -10237,6 +10243,7 @@
 				5B8FBD421E2F8282005CDB00 /* ShopInfoAddressView.xib in Resources */,
 				5B8FBAB01E2F8280005CDB00 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
 				5B8FBDED1E2F8283005CDB00 /* UserProfileBiodataViewController.xib in Resources */,
+				627561721E360DF700AFBFDF /* ResetPasswordSuccessViewController.xib in Resources */,
 				5B8FBB071E2F8280005CDB00 /* AnnouncementTickerView.xib in Resources */,
 				5B8FBE281E2F8283005CDB00 /* icon_more@3x.png in Resources */,
 				5B8FBE251E2F8283005CDB00 /* icon_login_active.png in Resources */,
@@ -11251,6 +11258,7 @@
 				5B8FB9031E2F827F005CDB00 /* Promote.m in Sources */,
 				5B8FB9B71E2F827F005CDB00 /* TransactionVoucher.m in Sources */,
 				5B8FB9D91E2F827F005CDB00 /* GeneratedHost.m in Sources */,
+				627561711E360DF700AFBFDF /* ResetPasswordSuccessViewController.swift in Sources */,
 				5B8FB8701E2F827F005CDB00 /* InboxMessageDetail.m in Sources */,
 				5B8FB8511E2F827E005CDB00 /* GoogleDistanceMatrix.m in Sources */,
 				5B8FBA6F1E2F8280005CDB00 /* GenerateHostObservable.swift in Sources */,
