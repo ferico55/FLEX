@@ -7,8 +7,27 @@
 //
 
 #import "AnnouncementTickerView.h"
+#import "Tokopedia-Swift.h"
+#import "NSURL+TKPURL.h"
+
+@interface AnnouncementTickerView()
+
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *messageLabel;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+
+@end
+
 
 @implementation AnnouncementTickerView
+
+-(instancetype)initWithMessage:(NSString *)message colorHexString:(NSString *)colorHexString{
+    
+    self = [AnnouncementTickerView newView];
+    [self setMessage:message withContentColorHexString:colorHexString];
+    
+    return self;
+}
 
 + (id)newView {
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"AnnouncementTickerView" owner:nil options:nil];
@@ -22,17 +41,17 @@
     return nil;
 }
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    
-    if (self) {
-        return self;
-    }
-    
-    return nil;
+- (void)resetMessageAttributedLabel{
+    _messageLabel.text = nil;
+    _messageLabel.linkAttributes = nil;
+    _messageLabel.attributedText = nil;
+    _messageLabel.attributedTruncationToken = nil;
 }
 
-- (void)setMessage:(NSString *)text {
+- (void)setMessage:(NSString *)text withContentColorHexString:(NSString *)contentColorHexString{
+    
+    [self resetMessageAttributedLabel];
+    
     NSString *tickerMessage = [NSString convertHTML:text];
     NSAttributedString *attString = [self attributedMessage:tickerMessage];
     NSArray *matches = [NSString getStringsBetweenAhrefTagWithString:text];
@@ -57,6 +76,20 @@
         NSRange range = [attString.string rangeOfString:mutArray[ii]];
         [_messageLabel addLinkToURL:url withRange:range];
     }
+    
+    [self setContentColorHexString:contentColorHexString];
+}
+
+-(void)setContentColorHexString:(NSString *)contentColorHexString{
+    
+    UIColor *themeColor = [UIColor fromHexString:contentColorHexString];
+    _contentView.layer.borderColor = themeColor.CGColor;
+    
+    UIImage *origImage = _closeButton.imageView.image;
+    UIImage *tintImage = [origImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [_closeButton setImage:tintImage forState:UIControlStateNormal];
+    _closeButton.tintColor = themeColor;
+    
 }
 
 - (NSAttributedString *)attributedMessage:(NSString *)text {
@@ -74,10 +107,16 @@
     return attString;
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    NSString *realUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+- (IBAction)tapClose:(id)sender {
     
-    self.onTapMessageWithUrl([NSURL URLWithString:[realUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
+    if(_onTapCloseButton){
+        self.onTapCloseButton();
+    }
+    
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    self.onTapMessageWithUrl([url TKPMeUrl]);
 }
 
 @end

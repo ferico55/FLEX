@@ -355,7 +355,7 @@ typedef enum TagRequest {
 #pragma mark - Notification observers
 
 - (void)applicationLogin:(NSNotification*)notification
-{    
+{
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
@@ -399,6 +399,8 @@ typedef enum TagRequest {
 
 - (void)updateTabBarMore:(NSNotification*)notification
 {
+    [self popToRootAllViewControllers];
+   
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
@@ -571,12 +573,16 @@ typedef enum TagRequest {
 
 - (void)redirectNotification:(NSNotification*)notification {
     _tabBarController.selectedIndex = 0;
+
+    [self popToRootAllViewControllers];
+}
+
+- (void)popToRootAllViewControllers{
     for(UIViewController *viewController in _tabBarController.viewControllers) {
         if([viewController isKindOfClass:[UINavigationController class]]) {
             [(UINavigationController *)viewController popToRootViewControllerAnimated:NO];
         }
     }
-    
 }
 
 #pragma mark - Notification Observer Method

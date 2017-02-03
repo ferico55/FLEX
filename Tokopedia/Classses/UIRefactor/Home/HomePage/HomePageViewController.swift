@@ -50,7 +50,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private let horizontalStackViewSpacing: CGFloat = 30.0
     
     private var isRequestingCategory: Bool = false
-    private var isRequestingTicker: Bool = false
+    private var canRequestTicker: Bool = true
     private var isRequestingBanner: Bool = false
     private var isRequestingPulsaWidget: Bool = false
     
@@ -74,7 +74,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         if isRequestingBanner == false {
             self.requestBanner()
         }
-        if isRequestingTicker == false {
+        if canRequestTicker == true {
             self.requestTicker()
         }
         if pulsaActiveCategories == nil && isRequestingPulsaWidget == false {
@@ -433,19 +433,30 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     private func requestTicker() {
         tickerRequest = AnnouncementTickerRequest()
-        isRequestingTicker = true
+        canRequestTicker = false
         tickerRequest.fetchTicker({[unowned self] (ticker) in
-            self.isRequestingTicker = false
+            self.canRequestTicker = true
             if (ticker.tickers.count > 0) {
+                
+                let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
+                let tick = ticker.tickers[randomIndex]
+
+                
                 if self.tickerView == nil {
-                    self.tickerView = AnnouncementTickerView.newView()
+                    
+                    self.tickerView = AnnouncementTickerView.init(message: tick.message, colorHexString: tick.color)
                     self.tickerPlaceholder.addSubview((self.tickerView)!)
                     
                     self.tickerView.onTapMessageWithUrl = {[weak self] (url) in
                         self!.navigator.navigateToWebTicker(url)
                     }
                     
-                    // init ticker
+                    self.tickerView.onTapCloseButton = {[unowned self] in
+                        self.canRequestTicker = false
+                        self.outerStackView.removeArrangedSubview(self.tickerView)
+                        self.tickerView.removeFromSuperview()
+                    }
+                    
                     self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
                     
                     self.tickerPlaceholder.mas_makeConstraints { make in
@@ -460,12 +471,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     self.tickerPlaceholder.addSubview(self.tickerView)
                 }
                 
-                let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
-                let tick = ticker.tickers[randomIndex]
-                self.tickerView.setMessage(tick.message)
+                self.tickerView.setMessage(tick.message, withContentColorHexString: tick.color)
             }
         }) { (error) in
-            self.isRequestingTicker = false
+            self.canRequestTicker = true
         }
     }
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		11236B17B14C2FE1F670E2B3 /* RolloutGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA74BEEF5C4536E25A36061 /* RolloutGenerated.swift */; };
+		45F3B3641E4435A700B9F269 /* NSURL+TKPURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F3B3631E4435A700B9F269 /* NSURL+TKPURL.m */; };
 		4721B7779D7F8855EA879E21 /* RolloutSwiftCompilerInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */; };
 		5B8FB79B1E2F827E005CDB00 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8FAB5C1E2F8277005CDB00 /* AppDelegate.m */; };
 		5B8FB79C1E2F827E005CDB00 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8FAB601E2F8277005CDB00 /* AnalyticsManager.m */; };
@@ -1776,6 +1777,8 @@
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		45F3B3621E4435A700B9F269 /* NSURL+TKPURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+TKPURL.h"; sourceTree = "<group>"; };
+		45F3B3631E4435A700B9F269 /* NSURL+TKPURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+TKPURL.m"; sourceTree = "<group>"; };
 		5B8FAB5B1E2F8277005CDB00 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5B8FAB5C1E2F8277005CDB00 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5B8FAB5F1E2F8277005CDB00 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
@@ -4860,6 +4863,8 @@
 				5B8FAB931E2F8278005CDB00 /* UITextView+UITextView_Placeholder.m */,
 				5B8FAB941E2F8278005CDB00 /* UIViewCategory.swift */,
 				5B8FAB951E2F8278005CDB00 /* UIViewControllerCategory.swift */,
+				45F3B3621E4435A700B9F269 /* NSURL+TKPURL.h */,
+				45F3B3631E4435A700B9F269 /* NSURL+TKPURL.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -11024,6 +11029,7 @@
 				5B8FBC201E2F8281005CDB00 /* RequestAddEditProduct.swift in Sources */,
 				5B8FBB611E2F8281005CDB00 /* ResolutionCenterDetailCell.m in Sources */,
 				5B8FB8681E2F827F005CDB00 /* Hotlist.m in Sources */,
+				45F3B3641E4435A700B9F269 /* NSURL+TKPURL.m in Sources */,
 				5B8FBB221E2F8280005CDB00 /* PromoViewController.swift in Sources */,
 				5B8FBA0D1E2F8280005CDB00 /* MHVerticalTabBarController.m in Sources */,
 				5B8FB87F1E2F827F005CDB00 /* ResolutionBy.m in Sources */,
