@@ -144,11 +144,12 @@
     if ([pushNotificationData objectForKey:@"url_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"url_deeplink"]];
         [TPRoutes routeURL:url];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
+                                                            object:nil
+                                                          userInfo:pushNotificationData];
+
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
-                                                        object:nil
-                                                      userInfo:pushNotificationData];
 }
 
 - (void)configureAppIndexing {
