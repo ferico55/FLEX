@@ -172,6 +172,7 @@
 #import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
 #import "FavoriteShopRequest.h"
+#import "UIColor+Theme.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
