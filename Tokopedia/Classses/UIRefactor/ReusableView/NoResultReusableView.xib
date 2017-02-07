@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,59 +20,50 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jTB-Zo-tFB">
-                    <frame key="frameInset" minX="120" minY="50" width="80" height="80"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTB-Zo-tFB">
+                    <rect key="frame" x="344" y="50" width="80" height="80"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="80" id="WHM-4N-FrS"/>
                         <constraint firstAttribute="width" constant="80" id="eIB-yv-Th6"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oH-c2-qNI">
-                    <frame key="frameInset" minX="50" minY="180" width="220" height="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oH-c2-qNI">
+                    <rect key="frame" x="274" y="184" width="220" height="21.5"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="11" id="Elo-dh-EM9"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="Mjm-gI-ghi"/>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="yhX-dw-2Wq"/>
                     </constraints>
-                    <attributedString key="attributedText">
-                        <fragment content="Label">
-                            <attributes>
-                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <font key="NSFont" size="14" name="HelveticaNeue"/>
-                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="6"/>
-                            </attributes>
-                        </fragment>
-                    </attributedString>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                    </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCj-cx-8cZ">
-                    <frame key="frameInset" minX="40" minY="150" width="240" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCj-cx-8cZ">
+                    <rect key="frame" x="264" y="150" width="240" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="240" id="ezp-ct-AJs"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="yu4-fw-Nhy"/>
                     </constraints>
-                    <attributedString key="attributedText">
-                        <fragment content="Label">
-                            <attributes>
-                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <font key="NSFont" size="17" name="HelveticaNeue"/>
-                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="1000"/>
-                            </attributes>
-                        </fragment>
-                    </attributedString>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    </variation>
                 </label>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yks-X0-wVh">
-                    <frame key="frameInset" minX="20" minY="217" width="280" height="40"/>
-                    <color key="backgroundColor" red="0.88235294117647056" green="0.29411764705882354" blue="0.20784313725490197" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yks-X0-wVh">
+                    <rect key="frame" x="65" y="215.5" width="638" height="40"/>
+                    <color key="backgroundColor" red="0.25882352941176467" green="0.70980392156862748" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="MfT-If-729"/>
-                        <constraint firstAttribute="width" constant="280" id="PK3-8s-GYV"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                     <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <state key="normal" title="Button"/>
                     <connections>
@@ -83,12 +77,13 @@
                 <constraint firstItem="ZCj-cx-8cZ" firstAttribute="top" secondItem="jTB-Zo-tFB" secondAttribute="bottom" constant="20" id="A3R-0y-08n"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="CXn-hl-DoD"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="0oH-c2-qNI" secondAttribute="centerX" id="JFF-cC-VJ4"/>
+                <constraint firstAttribute="trailing" secondItem="yks-X0-wVh" secondAttribute="trailing" constant="65" id="JVu-CH-3lL"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="W6q-jb-DNZ"/>
                 <constraint firstItem="0oH-c2-qNI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="W9K-es-d5b"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="ZCj-cx-8cZ" secondAttribute="centerX" id="eSl-9t-7LX"/>
                 <constraint firstItem="0oH-c2-qNI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fKP-9p-m0Q"/>
-                <constraint firstItem="yks-X0-wVh" firstAttribute="top" secondItem="0oH-c2-qNI" secondAttribute="bottom" constant="20" id="h64-Db-ZGw"/>
-                <constraint firstItem="yks-X0-wVh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-0.5" id="tHe-GL-V7q"/>
+                <constraint firstItem="yks-X0-wVh" firstAttribute="top" secondItem="0oH-c2-qNI" secondAttribute="bottom" constant="10" id="h64-Db-ZGw"/>
+                <constraint firstItem="yks-X0-wVh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="65" id="sqs-oz-vEY"/>
             </constraints>
         </view>
     </objects>

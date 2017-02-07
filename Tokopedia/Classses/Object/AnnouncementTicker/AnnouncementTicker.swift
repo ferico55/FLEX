@@ -9,13 +9,13 @@
 import UIKit
 
 class AnnouncementTicker: NSObject {
-    var meta: AnnouncementTickerMeta!
+    var meta: GeneralMetaData!
     var data: AnnouncementTickerResult!
     
     static func mapping() -> RKObjectMapping! {
         let mapping = RKObjectMapping(forClass: self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "meta", toKeyPath: "meta", withMapping: AnnouncementTickerMeta.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "meta", toKeyPath: "meta", withMapping: GeneralMetaData.mapping()))
         
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: AnnouncementTickerResult.mapping()))
         

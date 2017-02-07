@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #define NO_RESULT_ICON @"icon_no_data_grey.png"
-#define NO_RESULT_TITLE_SIZE (IS_IPHONE ? 14.0f : 20.0f);
-#define NO_RESULT_DESC_SIZE (IS_IPHONE ? 11.0f : 18.0f);
 #define NO_RESULT_BUTTON_TITLE_SIZE (IS_IPHONE ? 14.0f : 18.0f);
 #define NO_RESULT_LINE_SPACING (IS_IPHONE ? 10.0f : 20.0f);
 
