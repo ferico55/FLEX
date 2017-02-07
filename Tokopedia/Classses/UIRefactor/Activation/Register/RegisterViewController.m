@@ -329,12 +329,11 @@ MMNumberKeyboardDelegate
                 
                 if (fullname && ![fullname isEqualToString:@""] &&
                     [test evaluateWithObject:fullname] &&
-                    phone &&
+                    phone && ![phone isEqualToString:@""] &&
                     email && [email isEmail] &&
                     pass && ![pass isEqualToString:@""] &&
                     confirmpass && ![confirmpass isEqualToString:@""]&&
                     [pass isEqualToString:confirmpass] &&
-                    phone.length >= 6 &&
                     pass.length >= 6 &&
                     isagree) {
                     [self doRegisterRequest:_datainput];
@@ -354,10 +353,8 @@ MMNumberKeyboardDelegate
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
-                    } else if (phone.length < 6) {
-                        [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
-                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
                     }
+                    
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
@@ -636,6 +633,9 @@ MMNumberKeyboardDelegate
     }
     if (textField == _textfieldconfirmpass) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APICONFIRMPASSKEY];
+    }
+    if (textField == _textfieldphonenumber) {
+        [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
     }
     return YES;
 }
