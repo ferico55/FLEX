@@ -453,13 +453,11 @@
 
 #pragma mark - Search Controller Delegate
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    
+    [self setSearchControllerHidden:NO];
 }
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        searchController.searchResultsController.view.hidden = NO;
-    });
+    [self setSearchControllerHidden:NO];
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -490,6 +488,13 @@
     } else {
         _viewControllers = @[_homePageController, _promoViewController];
     }
+}
+
+-(void) setSearchControllerHidden:(BOOL) hidden {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        weakSelf.searchController.searchResultsController.view.hidden = hidden;
+    });
 }
 
 @end
