@@ -565,13 +565,7 @@ MMNumberKeyboardDelegate
                        password:[_datainput objectForKey:kTKPDREGISTER_APIPASSKEY]
              fromViewController:self
                 successCallback:^(Login *login) {
-                    [AnalyticsManager trackLogin:login];
-                    [authService storeCredentialToKeychain:login];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
-                    
-                    [self navigateToProperPage];
+                    [self onLoginSuccess:login];
                 }
                 failureCallback:^(NSError *error) {
                     
@@ -829,7 +823,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         }
     } else {
         [self.navigationController popViewControllerAnimated:YES];
-        self.onLoginSuccess();
     }
     
     
