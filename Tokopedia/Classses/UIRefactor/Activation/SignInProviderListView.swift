@@ -10,8 +10,8 @@ import UIKit
 
 class SignInProviderListView: UIView {
     var onWebViewProviderSelected: ((SignInProvider) -> Void)?
-    var onFacebookSelected: (() -> Void)?
-    var onGoogleSelected: (() -> Void)?
+    var onFacebookSelected: ((SignInProvider) -> Void)?
+    var onGoogleSelected: ((SignInProvider) -> Void)?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,8 +44,8 @@ class SignInProviderListView: UIView {
             
             button.bk_addEventHandler({[unowned self] button in
                 switch provider.id {
-                    case "facebook": self.onFacebookSelected?()
-                    case "gplus": self.onGoogleSelected?()
+                    case "facebook": self.onFacebookSelected?(provider)
+                    case "gplus": self.onGoogleSelected?(provider)
                 default: self.onWebViewProviderSelected?(provider)
                 }
             }, forControlEvents: .TouchUpInside)

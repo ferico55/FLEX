@@ -96,27 +96,11 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [self localyticsEvent:@"Cart Viewed" attributes:attributes];
 }
 
-+ (NSString *)providerWithMethod:(NSString *)method {
-    if ([method isEqualToString:@"1"]) {
-        return @"Facebook";
-    } else if ([method isEqualToString:@"2"]) {
-        return @"Google";
-    } else if ([method isEqualToString:@"4"]) {
-        return @"Yahoo";
-    } else if ([method isEqualToString:@"0"]) {
-        return @"Email";
-    } else {
-        return @"";
-    }
-}
-
-+ (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success {
-    NSString *provider = [self providerWithMethod:method];
-    
++ (void)localyticsTrackRegistration:(NSString *)providerName success:(BOOL)success {
     NSDictionary *attributes = @{
                                  @"Success" : success? @"Yes" : @"No",
                                  @"Previous Screen" : @"Login",
-                                 @"Method" : provider?:@""
+                                 @"Method" : providerName?:@""
                                  };
     
     [self localyticsEvent:@"Registration Summary" attributes:attributes];

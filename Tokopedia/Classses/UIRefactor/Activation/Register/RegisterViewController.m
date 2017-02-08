@@ -185,10 +185,18 @@ MMNumberKeyboardDelegate
     [providerListView attachToView:_signInProviderContainer];
     
     providerListView.onWebViewProviderSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [self webViewLoginWithProvider:provider];
     };
     
-    providerListView.onFacebookSelected = ^{
+    providerListView.onFacebookSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
                             fromViewController:weakSelf
@@ -197,7 +205,11 @@ MMNumberKeyboardDelegate
                                        }];
     };
     
-    providerListView.onGoogleSelected = ^{
+    providerListView.onGoogleSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [[GIDSignIn sharedInstance] signIn];
     };
 }
@@ -497,13 +509,13 @@ MMNumberKeyboardDelegate
                                                                                delegate:self];
             [alertView show];
             
-            [AnalyticsManager localyticsTrackRegistration:@"0" success:NO];
+            [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             
-            [AnalyticsManager localyticsTrackRegistration:@"0" success:YES];
+            [AnalyticsManager localyticsTrackRegistration:@"Email" success:YES];
             [AnalyticsManager localyticsValue:@"Yes" profileAttribute:@"Is Login"];
             [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
             
@@ -523,7 +535,7 @@ MMNumberKeyboardDelegate
 
 - (void)requestfailure {
     [self cancel];
-    
+    [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
     _act.hidden = YES;
     [_act stopAnimating];
     _texfieldfullname.enabled = YES;

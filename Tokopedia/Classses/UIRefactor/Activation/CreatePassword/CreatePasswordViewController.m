@@ -74,6 +74,8 @@
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
+    [self trackVisitPageFromProviderName:_userProfile.providerName];
+    
     MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
     keyboard.allowsDecimalPoint = false;
     keyboard.delegate = self;
@@ -253,6 +255,7 @@
 - (IBAction)tap:(id)sender
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self trackAbandonRegistrationWithProviderName:_userProfile.providerName];
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logOut];
         [FBSDKAccessToken setCurrentAccessToken:nil];
@@ -422,20 +425,20 @@
                                                 onSuccess:^(CreatePassword *result) {
                                                     BOOL status = [result.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                                     if (status && [result.result.is_success boolValue]) {
-                                                        [self trackRegistration];
+                                                        [self trackSuccessRegistrationWithProviderName:_userProfile.providerName];
 
                                                         if (_onPasswordCreated) {
                                                             [self dismissViewControllerAnimated:YES completion:nil];
                                                             _onPasswordCreated();
                                                         }
                                                     } else if (result.message_error) {
-                                                        [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
+                                                        [self trackFailedRegistrationWithProviderName:_userProfile.providerName];
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                                                                        delegate:self];
                                                         [alert show];
                                                         [self enableTextFields];
                                                     } else {
-                                                        [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
+                                                        [self trackFailedRegistrationWithProviderName:_userProfile.providerName];
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Registrasi gagal silahkan coba lagi."]
                                                                                                                        delegate:self];
                                                         [alert show];
@@ -446,35 +449,11 @@
                                                     _signupButton.layer.opacity = 1;
                                                 }
                                                 onFailure:^(NSError *errorResult) {
-                                                    [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:NO];
+                                                    [self trackFailedRegistrationWithProviderName:_userProfile.providerName];
                                                     [self enableTextFields];
                                                 }];
 }
 
-- (void)trackRegistration {
-    
-    NSString* eventType = @"Facebook Registration";
-    NSString *channel = @"Facebook";
-    
-    if ([_userProfile.provider isEqualToString:@"2"]) {
-        eventType = @"Google Registration";
-        channel = @"Google";
-    } else if ([_userProfile.provider isEqualToString:@"4"]) {
-        eventType = @"Yahoo Registration";
-        channel = @"Yahoo";
-    }
-    
-    NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : eventType};
-
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
-    
-    [AnalyticsManager localyticsTrackRegistration:_userProfile.provider success:YES];
-    
-    [AnalyticsManager trackEventName:@"registerSuccess"
-                            category:GA_EVENT_CATEGORY_REGISTER
-                              action:GA_EVENT_ACTION_REGISTER_SUCCESS
-                               label:channel];
-}
 
 #pragma mark - Keyboard Notification
 
@@ -532,5 +511,45 @@
     return YES;
 }
 
+#pragma mark - Tracking Methods
+- (void)trackVisitPageFromProviderName:(NSString *)providerName {
+    NSString *eventLabel = [NSString stringWithFormat:@"Create Password Page - %@", providerName];
+    
+    [AnalyticsManager trackEventName:@"clickRegister"
+                            category:GA_EVENT_CATEGORY_REGISTER
+                              action:GA_EVENT_ACTION_VIEW
+                               label:eventLabel];
+    
+}
+
+- (void)trackSuccessRegistrationWithProviderName:(NSString *)providerName {
+    NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : [NSString stringWithFormat:@"%@ Registration", providerName]};
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
+    
+    [AnalyticsManager localyticsTrackRegistration:_userProfile.providerName success:YES];
+    
+    [AnalyticsManager trackEventName:@"registerSuccess"
+                            category:GA_EVENT_CATEGORY_REGISTER
+                              action:GA_EVENT_ACTION_REGISTER_SUCCESS
+                               label:providerName];
+}
+
+- (void)trackFailedRegistrationWithProviderName:(NSString *)providerName {
+    [AnalyticsManager trackEventName:@"registerError"
+                            category:GA_EVENT_CATEGORY_REGISTER
+                              action:GA_EVENT_ACTION_REGISTER_ERROR
+                               label:providerName];
+    
+    [AnalyticsManager localyticsTrackRegistration:_userProfile.providerName
+                                          success:NO];
+}
+
+- (void)trackAbandonRegistrationWithProviderName:(NSString *)providerName {
+    [AnalyticsManager trackEventName:@"registerAbandon"
+                            category:GA_EVENT_CATEGORY_REGISTER
+                              action:GA_EVENT_ACTION_ABANDON
+                               label:providerName];
+}
 
 @end

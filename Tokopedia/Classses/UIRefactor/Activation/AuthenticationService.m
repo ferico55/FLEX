@@ -322,6 +322,7 @@
                                                  } else {
                                                      CreatePasswordUserProfile *userProfile = [CreatePasswordUserProfile new];
                                                      userProfile.provider = @"4";
+                                                     userProfile.providerName = @"Yahoo";
                                                      userProfile.email = accountInfo.email;
                                                      userProfile.name = accountInfo.name;
                                                      
