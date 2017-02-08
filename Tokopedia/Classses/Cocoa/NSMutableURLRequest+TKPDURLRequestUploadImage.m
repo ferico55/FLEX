@@ -58,7 +58,7 @@
     //setting the body of the post to the request
     [request setHTTPBody:body];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://%@/%@",uploadHost,@"ws/action/upload-image.pl"];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@/%@",uploadHost,@"web-service/v4/action/upload-image/upload_product_image.pl"];
     
     [request setURL:[NSURL URLWithString:urlString]];
     

@@ -1747,6 +1747,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		9264B90D1E4AD19500353E58 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9264B90A1E4AD19500353E58 /* Info.plist */; };
+		9264B90E1E4AD19500353E58 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264B90B1E4AD19500353E58 /* NotificationService.swift */; };
 		B715641F0F836AA3DB6B5D6B /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4665,6 +4667,9 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9264B90A1E4AD19500353E58 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9264B90B1E4AD19500353E58 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		9264B90C1E4AD19500353E58 /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9941,6 +9946,16 @@
 			name = Rollout;
 			sourceTree = "<group>";
 		};
+		9264B9091E4AD19500353E58 /* ServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				9264B90A1E4AD19500353E58 /* Info.plist */,
+				9264B90B1E4AD19500353E58 /* NotificationService.swift */,
+				9264B90C1E4AD19500353E58 /* ServiceExtension.entitlements */,
+			);
+			path = ServiceExtension;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -9955,6 +9970,7 @@
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
+				9264B9091E4AD19500353E58 /* ServiceExtension */,
 				34B01C0A1E49B79700C132A8 /* Tokopedia */,
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
@@ -10417,6 +10433,7 @@
 				4573F3551E49CB730058F141 /* AlertDatePickerView.xib in Resources */,
 				4573F7121E49CB780058F141 /* ProductCell.xib in Resources */,
 				4573F67D1E49CB770058F141 /* ShopProductPageViewController.xib in Resources */,
+				9264B90D1E4AD19500353E58 /* Info.plist in Resources */,
 				4573F44A1E49CB740058F141 /* HotlistCollectionCell.xib in Resources */,
 				4573F72F1E49CB780058F141 /* loading-icon.gif in Resources */,
 				4573F3D81E49CB730058F141 /* NoResultView.xib in Resources */,
@@ -11182,6 +11199,7 @@
 				4573F6751E49CB770058F141 /* ShopHomeViewController.swift in Sources */,
 				4573F5301E49CB750058F141 /* ProductReputationCell.m in Sources */,
 				4573F0FF1E49CB6F0058F141 /* OAuthToken.swift in Sources */,
+				9264B90E1E4AD19500353E58 /* NotificationService.swift in Sources */,
 				4573F5201E49CB750058F141 /* ImageStorage.m in Sources */,
 				4573F56C1E49CB750058F141 /* PulsaTweaks.m in Sources */,
 				4573F15B1E49CB700058F141 /* TalkResult.m in Sources */,
