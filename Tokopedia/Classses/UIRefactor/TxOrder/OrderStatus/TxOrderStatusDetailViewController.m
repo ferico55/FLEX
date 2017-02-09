@@ -360,9 +360,7 @@
             status = history.history_seller_status;
         
     }
-    if (![history.history_comments isEqualToString:@""]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
-    }
+    status = [status stringByAppendingString:history.history_comments];
     
     [cell setStatusLabelText:status];
     

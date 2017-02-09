@@ -204,10 +204,8 @@
     } else {
         status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     }
-    if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@",
-                                                  history.history_comments]];
-    }
+    status = [status stringByAppendingString:history.history_comments];
+
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];
