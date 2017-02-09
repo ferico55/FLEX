@@ -80,6 +80,12 @@
     }];
 }
 
+-(void)showRetryButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addRetryButton:^{
+        onTap(_order);
+    }];
+}
+
 -(void)showEditResiButtonOnTap:(void (^)(OrderTransaction *))onTap{
     [_buttonsView addChangeResiButton:^{
         onTap(_order);
@@ -119,7 +125,7 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
+        UIButton *button = (UIButton *)sender; 
         if (button.tag == 1) {
             [self.delegate didTapTrackButton:button indexPath:_indexPath];
         } else if (button.tag == 2) {

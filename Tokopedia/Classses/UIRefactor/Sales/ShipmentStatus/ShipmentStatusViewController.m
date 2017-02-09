@@ -11,7 +11,6 @@
 #import "Order.h"
 #import "OrderTransaction.h"
 #import "ActionOrder.h"
-
 #import "ShipmentStatusViewController.h"
 #import "FilterShipmentStatusViewController.h"
 #import "DetailShipmentStatusViewController.h"
@@ -184,15 +183,31 @@
             [cell showTrackButtonOnTap:^(OrderTransaction *order) {
                 [self didTapTrackOrder:order];
             }];
+            
+            __weak typeof(self) wself = self;
+            [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+                [wself doAskBuyerWithOrder:order];
+            }];
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING) {
             [cell showTrackButtonOnTap:^(OrderTransaction *order) {
                 [self didTapTrackOrder:order];
             }];
             
-            if (order.order_is_pickup != 1) {
-                [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
-                    [self didTapReceiptOrder:order];
+            __weak typeof(self) wself = self;
+            [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+                [wself doAskBuyerWithOrder:order];
+            }];
+            
+            if (order.order_shipping_retry) {
+                [cell showRetryButtonOnTap:^(OrderTransaction *order) {
+                    [self didTapRetryPickup:order];
                 }];
+            } else {
+                if (order.order_is_pickup != 1) {
+                    [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                        [self didTapReceiptOrder:order];
+                    }];
+                }
             }
         } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
@@ -201,15 +216,24 @@
             [cell showTrackButtonOnTap:^(OrderTransaction *order) {
                 [self didTapTrackOrder:order];
             }];
-            [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
-                [self didTapReceiptOrder:order];
+            
+            __weak typeof(self) wself = self;
+            [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+                [wself doAskBuyerWithOrder:order];
             }];
+            
+            if (order.order_shipping_retry == 1) {
+                [cell showRetryButtonOnTap:^(OrderTransaction *order) {
+                    [self didTapRetryPickup:order];
+                }];
+            } else {
+                if (order.order_is_pickup != 1) {
+                    [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                        [self didTapReceiptOrder:order];
+                    }];
+                }
+            }
         }
-        
-        __weak typeof(self) wself = self;
-        [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
-            [wself doAskBuyerWithOrder:order];
-        }];
             
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
             cell.dateFinishLabel.hidden = NO;
@@ -352,6 +376,28 @@
     [self.navigationController pushViewController:controller animated:YES];
 }   
 
+- (void)didTapRetryPickup:(OrderTransaction *)order {
+    _selectedOrder = order;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Konfirmasi Retry Pickup" message:@"Lakukan Retry Pickup?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [RetryPickupRequest retryPickupOrder:order.order_detail.detail_order_id onSuccess:^(V4Response<GeneralActionResult *> * _Nonnull data) {
+            [self didReceiveResult:data];
+        } onFailure:^{
+            
+        }];
+        
+    }];
+    
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alertController addAction:actionCancel];
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
 - (void)didTapReceiptOrder:(OrderTransaction *)order {
     _selectedOrder = order;
     
@@ -415,9 +461,14 @@
     _selectedIndexPath = indexPath;
 
     DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
-    controller.order = order;
+    controller.order = _selectedOrder;
     controller.delegate = self;
     controller.is_allow_manage_tx = _order.is_allow_manage_tx;
+    controller.onSuccessRetry = ^ (BOOL isSuccess) {
+        if (isSuccess) {
+            [_tableView reloadData];
+        }
+    };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -488,6 +539,28 @@
         _selectedOrder.order_history = histories;
         [self.tableView reloadData];
     }
+}
+
+- (void) popUpMessagesClose:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertController;
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Tutup" style:UIAlertActionStyleCancel handler:nil];
+    alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
+- (void)didReceiveResult:(V4Response<GeneralActionResult*> *)result {
+    if ([result.data.is_success isEqualToString:@"1"]) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status delegate:self];
+        [alert show];
+        [self refreshData];
+    } else {
+        NSString *title = result.message_error[0];
+        NSString *message = result.message_error[1];
+        [self popUpMessagesClose:title message:message];
+    }
+    
 }
 
 @end

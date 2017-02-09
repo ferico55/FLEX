@@ -43,5 +43,6 @@
 @property BOOL isDetailShipmentConfirmation;
 
 @property (copy, nonatomic) void(^didAcceptOrder)();
+@property (copy) void(^onSuccessRetry)(BOOL isSuccess);
 
 @end

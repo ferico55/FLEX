@@ -18,6 +18,7 @@ class OrderButtonView: UIView {
     private var onTapChangeCourier:(() -> Void)?
     private var onTapConfirm:(() -> Void)?
     private var onTapTrack:(() -> Void)?
+    private var onTapRetry:(() -> Void)?
     private var onTapChangeResi:(() -> Void)?
     private var onTapAskBuyer:(() -> Void)?
     
@@ -56,6 +57,11 @@ class OrderButtonView: UIView {
     func addTrackButton(onTap:(() -> Void)?) {
         onTapTrack = onTap
         self.addButtonWithTitle("Lacak", imageName:"icon_track_grey", action:#selector(self.tapTrack(_:)))
+    }
+    
+    func addRetryButton(onTap:(() -> Void)?) {
+        onTapRetry = onTap
+        self.addButtonWithTitle("Retry Pickup", imageName:"", action:#selector(self.tapRetry(_:)), color:UIColor(red: 66/255, green: 181/255, blue: 73/255, alpha: 1.0), textColor:UIColor.whiteColor())
     }
     
     func addChangeResiButton(onTap:(() -> Void)?) {
@@ -105,6 +111,10 @@ class OrderButtonView: UIView {
         onTapTrack?()
     }
     
+    @objc private func tapRetry(sender:UIButton){
+        onTapRetry?()
+    }
+    
     @objc private func tapChangeResi(sender:UIButton){
         onTapChangeResi?()
     }
@@ -136,6 +146,27 @@ class OrderButtonView: UIView {
         button.titleLabel?.font = UIFont.systemFontOfSize(10)
         button.titleLabel?.numberOfLines = 0;
         button.backgroundColor = UIColor.clearColor()
+        button.setTitle(title, forState: UIControlState.Normal)
+        button.addTarget(self, action: action, forControlEvents: UIControlEvents.TouchUpInside)
+        button.titleEdgeInsets.left = 6;
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = UIColor(red:188.0/255.0, green:187.0/255.0, blue:193.0/255.0, alpha:0.5).CGColor
+        
+        self.buttonsStackView().addArrangedSubview(button)
+        
+        button.mas_makeConstraints({ (make) in
+            make.height.mas_equalTo()(40)
+        })
+    }
+    
+    private func addButtonWithTitle(title:String, imageName:String, action:Selector, color:UIColor, textColor:UIColor){
+        
+        let button = UIButton(type: UIButtonType.Custom)
+        button.setImage(UIImage(named: imageName), forState: UIControlState.Normal)
+        button.setTitleColor(textColor, forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(10)
+        button.titleLabel?.numberOfLines = 0;
+        button.backgroundColor = color;
         button.setTitle(title, forState: UIControlState.Normal)
         button.addTarget(self, action: action, forControlEvents: UIControlEvents.TouchUpInside)
         button.titleEdgeInsets.left = 6;

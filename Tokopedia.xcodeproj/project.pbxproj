@@ -67,6 +67,7 @@
 		4573F7541E49CB790058F141 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4573F0B21E49CB6F0058F141 /* vt-iOSlib-1.0.1.zip */; };
 		4573F7551E49CB790058F141 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4573F0B51E49CB6F0058F141 /* XYPieChart.m */; };
 		4721B7779D7F8855EA879E21 /* RolloutSwiftCompilerInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */; };
+		522C174B1E4C5BA300A9FEBC /* RetryPickupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522C174A1E4C5BA300A9FEBC /* RetryPickupRequest.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -1865,6 +1866,7 @@
 		4573F0B21E49CB6F0058F141 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		4573F0B41E49CB6F0058F141 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4573F0B51E49CB6F0058F141 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		522C174A1E4C5BA300A9FEBC /* RetryPickupRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryPickupRequest.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -9044,6 +9046,7 @@
 		921A32ED1E4C464800F4453E /* ShipmentStatus */ = {
 			isa = PBXGroup;
 			children = (
+				522C174A1E4C5BA300A9FEBC /* RetryPickupRequest.swift */,
 				921A32EE1E4C464800F4453E /* ChangeReceiptNumberViewController.h */,
 				921A32EF1E4C464800F4453E /* ChangeReceiptNumberViewController.m */,
 				921A32F01E4C464800F4453E /* ChangeReceiptNumberViewController.xib */,
@@ -11210,6 +11213,7 @@
 				921A38B11E4C464C00F4453E /* HotlistCollectionCell.m in Sources */,
 				921A35251E4C464900F4453E /* NSDictionaryCategory.m in Sources */,
 				921A379F1E4C464B00F4453E /* AuthenticationService.m in Sources */,
+				522C174B1E4C5BA300A9FEBC /* RetryPickupRequest.swift in Sources */,
 				921A38851E4C464C00F4453E /* FavoriteShopRequest.m in Sources */,
 				921A3AFE1E4C465000F4453E /* ProductTalkFormViewController.m in Sources */,
 				921A36E11E4C464A00F4453E /* ShopInfoImage.m in Sources */,

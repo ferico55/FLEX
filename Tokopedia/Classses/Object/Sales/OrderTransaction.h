@@ -34,5 +34,6 @@
 @property (strong, nonatomic) OrderDestination *order_destination;
 @property (strong, nonatomic) OrderSellerShop *order_shop;
 @property NSInteger order_is_pickup;
+@property NSInteger order_shipping_retry;
 
 @end

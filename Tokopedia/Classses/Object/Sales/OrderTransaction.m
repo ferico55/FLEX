@@ -12,7 +12,7 @@
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    [mapping addAttributeMappingsFromArray:@[@"order_JOB_status", @"order_auto_resi", @"order_auto_awb", @"order_is_pickup"]];
+    [mapping addAttributeMappingsFromArray:@[@"order_JOB_status", @"order_auto_resi", @"order_auto_awb", @"order_is_pickup", @"order_shipping_retry"]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"order_customer" toKeyPath:@"order_customer" withMapping:[OrderCustomer mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"order_payment" toKeyPath:@"order_payment" withMapping:[OrderPayment mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"order_detail" toKeyPath:@"order_detail" withMapping:[OrderDetail mapping]]];
