@@ -485,7 +485,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 
                 let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
                 let tick = ticker.tickers[randomIndex]
-
+                self.tickerPlaceholder.hidden = false
                 
                 if self.tickerView == nil {
                     
@@ -498,8 +498,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     
                     self.tickerView.onTapCloseButton = {[unowned self] in
                         self.canRequestTicker = false
-                        self.outerStackView.removeArrangedSubview(self.tickerView)
-                        self.tickerView.removeFromSuperview()
+                        self.tickerPlaceholder.hidden = true
                     }
                     
                     self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
@@ -517,7 +516,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 }
                 
                 self.tickerView.setMessage(tick.message, withContentColorHexString: tick.color)
+            
+            } else {
+                
+                self.tickerPlaceholder.hidden = true
             }
+            
         }) { (error) in
             self.canRequestTicker = true
         }
