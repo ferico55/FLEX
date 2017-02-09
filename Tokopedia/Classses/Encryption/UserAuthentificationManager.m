@@ -249,4 +249,18 @@
     return jsUrl;
 }
 
+- (BOOL)isOfficialStore {
+    return [[self secureStorageDictionary][@"shop_is_official"] boolValue];
+}
+
+- (ShopType)shopType {
+    if ([[self secureStorageDictionary][@"shop_is_official"] boolValue]) {
+        return ShopTypeOfficial;
+    } else if ([[self secureStorageDictionary][@"shop_is_gold"] boolValue]) {
+        return ShopTypeGold;
+    } else {
+        return ShopTypeRegular;
+    }
+}
+
 @end

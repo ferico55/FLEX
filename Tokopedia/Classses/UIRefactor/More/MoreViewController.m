@@ -366,17 +366,30 @@
                                            [_shopImageView setImage:image];
 #pragma clang diagnostic pop
                                        } failure: nil];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                                                               _shopIsGoldLabel.frame.origin.y,
+                                                                               22, 22)];
         
-        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
-                                         22, 22);
-            [_shopCell addSubview:imageView];
-            _shopIsGoldLabel.text = @"        Gold Merchant";
-        } else {
-            _shopIsGoldLabel.text = @"Regular Merchant";
-        }
+        [_shopCell addSubview:imageView];
+        
+        NSDictionary<NSString *, NSDictionary *> *display = @{
+                                    @(ShopTypeRegular): @{
+                                            @"label": @"Regular Merchant",
+                                            @"image": [UIImage new]
+                                    },
+                                    @(ShopTypeGold): @{
+                                            @"label": @"        Gold Merchant",
+                                            @"image": [UIImage imageNamed:@"Badges_gold_merchant"]
+                                    },
+                                    @(ShopTypeOfficial): @{
+                                            @"label": @"        Official Merchant",
+                                            @"image": [UIImage imageNamed:@"badge_official_small"]
+                                    }
+                                  };
+        
+        ShopType shopType = authManager.shopType;
+        _shopIsGoldLabel.text = (NSString *)display[@(shopType)][@"label"];
+        imageView.image = (UIImage *)display[@(shopType)][@"image"];
     }
     [self.tableView reloadData];
 }

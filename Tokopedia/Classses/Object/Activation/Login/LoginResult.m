@@ -23,6 +23,7 @@
                                              @"shop_name",
                                              @"shop_avatar",
                                              @"shop_is_gold",
+                                             @"shop_is_official",
                                              @"user_id",
                                              @"shop_has_terms",
                                              @"full_name",
