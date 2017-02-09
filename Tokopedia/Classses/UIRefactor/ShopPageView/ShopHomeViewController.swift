@@ -75,9 +75,9 @@ class ShopHomeViewController: UIViewController {
             make.edges.equalTo()(self.view)
         }
         
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: self.url)!))
-        
         webView.navigationDelegate = self
+        
+        webView.loadRequest(NSURLRequest(URL: NSURL(string: self.url)!))
         
         webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
             let webView = view as! WKWebView

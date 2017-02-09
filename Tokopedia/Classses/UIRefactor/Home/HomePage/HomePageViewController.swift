@@ -53,6 +53,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private var canRequestTicker: Bool = true
     private var isRequestingBanner: Bool = false
     private var isRequestingPulsaWidget: Bool = false
+    private var isRequestingOfficialStore: Bool = false
+    private var officialStoreRequestSuccess: Bool = false
+    
+    private let officialStorePlaceholder = UIView()
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -82,6 +86,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         }
         if homePageCategoryData == nil && isRequestingCategory == false {
             self.requestCategory()
+        }
+        
+        if !officialStoreRequestSuccess && !isRequestingOfficialStore {
+            self.requestOfficialStore()
         }
         
         if isTopPicksDataEmpty {
@@ -296,6 +304,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         // init top picks
         self.outerStackView.addArrangedSubview(self.topPicksPlaceholder)
+        
+        self.outerStackView.addArrangedSubview(self.officialStorePlaceholder)
     }
     
     private func refreshHorizontalStackView() -> OAStackView {
@@ -429,6 +439,41 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.requestManager.didNotSuccessReceiveCategory = {
             self.isRequestingPulsaWidget = false
         }
+    }
+    
+    private func requestOfficialStore() {
+        let networkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(
+            NSString.mojitoUrl(),
+            path: "/os/api/v1/brands/list",
+            method: .GET,
+            parameter: ["device":"ios"],
+            mapping: V4Response.mappingWithData(OfficialStoreHomeItem.mapping()),
+            onSuccess: { [weak self] (mappingResult, operation) in
+                guard let `self` = self else { return }
+                
+                self.isRequestingOfficialStore = false
+                self.officialStoreRequestSuccess = true
+                
+                let result = mappingResult.dictionary()[""] as! V4Response
+                let shops = result.data as! [OfficialStoreHomeItem]
+                
+                guard !shops.isEmpty else { return }
+                
+                let officialStoreSection = OfficialStoreSectionViewController(shops: shops)
+                
+                self.addChildViewController(officialStoreSection)
+                self.officialStorePlaceholder.addSubview(officialStoreSection.view)
+                
+                officialStoreSection.view.mas_makeConstraints { (make) in
+                    make.edges.equalTo()(self.officialStorePlaceholder)
+                }
+            },
+            onFailure: {error in
+                self.isRequestingOfficialStore = false
+            })
     }
     
     private func requestTicker() {
