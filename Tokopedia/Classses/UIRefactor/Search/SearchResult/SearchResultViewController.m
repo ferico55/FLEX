@@ -31,7 +31,7 @@
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "NSString+MD5.h"
 #import "URLCacheController.h"
 
 #import "ProductCell.h"
@@ -1037,7 +1037,7 @@ ImageSearchRequestDelegate
         userId = [_userManager getMyDeviceToken];
     }
     
-    return userId;
+    return [userId encryptWithMD5];
 }
 
 -(NSString*)selectedCategoryIDsString{

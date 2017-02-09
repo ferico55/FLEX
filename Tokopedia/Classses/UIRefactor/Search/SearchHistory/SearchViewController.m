@@ -17,7 +17,7 @@
 #import "CatalogViewController.h"
 #import "NotificationManager.h"
 #import "HotlistResultViewController.h"
-
+#import "NSString+MD5.h"
 #import "SearchAutoCompleteDomains.h"
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
@@ -226,7 +226,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         userId = [_authManager getMyDeviceToken];
     }
     
-    return userId;
+    return [userId encryptWithMD5];
 }
 
 #pragma mark - API
@@ -509,12 +509,11 @@ NSString *const RECENT_SEARCH = @"recent_search";
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc.isFromAutoComplete = autocomplete;
-    vc.delegate = self;
+    vc1.isFromAutoComplete = autocomplete;
+    vc1.delegate = self;
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc.isFromAutoComplete = autocomplete;
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
