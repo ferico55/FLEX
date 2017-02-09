@@ -16,6 +16,7 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import "TKPDTabViewController.h"
 #import "ProductAddEditViewController.h"
+#import "GAIDictionaryBuilder.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -608,6 +609,10 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     
     // AppsFlyer Tracking
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    
+    [tracker set:kGAIUserId value:login.result.user_id];
 }
 
 + (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString *)label {

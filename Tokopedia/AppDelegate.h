@@ -12,6 +12,7 @@
 #import "TAGContainerOpener.h"
 #import "TAGManager.h"
 #import <UserNotifications/UserNotifications.h>
+#import "GAI.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate>
@@ -22,4 +23,7 @@
 
 @property (nonatomic, strong) TAGManager *tagManager;
 @property (nonatomic, strong) TAGContainer *container;
+
+@property (strong, nonatomic) id<GAITracker> tracker;
+
 @end
