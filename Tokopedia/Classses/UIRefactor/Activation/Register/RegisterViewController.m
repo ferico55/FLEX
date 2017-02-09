@@ -816,10 +816,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             [loginController.delegate redirectViewController:loginController.redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else {
+            UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
             [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -930,8 +930,15 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self navigateToProperPage];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                        object:nil
+                                                      userInfo:nil];
     
     [AnalyticsManager trackLogin:login];
+    
+    if (_onLoginSuccess) {
+        _onLoginSuccess();
+    }
 }
 
 @end
