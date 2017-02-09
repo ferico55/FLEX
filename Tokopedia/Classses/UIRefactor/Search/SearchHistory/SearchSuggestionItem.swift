@@ -9,13 +9,15 @@
 import Foundation
 
 class SearchSuggestionItem: NSObject {
-    var keyword: String!
-    var url: String!
-    var redirectUrl: String!
+    var keyword = ""
+    var url = ""
+    var redirectUrl = ""
+    var imageURI = ""
+    var isOfficial = false
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(forClass: SearchSuggestionItem.self)
-        mapping.addAttributeMappingsFromArray(["keyword", "url"])
+        mapping.addAttributeMappingsFromArray(["keyword", "url", "imageURI", "isOfficial"])
         mapping.addAttributeMappingsFromDictionary(["redirection_url":"redirectUrl"])
         return mapping
     }

@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "badge_official.png",
+      "filename" : "badge_official@1x.png",
       "scale" : "1x"
     },
     {

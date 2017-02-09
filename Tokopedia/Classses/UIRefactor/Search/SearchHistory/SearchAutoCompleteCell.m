@@ -9,28 +9,24 @@
 #import "SearchAutoCompleteCell.h"
 #import "UIView+HVDLayout.h"
 
+static const NSString* SEARCH_AUTOCOMPLETE = @"autocomplete";
+static const NSString* RECENT_SEARCH = @"recent_search";
+
 @implementation SearchAutoCompleteCell
 
-- (void)awakeFromNib {
-    // Initialization code
-    [self.contentView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
-}
-
-- (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel {
-    [_searchTitle setText:viewModel.title];
-    [self setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
+- (void)setSearchCell:(SearchSuggestionItem*) item section:(SearchSuggestionData*) data {
+    [_searchTitle setText:item.keyword];
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.imageUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_searchImage setContentMode:UIViewContentModeCenter];
-    [_searchImage setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [_searchImage setContentMode:UIViewContentModeScaleAspectFill];
-        [_searchImage setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_searchImage setImage:nil];
-    }];
+    _closeButton.hidden = YES;
+    _searchLoopImageView.hidden = YES;
+    _searchTitleLeadingToSuperViewConstraint.constant = 21;
+    if([data.id isEqual: RECENT_SEARCH]) {
+        _closeButton.hidden = NO;
+    } else if ([data.id isEqual: SEARCH_AUTOCOMPLETE]){
+        _searchLoopImageView.hidden = NO;
+        _searchTitleLeadingToSuperViewConstraint.constant = 46;
+        
+    }
 }
 
 - (void)setBoldSearchText:(NSString *)searchText {

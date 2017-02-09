@@ -23,7 +23,7 @@
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
 #import "UIView+HVDLayout.h"
-
+#import "SearchAutoCompleteShopCell.h"
 #import "ImagePickerCategoryController.h"
 
 #import "Tokopedia-Swift.h"
@@ -93,6 +93,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    UINib *cellShopNib = [UINib nibWithNibName:@"SearchAutoCompleteShopCell" bundle:nil];
+    [_collectionView registerNib:cellShopNib forCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
     _requestManager = [TokopediaNetworkManager new];
@@ -234,7 +236,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
      __weak typeof(self) weakSelf = self;
     [debouncer setCallback:^{
-        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v2" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *result = [successResult dictionary];
                     [weakSelf.searchSuggestionDataArray removeAllObjects];
@@ -294,31 +296,27 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     UICollectionViewCell *cell = nil;
-    SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+    
     if (_searchSuggestionDataArray.count > 0){
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-        
         SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-        searchCell.searchTitle.text = searchSuggestionItem.keyword;
         
-        searchCell.closeButton.hidden = YES;
-        searchCell.searchLoopImageView.hidden = YES;
-        searchCell.searchTitleLeadingToSuperViewConstraint.constant = 21;
-        if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
-            searchCell.closeButton.hidden = NO;
+        if ([searchSuggestionData.id isEqual: @"shop"]) {
+            SearchAutoCompleteShopCell *shopCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier" forIndexPath:indexPath];
+            [shopCell setSearchItem:searchSuggestionItem];
+            
+            cell = shopCell;
+        } else {
+            SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+            [searchCell setSearchCell:searchSuggestionItem section:searchSuggestionData];
             [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-        } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
-            searchCell.searchLoopImageView.hidden = NO;
-            searchCell.searchTitleLeadingToSuperViewConstraint.constant = 46;
-
+            [searchCell setGreenSearchText:_searchBar.text];
+            
+            cell = searchCell;
         }
-        [searchCell setGreenSearchText:_searchBar.text];
-    }
-    
-    cell = searchCell;
-    cell.hidden = NO;
+        cell.hidden = NO;
+      }
     
     return cell;
 }
@@ -353,12 +351,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
 
-    if ([searchSuggestionData.id isEqual: @"hotlist"]){
+    if ([searchSuggestionData.id isEqual: @"hotlist"] || [searchSuggestionData.id isEqual: @"shop"]){
         NSString *url = searchSuggestionItem.redirectUrl;
         if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
             url = searchSuggestionItem.url;
         }
-        NSArray *keys = [url componentsSeparatedByString:@"/"];
+        
         [TPRoutes routeURL:[NSURL URLWithString:url]];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];

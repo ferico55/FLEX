@@ -68,6 +68,8 @@
 		4573F7551E49CB790058F141 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4573F0B51E49CB6F0058F141 /* XYPieChart.m */; };
 		4721B7779D7F8855EA879E21 /* RolloutSwiftCompilerInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4030C14B6EDCAC975E2B7C /* RolloutSwiftCompilerInitiator.swift */; };
 		522C174B1E4C5BA300A9FEBC /* RetryPickupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522C174A1E4C5BA300A9FEBC /* RetryPickupRequest.swift */; };
+		522C174F1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C174D1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.m */; };
+		522C17501E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522C174E1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.xib */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -1867,6 +1869,9 @@
 		4573F0B41E49CB6F0058F141 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4573F0B51E49CB6F0058F141 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		522C174A1E4C5BA300A9FEBC /* RetryPickupRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryPickupRequest.swift; sourceTree = "<group>"; };
+		522C174C1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteShopCell.h; sourceTree = "<group>"; };
+		522C174D1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteShopCell.m; sourceTree = "<group>"; };
+		522C174E1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchAutoCompleteShopCell.xib; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -9094,6 +9099,9 @@
 		921A33071E4C464800F4453E /* SearchHistory */ = {
 			isa = PBXGroup;
 			children = (
+				522C174C1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.h */,
+				522C174D1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.m */,
+				522C174E1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.xib */,
 				921A33081E4C464800F4453E /* GetSearchSuggestionGeneralResponse.swift */,
 				921A33091E4C464800F4453E /* SearchAutoCompleteCell.h */,
 				921A330A1E4C464800F4453E /* SearchAutoCompleteCell.m */,
@@ -10465,6 +10473,7 @@
 				921A3B441E4C465000F4453E /* CancelOrderViewController.xib in Resources */,
 				921A3AD61E4C465000F4453E /* EtalaseCell.xib in Resources */,
 				34B02ECA1E49B7A600C132A8 /* LaunchScreen.xib in Resources */,
+				522C17501E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.xib in Resources */,
 				921A38AA1E4C464C00F4453E /* PromoViewController.xib in Resources */,
 				921A3AA71E4C464F00F4453E /* OpenShopSuccessViewController.xib in Resources */,
 				921A38D41E4C464C00F4453E /* EditSolutionBuyerViewController.xib in Resources */,
@@ -11033,6 +11042,7 @@
 				921A364A1E4C464A00F4453E /* Notification.m in Sources */,
 				921A35661E4C464900F4453E /* Logout.m in Sources */,
 				921A36F71E4C464A00F4453E /* JNE.m in Sources */,
+				522C174F1E4C7B1000A9FEBC /* SearchAutoCompleteShopCell.m in Sources */,
 				921A3AEA1E4C465000F4453E /* ShopTalkPageViewController.m in Sources */,
 				921A39CD1E4C464E00F4453E /* PulsaRelationData.swift in Sources */,
 				921A36901E4C464A00F4453E /* ActionOrderResult.m in Sources */,

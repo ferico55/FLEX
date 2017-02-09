@@ -9,8 +9,8 @@
 import Foundation
 
 class SearchSuggestionData: NSObject {
-    var name: String!
-    var id: String!
+    var name = ""
+    var id = ""
     var items: [SearchSuggestionItem]!
     
     class func mapping() -> RKObjectMapping {

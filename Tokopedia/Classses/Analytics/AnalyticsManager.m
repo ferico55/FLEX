@@ -677,6 +677,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         actionForTracker = @"Popular Search";
     } else if ([searchID isEqualToString:@"hotlist"]) {
         actionForTracker = @"Search Hotlist";
+    } else if ([searchID isEqualToString:@"shop"]) {
+        actionForTracker = @"Search Shop";
     }
     
     return actionForTracker;
