@@ -87,9 +87,11 @@
 }
 
 -(void)showEditResiButtonOnTap:(void (^)(OrderTransaction *))onTap{
-    [_buttonsView addChangeResiButton:^{
-        onTap(_order);
-    }];
+    if (_order.order_is_pickup == 0){
+        [_buttonsView addChangeResiButton:^{
+            onTap(_order);
+        }];
+    }
 }
 
 - (void)showAllButton

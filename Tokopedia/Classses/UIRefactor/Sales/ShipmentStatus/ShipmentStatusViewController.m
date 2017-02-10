@@ -203,11 +203,9 @@
                     [self didTapRetryPickup:order];
                 }];
             } else {
-                if (order.order_is_pickup != 1) {
-                    [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
-                        [self didTapReceiptOrder:order];
-                    }];
-                }
+                [cell showEditResiButtonOnTap:^(OrderTransaction *order) {
+                    [self didTapReceiptOrder:order];
+                }];
             }
         } else if (
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
