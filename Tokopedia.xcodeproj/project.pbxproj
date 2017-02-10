@@ -1752,8 +1752,9 @@
 		921A3B8D1E4C465100F4453E /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 921A35171E4C464900F4453E /* VTItemDetails.m */; };
 		921A3B8E1E4C465100F4453E /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 921A35191E4C464900F4453E /* VTToken.m */; };
 		921A3B8F1E4C465100F4453E /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 921A351B1E4C464900F4453E /* VTTransactionDetails.m */; };
+		921A59BE1E4D6E3F005F1FBC /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 921A59B71E4D6E3E005F1FBC /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		921A59C31E4D774F005F1FBC /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264B90B1E4AD19500353E58 /* NotificationService.swift */; };
 		9264B90D1E4AD19500353E58 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9264B90A1E4AD19500353E58 /* Info.plist */; };
-		9264B90E1E4AD19500353E58 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264B90B1E4AD19500353E58 /* NotificationService.swift */; };
 		B715641F0F836AA3DB6B5D6B /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93485AE00F1CD3AF3065663A /* RolloutSwiftInjectionBridge.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1773,6 +1774,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		921A59BC1E4D6E3F005F1FBC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC36DF7B19B0656400AF74C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 921A59B61E4D6E3E005F1FBC;
+			remoteInfo = ServiceExtension;
+		};
 		FC36DFA319B0656400AF74C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FC36DF7B19B0656400AF74C1 /* Project object */;
@@ -1781,6 +1789,20 @@
 			remoteInfo = Tokopedia;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		921A59C21E4D6E3F005F1FBC /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				921A59BE1E4D6E3F005F1FBC /* ServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4680,6 +4702,7 @@
 		921A35191E4C464900F4453E /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		921A351A1E4C464900F4453E /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		921A351B1E4C464900F4453E /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		921A59B71E4D6E3E005F1FBC /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9264B90A1E4AD19500353E58 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9264B90B1E4AD19500353E58 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		9264B90C1E4AD19500353E58 /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
@@ -4706,6 +4729,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		921A59B41E4D6E3E005F1FBC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC36DF8019B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -9998,6 +10028,7 @@
 			children = (
 				FC36DF8319B0656400AF74C1 /* Tokopedia.app */,
 				FC36DF9E19B0656400AF74C1 /* TokopediaTests.xctest */,
+				921A59B71E4D6E3E005F1FBC /* ServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -10070,6 +10101,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		921A59B61E4D6E3E005F1FBC /* ServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 921A59C11E4D6E3F005F1FBC /* Build configuration list for PBXNativeTarget "ServiceExtension" */;
+			buildPhases = (
+				921A59B31E4D6E3E005F1FBC /* Sources */,
+				921A59B41E4D6E3E005F1FBC /* Frameworks */,
+				921A59B51E4D6E3E005F1FBC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ServiceExtension;
+			productName = ServiceExtension;
+			productReference = 921A59B71E4D6E3E005F1FBC /* ServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FC36DF8219B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
@@ -10082,10 +10130,12 @@
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
 				D82E8EEA83AEC3DBD6A71193 /* Rollout.io post-build */,
+				921A59C21E4D6E3F005F1FBC /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				921A59BD1E4D6E3F005F1FBC /* PBXTargetDependency */,
 			);
 			name = Tokopedia;
 			productName = Tokopedia;
@@ -10119,10 +10169,15 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
+					921A59B61E4D6E3E005F1FBC = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = YQP4A2M94J;
+						ProvisioningStyle = Automatic;
+					};
 					FC36DF8219B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
 						LastSwiftMigration = 0800;
@@ -10174,11 +10229,19 @@
 			targets = (
 				FC36DF8219B0656400AF74C1 /* Tokopedia */,
 				FC36DF9D19B0656400AF74C1 /* TokopediaTests */,
+				921A59B61E4D6E3E005F1FBC /* ServiceExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		921A59B51E4D6E3E005F1FBC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC36DF8119B0656400AF74C1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -10725,6 +10788,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		921A59B31E4D6E3E005F1FBC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				921A59C31E4D774F005F1FBC /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC36DF7F19B0656400AF74C1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -10941,7 +11012,6 @@
 				921A36041E4C464900F4453E /* EditSolution.swift in Sources */,
 				921A376C1E4C464B00F4453E /* WalletData.swift in Sources */,
 				921A37971E4C464B00F4453E /* TKPGoogleDistanceMatrixProductStore.m in Sources */,
-				9264B90E1E4AD19500353E58 /* NotificationService.swift in Sources */,
 				921A375A1E4C464B00F4453E /* GeneratedHost.m in Sources */,
 				921A396B1E4C464D00F4453E /* ProductEditWholesaleViewController.m in Sources */,
 				921A37FA1E4C464B00F4453E /* CatalogProductCell.m in Sources */,
@@ -12055,6 +12125,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		921A59BD1E4D6E3F005F1FBC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 921A59B61E4D6E3E005F1FBC /* ServiceExtension */;
+			targetProxy = 921A59BC1E4D6E3F005F1FBC /* PBXContainerItemProxy */;
+		};
 		FC36DFA419B0656400AF74C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FC36DF8219B0656400AF74C1 /* Tokopedia */;
@@ -12082,6 +12157,63 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		921A59BF1E4D6E3F005F1FBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YQP4A2M94J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+			};
+			name = Debug;
+		};
+		921A59C01E4D6E3F005F1FBC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YQP4A2M94J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia.ServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
+			};
+			name = Release;
+		};
 		FC36DFAD19B0656400AF74C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -12174,6 +12306,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
@@ -12225,6 +12358,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
@@ -12332,6 +12466,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		921A59C11E4D6E3F005F1FBC /* Build configuration list for PBXNativeTarget "ServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				921A59BF1E4D6E3F005F1FBC /* Debug */,
+				921A59C01E4D6E3F005F1FBC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		FC36DF7E19B0656400AF74C1 /* Build configuration list for PBXProject "Tokopedia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
