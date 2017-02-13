@@ -64,6 +64,11 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSDictionary *pushNotificationData = response.notification.request.content.userInfo;
+    if (pushNotificationData) {
+        [self handlePushNotificationWithData:pushNotificationData];
+    }
+    
     completionHandler();
 }
 
