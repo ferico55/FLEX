@@ -131,7 +131,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
     [self getUserSearchSuggestionDataWithQuery:@""];
     
     [self initNotificationManager];
@@ -351,13 +350,40 @@ NSString *const RECENT_SEARCH = @"recent_search";
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
 
-    if ([searchSuggestionData.id isEqual: @"hotlist"] || [searchSuggestionData.id isEqual: @"shop"]){
-        NSString *url = searchSuggestionItem.redirectUrl;
-        if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
-            url = searchSuggestionItem.url;
-        }
-        
+    NSString *url = searchSuggestionItem.redirectUrl;
+    if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
+        url = searchSuggestionItem.url;
+    }
+    
+    if ([searchSuggestionData.id isEqual: @"hotlist"]){
         [TPRoutes routeURL:[NSURL URLWithString:url]];
+    } else if ([searchSuggestionData.id isEqual: @"shop"]) {
+        [self navigateToIntermediaryPage];
+        
+        NSString *path = [self shopDomainForUrl:url];
+        
+        UINavigationController *nav = self.presentingViewController.navigationController;
+        [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
+            [nav popViewControllerAnimated:NO];
+            
+            if (exists) {
+                ShopViewController *shopViewController = [ShopViewController new];
+                shopViewController.data = @{
+                                            @"shop_domain": path
+                                            };
+                
+                [nav pushViewController:shopViewController animated:NO];
+                
+            } else {
+                WebViewController *webViewController = [WebViewController new];
+                webViewController.strTitle = @"Tokopedia";
+                webViewController.strURL = url;
+                
+                if(nav != nil) {
+                    [nav pushViewController:webViewController animated:NO];
+                }
+            }
+        }];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -565,6 +591,27 @@ NSString *const RECENT_SEARCH = @"recent_search";
     UICollectionView *collectionView = self.collectionView;
     UIEdgeInsets collectionInset = collectionView.contentInset;
     [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top) animated:YES];
+}
+
+- (void)navigateToIntermediaryPage {
+    UIViewController *viewController = [UIViewController new];
+    viewController.view.frame = self.presentingViewController.navigationController.viewControllers.lastObject.view.frame;
+    viewController.view.backgroundColor = [UIColor whiteColor];
+    viewController.hidesBottomBarWhenPushed = YES;
+    [SwiftOverlays showCenteredWaitOverlay:viewController.view];
+    
+    [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
+}
+
+- (NSString *)shopDomainForUrl:(NSString *)urlString {
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSString *path = [[url.pathComponents
+                       bk_reject:^BOOL(NSString *path) {
+                           return [path isEqualToString:@"/"];
+                       }]
+                      componentsJoinedByString:@"/"];
+    return path;
 }
 
 @end
