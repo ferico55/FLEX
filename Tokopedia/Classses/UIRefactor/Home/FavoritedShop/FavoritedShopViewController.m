@@ -110,8 +110,6 @@ FavoriteShopRequestDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
-    [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
-    
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
