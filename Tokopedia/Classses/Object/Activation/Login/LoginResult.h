@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_avatar;
 @property (nonatomic) NSInteger shop_is_gold;
+@property (nonatomic) NSInteger shop_is_official;
 
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *shop_has_terms;

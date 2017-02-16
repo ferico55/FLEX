@@ -9,16 +9,15 @@
 #import <UIKit/UIKit.h>
 
 #import "SearchAutoCompleteViewModel.h"
+#import "Tokopedia-Swift.h"
 
 @interface SearchAutoCompleteCell : UICollectionViewCell
-
 @property (strong, nonatomic) IBOutlet UILabel *searchTitle;
-@property (weak, nonatomic) IBOutlet UIImageView *searchImage;
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
 @property (strong, nonatomic) IBOutlet UIImageView *searchLoopImageView;
-
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchTitleLeadingToSuperViewConstraint;
-- (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel;
+
+- (void)setSearchCell:(SearchSuggestionItem*) item section:(SearchSuggestionData*) data;
 - (void)setBoldSearchText:(NSString*)searchText;
 - (void)setGreenSearchText:(NSString*)searchText;
 

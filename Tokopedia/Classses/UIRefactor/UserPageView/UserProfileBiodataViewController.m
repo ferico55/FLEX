@@ -370,33 +370,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self determineOtherScrollView:scrollView];
-}
-
-- (void)determineOtherScrollView:(UIScrollView *)scrollView {
-    NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShopScroll" object:nil userInfo:userInfo];
-}
-
-
-- (void)updateInfoProfileScroll:(NSNotification *)notification
-{
-    id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    }
-    
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _table.contentOffset = cgpoint;
-    
-}
-
 #pragma mark - CMPopTipView Delegate
 - (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
 {

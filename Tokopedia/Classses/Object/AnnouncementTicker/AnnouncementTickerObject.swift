@@ -20,6 +20,7 @@ class AnnouncementTickerObject: NSObject {
     var updated_by: String = ""
     var updated_on: String = ""
     var status: String = ""
+    var color : String = ""
     
     static func mapping() -> RKObjectMapping! {
         let mapping = RKObjectMapping(forClass: self)
@@ -37,6 +38,7 @@ class AnnouncementTickerObject: NSObject {
                 "created_on" : "created_on",
                 "updated_by" : "updated_by",
                 "updated_on" : "updated_on",
+                "color" : "color"
             ]
         )
         

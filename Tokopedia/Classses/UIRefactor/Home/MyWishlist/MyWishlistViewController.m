@@ -30,6 +30,8 @@
 
 #import "NSNumberFormatter+IDRFormater.h"
 #import "NotificationManager.h"
+#import "UITextField+BlocksKit.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
@@ -48,10 +50,20 @@ RetryViewDelegate
 
 @property (nonatomic, strong) NSMutableArray<MyWishlistData *> *product;
 @property (nonatomic, assign) CGFloat lastContentOffset;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
 
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) UserAuthentificationManager *userManager;
+
+// Search Wishlist Properties
+@property (strong, nonatomic) TokopediaNetworkManager *wishlistNetworkManager;
+@property (strong, nonatomic) UITextField *searchWishlistTextField;
+@property (strong, nonatomic) UILabel *searchResultCountLabel;
+@property (strong, nonatomic) NSString *activeSearchText;
+@property (strong, nonatomic) NoResultReusableView *searchNoResultView;
+@property (nonatomic) BOOL isRequestingData;
 
 typedef enum TagRequest {
     ProductTag
@@ -76,7 +88,7 @@ typedef enum TagRequest {
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
     NoResultReusableView *_notLoggedInView;
-    UserAuthentificationManager *_userManager;
+    
     NotificationManager *_notifManager;
 }
 
@@ -98,12 +110,25 @@ typedef enum TagRequest {
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
-    [_noResultView generateAllElements:@"wishlist.png"
-                                 title:@"Lihat produk yang telah ditambahkan ke Wishlist disini"
-                                  desc:@"Segera tambahkan produk yang Anda sukai, belanja jadi lebih cepat!"
-                              btnTitle:@"Lihat Hot List"];
+    [_noResultView generateAllElements:@"toped_wishlist"
+                                 title:@""
+                                  desc:@"Wishlist Anda masih kosong"
+                              btnTitle:@"Mulai cari produk"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
+}
+
+- (void) initSearchNoResultView {
+    __weak typeof(self) weakSelf = self;
+    _searchNoResultView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, 50, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    [_searchNoResultView generateAllElements:@"toped_cry"
+                                       title:@""
+                                        desc:@"Produk tidak ditemukan di Wishlist"
+                                    btnTitle:@"Lihat semua Wishlist"];
+    _searchNoResultView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        [weakSelf showWaitOverlay];
+        [weakSelf refreshView:nil];
+    };
 }
 
 - (void)initNotLoggedInView {
@@ -130,6 +155,7 @@ typedef enum TagRequest {
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    [self initWishlistNetworkManager];
     [self initNotificationManager];
     
     _userManager = [[UserAuthentificationManager alloc] init];
@@ -139,6 +165,7 @@ typedef enum TagRequest {
     _isNoData = (_product.count > 0);
     _page = 1;
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
+    _activeSearchText = @"";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
@@ -149,6 +176,7 @@ typedef enum TagRequest {
     //todo with view
     [self initNoResultView];
     [self initNotLoggedInView];
+    [self initSearchNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -156,15 +184,14 @@ typedef enum TagRequest {
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
-//    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
-    
-//    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
-    
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    
+    UINib *searchWishlistNib = [UINib nibWithNibName:@"MyWishlistSearchCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:searchWishlistNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WishlistSearchHeaderView"];
     
     UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"GeneralProductCollectionViewIdentifier"];
@@ -182,24 +209,56 @@ typedef enum TagRequest {
         [_collectionView addSubview:_notLoggedInView];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
     } else {
-        [self loadProduct];
+        [self loadAllWishlist];
     }
 }
 
-- (void)loadProduct {
-    TokopediaNetworkManager* network = [TokopediaNetworkManager new];
-    network.isUsingHmac = YES;
+-(void) loadAllWishlist {
     __weak typeof(self) weakSelf = self;
-    [network requestWithBaseUrl:[NSString mojitoUrl]
-                           path:[self getWishlistPath]
-                         method:RKRequestMethodGET
-                      parameter:@{@"page" : @(_page), @"count" : @"10"}
-                        mapping:[MyWishlistResponse mapping]
-                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                          [weakSelf didReceiveProduct:[successResult.dictionary objectForKey:@""]];
-                      } onFailure:^(NSError *errorResult) {
-                          _isFailRequest = NO;
-                      }];
+    _isRequestingData = YES;
+    [_wishlistNetworkManager requestWithBaseUrl:[NSString mojitoUrl]
+                                          path:[self getWishlistPath]
+                                        method:RKRequestMethodGET
+                                     parameter:@{@"page" : @(_page), @"count" : @"10"}
+                                       mapping:[MyWishlistResponse mapping]
+                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                         weakSelf.activeSearchText = @"";
+                                         [weakSelf removeAllOverlays];
+                                         [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 70)];
+                                         [weakSelf didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+                                     } onFailure:^(NSError *errorResult) {
+                                         [weakSelf getWishlistDidError];
+                                     }];
+}
+
+-(void) loadWishlistWithSearchText: (NSString *) searchText {
+    __weak typeof(self) weakSelf = self;
+    if (_isRequestingData == NO) {
+        if ([searchText isEqualToString:@""]){
+            [self loadAllWishlist];
+        } else {
+            _isRequestingData = YES;
+            [_wishlistNetworkManager requestWithBaseUrl:[NSString mojitoUrl]
+                                                   path:[NSString stringWithFormat:@"/users/%@/wishlist/search/v2", [_userManager getUserId]]
+                                                 method:RKRequestMethodGET
+                                              parameter:@{@"q":searchText, @"page" : @(_page), @"count" : @"10"}
+                                                mapping:[MyWishlistResponse mapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                weakSelf.activeSearchText = searchText;
+                [weakSelf removeAllOverlays];
+                [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 100)];
+                [weakSelf didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+            } onFailure:^(NSError *errorResult) {
+                [weakSelf getWishlistDidError];
+            }];
+        }
+    }
+}
+
+- (void) getWishlistDidError {
+    _isFailRequest = NO;
+    _isRequestingData = NO;
+    [self removeAllOverlays];
 }
 
 -(NSString *) getWishlistPath {
@@ -223,6 +282,11 @@ typedef enum TagRequest {
     
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+}
+
+- (void) initWishlistNetworkManager {
+    _wishlistNetworkManager = [TokopediaNetworkManager new];
+    _wishlistNetworkManager.isUsingHmac = YES;
 }
 
 #pragma mark - Collection Delegate
@@ -257,7 +321,7 @@ typedef enum TagRequest {
                              otherButtonTitles:@[@"Yakin"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                            if(buttonIndex == 1) {
-                                               [self requestRemoveWishlist:list withIndexPath:indexPath];
+                                               [self requestRemoveWishlist:list];
                                            }
                                        }];
     };
@@ -268,35 +332,41 @@ typedef enum TagRequest {
     if (row == indexPath.row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
-            [self loadProduct];
+            [self loadWishlistWithSearchText:_activeSearchText];
         }
     }
     return cell;
 }
 
-- (void)requestRemoveWishlist:(MyWishlistData*)list withIndexPath:(NSIndexPath*)indexPath {
+- (void)requestRemoveWishlist:(MyWishlistData*)wishlistData {
     UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
     NSString *userId = [userManager getUserId];
     
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
-    NSString *productId = list.id;
+    NSString *productId = wishlistData.id;
+    __weak typeof(self) weakSelf = self;
     [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : userId} parameter:nil mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                        [_collectionView performBatchUpdates:^ {
-                                            [_product removeObjectAtIndex:indexPath.row];
-                                            [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                                        } completion:^(BOOL finished) {
-                                            [_collectionView reloadData];
-                                        }];
-                                        
+                                        if ([weakSelf.product containsObject: wishlistData]){
+                                            [weakSelf.collectionView performBatchUpdates:^ {
+                                                
+                                                NSInteger index = [weakSelf.product indexOfObject:wishlistData];
+                                                [weakSelf.product removeObjectAtIndex:index];
+                                                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+                                                [weakSelf.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                                if (weakSelf.product.count == 0) {
+                                                    [weakSelf showNoResultView];                                    }
+                                            } completion:^(BOOL finished) {
+                                                [weakSelf.collectionView reloadData];
+                                            }];
+                                        }
                                     } onFailure:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [ProductCellSize sizeWishlistCell];
 }
-
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     
@@ -310,6 +380,16 @@ typedef enum TagRequest {
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
+    } else if (kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WishlistSearchHeaderView" forIndexPath:indexPath];
+        MyWishlistSearchCollectionReusableView *reusableViewHeader = (MyWishlistSearchCollectionReusableView *)reusableView;
+        self.searchWishlistTextField = reusableViewHeader.searchWishlistTextField;
+        self.searchResultCountLabel = reusableViewHeader.searchResultCountLabel;
+        reusableViewHeader.didTapResetButton = ^(void){
+            [self showWaitOverlay];
+             [self refreshView:nil];
+        };
+        [self setupSearchTextFieldBlocksKit];
     }
     
     return reusableView;
@@ -335,9 +415,15 @@ typedef enum TagRequest {
 
 #pragma Methods
 -(void)refreshView:(UIRefreshControl*)refresh {
-    _page = 1;
-    _isShowRefreshControl = YES;
-    [self loadProduct];
+    if ([_userManager isLogin]) {
+        _page = 1;
+        _isShowRefreshControl = YES;
+        _searchWishlistTextField.text = @"";
+        _activeSearchText = @"";
+        [self loadAllWishlist];
+    } else {
+        [_refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - NoResult Delegate
@@ -391,6 +477,7 @@ typedef enum TagRequest {
 }
 
 - (void)didReceiveProduct:(MyWishlistResponse*)productStore {
+    _isRequestingData = NO;
     if(_page == 1) {
         _product = [productStore.data mutableCopy];
     } else {
@@ -398,6 +485,7 @@ typedef enum TagRequest {
     }
     
     [_noResultView removeFromSuperview];
+    [_searchNoResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  productStore.pagination.uri_next;
@@ -409,12 +497,10 @@ typedef enum TagRequest {
         }
         [_noResultView removeFromSuperview];
     } else {
-        // no data at all
-        _isNoData = YES;
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
-        //[self setView:_noResultView];
-        [_collectionView addSubview:_noResultView];
+        [self showNoResultView];
     }
+    
+    self.searchResultCountLabel.text  = [NSString stringWithFormat:@"%@ hasil", productStore.header.total_data];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -460,14 +546,14 @@ typedef enum TagRequest {
         [_collectionView reloadData];
         [_noResultView removeFromSuperview];
     }else{
-        [_collectionView addSubview:_noResultView];
+        [self showNoResultView];
     }
     [_collectionView reloadData];
 }
 
 #pragma mark - Other Method
 - (void)pressRetryButton {
-    [self loadProduct];
+    [self loadAllWishlist];
     _isFailRequest = NO;
     [_collectionView reloadData];
 }
@@ -476,8 +562,25 @@ typedef enum TagRequest {
     [_collectionView reloadData];
 }
 
+- (BOOL) isSearchModeActive {
+    return ![_activeSearchText isEqualToString:@""];
+}
 
-#pragma mark 
+- (void) showNoResultView {
+    if ([self isSearchModeActive]) {
+        [_collectionView insertSubview:_searchNoResultView atIndex:0];
+    } else {
+        // no data at all
+        _isNoData = YES;
+        [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 0)];
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        //[self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
+    }
+}
+
+
+#pragma mark
 - (RKObjectMapping *)actionRemoveWishlistMapping {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -506,6 +609,7 @@ typedef enum TagRequest {
 }
 
 - (void)setAsGuestView {
+    [_flowLayout setHeaderReferenceSize:CGSizeZero];
     [_flowLayout setFooterReferenceSize:CGSizeZero];
     [_collectionView addSubview:_notLoggedInView];
     [_noResultView removeFromSuperview];
@@ -563,4 +667,23 @@ typedef enum TagRequest {
                             animated:YES];
 }
 
+#pragma - Search TextField BlocksKit
+
+- (void) setupSearchTextFieldBlocksKit {
+    __weak typeof(self) weakSelf = self;
+    _searchWishlistTextField.bk_shouldReturnBlock = ^BOOL(UITextField *textField) {
+        if (weakSelf.isRequestingData == NO) {
+            _page = 1;
+            [weakSelf showWaitOverlay];
+            [weakSelf loadWishlistWithSearchText:textField.text];
+            return YES;
+        } else {
+            return NO;
+        }
+    };
+}
+
 @end
+
+
+

@@ -25,21 +25,24 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.button.layer.cornerRadius = 2;
+    self.button.layer.cornerRadius = 5;
 }
 
 - (void)setText:(NSString *)text
 {
     _text = text?:@"";
     _textLabel.text = _text;
-    [_textLabel sizeToFit];
     
     self.clipsToBounds = YES;
-    self.layer.cornerRadius = 2;
+    self.layer.cornerRadius = 5;
 
 }
 
 - (IBAction)didTapLoginButton:(UIButton *)sender {
+    if (_didTapActionButton) {
+        _didTapActionButton();
+    }
+    
     [super dismissWithClickedButtonIndex:0 animated:YES];
     if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
         [self.delegate alertView:self clickedButtonAtIndex:0];

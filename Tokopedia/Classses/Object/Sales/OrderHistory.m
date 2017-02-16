@@ -14,7 +14,10 @@
     if ([_history_comments isEqualToString:@"0"]) {
         _history_comments = @"";
     }
-    return [_history_comments stringByReplacingOccurrencesOfString:@"            " withString:@""];
+    
+    [_history_comments stringByReplacingOccurrencesOfString:@"            " withString:@""];
+    
+    return (_history_comments.length)?[NSString stringWithFormat:@"\n\nKeterangan: \n%@", _history_comments]:@"";
 }
 +(NSDictionary *)attributeMappingDictionary
 {

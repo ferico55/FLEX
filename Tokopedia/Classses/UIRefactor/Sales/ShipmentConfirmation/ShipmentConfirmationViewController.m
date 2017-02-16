@@ -253,8 +253,6 @@
     
     [cell removeAllButtons];
     
-    __weak typeof(self) wself = self;
-    
     [cell showCancelButtonOnTap:^(OrderTransaction *order) {
     	__weak typeof(self) weakSelf = self;
 		
@@ -271,7 +269,11 @@
     	[self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }];
     
-    
+    __weak typeof(self) wself = self;
+    [cell showAskBuyerButtonOnTap:^(OrderTransaction *order) {
+        [wself doAskBuyerWithOrder:order];
+    }];
+
     if (transaction.order_is_pickup == 1) {
         [cell showPickUpButtonOnTap:^(OrderTransaction *order) {
             SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
@@ -306,6 +308,18 @@
     
     return cell;
 }
+
+-(void)doAskBuyerWithOrder:(OrderTransaction*)order{
+    SendMessageViewController *messageController = [SendMessageViewController new];
+    messageController.data = @{
+                               @"user_id":order.order_customer.customer_id?:@"",
+                               @"shop_name":order.order_customer.customer_name?:@""
+                               };
+    messageController.subject = order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    [self.navigationController pushViewController:messageController animated:YES];
+}
+
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isLastIndexPath:indexPath] && self.nextURL) {

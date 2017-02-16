@@ -173,10 +173,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.signInProviderContainer removeAllSubviews];
     SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
     signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [weakSelf webViewLoginWithProvider:provider];
     };
     
-    signInProviderView.onFacebookSelected = ^{
+    signInProviderView.onFacebookSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
                             fromViewController:weakSelf
@@ -185,7 +193,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                        }];
     };
     
-    signInProviderView.onGoogleSelected = ^{
+    signInProviderView.onGoogleSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [[GIDSignIn sharedInstance] signIn];
     };
     
@@ -467,6 +479,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 
     [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+    [secureStorage setKeychainWithValue:@(login.result.shop_is_official) withKey:@"shop_is_official"];
     [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
     [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];

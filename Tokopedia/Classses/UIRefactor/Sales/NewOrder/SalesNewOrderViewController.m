@@ -432,9 +432,6 @@
         [wself refreshOrderList];
     };
     
-    
-    controller.showAskBuyer = _showAskBuyer;
-
     [self.navigationController pushViewController:controller animated:YES];
 }
 

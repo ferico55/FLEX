@@ -28,7 +28,18 @@ class WalletStore: NSObject {
     }
     
     func isExpired() -> Bool {
-        return self.error == "invalid_request"
+        let userAuth = UserAuthentificationManager()
+        let userInformation = userAuth.getUserLoginData()
+        
+        if let tokenType = userInformation["oAuthToken.tokenType"] {
+            if tokenType != nil {
+                return self.error == "invalid_request"
+            }
+            
+            return true
+        }
+        
+        return true
     }
     
     func shouldShowWallet() -> Bool {

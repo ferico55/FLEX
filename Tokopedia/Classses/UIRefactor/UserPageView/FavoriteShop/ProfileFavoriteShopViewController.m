@@ -79,8 +79,6 @@
     [self initNotification];
     _page = 1;
     
-    _table.tableFooterView = _footer;
-    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -117,12 +115,6 @@
     [super viewWillAppear:animated];
 
     [AnalyticsManager trackScreenName:@"Profile - Favorited Shop"];
-    
-    if (!_isrefreshview) {
-        if (_isnodata && _profile) {
-            [self loadData];
-        }
-    }
 }
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -321,34 +313,6 @@
 
 - (id)didReceiveNavigationController {
     return nil;
-}
-
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self determineOtherScrollView:scrollView];
-}
-
-- (void)determineOtherScrollView:(UIScrollView *)scrollView {
-    NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateInfoProfileScroll" object:nil userInfo:userInfo];
-}
-
-
-- (void)updateFavoriteShopScroll:(NSNotification *)notification
-{
-    id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    }
-    
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    _table.contentOffset = cgpoint;
-    
 }
 
 -(void) setHeaderData: (ProfileInfo*) profile {

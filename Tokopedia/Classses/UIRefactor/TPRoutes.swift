@@ -14,6 +14,10 @@ class TPRoutes: NSObject {
     static func configureRoutes() {
         let navigator = NavigateViewController()
         
+        JLRoutes.globalRoutes().unmatchedURLHandler = { (route, url, dictionary) in
+            self.openWebView(url!)
+        }
+        
         //create shop
         JLRoutes.globalRoutes().addRoute("/buka-toko-online-gratis") { (params: [String : AnyObject]!) -> Bool in
             let userManager = UserAuthentificationManager()

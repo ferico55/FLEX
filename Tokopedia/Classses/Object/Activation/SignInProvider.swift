@@ -39,7 +39,7 @@ class SignInProvider: NSObject {
             }(),
             {
                 let provider = SignInProvider()
-                provider.name = "Google+"
+                provider.name = "Google"
                 provider.id = "gplus"
                 provider.imageUrl = "https://ecs1.tokopedia.net/img/icon/gplus_icon.png"
                 provider.color = "#FFFFFF"

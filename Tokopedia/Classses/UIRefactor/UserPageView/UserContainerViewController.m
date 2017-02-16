@@ -135,18 +135,6 @@
             
             [barbuttonright setCustomView:button];
             self.navigationItem.rightBarButtonItem = barbuttonright;
-        } else {
-            //button message
-            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_message"];
-            
-            CGRect frame = CGRectMake(0, 0, 20, 20);
-            UIButton* button = [[UIButton alloc] initWithFrame:frame];
-            [button setBackgroundImage:infoImage forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchDown];
-            [button setTag:15];
-            
-            [barbuttonright setCustomView:button];
-            self.navigationItem.rightBarButtonItem = barbuttonright;
         }
     }
 }
@@ -436,19 +424,6 @@
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
-            
-        case 15 : {
-            if(_profile != nil) {
-                SendMessageViewController *messageController = [SendMessageViewController new];
-                messageController.data = @{
-                                       kTKPDSHOPEDIT_APIUSERIDKEY:_profileUserID?:@"",
-                                       kTKPDDETAIL_APISHOPNAMEKEY:_profile.result.user_info.user_name
-                                       };
-                [self.navigationController pushViewController:messageController animated:YES];
-            }
-            break;
-        }
-            
         case 16 : {
             ShopViewController *container = [[ShopViewController alloc] init];
             

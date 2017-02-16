@@ -56,4 +56,6 @@
 
 - (void)getThirdPartySignInOptionsOnSuccess:(void (^)(NSArray <SignInProvider*> *))successCallback;
 
+- (void)storeCredentialToKeychain:(Login *)login;
+
 @end

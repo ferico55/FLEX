@@ -23,7 +23,6 @@
 #import "OrderBookingResponse.h"
 #import "AlertShipmentCodeView.h"
 #import "RejectReasonViewController.h"
-
 #import <BlocksKit/BlocksKit.h>
 #import "UIAlertView+BlocksKit.h"
 #import "Tokopedia-Swift.h"
@@ -38,6 +37,7 @@
 >
 
 @property (strong, nonatomic) AlertShipmentCodeView *alert;
+@property (strong, nonatomic) IBOutlet UIView *retryView;
 
 @end
 
@@ -58,6 +58,7 @@
     
     [self request];
     [self initStackView];
+    [self hideRetry];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
 }
@@ -125,6 +126,7 @@
     [self addDropshipView];
     [self addTotalOrderView];
     [self addOrderDateView];
+    [self.view bringSubviewToFront:_retryView];
 }
 
 -(void)addOrderDateView{
@@ -304,11 +306,9 @@
             }
         }];
         
-        if (_showAskBuyer) {
-            [buttonView addAskBuyerButton:^{
-                [wself doAskBuyer];
-            }];
-        }
+        [buttonView addAskBuyerButton:^{
+            [wself doAskBuyer];
+        }];
         
         [buttonView addAcceptButton:^{
             if ([wself isOrderNotExpired]) {
@@ -341,6 +341,10 @@
         	[weakSelf.navigationController presentViewController:navigationController animated:YES completion:nil];
         
 
+        }];
+        
+        [buttonView addAskBuyerButton:^{
+            [wself doAskBuyer];
         }];
         
         if (_transaction.order_is_pickup == 1) {
@@ -617,6 +621,65 @@
 
 - (BOOL)isBuyerAcceptPartial{
     return _transaction.order_detail.detail_partial_order == 1;
+}
+
+- (IBAction)actionRetryPickup:(id)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Konfirmasi Retry Pickup" message:@"Lakukan Retry Pickup?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [RetryPickupRequest retryPickupOrder:_transaction.order_detail.detail_order_id onSuccess:^(V4Response<GeneralActionResult *> * _Nonnull data) {
+            [self didReceiveResult:data];
+        } onFailure:^{
+        
+        }];
+    }];
+    
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alertController addAction:actionCancel];
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+    
+    
+}
+
+-(void) hideRetry {
+    if (_transaction.order_shipping_retry != 1) {
+        _retryView.hidden = YES;
+        _scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    } else {
+        _scrollView.contentInset = UIEdgeInsetsMake(0, 0, _retryView.frame.size.height, 0);
+    }
+}
+
+- (void) popUpMessagesClose:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertController;
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Tutup" style:UIAlertActionStyleCancel handler:nil];
+    alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
+
+
+- (void)didReceiveResult:(V4Response<GeneralActionResult*> *)result {
+    if ([result.data.is_success isEqualToString:@"1"]) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status delegate:self];
+        [alert show];
+        _transaction.order_shipping_retry = 0;
+        [self hideRetry];
+        
+    } else {
+        NSString *title = result.message_error[0];
+        NSString *message = result.message_error[1];
+        [self popUpMessagesClose:title message:message];
+    }
+    if (_onSuccessRetry) {
+        _onSuccessRetry([result.data.is_success boolValue]);
+    }
 }
 
 @end

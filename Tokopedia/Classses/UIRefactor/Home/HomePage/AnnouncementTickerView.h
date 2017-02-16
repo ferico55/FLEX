@@ -11,11 +11,11 @@
 
 @interface AnnouncementTickerView : UIView <TTTAttributedLabelDelegate>
 
-@property (strong, nonatomic) IBOutlet TTTAttributedLabel *messageLabel;
-
 @property (copy) void(^onTapMessageWithUrl)(NSURL *url);
+@property (copy) void(^onTapCloseButton)();
 
-+ (id)newView;
-- (void)setMessage:(NSString *)text;
+-(instancetype)initWithMessage:(NSString *)message colorHexString:(NSString *)colorHexString;
+
+- (void)setMessage:(NSString *)text withContentColorHexString:(NSString *)contentColorHexString;
 
 @end

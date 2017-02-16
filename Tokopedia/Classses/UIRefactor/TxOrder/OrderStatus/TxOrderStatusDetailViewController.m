@@ -360,17 +360,15 @@
             status = history.history_seller_status;
         
     }
-    if (![history.history_comments isEqualToString:@""]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
-    }
+    status = [status stringByAppendingString:history.history_comments];
     
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];
     
-    if (indexPath.row == (_order.order_history.count-1)) {
-        [cell hideLine];
-    }
+    BOOL isLastRow = (indexPath.row == (_order.order_history.count-1));
+    cell.lineHidden = isLastRow;
+
     cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }

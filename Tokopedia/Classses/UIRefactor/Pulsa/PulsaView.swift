@@ -40,14 +40,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
         productButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.54), forState: .Normal)
         productButton.backgroundColor = UIColor.whiteColor()
-        productButton.hidden = true
         productButton.layer.borderWidth = 0
         productButton.contentHorizontalAlignment = .Left
         return productButton
     }()
     lazy private var productButtonUnderlineView: UIView = {
         let productButtonUnderlineView = UIView()
-        productButtonUnderlineView.hidden = true
         productButtonUnderlineView.backgroundColor = self.underlineViewColor
         return productButtonUnderlineView
     }()
@@ -78,7 +76,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     lazy private var nominalLabel: UILabel = {
         let nominalLabel = UILabel()
         nominalLabel.text = "Nominal"
-        nominalLabel.hidden = true
         nominalLabel.font = UIFont.microTheme()
         nominalLabel.textColor = self.titleTextColor
         return nominalLabel
@@ -496,6 +493,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         saldoButtonPlaceholder.mas_makeConstraints { make in
             make.height.equalTo()(41)
         }
+        saldoButtonPlaceholder.clipsToBounds = true
         
         saldoButtonPlaceholder.addSubview(self.saldoCheckBox)
         
@@ -659,23 +657,15 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     
     private func showProductButton(products: [PulsaProduct]) {
-        productButton.hidden = false
-        
-        self.buttonsPlaceholder.mas_updateConstraints { make in
-            make.height.equalTo()(self.selectedOperator.attributes.rule.show_product ? 66 : 0)
+        UIView.animateWithDuration(0.25) {
+            self.saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
+                make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 41 : 0)
+            })
+            self.buttonsPlaceholder.mas_updateConstraints { make in
+                make.height.equalTo()(self.selectedOperator.attributes.rule.show_product ? 66 : 0)
+            }
+            self.layoutIfNeeded()
         }
-        
-        saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
-            make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 41 : 0)
-        })
-        
-        UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
-            self.productButton.hidden = false
-            self.productButtonUnderlineView.hidden = false
-            self.nominalLabel.hidden = false
-            }, completion: { finished in
-                
-        })
         
         //prevent keep adding button to handler
         productButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
@@ -702,11 +692,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
             make.height.equalTo()(0)
         })
-        
-        productButton.hidden = true
-        productButtonUnderlineView.hidden = true
-        buyButton.hidden = true
-        nominalLabel.hidden = true
     }
     
     private func showBuyButton() {
@@ -736,7 +721,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             self.didPressBuyButton()
             }, forControlEvents: .TouchUpInside)
         
-        productButton.hidden = true
         self.prefixView?.hidden = true
     }
     
@@ -758,7 +742,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         }
         
         self.buttonErrorPlaceholder.mas_updateConstraints { make in
-            make.height.equalTo()((self.productButton.hidden == false && !self.isValidProduct()) ? 22 : 0)
+            make.height.equalTo()((!self.isValidProduct()) ? 22 : 0)
         }
         
         self.operatorErrorLabel?.mas_updateConstraints { make in
@@ -953,10 +937,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             
         }
         
-        self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { textField, range, string in
+        self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { [unowned self] textField, range, string in
             guard let text = textField.text else { return true }
             
-            let newLength = text.characters.count + string.characters.count - range.length
+            let convertedString = self.convertAreaNumber(string)
+            let newLength = text.characters.count + convertedString.characters.count - range.length
             // 14 is longest phone number existed
             return newLength <= (self.selectedOperator.attributes.maximum_length > 0 ? self.selectedOperator.attributes.maximum_length : 14)
         }
@@ -1007,6 +992,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         
         if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
             inputtedText = self.convertAreaNumber(inputtedText)
+            self.numberField.text = inputtedText
         }
         
         self.setRightViewNumberField(inputtedText)
@@ -1016,13 +1002,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     //convert code area from +62 into 0
     private func convertAreaNumber(phoneNumber: String) -> String{
         var convertedNumber = phoneNumber
-        if(phoneNumber.characters.count >= 2) {
-            let countryCode = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0)..<phoneNumber.startIndex.advancedBy(2))
-            if(countryCode == "62") {
-                convertedNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex..<phoneNumber.startIndex.advancedBy(2), withString: "0")
-            }
+        convertedNumber = convertedNumber.stringByReplacingOccurrencesOfString(" ", withString: "")
+        if(phoneNumber.characters.count >= 3) {
+                convertedNumber = convertedNumber.stringByReplacingOccurrencesOfString("+62", withString: "0", options: .CaseInsensitiveSearch, range: phoneNumber.startIndex..<convertedNumber.startIndex.advancedBy(3))
+                convertedNumber = convertedNumber.stringByReplacingOccurrencesOfString("62", withString: "0", options: .CaseInsensitiveSearch, range: phoneNumber.startIndex..<convertedNumber.startIndex.advancedBy(2))
         }
-        
         return convertedNumber
     }
 }

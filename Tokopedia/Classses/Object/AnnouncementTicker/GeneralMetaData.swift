@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnnouncementTickerMeta: NSObject {
+class GeneralMetaData: NSObject {
     var total_data: String = ""
     
     static func mapping() -> RKObjectMapping! {
