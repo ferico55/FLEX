@@ -99,7 +99,7 @@
     [super viewDidLoad];
     
     _homePageController = [JasonViewController new];
-    _homePageController.url = @"https://www.jasonbase.com/things/Emo.json";
+    _homePageController.url = @"https://jasonbase.com/things/Bkp";
     
     _productFeedController = [ProductFeedViewController new];
     
