@@ -19,7 +19,7 @@ class NoteDetails : NSObject, TKPObjectMapping
     var notes_update_time : NSString = ""
     var notes_content : NSString = ""
     
-    class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["notes_position" : "notes_position",
                 "notes_status" : "notes_status",
                 "notes_create_time" : "notes_create_time",
@@ -32,9 +32,9 @@ class NoteDetails : NSObject, TKPObjectMapping
     
     class func mapping() -> RKObjectMapping! {
         
-        let mapping : RKObjectMapping! = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping! = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(attributeMappingDictionary())
+        mapping.addAttributeMappings(from:attributeMappingDictionary())
         
         return mapping
     }

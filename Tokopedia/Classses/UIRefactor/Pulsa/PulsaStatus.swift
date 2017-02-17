@@ -10,17 +10,17 @@ class PulsaStatus: NSObject {
     var type : String!
     var attributes : PulsaStatusAttribute = PulsaStatusAttribute()
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "type" : "type",
         ]
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "attributes", toKeyPath: "attributes", withMapping: PulsaStatusAttribute.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "attributes", toKeyPath: "attributes", with: PulsaStatusAttribute.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping

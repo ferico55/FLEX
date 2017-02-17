@@ -38,7 +38,6 @@
 #import "NoResultReusableView.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-#import "SwiftOverlays.h"
 #import "CustomNotificationView.h"
 
 #import "NSStringCategory.h"
@@ -50,6 +49,7 @@
 #import "NotificationManager.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
+@import SwiftOverlays;
 
 @interface TransactionCartViewController ()
 <

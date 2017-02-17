@@ -21,7 +21,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     
     var rule: PulsaOperatorAttributeRule = PulsaOperatorAttributeRule()
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "name"  : "name",
             "weight" : "weight",
@@ -35,10 +35,10 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let ruleMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "rule", toKeyPath: "rule", withMapping: PulsaOperatorAttributeRule.mapping())
+        let ruleMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "rule", toKeyPath: "rule", with: PulsaOperatorAttributeRule.mapping())
         mapping.addPropertyMapping(ruleMapping)
         
         return mapping
@@ -50,52 +50,52 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let name = aDecoder.decodeObjectForKey("name") as? String {
+        if let name = aDecoder.decodeObject(forKey: "name") as? String {
             self.name = name
         }
         
-        if let weight = aDecoder.decodeObjectForKey("weight") as? Int {
+        if let weight = aDecoder.decodeObject(forKey: "weight") as? Int {
             self.weight = weight
         }
         
-        if let image = aDecoder.decodeObjectForKey("image") as? String {
+        if let image = aDecoder.decodeObject(forKey: "image") as? String {
             self.image = image
         }
         
-        if let minimum_length = aDecoder.decodeObjectForKey("minimum_length") as? Int {
+        if let minimum_length = aDecoder.decodeObject(forKey: "minimum_length") as? Int {
             self.minimum_length = minimum_length
         }
         
-        if let maximum_length = aDecoder.decodeObjectForKey("maximum_length") as? Int {
+        if let maximum_length = aDecoder.decodeObject(forKey: "maximum_length") as? Int {
             self.maximum_length = maximum_length
         }
         
-        if let status = aDecoder.decodeObjectForKey("status") as? Int {
+        if let status = aDecoder.decodeObject(forKey: "status") as? Int {
             self.status = status
         }
         
-        if let prefix = aDecoder.decodeObjectForKey("prefix") as? [String] {
+        if let prefix = aDecoder.decodeObject(forKey: "prefix") as? [String] {
             self.prefix = prefix
         }
         
-        if let default_product_id = aDecoder.decodeObjectForKey("default_product_id") as? String {
+        if let default_product_id = aDecoder.decodeObject(forKey: "default_product_id") as? String {
             self.default_product_id = default_product_id
         }
         
-        if let rule = aDecoder.decodeObjectForKey("rule") as? PulsaOperatorAttributeRule {
+        if let rule = aDecoder.decodeObject(forKey:"rule") as? PulsaOperatorAttributeRule {
             self.rule = rule
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(weight, forKey: "weight")
-        aCoder.encodeObject(image, forKey: "image")
-        aCoder.encodeObject(status, forKey: "status")
-        aCoder.encodeObject(prefix, forKey: "prefix")
-        aCoder.encodeObject(minimum_length, forKey: "minimum_length")
-        aCoder.encodeObject(maximum_length, forKey: "maximum_length")
-        aCoder.encodeObject(default_product_id, forKey: "default_product_id")
-        aCoder.encodeObject(rule, forKey: "rule")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name as Any?, forKey: "name")
+        aCoder.encode(weight as Any?, forKey: "weight")
+        aCoder.encode(image as Any?, forKey: "image")
+        aCoder.encode(status as Any?, forKey: "status")
+        aCoder.encode(prefix as Any?, forKey: "prefix")
+        aCoder.encode(minimum_length as Any?, forKey: "minimum_length")
+        aCoder.encode(maximum_length as Any?, forKey: "maximum_length")
+        aCoder.encode(default_product_id as Any?, forKey: "default_product_id")
+        aCoder.encode(rule as Any?, forKey: "rule")
     }
 }

@@ -13,7 +13,7 @@ class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
 
-    override func didReceiveNotificationRequest(request: UNNotificationRequest, withContentHandler contentHandler: (UNNotificationContent) -> Void) {
+    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler:@escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         self.bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
@@ -27,20 +27,20 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    private func handleLocalyticsNotification(request: UNNotificationRequest) {
+    private func handleLocalyticsNotification(_ request: UNNotificationRequest) {
         if let bestAttemptContent = bestAttemptContent,
             let attachmentUrl = bestAttemptContent.userInfo["ll_attachment_url"] as? String,
-            let fileUrl  = NSURL(string: attachmentUrl) {
-            NSURLSession.sharedSession().downloadTaskWithURL(fileUrl) { (location, response, error) in
+            let fileUrl  = URL(string: attachmentUrl) {
+            URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
                 if let location = location {
                     let tmpDirectory = NSTemporaryDirectory()
-                    let tmpFile = "file://\(tmpDirectory)\((fileUrl.lastPathComponent)!)"
+                    let tmpFile = "file://\(tmpDirectory)\((fileUrl.lastPathComponent))"
                     
-                    let tmpUrl = NSURL(string: tmpFile)!
+                    let tmpUrl = URL(string: tmpFile)!
                     
-                    _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: tmpUrl)
+                    _ = try? FileManager.default.moveItem(at: location, to: tmpUrl)
                     
-                    if let attachment = try? UNNotificationAttachment(identifier: "", URL: tmpUrl, options: nil) {
+                    if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options: nil) {
                         bestAttemptContent.attachments = [attachment]
                     }
                 }
@@ -50,21 +50,21 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     //handle notification from Tokopedia
-    private func handleTransactionalNotification(request: UNNotificationRequest) {
+    private func handleTransactionalNotification(_ request: UNNotificationRequest) {
         if let bestAttemptContent = bestAttemptContent,
             let notificationData = request.content.userInfo["data"] as? [String: String],
             let urlString = notificationData["attachment-url"],
-            let fileUrl = NSURL(string: urlString) {
-            NSURLSession.sharedSession().downloadTaskWithURL(fileUrl) { (location, response, error) in
+            let fileUrl = URL(string: urlString) {
+            URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
                 if let location = location {
                     let tmpDirectory = NSTemporaryDirectory()
-                    let tmpFile = "file://\(tmpDirectory)\((fileUrl.lastPathComponent)!)"
+                    let tmpFile = "file://\(tmpDirectory)\((fileUrl.lastPathComponent))"
                     
-                    let tmpUrl = NSURL(string: tmpFile)!
+                    let tmpUrl = URL(string: tmpFile)!
                     
-                    _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: tmpUrl)
+                    _ = try? FileManager.default.moveItem(at: location, to: tmpUrl)
                     
-                    if let attachment = try? UNNotificationAttachment(identifier: "", URL: tmpUrl, options: nil) {
+                    if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options: nil) {
                         bestAttemptContent.attachments = [attachment]
                     }
                 }

@@ -17,9 +17,9 @@ class EditConfirmationViewController: FormViewController {
     
     var paymentID = ""
     var didEditPayment : (()->Void)?
-    private var refreshControl = UIRefreshControl()
-    private var act = UIActivityIndicatorView()
-    private var doneButton =  UIBarButtonItem()
+    fileprivate var refreshControl = UIRefreshControl()
+    fileprivate var act = UIActivityIndicatorView()
+    fileprivate var doneButton =  UIBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,35 +33,35 @@ class EditConfirmationViewController: FormViewController {
         tableView?.backgroundColor = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 1)
     }
     
-    private func addActivityIndicator(){
+    fileprivate func addActivityIndicator(){
         self.view.addSubview(act)
         act.hidesWhenStopped = true
-        act.activityIndicatorViewStyle = .Gray
+        act.activityIndicatorViewStyle = .gray
         act.mas_makeConstraints { (make) in
-            make.center.equalTo()(self.view)
+            make?.center.equalTo()(self.view)
         }
         act.startAnimating()
     }
     
-    private func addDoneButton(){
+    fileprivate func addDoneButton(){
         doneButton = UIBarButtonItem(
             title: "Simpan",
-            style: .Plain,
+            style: .plain,
             target: self,
             action: #selector(onTapSubmit)
         )
         self.navigationItem.rightBarButtonItem = doneButton
     }
     
-    private func addRefreshControl(){
-        refreshControl.addTarget(self, action: #selector(EditConfirmationViewController.requestFormData), forControlEvents: UIControlEvents.ValueChanged)
+    fileprivate func addRefreshControl(){
+        refreshControl.addTarget(self, action: #selector(EditConfirmationViewController.requestFormData), for: UIControlEvents.valueChanged)
         tableView?.addSubview(refreshControl)
     }
     
-    private func configFormWithData(data:PaymentConfirmationForm) {
+    fileprivate func configFormWithData(_ data:PaymentConfirmationForm) {
         
         TextRow.defaultCellSetup = { cell, row in
-            cell.tintColor = UIColor.blackColor()
+            cell.tintColor = UIColor.black
         }
 
         form = Section()
@@ -82,7 +82,7 @@ class EditConfirmationViewController: FormViewController {
                     }
                 }
                 row.value = selectedBank
-                row.addRule(RuleRequired())
+                row.add(rule:RuleRequired())
                 }.cellSetup() {cell, row in
                     cell.detailTextLabel!.textColor = UIColor(red: 66/255, green: 180/255, blue: 29/255, alpha: 1)
                     cell.tintColor = UIColor(red: 66/255, green: 180/255, blue: 29/255, alpha: 1)
@@ -92,28 +92,28 @@ class EditConfirmationViewController: FormViewController {
                 $0.title = "Nama Pemilik Kartu"
                 $0.placeholder = "Nama Pemilik Kartu"
                 $0.value = data.user_acc_name
-                $0.addRule(RuleRequired())
-                $0.validationOptions = .ValidatesOnChange
+                $0.add(rule:RuleRequired())
+                $0.validationOptions = .validatesOnChange
             }
             
             <<< TextRow(EditConfirmationRowTag.AccountNumber.rawValue) {
                 $0.title = "Nomor Rekening"
                 $0.placeholder = "Nomor Rekening"
                 $0.value = data.user_acc_no
-                $0.addRule(RuleRequired())
-                $0.validationOptions = .ValidatesOnChange
+                $0.add(rule:RuleRequired())
+                $0.validationOptions = .validatesOnChange
             }
             
             <<< TextAreaRow(EditConfirmationRowTag.Comment.rawValue) {
                 $0.placeholder = "Catatan (Optional)"
-                $0.textAreaHeight = .Dynamic(initialTextViewHeight: 80)
+                $0.textAreaHeight = .dynamic(initialTextViewHeight: 80)
                 $0.value = ""
             }
             
             +++ Section()
     }
     
-    @objc private func onTapSubmit(sender: UIBarButtonItem){
+    @objc fileprivate func onTapSubmit(_ sender: UIBarButtonItem){
         
         self.validateInput() { [weak self] dataInput in
             
@@ -123,36 +123,36 @@ class EditConfirmationViewController: FormViewController {
         }
     }
     
-    @objc private func editPayment(dataInput: PaymentConfirmationForm){
+    @objc fileprivate func editPayment(_ dataInput: PaymentConfirmationForm){
         
-        self.doneButton.enabled = false
+        self.doneButton.isEnabled = false
         
         ConfirmationRequest.fetchEdit(dataInput,
                                       onSuccess: { [weak self] (data) in
                                         
                 guard let `self` = self else { return }
-                self.doneButton.enabled = true
-                self.navigationController?.popViewControllerAnimated(true)
+                self.doneButton.isEnabled = true
+                self.navigationController?.popViewController(animated: true)
                 
                 self.didEditPayment?()
                                         
             }, onFailure: { [weak self] in
                 
                 guard let `self` = self else { return }
-                self.doneButton.enabled = true
+                self.doneButton.isEnabled = true
                 
         })
     }
     
-    @objc private func requestFormData(){
+    @objc fileprivate func requestFormData(){
         
-        doneButton.enabled = false
+        doneButton.isEnabled = false
         
         ConfirmationRequest.fetchEditForm(paymentID,
                                           onSuccess: { [weak self] (data) in
             
                 guard let `self` = self else { return }
-                self.doneButton.enabled = true
+                self.doneButton.isEnabled = true
                 self.configFormWithData(data)
                 self.endRefreshing()
             
@@ -164,12 +164,12 @@ class EditConfirmationViewController: FormViewController {
         })
     }
     
-    private func endRefreshing(){
+    fileprivate func endRefreshing(){
         self.refreshControl.endRefreshing()
         act.stopAnimating()
     }
     
-    private func validateInput(then processForm:(PaymentConfirmationForm) -> Void){
+    fileprivate func validateInput(then processForm:(PaymentConfirmationForm) -> Void){
         let valuesDictionary = form.values()
     
         let postObject : PaymentConfirmationForm = PaymentConfirmationForm()

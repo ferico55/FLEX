@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-enum RequestError : ErrorType {
+enum RequestError : Error {
     case networkError
 }
 
@@ -18,22 +18,22 @@ enum RequestError : ErrorType {
     
     static var errorCompletionHandler:()->Void={}
     
-    class func fetchFormEditProductID(productID:String, shopID:String, onSuccess: ((ProductEditResult) -> Void), onFailure:(()->Void)) {
+    class func fetchFormEditProductID(_ productID:String, shopID:String, onSuccess: @escaping ((ProductEditResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
         let param : Dictionary = ["product_id":productID, "shop_id":shopID]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/product/get_edit_product_form.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: ProductEdit.mapping(),
+                                          mapping: V4Response<ProductEditResult>.mapping(withData: ProductEditResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ProductEdit = result[""] as! ProductEdit
+                                            let response : V4Response<ProductEditResult> = result[""] as! V4Response<ProductEditResult>
                                             
                                             if response.message_error.count > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
@@ -47,24 +47,24 @@ enum RequestError : ErrorType {
         }
     }
     
-    class func fetchGetCatalog(productName:String, departmentID:String, onSuccess: (([CatalogList]) -> Void), onFailure:(()->Void)) {
+    class func fetchGetCatalog(_ productName:String, departmentID:String, onSuccess: @escaping (([CatalogList]) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
         let param : Dictionary = ["product_name":productName, "product_department_id":departmentID]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/catalog/get_catalog.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: CatalogAddProduct.mapping(),
+                                          mapping: V4Response<CatalogResult>.mapping(withData: CatalogResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : CatalogAddProduct = result[""] as! CatalogAddProduct
+                                            let response : V4Response<CatalogResult> = result[""] as! V4Response<CatalogResult>
                                             
-                                            if response.message_error?.count > 0 {
+                                            if (response.message_error?.count)! > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {
@@ -76,7 +76,7 @@ enum RequestError : ErrorType {
         }
     }
     
-    class func fetchDeleteProductImageObject(imageObject:ProductEditImages, productID:String, shopID:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchDeleteProductImageObject(_ imageObject:ProductEditImages, productID:String, shopID:String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -87,18 +87,18 @@ enum RequestError : ErrorType {
             "picture_id"  : imageObject.image_id
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/product/delete_product_pic.pl",
                                           method: .POST,
                                           parameter: param,
-                                          mapping: GeneralAction.mapping(),
+                                          mapping: V4Response<GeneralActionResult>.mapping(withData: GeneralActionResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : GeneralAction = result[""] as! GeneralAction
+                                            let response : V4Response<GeneralActionResult> = result[""] as! V4Response<GeneralActionResult>
                                             
                                             if response.data.is_success == "1"{
-                                                if response.message_status?.count>0 {
+                                                if (response.message_status?.count)!>0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
                                                 onSuccess()
@@ -118,7 +118,7 @@ enum RequestError : ErrorType {
     
     // MARK: - EDIT PRODUCT REQUEST
     
-    class func fetchEditProduct(form:ProductEditResult, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchEditProduct(_ form:ProductEditResult, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         RequestAddEditProduct.errorCompletionHandler = onFailure
         
@@ -127,37 +127,35 @@ enum RequestError : ErrorType {
         GenerateHostObservable.getGeneratedHost()
             .flatMap { (host) -> Observable<[ProductEditImages]> in
                 generatedHost = host
-                return self.getEditProductImages(form.product_images, generatedHost: generatedHost, productID: form.product.product_id).doOnError({ (error) in
+                return self.getEditProductImages(form.product_images, generatedHost: generatedHost, productID: form.product.product_id).do(onError : { (error) in
                     onFailure()
                 })
             }
             .flatMap { (selectedImages) -> Observable<String>  in
-                return self.fetchEditProductSubmit(form, generatedHost: generatedHost).doOnError({ (error) in
+                return self.fetchEditProductSubmit(form, generatedHost: generatedHost).do(onError: { (error) in
                     onFailure()
                 })
             }
-            .subscribeNext { (isSuccess) in
+            .subscribe( onNext : { (isSuccess) in
                 onSuccess()
-        }
+            })
     }
     
-    private class func getEditProductImages(selectedImages:[ProductEditImages], generatedHost:GeneratedHost, productID:String) -> Observable<[ProductEditImages]> {
-        
-        return selectedImages
-            .toObservable()
-            .skipWhile({ selectedImage -> Bool in
-                return (selectedImage.image_id != "")
-            })
-            .flatMap({ selectedImage -> Observable<ProductEditImages> in
-                return self.getPostKeyEditProductID(productID, selectedImage: selectedImage, generatedHost: generatedHost)
-            })
-            .flatMap({ selectedImage -> Observable<ProductEditImages>  in
-                return self.getImageID(selectedImage)
-            })
-            .toArray()
+    fileprivate class func getEditProductImages(_ selectedImages:[ProductEditImages], generatedHost:GeneratedHost, productID:String) -> Observable<[ProductEditImages]> {
+        return Observable.from(selectedImages)
+                        .skipWhile({ selectedImage -> Bool in
+                            return (selectedImage.image_id != "")
+                        })
+                        .flatMap({ selectedImage -> Observable<ProductEditImages> in
+                            return self.getPostKeyEditProductID(productID, selectedImage: selectedImage, generatedHost: generatedHost)
+                        })
+                        .flatMap({ selectedImage -> Observable<ProductEditImages>  in
+                            return self.getImageID(selectedImage)
+                        })
+                        .toArray()
     }
     
-    private class func getImageID(selectedImage:ProductEditImages) -> Observable<ProductEditImages> {
+    fileprivate class func getImageID(_ selectedImage:ProductEditImages) -> Observable<ProductEditImages> {
         
           return Observable.create({ (observer) -> Disposable in
             let param :[String:String] = [
@@ -167,18 +165,18 @@ enum RequestError : ErrorType {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString.v4Url(),
+            networkManager.request(withBaseUrl: NSString.v4Url(),
                 path: "/v4/action/product/edit_product_picture.pl",
                 method: .POST,
                 parameter: param,
-                mapping: UploadImage.mapping(),
+                mapping: V4Response<ImageResult>.mapping(withData: ImageResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : UploadImage = result[""] as! UploadImage
+                    let response : V4Response<ImageResult> = result[""] as! V4Response<ImageResult>
                     
                     if response.data.is_success == "1"{
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }
                         selectedImage.image_id = response.data.pic_id
@@ -190,23 +188,23 @@ enum RequestError : ErrorType {
                         } else {
                             StickyAlertView.showErrorMessage(["Gagal menambah produk"])
                         }
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
                 StickyAlertView.showErrorMessage(["Gagal menambah produk"])
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
-    private class func fetchEditProductSubmit(form:ProductEditResult, generatedHost:GeneratedHost) -> Observable<String> {
+    fileprivate class func fetchEditProductSubmit(_ form:ProductEditResult, generatedHost:GeneratedHost) -> Observable<String> {
         
         return Observable.create({ (observer) -> Disposable in
             let imageIDs:[String] = form.product_images.map{$0.image_id}
-            let imageIDString : String = imageIDs.joinWithSeparator("~")
+            let imageIDString : String = imageIDs.joined(separator: "~")
             
             var pictureDefault : String = (form.product_images.first?.image_id)!
             for selectedImage in form.product_images where selectedImage.image_primary == "1" {
@@ -261,7 +259,7 @@ enum RequestError : ErrorType {
                 param.update(photoDescriptionParam)
             }
             
-            for (index,wholesale) in form.wholesale_price.enumerate() {
+            for (index,wholesale) in form.wholesale_price.enumerated() {
                 let wholesaleParam : [String:String] = [
                     "qty_max_\(index+1)" : wholesale.wholesale_max,
                     "qty_min_\(index+1)" : wholesale.wholesale_min,
@@ -273,18 +271,18 @@ enum RequestError : ErrorType {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/edit_product.pl",
                 method: .POST,
                 parameter: param,
-                mapping: AddProductValidation.mapping(),
+                mapping: V4Response<AddProductValidationResult>.mapping(withData: AddProductValidationResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : AddProductValidation = result[""] as! AddProductValidation
+                    let response : V4Response<AddProductValidationResult> = result[""] as! V4Response<AddProductValidationResult>
                     
                     if response.data.is_success == "1" {
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         } else {
                             StickyAlertView.showSuccessMessage(["Anda telah berhasil memperbarui produk"])
@@ -297,21 +295,21 @@ enum RequestError : ErrorType {
                         } else {
                             StickyAlertView.showErrorMessage(["Gagal memperbarui produk"])
                         }
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
                 StickyAlertView.showErrorMessage(["Gagal memperbarui produk"])
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
     //MARK: - ADD PRODUCT REQUEST
     
-    class func fetchAddProduct(form:ProductEditResult,isDuplicate:String,  onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAddProduct(_ form:ProductEditResult,isDuplicate:String,  onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         RequestAddEditProduct.errorCompletionHandler = onFailure
         
@@ -322,35 +320,35 @@ enum RequestError : ErrorType {
         GenerateHostObservable.getGeneratedHost()
         .flatMap { (host) -> Observable<[ProductEditImages]> in
             generatedHost = host
-            return getImageURLAddProducts(form.product_images, generatedHost: host).doOnError({ (error) in
+            return getImageURLAddProducts(form.product_images, generatedHost: host).do(onError : { (error) in
                 onFailure()
             })
         }.flatMap { (selectedImages) -> Observable<String> in
             uploadedImages = selectedImages
-            return getPostKeyAddProduct(form, isDuplicate: isDuplicate, generatedHost: generatedHost).doOnError({ (error) in
+            return getPostKeyAddProduct(form, isDuplicate: isDuplicate, generatedHost: generatedHost).do(onError : { (error) in
                 onFailure()
             })
         }.flatMap { (postKey) -> Observable<String> in
             postKeyParam  = postKey
-            return getFileUploadedAddProduct(isDuplicate, selectedImages:uploadedImages , generatedHost: generatedHost).doOnError({ (error) in
+            return getFileUploadedAddProduct(isDuplicate, selectedImages:uploadedImages , generatedHost: generatedHost).do(onError : { (error) in
                 onFailure()
             })
         }.flatMap { (fileUploaded) -> Observable<String> in
-            return fetchSubmitAddProduct(isDuplicate, fileUploaded: fileUploaded, postKey: postKeyParam).doOnError({ (error) in
+            return fetchSubmitAddProduct(isDuplicate, fileUploaded: fileUploaded, postKey: postKeyParam).do(onError : { (error) in
                 onFailure()
             })
-        }.subscribeNext { (isSuccess) in
+        }.subscribe(onNext : { (isSuccess) in
             onSuccess()
-        }
+        })
     }
     
-    private class func getPostKey(form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
+    fileprivate class func getPostKey(_ form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
         return Observable.create({ (observer) -> Disposable in
             let filePaths:[String] = form.product_images.map{$0.image_src}
-            let filePathString : String = filePaths.joinWithSeparator("~")
+            let filePathString : String = filePaths.joined(separator: "~")
             
             let pictDescriptions:[String] = form.product_images.map{$0.image_description}
-            let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
+            let pictDescriptionString : String = pictDescriptions.joined(separator: "~")
             
             var pictureDefault : String = ""
             for selectedImage in form.product_images where selectedImage.image_primary == "1" {
@@ -396,7 +394,7 @@ enum RequestError : ErrorType {
                 //"po_process_value -> for processing value
             ]
             
-            for (index,wholesale) in form.wholesale_price.enumerate() {
+            for (index,wholesale) in form.wholesale_price.enumerated() {
                 let wholesaleParam : [String:String] = [
                     "qty_max_\(index+1)" : wholesale.wholesale_max,
                     "qty_min_\(index+1)" : wholesale.wholesale_min,
@@ -408,18 +406,18 @@ enum RequestError : ErrorType {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_validation.pl",
                 method: .POST,
                 parameter: param,
-                mapping: AddProductValidation.mapping(),
+                mapping: V4Response<AddProductValidationResult>.mapping(withData: AddProductValidationResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : AddProductValidation = result[""] as! AddProductValidation
+                    let response : V4Response<AddProductValidationResult> = result[""] as! V4Response<AddProductValidationResult>
                     
                     if response.data.post_key != nil {
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }
                         observer.onNext(response.data.post_key)
@@ -430,31 +428,31 @@ enum RequestError : ErrorType {
                         } else {
                             StickyAlertView.showErrorMessage(["Gagal menambah produk"])
                         }
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
                 StickyAlertView.showErrorMessage(["Gagal menambah produk"])
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
             
         })
     }
     
     
-    private class func getPostKeyAddProduct(form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
+    fileprivate class func getPostKeyAddProduct(_ form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
         
         
         let filePaths:[String] = form.product_images.map{$0.image_src}
-        let filePathString : String = filePaths.joinWithSeparator("~")
+        let filePathString : String = filePaths.joined(separator: "~")
         
         let pictDescriptions:[String] = form.product_images.map{$0.image_description}
-        let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
+        let pictDescriptionString : String = pictDescriptions.joined(separator: "~")
         
         var pictureDefault : String = "0"
-        for (index, selectedImage) in form.product_images.enumerate(){
+        for (index, selectedImage) in form.product_images.enumerated(){
             if selectedImage.image_primary == "1" {
                 pictureDefault = "\(index)"
             }
@@ -499,7 +497,7 @@ enum RequestError : ErrorType {
             //"po_process_value -> for processing value
         ]
         
-        for (index,wholesale) in form.wholesale_price.enumerate() {
+        for (index,wholesale) in form.wholesale_price.enumerated() {
             let wholesaleParam : [String:String] = [
                 "qty_max_\(index+1)" : wholesale.wholesale_max,
                 "qty_min_\(index+1)" : wholesale.wholesale_min,
@@ -512,18 +510,18 @@ enum RequestError : ErrorType {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_validation.pl",
                 method: .POST,
                 parameter: param,
-                mapping: AddProductValidation.mapping(),
+                mapping: V4Response<AddProductValidationResult>.mapping(withData: AddProductValidationResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : AddProductValidation = result[""] as! AddProductValidation
+                    let response : V4Response<AddProductValidationResult> = result[""] as! V4Response<AddProductValidationResult>
                     
                     if response.data.post_key != nil {
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }
                         observer.onNext(response.data.post_key)
@@ -531,33 +529,33 @@ enum RequestError : ErrorType {
                     } else {
                         var errors : [AnyObject] = []
                         if response.message_error != nil{
-                            errors = response.message_error
+                            errors = response.message_error as [AnyObject]
                         } else {
-                            errors = ["Gagal menambah produk"]
+                            errors = ["Gagal menambah produk" as AnyObject]
                         }
                         StickyAlertView .showErrorMessage(errors)
                         observer.onError(RequestError.networkError)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
     
-    private class func getFileUploadedAddProduct(isDuplicate:String, selectedImages:[ProductEditImages], generatedHost:GeneratedHost) ->Observable<String> {
+    fileprivate class func getFileUploadedAddProduct(_ isDuplicate:String, selectedImages:[ProductEditImages], generatedHost:GeneratedHost) ->Observable<String> {
         
         let filePaths:[String] = selectedImages.map{$0.image_src}
-        let filePathString : String = filePaths.joinWithSeparator("~")
+        let filePathString : String = filePaths.joined(separator: "~")
         
         let pictDescriptions:[String] = selectedImages.map{$0.image_description}
-        let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
+        let pictDescriptionString : String = pictDescriptions.joined(separator: "~")
         
         var pictureDefault : String = "0"
-        for (index, selectedImage) in selectedImages.enumerate(){
+        for (index, selectedImage) in selectedImages.enumerated(){
             if selectedImage.image_primary == "1" {
                 pictureDefault = "\(index)"
             }
@@ -574,18 +572,18 @@ enum RequestError : ErrorType {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl("https://\(generatedHost.upload_host)",
+            networkManager.request(withBaseUrl: "https://\(generatedHost.upload_host)",
                 path: "/web-service/v4/action/upload-image-helper/add_product_picture.pl",
                 method: .POST,
                 parameter: param,
-                mapping: UploadImage.mapping(),
+                mapping: V4Response<UploadImageResult>.mapping(withData: UploadImageResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : UploadImage = result[""] as! UploadImage
+                    let response : V4Response<UploadImageResult> = result[""] as! V4Response<UploadImageResult>
                     
                     if response.data?.is_success == "1"{
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }
                         observer.onNext(response.data.file_uploaded)
@@ -596,19 +594,19 @@ enum RequestError : ErrorType {
                         } else {
                             StickyAlertView.showErrorMessage(["Gagal menambah produk"])
                         }
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
                 StickyAlertView.showErrorMessage(["Gagal menambah produk"])
             }
 
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
-    private class func fetchSubmitAddProduct(isDuplicate:String, fileUploaded:String, postKey:String)-> Observable<String> {
+    fileprivate class func fetchSubmitAddProduct(_ isDuplicate:String, fileUploaded:String, postKey:String)-> Observable<String> {
         
         let param :[String:String] = [
             "file_uploaded" : fileUploaded,
@@ -619,22 +617,22 @@ enum RequestError : ErrorType {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_submit.pl",
                 method: .POST,
                 parameter: param,
-                mapping: GeneralAction.mapping(),
+                mapping: V4Response<GeneralActionResult>.mapping(withData: GeneralActionResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response : GeneralAction = result[""] as! GeneralAction
+                    let response : V4Response<GeneralActionResult> = result[""] as! V4Response<GeneralActionResult>
                     
-                    if response.message_error?.count > 0 {
+                    if (response.message_error?.count)! > 0 {
                         StickyAlertView.showErrorMessage(response.message_error)
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     } else {
                         RequestAddEditProduct.errorCompletionHandler()
-                        if response.message_status?.count>0 {
+                        if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }else{
                             StickyAlertView.showSuccessMessage(["Anda telah berhasil menambah produk"])
@@ -644,17 +642,17 @@ enum RequestError : ErrorType {
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
                 StickyAlertView.showErrorMessage(["Gagal menambah produk"])
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
 
     }
 
     //MARK: - UPLOAD IMAGE
-    private class func getPostKeyEditProductID(productID:String, selectedImage:ProductEditImages, generatedHost:GeneratedHost) -> Observable<ProductEditImages>{
+    fileprivate class func getPostKeyEditProductID(_ productID:String, selectedImage:ProductEditImages, generatedHost:GeneratedHost) -> Observable<ProductEditImages>{
 
         return Observable.create({ (observer) -> Disposable in
             
@@ -669,11 +667,11 @@ enum RequestError : ErrorType {
                 path: "/web-service/v4/action/upload-image/upload_product_image.pl",
                 name: "fileToUpload",
                 fileName: "Image",
-                requestObject: postObject,
+                request: postObject,
                 onSuccess: { (imageResult) in
                     
-                    if imageResult.pic_obj != nil{
-                        selectedImage.fileUploaded = imageResult.pic_obj
+                    if imageResult?.pic_obj != nil{
+                        selectedImage.fileUploaded = (imageResult?.pic_obj)!
                         observer.onNext(selectedImage)
                         observer.onCompleted()
                     } else {
@@ -685,15 +683,12 @@ enum RequestError : ErrorType {
                     observer.onError(RequestError.networkError)
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
-    private class func getImageURLAddProducts(selectedImages:[ProductEditImages], generatedHost:GeneratedHost) -> Observable<[ProductEditImages]>{
-        
-        return selectedImages
-            .toObservable()
-            .flatMapWithIndex({ (uploadedImages, index) -> Observable<ProductEditImages> in
+    fileprivate class func getImageURLAddProducts(_ selectedImages:[ProductEditImages], generatedHost:GeneratedHost) -> Observable<[ProductEditImages]>{
+        return Observable.from(selectedImages).flatMapWithIndex({ (uploadedImages, index) -> Observable<ProductEditImages> in
                 
                 return Observable.create({ (observer) -> Disposable in
                     
@@ -707,16 +702,18 @@ enum RequestError : ErrorType {
                         path: "/web-service/v4/action/upload-image/upload_product_image.pl",
                         name: "fileToUpload",
                         fileName: "Image",
-                        requestObject: postObject,
+                        request: postObject,
                         onSuccess: { (imageResult) in
-                            selectedImages[index].image_src = imageResult.file_path
+                            guard let result = imageResult else { return }
+                            
+                            selectedImages[index].image_src = result.file_path
                             observer.onNext(selectedImages[index])
                             observer.onCompleted()
                         }, onFailure: { (error) in
                             observer.onError(RequestError.networkError)
                     })
                     
-                    return NopDisposable.instance
+                    return Disposables.create()
                 })
             })
             .toArray()
@@ -725,7 +722,7 @@ enum RequestError : ErrorType {
 
 
 extension Dictionary {
-    mutating func update(other:Dictionary) {
+    mutating func update(_ other:Dictionary) {
         for (key,value) in other {
             self.updateValue(value, forKey:key)
         }

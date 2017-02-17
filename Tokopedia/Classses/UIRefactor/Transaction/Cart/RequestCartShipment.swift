@@ -60,7 +60,7 @@ class CartEditInsurancePostObject: NSObject {
 
 class RequestCartShipment: NSObject {
     
-    class func fetchShipmentFormWithObject(postObject: ShippingFormPostObject,onSuccess: ((data:CartShipmentForm) -> Void), onFailure:(()->Void)) {
+    class func fetchShipmentFormWithObject(_ postObject: ShippingFormPostObject,onSuccess: @escaping ((_ data:CartShipmentForm) -> Void), onFailure:@escaping (()->Void)) {
         
         let auth = UserAuthentificationManager()
         
@@ -75,7 +75,7 @@ class RequestCartShipment: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/tx-cart/get_edit_address_shipping_form.pl",
                                           method: .GET,
                                           parameter: param,
@@ -92,7 +92,7 @@ class RequestCartShipment: NSObject {
                                                 if response.message_status.count > 0{
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
-                                                onSuccess(data: response.data.form)
+                                                onSuccess(response.data.form)
                                             }
                                             
         }) { (error) in
@@ -100,7 +100,7 @@ class RequestCartShipment: NSObject {
         }
     }
     
-    class func fetchCalculatePriceWithObject(postObject: CalculatePostObject,onSuccess: ((data:TransactionCalculatePriceResult) -> Void), onFailure:(()->Void)) {
+    class func fetchCalculatePriceWithObject(_ postObject: CalculatePostObject,onSuccess: @escaping ((_ data:TransactionCalculatePriceResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let param : [String : String] = [
             "do"            : "calculate_address_shipping",
@@ -115,7 +115,7 @@ class RequestCartShipment: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/tx-cart/calculate_cart.pl",
                                           method: .GET,
                                           parameter: param,
@@ -143,7 +143,7 @@ class RequestCartShipment: NSObject {
                                                     shipment.shipment_package = packages
                                                 })
                                                 
-                                                onSuccess(data: response.data)
+                                                onSuccess(response.data)
                                             }
                                             
             }) { (error) in
@@ -151,7 +151,7 @@ class RequestCartShipment: NSObject {
         }
     }
     
-    class func fetchEditAddress(postObject: CartEditAddressPostObject,onSuccess: ((data:TransactionAction) -> Void), onFailure:(()->Void)) {
+    class func fetchEditAddress(_ postObject: CartEditAddressPostObject,onSuccess: @escaping ((_ data:TransactionAction) -> Void), onFailure:@escaping (()->Void)) {
         
         let auth = UserAuthentificationManager()
         
@@ -176,7 +176,7 @@ class RequestCartShipment: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/action/tx-cart/edit_address.pl",
                                           method: .POST,
                                           parameter: param,
@@ -190,7 +190,7 @@ class RequestCartShipment: NSObject {
                                                 if response.message_status.count > 0{
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
-                                                onSuccess(data: response)
+                                                onSuccess(response)
                                             } else {
                                                 if response.message_error.count > 0{
                                                     StickyAlertView.showErrorMessage(response.message_error)
@@ -203,7 +203,7 @@ class RequestCartShipment: NSObject {
         
     }
     
-    class func fetchEditInsurance(postObject: CartEditInsurancePostObject,onSuccess: ((data:TransactionAction) -> Void), onFailure:(()->Void))  {
+    class func fetchEditInsurance(_ postObject: CartEditInsurancePostObject,onSuccess: @escaping ((_ data:TransactionAction) -> Void), onFailure:@escaping (()->Void))  {
         let auth = UserAuthentificationManager()
         
         let param : [String : String] = [
@@ -217,7 +217,7 @@ class RequestCartShipment: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/action/tx-cart/edit_insurance.pl",
                                           method: .POST,
                                           parameter: param,
@@ -231,7 +231,7 @@ class RequestCartShipment: NSObject {
                                                 if response.message_status.count > 0{
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
-                                                onSuccess(data: response)
+                                                onSuccess(response)
                                             } else {
                                                 if response.message_error.count > 0{
                                                     StickyAlertView.showErrorMessage(response.message_error)

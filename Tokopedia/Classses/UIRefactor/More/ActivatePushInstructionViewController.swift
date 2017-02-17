@@ -16,12 +16,12 @@ class ActivatePushInstructionViewController: UIViewController {
     
     @IBOutlet var aktifkanButton: UIButton? {
         didSet {
-            aktifkanButton?.layer.borderColor = UIColor.whiteColor().CGColor
+            aktifkanButton?.layer.borderColor = UIColor.white.cgColor
             aktifkanButton?.layer.borderWidth = 1
         }
     }
     
-    private static var nibName: String {
+    fileprivate static var nibName: String {
         get {
             if #available(iOS 8, *) {
                 return "ActivatePushInstructionViewController"
@@ -50,8 +50,8 @@ class ActivatePushInstructionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func didTapCloseButton(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: viewControllerDidClosed)
+    @IBAction func didTapCloseButton(_ sender: AnyObject) {
+        dismiss(animated: true, completion: viewControllerDidClosed)
     }
     
     /*

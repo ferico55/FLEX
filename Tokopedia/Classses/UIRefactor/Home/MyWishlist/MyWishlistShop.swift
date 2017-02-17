@@ -21,12 +21,12 @@ class MyWishlistShop: NSObject {
     var status: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistShop.self)
+        let mapping = RKObjectMapping(for: MyWishlistShop.self)
         
-        mapping.addAttributeMappingsFromArray(["id", "name", "url", "gold_merchant", "lucky_merchant", "location", "status"])
+        mapping?.addAttributeMappings(from:["id", "name", "url", "gold_merchant", "lucky_merchant", "location", "status"])
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "reputation", toKeyPath: "reputation", withMapping: MyWishlistShopReputation.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "reputation", toKeyPath: "reputation", with: MyWishlistShopReputation.mapping()))
         
-        return mapping
+        return mapping!
     }
 }

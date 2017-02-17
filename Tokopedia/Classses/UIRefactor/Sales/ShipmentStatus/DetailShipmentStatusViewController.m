@@ -204,8 +204,10 @@
     } else {
         status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     }
-    status = [status stringByAppendingString:history.history_comments];
-
+    if (![history.history_comments isEqualToString:@"0"]) {
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@",
+                                                  history.history_comments]];
+    }
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];
@@ -309,7 +311,7 @@
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Konfirmasi Retry Pickup" message:@"Lakukan Retry Pickup?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [RetryPickupRequest retryPickupOrder:_order.order_detail.detail_order_id onSuccess:^(V4Response<GeneralActionResult *> * _Nonnull data) {
+        [RetryPickupRequest retryPickupOrderWithOrderId:_order.order_detail.detail_order_id onSuccess:^(V4Response<GeneralActionResult *> * _Nonnull data) {
             [self didReceiveResult:data];
         } onFailure:^{
             

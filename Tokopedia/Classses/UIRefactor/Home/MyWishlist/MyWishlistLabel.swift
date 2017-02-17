@@ -15,10 +15,10 @@ class MyWishlistLabel: NSObject {
     var color: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistLabel.self)
-        mapping.addAttributeMappingsFromArray(["title", "color"])
+        let mapping = RKObjectMapping(for: MyWishlistLabel.self)
+        mapping?.addAttributeMappings(from: ["title", "color"])
         
-        return mapping
+        return mapping!
     }
 }
 

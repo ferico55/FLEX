@@ -27,7 +27,7 @@
 #import "ImagePickerCategoryController.h"
 
 #import "Tokopedia-Swift.h"
-
+@import SwiftOverlays;
 NSString *const searchPath = @"/search/%@";
 
 @interface SearchViewController ()

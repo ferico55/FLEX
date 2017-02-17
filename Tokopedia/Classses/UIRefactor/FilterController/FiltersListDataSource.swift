@@ -8,7 +8,8 @@
 
 import UIKit
 
-extension CollectionType {
+extension Collection where Indices.Iterator.Element == Index {
+    
     /// Returns the element at the specified index iff it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Generator.Element? {
         return indices.contains(index) ? self[index] : nil
@@ -18,23 +19,23 @@ extension CollectionType {
 class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate  {
 
     var tableView: UITableView?
-    private var searchBar: UISearchBar = UISearchBar()
-    private var items: [ListOption] = []
-    private var showSearchBar: Bool = false
+    fileprivate var searchBar: UISearchBar = UISearchBar()
+    fileprivate var items: [ListOption] = []
+    fileprivate var showSearchBar: Bool = false
     var selectedObjects : [ListOption] = []
     
-    private var filteredItem:[ListOption] = []
-    private var searchActive : Bool = false
-    private var searchBarPlaceholder = ""
+    fileprivate var filteredItem:[ListOption] = []
+    fileprivate var searchActive : Bool = false
+    fileprivate var searchBarPlaceholder = ""
     
-    private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
-    private var timer : NSTimer?
+    fileprivate var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
+    fileprivate var timer : Timer?
     
     override init() {
         super.init()
     }
     
-    init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[ListOption], searchBarPlaceholder: String, onCompletion: (([ListOption]) -> Void)) {
+    init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[ListOption], searchBarPlaceholder: String, onCompletion: @escaping (([ListOption]) -> Void)) {
         super.init()
         
         completionHandler = onCompletion
@@ -46,22 +47,22 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         self.tableView!.delegate      =   self
         self.tableView!.dataSource    =   self
         
-        self.tableView!.registerClass(FilterTableViewCell.self, forCellReuseIdentifier: "cellCheckmark")
-        self.tableView!.registerClass(TextFieldCell.self, forCellReuseIdentifier: "cellTextField")
-        self.tableView!.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
-        self.tableView!.keyboardDismissMode = .Interactive
+        self.tableView!.register(FilterTableViewCell.self, forCellReuseIdentifier: "cellCheckmark")
+        self.tableView!.register(TextFieldCell.self, forCellReuseIdentifier: "cellTextField")
+        self.tableView!.tableFooterView = UIView(frame: CGRect(x:0, y:0, width:1, height:1))
+        self.tableView!.keyboardDismissMode = .interactive
         
-        searchBar = UISearchBar.init(frame: CGRectMake(0, 0, tableView.frame.size.width, 44))
+        searchBar = UISearchBar(frame: CGRect(x:0, y:0, width:tableView.frame.size.width, height:44))
         searchBar.delegate = self
         let image = UIImage()
-        searchBar.setBackgroundImage(image, forBarPosition: .Any, barMetrics: .Default)
+        searchBar.setBackgroundImage(image, for: .any, barMetrics: .default)
         searchBar.scopeBarBackgroundImage = image
         searchBar.placeholder = searchBarPlaceholder
-        searchBar.translucent = true
-        searchBar.backgroundColor = UIColor.whiteColor()
-        searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar.isTranslucent = true
+        searchBar.backgroundColor = UIColor.white
+        searchBar.searchBarStyle = UISearchBarStyle.minimal
         
-        searchBar.tintColor = UIColor.grayColor()
+        searchBar.tintColor = UIColor.gray
         
         self.tableView!.allowsMultipleSelection = true
         self.tableView!.reloadData()
@@ -77,7 +78,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(searchActive){
             if searchBar.text == "" {
                 return self.items.count
@@ -90,30 +91,30 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell:UITableViewCell = UITableViewCell()
         
         let item : ListOption = self.item(indexPath.row)
         
-        if item.input_type == self.checkmarType() {
-            cell = FilterTableViewCell.init(style: .Default, reuseIdentifier: "cellCheckmark")
+        if item.input_type == self.checkmarType() as String {
+            cell = FilterTableViewCell(style: .default, reuseIdentifier: "cellCheckmark")
             (cell as! FilterTableViewCell).label.text =  item.name
             (cell as! FilterTableViewCell).disableSelected = false
             (cell as! FilterTableViewCell).setPading(10)
             for selected in selectedObjects {
                 if selected.value == item.value && selected.key == item.key {
                     item.isSelected = true
-                    tableView .selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
+                    tableView .selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
             }
             
             let customColorView = UIView()
-            customColorView.backgroundColor = UIColor.whiteColor()
+            customColorView.backgroundColor = UIColor.white
             cell.selectedBackgroundView =  customColorView;
         }
-        if item.input_type == self.textInputType() {
-            cell = TextFieldCell.init(style: .Default, reuseIdentifier: "cellTextField")
+        if item.input_type == self.textInputType() as String {
+            cell = TextFieldCell(style: .default, reuseIdentifier: "cellTextField")
             (cell as! TextFieldCell).titleLabel.text = item.name
             
             for selected in selectedObjects {
@@ -132,7 +133,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             (cell as! TextFieldCell).textField.tag = indexPath.row
             (cell as! TextFieldCell).textField.delegate = self
             
-            cell.selectionStyle = .None
+            cell.selectionStyle = .none
         }
         
         return cell
@@ -146,17 +147,17 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         return "checkbox"
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let item : ListOption = self.item(indexPath.row)
         
-        if item.input_type != textInputType() {
+        if item.input_type != textInputType() as String {
             if item.isSelected {
                 item.isSelected = false
-                self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
-                for (index, selected) in selectedObjects.enumerate() {
+                self.tableView!.deselectRow(at: indexPath, animated: false)
+                for (index, selected) in selectedObjects.enumerated() {
                     if selected == item{
-                        selectedObjects.removeAtIndex(index)
+                        selectedObjects.remove(at: index)
                     }
                 }
             } else{
@@ -167,18 +168,18 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if showSearchBar && items.count > 0 {
             return 44
         }
         return 0
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return self.searchBar;
     }
     
-    private func item(index:Int) -> ListOption {
+    fileprivate func item(_ index:Int) -> ListOption {
         var item : ListOption = items[index]
         
         if(searchActive){
@@ -195,10 +196,10 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         return item
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let item : ListOption = self.item(indexPath.row)
         
-        if item.input_type == self.textInputType() {
+        if item.input_type == self.textInputType() as String {
             return 55
         } else {
             return 44
@@ -206,12 +207,12 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     //MARK: - SearchBar Delegate
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = true;
         
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         timer?.invalidate()
         timer = nil
         searchActive = (searchBar.text != "");
@@ -219,12 +220,12 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         tableView?.reloadData()
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         filteredItem = items.filter({ (object) -> Bool in
             let tmp: ListOption = object
             
-            return tmp.name.lowercaseString.rangeOfString(searchBar.text!.lowercaseString) != nil
+            return tmp.name.lowercased().range(of:searchBar.text!.lowercased()) != nil
         })
         if(filteredItem.count == 0){
             searchActive = false;
@@ -236,45 +237,45 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         timer?.invalidate()
         timer = nil
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(FiltersListDataSource.reloadDataAfterFilter), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(FiltersListDataSource.reloadDataAfterFilter), userInfo: nil, repeats: false)
 
     }
     
-    func addItems(items:[ListOption]){
+    func addItems(_ items:[ListOption]){
         self.items.removeAll()
         
-        var indexPaths : [NSIndexPath] = []
-        for (index,item) in items.enumerate() {
+        var indexPaths : [IndexPath] = []
+        for (index,item) in items.enumerated() {
             self.selectedObjects.forEach({ (selectedItem) in
                 if item == selectedItem {
                     item.isSelected = true;
                 }
             })
             self.items.append(item)
-            indexPaths.append(NSIndexPath.init(forRow:index , inSection: 0))
+            indexPaths.append(IndexPath(row:index , section: 0))
         }
         
         self.tableView!.beginUpdates()
-        self.tableView!.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+        self.tableView!.insertRows(at: indexPaths, with: .automatic)
         self.tableView!.endUpdates()
         
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if Int(string) == nil && string != "" {
             return false
         }
         
-        let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         
         let item : ListOption = self.item(textField.tag)
         
         let selectedObject = item.copy() as! ListOption
         selectedObject.value = "\(newString)"
         
-        for (index, selected) in selectedObjects.enumerate() {
+        for (index, selected) in selectedObjects.enumerated() {
             if selected.key == selectedObject.key {
-                selectedObjects.removeAtIndex(index)
+                selectedObjects.remove(at: index)
             }
         }
         if selectedObject.value != "" {

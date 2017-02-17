@@ -48,20 +48,20 @@ class ResetPasswordSuccessViewController: UIViewController {
         
         emailString.addAttributes(
             [
-                NSFontAttributeName : UIFont.boldSystemFontOfSize(13),
-                NSForegroundColorAttributeName : UIColor.blackColor().colorWithAlphaComponent(0.54)
+                NSFontAttributeName : UIFont.boldSystemFont(ofSize: 13),
+                NSForegroundColorAttributeName : UIColor.black.withAlphaComponent(0.54)
             ],
             range: NSMakeRange(0, email.characters.count))
         
         infoAttributedString.addAttributes(
             [
                 NSParagraphStyleAttributeName : paragraphStyle,
-                NSForegroundColorAttributeName : UIColor.blackColor().colorWithAlphaComponent(0.54),
+                NSForegroundColorAttributeName : UIColor.black.withAlphaComponent(0.54),
                 NSFontAttributeName : UIFont.largeTheme()
             ],
             range: NSMakeRange(0, infoAttributedString.length))
         
-        infoAttributedString.appendAttributedString(emailString)
+        infoAttributedString.append(emailString)
         
         self.messageLabel.attributedText = infoAttributedString
     }
@@ -70,8 +70,8 @@ class ResetPasswordSuccessViewController: UIViewController {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(
-            NSString.accountsUrl(),
+        networkManager.request(
+            withBaseUrl: NSString.accountsUrl(),
             path: "/api/reset",
             method: .POST,
             parameter: ["email" : self.email ?? ""],
@@ -89,8 +89,8 @@ class ResetPasswordSuccessViewController: UIViewController {
     }
     
     @IBAction private func tapLoginNowButton(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName("navigateToPageInTabBar", object: "4")
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "navigateToPageInTabBar"), object: "4")
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
 }

@@ -74,23 +74,28 @@ static failedCompletionBlock failedRequest;
             requestObject.server_id = host.server_id;
             requestObject.user_id = [auth getUserId];
             
-            [RequestUploadImage requestUploadImage:imageObjects[i].resizedImage
-                                    withUploadHost:uploadImageBaseURL
-                                              path:@"/web-service/v4/action/upload-image/upload_contact_image.pl"
-                                              name:@"fileToUpload"
-                                          fileName:imageObjects[i].fileName?:@"image.png"
-                                     requestObject:requestObject
-                                         onSuccess:^(ImageResult *imageResult) {
-                                             
-                                             [uploadedDatas addObject:imageResult];
-                                             countImage+=1;
-                                             if (countImage == imageObjects.count) {
-                                                 success(uploadedDatas, host);
-                                             }
-                                             
-                                         } onFailure:^(NSError *error) {
-                                             failedRequest(error);
-                                         }];
+            [imageObjects[i] fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+                UIImage *resizedImage = [TKPImagePickerController resizedImage:image];
+                [RequestUploadImage requestUploadImage:resizedImage
+                                        withUploadHost:uploadImageBaseURL
+                                                  path:@"/web-service/v4/action/upload-image/upload_contact_image.pl"
+                                                  name:@"fileToUpload"
+                                              fileName:@"image.png"
+                                         requestObject:requestObject
+                                             onSuccess:^(ImageResult *imageResult) {
+                                                 
+                                                 [uploadedDatas addObject:imageResult];
+                                                 countImage+=1;
+                                                 if (countImage == imageObjects.count) {
+                                                     success(uploadedDatas, host);
+                                                 }
+                                                 
+                                             } onFailure:^(NSError *error) {
+                                                 failedRequest(error);
+                                             }];
+                
+            }];
+            
         }
 
     } onFailure:^{

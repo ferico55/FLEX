@@ -17,9 +17,9 @@ class MyWishlistShopReputation: NSObject {
     var image: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistShopReputation.self)
+        let mapping = RKObjectMapping(for: MyWishlistShopReputation.self)
         
-        mapping.addAttributeMappingsFromArray(["score", "set", "level", "image"])
-        return mapping
+        mapping?.addAttributeMappings(from:["score", "set", "level", "image"])
+        return mapping!
     }
 }

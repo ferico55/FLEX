@@ -38,6 +38,8 @@ FOUNDATION_EXPORT const unsigned char SPTDataLoaderVersionString[];
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark - Persistent Cache Errors
+
 /**
  * The SPTPersistentCacheLoadingError enum defines constants that identify NSError's in SPTPersistentCacheErrorDomain.
  */
@@ -82,10 +84,20 @@ typedef NS_ENUM(NSInteger, SPTPersistentCacheLoadingError) {
  */
 FOUNDATION_EXPORT NSString *const SPTPersistentCacheErrorDomain;
 
+
+#pragma mark - Callback Types
+
 /**
- * Type of callback that is used to give caller a chance to choose which key to open if any.
+ *  Type off callback for load/store calls
+ */
+typedef void (^SPTPersistentCacheResponseCallback)(SPTPersistentCacheResponse *response);
+/**
+ *  Type of callback that is used to give caller a chance to choose which key to open if any.
  */
 typedef NSString * _Nonnull(^SPTPersistentCacheChooseKeyCallback)(NSArray<NSString *> *keys);
+
+
+#pragma mark - SPTPersistentCache Interface
 
 /**
  * @brief SPTPersistentCache
@@ -183,8 +195,12 @@ typedef NSString * _Nonnull(^SPTPersistentCacheChooseKeyCallback)(NSArray<NSStri
 /**
  * @brief Removes data for keys unconditionally even if expired.
  * @param keys The keys corresponding to the data to remove.
+ * @param callback May be nil if not interested in result.
+ * @param queue Queue on which to run the callback. If callback is nil this is ignored otherwise mustn't be nil.
  */
-- (void)removeDataForKeys:(NSArray<NSString *> *)keys;
+- (void)removeDataForKeys:(NSArray<NSString *> *)keys
+                 callback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                  onQueue:(dispatch_queue_t _Nullable)queue;
 /**
  * @discussion Increment ref count for given keys. Give callback with result for each key in input array.
  *             Req.#1.2. Expired records treated as not found on lock.
@@ -215,16 +231,25 @@ typedef NSString * _Nonnull(^SPTPersistentCacheChooseKeyCallback)(NSArray<NSStri
 - (void)unscheduleGarbageCollector;
 /**
  * Delete all files files in managed folder unconditionaly.
+ * @param callback May be nil if not interested in result.
+ * @param queue Queue on which to run the callback. If callback is nil this is ignored otherwise mustn't be nil.
  */
-- (void)prune;
+- (void)pruneWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                  onQueue:(dispatch_queue_t _Nullable)queue;
 /**
  * Wipe only files that locked regardless of refCount value.
+ * @param callback May be nil if not interested in result.
+ * @param queue Queue on which to run the callback. If callback is nil this is ignored otherwise mustn't be nil.
  */
-- (void)wipeLockedFiles;
+- (void)wipeLockedFilesWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                            onQueue:(dispatch_queue_t _Nullable)queue;
 /**
  * Wipe only files that are not locked regardles of their expiration time.
+ * @param callback May be nil if not interested in result.
+ * @param queue Queue on which to run the callback. If callback is nil this is ignored otherwise mustn't be nil.
  */
-- (void)wipeNonLockedFiles;
+- (void)wipeNonLockedFilesWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                               onQueue:(dispatch_queue_t _Nullable)queue;
 /**
  * Returns size occupied by cache.
  * @warning This method does synchronous calculations.

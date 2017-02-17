@@ -10,20 +10,20 @@ import UIKit
 
 class HomeSliderView: UIView {
     
-    @IBOutlet private var carouselPlaceholder: UIView!
-    @IBOutlet private var seeAllPromoButton: UIButton!
-    private var pageControlHeight: Int = 12
-    private var customPageControl: StyledPageControl!
+    @IBOutlet fileprivate var carouselPlaceholder: UIView!
+    @IBOutlet fileprivate var seeAllPromoButton: UIButton!
+    fileprivate var pageControlHeight: Int = 12
+    fileprivate var customPageControl: StyledPageControl!
     
-    @IBOutlet private var homeSliderAddOnView: UIView!
-    private var carouselDataSource: CarouselDataSource!
+    @IBOutlet fileprivate var homeSliderAddOnView: UIView!
+    fileprivate var carouselDataSource: CarouselDataSource!
     
     override func awakeFromNib() {
         setupCustomPageControl()
         setupSliderAddOnPromoButton()
     }
     
-    private func setupCustomPageControl() {
+    fileprivate func setupCustomPageControl() {
         customPageControl = StyledPageControl()
         customPageControl.pageControlStyle = PageControlStyleDefault
         customPageControl.coreNormalColor = UIColor(red: 214.0/255.0, green: 214.0/255.0, blue: 214.0/255.0, alpha: 1)
@@ -33,45 +33,46 @@ class HomeSliderView: UIView {
         self.addSubview(customPageControl)
     }
     
-    private func setupSliderAddOnPromoButton() {
+    fileprivate func setupSliderAddOnPromoButton() {
         let userAuthManager = UserAuthentificationManager()
-        self.seeAllPromoButton.bk_whenTapped {
+        self.seeAllPromoButton.bk_(whenTapped: {
             var userInfo: [String : Int]!
             if userAuthManager.isLogin {
                 userInfo = ["page" : 3]
             } else {
                 userInfo = ["page" : 2]
             }
-            NSNotificationCenter.defaultCenter().postNotificationName("didSwipeHomePage", object: self, userInfo: userInfo)
-        }
+            
+            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: userInfo)
+        })
     }
     
     func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
-        let slider = iCarousel(frame: CGRectZero)
+        let slider = iCarousel(frame: CGRect.zero)
         slider.backgroundColor = backgroundColor
         self.carouselPlaceholder.addSubview(slider)
         slider.mas_makeConstraints{ make in
-            make.edges.mas_equalTo()(self.carouselPlaceholder)
+            make?.edges.mas_equalTo()(self.carouselPlaceholder)
         }
         
-        self.carouselDataSource = CarouselDataSource(banner: banner, withPageControl: self.customPageControl)
+        self.carouselDataSource = CarouselDataSource(banner: banner, with: self.customPageControl)
         self.carouselDataSource.navigationDelegate = navigationController
-        slider.type = .Linear
+        slider.type = .linear
         slider.dataSource = self.carouselDataSource
         slider.delegate = self.carouselDataSource
         slider.decelerationRate = 0.5
         
-        let timer = NSTimer.bk_timerWithTimeInterval(5.0, block: { (timer) in
-            slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
+        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { (timer) in
+            slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
             }, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
         
         customPageControl.numberOfPages = banner.count
         customPageControl.mas_makeConstraints { (make) in
-            make.centerY.mas_equalTo()(self.homeSliderAddOnView)
-            make.left.mas_equalTo()(self.homeSliderAddOnView).with().offset()(20)
-            make.height.mas_equalTo()(self.pageControlHeight)
-            make.width.mas_equalTo()(self.pageControlHeight*Int(self.customPageControl.numberOfPages))
+            make?.centerY.mas_equalTo()(self.homeSliderAddOnView)
+            make?.left.mas_equalTo()(self.homeSliderAddOnView)?.with().offset()(20)
+            make?.height.mas_equalTo()(self.pageControlHeight)
+            make?.width.mas_equalTo()(self.pageControlHeight*Int(self.customPageControl.numberOfPages))
         }
     }
 }

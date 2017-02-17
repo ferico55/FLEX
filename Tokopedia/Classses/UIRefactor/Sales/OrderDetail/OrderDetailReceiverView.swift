@@ -10,36 +10,36 @@ import UIKit
 
 class OrderDetailReceiverView: UIView {
 
-    @IBOutlet private var receiverPhone: LabelCopyable!
-    @IBOutlet private var receiverName: LabelCopyable!
-    @IBOutlet private var receiverAddress: LabelCopyable!
-    @IBOutlet private var partialOrder: LabelCopyable!
-    @IBOutlet private var courierAgent: LabelCopyable!
-    @IBOutlet private var iDropCodeButton: UIButton!
+    @IBOutlet fileprivate var receiverPhone: LabelCopyable!
+    @IBOutlet fileprivate var receiverName: LabelCopyable!
+    @IBOutlet fileprivate var receiverAddress: LabelCopyable!
+    @IBOutlet fileprivate var partialOrder: LabelCopyable!
+    @IBOutlet fileprivate var courierAgent: LabelCopyable!
+    @IBOutlet fileprivate var iDropCodeButton: UIButton!
     
-    private var order = OrderTransaction(){
+    fileprivate var order = OrderTransaction(){
         didSet{
             let orderReceiver = order.order_destination
             
-            receiverName.text = orderReceiver.receiver_name
+            receiverName.text = orderReceiver!.receiver_name
             receiverName.onCopy = { text in
-                UIPasteboard.generalPasteboard().string = text
+                UIPasteboard.general.string = text
             }
-            receiverAddress.text = "\(orderReceiver.address_street)\n\(orderReceiver.address_district)\n\(orderReceiver.address_city)\n\(orderReceiver.address_province), \(orderReceiver.address_country), \(orderReceiver.address_postal)"
+            receiverAddress.text = "\(orderReceiver!.address_street)\n\(orderReceiver!.address_district)\n\(orderReceiver!.address_city)\n\(orderReceiver!.address_province), \(orderReceiver!.address_country), \(orderReceiver!.address_postal)"
             receiverAddress.onCopy = { text in
-                UIPasteboard.generalPasteboard().string = text
+                UIPasteboard.general.string = text
             }
-            receiverPhone.text = orderReceiver.receiver_phone
+            receiverPhone.text = orderReceiver?.receiver_phone
             receiverPhone.onCopy = { text in
-                UIPasteboard.generalPasteboard().string = text
+                UIPasteboard.general.string = text
             }
             courierAgent.text = "\(order.order_shipment.shipment_name) (\(order.order_shipment.shipment_product))"
             courierAgent.onCopy = { text in
-                UIPasteboard.generalPasteboard().string = text
+                UIPasteboard.general.string = text
             }
             partialOrder.text = order.order_detail.partialString
             partialOrder.onCopy = { text in
-                UIPasteboard.generalPasteboard().string = text
+                UIPasteboard.general.string = text
             }
         }
     }
@@ -49,19 +49,19 @@ class OrderDetailReceiverView: UIView {
             var text : NSAttributedString!
             
             if iDropCode == "try again" {
-                text = NSAttributedString(string: "Kode sedang dipronses...", attributes: [NSForegroundColorAttributeName:UIColor.blackColor()])
+                text = NSAttributedString(string: "Kode sedang dipronses...", attributes: [NSForegroundColorAttributeName:UIColor.black])
                 
-                iDropCodeButton.setImage(UIImage(named: "icon_pesan_ulang.png"), forState: .Normal)
-                iDropCodeButton.hidden = false
+                iDropCodeButton.setImage(UIImage(named: "icon_pesan_ulang.png"), for: UIControlState())
+                iDropCodeButton.isHidden = false
             } else {
-                text = NSAttributedString(string: iDropCode, attributes: [NSForegroundColorAttributeName:UIColor.redColor()])
+                text = NSAttributedString(string: iDropCode, attributes: [NSForegroundColorAttributeName:UIColor.red])
                 
-                iDropCodeButton.hidden = true
+                iDropCodeButton.isHidden = true
             }
             
             let kurir = NSMutableAttributedString(string: courierAgent.text!)
-            kurir.appendAttributedString(NSAttributedString(string:"-"))
-            kurir.appendAttributedString(text)
+            kurir.append(NSAttributedString(string:"-"))
+            kurir.append(text)
             
             courierAgent.attributedText = kurir;
         }
@@ -70,8 +70,8 @@ class OrderDetailReceiverView: UIView {
     var onTapGetIDropCode:(() -> Void)?
     var shouldRequestIDropCode : Bool = false
     
-    static func newView(order: OrderTransaction)-> UIView {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("OrderDetailReceiverView", owner: nil, options: nil)!
+    static func newView(_ order: OrderTransaction)-> UIView {
+        let views:Array = Bundle.main.loadNibNamed("OrderDetailReceiverView", owner: nil, options: nil)!
         let view = views.first as! OrderDetailReceiverView
         
         view.order = order
@@ -79,15 +79,15 @@ class OrderDetailReceiverView: UIView {
         return view
     }
     
-    @IBAction private func getIDropCode(sender: AnyObject){
+    @IBAction fileprivate func getIDropCode(_ sender: AnyObject){
         
         guard shouldRequestIDropCode else { return }
 
         let kurir = NSMutableAttributedString(string: courierAgent.text!)
-        kurir.appendAttributedString(NSAttributedString(string:"-"))
-        kurir.appendAttributedString(NSAttributedString(string:"Loading..."))
+        kurir.append(NSAttributedString(string:"-"))
+        kurir.append(NSAttributedString(string:"Loading..."))
         courierAgent.attributedText = kurir;
-        iDropCodeButton.hidden = true
+        iDropCodeButton.isHidden = true
             
         onTapGetIDropCode?()
         

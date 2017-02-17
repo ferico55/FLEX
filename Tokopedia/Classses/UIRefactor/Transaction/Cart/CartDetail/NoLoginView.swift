@@ -12,15 +12,15 @@ import UIKit
     
     var onTapRegister : (()->Void)?
     
-    class func newView()-> AnyObject! {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("NoLoginView", owner: nil, options: nil)!
-        for view:AnyObject in views{
+    class func newView()-> Any! {
+        let views:Array = Bundle.main.loadNibNamed("NoLoginView", owner: nil, options: nil)!
+        for view: Any in views{
             return view;
         }
         return nil
     }
     
-    @IBAction func tapRegister(sender: AnyObject) {
+    @IBAction func tapRegister(_ sender: AnyObject) {
         onTapRegister?()
     }
 }

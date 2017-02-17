@@ -25,15 +25,15 @@ class MessageViewController: JSQMessagesViewController {
         "5" : UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0) // system
     ]
 
-    private var messages = [JSQMessage]()
-    private var avatars = Dictionary<String, JSQMessagesAvatarImage>()
-    private var userLabelColors = Dictionary<String, UIColor>()
+    fileprivate var messages = [JSQMessage]()
+    fileprivate var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    fileprivate var userLabelColors = Dictionary<String, UIColor>()
     
-    private var outgoingBubbleImageView: JSQMessagesBubbleImage!
-    private var incomingBubbleImageView: JSQMessagesBubbleImage!
-    private var nextPage: String?
-    private var indicator = UIActivityIndicatorView()
-    private let route = JLRoutes()
+    fileprivate var outgoingBubbleImageView: JSQMessagesBubbleImage!
+    fileprivate var incomingBubbleImageView: JSQMessagesBubbleImage!
+    fileprivate var nextPage: String?
+    fileprivate var indicator = UIActivityIndicatorView()
+    fileprivate let route = JLRoutes()
     
     lazy var fetchMessageManager : TokopediaNetworkManager = {
        var manager = TokopediaNetworkManager()
@@ -50,13 +50,13 @@ class MessageViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AnalyticsManager.trackScreenName("Inbox Message Detail Page")
-        collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         
         //set margin between bubble, thus the bubble will adjust how it appear on iPad
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
         
         self.topContentAdditionalInset = 30
-        if (self.hideInputMessage) {inputToolbar.hidden = true}
+        if (self.hideInputMessage) {inputToolbar.isHidden = true}
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
@@ -65,7 +65,7 @@ class MessageViewController: JSQMessagesViewController {
         fetchMessages("1")
     }
     
-    private func setupRoute(){
+    fileprivate func setupRoute(){
         route.addRoute("/invoice.pl") { [unowned self] dictionary in
             
             guard let pdf = dictionary["pdf"] else {return false}
@@ -73,26 +73,26 @@ class MessageViewController: JSQMessagesViewController {
             
             let url = "\(NSString.tokopediaUrl())/invoice.pl?pdf=\(pdf)&id=\(id)"
             
-            NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: url)
+            NavigateViewController.navigateToInvoice(from: self, withInvoiceURL: url)
             
             return true
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
     //MARK: JSQMessageDataSource
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item]
         
         if message.senderId == senderId {
@@ -102,22 +102,22 @@ class MessageViewController: JSQMessagesViewController {
         }
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         let message = messages[indexPath.item]
         
         if(message.senderId != self.senderId) {
             var senderName = message.senderDisplayName
-            if(senderName.characters.count > 30) {
-                senderName = "\(senderName[senderName.startIndex.advancedBy(0)...senderName.startIndex.advancedBy(30)])..."
+            if((senderName?.characters.count)! > 30) {
+                senderName = "\(senderName?[(senderName?.index((senderName?.startIndex)!, offsetBy: 0))!...(senderName?.index((senderName?.startIndex)!, offsetBy: 30))!])..."
             }
             
-            return NSAttributedString(string: senderName, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
+            return NSAttributedString(string: senderName!, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])
         }
         
         return nil
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
         let message = messages[indexPath.item]
         
         if message.senderId == senderId {
@@ -127,46 +127,43 @@ class MessageViewController: JSQMessagesViewController {
         }
     }
     
-   
-    
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         let message = messages[indexPath.item]
         
         if message.senderId == senderId {
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.blackColor()
+            cell.textView!.textColor = UIColor.black
         }
         
         cell.textView!.delegate = self
-        cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName : UIColor.blueColor(), NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue]
+        cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName : UIColor.blue, NSUnderlineStyleAttributeName : NSUnderlineStyle.styleSingle.rawValue]
         
         return cell
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapAvatarImageView avatarImageView: UIImageView!, atIndexPath indexPath: NSIndexPath!) {
-        if(UIDevice.currentDevice().userInterfaceIdiom == .Phone) {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapAvatarImageView avatarImageView: UIImageView!, at indexPath: IndexPath!) {
+        if(UIDevice.current.userInterfaceIdiom == .phone) {
             let message = messages[indexPath.item]
             
             let controller = NavigateViewController()
-            controller.navigateToProfileFromViewController(self, withUserID: message.senderId)
+            controller.navigateToProfile(from: self, withUserID: message.senderId)
         }
-        
+
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         let message = messages[indexPath.item]
         
         return avatars[message.senderId]
     }
     
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
         self.fetchMessages(self.nextPage)
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
         
         if(indexPath.item == 0) {
             return 30
@@ -175,8 +172,8 @@ class MessageViewController: JSQMessagesViewController {
         if(indexPath.item > 0) {
             let message = messages[indexPath.item - 1]
             let previousMessage = self.messages[indexPath.item]
-            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
-            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: message.date))
+            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: previousMessage.date))
             
             if(dateString != previousDateString) {
                 return 30
@@ -186,46 +183,46 @@ class MessageViewController: JSQMessagesViewController {
         return 0
     }
     
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         let message = messages[indexPath.item]
         
         if(indexPath.item == 0) {
-            return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+            return NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: message.date))
         }
         
         if(indexPath.item > 0) {
             let previousMessage = self.messages[indexPath.item - 1]
-            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
-            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(previousMessage.date))
+            let dateString = NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: message.date))
+            let previousDateString = NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: previousMessage.date))
 
             if(dateString != previousDateString) {
-                return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().relativeDateForDate(message.date))
+                return NSAttributedString(string: JSQMessagesTimestampFormatter.shared().relativeDate(for: message.date))
             }
         }
         return nil
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return 20
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         let message = messages[indexPath.item]
         
-        return NSAttributedString(string: JSQMessagesTimestampFormatter.sharedFormatter().timeForDate(message.date))
+        return NSAttributedString(string: JSQMessagesTimestampFormatter.shared().time(for: message.date))
+
     }
-    
-    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+        
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         AnalyticsManager.trackEventName("clickMessage", category: GA_EVENT_CATEGORY_INBOX_MESSAGE, action: GA_EVENT_ACTION_SEND, label: "Message")
         let message = JSQMessage(senderId: self.senderId, senderDisplayName: senderDisplayName, date: date, text: text)
-        self.messages.append(message)
+        self.messages.append(message!)
         
-        self.finishSendingMessageAnimated(true)
+        self.finishSendingMessage(animated: true)
         
         sendMessageManager .
-            requestWithBaseUrl(NSString.kunyitUrl(),
+            request(withBaseUrl: NSString.kunyitUrl(),
                                path: "/v1/message/reply",
                                method: .POST,
                                parameter: ["reply_message" : text, "message_id" : self.messageId],
@@ -236,7 +233,7 @@ class MessageViewController: JSQMessagesViewController {
                                     if(result.data.is_success == "1") {
                                         self.onMessagePosted(text)
                                     } else {
-                                        self.receiveErrorSendMessage(result.message_error)
+                                        self.receiveErrorSendMessage(result.message_error as [AnyObject])
                                     }
                                },
                                onFailure: {  [weak self] (error) in
@@ -247,28 +244,28 @@ class MessageViewController: JSQMessagesViewController {
         )
     }
     
-    private func receiveErrorSendMessage(errors: [AnyObject]) {
+    fileprivate func receiveErrorSendMessage(_ errors: [AnyObject]) {
         AnalyticsManager.trackEventName("clickMessage", category: GA_EVENT_CATEGORY_INBOX_MESSAGE, action: GA_EVENT_ACTION_ERROR, label: "Message")
         let stickyAlert = StickyAlertView(errorMessages: errors, delegate: self)
-        stickyAlert .show()
+        stickyAlert? .show()
         let lastMessage = self.messages.last?.text
         self.messages.removeLast()
         
-        self.finishSendingMessageAnimated(true)
+        self.finishSendingMessage(animated: true)
         self.inputToolbar.contentView.textView.text = lastMessage
     }
     
     //MARK: TextView Delegate
-    override func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    override func textView(_ textView: UITextView, shouldInteractWith URL: Foundation.URL, in characterRange: NSRange) -> Bool {
         var urlString : String!
         
         guard !route.routeURL(URL) else {return false}
         
-        if(URL.scheme?.lowercaseString == "http" || URL.scheme?.lowercaseString == "https") {
+        if(URL.scheme?.lowercased() == "http" || URL.scheme?.lowercased() == "https") {
             if(URL.host == "www.tokopedia.com") {
-                urlString = URL.absoluteString!
+                urlString = URL.absoluteString
             } else {
-                urlString = "https://tkp.me/r?url=\(URL.absoluteString!.stringByReplacingOccurrencesOfString("*", withString: "."))"
+                urlString = "https://tkp.me/r?url=\(URL.absoluteString.replacingOccurrences(of: "*", with: "."))"
             }
             
             self.openWebViewWithUrl(urlString)
@@ -280,114 +277,113 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     //MARK: Bubble Setup
-    private func setupBubbles() {
+    fileprivate func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleGreen())
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }
     
-    private func setupTitle() {
-        let titleView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width - 120, 44))
+    fileprivate func setupTitle() {
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width - 120, height: 44))
         
-        let titleLabel = UILabel(frame: CGRectZero)
-        let betweenLabel = UILabel(frame: CGRectZero)
+        let titleLabel = UILabel(frame: CGRect.zero)
+        let betweenLabel = UILabel(frame: CGRect.zero)
         
         titleView.addSubview(titleLabel)
         titleView.addSubview(betweenLabel)
         
         titleLabel.text = messageTitle
         titleLabel.font = UIFont.largeThemeMedium()
-        titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.textAlignment = .Center
+        titleLabel.textColor = UIColor.white
+        titleLabel.textAlignment = .center
         titleLabel.mas_makeConstraints { (make) in
-            make.top.left().right().equalTo()(titleView)
+            make?.top.left().right().equalTo()(titleView)
         }
         
         
         betweenLabel.text = messageSubtitle
         betweenLabel.font = UIFont.smallTheme()
-        betweenLabel.textAlignment = .Center
-        betweenLabel.textColor = UIColor.whiteColor()
+        betweenLabel.textAlignment = .center
+        betweenLabel.textColor = UIColor.white
         betweenLabel.mas_makeConstraints { (make) in
-            make.top.equalTo()(titleLabel.mas_bottom)
-            make.left.right().equalTo()(titleView)
+            make?.top.equalTo()(titleLabel.mas_bottom)
+            make?.left.right().equalTo()(titleView)
         }
         
         self.navigationItem.titleView = titleView
     }
     
     //MARK: Network
-    private func fetchMessages(page: String!) {
+    fileprivate func fetchMessages(_ page: String!) {
         showLoading()
-        fetchMessageManager .
-            requestWithBaseUrl(
-                NSString.kunyitUrl(),
-                path: "/v1/message/detail",
-                method: .GET,
-                parameter: ["message_id" : messageId, "page" : page, "per_page" : "10", "nav" : messageTabName],
-                mapping: InboxMessageDetail.mapping(),
-                onSuccess: { [unowned self] (result, operation) in
+        fetchMessageManager.request(
+            withBaseUrl: NSString.kunyitUrl(),
+            path: "/v1/message/detail",
+            method: .GET,
+            parameter: ["message_id" : messageId, "page" : page, "per_page" : "10", "nav" : messageTabName],
+            mapping: InboxMessageDetail.mapping(),
+            onSuccess: { [unowned self] (result, operation) in
+                
+                let messageDetail = result.dictionary()[""] as! InboxMessageDetail
+                if((messageDetail.message_error == nil)) {
+                    self.didReceiveMessages(messageDetail.result.list as! [InboxMessageDetailList])
                     
-                    let result = result.dictionary()[""] as! InboxMessageDetail
-                    if((result.message_error == nil)) {
-                        self.didReceiveMessages(result.result.list as! [InboxMessageDetailList])
-                        
-                        let messageUsers = result.result.conversation_between.map({"\($0.user_name)"}).joinWithSeparator(", ")
-                        if(messageUsers != "") {
-                            self.messageSubtitle = "Antara : \(messageUsers)"
-                        }
-                        self.setupTitle()
-                        
-                        self.showLoadEarlierMessagesHeader = result.result.paging.isShowNext
-                        self.nextPage = result.result.paging.uriNext.valueForKey("page")
+                    let messageUsers = messageDetail.result.conversation_between.map({"\(($0 as! InboxMessageDetailBetween).user_name)"}).joined(separator: ", ")
+                    if(messageUsers != "") {
+                        self.messageSubtitle = "Antara : \(messageUsers)"
                     }
-                    self.hideLoading()
-                },
-                onFailure: { (error) in
-                    self.hideLoading()
+                    self.setupTitle()
+                    
+                    self.showLoadEarlierMessagesHeader = messageDetail.result.paging.isShowNext
+                    self.nextPage = TokopediaNetworkManager.getPageFromUri(messageDetail.result.paging.uri_next)
                 }
+                self.hideLoading()
+            },
+            onFailure: { (error) in
+                self.hideLoading()
+        }
         )
     }
     
-    private func showLoading() {
+    fileprivate func showLoading() {
         indicator.startAnimating()
-        indicator.activityIndicatorViewStyle = .Gray
+        indicator.activityIndicatorViewStyle = .gray
         
         self.view.addSubview(indicator)
         indicator.mas_makeConstraints { (make) in
-            make.left.top().right().equalTo()(self.collectionView)
-            make.height.equalTo()(44)
+            make?.left.top().right().equalTo()(self.collectionView)
+            make?.height.equalTo()(44)
         }
     }
     
-    private func hideLoading() {
+    fileprivate func hideLoading() {
         indicator.stopAnimating()
         self.topContentAdditionalInset = 0
     }
     
-    private func didReceiveMessages(messages: [InboxMessageDetailList]) {
+    fileprivate func didReceiveMessages(_ messages: [InboxMessageDetailList]) {
         messages.forEach({ (message) in
             let message = message
             let dateString = message.message_reply_time.formatted
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
-            dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+            dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
             
-            let dateObj = dateFormatter.dateFromString(dateString)!
+            let dateObj = dateFormatter.date(from: dateString!)!
             let messageReply = NSString.extracTKPMEUrl(message.message_reply)
 
-            if (message.user_label_id == String(UserLabelMessage.Administrator)){
-                inputToolbar.hidden = true
+            if (message.user_label_id == String(describing: UserLabelMessage.Administrator)){
+                inputToolbar.isHidden = true
             }
             
             if(message.user_id == self.senderId) {
                 self.addMessage(self.senderId, text: messageReply , senderName: "",date: dateObj)
             } else {
                 self.addMessage(message.user_id, text: messageReply, senderName: "\(message.user_label) - \(message.user_name)", date: dateObj)
-                let imageView = UIImageView(frame: CGRectZero)
-                imageView.setImageWithURL(NSURL(string: message.user_image), placeholderImage: UIImage(named: "default-boy.png"))
+                let imageView = UIImageView(frame: CGRect.zero)
+                imageView.setImageWith(NSURL(string: message.user_image) as URL!, placeholderImage: UIImage(named: "default-boy.png"))
                 
-                avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImageWithImage(imageView.image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
+                avatars[message.user_id] = JSQMessagesAvatarImageFactory.avatarImage(with: imageView.image, diameter: UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width))
                 userLabelColors[message.user_id] = labelColorsCollection[message.user_label_id]
                 
             }
@@ -396,12 +392,12 @@ class MessageViewController: JSQMessagesViewController {
         self.finishReceivingMessage()
     }
     
-    func addMessage(id: String, text: String, senderName: String, date: NSDate) {
+    func addMessage(_ id: String, text: String, senderName: String, date: Date) {
         let message = JSQMessage(senderId: id, senderDisplayName: senderName, date: date, text: text)
-        messages.insert(message, atIndex: 0)
+        messages.insert(message!, at: 0)
     }
     
-    private func openWebViewWithUrl(url: String) {
+    fileprivate func openWebViewWithUrl(_ url: String) {
         let controller = WebViewController()
         controller.strURL = url
         controller.strTitle = url
@@ -410,7 +406,7 @@ class MessageViewController: JSQMessagesViewController {
             guard let `self` = self else { return }
             
             if(tappedUrl?.absoluteString == "https://www.tokopedia.com/") {
-                self.navigationController!.popViewControllerAnimated(true)
+                self.navigationController!.popViewController(animated: true)
             }
         }
         

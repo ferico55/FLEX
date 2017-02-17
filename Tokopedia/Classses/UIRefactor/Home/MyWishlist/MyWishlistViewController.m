@@ -36,6 +36,7 @@
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
+@import SwiftOverlays;
 
 @interface MyWishlistViewController ()
 <

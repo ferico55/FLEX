@@ -11,12 +11,12 @@ import UIKit
 class OTPOnCall: NSObject {
     var otpSent: Bool = false
     
-    class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+    class func mapping() -> RKObjectMapping! {
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "otp_sent" : "otpSent"
             ])
         
-        return mapping
+        return mapping!
     }
 }

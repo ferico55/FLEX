@@ -16,9 +16,9 @@ class SearchSuggestionItem: NSObject {
     var isOfficial = false
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: SearchSuggestionItem.self)
-        mapping.addAttributeMappingsFromArray(["keyword", "url", "imageURI", "isOfficial"])
-        mapping.addAttributeMappingsFromDictionary(["redirection_url":"redirectUrl"])
+        let mapping: RKObjectMapping = RKObjectMapping(for: SearchSuggestionItem.self)
+        mapping.addAttributeMappings(from: ["keyword", "url", "imageURI", "isOfficial"])
+        mapping.addAttributeMappings(from: ["redirection_url":"redirectUrl"])
         return mapping
     }
 }

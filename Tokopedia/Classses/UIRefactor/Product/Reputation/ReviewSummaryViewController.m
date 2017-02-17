@@ -124,8 +124,8 @@ TokopediaNetworkManagerDelegate
         _attachedImagesViewHeight.constant = 8;
         _textViewHeight.constant = 139.0;
     } else {
-        for (NSInteger ii = 0; ii < _attachedImages.count; ii++) {
-            AttachedPicture *pict = _attachedImages[ii];
+        for (NSInteger ii = 0; ii < [self attachedImageWithoutDeletedImage].count; ii++) {
+            AttachedPicture *pict = [self attachedImageWithoutDeletedImage][ii];
             
             if (![pict.thumbnailUrl isEqualToString:@""]) {
                 [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
@@ -139,6 +139,18 @@ TokopediaNetworkManagerDelegate
             
         }
     }
+}
+
+-(NSArray<AttachedPicture *> *)attachedImageWithoutDeletedImage{
+    NSMutableArray *attached = [NSMutableArray new];
+    
+    for (AttachedPicture *pict in _attachedImages) {
+        if (![pict.isDeleted isEqualToString:@"1"]) {
+            [attached addObject:pict];
+        }
+    }
+    
+    return [attached copy];
 }
 
 - (void)setQualityLabel {

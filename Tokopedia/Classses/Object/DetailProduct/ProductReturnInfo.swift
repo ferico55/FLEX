@@ -14,8 +14,8 @@ class ProductReturnInfo: NSObject {
     var content: String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(["icon" : "icon", "color_rgb" : "color_rgb", "content" : "content"])
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: ["icon" : "icon", "color_rgb" : "color_rgb", "content" : "content"])
         
         return mapping
     }

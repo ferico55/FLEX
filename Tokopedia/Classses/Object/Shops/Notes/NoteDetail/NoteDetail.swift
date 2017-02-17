@@ -14,16 +14,16 @@ class NoteDetail : NSObject, TKPObjectMapping
     var server_process_time : NSString = ""
     var result : NoteDetailResult = NoteDetailResult()
     
-    class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status" : "status",
                 "server_process_time" : "server_process_time"]
     }
     
     class func mapping() -> RKObjectMapping!{
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(attributeMappingDictionary())
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "result", withMapping: NoteDetailResult.mapping()))
+        mapping.addAttributeMappings(from:attributeMappingDictionary())
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "result", with: NoteDetailResult.mapping()))
         
         return mapping
     }

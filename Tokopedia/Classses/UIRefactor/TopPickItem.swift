@@ -14,9 +14,9 @@ class TopPickItem: NSObject {
     var url: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: TopPickItem.self)
+        let mapping = RKObjectMapping(for: TopPickItem.self)
         
-        mapping.addAttributeMappingsFromDictionary(["name" : "name", "image_url" : "imageUrl", "url" : "url"])
-        return mapping
+        mapping?.addAttributeMappings(from:["name" : "name", "image_url" : "imageUrl", "url" : "url"])
+        return mapping!
     }
 }

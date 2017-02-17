@@ -14,8 +14,8 @@ class WalletAction: NSObject {
     var type: String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:[
             "text" : "text",
             "redirect_url" : "redirect_url",
             "type" : "type"

@@ -36,6 +36,7 @@
 #import "PromoRequest.h"
 #import "Tokopedia-Swift.h"
 #import "NoResultReusableView.h"
+@import SwiftOverlays;
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;

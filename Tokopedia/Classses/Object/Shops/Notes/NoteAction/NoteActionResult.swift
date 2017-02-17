@@ -14,9 +14,9 @@ class NoteActionResult : NSObject, TKPObjectMapping
     var is_success : String = ""
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromArray(["note_id", "is_success"])
+        mapping.addAttributeMappings(from: ["note_id", "is_success"])
         
         return mapping
     }

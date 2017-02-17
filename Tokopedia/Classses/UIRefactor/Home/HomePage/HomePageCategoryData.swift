@@ -12,8 +12,8 @@ class HomePageCategoryData: NSObject{
     var layout_sections: [HomePageCategoryLayoutSection]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: HomePageCategoryData.self)
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "layout_sections", toKeyPath: "layout_sections", withMapping: HomePageCategoryLayoutSection.mapping()))
+        let mapping: RKObjectMapping = RKObjectMapping(for: HomePageCategoryData.self)
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "layout_sections", toKeyPath: "layout_sections", with: HomePageCategoryLayoutSection.mapping()))
         return mapping;
     }
 }

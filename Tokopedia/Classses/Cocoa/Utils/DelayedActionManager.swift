@@ -10,24 +10,20 @@ import Foundation
 
 class DelayedActionManager : NSObject
 {
-    private var lastFireTime:dispatch_time_t = 0
+    fileprivate var lastFireTime:DispatchTime!
     
     //when this function is not called for specific time, do the action
     //if this function is called again, reset the delay time with the new one
-    func whenNotCalledFor(delay:NSTimeInterval, doAction:(()->()) )
+    func whenNotCalledFor(_ delay:TimeInterval, doAction:@escaping (()->()) )
     {
         let dispatchDelay = Int64(delay * Double(NSEC_PER_SEC))
         
-        self.lastFireTime = dispatch_time(DISPATCH_TIME_NOW,0)
+        self.lastFireTime = DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC)
         
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                dispatchDelay
-            ),
-            dispatch_get_main_queue()) {
-                let now = dispatch_time(DISPATCH_TIME_NOW,0)
-                let when = dispatch_time(self.lastFireTime, dispatchDelay)
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(dispatchDelay) / Double(NSEC_PER_SEC)) {
+                let now = DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC)
+                let when = self.lastFireTime + Double(dispatchDelay) / Double(NSEC_PER_SEC)
                 if now >= when {
                     doAction()
                 }

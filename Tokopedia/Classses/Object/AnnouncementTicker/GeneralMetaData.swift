@@ -12,9 +12,9 @@ class GeneralMetaData: NSObject {
     var total_data: String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping = RKObjectMapping(forClass: self)
+        let mapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromArray(["total_data"])
+        mapping?.addAttributeMappings(from:["total_data"])
         
         return mapping
     }

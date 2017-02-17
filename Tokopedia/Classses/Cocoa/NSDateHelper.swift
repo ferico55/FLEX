@@ -9,30 +9,30 @@
 import Foundation
 
 extension NSDate {
-    class func convertDateString(string: String, fromFormat format1: String, toFormat format2: String ) -> String{
-        let dtf: NSDateFormatter = NSDateFormatter()
+    static func convertDateString(_ string: String, fromFormat format1: String, toFormat format2: String ) -> String{
+        let dtf: DateFormatter = DateFormatter()
 
         //Need to add local and timezone for iOS above 8.1
-        let Locale:NSLocale=NSLocale(localeIdentifier: "id_ID")
+        let Locale:Foundation.Locale=Foundation.Locale(identifier: "id_ID")
         dtf.locale=Locale
-        dtf.timeZone = NSTimeZone(name: "GMT")
+        dtf.timeZone = TimeZone(identifier: "GMT")
         
         dtf.dateFormat = format1
-        let date: NSDate = dtf.dateFromString(string)!
-        let dateFormat: NSDateFormatter = NSDateFormatter()
+        let date: Date = dtf.date(from: string)!
+        let dateFormat: DateFormatter = DateFormatter()
         dateFormat.dateFormat = format2
-        let result = dateFormat.stringFromDate(date)
+        let result = dateFormat.string(from: date)
         return result
     }
     
-    func timeStamp() -> String{
+    func timeStamp() -> String {
         let myDateString = String(Int64(self.timeIntervalSince1970*1000))
         return "\(myDateString)"
     }
     
-    func stringWithFormat(dateFormat: String) -> String{
-        let formatter = NSDateFormatter()
+    func stringWithFormat(_ dateFormat: String) -> String {
+        let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self as Date)
     }
 }

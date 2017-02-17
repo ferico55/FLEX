@@ -67,4 +67,8 @@
     return [_product_notes kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString *)product_weight{
+    return _product_weight ?: @"";
+}
+
 @end

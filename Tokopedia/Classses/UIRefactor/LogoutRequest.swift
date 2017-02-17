@@ -15,7 +15,7 @@ class LogoutRequestParameter: NSObject {
 
 class LogoutRequest: NSObject {
     
-    class func fetchLogout(objectRequest: LogoutRequestParameter, onSuccess: ((LogoutResult) -> Void)) {
+    class func fetchLogout(_ objectRequest: LogoutRequestParameter, onSuccess: @escaping ((LogoutResult) -> Void)) {
         
         let param : [String : String] = [
             "device_id"         : objectRequest.deviceID
@@ -25,20 +25,20 @@ class LogoutRequest: NSObject {
         networkManager.isUsingHmac = true
         networkManager.isUsingDefaultError = false
 
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/session/logout.pl",
                                           method: .POST,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(LogoutResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: LogoutResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
+                                            let response : V4Response = result[""] as! V4Response<LogoutResult>
                                             
                                             if response.message_error.count > 0{
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             } else {
-                                                onSuccess(response.data as! LogoutResult)
+                                                onSuccess(response.data as LogoutResult)
                                             }
         }) { (error) in
             

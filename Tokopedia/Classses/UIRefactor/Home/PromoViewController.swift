@@ -16,14 +16,14 @@ class PromoViewController: UIViewController {
         let promoView = PromoView()
         self.view.addSubview(promoView)
         promoView.mas_makeConstraints { (make) in
-            make.edges.mas_equalTo()(self.view)
+            make?.edges.mas_equalTo()(self.view)
         }
         promoView.didTapPromoDetail = { webViewController in
             self.navigationController?.pushViewController(webViewController, animated: true)
         }
         promoView.onTapLinkWithUrl = { url in
             if url.absoluteString == "https://www.tokopedia.com/" {
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             }
         }
         

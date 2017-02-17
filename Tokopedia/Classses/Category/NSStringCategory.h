@@ -10,29 +10,29 @@
 
 @interface NSString (TkpdCategory)
 
--(NSString *)isEmail;
-+(NSString *)convertHTML:(NSString *)html;
-+(NSString *)getLinkFromHTMLString:(NSString*)html;
-+(NSString*) timeLeftSinceDate:(NSDate *)dateT;
+- (null_unspecified NSString *)isEmail;
++ (nonnull NSString *)convertHTML:(nonnull NSString *)html;
++ (null_unspecified NSString *)getLinkFromHTMLString:(nonnull NSString*)html;
++ (null_unspecified NSString*) timeLeftSinceDate:(nonnull NSDate *)dateT;
+- (BOOL)isNotAllBaseCharacter;
+- (BOOL)isAllNonNumber;
+- (BOOL)isNumber;
++ (nonnull NSString *)stringReplaceAhrefWithUrl:(nonnull NSString *)string;
++ (nonnull NSString *)extracTKPMEUrl:(nonnull NSString *)string;
+
+
++ (nonnull NSString*) encodeString:(nonnull NSString*)string;
+
 - (BOOL) isNotAllBaseCharacter;
--(BOOL)isAllNonNumber;
-- (BOOL) isNumber;
-+ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
-+ (NSString *)extracTKPMEUrl:(NSString *)string;
 
+- (null_unspecified NSString *)priceFromStringIDR;
 
-+ (NSString*) encodeString:(NSString*)string;
++ (null_unspecified NSArray *)getStringsBetweenAhrefTagWithString:(nonnull NSString *)string;
++ (null_unspecified NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(nonnull NSString *)string;
 
-- (BOOL) isNotAllBaseCharacter;
++ (nonnull NSString *)joinStringsWithBullets:(nonnull NSArray *)strings;
 
--(NSString *)priceFromStringIDR;
-
-+ (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string;
-+ (NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string;
-
-+ (NSString *)joinStringsWithBullets:(NSArray *)strings;
-
-+ (NSString *)jsonStringArrayFromArray:(NSArray *)array;
++ (nonnull NSString *)jsonStringArrayFromArray:(nonnull NSArray *)array;
 
 - (BOOL)empty;
 

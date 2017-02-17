@@ -10,16 +10,16 @@ import UIKit
 
 class PickupAddressView: UIView {
     
-    @IBOutlet private var addressLabel: UILabel!
+    @IBOutlet fileprivate var addressLabel: UILabel!
     
-    private var address = String(){
+    fileprivate var address = String(){
         didSet{
             addressLabel.text = address;
         }
     }
 
-    static func newView(address:String)-> UIView {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("PickupAddressView", owner: nil, options: nil)!
+    static func newView(_ address:String)-> UIView {
+        let views:Array = Bundle.main.loadNibNamed("PickupAddressView", owner: nil, options: nil)!
         let view = views.first as! PickupAddressView
         view.address = address
         

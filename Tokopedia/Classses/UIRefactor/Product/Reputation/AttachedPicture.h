@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+@class DKAsset;
 
-@interface AttachedPicture : NSObject
+@interface AttachedPicture : NSObject <NSCopying>
 
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSString *fileName;
@@ -18,5 +19,6 @@
 @property (strong, nonatomic) NSString *attachmentID;
 @property (strong, nonatomic) NSString *isDeleted;
 @property (strong, nonatomic) NSString *isPreviouslyUploaded;
+@property (strong, nonatomic) DKAsset *asset;
 
 @end

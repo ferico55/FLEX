@@ -11,11 +11,15 @@
 
 Everyone tries to implement a cache at some point in their app’s lifecycle, and this is ours. This is a library that allows people to cache `NSData` with time to live (TTL) values and semantics for disk management.
 
-- [x] 📱 iOS 7.0+
-- [x] 💻 OS X 10.9+
+- [x] 📱 iOS 8.0+
+- [x] 💻 OS X 10.10+
 
 ## Architecture :triangular_ruler:
-`SPTPersistentCache` is designed as an LRU cache which stores all the data in a single binary file, with entries containing the length, last accessed time and a CRC check designed to prevent corruption. It can be used to automatically schedule garbage collection and invoke pruning.
+`SPTPersistentCache` is designed as an LRU cache which makes use of the file system to store files as well as inserting a cache header into each file. This cache header allows us to track the TTL, last updated time, the redundancy check and more. This allows the cache to know how often a file is accessed, when it was made, whether it has become corrupt and allows decisions to be made on whether the cache is stale.
+
+The use of different files rather than a single binary file allows multiple reads/writes on different files within the cache without complicated blocking logic. The cache header in each file can be removed quite easily, this can be seen in the `SPTPersistentCacheViewer` tool that is made to run on OS X.
+
+Included here is also the ability to schedule garbage collection over the cache, which allows the user to ensure they are never using too much space for commonly cache data (such as images).
 
 ## Installation :inbox_tray:
 `SPTPersistentCache` can be installed in a variety of ways including traditional static libraries and dynamic frameworks.
@@ -30,11 +34,11 @@ $ gem install cocoapods
 ```
 Then simply add `SPTPersistentCache` to your `Podfile`.
 ```
-pod 'SPTPersistentCache', '~> 1.0'
+pod 'SPTPersistentCache', '~> 1.1.0'
 ```
-Lastly let CocoaPods do it's thing by running:
+Lastly let CocoaPods do its thing by running:
 ```shell
-$ cocoapods update
+$ pod install
 ```
 
 ### Carthage
@@ -45,7 +49,7 @@ $ brew install carthage
 ```
 You will also need to add `SPTPersistentCache` to your `Cartfile`:
 ```
-github 'spotify/SPTPersistentCache' ~> 1.0
+github 'spotify/SPTPersistentCache' ~> 1.1.0
 ```
 After that is all said and done, let Carthage pull in SPTPersistentCache like so:
 ```shell
@@ -59,14 +63,18 @@ For an example of this framework's usage, see the demo application `SPTPersisten
 ### Creating the SPTPersistentCache
 It is best to use different caches for different types of data you want to store, and not just one big cache for your entire application. However, only create one `SPTPersistentCache` instance for each cache, otherwise you might encounter anomalies when the two different caches end up writing to the same file.
 ```objc
-SPTPersistentCacheOptions *options = [[SPTPersistentCacheOptions alloc] initWithCachePath:cachePath
-                                                                               identifier:@"com.spotify.demo.image.cache"
-                                                                defaultExpirationInterval:(60 * 60 * 24 * 30)
-                                                                 garbageCollectorInterval:(NSUInteger)(1.5 * SPTPersistentCacheDefaultGCIntervalSec)
-                                                                                    debug:^(NSString *string) {
-                                                                                              NSLog(@"%@", string);
-                                                                                          }];
+NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject stringByAppendingString:@"com.spotify.demo.image.cache"];
+
+SPTPersistentCacheOptions *options = [SPTPersistentCacheOptions new];
+options.cachePath = cachePath;
+options.cacheIdentifier = @"com.spotify.demo.image.cache";
+options.defaultExpirationPeriod = 60 * 60 * 24 * 30; // 30 days
+options.garbageCollectionInterval = (NSUInteger)(1.5 * SPTPersistentCacheDefaultGCIntervalSec);
 options.sizeConstraintBytes = 1024 * 1024 * 10; // 10 MiB
+options.debugOutput = ^(NSString *string) {
+    NSLog(@"%@", string);
+};
+
 SPTPersistentCache *cache = [[SPTPersistentCache alloc] initWithOptions:options];
 ```
 

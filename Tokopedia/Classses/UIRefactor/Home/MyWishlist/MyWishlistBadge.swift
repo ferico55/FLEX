@@ -15,9 +15,9 @@ class MyWishlistBadge: NSObject {
     var image_url: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistBadge.self)
-        mapping.addAttributeMappingsFromArray(["title", "image_url"])
+        let mapping = RKObjectMapping(for: MyWishlistBadge.self)
+        mapping?.addAttributeMappings(from:["title", "image_url"])
         
-        return mapping
+        return mapping!
     }
 }

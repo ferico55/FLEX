@@ -12,9 +12,8 @@
 
 @protocol LoginViewDelegate <NSObject>
 
-- (void)redirectViewController:(id)viewController;
-
 @optional
+- (void)redirectViewController:(id)viewController;
 - (void)cancelLoginView;
 - (void)didLoginSuccess:(LoginResult*) login;
 

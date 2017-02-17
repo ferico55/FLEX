@@ -8,18 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "DetailReputationReview.h"
+@class AttachedPicture;
 
-@class ProductAddCaptionViewController, GeneratedHost;
+@class ProductAddCaptionViewController, GeneratedHost, DKAsset;
 
 @protocol ProductAddCaptionDelegate <NSObject>
 @optional
-- (void)updateAttachedPictures:(NSArray*)attachedPictures
-                selectedAssets:(NSArray*)selectedAssets
-              uploadedPictures:(NSArray*)uploadedPictures
-          tempUploadedPictures:(NSArray*)tempUploadedPictures;
+- (void)updateSelectedAssets:(NSMutableArray *)selectedAssets
+              uploadedPictures:(NSMutableArray *)uploadedPictures;
 @end
 
 @interface ProductAddCaptionViewController : UIViewController
+
+- (instancetype)initWithSelectedAssets:(NSMutableArray<DKAsset*>*)selectedAssets isEdit:(BOOL)isEdit uploadedPicture:(NSMutableArray<AttachedPicture*>*)uploadedPicture selectedImageIndex:(int)selectedImageIndex delegate:(id<ProductAddCaptionDelegate>)delegate;
 
 @property (weak, nonatomic) id<ProductAddCaptionDelegate> delegate;
 @property NSInteger selectedImageTag;
@@ -30,13 +31,10 @@
 @property (nonatomic, strong) NSArray *selectedImages;
 @property (nonatomic, strong) NSArray *selectedIndexPaths;
 @property (nonatomic, strong) NSArray *imagesCaptions;
-@property (nonatomic, strong) NSArray *selectedAssets;
+@property (nonatomic, strong) NSMutableArray<DKAsset*> *selectedAssets;
 
-@property (nonatomic, strong) NSMutableArray *attachedImagesArray;
 @property (nonatomic, strong) NSMutableArray *deletedIndexes;
-@property (nonatomic, strong) NSMutableArray *attachedPictureImages;
-@property (nonatomic, strong) NSMutableArray *attachedPictures;
-@property (nonatomic, strong) NSMutableArray *uploadedPictures;
-@property (nonatomic, strong) NSMutableArray *tempUploadedPictures;
+
+-(void)addImageFromAsset;
 
 @end

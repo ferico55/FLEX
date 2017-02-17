@@ -26,7 +26,7 @@
 import Foundation
 
 /// Base class for the Eureka cells
-public class BaseCell : UITableViewCell, BaseCellType {
+open class BaseCell : UITableViewCell, BaseCellType {
 
     /// Untyped row associated to this cell.
     public var baseRow: BaseRow! { return nil }
@@ -51,40 +51,42 @@ public class BaseCell : UITableViewCell, BaseCellType {
             if responder! is FormViewController {
                 return responder as? FormViewController
             }
-            responder = responder?.nextResponder()
+            responder = responder?.next
         }
         return nil
     }
 
-    public func setup(){}
-    public func update() {}
+    open func setup(){}
+    open func update() {}
 
-    public func didSelect() {}
+    open func didSelect() {}
 
     /**
      If the cell can become first responder. By default returns false
      */
-    public func cellCanBecomeFirstResponder() -> Bool {
+    open func cellCanBecomeFirstResponder() -> Bool {
         return false
     }
 
     /**
      Called when the cell becomes first responder
      */
-    public func cellBecomeFirstResponder(direction: Direction = .Down) -> Bool {
+    @discardableResult
+    open func cellBecomeFirstResponder(withDirection: Direction = .down) -> Bool {
         return becomeFirstResponder()
     }
 
     /**
      Called when the cell resigns first responder
      */
-    public func cellResignFirstResponder() -> Bool {
+    @discardableResult
+    open func cellResignFirstResponder() -> Bool {
         return resignFirstResponder()
     }
 }
 
 /// Generic class that represents the Eureka cells.
-public class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     public typealias Value = T
 
@@ -92,8 +94,8 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     public weak var row : RowOf<T>!
 
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
-    override public var inputAccessoryView: UIView? {
-        if let v = formViewController()?.inputAccessoryViewForRow(row){
+    override open var inputAccessoryView: UIView? {
+        if let v = formViewController()?.inputAccessoryView(for: row){
             return v
         }
         return super.inputAccessoryView
@@ -111,41 +113,41 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     /**
      Function responsible for setting up the cell at creation time.
      */
-    public override func setup(){
+    open override func setup(){
         super.setup()
     }
 
     /**
      Function responsible for updating the cell each time it is reloaded.
      */
-    public override func update(){
+    open override func update(){
         super.update()
         textLabel?.text = row.title
-        textLabel?.textColor = row.isDisabled ? .grayColor() : .blackColor()
+        textLabel?.textColor = row.isDisabled ? .gray : .black
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
 
     /**
      Called when the cell was selected.
      */
-    public override func didSelect() {}
-    
-    public override func canBecomeFirstResponder() -> Bool {
-        return false
+    open override func didSelect() {}
+
+    override open var canBecomeFirstResponder: Bool {
+        get { return false }
     }
-    
-    public override func becomeFirstResponder() -> Bool {
+
+    open override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         if result {
-            formViewController()?.beginEditing(self)
+            formViewController()?.beginEditing(of: self)
         }
         return result
     }
 
-    public override func resignFirstResponder() -> Bool {
+    open override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         if result {
-            formViewController()?.endEditing(self)
+            formViewController()?.endEditing(of: self)
         }
         return result
     }

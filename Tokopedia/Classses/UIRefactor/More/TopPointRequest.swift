@@ -10,20 +10,20 @@ import UIKit
 
 class TopPointRequest: NSObject {
     
-    class func fetchTopPoint(onSuccess: ((LoyaltyPointResult) -> Void)) {
+    class func fetchTopPoint(_ onSuccess: @escaping ((LoyaltyPointResult) -> Void)) {
 
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .pointUrl(),
+        networkManager.request(withBaseUrl: NSString .pointUrl(),
                                           path: "/app/v4",
                                           method: .POST,
                                           parameter: [:],
-                                          mapping:  V4Response.mappingWithData(LoyaltyPointResult.mapping()),
+                                          mapping:  V4Response<AnyObject>.mapping(withData: LoyaltyPointResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
-                                            let data = response.data as! LoyaltyPointResult
+                                            let response : V4Response = result[""] as! V4Response<LoyaltyPointResult>
+                                            let data = response.data as LoyaltyPointResult
                                             
                                             guard response.data != nil else {
                                                 return

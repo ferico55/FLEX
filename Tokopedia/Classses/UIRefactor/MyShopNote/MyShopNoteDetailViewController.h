@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import "Tokopedia-Swift.h"
+@class NotesList;
 
 @protocol MyShopNoteDetailDelegate <NSObject>
 

@@ -12,10 +12,10 @@ class DiscoverResult: NSObject {
     var providers: [SignInProvider]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        let providerMapping = RKRelationshipMapping(fromKeyPath: "providers", toKeyPath: "providers", withMapping: SignInProvider.mapping())!
+        let mapping = RKObjectMapping(for: self)
+        let providerMapping = RKRelationshipMapping(fromKeyPath: "providers", toKeyPath: "providers", with: SignInProvider.mapping())!
         
-        mapping.addPropertyMapping(providerMapping)
-        return mapping
+        mapping?.addPropertyMapping(providerMapping)
+        return mapping!
     }
 }

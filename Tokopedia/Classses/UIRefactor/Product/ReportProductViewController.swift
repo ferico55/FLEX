@@ -25,7 +25,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     var downPicker: DownPicker!
     var submitBarButtonItem: UIBarButtonItem!
     var networkManager = TokopediaNetworkManager()
-    var reportDataArray : [[String: NSObject]] = []
+    var reportDataArray : [[String: Any]] = [[:]]
     var reportLinkUrl: String?
     var userManager = UserAuthentificationManager()
     var selectedReportId: Int!
@@ -34,7 +34,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        downPickerTextField.enabled = false
+        downPickerTextField.isEnabled = false
         deskripsiTextView.delegate = self
         generateKeyboardNotification()
         setupHiddenObject()
@@ -44,7 +44,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Laporkan Produk"
     }
@@ -53,7 +53,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func didTapReportButton(sender: UIButton) {
+    @IBAction func didTapReportButton(_ sender: UIButton) {
         let userManager = UserAuthentificationManager()
         let appVersion = UIApplication.getAppVersionStringWithoutDot()
         let webViewVC = WebViewController()
@@ -61,12 +61,12 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         let webViewURL = (self.reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)" as NSString).kv_encodeHTMLCharacterEntities()
         
         
-        webViewVC.strURL = userManager.webViewUrlFromUrl(webViewURL)
+        webViewVC.strURL = userManager.webViewUrl(fromUrl: webViewURL!)
         webViewVC.strTitle = "Laporkan Produk"
         webViewVC.shouldAuthorizeRequest = true
         webViewVC.onTapLinkWithUrl = { (url) in
-            if (url.absoluteString == "https://www.tokopedia.com/") {
-                self.navigationController?.popViewControllerAnimated(true)
+            if (url?.absoluteString == "https://www.tokopedia.com/") {
+                self.navigationController?.popViewController(animated: true)
             }
         }
         self.navigationController?.pushViewController(webViewVC, animated: true)
@@ -75,36 +75,36 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     // MARK: KeyboardNotification
     
     func generateKeyboardNotification() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, deskripsiTextView.frame.size.height, 0)
         scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, deskripsiTextView.frame.size.height, 0)
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
     // MARK: Layout Setup
     
     func generateSubmitBarButtonItem() {
-        self.submitBarButtonItem = UIBarButtonItem(title: "Submit", style: .Plain, target: self, action: #selector(ReportProductViewController.sendReportToServer))
+        self.submitBarButtonItem = UIBarButtonItem(title: "Submit", style: .plain, target: self, action: #selector(ReportProductViewController.sendReportToServer))
         disableSubmitBarButtonItem()
         self.navigationItem.rightBarButtonItem = submitBarButtonItem
     }
     
     func disableSubmitBarButtonItem() {
         self.submitBarButtonItem.tintColor = UIColor(colorLiteralRed: 228/255, green: 228/255, blue: 228/255, alpha: 1.0)
-        self.submitBarButtonItem.enabled = false
+        self.submitBarButtonItem.isEnabled = false
     }
     
     func enableSubmitBarButtonItem() {
         self.submitBarButtonItem.tintColor = UIColor(colorLiteralRed: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
-        self.submitBarButtonItem.enabled = true
+        self.submitBarButtonItem.isEnabled = true
     }
     
     func setupHiddenObject() {
@@ -113,44 +113,44 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     }
     
     func showDeskripsiForm() {
-        self.deskripsiTextView.hidden = false
+        self.deskripsiTextView.isHidden = false
         showOrHidePlaceholder()
     }
     
     func hideDeskripsiForm() {
-        self.deskripsiTextView.hidden = true
+        self.deskripsiTextView.isHidden = true
         showOrHidePlaceholder()
     }
     
     func hideLinkInstruction() {
-        self.linkInstructionLabel.hidden = true
-        self.laporkanButton.hidden = true
+        self.linkInstructionLabel.isHidden = true
+        self.laporkanButton.isHidden = true
     }
     
     func showLinkInstruction() {
-        self.linkInstructionLabel.hidden = false
-        self.laporkanButton.hidden = false
+        self.linkInstructionLabel.isHidden = false
+        self.laporkanButton.isHidden = false
     }
     
     func showOrHidePlaceholder() {
-        if self.deskripsiTextView.text == "" && self.deskripsiTextView.hidden == false {
-            self.tulisDeskripsiPlaceholderLabel.hidden = false
+        if self.deskripsiTextView.text == "" && self.deskripsiTextView.isHidden == false {
+            self.tulisDeskripsiPlaceholderLabel.isHidden = false
         } else {
-            self.tulisDeskripsiPlaceholderLabel.hidden = true
+            self.tulisDeskripsiPlaceholderLabel.isHidden = true
         }
     }
     
-    func showErrorAlertViewWithIsNeedPopViewController(error: String) {
+    func showErrorAlertViewWithIsNeedPopViewController(_ error: String) {
         let stickyAlertView = StickyAlertView(errorMessages: [error], delegate: self)
-        stickyAlertView.show()
+        stickyAlertView?.show()
         
     }
     
     func showSuccessAlertViewWithIsNeedPopViewController() {
         successAlertView = UIAlertView()
-        successAlertView?.bk_initWithTitle("Sukses Laporkan Produk", message: "")
-        successAlertView?.bk_addButtonWithTitle("OK", handler: { 
-            self.navigationController?.popViewControllerAnimated(true)
+        successAlertView?.bk_init(withTitle: "Sukses Laporkan Produk", message: "")
+        successAlertView?.bk_addButton(withTitle: "OK", handler: { 
+            self.navigationController?.popViewController(animated: true)
         })
         successAlertView!.show()
     }
@@ -159,10 +159,10 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     func getReportTypeFromAPI() {
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(), path: "/v4/product/get_product_report_type.pl", method: .GET, parameter: ["product_id":productId], mapping: ReportProductGetTypeResponse.mapping(), onSuccess: {(mappingResult, operation) in
-                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+        networkManager.request(withBaseUrl: NSString.v4Url(), path: "/v4/product/get_product_report_type.pl", method: .GET, parameter: ["product_id":productId], mapping: ReportProductGetTypeResponse.mapping(), onSuccess: {(mappingResult, operation) in
+                DispatchQueue.main.async(execute: { [weak self] in
                     if let weakSelf = self {
-                        let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+                        let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
                         let reportProductResponse: ReportProductGetTypeResponse = result[""] as! ReportProductGetTypeResponse
                         
                         var reportTitleArray: [String] = []
@@ -172,13 +172,13 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                         }
                         
                         weakSelf.initDownPickerData(reportTitleArray)
-                        weakSelf.downPickerTextField.enabled = true
+                        weakSelf.downPickerTextField.isEnabled = true
                     }
                 })
             }) { (error) in
-                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                DispatchQueue.main.async(execute: { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController((error.localizedDescription))
                     }
                 })
         }
@@ -190,11 +190,11 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                     "text_message": self.deskripsiTextView.text,
                     "user_id"     : self.userManager.getUserId()]
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(), path: "/v4/action/product/report_product.pl", method: .POST, parameter: param, mapping: ReportProductSubmitResponse.mapping(), onSuccess: { (mappingResult, operation) in
-                dispatch_async(dispatch_get_main_queue(), { 
+        networkManager.request(withBaseUrl: NSString.v4Url(), path: "/v4/action/product/report_product.pl", method: .POST, parameter: param, mapping: ReportProductSubmitResponse.mapping(), onSuccess: { (mappingResult, operation) in
+                DispatchQueue.main.async(execute: { 
                     [weak self] in
                     if let weakSelf = self {
-                        let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+                        let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
                         let reportProductResponse: ReportProductSubmitResponse = result[""] as! ReportProductSubmitResponse
                         if reportProductResponse.data.is_success == "1" {
                             AnalyticsManager.trackEventName("reportSuccess", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: "Report Success", label: "Report Success")
@@ -205,7 +205,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                     }
                 })
             }) { (error) in
-                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                DispatchQueue.main.async(execute: { [weak self] in
                     if let weakSelf = self {
                         weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
                     }
@@ -215,35 +215,36 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     // MARK: DownPicker Functionality
     
-    func initDownPickerData(reportTitleArray: [String]) {
+    func initDownPickerData(_ reportTitleArray: [String]) {
         var reportTitleArrayWithHardcodedAtIndex0 :[String] = reportTitleArray
-        reportTitleArrayWithHardcodedAtIndex0.insert("Pilih Jenis Laporan", atIndex: 0)
+        reportTitleArrayWithHardcodedAtIndex0.insert("Pilih Jenis Laporan", at: 0)
         self.downPicker = DownPicker(textField: downPickerTextField, withData: reportTitleArrayWithHardcodedAtIndex0)
         var frame = self.downPicker.getTextField().rightView?.frame
         frame?.size.height = (frame?.size.height)! / 1.5
         frame?.size.width = (frame?.size.width)! / 2
-        self.downPicker.getTextField().rightView?.contentMode = .Left
+        self.downPicker.getTextField().rightView?.contentMode = .left
         self.downPicker.getTextField().rightView?.frame = frame!
         self.downPicker.setArrowImage(UIImage(named: "icon_up_down_arrow_green"))
         self.downPicker.selectedIndex = 0
         self.downPicker.shouldDisplayCancelButton = false
-        self.downPicker.addTarget(self, action: #selector(ReportProductViewController.didChangeDownPickerValue(_:)), forControlEvents: .ValueChanged)
+        self.downPicker.addTarget(self, action: #selector(ReportProductViewController.didChangeDownPickerValue(_:)), for: .valueChanged)
     }
     
-    func didChangeDownPickerValue(downPicker: DownPicker) {
+    func didChangeDownPickerValue(_ downPicker: DownPicker) {
         showOrHidePlaceholder()
         let downPickerSelectedIndex = downPicker.selectedIndex
         if downPickerSelectedIndex > 0 {
             var selectedReportData = reportDataArray[downPickerSelectedIndex-1]
             reportLinkUrl = selectedReportData["report_url"] as? String
-            selectedReportId = selectedReportData["report_id"] as? Int
-            if selectedReportData["report_response"] == 1 {
+            selectedReportId = selectedReportData["report_id"] as? Int!
+            let reportReponse = selectedReportData["report_response"] as? Int
+            if reportReponse == 1 {
                 showDeskripsiForm()
                 hideLinkInstruction()
                 enableSubmitBarButtonItem()
-            } else if selectedReportData["report_response"] == 0 {
+            } else if reportReponse == 0 {
                 hideDeskripsiForm()
-                linkInstructionLabel.text = selectedReportData["report_description"] as? String
+                linkInstructionLabel.text = selectedReportData["report_description"] as! String?
                 showLinkInstruction()
                 disableSubmitBarButtonItem()
             }
@@ -256,11 +257,11 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     // MARK: Text view delegate
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        self.tulisDeskripsiPlaceholderLabel.hidden = true
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.tulisDeskripsiPlaceholderLabel.isHidden = true
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         showOrHidePlaceholder()
     }
 }

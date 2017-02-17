@@ -12,10 +12,10 @@ class TopPicksResponseData: NSObject {
     var groups: [TopPicksGroup]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: TopPicksResponseData.self)
+        let mapping = RKObjectMapping(for: TopPicksResponseData.self)
 
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "groups", toKeyPath: "groups", withMapping: TopPicksGroup.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "groups", toKeyPath: "groups", with: TopPicksGroup.mapping()))
         
-        return mapping
+        return mapping!
     }
 }

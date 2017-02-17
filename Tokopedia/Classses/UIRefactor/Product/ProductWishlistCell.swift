@@ -8,6 +8,30 @@
 
 import Foundation
 import OAStackView
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 class ProductWishlistCell : UICollectionViewCell {
@@ -30,8 +54,8 @@ class ProductWishlistCell : UICollectionViewCell {
     var tappedBuyButton: ((ProductWishlistCell) -> Void)?
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
-    func setViewModel(viewModel : ProductModelView) {
-        let url = NSURL(string: viewModel.productThumbUrl)!
+    func setViewModel(_ viewModel : ProductModelView) {
+        let url = URL(string: viewModel.productThumbUrl)!
         productName.text = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop
@@ -40,52 +64,52 @@ class ProductWishlistCell : UICollectionViewCell {
         
         productImage.setImageWithUrl(url, placeHolderImage: UIImage(named: "grey-bg.png"))
         
-        let trashGesture = UITapGestureRecognizer.init(target: self, action: #selector(ProductWishlistCell.tapTrashButton))
+        let trashGesture = UITapGestureRecognizer(target: self, action: #selector(ProductWishlistCell.tapTrashButton))
         productTrashButton.addGestureRecognizer(trashGesture)
-        productTrashButton.userInteractionEnabled = true
+        productTrashButton.isUserInteractionEnabled = true
         
         if(viewModel.isProductBuyAble) {
-            productBuyButton.backgroundColor = UIColor.whiteColor()
-            productBuyButton.setTitle("Beli", forState: .Normal)
-            productBuyButton.userInteractionEnabled = true
+            productBuyButton.backgroundColor = UIColor.white
+            productBuyButton.setTitle("Beli", for: .normal)
+            productBuyButton.isUserInteractionEnabled = true
             productBuyButton.layer.borderWidth = 1.0
-            productBuyButton.layer.borderColor = UIColor.init(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0).CGColor
-            productBuyButton.setTitleColor(UIColor.init(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0), forState: .Normal)
+            productBuyButton.layer.borderColor = UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0).cgColor
+            productBuyButton.setTitleColor(UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0), for: .normal)
         } else {
-            productBuyButton.backgroundColor = UIColor.init(red: 231/255, green: 231/255, blue: 231/255, alpha: 0.65)
-            productBuyButton.setTitle("Stok Kosong", forState: .Normal)
-            productBuyButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-            productBuyButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-            productBuyButton.userInteractionEnabled = false
+            productBuyButton.backgroundColor = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 0.65)
+            productBuyButton.setTitle("Stok Kosong", for: .normal)
+            productBuyButton.setTitleColor(UIColor.lightGray, for: .normal)
+            productBuyButton.layer.borderColor = UIColor.lightGray.cgColor
+            productBuyButton.isUserInteractionEnabled = false
         }
-        setBadges(viewModel.badges)
-        setLabels(viewModel.labels)
+        setBadges(viewModel.badges as [AnyObject]?)
+        setLabels(viewModel.labels as [AnyObject]?)
         
     }
     
-    internal func setLabels(labels: [AnyObject]?) {
+    internal func setLabels(_ labels: [AnyObject]?) {
         labelsView.arrangedSubviews.forEach { (subview) in
             labelsView .removeArrangedSubview(subview)
         }
         
-        labelsView.alignment = .Fill
+        labelsView.alignment = .fill
         labelsView.spacing = 2
-        labelsView.axis = .Horizontal
-        labelsView.distribution = .EqualSpacing
+        labelsView.axis = .horizontal
+        labelsView.distribution = .equalSpacing
         
         if(labels?.count > 0) {
             labels!.forEach { (productLabel) in
                 let productObject = productLabel as! ProductLabel
                 
-                let label = UILabel(frame: CGRectZero)
+                let label = UILabel(frame: CGRect.zero)
                 label.text = "\(productObject.title) "
                 label.backgroundColor = UIColor.fromHexString(productObject.color)
-                label.textAlignment = .Center
+                label.textAlignment = .center
                 label.layer.cornerRadius = 3
                 label.layer.masksToBounds = true
                 label.layer.borderWidth = 1.0
-                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor().CGColor : UIColor.fromHexString(productObject.color).CGColor
-                label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGrayColor() : UIColor.whiteColor()
+                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGray.cgColor : UIColor.fromHexString(productObject.color).cgColor
+                label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGray : UIColor.white
                 label.font = UIFont.microTheme()
                 
                 self.labelsView .addArrangedSubview(label)
@@ -95,16 +119,16 @@ class ProductWishlistCell : UICollectionViewCell {
         
     }
     
-    internal func setBadges(badges: [AnyObject]?) {
+    internal func setBadges(_ badges: [AnyObject]?) {
         badgesView.arrangedSubviews.forEach { (subview) in
             badgesView .removeArrangedSubview(subview)
         }
         
-        badgesView.alignment = .Fill
+        badgesView.alignment = .fill
         badgesView.spacing = 2
-        badgesView.axis = .Horizontal
-        badgesView.distribution = .FillEqually
-        badgesView.alignment = .Center
+        badgesView.axis = .horizontal
+        badgesView.distribution = .fillEqually
+        badgesView.alignment = .center
         
         if(badges?.count > 0) {
             var urls = [String]()
@@ -113,19 +137,19 @@ class ProductWishlistCell : UICollectionViewCell {
                 urls.append(badgeObject.image_url)
             })
             
-            imageDownloader.downloadImagesWithUrls(urls) { [weak self](images) in
+            imageDownloader.downloadImages(withUrls: urls) { [weak self](images) in
                 guard let `self` = self else { return }
                 
-                images.forEach({ (image) in
+                images?.forEach({ (image) in
                     if(image.size.width > 1) {
-                        let imageView = UIImageView(frame: CGRectZero)
+                        let imageView = UIImageView(frame: CGRect.zero)
                         imageView.image = image
                         
                         self.badgesView .addArrangedSubview(imageView)
                         
                         imageView.mas_makeConstraints({ (make) in
-                            make.width.equalTo()(self.badgesView.mas_height)
-                            make.height.equalTo()(self.badgesView.mas_height)
+                            make?.width.equalTo()(self.badgesView.mas_height)
+                            make?.height.equalTo()(self.badgesView.mas_height)
                         })
 
                     }
@@ -133,14 +157,14 @@ class ProductWishlistCell : UICollectionViewCell {
             }
             
             locationLabel.mas_makeConstraints({ (make) in
-                make.trailing.equalTo()(self.badgesView.mas_leading)
+                make?.trailing.equalTo()(self.badgesView.mas_leading)
             })
 
         }
         
     }
     
-    @IBAction func tapBuyButton(sender: AnyObject) {
+    @IBAction func tapBuyButton(_ sender: AnyObject) {
         tappedBuyButton?(self)
     }
     

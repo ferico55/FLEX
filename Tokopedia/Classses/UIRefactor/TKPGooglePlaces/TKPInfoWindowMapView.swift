@@ -15,16 +15,16 @@ class TKPInfoWindowMapView: UIView {
 
     // MARK: Initialization
     init() {
-        super.init(frame: CGRectMake(0, 0, 280, 80))
+        super.init(frame: CGRect(x: 0, y: 0, width: 280, height: 80))
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func newView()-> AnyObject! {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("TKPInfoWindowMapView", owner: nil, options: nil)!
-        for view:AnyObject in views{
+    func newView()-> Any! {
+        let views:Array = Bundle.main.loadNibNamed("TKPInfoWindowMapView", owner: nil, options: nil)!
+        for view:Any in views{
             return view;
         }
         return nil

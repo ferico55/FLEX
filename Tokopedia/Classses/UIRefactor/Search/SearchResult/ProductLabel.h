@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface ProductLabel : NSObject
-@property (strong, nonatomic) NSString *title;
-@property (strong, nonatomic) NSString *color;
+@property (strong, nonatomic, nonnull) NSString *title;
+@property (strong, nonatomic, nonnull) NSString *color;
 
 
 +(RKObjectMapping*)mapping;
+
 @end

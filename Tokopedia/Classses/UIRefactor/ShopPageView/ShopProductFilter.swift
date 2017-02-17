@@ -14,7 +14,7 @@ class ShopProductFilter: NSObject {
     var page = 1
     var etalaseId = ""
     
-    class func fromUrlQuery(dictionary: [NSObject: AnyObject]) -> ShopProductFilter {
+    class func fromUrlQuery(_ dictionary: [AnyHashable: Any]) -> ShopProductFilter {
         let filter = ShopProductFilter()
         filter.query = dictionary["keyword"] as? String ?? ""
         filter.orderBy = dictionary["sort"] as? String ?? ""

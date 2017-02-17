@@ -11,6 +11,8 @@
 #import "WebViewController.h"
 #import "Tokopedia-Swift.h"
 
+@import SwiftOverlays;
+
 NSInteger const bannerIpadWidth = 450;
 
 @interface CarouselDataSource ()

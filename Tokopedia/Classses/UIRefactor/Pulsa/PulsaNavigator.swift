@@ -20,37 +20,37 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToAddressBook() {
-        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().isTranslucent = false
         if #available(iOS 9.0, *) {
             let contactPicker = CNContactPickerViewController()
             
             contactPicker.delegate = self
             contactPicker.displayedPropertyKeys = [CNContactPhoneNumbersKey]
             
-            self.controller.presentViewController(contactPicker, animated: true, completion: nil)
+            self.controller.present(contactPicker, animated: true, completion: nil)
 
         } else {
             // Fallback on earlier versions
             let contactPicker = ABPeoplePickerNavigationController()
             contactPicker.peoplePickerDelegate = self
-            contactPicker.displayedProperties = [NSNumber(int: kABPersonPhoneProperty)]
+            contactPicker.displayedProperties = [NSNumber(value: kABPersonPhoneProperty as Int32)]
 
-            self.controller.presentViewController(contactPicker, animated: true, completion: nil)
+            self.controller.present(contactPicker, animated: true, completion: nil)
         }
         
     }
     
-    func navigateToPulsaProduct(products: [PulsaProduct], selectedOperator: PulsaOperator) {
+    func navigateToPulsaProduct(_ products: [PulsaProduct], selectedOperator: PulsaOperator) {
         let controller = PulsaProductViewController()
         
-        controller.products = products.sort({
+        controller.products = products.sorted(by: {
             $0.attributes.weight < $1.attributes.weight
         })
         
         controller.didSelectProduct = { [unowned self] product in
             self.pulsaView.selectedProduct = product
             self.pulsaView.hideErrors()
-            self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
+            self.pulsaView.productButton.setTitle(product.attributes.desc, for: .normal)
         }
         controller.selectedOperator = selectedOperator
         
@@ -58,7 +58,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
-    func navigateToPulsaOperator(operators: [PulsaOperator]) {
+    func navigateToPulsaOperator(_ operators: [PulsaOperator]) {
         let controller = PulsaOperatorViewController()
         
         
@@ -66,7 +66,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             self.pulsaView.buildViewByOperator(selectedOperator)
         }
         
-        controller.operators = operators.sort({
+        controller.operators = operators.sorted(by: {
             $0.attributes.weight < $1.attributes.weight
         })
         
@@ -77,8 +77,8 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     func navigateToLoginIfRequired() {
         let navigation = UINavigationController()
         navigation.navigationBar.backgroundColor = UIColor(red: (18.0/255.0), green: (199.0/255.0), blue: (0/255.0), alpha: 1)
-        navigation.navigationBar.translucent = false
-        navigation.navigationBar.tintColor = UIColor.whiteColor()
+        navigation.navigationBar.isTranslucent = false
+        navigation.navigationBar.tintColor = UIColor.white
         
         let controller = LoginViewController()
         controller.isPresentedViewController = true
@@ -87,10 +87,10 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         
         navigation.viewControllers = [controller]
         
-        self.controller.navigationController!.presentViewController(navigation, animated: true, completion: nil)
+        self.controller.navigationController!.present(navigation, animated: true, completion: nil)
     }
     
-    func navigateToSuccess(url: NSURL) {
+    func navigateToSuccess(_ url: URL) {
         let controller = WebViewController()
         controller.strURL = url.absoluteString
         controller.shouldAuthorizeRequest = true
@@ -98,37 +98,37 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
-    func navigateToWebTicker(url: NSURL) {
+    func navigateToWebTicker(_ url: URL) {
         let controller = WebViewController()
         controller.strURL = url.absoluteString
         controller.strTitle = ""
         controller.onTapLinkWithUrl = {[weak self] (url) in
-            if url.absoluteString == "https://www.tokopedia.com/" {
-                self!.controller.navigationController?.popViewControllerAnimated(true)
+            if url?.absoluteString == "https://www.tokopedia.com/" {
+                self!.controller.navigationController?.popViewController(animated: true)
             }
         }
         
         self.controller.navigationController?.pushViewController(controller, animated: true)
     }
     
-    private func didSelectContact(contact: String) {
+    fileprivate func didSelectContact(_ contact: String) {
         var phoneNumber = contact
-        phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
+        phoneNumber = phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression, range: nil)
         phoneNumber = self.replaceAreaNumber(phoneNumber)
         
         self.pulsaView.numberField.text = phoneNumber
         self.pulsaView.checkInputtedNumber()
     }
     
-    private func showInvalidNumberError() {
+    fileprivate func showInvalidNumberError() {
         StickyAlertView.showErrorMessage(["Nomor yang Anda pilih tidak valid."])
     }
     
-    private func replaceAreaNumber(phoneNumber: String) -> String {
+    fileprivate func replaceAreaNumber(_ phoneNumber: String) -> String {
         var phone = ""
         
         if phoneNumber.characters.count > 2 {
-            phone = phoneNumber.stringByReplacingOccurrencesOfString("62", withString: "0", options: .LiteralSearch, range: phoneNumber.startIndex ..< phoneNumber.startIndex.advancedBy(2))
+            phone = phoneNumber.replacingOccurrences(of: "62", with: "0", options: .literal, range: phoneNumber.startIndex ..< phoneNumber.characters.index(phoneNumber.startIndex, offsetBy: 2))
         }
         
         return phone
@@ -137,7 +137,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     //MARK : CNContactPickerdelegate
     @available(iOS 9.0, *)
-    func contactPicker(picker: CNContactPickerViewController, didSelectContactProperty contactProperty: CNContactProperty) {
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if contactProperty.key == CNContactPhoneNumbersKey {
             guard let phoneNumber = contactProperty.value else { return }
@@ -150,8 +150,8 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
 
     //MARK : ABPeoplePickerNavigationControllerDelegate
-    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
-        let phones: ABMultiValueRef = ABRecordCopyValue(person, kABPersonPhoneProperty).takeRetainedValue()
+    func peoplePickerNavigationController(_ peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
+        let phones: ABMultiValue = ABRecordCopyValue(person, kABPersonPhoneProperty).takeRetainedValue()
         AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if ABMultiValueGetCount(phones) > 0 {
             let index = Int(identifier) as CFIndex

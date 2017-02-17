@@ -10,16 +10,16 @@ import Foundation
 
 extension AuthenticationService: LoginViewDelegate {
 
-    public func redirectViewController(viewController: AnyObject!) {
+    public func redirectViewController(_ viewController: Any!) {
         
     }
     
-    public func didLoginSuccess(loginResult: LoginResult) {
+    public func didLoginSuccess(_ loginResult: LoginResult) {
         loginSuccessBlock(loginResult)
         loginSuccessBlock = nil
     }
     
-    func signInFromViewController(viewController: UIViewController, onSignInSuccess: (loginResult: LoginResult!) -> Void){
+    func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void){
         
         let loginViewController: LoginViewController = LoginViewController()
         loginViewController.isPresentedViewController = true
@@ -27,15 +27,15 @@ extension AuthenticationService: LoginViewDelegate {
         loginViewController.redirectViewController = viewController
         
         let navigationController: UINavigationController = UINavigationController(rootViewController: loginViewController)
-        navigationController.navigationBar.translucent = false;
+        navigationController.navigationBar.isTranslucent = false;
         
-        viewController.presentViewController(navigationController, animated: true, completion: nil)
+        viewController.present(navigationController, animated: true, completion: nil)
         loginSuccessBlock = { loginResult in
-            onSignInSuccess(loginResult: loginResult)
+            onSignInSuccess(loginResult)
         }
     }
     
-    func ensureLoggedInFromViewController(viewController: UIViewController, onSuccess: () -> ()) {
+    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: @escaping () -> ()) {
         if UserAuthentificationManager().isLogin {
             onSuccess()
         } else {

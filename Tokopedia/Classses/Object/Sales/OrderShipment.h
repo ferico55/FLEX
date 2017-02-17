@@ -10,11 +10,11 @@
 
 @interface OrderShipment : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSString *shipment_logo;
-@property (strong, nonatomic) NSString *shipment_package_id;
+@property (strong, nonatomic, nonnull) NSString *shipment_logo;
+@property (strong, nonatomic, nonnull) NSString *shipment_package_id;
 @property NSInteger shipment_id;
-@property (strong, nonatomic) NSString *shipment_product;
-@property (strong, nonatomic) NSString *shipment_name;
+@property (strong, nonatomic, nonnull) NSString *shipment_product;
+@property (strong, nonatomic, nonnull) NSString *shipment_name;
 
 @property (nonatomic) BOOL isIDrop;
 

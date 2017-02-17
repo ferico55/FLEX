@@ -10,8 +10,8 @@ import UIKit
 
 class OrderDateView: UIView {
 
-    @IBOutlet private var orderDate: UILabel!
-    @IBOutlet private var dueDate: UILabel!
+    @IBOutlet fileprivate var orderDate: UILabel!
+    @IBOutlet fileprivate var dueDate: UILabel!
     
     var order = OrderTransaction(){
         didSet {
@@ -21,7 +21,7 @@ class OrderDateView: UIView {
     }
     
     static func newView()-> UIView? {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("OrderDateView", owner: nil, options: nil)!
+        let views:Array = Bundle.main.loadNibNamed("OrderDateView", owner: nil, options: nil)!
         for view in views{
             return view as? UIView;
         }

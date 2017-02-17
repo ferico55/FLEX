@@ -154,11 +154,11 @@
 
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
-    _userProfile = [CreatePasswordUserProfile fromFacebook:facebookUserData];
+    _userProfile = [CreatePasswordUserProfile fromFacebookWithUserData:facebookUserData];
 }
 
 - (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
-    _userProfile = [CreatePasswordUserProfile fromGoogle:gidGoogleUser];
+    _userProfile = [CreatePasswordUserProfile fromFacebookWithUserData:gidGoogleUser];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

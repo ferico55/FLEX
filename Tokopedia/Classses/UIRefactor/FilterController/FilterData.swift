@@ -14,12 +14,12 @@ class FilterData: NSObject {
     var sort   : [ListOption] = []
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "filter", toKeyPath: "filter", withMapping: ListFilter.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "filter", toKeyPath: "filter", with: ListFilter.mapping())
         mapping.addPropertyMapping(relMapping)
         
-        let relMappingSort : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "sort", toKeyPath: "sort", withMapping: ListOption.mapping())
+        let relMappingSort : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "sort", toKeyPath: "sort", with: ListOption.mapping())
         mapping.addPropertyMapping(relMappingSort)
         
         return mapping

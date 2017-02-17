@@ -36,7 +36,7 @@ public struct RuleClosure<T: Equatable>: RuleType {
         return closure(value)
     }
     
-    public init(validationError: ValidationError = ValidationError(msg: "Field validation fails.."), closure: ((T?) -> ValidationError?)) {
+    public init(validationError: ValidationError = ValidationError(msg: "Field validation fails.."), closure: @escaping ((T?) -> ValidationError?)) {
         self.validationError = validationError
         self.closure = closure
     }

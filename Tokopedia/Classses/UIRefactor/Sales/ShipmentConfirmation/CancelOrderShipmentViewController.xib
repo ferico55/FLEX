@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -105,7 +105,7 @@
                                             <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IS2-zg-bdk" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IS2-zg-bdk" customClass="RSKGrowingTextView" customModule="RSKGrowingTextView">
                                             <rect key="frame" x="8" y="134" width="359" height="33"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -145,6 +145,7 @@
                                         <constraint firstItem="jtT-0X-i9N" firstAttribute="top" secondItem="80W-y8-qlB" secondAttribute="bottom" constant="7" id="XLV-c1-Yq1"/>
                                         <constraint firstItem="mtE-6O-KIO" firstAttribute="leading" secondItem="jtT-0X-i9N" secondAttribute="leading" id="Yc6-gk-1dE"/>
                                         <constraint firstItem="80W-y8-qlB" firstAttribute="leading" secondItem="or7-fS-vs0" secondAttribute="leading" constant="8" id="eRk-dm-N4M"/>
+                                        <constraint firstAttribute="height" constant="517" placeholder="YES" id="n8C-lR-78K"/>
                                         <constraint firstItem="OO9-2N-i6w" firstAttribute="top" secondItem="jtT-0X-i9N" secondAttribute="bottom" constant="8" id="rVL-Wd-tE8"/>
                                         <constraint firstItem="IS2-zg-bdk" firstAttribute="leading" secondItem="zZV-pv-6Jo" secondAttribute="leading" id="rtf-Pe-38O"/>
                                         <constraint firstItem="IS2-zg-bdk" firstAttribute="top" secondItem="zZV-pv-6Jo" secondAttribute="bottom" constant="6" id="y5c-uG-pmp"/>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RSKPlaceholderTextView
 
 class ShopTagDescriptionViewCell: UITableViewCell, UITextViewDelegate {
 
@@ -20,11 +21,11 @@ class ShopTagDescriptionViewCell: UITableViewCell, UITextViewDelegate {
         textView.font = UIFont.title2Theme()
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         updateCounterLabel()
     }
     
@@ -38,7 +39,7 @@ class ShopTagDescriptionViewCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (textView.tag == 1) {
             if (range.location == 48 && range.length == 0) {
                 return false

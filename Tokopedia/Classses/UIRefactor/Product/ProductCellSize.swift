@@ -9,11 +9,11 @@
 import Foundation
 
 @objc class ProductCellSize: NSObject {
-    class func sizeWithType(cellType : Int) -> CGSize {
+    class func sizeWithType(_ cellType : Int) -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let isPad = (UIDevice.currentDevice().userInterfaceIdiom == .Pad)
+        let screenWidth = UIScreen.main.bounds.size.width
+        let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
     
         var cellWidth: CGFloat;
         if(cellType == 1) {
@@ -31,15 +31,15 @@ import Foundation
         }
         
         
-        return CGSizeMake(cellWidth, cellHeight);
+        return CGSize(width: cellWidth, height: cellHeight);
     }
     
     class func sizeWishlistCell() -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
         var cellWidth: CGFloat
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let isPad = (UIDevice.currentDevice().userInterfaceIdiom == .Pad)
+        let screenWidth = UIScreen.main.bounds.size.width
+        let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
         
         numberOfCell = isPad ? 4 : 2
         cellWidth = screenWidth/numberOfCell
@@ -47,6 +47,6 @@ import Foundation
     
         
         
-        return CGSizeMake(cellWidth, cellHeight);
+        return CGSize(width: cellWidth, height: cellHeight);
     }
 }

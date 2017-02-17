@@ -36,7 +36,7 @@
     }
 }
 
-- (id)getUserLoginData {
+- (NSDictionary *)getUserLoginData {
     if([self isLogin]) {
         return [self secureStorageDictionary];
     } else {
