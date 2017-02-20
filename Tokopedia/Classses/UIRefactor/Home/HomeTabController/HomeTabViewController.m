@@ -34,17 +34,16 @@
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
 #import "SearchViewController.h"
-#import "JasonViewController.h"
 
 @interface HomeTabViewController ()
 <
-    UIScrollViewDelegate,
-    NotificationManagerDelegate,
-    RedirectHandlerDelegate,
-    UISearchControllerDelegate,
-    UISearchResultsUpdating,
-    UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate
+UIScrollViewDelegate,
+NotificationManagerDelegate,
+RedirectHandlerDelegate,
+UISearchControllerDelegate,
+UISearchResultsUpdating,
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate
 >
 {
     NotificationManager *_notifManager;
@@ -55,7 +54,7 @@
     NSURL *_deeplinkUrl;
 }
 
-@property (strong, nonatomic) JasonViewController *homePageController;
+@property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) PromoViewController *promoViewController;
@@ -98,8 +97,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _homePageController = [JasonViewController new];
-    _homePageController.url = @"https://jasonbase.com/things/Bkp";
+    _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
     
@@ -109,7 +107,7 @@
     _shopViewController = [FavoritedShopViewController new];
     
     _homeHeaderController = [HomeTabHeaderViewController new];
-
+    
     _redirectHandler = [RedirectHandler new];
     
     _navigate = [NavigateViewController new];
@@ -130,7 +128,7 @@
     _scrollView.frame = frame;
     
     _scrollView.delegate = self;
-
+    
     [self addChildViewController:_homePageController];
     [self.scrollView addSubview:_homePageController.view];
     
@@ -170,7 +168,7 @@
                                    attribute:NSLayoutAttributeLeading
                                    multiplier:1.0f
                                    constant:0.f];
-
+    
     [self.scrollView addConstraints:@[width, height, top, leading]];
     [_homePageController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
@@ -212,7 +210,7 @@
     [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(searchWrapper);
     }];
-
+    
     [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]];
     self.navigationItem.titleView = searchWrapper;
 }
@@ -242,7 +240,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     self.navigationController.title = @"Home";
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -276,15 +274,15 @@
 }
 
 - (void)setArrow {
-//    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-//    CGRect frame = greenArrowImageView.frame;
-//    frame.size.width = 13;
-//    frame.size.height = 7;
-//    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
-//    frame.origin.y = 64;
-//    greenArrowImageView.frame = frame;
-////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
-//    [self.view addSubview:greenArrowImageView];
+    //    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+    //    CGRect frame = greenArrowImageView.frame;
+    //    frame.size.width = 13;
+    //    frame.size.height = 7;
+    //    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
+    //    frame.origin.y = 64;
+    //    greenArrowImageView.frame = frame;
+    ////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
+    //    [self.view addSubview:greenArrowImageView];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -481,7 +479,7 @@
     [self redirectToHome];
     [self setSearchByImage];
 }
-    
+
 #pragma mark - Method
 
 - (void) instantiateViewControllers {

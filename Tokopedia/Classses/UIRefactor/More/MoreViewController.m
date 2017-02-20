@@ -62,6 +62,7 @@
 #import <JLPermissions/JLNotificationPermission.h>
 
 #import "Tokopedia-Swift.h"
+#import "JasonViewController.h"
 
 @interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
     NSDictionary *_auth;
@@ -432,7 +433,7 @@
             break;
             
         case 6:
-            return 4;
+            return 5;
             break;
             
         case 7:
@@ -674,6 +675,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                                                                            anchor:[tableView cellForRowAtIndexPath:indexPath]];
             
             [wrapperController presentViewController:controller animated:YES completion:nil];
+        } else if(indexPath.row == 4) {
+            JasonViewController* controller = [JasonViewController new];
+            controller.url = @"https://jasonbase.com/things/Bkp";
+            [wrapperController.navigationController pushViewController:controller animated:YES];
+
         }
     }
     
