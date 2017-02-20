@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class SettingUserProfileRequest: NSObject {
     
-    class func fetchUserProfileForm(onSuccess: ((data:DataUser) -> Void), onFailure:(()->Void)){
+    class func fetchUserProfileForm(_ onSuccess:@escaping ((_ data:DataUser) -> Void), onFailure:@escaping (()->Void)){
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         let param : [String : String] = ["profile_user_id":auth.getUserId()]
@@ -18,7 +19,7 @@ class SettingUserProfileRequest: NSObject {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/people/get_profile.pl",
                                           method: .GET,
                                           parameter: param,
@@ -32,7 +33,7 @@ class SettingUserProfileRequest: NSObject {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {
-                                                onSuccess(data: response.data.data_user)
+                                                onSuccess(response.data.data_user)
                                             }
                                             
         }) { (error) in
@@ -42,7 +43,7 @@ class SettingUserProfileRequest: NSObject {
         
     }
     
-    class func fetchEditUserProfile(postObject:DataUser, onSuccess: (() -> Void), onFailure:(()->Void)){
+    class func fetchEditUserProfile(_ postObject:DataUser, onSuccess:@escaping (() -> Void), onFailure:@escaping (()->Void)){
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -62,7 +63,7 @@ class SettingUserProfileRequest: NSObject {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/action/people/edit_biodata.pl",
                                           method: .POST,
                                           parameter: param,
@@ -90,7 +91,7 @@ class SettingUserProfileRequest: NSObject {
         }
     }
     
-    class func fetchUploadProfilePicture(image:UIImage,  onSuccess: ((imageURLString: String) -> Void), onFailure:(()->Void)) {
+    class func fetchUploadProfilePicture(_ image:UIImage,  onSuccess:@escaping ((_ imageURLString: String) -> Void), onFailure:@escaping (()->Void)) {
         
         RequestAddEditProduct.errorCompletionHandler = onFailure
         
@@ -107,13 +108,13 @@ class SettingUserProfileRequest: NSObject {
                 return submitProfilePicture(imageResult.pic_obj, generatedHost: generatedHost)
                 
             }.subscribe(onNext: { (isSuccess) in
-                    onSuccess(imageURLString: imageURLString)
+                    onSuccess(imageURLString)
                 }, onError: { (errorType) in
                     onFailure()
             })
     }
     
-    private class func getPictObj(image: UIImage, generatedHost:GeneratedHost) -> Observable<ImageResult>{
+    fileprivate class func getPictObj(_ image: UIImage, generatedHost:GeneratedHost) -> Observable<ImageResult>{
         
         return Observable.create({ (observer) -> Disposable in
             
@@ -127,19 +128,22 @@ class SettingUserProfileRequest: NSObject {
                 path: "/web-service/v4/action/upload-image/upload_profile_image.pl",
                 name: "profile_img",
                 fileName: "Image",
-                requestObject: postObject,
+                request: postObject,
                 onSuccess: { (imageResult) in
-                    observer.onNext(imageResult)
-                    observer.onCompleted()
+                    if let imageResult = imageResult {
+                        observer.onNext(imageResult)
+                        observer.onCompleted()
+                    }
+                    
                 }, onFailure: { (error) in
-                    observer.onError(RequestError.networkError)
+                    observer.onError(RequestError.networkError as Error)
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     
-    private class func submitProfilePicture(fileUploaded: String, generatedHost:GeneratedHost) -> Observable<String>{
+    fileprivate class func submitProfilePicture(_ fileUploaded: String, generatedHost:GeneratedHost) -> Observable<String>{
         
         return Observable.create({ (observer) -> Disposable in
             
@@ -153,7 +157,7 @@ class SettingUserProfileRequest: NSObject {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString.v4Url(),
+            networkManager.request(withBaseUrl: NSString.v4Url(),
                 path: "/v4/action/people/upload_profile_picture.pl",
                 method: .POST,
                 parameter: param,
@@ -173,15 +177,15 @@ class SettingUserProfileRequest: NSObject {
                         if response.message_error.count > 0{
                             StickyAlertView.showErrorMessage(response.message_error)
                         }
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
                 StickyAlertView.showErrorMessage(["error"])
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     

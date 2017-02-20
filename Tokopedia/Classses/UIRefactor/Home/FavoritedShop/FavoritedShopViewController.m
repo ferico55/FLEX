@@ -13,13 +13,13 @@
 #import "FavoritedShopCell.h"
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
-#import "ShopContainerViewController.h"
 #import "LoadingView.h"
 #import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
 #import "FavoriteShopRequest.h"
 #import "PromoResult.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
@@ -109,8 +109,6 @@ FavoriteShopRequestDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
-    
-    [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
     
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -399,7 +397,7 @@ FavoriteShopRequestDelegate
 #pragma mark - Delegate
 -(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview {
     
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     
     if (indexpath.section == 0 && _promoShops.count > 0) {
         PromoResult *promoResult = [_promoShops objectAtIndex:indexpath.row];

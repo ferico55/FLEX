@@ -15,4 +15,8 @@
     return labelMapping;
 }
 
+- (NSString*)title {
+    return _title ?:@"";
+}
+
 @end

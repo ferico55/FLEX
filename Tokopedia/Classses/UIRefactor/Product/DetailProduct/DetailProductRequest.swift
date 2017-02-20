@@ -10,7 +10,7 @@ import UIKit
 
 class DetailProductRequest: NSObject {
     
-    class func fetchPromoteProduct(productID:String, onSuccess: ((PromoteResult) -> Void)) {
+    class func fetchPromoteProduct(_ productID:String, onSuccess: @escaping ((PromoteResult) -> Void), onFailure:@escaping ((PromoteResult) -> Void)) {
 
         let param :[String:String] = [
             "product_id" : productID
@@ -18,29 +18,28 @@ class DetailProductRequest: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/product/promote_product.pl",
                                           method: .POST,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(PromoteResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: PromoteResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : V4Response = result[""] as! V4Response
+                                            let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
                                             let data = response.data as! PromoteResult
                                             
                                             if data.is_dink == "1" {
-                                                StickyAlertView.showSuccessMessage(["Promo pada product \(data.product_name) telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
                                                 onSuccess(data)
                                             } else {
-                                                StickyAlertView.showErrorMessage(["Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."])
+                                                onFailure(data)
                                             }
                                             
         }) { (error) in
         }
     }
     
-    class func fetchOtherProduct(productID:String, shopID:String, onSuccess: ((SearchAWSResult) -> Void),onFailure: (() -> Void)) {
+    class func fetchOtherProduct(_ productID:String, shopID:String, onSuccess: @escaping ((SearchAWSResult) -> Void),onFailure: @escaping (() -> Void)) {
         
         let param :[String:String] = [
             "shop_id" : shopID,
@@ -51,15 +50,15 @@ class DetailProductRequest: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .aceUrl(),
+        networkManager.request(withBaseUrl: NSString .aceUrl(),
                                           path: "/search/v2.3/product",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(SearchAWSResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: SearchAWSResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : V4Response = result[""] as! V4Response
+                                            let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
                                             let data = response.data as! SearchAWSResult
                                             
                                             if response.message_error.count > 0 {

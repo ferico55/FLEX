@@ -106,17 +106,18 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
     
-    if([modelView.talkOwnerStatus isEqualToString:@"0"] && [_userManager isLogin]) {
-        [self.unfollowButton setHidden:NO];
-
-        commentButtonTrailingToVerticalBorder.priority = 750;
-        self.divider.hidden = NO;
-        [self layoutIfNeeded];
-    } else {
+    if([modelView.talkShopId isEqualToString:_myShopID]) {
         [self.unfollowButton setHidden:YES];
-
+        
+        
         commentButtonTrailingToVerticalBorder.priority = 600;
         self.divider.hidden = YES;
+        [self layoutIfNeeded];
+    } else {
+        [self.unfollowButton setHidden:NO];
+        
+        commentButtonTrailingToVerticalBorder.priority = 750;
+        self.divider.hidden = NO;
         [self layoutIfNeeded];
     }
 

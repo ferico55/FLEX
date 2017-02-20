@@ -57,7 +57,7 @@ public protocol BaseCellType : class {
     /**
      Method called when the cell becomes first responder
      */
-    func cellBecomeFirstResponder(direction: Direction) -> Bool
+    func cellBecomeFirstResponder(withDirection: Direction) -> Bool
     
     /**
      Method called when the cell resigns first responder
@@ -79,6 +79,6 @@ public protocol TypedCellType : BaseCellType {
     var row : RowOf<Value>! { get set }
 }
 
-public protocol CellType {}
+public protocol CellType: TypedCellType {}
 
 

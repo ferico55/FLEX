@@ -20,7 +20,7 @@
 @property (strong, nonatomic) NSString *order_subtotal_price;
 @property (strong, nonatomic) NSString *product_id;
 @property NSInteger product_quantity;
-@property (strong, nonatomic) NSString *product_weight;
+@property (strong, nonatomic, nonnull) NSString *product_weight;
 @property (strong, nonatomic) NSString *order_subtotal_price_idr;
 @property NSInteger product_reject_quantity;
 @property (strong, nonatomic) NSString *product_name;

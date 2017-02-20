@@ -10,6 +10,8 @@
 #import "EtalaseList.h"
 #import "ShopPageHeader.h"
 
+@class ShopProductFilter;
+
 @interface ShopProductPageViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger indexNumber;
@@ -22,7 +24,8 @@
 
 @property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
 @property BOOL showHomeTab;
+@property (nonatomic) Shop *shop;
 
-- (void)showProductsWithEtalaseId:(NSString *)etalaseId;
+- (void)showProductsWithFilter:(ShopProductFilter *)filter;
 
 @end

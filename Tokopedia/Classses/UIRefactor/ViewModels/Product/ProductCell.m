@@ -18,6 +18,13 @@
     QueueImageDownloader* imageDownloader;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [_shopLocation mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(_badgesView.mas_leading);
+    }];
+}
+
 - (void)setViewModel:(ProductModelView *)viewModel {
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];

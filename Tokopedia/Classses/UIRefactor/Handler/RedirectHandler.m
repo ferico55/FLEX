@@ -18,6 +18,8 @@
 #import "NotificationState.h"
 
 #import "NavigateViewController.h"
+#import "SalesTransactionListViewController.h"
+#import "ShipmentStatusViewController.h"
 
 @implementation RedirectHandler
 {
@@ -54,10 +56,7 @@
               state == STATE_EDIT_REVIEW ||
               state == STATE_REPLY_REVIEW) {
         [self redirectToReview];
-    } else if(state == STATE_NEW_ORDER) {
-        [self redirectToNewOrder];
-    } else if (state == STATE_NEW_RESOLUTION||
-               state == STATE_EDIT_RESOLUTION ||
+    } else if (state == STATE_EDIT_RESOLUTION ||
                state == STATE_RESCENTER_SELLER_REPLY ||
                state == STATE_RESCENTER_BUYER_REPLY ||
                state == STATE_RESCENTER_SELLER_AGREE ||
@@ -65,13 +64,80 @@
                state == STATE_RESCENTER_ADMIN_SELLER_REPLY ||
                state == STATE_RESCENTER_ADMIN_BUYER_REPLY ) {
   	     [self redirectToResolution];
-	} else if (state == STATE_PURCHASE_REJECTED) {
-        [self redirectToRejectedOrder];
-    } else if (state == STATE_PURCHASE_PROCESS_PARTIAL) {
+	} else if (state == STATE_PURCHASE_PROCESS_PARTIAL) {
         //TODO: KONFIRMASI ORDER PROCESSED
         [self redirectToProcessedOrder];
     } else if (state == STATE_CONFIRM_PACKAGE_RECEIVED) {
         [self redirectToConfirmPackageArrived];
+    }
+    
+    switch (state) {
+        case StateOrderSellerNewOrder:
+            [self redirectToNewOrder];
+            break;
+            
+        case StateOrderSellerInvalidResi:
+            [self redirectToShipmentStatus];
+            break;
+            
+        case StateOrderSellerFinishOrder:
+            [self redirectToTransactionListSeller];
+            break;
+            
+        case StateOrderBuyerConfirmShipping:
+            [self redirectToProcessedOrder];
+            break;
+            
+        case StateOrderBuyerDelivered:
+            [self redirectToConfirmPackageArrived];
+            break;
+            
+        case StateOrderBuyerFinishOrder:
+            [self redirectToTransactionListBuyer];
+            break;
+            
+        case StateOrderSellerAutoCancel2D:
+            [self redirectToTransactionListSeller];
+            break;
+            
+        case StateOrderSellerAutoCancel4D:
+            [self redirectToTransactionListSeller];
+            break;
+            
+        case StateOrderSellerOrderDelivered:
+            [self redirectToShipmentStatus];
+            break;
+            
+        case StateOrderSellerReceivedComplain:
+            [self redirectToBuyerComplaint];
+            break;
+            
+        case StateOrderBuyerNewOrder:
+            [self redirectToProcessedOrder];
+            break;
+            
+        case StateOrderBuyerRejected:
+            [self redirectToRejectedOrder];
+            break;
+            
+        case StateOrderBuyerAutoCancel2D:
+            [self redirectToTransactionListBuyer];
+            break;
+            
+        case StateOrderBuyerAutoCancel4D:
+            [self redirectToTransactionListBuyer];
+            break;
+            
+        case StateOrderBuyerShippingRejected:
+            [self redirectToRejectedOrder];
+            break;
+            
+        case StateOrderBuyerReminderFinishOrder:
+            [self redirectToConfirmPackageArrived];
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -93,6 +159,11 @@
 -(void)redirectToResolution{
     _navigationController = (UINavigationController*)_delegate;    
     [[self navigate]navigateToInboxResolutionFromViewController:_navigationController];
+}
+
+-(void)redirectToBuyerComplaint{
+    _navigationController = (UINavigationController*)_delegate;
+    [[self navigate]navigateToInboxResolutionFromViewController:_navigationController atIndex:2];
 }
 
 - (void)redirectToNewOrder {
@@ -132,6 +203,31 @@
     controller.action = @"get_tx_order_deliver";
     controller.viewControllerTitle = @"Konfirmasi Penerimaan";
     [_navigationController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)redirectToTransactionListBuyer {
+    _navigationController = (UINavigationController*)_delegate;
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_list";
+    controller.viewControllerTitle = @"Daftar Transaksi";
+    [_navigationController.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)redirectToTransactionListSeller{
+    SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
+    [[self navigationController].navigationController pushViewController:controller animated:YES];
+}
+
+-(void)redirectToShipmentStatus{
+    ShipmentStatusViewController *controller = [ShipmentStatusViewController new];
+    [[self navigationController].navigationController pushViewController:controller animated:YES];
+}
+
+-(UINavigationController *)navigationController{
+    if (!_navigationController) {
+        _navigationController = (UINavigationController*)_delegate;
+    }
+    return _navigationController;
 }
 
 @end

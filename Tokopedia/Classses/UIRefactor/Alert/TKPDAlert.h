@@ -11,5 +11,6 @@
 @interface TKPDAlert : TKPDAlertView
 
 @property (strong, nonatomic) NSString *text;
+@property (copy, nonatomic) void(^didTapActionButton)();
 
 @end

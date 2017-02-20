@@ -31,7 +31,7 @@
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "NSString+MD5.h"
 #import "URLCacheController.h"
 
 #import "ProductCell.h"
@@ -581,7 +581,7 @@ ImageSearchRequestDelegate
     NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.product_name];
+        [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.catalog_name];
         CatalogViewController *vc = [CatalogViewController new];
         vc.catalogID = product.catalog_id;
         vc.catalogName = product.catalog_name;
@@ -593,12 +593,7 @@ ImageSearchRequestDelegate
         if (_isFromImageSearch) {
             [navigateController navigateToProductFromViewController:self withProduct:product];
         } else {
-            [navigateController navigateToProductFromViewController:self
-                                                           withName:product.product_name
-                                                          withPrice:product.product_price
-                                                             withId:product.product_id
-                                                       withImageurl:product.product_image
-                                                       withShopName:product.shop_name];
+            [NavigateViewController navigateToProductFromViewController:self withProduct:product];
         }
     }
 }
@@ -1042,7 +1037,7 @@ ImageSearchRequestDelegate
         userId = [_userManager getMyDeviceToken];
     }
     
-    return userId;
+    return [userId encryptWithMD5];
 }
 
 -(NSString*)selectedCategoryIDsString{
@@ -1088,8 +1083,8 @@ ImageSearchRequestDelegate
     NSDictionary *pathDictionary = @{
                                      @"search_catalog" : @"/search/v2.1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
-                                     @"search_product" : @"/search/v2.4/product",
-                                     [self directoryType] : @"/search/v2.4/product"
+                                     @"search_product" : @"/search/v2.5/product",
+                                     [self directoryType] : @"/search/v2.5/product"
                                      };
     return pathDictionary;
 }
@@ -1485,7 +1480,8 @@ ImageSearchRequestDelegate
             @"product_name"     : promoResult.product.name?:@"",
             @"product_image"    : promoResult.product.image.s_url?:@"",
             @"product_price"    : promoResult.product.price_format?:@"",
-            @"shop_name"        : promoResult.shop.name?:@""
+            @"shop_name"        : promoResult.shop.name?:@"",
+            @"pre_order"        : [NSNumber numberWithBool:promoResult.product.product_preorder]
         };
 
         PromoRequestSourceType source;

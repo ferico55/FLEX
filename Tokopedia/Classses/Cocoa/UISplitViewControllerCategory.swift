@@ -9,8 +9,13 @@
 import Foundation
 
 extension UISplitViewController {
-    func replaceDetailViewController(viewController: UIViewController) {
+    func replaceDetailViewController(_ viewController: UIViewController) {
         let masterViewController = viewControllers.first!
         viewControllers = [masterViewController, viewController]
+    }
+    
+    func getDetailViewController()->UIViewController {
+        let detailViewController = viewControllers.last!
+        return detailViewController;
     }
 }

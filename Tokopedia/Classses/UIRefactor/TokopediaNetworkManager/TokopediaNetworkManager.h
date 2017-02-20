@@ -56,21 +56,21 @@ DEPRECATED_ATTRIBUTE
 - (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
 + (NSString *)getPageFromUri:(NSString *)uri;
 
-- (void) requestWithBaseUrl:(NSString*)baseUrl
-                       path:(NSString*)path
+- (void) requestWithBaseUrl:(nonnull NSString*)baseUrl
+                       path:(nonnull NSString*)path
                      method:(RKRequestMethod)method
-                  parameter:(NSDictionary<NSString*, NSString*>*)parameter
-                    mapping:(RKObjectMapping*)mapping
-                  onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
-                  onFailure:(void(^)(NSError* errorResult)) errorCallback;
+                  parameter:(nullable NSDictionary<NSString*, NSString*>*)parameter
+                    mapping:(nonnull RKObjectMapping*)mapping
+                  onSuccess:(nonnull void(^)(RKMappingResult* _Nonnull successResult, RKObjectRequestOperation* _Nonnull operation))successCallback
+                  onFailure:(nullable void(^)(NSError* _Nonnull errorResult)) errorCallback;
 
-- (void) requestWithBaseUrl:(NSString*)baseUrl
-                       path:(NSString*)path
+- (void) requestWithBaseUrl:(nonnull NSString*)baseUrl
+                       path:(nonnull NSString*)path
                      method:(RKRequestMethod)method
-                     header:(NSDictionary<NSString *, NSString *> *)header
-                  parameter:(NSDictionary<NSString*, NSString*>*)parameter
-                    mapping:(RKObjectMapping*)mapping
-                  onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
-                  onFailure:(void(^)(NSError* errorResult)) errorCallback;
+                     header:(nullable NSDictionary<NSString *, NSString *> *)header
+                  parameter:(nullable NSDictionary<NSString*, NSString*>*)parameter
+                    mapping:(nonnull RKObjectMapping*)mapping
+                  onSuccess:(nonnull void(^)(RKMappingResult* _Nonnull successResult, RKObjectRequestOperation* _Nonnull operation))successCallback
+                  onFailure:(nullable void(^)(NSError* _Nonnull errorResult)) errorCallback;
 
 @end

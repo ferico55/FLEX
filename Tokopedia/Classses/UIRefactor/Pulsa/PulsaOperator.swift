@@ -13,7 +13,7 @@ class PulsaOperator: NSObject, NSCoding {
     var type : String?
     var attributes : PulsaOperatorAttribute = PulsaOperatorAttribute()
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "id"  : "id",
             "type" : "type",
@@ -21,10 +21,10 @@ class PulsaOperator: NSObject, NSCoding {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "attributes", toKeyPath: "attributes", withMapping: PulsaOperatorAttribute.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "attributes", toKeyPath: "attributes", with: PulsaOperatorAttribute.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -36,22 +36,22 @@ class PulsaOperator: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let id = aDecoder.decodeObjectForKey("id") as? String {
+        if let id = aDecoder.decodeObject(forKey: "id") as? String {
             self.id = id
         }
         
-        if let type = aDecoder.decodeObjectForKey("type") as? String {
+        if let type = aDecoder.decodeObject(forKey: "type") as? String {
             self.type = type
         }
         
-        if let attributes = aDecoder.decodeObjectForKey("attributes") as? PulsaOperatorAttribute {
+        if let attributes = aDecoder.decodeObject(forKey:"attributes") as? PulsaOperatorAttribute {
             self.attributes = attributes
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(type, forKey: "type")
-        aCoder.encodeObject(attributes, forKey: "attributes")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(type, forKey: "type")
+        aCoder.encode(attributes, forKey: "attributes")
     }
 }

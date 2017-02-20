@@ -59,11 +59,28 @@
         [MainViewController new];
 }
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound);
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSDictionary *pushNotificationData = response.notification.request.content.userInfo;
+    if (pushNotificationData) {
+        [self handlePushNotificationWithData:pushNotificationData];
+    }
+    
+    completionHandler();
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    UNUserNotificationCenter* notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    notificationCenter.delegate = self;
+
     [TPRoutes configureRoutes];
     
     [self startAppsee];
     [self hideTitleBackButton];
+    [JLRoutes setShouldDecodePlusSymbols:NO];
     
     UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -87,6 +104,7 @@
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
         [self configureAppIndexing];
+        [self configureGoogleAnalytics];
         
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -125,6 +143,7 @@
         
         NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         if (pushNotificationData) {
+            
             [self handlePushNotificationWithData:pushNotificationData];
         }
     });
@@ -139,15 +158,35 @@
 }
 
 - (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {
-    [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
-                                                        object:nil
-                                                      userInfo:pushNotificationData];
+    if ([pushNotificationData objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"url_deeplink"]];
+        [TPRoutes routeURL:url];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
+                                                            object:nil
+                                                          userInfo:pushNotificationData];
+
+    }
 }
 
 - (void)configureAppIndexing {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
 //        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
+}
+
+- (NSString *)getGAPropertyID {
+    return @"UA-9801603-10";
+}
+
+- (void)configureGoogleAnalytics {
+    //Google Analytics init
+    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:[self getGAPropertyID]];
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [GAI sharedInstance].dispatchInterval = 60;
+    [[GAI sharedInstance] setDryRun:NO];
+    [[[GAI sharedInstance] trackerWithTrackingId:[self getGAPropertyID]] setAllowIDFACollection:YES];
 }
 
 - (void)configureAppsflyer {
@@ -177,11 +216,15 @@
                                    notifier:self];
 }
 
+- (BOOL)shouldShowLocalyticsTab {
+    return FBTweakValue(@"Localytics Tab", @"General", @"Show Localytics Tab", NO);
+}
+
 - (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
     [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
                 launchOptions:launchOptions];
 #ifdef DEBUG
-    [Localytics setTestModeEnabled:YES];
+    [Localytics setTestModeEnabled:[self shouldShowLocalyticsTab]];
     [Localytics tagEvent:@"Developer Options"];
 #endif
 }

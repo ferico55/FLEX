@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProfileInfo.h"
 
 @interface UserProfileBiodataViewController : GAITrackedViewController
 {
     IBOutlet NSLayoutConstraint *constraintHeightTableView;
 }
 @property (nonatomic, strong) NSString *profileUserID;
+-(void) setHeaderData:(ProfileInfo*) profile;
 
 @end

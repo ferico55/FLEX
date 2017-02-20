@@ -49,8 +49,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     GIDSignInDelegate
 >
 {
-    NSMutableDictionary *_activation;
-
     UIBarButtonItem *_barbuttonsignin;
 
     UserAuthentificationManager *_userManager;
@@ -78,7 +76,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (strong, nonatomic) IBOutlet UIView *formContainer;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
+
+@property (nonatomic) NSDictionary *loginData;
+
 @end
+
+#define EMAIL_PASSWORD(email, password) (@{ @"email":email, @"password":password }): email
 
 @implementation LoginViewController
 
@@ -89,9 +92,31 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 #pragma mark - Life Cycle
 
+- (void)setLoginData:(NSDictionary *)loginData {
+    _emailTextField.text = loginData[@"email"];
+    _passwordTextField.text = loginData[@"password"];
+}
+
+- (void)setupDefaultUsers {
+    FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
+                (@{
+                   (@{}): @"-Blank-",
+                   EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
+                   })
+                );
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupDefaultUsers];
     
     __weak typeof(self) weakSelf = self;
     
@@ -124,8 +149,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         cancelButton.tintColor = [UIColor whiteColor];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
-
-    _activation = [NSMutableDictionary new];
     
     [self updateFormViewAppearance];
 
@@ -150,10 +173,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.signInProviderContainer removeAllSubviews];
     SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
     signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [weakSelf webViewLoginWithProvider:provider];
     };
     
-    signInProviderView.onFacebookSelected = ^{
+    signInProviderView.onFacebookSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
                             fromViewController:weakSelf
@@ -162,7 +193,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                        }];
     };
     
-    signInProviderView.onGoogleSelected = ^{
+    signInProviderView.onGoogleSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [[GIDSignIn sharedInstance] signIn];
     };
     
@@ -205,6 +240,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {
     [super viewWillDisappear:animated];
     [self showLoginUi];
+    [self unsetLoggingInState];
 }
 
 - (void)navigateToRegister {
@@ -219,8 +255,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                             category:GA_EVENT_CATEGORY_LOGIN
                               action:GA_EVENT_ACTION_CLICK
                                label:@"CTA"];
-    NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-    NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+    NSString *email = _emailTextField.text;
+    NSString *pass = _passwordTextField.text;
     NSMutableArray *messages = [NSMutableArray new];
     BOOL valid = NO;
     NSString *message;
@@ -371,7 +407,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)setLoggingInState {
-    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
+    [_loginButton setTitle:@"Loading..." forState:UIControlStateNormal];
 }
 
 - (void)unsetLoggingInState {
@@ -443,6 +479,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 
     [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+    [secureStorage setKeychainWithValue:@(login.result.shop_is_official) withKey:@"shop_is_official"];
     [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
     [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
@@ -466,11 +503,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _emailTextField) {
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
-    } else if (textField == _passwordTextField){
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
-    }
 }
 
 
@@ -551,7 +583,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  };
 
     [[AuthenticationService sharedService]
-            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebookWithUserData:data]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
                                  [AnalyticsManager trackEventName:@"loginSuccess"
@@ -622,7 +654,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
     [[AuthenticationService sharedService]
-            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogleWithUser:user]
                            fromViewController:self
                              onSignInComplete:^(Login *login) {
                                  [AnalyticsManager trackEventName:@"loginSuccess"

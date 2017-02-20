@@ -14,9 +14,9 @@ class GetSearchSuggestionGeneralResponse: NSObject {
     var data: [SearchSuggestionData]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: GetSearchSuggestionGeneralResponse.self)
-       // mapping.addAttributeMappingsFromArray(["process_time"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: SearchSuggestionData.mapping()))
+        let mapping: RKObjectMapping = RKObjectMapping(for: GetSearchSuggestionGeneralResponse.self)
+       // mapping.addAttributeMappings(from:["process_time"])
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: SearchSuggestionData.mapping()))
         return mapping;
     }
     

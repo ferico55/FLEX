@@ -17,14 +17,13 @@ PODS:
   - AFOAuth2Manager (3.0.0):
     - AFNetworking/NSURLSession (~> 3.0)
   - AHKActionSheet (0.5.4)
-  - APAddressBook (0.2.3):
-    - APAddressBook/Core (= 0.2.3)
-  - APAddressBook/Core (0.2.3)
-  - APAddressBook/Swift (0.2.3):
+  - APAddressBook/Core (0.3.1)
+  - APAddressBook/Swift (0.3.1):
     - APAddressBook/Core
   - Appsee (2.2)
   - AppsFlyerFramework (4.5.1)
   - BBBadgeBarButtonItem (1.2)
+  - BEMCheckBox (1.2.1)
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
   - BlocksKit/All (2.2.5):
@@ -51,6 +50,11 @@ PODS:
   - DAKeyboardControl (2.4.0)
   - DBPrivacyHelper (0.6.3)
   - DHSmartScreenshot (1.3.1)
+  - DKImagePickerController (3.5.0):
+    - DKImagePickerController/Camera (= 3.5.0)
+    - DKImagePickerController/ImageManager (= 3.5.0)
+  - DKImagePickerController/Camera (3.5.0)
+  - DKImagePickerController/ImageManager (3.5.0)
   - DownPicker (0.1.34)
   - DTCoreText (1.6.19):
     - DTCoreText/Core (= 1.6.19)
@@ -72,7 +76,7 @@ PODS:
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
-  - Eureka (1.7.0)
+  - Eureka (2.0.0-beta.1)
   - FBSDKCoreKit (4.11.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.11.0):
@@ -106,7 +110,7 @@ PODS:
     - SCSiriWaveformView
   - ISO8601DateFormatterValueTransformer (0.6.1):
     - RKValueTransformers (~> 1.1.0)
-  - JDStatusBarNotification (1.5.4)
+  - JDStatusBarNotification (1.5.5)
   - JLPermissions/Contacts (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
@@ -120,10 +124,16 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - libPhoneNumber-iOS (0.8.17)
+  - libPhoneNumber-iOS (0.9.4)
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.5)
+  - MXPagerView (0.1.4)
+  - MXParallaxHeader (0.6.0)
+  - MXSegmentedPager (3.2.0):
+    - HMSegmentedControl (= 1.5.3)
+    - MXPagerView (= 0.1.4)
+    - MXParallaxHeader (= 0.6.0)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -134,7 +144,7 @@ PODS:
   - OAStackView (1.0.1)
   - OMGHTTPURLRQ/UserAgent (3.2.2)
   - PBJVision (0.4.2)
-  - PHFComposeBarView (2.0.2):
+  - PHFComposeBarView (2.1.0):
     - PHFDelegateChain (~> 1.0)
   - PHFDelegateChain (1.0.1)
   - Reachability (3.2)
@@ -159,50 +169,56 @@ PODS:
     - TransitionKit (~> 2.2)
   - Reveal-iOS-SDK (1.6.2)
   - RKValueTransformers (1.1.3)
-  - RMActionController (1.1.0)
-  - RMDateSelectionViewController (2.1.0):
-    - RMActionController (~> 1.1.0)
-  - Rollout.io (1.7.1)
-  - SBJson (4.0.4)
+  - RMActionController (1.2.1)
+  - RMDateSelectionViewController (2.2.1):
+    - RMActionController (~> 1.2.1)
+  - Rollout.io (1.10.0)
+  - RSKGrowingTextView (2.0.0):
+    - RSKPlaceholderTextView (= 2.0.0)
+  - RSKPlaceholderTextView (2.0.0)
+  - RxSwift (3.1.0)
+  - SBJson (4.0.5)
   - SCSiriWaveformView (1.0.3)
-  - SDWebImage (4.0.0-beta2):
-    - SDWebImage/Core (= 4.0.0-beta2)
-  - SDWebImage/Core (4.0.0-beta2)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
   - SOCKit (1.1)
-  - SPTPersistentCache (1.0.0)
+  - SPTPersistentCache (1.1.0)
   - SVPullToRefresh (0.4.1)
   - SWFrameButton (1.2.2)
+  - SwiftOverlays (3.0.0)
   - SWTableViewCell (0.3.7)
   - SZTextView (1.2.2)
-  - TDOAuth (1.1.3):
+  - TDOAuth (1.1.4):
     - OMGHTTPURLRQ/UserAgent
-  - TPKeyboardAvoiding (1.3)
+  - TPKeyboardAvoiding (1.3.1)
   - TransitionKit (2.2.1)
   - TTTAttributedLabel (1.13.4)
   - TWMessageBarManager (1.8.1)
   - UICKeyChainStore (2.1.0)
   - UITableView+FDTemplateLayoutCell (1.4)
+  - VMaskTextField (1.0.8)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
-  - AFNetworking
   - AFNetworking (~> 3.1.0)
   - AFOAuth2Manager
   - AHKActionSheet
-  - APAddressBook
   - APAddressBook/Swift
   - Appsee
   - AppsFlyerFramework
   - BBBadgeBarButtonItem
+  - BEMCheckBox (~> 1.2.0)
   - BlocksKit (~> 2.2.5)
   - ComponentKit (~> 0.14)
   - CYRTextView
   - DAKeyboardControl
   - DHSmartScreenshot
+  - DKImagePickerController (~> 3.5.0)
   - DownPicker
   - DTCoreText
   - EAIntroView (~> 2.8.0)
-  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `swift2.3`)
+  - Eureka (~> 2.0.0-beta.1)
   - FBSDKLoginKit
   - FLEX (~> 2.0)
   - FreeStreamer (from `https://github.com/muhku/FreeStreamer.git`)
@@ -210,7 +226,7 @@ DEPENDENCIES:
   - GoogleMaps
   - GoogleSignIn (~> 2.4.0)
   - GoogleTagManager
-  - HMSegmentedControl
+  - HMSegmentedControl (from `https://github.com/billionssg/HMSegmentedControl`)
   - INTULocationManager
   - IQAudioRecorderController (from `https://github.com/hackiftekhar/IQAudioRecorderController.git`)
   - JDStatusBarNotification
@@ -223,6 +239,7 @@ DEPENDENCIES:
   - Localytics
   - Masonry
   - MMNumberKeyboard
+  - MXSegmentedPager (~> 3.2.0)
   - NJKWebViewProgress
   - NSGIF (~> 1.0)
   - NSHash
@@ -233,32 +250,39 @@ DEPENDENCIES:
   - RestKit (~> 0.27.0)
   - Reveal-iOS-SDK
   - RMDateSelectionViewController
-  - Rollout.io (~> 1.7.1)
-  - SBJson
+  - Rollout.io (~> 1.10.0)
+  - RSKGrowingTextView
+  - RSKPlaceholderTextView
+  - RxSwift (~> 3.1.0)
+  - SBJson (~> 4.0.4)
   - SDWebImage (from `https://github.com/rs/SDWebImage.git`)
-  - SPTPersistentCache (~> 1.0)
+  - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
   - SVPullToRefresh (from `https://github.com/samvermette/SVPullToRefresh.git`, branch `master`)
   - SWFrameButton
+  - SwiftOverlays
   - SWTableViewCell (from `https://github.com/gliechtenstein/SWTableViewCell.git`)
   - SZTextView
   - TDOAuth
-  - TPKeyboardAvoiding (~> 1.3)
+  - TPKeyboardAvoiding
   - TTTAttributedLabel
   - TWMessageBarManager
   - UICKeyChainStore
   - UITableView+FDTemplateLayoutCell (~> 1.4)
+  - VMaskTextField
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
-  Eureka:
-    :branch: swift2.3
-    :git: https://github.com/xmartlabs/Eureka.git
   FreeStreamer:
     :git: https://github.com/muhku/FreeStreamer.git
+  HMSegmentedControl:
+    :git: https://github.com/billionssg/HMSegmentedControl
   IQAudioRecorderController:
     :git: https://github.com/hackiftekhar/IQAudioRecorderController.git
   SDWebImage:
     :git: https://github.com/rs/SDWebImage.git
+  SPTPersistentCache:
+    :branch: master
+    :git: https://github.com/spotify/SPTPersistentCache.git
   SVPullToRefresh:
     :branch: master
     :git: https://github.com/samvermette/SVPullToRefresh.git
@@ -266,18 +290,21 @@ EXTERNAL SOURCES:
     :git: https://github.com/gliechtenstein/SWTableViewCell.git
 
 CHECKOUT OPTIONS:
-  Eureka:
-    :commit: be9e11baaba4092c36373e8c8ba774fddd6788cc
-    :git: https://github.com/xmartlabs/Eureka.git
   FreeStreamer:
     :commit: fb6f4f89a6f359905ec3c00a3027c64d0eff1340
     :git: https://github.com/muhku/FreeStreamer.git
+  HMSegmentedControl:
+    :commit: bdd8ecee6de8dc92ead132edce865041181fd56c
+    :git: https://github.com/billionssg/HMSegmentedControl
   IQAudioRecorderController:
     :commit: a9a064a319c61332fb9da0a88cc0d2d01f3d9bad
     :git: https://github.com/hackiftekhar/IQAudioRecorderController.git
   SDWebImage:
-    :commit: 5ea33a709579a28437176faf3b62e91d7532ebbc
+    :commit: 1e53e6c71b20ecd2254692ca6c92cd3fa85766f5
     :git: https://github.com/rs/SDWebImage.git
+  SPTPersistentCache:
+    :commit: 42d45d2dfe80001af783f98cf45e7c024a87cda5
+    :git: https://github.com/spotify/SPTPersistentCache.git
   SVPullToRefresh:
     :commit: a5f9dfee86a27c4e994d7edf93d0768c881d58bb
     :git: https://github.com/samvermette/SVPullToRefresh.git
@@ -289,10 +316,11 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AFOAuth2Manager: 0566da1be64883e339813d411229fdc9a84dab7c
   AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
-  APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
+  APAddressBook: f7e50fce276ae975c202b83b0ee98f4efde5a104
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BBBadgeBarButtonItem: c2fbca0bff18e21b70defc9438a8a5048008e7ca
+  BEMCheckBox: 264b8b72aa92adbfefa265cc58a0cdb86b207b9f
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
@@ -300,12 +328,13 @@ SPEC CHECKSUMS:
   DAKeyboardControl: 9d9bca22a5cc3c1d3cc61e24fbd208c3e84a3d2d
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DHSmartScreenshot: ee749048bd7126c4826748f98df3a4adc6ad6c78
+  DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   DTCoreText: 184cc2f460c2177108e8700dfb0eb1b1cb72c99d
   DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
-  Eureka: 2020d9faeef7b7e9adeb9e3d8af779e5931c1897
+  Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
   FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
@@ -324,50 +353,58 @@ SPEC CHECKSUMS:
   INTULocationManager: 73f8254b3d05c897c56bb13c190e5b7c648c0998
   IQAudioRecorderController: 1d46d99330cb2c9381568665d123cf435460a43e
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
-  JDStatusBarNotification: d47dded0594a50a39c84a2cc5aa356fcf6750d0e
+  JDStatusBarNotification: 2b4f29bd68a60d7aa2f190b5265f1ce59c18aaf8
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
   JSCoreBom: 712590b897ecd74d9fa9cb0f16857491411c932b
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  libPhoneNumber-iOS: 9f083847f8cb9b81064cff2ed2c98cbf18d9f9f2
+  libPhoneNumber-iOS: 63bab980d1fc9783d82d955800ac9d7c1d81fde3
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
+  MXPagerView: 8798126c2e629695474eb16cbe1a6da6e0b02915
+  MXParallaxHeader: 2997592b8349baf8557ae0e4346f6b17e141de39
+  MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   NSGIF: 73b435330174a9d04db9886a232c605a3e8139b5
   NSHash: 61d598c6d48957c5557f1eef0aeafd6ef5ec5fb7
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   OMGHTTPURLRQ: edb14c7d28add69226b79d826f930805927a0ffa
   PBJVision: fe43c9a58bb1c1277d16fd802fa836d25e034a45
-  PHFComposeBarView: 758c73ce54be681df97223bc61543dd8828ae0d3
+  PHFComposeBarView: 6382ab846e2f4d8634273c4a78d074bc5deed07f
   PHFDelegateChain: 491f9cd8a3fb8761f390ff05f74a0e168d48d285
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   REMenu: 30dad195930adf6c5eeb8041e3257aa60bf9fa49
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
-  RMActionController: 1fd9045c7f0373e175095ed4d21c1a876ffebc63
-  RMDateSelectionViewController: 499a019ab08943143e9dfea879357662a5dfbd35
-  Rollout.io: 4a178b5020f33162de7309087ceabcefa7d0c5f2
-  SBJson: 0abb2b193491f0c4e0de6e7ba48bb460b84b480b
+  RMActionController: e516bc0651a61d675abb5eaf09ee79a92ae6155c
+  RMDateSelectionViewController: 81b9251420345c793921b7516b77a9c80be7d399
+  Rollout.io: 00fff26ab67dd724fa8598fe89ef3261d391fb98
+  RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
+  RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
+  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
+  SBJson: af3137ccda22be3004487524da0a071c75d4251b
   SCSiriWaveformView: b8b2756af42addcd31900c3945f24edafefb5395
-  SDWebImage: e379f33106cf8d6766f970c0ef1c3fb609c94d78
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
-  SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
+  SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   SWFrameButton: cd3cc4a8961e8975f4800c0f6d1d3c54c213eb87
+  SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
   SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
   SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
-  TDOAuth: 82474f45874759a094034b9454c75153062f6771
-  TPKeyboardAvoiding: a5138f318c06fb3e151f886e18ce4a72695d9cbe
+  TDOAuth: 43b0dbcb1d07f8da4289384707b4938ae0b031a3
+  TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   TWMessageBarManager: fd84e7948ba7968a2b5d9454859135761214ec56
   UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
+  VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 294ee1142cf69347ead18019c3fe27c9b12708c1
+PODFILE CHECKSUM: 99de39b390279384f5f6704ce70900004c41d1e0
 
 COCOAPODS: 1.1.1

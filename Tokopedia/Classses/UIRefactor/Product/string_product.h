@@ -9,13 +9,7 @@
 #ifndef Tokopedia_string_product_h
 #define Tokopedia_string_product_h
 
-typedef enum
-{
-    TYPE_ADD_EDIT_PRODUCT_DEFAULT = 0,
-    TYPE_ADD_EDIT_PRODUCT_ADD,
-    TYPE_ADD_EDIT_PRODUCT_EDIT,
-    TYPE_ADD_EDIT_PRODUCT_COPY
-}TYPE_ADD_EDIT_PRODUCT;
+
 
 typedef enum
 {

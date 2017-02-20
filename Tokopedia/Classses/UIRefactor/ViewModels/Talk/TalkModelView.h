@@ -24,5 +24,6 @@
 @property (strong, nonatomic) NSString *readStatus;
 @property (strong, nonatomic) NSString *talkMessage;
 @property (strong, nonatomic) NSString *talkOwnerStatus;
+@property (strong, nonatomic) NSString *talkShopId;
 
 @end

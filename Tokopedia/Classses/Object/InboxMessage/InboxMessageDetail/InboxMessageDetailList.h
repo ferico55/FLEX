@@ -13,22 +13,22 @@
 
 
 
-@property (nonatomic, strong) NSString *message_action;
-@property (nonatomic, strong) NSString *message_create_by;
-@property (nonatomic, strong) NSString *message_reply;
-@property (nonatomic, strong) InboxMessageReplyTime *message_reply_time;
-@property (nonatomic, strong) NSString *message_reply_id;
-@property (nonatomic, strong) NSString *message_button_spam;
-@property (nonatomic, strong) NSString *message_reply_time_fmt;
-@property (nonatomic, strong) NSString *message_create_time_fmt;
-@property (nonatomic, strong) NSString *message_reply_time_ago;
-@property (nonatomic, strong) NSString *is_moderator;
-@property (nonatomic, strong) NSString *user_id;
-@property (nonatomic, strong) NSString *user_name;
-@property (nonatomic, strong) NSString *user_image;
-@property (nonatomic, strong) NSString *is_not_delivered;
-@property (nonatomic, strong) NSString *user_label;
-@property (nonatomic, strong) NSString *user_label_id;
+@property (nonatomic, strong, nonnull) NSString *message_action;
+@property (nonatomic, strong, nonnull) NSString *message_create_by;
+@property (nonatomic, strong, nonnull) NSString *message_reply;
+@property (nonatomic, strong, nonnull) InboxMessageReplyTime *message_reply_time;
+@property (nonatomic, strong, nonnull) NSString *message_reply_id;
+@property (nonatomic, strong, nonnull) NSString *message_button_spam;
+@property (nonatomic, strong, nonnull) NSString *message_reply_time_fmt;
+@property (nonatomic, strong, nonnull) NSString *message_create_time_fmt;
+@property (nonatomic, strong, nonnull) NSString *message_reply_time_ago;
+@property (nonatomic, strong, nonnull) NSString *is_moderator;
+@property (nonatomic, strong, nonnull) NSString *user_id;
+@property (nonatomic, strong, nonnull) NSString *user_name;
+@property (nonatomic, strong, nonnull) NSString *user_image;
+@property (nonatomic, strong, nonnull) NSString *is_not_delivered;
+@property (nonatomic, strong, nonnull) NSString *user_label;
+@property (nonatomic, strong, nonnull) NSString *user_label_id;
 
 @property (nonatomic) BOOL is_just_sent;
 

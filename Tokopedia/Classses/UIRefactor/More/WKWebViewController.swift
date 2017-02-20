@@ -11,27 +11,26 @@ import WebKit
 
 class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, NoResultDelegate {
 
-    private var urlString: String
-    private var shouldAuthorizeRequest: Bool = true
-    private var webView: WKWebView!
-    private var refreshControl: UIRefreshControl!
-    private var urlRequest: NSURLRequest!
-    private var progressView: UIProgressView!
-    private var noInternetView: NoResultReusableView!
+    fileprivate var urlString: String
+    fileprivate var shouldAuthorizeRequest: Bool = true
+    fileprivate var webView: WKWebView!
+    fileprivate var refreshControl: UIRefreshControl!
+    fileprivate var urlRequest: URLRequest!
+    fileprivate var progressView: UIProgressView!
+    fileprivate var noInternetView: NoResultReusableView!
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        webView.UIDelegate = self
+        webView.uiDelegate = self
         view = webView
         initProgressView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), for: UIControlEvents.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
         
@@ -53,52 +52,52 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         super.didReceiveMemoryWarning()
     }
     
-    private func loadWebView() {
-        let myURL = NSURL(string: urlString)
-        webView.loadRequest(requestForURL(myURL!))
+    fileprivate func loadWebView() {
+        let myURL = URL(string: urlString)
+        webView.load(requestForURL(myURL!))
         
-        webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
+        webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
             
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }
     
-    private func requestForURL(url: NSURL) -> NSMutableURLRequest {
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
         var request: NSMutableURLRequest
         if shouldAuthorizeRequest {
             request = NSMutableURLRequest(authorizedHeader: url)
         } else {
             request = NSMutableURLRequest()
             request.setValue("Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5", forHTTPHeaderField: "User-Agent")
-            request.URL = url
+            request.url = url
         }
         
-        return request
+        return request as URLRequest
     }
     
-    private func initNoInternetView() {
-        noInternetView = NoResultReusableView(frame: UIScreen.mainScreen().bounds)
+    fileprivate func initNoInternetView() {
+        noInternetView = NoResultReusableView(frame: UIScreen.main.bounds)
         noInternetView.delegate = self
         noInternetView.generateAllElements("icon_no_data_grey.png", title: "Whoops!\nTidak ada koneksi Internet", desc: "Harap coba lagi", btnTitle: "Coba Kembali")
     }
     
-    private func initProgressView() {
-        progressView = UIProgressView(progressViewStyle: .Bar)
+    fileprivate func initProgressView() {
+        progressView = UIProgressView(progressViewStyle: .bar)
         progressView.frame.size.width = self.view.bounds.size.width
         webView.addSubview(progressView);
         progressView.mas_makeConstraints { make in
-            make.top.right().left().equalTo()(self.view)
-            make.height.equalTo()(2)
+            make?.top.right().left().equalTo()(self.view)
+            make?.height.equalTo()(2)
         }
     }
     
-    @objc private func refreshWebView() {
+    @objc fileprivate func refreshWebView() {
         initProgressView()
-        progressView.hidden = false
-        webView.loadRequest(requestForURL(NSURL(string: urlString)!))
+        progressView.isHidden = false
+        webView.load(requestForURL(URL(string: urlString)!))
         
-        webView.bk_addObserverForKeyPath("estimatedProgress") { [unowned self] view in
+        webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
             
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
@@ -106,39 +105,37 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     //MARK: WKNavigation Delegate
-    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideLoadingIndicators()
     }
     
-    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
-        if !noInternetView.isDescendantOfView(webView) && error.code == -1009 {
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        if !noInternetView.isDescendant(of: webView) && (error as NSError).code == -1009 {
             webView.addSubview(noInternetView)
         }
-        webView.loadRequest(NSURLRequest(URL: NSURL(string: "about:blank")!))
+        webView.load(URLRequest(url: URL(string: "about:blank")!))
         hideLoadingIndicators()
     }
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         hideLoadingIndicators()
     }
     
-    private func hideLoadingIndicators() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        progressView.hidden = true
+    fileprivate func hideLoadingIndicators() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        progressView.isHidden = true
         refreshControl.endRefreshing()
     }
-    
+        
     //MARK: No Result Delegate
-    func buttonDidTapped(sender: AnyObject!) {
-        if noInternetView.isDescendantOfView(webView) {
+    func buttonDidTapped(_ sender: Any!) {
+        if noInternetView.isDescendant(of: webView) {
             noInternetView.removeFromSuperview()
         }
         refreshWebView()
     }
-
-
 }

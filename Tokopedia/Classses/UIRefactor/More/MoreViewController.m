@@ -41,7 +41,6 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
-#import "ShopContainerViewController.h"
 #import "UserContainerViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
@@ -86,6 +85,8 @@
     NSURL *_deeplinkUrl;
     
     BOOL _shouldDisplayPushNotificationCell;
+    BOOL _shouldDisplayWalletCell;
+    NSString* _walletUrl;
     
     CGRect _defaultTableFrame;
 }
@@ -105,6 +106,9 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
 @property (weak, nonatomic) IBOutlet UILabel *LPointLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
 @end
 
 @implementation MoreViewController
@@ -156,6 +160,7 @@
 {
     [super viewDidLoad];
     
+    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -199,7 +204,6 @@
     
     _request = [DepositRequest new];
     
-    [self updateSaldoTokopedia];
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
@@ -211,6 +215,55 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 }
+
+- (void)requestWallet {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    __weak typeof(self) weakSelf = self;
+    
+    [WalletRequest fetchStatusWithUserId:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
+        if(wallet.isExpired) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+            return;
+        }
+        
+        if(wallet.shouldShowWallet) {
+            [weakSelf showWalletCell:wallet];
+        } else {
+            if(wallet.shouldShowActivation) {
+                [weakSelf showWalletCell:wallet];
+                [weakSelf showActivationButton:wallet];
+            } else {
+                [weakSelf hideWalletCell];
+            }
+        }
+    } onFailure:^(NSError * error) {
+        if(error.code == 9991) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        } else {
+            [weakSelf hideWalletCell];
+        }
+    }];
+}
+
+- (void)showActivationButton:(WalletStore*)wallet {
+    [_walletActivationButton setHidden:NO];
+    [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
+}
+
+- (void)showWalletCell:(WalletStore*)wallet {
+    _walletNameLabel.text = wallet.data.text;
+    _walletBalanceLabel.text = wallet.data.balance;
+    _walletUrl = wallet.walletFullUrl;
+    
+    _shouldDisplayWalletCell = YES;
+    [self.tableView reloadData];
+}
+
+- (void)hideWalletCell {
+    _shouldDisplayWalletCell = NO;
+    [self.tableView reloadData];
+}
+
 
 - (void)appDidResume {
     [self togglePushNotificationCellVisibility];
@@ -317,32 +370,41 @@
                                            [_shopImageView setImage:image];
 #pragma clang diagnostic pop
                                        } failure: nil];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                                                               _shopIsGoldLabel.frame.origin.y,
+                                                                               22, 22)];
         
-        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
-                                         22, 22);
-            [_shopCell addSubview:imageView];
-            _shopIsGoldLabel.text = @"        Gold Merchant";
-        } else {
-            _shopIsGoldLabel.text = @"Regular Merchant";
-        }
+        [_shopCell addSubview:imageView];
+        
+        NSDictionary<NSString *, NSDictionary *> *display = @{
+                                    @(ShopTypeRegular): @{
+                                            @"label": @"Regular Merchant",
+                                            @"image": [UIImage new]
+                                    },
+                                    @(ShopTypeGold): @{
+                                            @"label": @"        Gold Merchant",
+                                            @"image": [UIImage imageNamed:@"Badges_gold_merchant"]
+                                    },
+                                    @(ShopTypeOfficial): @{
+                                            @"label": @"        Official Merchant",
+                                            @"image": [UIImage imageNamed:@"badge_official_small"]
+                                    }
+                                  };
+        
+        ShopType shopType = authManager.shopType;
+        _shopIsGoldLabel.text = (NSString *)display[@(shopType)][@"label"];
+        imageView.image = (UIImage *)display[@(shopType)][@"image"];
     }
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
-- (BOOL)shouldShowTopupSaldo {
-    return FBTweakValue(@"More", @"Topup Saldo", @"Show Topup", YES);
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
         case 0:{
-            return [self shouldShowTopupSaldo]?2: 1;
+            return _shouldDisplayWalletCell ? 2 : 1;
             break;
         }
         
@@ -428,8 +490,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [AnalyticsManager trackClickNavigateFromMore:@"Saldo"];
             }
         } else if (indexPath.row == 1) {
-            [NavigateViewController navigateToSaldoTopupFromViewController:_wrapperViewController];
-            [AnalyticsManager trackClickNavigateFromMore:@"Top Up Saldo"];
+            WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:_walletUrl shouldAuthorizeRequest:NO];
+            controller.title = _walletNameLabel.text;
+            
+            _wrapperViewController.hidesBottomBarWhenPushed = YES;
+            [_wrapperViewController.navigationController pushViewController:controller animated:YES];
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -467,11 +532,13 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 3) {
         if(indexPath.row == 0) {
+            UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
+            
             [AnalyticsManager trackClickNavigateFromMore:@"Shop"];
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-            container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+            ShopViewController *container = [[ShopViewController alloc] init];
+            container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
                                MORE_AUTH : _auth,
-                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                               MORE_SHOP_NAME : authenticationManager.getShopName
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
@@ -741,6 +808,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)updateSaldoTokopedia {
+    [self requestWallet];
     [_request requestGetDepositOnSuccess:^(DepositResult *result) {
         _depositLabel.text = result.deposit_total;
         _depositLabel.hidden = NO;

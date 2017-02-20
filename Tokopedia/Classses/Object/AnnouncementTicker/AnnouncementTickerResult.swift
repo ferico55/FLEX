@@ -12,9 +12,9 @@ class AnnouncementTickerResult: NSObject {
     var tickers: [AnnouncementTickerObject] = []
     
     static func mapping() -> RKObjectMapping! {
-        let mapping = RKObjectMapping(forClass: self)
+        let mapping = RKObjectMapping(for: self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "tickers", toKeyPath: "tickers", withMapping: AnnouncementTickerObject.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "tickers", toKeyPath: "tickers", with: AnnouncementTickerObject.mapping()))
         
         return mapping
     }

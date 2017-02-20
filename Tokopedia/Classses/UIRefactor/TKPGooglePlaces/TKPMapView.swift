@@ -28,39 +28,39 @@ class TKPMapView: GMSMapView {
 
         marker.map = self;
         marker.icon = UIImage(named:"icon_pinpoin_toped.png")
-        marker.infoWindowAnchor = CGPointMake(0.45, 0.0);
+        marker.infoWindowAnchor = CGPoint(x: 0.45, y: 0.0);
         self.selectedMarker = marker
 
-        self.myLocationEnabled = true
+        self.isMyLocationEnabled = true
         self.settings.myLocationButton = true
     }
     
-    func updateIsShowMarker(isShowMarker: Bool){
+    func updateIsShowMarker(_ isShowMarker: Bool){
         self.isShowMarker = isShowMarker
         if (isShowMarker){
             marker.opacity = 1.0
-            infoWindowView.hidden = false
+            infoWindowView.isHidden = false
         }
         else{
             marker.opacity = 0.0
-            infoWindowView.hidden = true
+            infoWindowView.isHidden = true
         }
     }
     
-    func showButtonCurrentLocation(isShow : Bool){
+    func showButtonCurrentLocation(_ isShow : Bool){
         self.settings.myLocationButton = isShow;
     }
     
-    func updateCameraPosition (position:CLLocationCoordinate2D) {
+    func updateCameraPosition (_ position:CLLocationCoordinate2D) {
         marker.position = position
         self.selectedMarker = marker
-        cameraUpdate = GMSCameraUpdate.setTarget(self.projection.coordinateForPoint(self.projection.pointForCoordinate(marker.position)))
-        self.animateWithCameraUpdate(cameraUpdate)
-        cameraPosition = GMSCameraPosition.cameraWithLatitude(marker.position.latitude, longitude:marker.position.longitude, zoom: 16)
+        cameraUpdate = GMSCameraUpdate.setTarget(self.projection.coordinate(for: self.projection.point(for: marker.position)))
+        self.animate(with: cameraUpdate)
+        cameraPosition = GMSCameraPosition.camera(withLatitude: marker.position.latitude, longitude:marker.position.longitude, zoom: 16)
         self.camera = cameraPosition
     }
     
-    func updateAddress(address:String){
+    func updateAddress(_ address:String){
         self.infoWindowView.addressLabel!.setCustomAttributedText(address)
     }
 }

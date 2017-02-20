@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+@class ProductPreorder;
 @class ProductReturnInfo;
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
 #import "Errors.h"
-
 
 #define CProductID @"product_id"
 #define CProductPrice @"product_price"
@@ -67,7 +67,7 @@
 @property (nonatomic, strong) ProductReturnInfo *return_info;
 
 @property (nonatomic, strong) NSArray<Errors *> *errors;
-
+@property (nonatomic, strong) ProductPreorder *product_preorder;
 @property (nonatomic, strong) ProductModelView *viewModel;
 
 @property (nonatomic, strong) NSDictionary *productFieldObjects;

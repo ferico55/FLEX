@@ -16,18 +16,18 @@ class NotesResult : NSObject{
     var list : Array<NotesList> = Array<NotesList>()
     var detail : NoteDetails = NoteDetails()
     
-    class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["is_allow" : "is_allow",
                 "allow_add" : "allow_add",
                 "has_terms" : "has_terms"]
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let listMapping = RKRelationshipMapping.init(fromKeyPath: "list", toKeyPath: "list", withMapping: NotesList.mapping())
+        let listMapping = RKRelationshipMapping(fromKeyPath: "list", toKeyPath: "list", with: NotesList.mapping())
         mapping.addPropertyMapping(listMapping)
         
         return mapping

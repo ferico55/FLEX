@@ -9,7 +9,7 @@
 import UIKit
 
 @objc enum Type :Int {
-    case Edit, Appeal
+    case edit, appeal
 }
 
 @IBDesignable
@@ -34,40 +34,40 @@ import UIKit
     
     @IBOutlet weak var uploadScrollView: UIScrollView!
     @IBOutlet var uploadImageButtons: [UIButton]!
-    private var refreshControl: UIRefreshControl!
+    fileprivate var refreshControl: UIRefreshControl!
     @IBOutlet var uploadImageCell: UITableViewCell!
     
-    private var resolutionData : EditResolutionFormData = EditResolutionFormData()
-    private var postObject : ReplayConversationPostData = ReplayConversationPostData()
-    private var firstResponderIndexPath : NSIndexPath?
-    private var alertProgress : UIAlertView = UIAlertView()
+    fileprivate var resolutionData : EditResolutionFormData = EditResolutionFormData()
+    fileprivate var postObject : ReplayConversationPostData = ReplayConversationPostData()
+    fileprivate var firstResponderIndexPath : IndexPath?
+    fileprivate var alertProgress : UIAlertView = UIAlertView()
     
     
-    var successEdit : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
+    var successEdit : ((_ solutionLast: ResolutionLast, _ conversationLast: ResolutionConversation, _ replyEnable: Bool) -> Void)?
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
-    var type         : Type   = Type.Edit
+    var type         : Type   = Type.edit
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if self.type == .Edit {
+        if self.type == .edit {
             self.title = "Ubah Solusi"
         } else {
             self.title = "Naik Banding"
         }
         
-        deleteImageButtons = NSArray.sortViewsWithTagInArray(deleteImageButtons) as! [UIButton]
-        uploadImageButtons = NSArray.sortViewsWithTagInArray(uploadImageButtons) as! [UIButton]
+        deleteImageButtons = NSArray.sortViewsWithTag(in: deleteImageButtons) as! [UIButton]
+        uploadImageButtons = NSArray.sortViewsWithTag(in: uploadImageButtons) as! [UIButton]
         
-        let button : UIBarButtonItem = UIBarButtonItem(title: "Selesai", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditSolutionSellerViewController.onTapSubmit))
+        let button : UIBarButtonItem = UIBarButtonItem(title: "Selesai", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditSolutionSellerViewController.onTapSubmit))
         self.navigationItem.rightBarButtonItem = button
         
-        self.tableView.registerNib(UINib.init(nibName: "EditSolutionSellerCell", bundle: nil), forCellReuseIdentifier: "EditSolutionSellerCellIdentifier")
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ReasonCellIdentifier")
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "SolutionCellIdentifier")
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "uploadImageCellIdentifier")
+        self.tableView.register(UINib(nibName: "EditSolutionSellerCell", bundle: nil), forCellReuseIdentifier: "EditSolutionSellerCellIdentifier")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ReasonCellIdentifier")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SolutionCellIdentifier")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "uploadImageCellIdentifier")
         
         self.tableView.tableHeaderView = headerView
         
@@ -76,18 +76,18 @@ import UIKit
         
         returnMoneyViewHeight.constant = 0
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(EditSolutionSellerViewController.keyboardWillShow(_:)),
-                                                         name: UIKeyboardWillShowNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillShow,
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(EditSolutionSellerViewController.keyboardWillHide(_:)),
-                                                         name: UIKeyboardWillHideNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillHide,
                                                          object: nil)
         
         refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "")
-        refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(EditSolutionSellerViewController.refresh), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
         
         reasonTextView.placeholder = "Tulis alasan Anda disini"
@@ -96,10 +96,10 @@ import UIKit
         self.adjustAlertProgressAppearance()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if type == .Edit {
+        if type == .edit {
             AnalyticsManager.trackScreenName("Resolution Center Seller Edit Page")
         } else {
             AnalyticsManager.trackScreenName("Resolution Center Appeal Page")
@@ -107,16 +107,16 @@ import UIKit
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    private func adjustAlertProgressAppearance(){
-        alertProgress = UIAlertView.init(title: nil, message: "Please wait...", delegate: nil, cancelButtonTitle: nil);
+    fileprivate func adjustAlertProgressAppearance(){
+        alertProgress = UIAlertView(title: nil, message: "Please wait...", delegate: nil, cancelButtonTitle: nil);
         
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(50, 10, 37, 37)) as UIActivityIndicatorView
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 50, y: 10, width: 37, height: 37)) as UIActivityIndicatorView
         loadingIndicator.center = self.view.center;
         loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         loadingIndicator.startAnimating();
         
         alertProgress.setValue(loadingIndicator, forKey: "accessoryView")
@@ -129,25 +129,25 @@ import UIKit
         uploadScrollView.contentSize = uploadImageContentView.frame.size
     }
     
-    @objc private func refresh() {
+    @objc fileprivate func refresh() {
         self.requestDataForm()
     }
     
-    private func requestDataForm(){
-        if self.type == .Edit {
+    fileprivate func requestDataForm(){
+        if self.type == .edit {
             self.requestDataFormEdit()
         } else {
             self.requestDataFormAppeal()
         }
     }
     
-    private func requestDataFormEdit(){
+    fileprivate func requestDataFormEdit(){
         
         self.isFinishRequest(false)
         
         RequestResolutionData.fetchformEditResolutionID(resolutionID, isGetProduct: isGetProduct, onSuccess: { (data) in
             
-            self.setResolutionData(data)
+            self.setResolutionData(data!)
             self.tableView.reloadData()
             
             self.isFinishRequest(true)
@@ -157,12 +157,12 @@ import UIKit
         }
     }
     
-    private func requestDataFormAppeal(){
+    fileprivate func requestDataFormAppeal(){
         
         self.isFinishRequest(false)
         
         RequestResolutionData.fetchformAppealResolutionID(resolutionID, onSuccess: { (data) in
-            self.setResolutionData(data)
+            self.setResolutionData(data!)
             self.tableView.reloadData()
             
             self.isFinishRequest(true)
@@ -172,18 +172,18 @@ import UIKit
         }
     }
     
-    private func isFinishRequest(isFinishRequest: Bool){
+    fileprivate func isFinishRequest(_ isFinishRequest: Bool){
         if isFinishRequest{
-            self.tableView.setContentOffset(CGPointZero, animated: true)
+            self.tableView.setContentOffset(CGPoint.zero, animated: true)
             self.refreshControl.endRefreshing()
         } else {
-            tableView.setContentOffset(CGPoint.init(x: 0, y: -self.refreshControl.frame.size.height), animated: true)
+            tableView.setContentOffset(CGPoint(x: 0, y: -self.refreshControl.frame.size.height), animated: true)
             refreshControl.beginRefreshing()
         }
         
     }
     
-    private func setSelectedSolutionWithData(data:EditResolutionFormData){
+    fileprivate func setSelectedSolutionWithData(_ data:EditResolutionFormData){
         
         for solution in data.form.resolution_solution_list where Int(solution.solution_id) == Int(data.form.resolution_last.last_solution) {
             postObject.selectedSolution = solution
@@ -193,17 +193,17 @@ import UIKit
         }
     }
     
-    private func setResolutionData(data:EditResolutionFormData){
+    fileprivate func setResolutionData(_ data:EditResolutionFormData){
         self.resolutionData = data
         self.setSelectedSolutionWithData(data)
         self .adjustUIForm(data.form)
     }
-    private func adjustUIForm(form: EditResolutionForm) {
-        invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, forState: .Normal)
-        buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", forState: .Normal)
+    fileprivate func adjustUIForm(_ form: EditResolutionForm) {
+        invoiceButton.setTitle(form.resolution_order.order_invoice_ref_num, for: .normal)
+        buyerButton.setTitle("Pembelian Oleh \(form.resolution_customer.customer_name)", for: .normal)
     }
     
-    private func adjustUISolution(solution: EditSolution){
+    fileprivate func adjustUISolution(_ solution: EditSolution){
         solutionLabel.text = solution.solution_text
         maxRefundLabel.text = solution.max_refund_idr
         maxRefundDescriptionLabel.text = solution.refund_text_desc
@@ -218,7 +218,7 @@ import UIKit
         }
     }
     
-    private func navigateToPhotoPicker(){
+    fileprivate func navigateToPhotoPicker(){
         
         TKPImagePickerController.showImagePicker(self,
                                               assetType: .allPhotos,
@@ -226,48 +226,52 @@ import UIKit
                                               showCancel: true,
                                               showCamera: true,
                                               maxSelected: 5,
-                                              selectedAssets: self.postObject.selectedAssets
+                                              selectedAssets: self.postObject.selectedAssets as NSArray
         ) { [unowned self] (assets) in
             self.postObject.selectedAssets = assets
             self.adjustUISelectedImage()
         }
     }
     
-    private func adjustUISelectedImage(){
+    fileprivate func adjustUISelectedImage(){
         uploadImageButtons.forEach {
-            $0.hidden = true
-            $0.setBackgroundImage(UIImage.init(named: "icon_upload_image.png"), forState: .Normal)
+            $0.isHidden = true
+            $0.setBackgroundImage(UIImage(named: "icon_upload_image.png"), for: UIControlState())
         }
         
-        deleteImageButtons.forEach{ $0.hidden = true }
+        deleteImageButtons.forEach{ $0.isHidden = true }
         
-        for (index,asset) in postObject.selectedAssets.enumerate() {
+        for (index,asset) in postObject.selectedAssets.enumerated() {
             if index == uploadImageButtons.count {
                 postObject.selectedAssets.removeLast()
                 break
             }
-            uploadImageButtons[index].hidden = false
-            deleteImageButtons[index].hidden = false
-            uploadImageButtons[index].setBackgroundImage(asset.thumbnailImage, forState: .Normal)
+            uploadImageButtons[index].isHidden = false
+            deleteImageButtons[index].isHidden = false
+            
+            asset.fetchImageWithSize(self.uploadImageButtons[index].frame.size.toPixel(), completeBlock: { [weak self](image, info) in
+                guard let `self` = self else { return }
+                self.uploadImageButtons[index].setBackgroundImage(image, for: .normal)
+            })
         }
         
         if (postObject.selectedAssets.count<uploadImageButtons.count) {
             let uploadedButton = uploadImageButtons[postObject.selectedAssets.count]
-            uploadedButton.hidden = false
+            uploadedButton.isHidden = false
             
-            uploadScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
+            uploadScrollView.contentSize = CGSize(width: uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, height: 0);
             
         }
     }
     
-    @objc private func onTapSubmit(){
+    @objc fileprivate func onTapSubmit(){
         self.adjustPostData()
         let validation : ResolutionValidation = ResolutionValidation()
         if !validation.isValidSubmitEditResolution(self.postObject) {
             return;
         }
         
-        if type == Type.Edit {
+        if type == Type.edit {
             postObject.editSolution = "1"
             self.requestSubmitEdit()
         } else {
@@ -276,7 +280,7 @@ import UIKit
         }
     }
     
-    private func adjustPostData(){
+    fileprivate func adjustPostData(){
         if isGetProduct {
             postObject.flagReceived = "1"
         } else {
@@ -284,7 +288,7 @@ import UIKit
         }
         
         postObject.resolutionID = resolutionID
-        postObject.refundAmount = (refundTextField.text?.stringByReplacingOccurrencesOfString(".", withString: ""))!
+        postObject.refundAmount = (refundTextField.text?.replacingOccurrences(of: ".", with: ""))!
         postObject.replyMessage = reasonTextView.text
         if Int(resolutionData.form.resolution_by.by_customer) == 1 {
             postObject.actionBy     = "1"
@@ -295,33 +299,33 @@ import UIKit
         postObject.troubleType = resolutionData.form.resolution_last.last_trouble_type
     }
     
-    func didSuccessEdit(success:((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool)->Void)){
+    func didSuccessEdit(_ success:@escaping ((_ solutionLast: ResolutionLast, _ conversationLast: ResolutionConversation, _ replyEnable: Bool)->Void)){
         self.successEdit = success
     }
     
-    @IBAction func onTapInvoiceButton(sender: UIButton) {
-        NavigateViewController.navigateToInvoiceFromViewController(self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
+    @IBAction func onTapInvoiceButton(_ sender: UIButton) {
+        NavigateViewController.navigateToInvoice(from: self, withInvoiceURL: resolutionData.form.resolution_order.order_pdf_url)
     }
     
-    @IBAction func onTapBuyerButton(sender: UIButton) {
+    @IBAction func onTapBuyerButton(_ sender: UIButton) {
         
     }
     
-    private func requestSubmitEdit() {
+    fileprivate func requestSubmitEdit() {
         
         alertProgress.show()
         
         RequestResolution.fetchReplayConversation(postObject, onSuccess: { (data) in
             StickyAlertView.showSuccessMessage(["Anda berhasil mengubah solusi."])
-            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
-            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
+            self.alertProgress.dismiss(withClickedButtonIndex: 0, animated: true)
+            self.successEdit?(data.solution_last, data.conversation_last[0] , true)
             
         }) {
-            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+            self.alertProgress.dismiss(withClickedButtonIndex: 0, animated: true)
         }
     }
     
-    private func requestSubmitAppeal() {
+    fileprivate func requestSubmitAppeal() {
         
         alertProgress.show()
         
@@ -331,16 +335,16 @@ import UIKit
                                                         message: reasonTextView.text,
                                                         imageObjects: postObject.selectedAssets,
                                                         success: { (data) in
-                                                            self.successEdit?(solutionLast: data.solution_last, conversationLast: data.conversation_last[0] , replyEnable: true)
-                                                            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
-                                                            self.navigationController?.popViewControllerAnimated(true)
+                                                            self.successEdit?((data?.solution_last)!, (data?.conversation_last[0])! , true)
+                                                            self.alertProgress.dismiss(withClickedButtonIndex: 0, animated: true)
+                                                            self.navigationController?.popViewController(animated: true)
                                                             
         }) { (error) in
-            self.alertProgress.dismissWithClickedButtonIndex(0, animated: true)
+            self.alertProgress.dismiss(withClickedButtonIndex: 0, animated: true)
         }
     }
     
-    @IBAction func onTapChooseSolution(sender: AnyObject) {
+    @IBAction func onTapChooseSolution(_ sender: AnyObject) {
         let controller : GeneralTableViewController = GeneralTableViewController()
         controller.objects = self.resolutionData.form.resolution_solution_list.map{$0.solution_text}
         controller.delegate = self
@@ -349,39 +353,39 @@ import UIKit
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    @IBAction func onTapImageButton(sender: AnyObject) {
+    @IBAction func onTapImageButton(_ sender: AnyObject) {
         self.navigateToPhotoPicker()
     }
     
-    @IBAction func onTapCancelButton(sender: UIButton) {
-        postObject.selectedAssets.removeAtIndex(sender.tag)
+    @IBAction func onTapCancelButton(_ sender: UIButton) {
+        postObject.selectedAssets.remove(at: sender.tag)
         self.adjustUISelectedImage()
     }
     
-    @objc private func keyboardWillShow(notification: NSNotification){
+    @objc fileprivate func keyboardWillShow(_ notification: Notification){
         
-        if let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            let contentInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+        if let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            let contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
             tableView.contentInset = contentInset
         }
         
         if firstResponderIndexPath != nil {
-            tableView.scrollToRowAtIndexPath(firstResponderIndexPath!, atScrollPosition: .Bottom, animated: true)
+            tableView.scrollToRow(at: firstResponderIndexPath!, at: .bottom, animated: true)
         }
     }
     
-    @objc private func keyboardWillHide(notification: NSNotification){
-        UIView.animateWithDuration(0.3) { [weak self] _ in
+    @objc fileprivate func keyboardWillHide(_ notification: Notification){
+        UIView.animate(withDuration: 0.3, animations: { [weak self] _ in
             if self?.firstResponderIndexPath != nil {
-                self?.tableView.contentInset = UIEdgeInsetsZero
+                self?.tableView.contentInset = UIEdgeInsets.zero
             }
-        }
+        }) 
     }
 }
 
 extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate {
     //MARK: GeneralTableViewDelegate
-    func didSelectObject(object: AnyObject!) {
+    func didSelectObject(_ object: AnyObject!) {
         for solution in resolutionData.form.resolution_solution_list where solution.solution_text == object as! String {
             postObject.selectedSolution = solution
             self.adjustUISolution(postObject.selectedSolution)
@@ -394,27 +398,27 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
 extension EditSolutionSellerViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
     
-    func textViewDidChange(textView: UITextView) {
-        reasonTextView.placeholderLabel.hidden = !textView.text.isEmpty
+    func textViewDidChange(_ textView: UITextView) {
+        reasonTextView.placeholderLabel.isHidden = !textView.text.isEmpty
     }
     
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        self.firstResponderIndexPath = IndexPath(row: 0, section: 3)
         return true
     }
 }
 
 extension EditSolutionSellerViewController : UITextFieldDelegate{
     //MARK: UITextFieldDelegate
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        NSNumberFormatter.setTextFieldFormatterString(textField, string: string)
+        NumberFormatter.setTextFieldFormatterString(textField, string: string)
         return true
         
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        self.firstResponderIndexPath = IndexPath(row: 0, section: 1)
         return true
     }
 }
@@ -428,11 +432,11 @@ extension EditSolutionSellerViewController : UITableViewDelegate {
 extension EditSolutionSellerViewController : UITableViewDataSource {
     //MARK: UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return resolutionData.form.resolution_last.last_product_trouble.count
@@ -447,25 +451,25 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 1:
-            solutionCell.contentView.backgroundColor = UIColor.clearColor()
+            solutionCell.contentView.backgroundColor = UIColor.clear
             return self.solutionCell
         case 2:
             return self.uploadImageCell
         case 3:
-            reasonCell.contentView.backgroundColor = UIColor.clearColor()
+            reasonCell.contentView.backgroundColor = UIColor.clear
             return self.reasonCell
         default:
-            let cell:EditSolutionSellerCell = tableView.dequeueReusableCellWithIdentifier("EditSolutionSellerCellIdentifier")! as! EditSolutionSellerCell
+            let cell:EditSolutionSellerCell = tableView.dequeueReusableCell(withIdentifier: "EditSolutionSellerCellIdentifier")! as! EditSolutionSellerCell
             cell.setViewModel(resolutionData.form.resolution_last.last_product_trouble[indexPath.row].sellerEditViewModel)
-            cell.contentView.backgroundColor = UIColor.clearColor()
+            cell.contentView.backgroundColor = UIColor.clear
             return cell
         }
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return ""

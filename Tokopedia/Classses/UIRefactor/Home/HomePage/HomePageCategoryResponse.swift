@@ -13,8 +13,8 @@ class HomePageCategoryResponse: NSObject {
     var data: HomePageCategoryData!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: HomePageCategoryResponse.self)
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: HomePageCategoryData.mapping()))
-        return mapping
+        let mapping = RKObjectMapping(for: HomePageCategoryResponse.self)
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: HomePageCategoryData.mapping()))
+        return mapping!
     }
 }

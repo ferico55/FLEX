@@ -15,6 +15,8 @@
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "TKPDTabViewController.h"
+#import "ProductAddEditViewController.h"
+#import "GAIDictionaryBuilder.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -95,27 +97,11 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [self localyticsEvent:@"Cart Viewed" attributes:attributes];
 }
 
-+ (NSString *)providerWithMethod:(NSString *)method {
-    if ([method isEqualToString:@"1"]) {
-        return @"Facebook";
-    } else if ([method isEqualToString:@"2"]) {
-        return @"Google";
-    } else if ([method isEqualToString:@"4"]) {
-        return @"Yahoo";
-    } else if ([method isEqualToString:@"0"]) {
-        return @"Email";
-    } else {
-        return @"";
-    }
-}
-
-+ (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success {
-    NSString *provider = [self providerWithMethod:method];
-    
++ (void)localyticsTrackRegistration:(NSString *)providerName success:(BOOL)success {
     NSDictionary *attributes = @{
                                  @"Success" : success? @"Yes" : @"No",
                                  @"Previous Screen" : @"Login",
-                                 @"Method" : provider?:@""
+                                 @"Method" : providerName?:@""
                                  };
     
     [self localyticsEvent:@"Registration Summary" attributes:attributes];
@@ -166,7 +152,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     }
     
     [manager.dataLayer push:@{@"event" : @"openScreen",
-                              @"screenName" : name?:@""}];
+                              @"screenName" : name?:@"",
+                              @"appsflyerID" : [[AppsFlyerTracker sharedTracker] getAppsFlyerUID]?:@""}];
     
     [Localytics tagScreen:name];
 }
@@ -622,6 +609,10 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     
     // AppsFlyer Tracking
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    
+    [tracker set:kGAIUserId value:login.result.user_id];
 }
 
 + (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString *)label {
@@ -686,6 +677,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         actionForTracker = @"Popular Search";
     } else if ([searchID isEqualToString:@"hotlist"]) {
         actionForTracker = @"Search Hotlist";
+    } else if ([searchID isEqualToString:@"shop"]) {
+        actionForTracker = @"Search Shop";
     }
     
     return actionForTracker;

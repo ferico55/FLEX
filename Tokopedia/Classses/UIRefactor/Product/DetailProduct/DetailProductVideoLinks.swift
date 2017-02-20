@@ -14,8 +14,8 @@ class DetailProductVideoLinks: NSObject {
     var varself: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: DetailProductVideoResponse.self)
-        mapping.addAttributeMappingsFromDictionary(["varself" : "self"])
-        return mapping
+        let mapping = RKObjectMapping(for: DetailProductVideoResponse.self)
+        mapping?.addAttributeMappings(from:["varself" : "self"])
+        return mapping!
     }
 }

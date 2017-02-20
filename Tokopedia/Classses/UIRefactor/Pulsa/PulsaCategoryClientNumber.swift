@@ -14,7 +14,7 @@ class PulsaCategoryClientNumber: NSObject {
     var help : String = ""
     var placeholder: String = ""
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "is_shown"  : "is_shown",
             "text" : "text",
@@ -24,8 +24,8 @@ class PulsaCategoryClientNumber: NSObject {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
         return mapping
     }
@@ -36,27 +36,27 @@ class PulsaCategoryClientNumber: NSObject {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let text = aDecoder.decodeObjectForKey("text") as? String {
+        if let text = aDecoder.decodeObject(forKey: "text") as? String {
             self.text = text
         }
         
-        if let placeholder = aDecoder.decodeObjectForKey("placeholder") as? String {
+        if let placeholder = aDecoder.decodeObject(forKey: "placeholder") as? String {
             self.placeholder = placeholder
         }
         
-        if let is_shown = aDecoder.decodeObjectForKey("is_shown") as? Bool {
+        if let is_shown = aDecoder.decodeObject(forKey: "is_shown") as? Bool {
             self.is_shown = is_shown
         }
         
-        if let help = aDecoder.decodeObjectForKey("help") as? String {
+        if let help = aDecoder.decodeObject(forKey: "help") as? String {
             self.help = help
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(is_shown, forKey: "is_shown")
-        aCoder.encodeObject(text, forKey: "text")
-        aCoder.encodeObject(help, forKey: "help")
-        aCoder.encodeObject(placeholder, forKey: "placeholder")
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(is_shown as Any?, forKey: "is_shown")
+        aCoder.encode(text as Any?, forKey: "text")
+        aCoder.encode(help as Any?, forKey: "help")
+        aCoder.encode(placeholder as Any?, forKey: "placeholder")
     }
 }

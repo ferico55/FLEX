@@ -10,32 +10,32 @@ import UIKit
 
 class OrderTotalView: UIView {
     
-    @IBOutlet private var totalProduct: UILabel!
-    @IBOutlet private var subtotal: UILabel!
-    @IBOutlet private var additionalFee: UILabel!
-    @IBOutlet private var shipmentFee: UILabel!
-    @IBOutlet private var totalPayment: UILabel!
-    @IBOutlet private var additionalFeeTitleLabel: UILabel!
-    @IBOutlet private var infoButton: UIButton!
-    @IBOutlet private var courierAgentGesture: UITapGestureRecognizer!
+    @IBOutlet fileprivate var totalProduct: UILabel!
+    @IBOutlet fileprivate var subtotal: UILabel!
+    @IBOutlet fileprivate var additionalFee: UILabel!
+    @IBOutlet fileprivate var shipmentFee: UILabel!
+    @IBOutlet fileprivate var totalPayment: UILabel!
+    @IBOutlet fileprivate var additionalFeeTitleLabel: UILabel!
+    @IBOutlet fileprivate var infoButton: UIButton!
+    @IBOutlet fileprivate var courierAgentGesture: UITapGestureRecognizer!
     
     var onTapInfoButton:(() -> Void)?
     
-    private var order = OrderTransaction(){
+    fileprivate var order = OrderTransaction(){
         didSet{
             totalProduct.text = "\(order.order_detail.detail_quantity) Barang (\(order.order_detail.detail_total_weight) kg)"
             subtotal.text = order.order_detail.detail_product_price_idr
             additionalFee.text = order.order_detail.additionalFee
             additionalFeeTitleLabel.text = order.order_detail.additionalFeeTitle
             shipmentFee.text = order.order_detail.detail_shipping_price_idr
-            infoButton.hidden = (Int(order.order_detail.detail_additional_fee)==0)
+            infoButton.isHidden = (Int(order.order_detail.detail_additional_fee)==0)
             totalPayment.text = order.order_detail.detail_open_amount_idr;
         }
     }
     
-    static func newView(order: OrderTransaction)-> UIView {
+    static func newView(_ order: OrderTransaction)-> UIView {
         
-        let views:Array = NSBundle.mainBundle().loadNibNamed("OrderTotalView", owner: nil, options: nil)!
+        let views:Array = Bundle.main.loadNibNamed("OrderTotalView", owner: nil, options: nil)!
         let view = views.first as! OrderTotalView
         
         view.order = order
@@ -43,7 +43,7 @@ class OrderTotalView: UIView {
         return view
     }
     
-    @IBAction func tapInfoButton(sender: AnyObject) {
+    @IBAction func tapInfoButton(_ sender: AnyObject) {
         onTapInfoButton?()
     }
 }

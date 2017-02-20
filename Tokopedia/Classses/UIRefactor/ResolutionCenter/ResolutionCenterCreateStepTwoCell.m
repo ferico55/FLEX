@@ -7,6 +7,7 @@
 //
 
 #import "ResolutionCenterCreateStepTwoCell.h"
+@import RSKPlaceholderTextView;
 
 @implementation ResolutionCenterCreateStepTwoCell
 + (id)newcell

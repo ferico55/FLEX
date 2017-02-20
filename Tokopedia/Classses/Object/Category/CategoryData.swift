@@ -12,14 +12,14 @@ import UIKit
     
     var categories:[CategoryDetail] = []
     
-    private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    fileprivate class func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return nil
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
-        let relMapping = RKRelationshipMapping.init(fromKeyPath: "categories", toKeyPath: "categories", withMapping: CategoryDetail.mapping())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
+        let relMapping = RKRelationshipMapping(fromKeyPath: "categories", toKeyPath: "categories", with: CategoryDetail.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping

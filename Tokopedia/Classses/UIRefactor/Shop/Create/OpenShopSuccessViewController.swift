@@ -8,18 +8,18 @@
 
 import UIKit
 
-@objc(OpenShopSuccessViewController) public class OpenShopSuccessViewController: UITableViewController {
+@objc(OpenShopSuccessViewController) open class OpenShopSuccessViewController: UITableViewController {
 
-    public var shopDomain: NSString!
-    public var shopName: NSString!
-    public var shopUrl: NSString!
+    open var shopDomain: NSString!
+    open var shopName: NSString!
+    open var shopUrl: NSString!
     
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet var headerView: UIView!
     @IBOutlet var footerView: UIView!
     @IBOutlet weak var addProductButton: UIButton!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         let nib = nibNameOrNil ?? "OpenShopSuccessViewController"
         super.init(nibName: nib, bundle: nibBundleOrNil)
     }
@@ -28,14 +28,14 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Buka Toko"
         
         let emptyLeftButton = UIBarButtonItem(
             title: "",
-            style: .Plain,
+            style: .plain,
             target: self,
             action: nil
         )
@@ -44,7 +44,7 @@ import UIKit
         
         let doneButton = UIBarButtonItem(
             title: "Selesai",
-            style: .Plain,
+            style: .plain,
             target: self,
             action: #selector(OpenShopSuccessViewController.didTapDoneButton(_:))
         )
@@ -52,11 +52,11 @@ import UIKit
         navigationItem.rightBarButtonItem = doneButton
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 5
         let firstSentence = "Selamat!\nAnda telah berhasil membuka toko\n\(shopName)\n"
         let secondSentence = "Sekarang Anda sudah siap untuk mulai\nberjualan di Tokopedia"
-        let attributedString = NSMutableAttributedString.init(string: firstSentence + secondSentence)
+        let attributedString = NSMutableAttributedString(string: firstSentence + secondSentence)
         attributedString.addAttributes([NSFontAttributeName: UIFont.title1ThemeMedium()!], range: NSMakeRange(0, firstSentence.characters.count))
         attributedString.addAttributes([NSParagraphStyleAttributeName: paragraphStyle], range: NSMakeRange(0, firstSentence.characters.count + secondSentence.characters.count))
         attributedString.addAttributes([NSFontAttributeName: UIFont.largeTheme()!], range: NSMakeRange(firstSentence.characters.count, secondSentence.characters.count))
@@ -69,26 +69,26 @@ import UIKit
         tableView.tableFooterView = footerView
     }
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
     // MARK: - Table view data source
 
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 
-    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell!
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
         if (cell == nil) {
-            cell = UITableViewCell(style:.Default, reuseIdentifier: "cell")
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            cell.textLabel?.numberOfLines = 0
+            cell = UITableViewCell(style:.default, reuseIdentifier: "cell")
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
+            cell?.textLabel?.numberOfLines = 0
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
@@ -97,17 +97,17 @@ import UIKit
         
         if (indexPath.section == 0) {
             let text = shopUrl as String
-            cell.textLabel?.attributedText = NSAttributedString.init(string: text, attributes: attributes)
-            cell.textLabel?.textColor = UIColor.init(red: 0.0, green: 122.0/255.0, blue: 1, alpha: 1)
+            cell?.textLabel?.attributedText = NSAttributedString(string: text, attributes: attributes)
+            cell?.textLabel?.textColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1, alpha: 1)
         } else if (indexPath.section == 1) {
             let text = "Secara otomatis toko Anda saat ini sudah dapat diakses oleh pengunjung Tokopedia.\n\nUntuk pengaturan, gunakan halaman pengaturan toko, dan jangan lewatkan kesempatan untuk melakukan transaksi pertama Anda."
-            cell.textLabel?.attributedText = NSAttributedString.init(string: text, attributes: attributes)
+            cell?.textLabel?.attributedText = NSAttributedString(string: text, attributes: attributes)
         }
 
-        return cell
+        return cell!
     }
     
-    override public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0) {
             return 44
         } else {
@@ -115,7 +115,7 @@ import UIKit
         }
     }
     
-    override public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             return "URL Toko"
         } else {
@@ -123,25 +123,25 @@ import UIKit
         }
     }
     
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == 0) {
-            let container = ShopContainerViewController()
+            let container = ShopViewController()
             container.data = ["shop_domain": shopDomain]
             navigationController?.pushViewController(container, animated: true)
         }
     }
 
-    @IBAction func didTapAddProductButton(sender: UIButton) {
+    @IBAction func didTapAddProductButton(_ sender: UIButton) {
         let controller = ProductAddEditViewController()
-        controller.type = 1
-        let navigation = UINavigationController.init(rootViewController: controller)
-        navigation.navigationBar.translucent = false
-        navigationController?.presentViewController(navigation, animated: true, completion:nil)
-        navigationController?.popToRootViewControllerAnimated(true)
+        controller.type = .ADD
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isTranslucent = false
+        navigationController?.present(navigation, animated: true, completion:nil)
+        navigationController?.popToRootViewController(animated: true)
     }
     
-    func didTapDoneButton(button: UIBarButtonItem) -> Void {
-        navigationController!.popToRootViewControllerAnimated(true)
+    func didTapDoneButton(_ button: UIBarButtonItem) -> Void {
+        navigationController!.popToRootViewController(animated: true)
     }
     
 }

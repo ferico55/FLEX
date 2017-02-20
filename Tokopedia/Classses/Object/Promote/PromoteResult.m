@@ -15,9 +15,15 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:@{
         @"p_name_enc" : @"product_name",
-        @"is_dink"      : @"is_dink"
+        @"is_dink"      : @"is_dink",
+        @"p_uri" : @"uri",
+        @"dink_time_expiry" : @"time_expired"
     }];
     return mapping;
+}
+
+- (NSString*)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
 @end

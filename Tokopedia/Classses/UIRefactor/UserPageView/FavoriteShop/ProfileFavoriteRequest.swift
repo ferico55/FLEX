@@ -10,7 +10,7 @@ import UIKit
 
 @objc class ProfileFavoriteRequest: NSObject {
     
-    class func fetchListFavoriteShop(page:NSInteger, profileUserID:String, onSuccess: ((FavoriteShopResult) -> Void), onFailure:(()->Void)) {
+    class func fetchListFavoriteShop(_ page:NSInteger, profileUserID:String, onSuccess: @escaping ((FavoriteShopResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -21,17 +21,17 @@ import UIKit
             "profile_user_id" : profileUserID
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/people/get_favorit_shop.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: FavoriteShop.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: FavoriteShopResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : FavoriteShop = result[""] as! FavoriteShop
+                                            let response : V4Response = result[""] as! V4Response<FavoriteShopResult>
                                             
-                                            if response.message_error?.count > 0 {
+                                            if (response.message_error?.count)! > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {

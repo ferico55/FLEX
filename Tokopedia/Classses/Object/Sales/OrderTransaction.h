@@ -28,11 +28,12 @@
 @property (strong, nonatomic) OrderDeadline *order_deadline;
 @property (strong, nonatomic) NSString *order_auto_awb;
 @property (strong, nonatomic) NSMutableArray *order_products;
-@property (strong, nonatomic) OrderShipment *order_shipment;
+@property (strong, nonatomic, nonnull) OrderShipment *order_shipment;
 @property (strong, nonatomic) OrderLast *order_last;
 @property (strong, nonatomic) NSMutableArray *order_history;
 @property (strong, nonatomic) OrderDestination *order_destination;
 @property (strong, nonatomic) OrderSellerShop *order_shop;
 @property NSInteger order_is_pickup;
+@property NSInteger order_shipping_retry;
 
 @end

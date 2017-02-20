@@ -124,9 +124,7 @@ NSString *const TkpCartCreditCard = @"credit_card";
     
     RKRelationshipMapping *relInstallmentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_bank_option" toKeyPath:@"installment_bank_option" withMapping:[InstallmentBank mapping]];
     [mapping addPropertyMapping:relInstallmentMapping];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card" toKeyPath:@"credit_card" withMapping:[CCFee mapping]]];
-    
+        
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret" toKeyPath:@"indomaret" withMapping:[IndomaretData mapping]]];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"bca_param" toKeyPath:@"bca_param" withMapping:[TransactionSummaryBCAParam mapping]]];

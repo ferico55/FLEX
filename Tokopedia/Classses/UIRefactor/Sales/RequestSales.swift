@@ -10,7 +10,7 @@ import UIKit
 
 class RequestSales: NSObject {
     
-    class func fetchAcceptOrderPartial(products: [OrderProduct], productQuantities: [[String : String]], orderID: String, shippingLeft:String, reason: String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptOrderPartial(_ products: [OrderProduct], productQuantities: [[String : String]], orderID: String, shippingLeft:String, reason: String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         var productIDs = ""
         products.forEach { (product) in
@@ -33,7 +33,7 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
@@ -43,11 +43,11 @@ class RequestSales: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : ActionOrder = result[""] as! ActionOrder
                                             
-                                            if (response.message_error?.count > 0) {
+                                            if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
+                                            if ((response.message_status?.count)! > 0) {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
@@ -63,7 +63,7 @@ class RequestSales: NSObject {
         })
     }
     
-    class func fetchAcceptOrder( orderID: String, shippingLeft:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptOrder( _ orderID: String, shippingLeft:String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let parameters = [
             "action_type": "accept",
@@ -73,7 +73,7 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
@@ -83,11 +83,11 @@ class RequestSales: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : ActionOrder = result[""] as! ActionOrder
                                             
-                                            if (response.message_error?.count > 0) {
+                                            if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
+                                            if ((response.message_status?.count)! > 0) {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
@@ -103,7 +103,7 @@ class RequestSales: NSObject {
         })
     }
     
-    class func fetchAcceptExpiredOrder( orderID: String, shippingLeft:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptExpiredOrder( _ orderID: String, shippingLeft:String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let parameters = [
             "action_type": "reject",
@@ -114,7 +114,7 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
@@ -124,11 +124,11 @@ class RequestSales: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : ActionOrder = result[""] as! ActionOrder
                                             
-                                            if (response.message_error?.count > 0) {
+                                            if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
+                                            if ((response.message_status?.count)! > 0) {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             

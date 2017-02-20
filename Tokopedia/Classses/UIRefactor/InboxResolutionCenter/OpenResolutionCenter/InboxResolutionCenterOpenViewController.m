@@ -6,12 +6,11 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionCenterDetailViewController.h"
 #import "ResolutionCenterInputViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "string_inbox_resolution_center.h"
-
+#import "Tokopedia-Swift.h"
 #import "GeneralTableViewController.h"
 
 #import "RequestResolutionData.h"
@@ -185,7 +184,7 @@
 -(void)navigateToPhotoPicker{
     __weak typeof(self) wself = self;
     [TKPImagePickerController showImagePicker:self
-                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                                 assetType:DKImagePickerControllerAssetTypeAllPhotos
                        allowMultipleSelect:YES
                                 showCancel:YES
                                 showCamera:YES
@@ -253,7 +252,9 @@
     for (int i = 0; i<_selectedImages.count; i++) {
         ((UIButton*)_uploadButtons[i]).hidden = NO;
         ((UIButton*)_cancelButtons[i]).hidden = NO;
-        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
+        [_selectedImages[i] fetchImageWithSize:((UIButton*)_uploadButtons[i]).frame.size completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            [_uploadButtons[i] setBackgroundImage:image forState:UIControlStateNormal];
+        }];
     }
     if (_selectedImages.count<_uploadButtons.count) {
         UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];

@@ -11,6 +11,8 @@
 #import "Login.h"
 #import "SecurityAnswer.h"
 #import "CreatePasswordViewController.h"
+#import "SecurityQuestionTweaks.h"
+#import "activation.h"
 
 @implementation AuthenticationService {
 }
@@ -29,24 +31,25 @@
     return @{@"Authorization": @"Basic dzFIWXBpZFNocmU6dllYdmQwcXRxVUFSSnNmajRWSWdTeFNrckF5NHBjeXE="};
 }
 
-- (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
+- (void)verifyLogin:(Login *)login withPhoneNumber:(NSString *)phoneNumber token:(OAuthToken *)token onPhoneNumberVerified:(void (^)())verifiedCallback {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 
-    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-    controller.questionType1 = login.result.security.user_check_security_1;
-    controller.questionType2 = login.result.security.user_check_security_2;
-
-    controller.userID = login.result.user_id;
-    controller.deviceID = [UserAuthentificationManager new].getMyDeviceToken;
+    SecurityQuestionViewController* controller = [[SecurityQuestionViewController alloc] initWithName:login.result.full_name phoneNumber:phoneNumber userID:login.result.user_id deviceID:[UserAuthentificationManager new].getMyDeviceToken token:token];
+    
+    if ([SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
+        controller.questionType1 = @"0";
+        controller.questionType2 = @"2";
+    } else {
+        controller.questionType1 = login.result.security.user_check_security_1;
+        controller.questionType2 = login.result.security.user_check_security_2;
+    }
+    
     controller.successAnswerCallback = ^(SecurityAnswer* answer) {
         [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
         verifiedCallback();
     };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [_viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    [_viewController.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
@@ -79,9 +82,10 @@
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  Login *login = successResult.dictionary[@""];
                                  login.result.email = accountInfo.email;
+                                 login.result.full_name = accountInfo.name;
                                  
-                                 if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                     [self verifyPhoneNumber:login onPhoneNumberVerified:^{
+                                 if ((login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) ||[SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
+                                     [self verifyLogin:login withPhoneNumber: accountInfo.phoneMasked token:oAuthToken onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                     onAuthenticationSuccess:successCallback
@@ -91,6 +95,7 @@
                                      TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
                                      [storage setKeychainWithValue:oAuthToken.accessToken withKey:@"oAuthToken.accessToken"];
                                      [storage setKeychainWithValue:oAuthToken.refreshToken withKey:@"oAuthToken.refreshToken"];
+                                     [storage setKeychainWithValue:oAuthToken.tokenType withKey:@"oAuthToken.tokenType"];
                                      
                                      successCallback(login);
                                  }
@@ -317,6 +322,7 @@
                                                  } else {
                                                      CreatePasswordUserProfile *userProfile = [CreatePasswordUserProfile new];
                                                      userProfile.provider = @"4";
+                                                     userProfile.providerName = @"Yahoo";
                                                      userProfile.email = accountInfo.email;
                                                      userProfile.name = accountInfo.name;
                                                      
@@ -356,5 +362,39 @@
                              }];
 }
 
+- (void)storeCredentialToKeychain:(Login *)login {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
+    [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+    
+    
+    if(login.result.user_image != nil) {
+        [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+    }
+    
+    [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+    [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+    
+    if(login.result.shop_avatar != nil) {
+        [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+    }
+    
+    [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+    [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+    [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+    [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+    [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
+    
+    if(login.result.user_reputation != nil) {
+        ReputationDetail *reputation = login.result.user_reputation;
+        [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+        [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+        [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+        [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+        [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+        [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
+    }
+}
 
 @end

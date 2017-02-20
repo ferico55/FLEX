@@ -39,6 +39,7 @@
 #import "UIAlertView+BlocksKit.h"
 
 #import "SendMessageViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface SalesNewOrderViewController ()
 <
@@ -432,9 +433,6 @@
         [wself refreshOrderList];
     };
     
-    
-    controller.showAskBuyer = _showAskBuyer;
-
     [self.navigationController pushViewController:controller animated:YES];
 }
 

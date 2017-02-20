@@ -9,7 +9,6 @@
 #import "string_order.h"
 
 #import "ActionOrder.h"
-
 #import "DetailShipmentStatusViewController.h"
 #import "DetailShipmentStatusCell.h"
 #import "OrderDetailViewController.h"
@@ -42,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UIButton *changeReceiptButton;
 @property (weak, nonatomic) IBOutlet UIView *receiptNumberView;
+@property (weak, nonatomic) IBOutlet UIView *retryView;
 
 @end
 
@@ -103,7 +103,9 @@
         _changeReceiptButton.hidden = YES;
     }
     
+    
     _history = _order.order_history;
+    [self hideRetry];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -132,6 +134,14 @@
             OrderDetailViewController *controller = [OrderDetailViewController new];
             controller.transaction = _order;
             controller.delegate = self;
+            controller.onSuccessRetry = ^ (BOOL isSuccess) {
+                if (isSuccess) {
+                    [self hideRetry];
+                    if (_onSuccessRetry) {
+                        _onSuccessRetry(isSuccess);
+                    }
+                }
+            };
             [self.navigationController pushViewController:controller animated:YES];
 
         } else if (button.tag == 2) {
@@ -202,10 +212,10 @@
     
     [cell setColorThemeForActionBy:history.history_action_by];
     
-    if (indexPath.row == (_history.count-1)) {
-        [cell hideLine];
-    }
+    BOOL isLastRow = (indexPath.row == (_order.order_history.count-1));
+    cell.lineHidden = isLastRow;
     
+    cell.backgroundColor = cell.contentView.backgroundColor;
     return cell;
 }
 
@@ -296,4 +306,60 @@
 {
     [UIPasteboard generalPasteboard].string = labelReceiptNumber.text;    
 }
+
+- (IBAction)actionRetryPickup:(id)sender {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Konfirmasi Retry Pickup" message:@"Lakukan Retry Pickup?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [RetryPickupRequest retryPickupOrderWithOrderId:_order.order_detail.detail_order_id onSuccess:^(V4Response<GeneralActionResult *> * _Nonnull data) {
+            [self didReceiveResult:data];
+        } onFailure:^{
+            
+        }];
+    }];
+    
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alertController addAction:actionCancel];
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
+-(void) hideRetry {
+    if (_order.order_shipping_retry != 1) {
+        _retryView.hidden = YES;
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    } else {
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, _retryView.frame.size.height, 0);
+    }
+}
+
+- (void) popUpMessagesClose:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertController;
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Tutup" style:UIAlertActionStyleCancel handler:nil];
+    alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:actionOk];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
+- (void)didReceiveResult:(V4Response<GeneralActionResult*> *)result {
+    if ([result.data.is_success isEqualToString:@"1"]) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status delegate:self];
+        [alert show];
+        _order.order_shipping_retry = 0;
+        [self hideRetry];
+        
+    } else {
+        NSString *title = result.message_error[0];
+        NSString *message = result.message_error[1];
+        [self popUpMessagesClose:title message:message];
+    }
+    if (_onSuccessRetry) {
+        _onSuccessRetry([result.data.is_success boolValue]);
+    }
+}
+
 @end

@@ -27,7 +27,7 @@
     [super newWithComponent:
      [CKInsetComponent
       newWithView:{}
-      insets:{5,15,5,15}
+      insets:{5,10,5,10}
       component:
           [CKStackLayoutComponent
            newWithView:{}

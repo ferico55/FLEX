@@ -74,10 +74,24 @@
     }];
 }
 
--(void)showEditResiButtonOnTap:(void (^)(OrderTransaction *))onTap{
-    [_buttonsView addChangeResiButton:^{
+- (void)showAskBuyerButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addAskBuyerButton:^{
         onTap(_order);
     }];
+}
+
+-(void)showRetryButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addRetryButton:^{
+        onTap(_order);
+    }];
+}
+
+-(void)showEditResiButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    if (_order.order_is_pickup == 0){
+        [_buttonsView addChangeResiButton:^{
+            onTap(_order);
+        }];
+    }
 }
 
 - (void)showAllButton
@@ -113,7 +127,7 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
+        UIButton *button = (UIButton *)sender; 
         if (button.tag == 1) {
             [self.delegate didTapTrackButton:button indexPath:_indexPath];
         } else if (button.tag == 2) {

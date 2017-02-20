@@ -26,7 +26,6 @@
 #import "SmileyAndMedal.h"
 #import "ShopBadgeLevel.h"
 #import "ShopReviewPageViewController.h"
-#import "ShopContainerViewController.h"
 #import "string_inbox_message.h"
 #import "string_inbox_review.h"
 #import "String_Reputation.h"
@@ -39,6 +38,7 @@
 #import "NavigationHelper.h"
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
+#import "Tokopedia-Swift.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -379,10 +379,10 @@
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
         
-        ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
+        ShopViewController *shopViewController = [ShopViewController new];
+        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
                                              kTKPD_AUTHKEY:auth?:@{}};
-        [self.navigationController pushViewController:shopContainerViewController animated:YES];
+        [self.navigationController pushViewController:shopViewController animated:YES];
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
@@ -758,10 +758,10 @@
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
         
-        ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
+        ShopViewController *shopViewController = [ShopViewController new];
+        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
                                              kTKPD_AUTHKEY:auth?:@{}};
-        [self.navigationController pushViewController:shopContainerViewController animated:YES];
+        [self.navigationController pushViewController:shopViewController animated:YES];
     }
     else {
         UserContainerViewController *container = [UserContainerViewController new];
@@ -858,19 +858,6 @@
                                                                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessSentComment] delegate:self];
                                                                        [stickyAlertView show];
                                                                        
-                                                                       //Reload data in DetailMyReviewReputationViewController
-                                                                       UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                                                                       if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
-                                                                           viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
-                                                                           if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
-                                                                               [((ShopReviewPageViewController *) viewController) reloadTable];
-                                                                           }
-                                                                       }
-                                                                       else if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-                                                                           [((ProductReputationViewController *) viewController) reloadTable];
-                                                                       }
-                                                                       
-                                                                       
                                                                        //Update Header
                                                                        NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
                                                                        if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
@@ -921,18 +908,6 @@
                                                                        
                                                                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemoveMessage] delegate:self];
                                                                        [stickyAlertView show];
-                                                                       
-                                                                       //Reload data in DetailMyReviewReputationViewController
-                                                                       UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                                                                       if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
-                                                                           viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
-                                                                           if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
-                                                                               [((ShopReviewPageViewController *) viewController) reloadTable];
-                                                                           }
-                                                                       }
-                                                                       else if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-                                                                           [((ProductReputationViewController *) viewController) reloadTable];
-                                                                       }
                                                                        
                                                                        
                                                                        //Update Header

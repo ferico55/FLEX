@@ -158,7 +158,7 @@
 -(void)navigateToPhotoPicker{
     __weak typeof(self) wself = self;
     [TKPImagePickerController showImagePicker:self
-                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                                 assetType:DKImagePickerControllerAssetTypeAllPhotos
                        allowMultipleSelect:YES
                                 showCancel:YES
                                 showCamera:YES
@@ -182,13 +182,15 @@
     
     [_selectedImages enumerateObjectsUsingBlock:^(DKAsset *asset, NSUInteger index, BOOL *stop) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setImage:asset.thumbnailImage forState:UIControlStateNormal];
-        
-        button.imageView.contentMode = UIViewContentModeScaleAspectFill;
         
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@90);
             make.width.equalTo(@90);
+        }];
+        
+        [asset fetchFullScreenImageWithCompleteBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            [button setImage:image forState:UIControlStateNormal];
+            button.imageView.contentMode = UIViewContentModeScaleAspectFill;
         }];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeSystem];

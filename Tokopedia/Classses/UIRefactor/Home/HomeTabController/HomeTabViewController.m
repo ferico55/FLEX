@@ -403,29 +403,6 @@
     [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
-- (void)redirectAfterNotification:(NSNotification *)userInfo
-{
-    NSDictionary *userDict = userInfo.userInfo;
-    NSInteger code = [[userDict objectForKey:@"state"] integerValue];
-    
-    if (code == STATE_NEW_MESSAGE) {
-        [self goToInboxMessage];
-    } else if (code == STATE_NEW_TALK) {
-        [self goToInboxTalk];
-    } else if (code == STATE_NEW_ORDER) {
-        [self goToNewOrder];
-    } else if (code == STATE_NEW_REPSYS ||
-               code == STATE_EDIT_REPSYS ||
-               code == STATE_NEW_REVIEW ||
-               code == STATE_EDIT_REVIEW ||
-               code == STATE_REPLY_REVIEW) {
-        [self goToInboxReview];
-    } else if (code == STATE_NEW_RESOLUTION||
-              code == STATE_EDIT_RESOLUTION) {
-        [self goToResolutionCenter];
-    }
-}
-
 - (void)goToInboxMessage {
     [_navigate navigateToInboxMessageFromViewController:self];
 }
@@ -478,13 +455,11 @@
 
 #pragma mark - Search Controller Delegate
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    
+    [self setSearchControllerHidden:NO];
 }
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        searchController.searchResultsController.view.hidden = NO;
-    });
+    [self setSearchControllerHidden:NO];
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -515,6 +490,13 @@
     } else {
         _viewControllers = @[_homePageController, _promoViewController];
     }
+}
+
+-(void) setSearchControllerHidden:(BOOL) hidden {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        weakSelf.searchController.searchResultsController.view.hidden = hidden;
+    });
 }
 
 @end

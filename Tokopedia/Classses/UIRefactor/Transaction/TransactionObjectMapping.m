@@ -305,52 +305,6 @@
     return shipmentspackageMapping;
 }
 
-#pragma mark - CC
--(RKObjectMapping *)transactionCCDataMapping
-{
-    RKObjectMapping *ccDataMapping = [RKObjectMapping mappingForClass:[CCData class]];
-    [ccDataMapping addAttributeMappingsFromArray:@[@"city",
-                                                   @"postal_code",
-                                                   @"address",
-                                                   @"phone",
-                                                   @"state",
-                                                   @"last_name",
-                                                   @"first_name"]];
-    return ccDataMapping;
-}
-
--(RKObjectMapping *)veritransDataMapping
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Veritrans class]];
-    [mapping addAttributeMappingsFromArray:@[@"token_url",
-                                             @"client_key"]];
-    return mapping;
-}
-
--(RKObjectMapping *)dataCreditMapping
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[DataCredit class]];
-    [mapping addAttributeMappingsFromArray:@[@"user_email",
-                                             @"payment_id",
-                                             @"cc_agent",
-                                             @"cc_type",
-                                             @"cc_card_bank_type"]];
-    return mapping;
-}
-
--(RKObjectMapping *)ccFeeMapping
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CCFee class]];
-    [mapping addAttributeMappingsFromArray:@[@"charge",
-                                             @"charge_idr",
-                                             @"total_idr",
-                                             @"total",
-                                             @"charge_25"
-                                             ]
-     ];
-    return mapping;
-}
-
 -(RKObjectMapping *)indomaretMapping
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[IndomaretData class]];

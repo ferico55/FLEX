@@ -12,9 +12,9 @@ class PulsaRelationCategory: NSObject {
     var data : PulsaRelationData = PulsaRelationData()
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaRelationData.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: PulsaRelationData.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -26,12 +26,12 @@ class PulsaRelationCategory: NSObject {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let data = aDecoder.decodeObjectForKey("data") as? PulsaRelationData {
+        if let data = aDecoder.decodeObject(forKey:"data") as? PulsaRelationData {
             self.data = data
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(data, forKey: "data")
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(data as Any?, forKey: "data")
     }
 }

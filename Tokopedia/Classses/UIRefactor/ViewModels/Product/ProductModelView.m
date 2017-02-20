@@ -18,4 +18,8 @@
     return [_productShop kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*)singleGridImageUrl {
+    return self.productLargeUrl ?: self.productThumbUrl;
+}
+
 @end

@@ -1,30 +1,81 @@
-RMDateSelectionViewController ![Build Status](https://travis-ci.org/CooperRS/RMDateSelectionViewController.svg?branch=master)
+RMDateSelectionViewController [![Build Status](https://travis-ci.org/CooperRS/RMDateSelectionViewController.svg?branch=master)](https://travis-ci.org/CooperRS/RMDateSelectionViewController/) [![Pod Version](https://img.shields.io/cocoapods/v/RMDateSelectionViewController.svg)](https://cocoapods.org/pods/RMDateSelectionViewController) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 =============================
 
-This is an iOS control for selecting a date using UIDatePicker in a UIActionSheet like fashion
+This framework allows you to select a date by presenting an action sheet. In addition, it allows you to add actions arround the presented date picker which behave like a button and can be tapped by the user. The result looks very much like an UIActionSheet or UIAlertController with a UIDatePicker and some UIActions attached.
+
+Besides being a fully-usable project, RMDateSelectionViewController also is an example for an use case of [RMActionController](https://github.com/CooperRS/RMActionController). You can use it to learn how to present a date picker other than UIDatePicker.
 
 ## Screenshots
+
 ### Portrait
-![Portrait](http://cooperrs.github.io/RMDateSelectionViewController/Images/Blur-Screen-Portrait.png)
+
+| White | Black |
+|:-----:|:-----:|
+|![Portrait](http://cooperrs.github.io/RMDateSelectionViewController/Images/Blur-Screen-Portrait.png)|![Colors](http://cooperrs.github.io/RMDateSelectionViewController/Images/Blur-Screen-Portrait-Black.png)|
 
 ### Landscape
 ![Landscape](http://cooperrs.github.com/RMDateSelectionViewController/Images/Blur-Screen-Landscape.png)
 
-### Black version
-![Colors](http://cooperrs.github.io/RMDateSelectionViewController/Images/Blur-Screen-Portrait-Black.png)
-
 ## Demo Project
-If you want to run the demo project you first need to run `pod install` to install the dependencies of RMDateSelectionViewController.
+If you want to run the demo project do not forget to initialize submodules.
 
 ## Installation (CocoaPods)
 ```ruby
 platform :ios, '8.0'
-pod "RMDateSelectionViewController", "~> 2.1.0"
+pod "RMDateSelectionViewController", "~> 2.2.1"
 ```
 
 ## Usage
 
-See the [Wiki Pages](https://github.com/CooperRS/RMDateSelectionViewController/wiki) on how to use RMDateSelectionViewController. Also take a look at [Migration](https://github.com/CooperRS/RMDateSelectionViewController/wiki/Migration) on how to migrate to the latest version of RMDateSelectionViewController.
+For a detailed description on how to use RMDateSelectionViewController take a look at the [Wiki Pages](https://github.com/CooperRS/RMDateSelectionViewController/wiki). The following four steps are a very short intro:
+
+* Import RMDateSelectionViewController:
+
+```objc
+#import <RMDateSelectionViewController/RMDateSelectionViewController.h>
+```
+
+* Create select and cancel actions:
+
+```objc
+RMAction<UIDatePicker *> *selectAction = [RMAction<UIDatePicker *> actionWithTitle:@"Select" style:RMActionStyleDone andHandler:^(RMActionController<UIDatePicker *> *controller) {
+    NSLog(@"Successfully selected date: %@", controller.contentView.date);
+}];
+
+RMAction<UIDatePicker *> *cancelAction = [RMAction<UIDatePicker *> actionWithTitle:@"Cancel" style:RMActionStyleCancel andHandler:^(RMActionController<UIDatePicker *> *controller) {
+    NSLog(@"Date selection was canceled");
+}];
+```
+
+* Create and instance of RMDateSelectionViewController and present it:
+
+```objc
+RMDateSelectionViewController *dateSelectionController = [RMDateSelectionViewController actionControllerWithStyle:RMActionControllerStyleWhite title:@"Test" message:@"This is a test message.\nPlease choose a date and press 'Select' or 'Cancel'." selectAction:selectAction andCancelAction:cancelAction];
+
+[self presentViewController:dateSelectionController animated:YES completion:nil];
+```
+
+* The following code block shows you a complete method:
+
+```objc
+- (IBAction)openDateSelectionController:(id)sender {
+    RMAction<UIDatePicker *> *selectAction = [RMAction<UIDatePicker *> actionWithTitle:@"Select" style:RMActionStyleDone andHandler:^(RMActionController<UIDatePicker *> *controller) {
+        NSLog(@"Successfully selected date: %@", controller.contentView.date);
+    }];
+    
+    RMAction<UIDatePicker *> *cancelAction = [RMAction<UIDatePicker *> actionWithTitle:@"Cancel" style:RMActionStyleCancel andHandler:^(RMActionController<UIDatePicker *> *controller) {
+        NSLog(@"Date selection was canceled");
+    }];
+    
+    RMDateSelectionViewController *dateSelectionController = [RMDateSelectionViewController actionControllerWithStyle:RMActionControllerStyleWhite title:@"Test" message:@"This is a test message.\nPlease choose a date and press 'Select' or 'Cancel'." selectAction:selectAction andCancelAction:cancelAction];
+    
+    [self presentViewController:dateSelectionController animated:YES completion:nil];
+}
+```
+
+## Migration
+
+See [Migration](https://github.com/CooperRS/RMDateSelectionViewController/wiki/Migration) on how to migrate to the latest version of RMDateSelectionViewController.
 
 ## Documentation
 There is an additional documentation available provided by the CocoaPods team. Take a look at [cocoadocs.org](http://cocoadocs.org/docsets/RMDateSelectionViewController/).
@@ -82,7 +133,9 @@ Localizations:
 I want to thank everyone who has contributed code and/or time to this project!
 
 ## License (MIT License)
-Copyright (c) 2013-2015 Roland Moers
+
+```
+Copyright (c) 2013-2016 Roland Moers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -101,3 +154,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+```

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@interface HMScrollView : UIScrollView
+@end
+
 @class HMSegmentedControl;
 
 typedef void (^IndexChangeBlock)(NSInteger index);
@@ -54,6 +57,7 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlType) {
 @property (nonatomic, strong) NSArray *sectionTitles;
 @property (nonatomic, strong) NSArray *sectionImages;
 @property (nonatomic, strong) NSArray *sectionSelectedImages;
+@property (nonatomic, strong) UIImage *redDotImage;
 
 /**
  Provide a block to be executed when selected index is changed.
@@ -89,11 +93,18 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlType) {
 @property (nonatomic, strong) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
 
 /**
- Color for the selection indicator stripe/box
+ Color for the selection indicator stripe
  
  Default is `R:52, G:181, B:229`
  */
 @property (nonatomic, strong) UIColor *selectionIndicatorColor UI_APPEARANCE_SELECTOR;
+
+/**
+ Color for the selection indicator box
+ 
+ Default is selectionIndicatorColor
+ */
+@property (nonatomic, strong) UIColor *selectionIndicatorBoxColor UI_APPEARANCE_SELECTOR;
 
 /**
  Color for the vertical divider between segments.
@@ -227,5 +238,6 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlType) {
 - (void)setSelectedSegmentIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)setIndexChangeBlock:(IndexChangeBlock)indexChangeBlock;
 - (void)setTitleFormatter:(HMTitleFormatterBlock)titleFormatter;
+- (void)showRedDotAtIndex:(NSInteger)index;
 
 @end

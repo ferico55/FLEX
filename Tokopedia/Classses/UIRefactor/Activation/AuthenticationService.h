@@ -20,8 +20,6 @@
 @property (nonatomic, copy) void (^loginSuccessBlock)(LoginResult* loginResult);
 + (instancetype)sharedService;
 
-- (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback;
-
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
                                       oAuthToken:(OAuthToken *)oAuthToken
                          onAuthenticationSuccess:(void (^)(Login *))successCallback
@@ -57,5 +55,7 @@
              failureCallback:(void (^)(NSError *))failureCallback;
 
 - (void)getThirdPartySignInOptionsOnSuccess:(void (^)(NSArray <SignInProvider*> *))successCallback;
+
+- (void)storeCredentialToKeychain:(Login *)login;
 
 @end

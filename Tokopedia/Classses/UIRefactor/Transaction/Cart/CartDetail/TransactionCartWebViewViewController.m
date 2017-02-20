@@ -13,7 +13,6 @@
 #import "RequestCart.h"
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
-#import "RequestCart.h"
 #import "TransactionActionResult.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>
@@ -29,17 +28,15 @@
 
 @implementation TransactionCartWebViewViewController
 
-+(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName {
++(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data {
     
     TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
     controller.toppayQueryString = data.query_string;
     controller.URLString = data.redirect_url;
     controller.toppayParam = data.parameter;
-    controller.gateway = @(gatewayID);
     controller.delegate = vc;
     controller.callbackURL = data.callback_url;
-    controller.title = gatewayName?:@"Pembayaran";
-    controller.gatewayCode = data.parameter[@"gateway_code"];
+    controller.title = @"Pembayaran";
     
     [vc.navigationController pushViewController:controller animated:YES];
 }

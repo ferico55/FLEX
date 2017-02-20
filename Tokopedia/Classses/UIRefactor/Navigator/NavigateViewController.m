@@ -7,11 +7,10 @@
 //
 
 #import "NavigateViewController.h"
-
+#import "ShopProductPageList.h"
 #import "UserAuthentificationManager.h"
 
 #import "WebViewInvoiceViewController.h"
-#import "ShopContainerViewController.h"
 #import "string_more.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "UserContainerViewController.h"
@@ -70,20 +69,20 @@
     NSString* deviceTime = invoiceDictionary [@"device_time"]?:@"";
     NSString *userID = [auth getUserId];
     
-    NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/v4/invoice.pl?id=%@&user_id=%@&tkpd=0&recharge=0&device_time=%@&device_id=%@&os_type=2&pdf=%@",
+    NSString* invoiceURLforWS = [NSString stringWithFormat:@"%@/v4/invoice.pl?device_id=%@&device_time=%@&id=%@&os_type=2&pdf=%@&recharge=0&tkpd=0&user_id=%@",
                                  [NSString v4Url],
-                                 invoiceID,
-                                 userID,
-                                 deviceTime,
                                  deviceID,
-                                 invoicePDF];
+                                 deviceTime,
+                                 invoiceID,
+                                 invoicePDF,
+                                 userID];
     
     VC.urlAddress = invoiceURLforWS?:@"";
     [viewController.navigationController pushViewController:VC animated:YES];}
 
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
@@ -91,7 +90,7 @@
 
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
@@ -194,6 +193,81 @@
     productController.data = @{@"product_id" : productId?:@""};
     productController.hidesBottomBarWhenPushed = YES;
     
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName{
+    NSDictionary *loadedData;
+    DetailProductViewController *productController = [DetailProductViewController new];
+    if([objProduct isKindOfClass:[ProductDetail class]]) {
+        ProductDetail *product = (ProductDetail *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_url?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : shopName?:@"",
+                       @"pre_order"       : @(product.product_preorder.process_day>0?YES:NO)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }
+
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct{
+    NSDictionary *loadedData;
+    DetailProductViewController *productController = [DetailProductViewController new];
+    
+    if([objProduct isKindOfClass:[SearchAWSProduct class]]) {
+        SearchAWSProduct *product = (SearchAWSProduct *) objProduct;
+        loadedData = @{@"product_id"        : product.product_id?:@"",
+                         @"product_name"    : product.product_name?:@"",
+                         @"product_image"   : product.product_url?:@"",
+                         @"product_price"   : product.product_price?:@"",
+                         @"shop_name"       : product.shop_name?:@"",
+                         @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[HistoryProductList class]]) {
+        HistoryProductList *product = (HistoryProductList *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[List class]]) {
+        List *product = (List *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }else if([objProduct isKindOfClass:[MyWishlistData class]]) {
+        MyWishlistData *product = (MyWishlistData *) objProduct;
+        loadedData = @{@"product_id"      : product.id?:@"",
+                       @"product_name"    : product.name?:@"",
+                       @"product_image"   : product.image?:@"",
+                       @"product_price"   : [product.price stringValue]?:@"",
+                       @"shop_name"       : product.shop.name?:@"",
+                       @"pre_order"       : @(product.preorder)};
+        productController.data = @{@"product_id" : product.id?:@""};
+    }else if([objProduct isKindOfClass:[ShopProductPageList class]]) {
+        ShopProductPageList *product = (ShopProductPageList *) objProduct;
+        loadedData = @{@"product_id"      : product.product_id?:@"",
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_image?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : product.product_id?:@""};
+    }
+    
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
@@ -337,8 +411,22 @@
     }
 }
 
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController atIndex:(int)index
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxResolSplitViewController *controller = [[InboxResolSplitViewController alloc] initWithSelectedIndex:index];
+        controller.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxResolutionCenterTabViewController *controller = [[InboxResolutionCenterTabViewController alloc] initWithSelectedIndex:index];
+        controller.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    ShopViewController *container = [[ShopViewController alloc] init];
 
     container.data = @{
                        @"shop_domain" : shopName
@@ -385,6 +473,7 @@
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
+        vc.isFromDirectory = YES;
         vc.delegate = viewController;
         NSMutableDictionary *datas = [NSMutableDictionary new];
         [datas addEntriesFromDictionary:data];
@@ -592,9 +681,14 @@
     [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 
++ (NSString *)contactUsURL {
+    NSString *appVersion = [UIApplication getAppVersionStringWithoutDot];
+    return [NSString stringWithFormat:@"%@/contact-us?flag_app=1&utm_source=ios&app_version=%@", [NSString tokopediaUrl], appVersion];
+}
+
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *contactUsURL = @"https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios";
+    NSString *contactUsURL = [self contactUsURL];
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
     controller.title = @"Tokopedia Contact";
     [viewController.navigationController pushViewController:controller animated:YES];
@@ -602,12 +696,10 @@
 
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/";
+    NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/?utm_source=ios";
     
-    WebViewController *controller = [WebViewController new];
-    controller.strURL = [auth webViewUrlFromUrl:pulsaURL];
-    controller.shouldAuthorizeRequest = YES;
-    controller.strTitle = @"Top Up Saldo";
+    WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:pulsaURL] shouldAuthorizeRequest:YES];
+    controller.title = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];
 }

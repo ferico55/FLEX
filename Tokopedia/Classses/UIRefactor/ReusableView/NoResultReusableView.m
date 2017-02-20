@@ -24,7 +24,7 @@
         [[NSBundle mainBundle] loadNibNamed:@"NoResultReusableView"
                                       owner:self
                                     options:nil];
-        [self.view setFrame:CGRectMake(0, 0, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, frame.size.height?:[[UIScreen mainScreen]bounds].size.height)];
+        [self.view setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, frame.size.height?:[[UIScreen mainScreen]bounds].size.height)];
         [self addSubview:self.view];
         
 //        UIDevice *device = [UIDevice currentDevice];					//Get the device object
@@ -88,13 +88,11 @@
 }
 
 -(void)setNoResultTitle:(NSString *)title{
-    CGFloat titleSize = NO_RESULT_TITLE_SIZE;
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 7.0;
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont mediumSystemFontOfSize:titleSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -103,13 +101,11 @@
 }
 
 -(void)setNoResultDesc:(NSString *)desc{
-    CGFloat descSize = NO_RESULT_DESC_SIZE;
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont systemFontOfSize:descSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     

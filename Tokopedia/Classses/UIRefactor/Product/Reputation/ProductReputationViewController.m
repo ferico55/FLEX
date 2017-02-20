@@ -229,13 +229,15 @@ static NSInteger userViewHeight = 70;
     width1 = width1>width5? width1: width5;
     constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = width1;
     
-    float productRatingValue = [reviewResult.advance_review.product_rating_point floatValue];
+    NSString *productRating = (tag == 0) ? reviewResult.advance_review.product_rating_point : reviewResult.advance_review.product_rate_accuracy_point;
+    
+    float productRatingValue = [productRating floatValue];
     
     //Set header rate
     for(int i=0;i<arrImageHeaderRating.count;i++) {
         NSString *imageName = @"";
         
-        if (i < ceilf(productRatingValue)) {
+        if (i < roundf(productRatingValue)) {
             imageName = @"icon_star_active";
         } else {
             imageName = @"icon_star";
@@ -245,8 +247,7 @@ static NSInteger userViewHeight = 70;
         tempImageView.image = [UIImage imageNamed:imageName];
     }
     
-    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [reviewResult.advance_review.product_rating_point floatValue]];
-    
+    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", productRatingValue];
     
     NSString *strReview = @"Review";
     lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [reviewResult.advance_review.product_review intValue]];

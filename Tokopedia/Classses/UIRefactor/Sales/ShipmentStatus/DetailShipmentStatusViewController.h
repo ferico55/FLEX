@@ -26,5 +26,6 @@
 @property (strong, nonatomic) OrderTransaction *order;
 @property (strong, nonatomic) NSString *is_allow_manage_tx;
 @property (weak, nonatomic) id<DetailShipmentStatusDelegate> delegate;
+@property (copy) void(^onSuccessRetry)(BOOL isSuccess);
 
 @end

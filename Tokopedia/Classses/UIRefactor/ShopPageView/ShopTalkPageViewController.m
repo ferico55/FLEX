@@ -27,20 +27,18 @@
 #import "TalkCell.h"
 #import "ShopPageRequest.h"
 #import "ProductTalkDetailViewController.h"
-#import "ShopTabView.h"
+
+#import "Tokopedia-Swift.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 UIScrollViewDelegate,
 TalkCellDelegate,
-ShopPageHeaderDelegate,
 UIAlertViewDelegate,
-NoResultDelegate>
+NoResultDelegate,
+ShopTabChild>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UIView *stickyTab;
-@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *userinfo;
@@ -110,7 +108,7 @@ NoResultDelegate>
     return self;
 }
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai diskusi produk"
@@ -119,11 +117,6 @@ NoResultDelegate>
 }
 
 - (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTalkHeaderPosition:)
-                                                 name:@"updateHeaderPosition"
-                                               object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTotalComment:)
                                                  name:@"UpdateTotalComment" object:nil];
@@ -164,18 +157,13 @@ NoResultDelegate>
     _table.delegate = self;
     _table.dataSource = self;
     
-    _shopPageHeader = [[ShopPageHeader alloc] initWithSelectedTab:ShopPageTabDiscussion];
-    _shopPageHeader.data = _data;
-    _shopPageHeader.delegate = self;
-    _shopPageHeader.onTabSelected = self.onTabSelected;
-    _shopPageHeader.showHomeTab = self.showHomeTab;
-    _header = _shopPageHeader.view;
-    
     _shopPageRequest = [[ShopPageRequest alloc]init];
     
-    _stickyTab = [(UIView *)_header viewWithTag:18];
-    
     _table.tableFooterView = _footer;
+    
+    // hack to fix y offset
+    UIView *dummy = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    _table.tableHeaderView = dummy;
     
     [_refreshControl addTarget:self
                         action:@selector(refreshView:)
@@ -191,41 +179,9 @@ NoResultDelegate>
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
     
-    [_refreshControl endRefreshing];
     [self initNotification];
     [self requestTalk];
-    
-    ShopTabView *shopTabView = [[ShopTabView alloc] initWithTab:ShopPageTabDiscussion];
-    shopTabView.showHomeTab = self.showHomeTab;
-    [self.view addSubview:shopTabView];
-    
-    shopTabView.onTabSelected = self.onTabSelected;
-    
-    [shopTabView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@40);
-    }];
-    
-    _fakeStickyTab = shopTabView;
-    _fakeStickyTab.hidden = YES;
-    
-    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
-    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
-    [_fakeStickyTab.layer setShadowRadius:1];
-    [_fakeStickyTab.layer setShadowOpacity:0.3];
 }
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    _table.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 0, 0);
-    
-    _header.frame = CGRectMake(0, -_header.frame.size.height, self.view.bounds.size.width, _header.frame.size.height);
-    
-    [_header layoutIfNeeded];
-    [_table addSubview:_header];
-}
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -284,6 +240,7 @@ NoResultDelegate>
 
 -(void)requestTalk{
     [_noResultView removeFromSuperview];
+    
     [_shopPageRequest requestForShopTalkPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                          page:_page
                                                   shop_domain:[_data objectForKey:@"shop_domain"]?:@""
@@ -320,11 +277,9 @@ NoResultDelegate>
                                                         [_table reloadData];
                                                         if (_list.count == 0) {
                                                             _act.hidden = YES;
-                                                            _table.tableFooterView = _noResultView;
+                                                            [self.view addSubview:_noResultView];
                                                         }
                                                         [_refreshControl endRefreshing];
-                                                        [_refreshControl setHidden:YES];
-                                                        [_refreshControl setEnabled:NO];
                                                     } onFailure:^(NSError *error) {
                                                         [_act stopAnimating];
                                                         self.table.tableFooterView = nil;
@@ -332,8 +287,6 @@ NoResultDelegate>
                                                         [alert show];
                                                         
                                                         [_refreshControl endRefreshing];
-                                                        [_refreshControl setHidden:YES];
-                                                        [_refreshControl setEnabled:NO];
                                                     }];
 }
 
@@ -351,6 +304,10 @@ NoResultDelegate>
     [_table reloadData];
     /** request data **/
     [self requestTalk];
+}
+
+- (void)refreshContent {
+    [self refreshView:nil];
 }
 
 #pragma mark - Notification Handler
@@ -375,42 +332,10 @@ NoResultDelegate>
     [_table reloadData];
 }
 
-- (void)updateTalkHeaderPosition:(NSNotification *)notification
-{
-    if (notification.object != self) {
-        id userinfo = notification.userInfo;
-        float ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-        
-        CGPoint cgpoint = CGPointMake(0, ypos);
-        
-        _table.contentOffset = cgpoint;
-    }
-}
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-}
-
-#pragma mark - Scroll view delegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > -_fakeStickyTab.frame.size.height;
-    
-    if(isFakeStickyVisible) {
-        _fakeStickyTab.hidden = NO;
-    } else {
-        _fakeStickyTab.hidden = YES;
-    }
-    
-    [self determineOtherScrollView:scrollView];
-}
-
-- (void)determineOtherScrollView:(UIScrollView *)scrollView {
-    NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeaderPosition" object:self userInfo:userInfo];
 }
 
 #pragma mark - Shop Header Delegate

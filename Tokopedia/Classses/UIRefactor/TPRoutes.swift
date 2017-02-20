@@ -14,8 +14,12 @@ class TPRoutes: NSObject {
     static func configureRoutes() {
         let navigator = NavigateViewController()
         
+        JLRoutes.global().unmatchedURLHandler = { (route, url, dictionary) in
+            self.openWebView(url!)
+        }
+        
         //create shop
-        JLRoutes.globalRoutes().addRoute("/buka-toko-online-gratis") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/buka-toko-online-gratis") { (params: [String : Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
             if(userManager.isLogin && userManager.getShopId() == "0") {
                 let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
@@ -26,196 +30,196 @@ class TPRoutes: NSObject {
         }
         
         //contact us
-        JLRoutes.globalRoutes().addRoute("/contact-us.pl") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/contact-us.pl") { (params: [String : Any]!) -> Bool in
             redirectContactUs()
 
             return true
         }
         
-        JLRoutes.globalRoutes().addRoute("/contact-us") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/contact-us") { (params: [String : Any]!) -> Bool in
             redirectContactUs()
             
             return true
         }
         
         //promo
-        JLRoutes.globalRoutes().addRoute("/promo") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/promo") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://www.tokopedia.com/promo" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //gold merchant
-        JLRoutes.globalRoutes().addRoute("/gold") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/gold") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://gold.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //events
-        JLRoutes.globalRoutes().addRoute("/events") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/events") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://events.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //halaman kota
-        JLRoutes.globalRoutes().addRoute("/kota") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/kota") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://kota.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //tech
-        JLRoutes.globalRoutes().addRoute("/tech") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/tech") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "http://tech.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //seller
-        JLRoutes.globalRoutes().addRoute("/seller-center") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/seller-center") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://seller.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //promo category
-        JLRoutes.globalRoutes().addRoute("/promo/category/:categoryName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/promo/category/:categoryName") { (params: [String : Any]!) -> Bool in
             let categoryName = params["categoryName"] as! String
-            let utmString = getUTMString(params)
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://www.tokopedia.com/promo/category/" + categoryName + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //hotlist
-        JLRoutes.globalRoutes().addRoute("/hot") { (params: [String : AnyObject]!) -> Bool in
-            NSNotificationCenter.defaultCenter().postNotificationName("redirectToHotlist", object: nil, userInfo: nil)
-            
+        JLRoutes.global().addRoute("/hot") { (params: [String : Any]!) -> Bool in
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "redirectToHotlist"), object: nil)
             return true
         }
         
         //blog marketplace
-        JLRoutes.globalRoutes().addRoute("/blog") { (params: [String : AnyObject]!) -> Bool in
-            let utmString = getUTMString(params)
+        JLRoutes.global().addRoute("/blog") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://blog.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             return true
         }
         
         //blog marketplace category
-        JLRoutes.globalRoutes().addRoute("/blog/category/:categoryName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/blog/category/:categoryName") { (params: [String : Any]!) -> Bool in
             let categoryName = params["categoryName"] as! String
-            let utmString = getUTMString(params)
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://blog.tokopedia.com/category/" + categoryName + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //blog marketplace article
-        JLRoutes.globalRoutes().addRoute("/blog/:year/:month/:title") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/blog/:year/:month/:title") { (params: [String : Any
+            ]!) -> Bool in
             let year = params["year"] as! String
             let month = params["month"] as! String
             let title = params["title"] as! String
-            let utmString = getUTMString(params)
+            let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://blog.tokopedia.com/" + year + "/" + month + "/" + title + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //bantuan
-        JLRoutes.globalRoutes().addRoute("/bantuan/*") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/bantuan/*") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
-            openWebView(url)
+            openWebView(url as URL)
             
             return true
         }
         
         //Tokopedia Tiket
-        JLRoutes.globalRoutes().addRoutes(["/kereta-api", "/tiket/kereta-api"]) { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().add(["/kereta-api", "/tiket/kereta-api"]) { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/kereta-api" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
 
         //Tokopedia
-        JLRoutes.globalRoutes().addRoute("/tiket/travel") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/tiket/travel") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/travel" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //tiket KAI - blog article
-        JLRoutes.globalRoutes().addRoute("/tiket/travel/:articleName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/tiket/travel/:articleName") { (params: [String : Any]!) -> Bool in
             let articleName = params["articleName"] as! String
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/travel/" + articleName + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //pulsa
-        JLRoutes.globalRoutes().addRoute("/pulsa") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/pulsa") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //pulsa blog
-        JLRoutes.globalRoutes().addRoute("/pulsa/blog") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/pulsa/blog") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com/blog" + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //pulsa blog article
-        JLRoutes.globalRoutes().addRoute("/pulsa/blog/:articleName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/pulsa/blog/:articleName") { (params: [String : Any]!) -> Bool in
             let articleName = params["articleName"] as! String
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com/blog/" + articleName + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //pulsa to specific page
-        JLRoutes.globalRoutes().addRoute("/pulsa/:pulsaProduct") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/pulsa/:pulsaProduct") { (params: [String : Any]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com/" + pulsaProduct + utmString
-            openWebView(NSURL(string: urlString)!)
+            openWebView(NSURL(string: urlString)! as URL)
             
             return true
         }
         
         //hot page
-        JLRoutes.globalRoutes().addRoute("/hot/:hotName") { (params: [String : AnyObject]!) -> Bool in
-            navigator.navigateToHotlistResultFromViewController(UIApplication.topViewController(), withData: ["key" : params["hotName"] as! String])
+        JLRoutes.global().addRoute("/hot/:hotName") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToHotlistResult(from: UIApplication.topViewController(), withData: ["key" : params["hotName"] as! String])
             return true
         }
         
         //directory
-        JLRoutes.globalRoutes().addRoute("/p/*") { (params: [String : AnyObject]) -> Bool in
+        JLRoutes.global().addRoute("/p/*") { (params: [String : Any]) -> Bool in
             let pathComponent = params[kJLRouteWildcardComponentsKey] as! [String]
             if(pathComponent.count > 0) {
                 let departments = [
@@ -223,36 +227,36 @@ class TPRoutes: NSObject {
                     "department_2" : pathComponent.count > 1 ? pathComponent[1] : "",
                     "department_3" : pathComponent.count > 2 ? pathComponent[2] : "",
                     "st" : "product",
-                    "sc_identifier" : pathComponent.joinWithSeparator("_")
+                    "sc_identifier" : pathComponent.joined(separator: "_")
                 ]
                 
-                navigator.navigateToSearchFromViewController(UIApplication.topViewController(), withData: departments)
+                navigator.navigateToSearch(from: UIApplication.topViewController(), withData: departments)
             }
  
             return true
         }
         
         //search
-        JLRoutes.globalRoutes().addRoute("/search/*") { (params: [String : AnyObject]!) -> Bool in
-            navigator.navigateToSearchFromViewController(UIApplication.topViewController(), withURL: params[kJLRouteURLKey] as! NSURL)
+        JLRoutes.global().addRoute("/search/*") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToSearch(from: UIApplication.topViewController(), with: (params[kJLRouteURLKey] as! NSURL) as URL!)
             return true
         }
         
         //catalog detail
-        JLRoutes.globalRoutes().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String : AnyObject]!) -> Bool in
-            navigator.navigateToCatalogFromViewController(UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
+        JLRoutes.global().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToCatalog(from: UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
             return true
         }
         
         //shop page
-        JLRoutes.globalRoutes().addRoute("/:shopName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/:shopName") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let shopName = params["shopName"] as! String
             isShopExists(shopName, shopExists: { (isExists) in
                 if isExists {
-                    navigator.navigateToShopFromViewController(UIApplication.topViewController(), withShopName: shopName)
+                    navigator.navigateToShop(from: UIApplication.topViewController(), withShopName: shopName)
                 } else {
-                    openWebView(url)
+                    openWebView(url as URL)
                 }
             })
             
@@ -261,7 +265,7 @@ class TPRoutes: NSObject {
         }
         
         //product detail page
-        JLRoutes.globalRoutes().addRoute("/:shopName/:productName") { (params: [String : AnyObject]!) -> Bool in
+        JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let productName = params["productName"] as! String
             let shopName = params["shopName"] as! String
@@ -272,9 +276,9 @@ class TPRoutes: NSObject {
                         "product_key" : productName,
                         "shop_domain" : shopName
                     ]
-                    navigator.navigateToProductFromViewController(UIApplication.topViewController(), withData: data)
+                    navigator.navigateToProduct(from: UIApplication.topViewController(), withData: data)
                 } else {
-                    openWebView(url)
+                    openWebView(url as URL)
                 }
             })
             
@@ -283,7 +287,9 @@ class TPRoutes: NSObject {
         
     }
     
-    static func getUTMString(params: [String : AnyObject]) -> String {
+    static func getUTMString(_ params: [String : Any
+        
+        ]) -> String {
         if params["utm_source"] != nil && params["utm_medium"] != nil && params["utm_campaign"] != nil {
             let utmSource = params["utm_source"] as! String
             let utmMedium = params["utm_medium"] as! String
@@ -299,13 +305,13 @@ class TPRoutes: NSObject {
         }
     }
     
-    static func openWebView(url: NSURL) {
+    static func openWebView(_ url: URL) {
         let controller = WebViewController()
         let userManager = UserAuthentificationManager()
         
-        var urlString = url.absoluteString
+        let urlString = url.absoluteString
         
-        controller.strURL = userManager.webViewUrlFromUrl(urlString)
+        controller.strURL = userManager.webViewUrl(fromUrl: urlString)
         controller.shouldAuthorizeRequest = true
         
         let visibleController = UIApplication.topViewController()
@@ -315,24 +321,25 @@ class TPRoutes: NSObject {
     static func redirectContactUs() {
         let userManager = UserAuthentificationManager()
         if(userManager.isLogin) {
-            NavigateViewController.navigateToContactUsFromViewController(UIApplication.topViewController())
+            NavigateViewController.navigateToContactUs(from: UIApplication.topViewController())
         }
     }
     
-    static func isContainPerlPostFix(urlPath: String) -> Bool {
-        return (urlPath.rangeOfString(".pl") != nil)
+    static func isContainPerlPostFix(_ urlPath: String) -> Bool {
+        return (urlPath.range(of: ".pl") != nil)
     }
     
-    static func routeURL(url: NSURL) -> Bool {
+    @discardableResult
+    static func routeURL(_ url: URL) -> Bool {
         AnalyticsManager.trackCampaign(url)
         return JLRoutes.routeURL(url)
     }
     
-    static func isShopExists(domain: String, shopExists: ((Bool) -> Void)) {
+    static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/shop/get_shop_info.pl",
                                           method: .GET,
                                           parameter: ["shop_domain" : domain],
@@ -354,7 +361,10 @@ class TPRoutes: NSObject {
 }
 
 extension UIApplication {
-    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let search = base as? UISearchController {
+            return search.presentingViewController
+        }
         if let nav = base as? UINavigationController {
             return topViewController(nav.visibleViewController)
         }

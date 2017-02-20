@@ -10,21 +10,23 @@
 
 @interface NSString (TPBaseUrl)
 
-+ (NSString*)basicUrl;
-+ (NSString*)aceUrl;
-+ (NSString*)v4Url;
-+ (NSString*)topAdsUrl;
-+ (NSString*)keroUrl;
-+ (NSString*)accountsUrl;
-+ (NSString*)hadesUrl;
-+ (NSString*)mojitoUrl;
-+ (NSString*)pulsaApiUrl;
-+ (NSString*)pulsaUrl;
-+ (NSString*)jsUrl;
-+ (NSString*)kunyitUrl;
-+ (NSString*)goldMerchantUrl;
-+ (NSString*)pointUrl;
-+ (NSString*)wvloginUrl;
-+ (NSString*)tokopediaUrl;
++ (nonnull NSString*)basicUrl;
++ (nonnull NSString*)aceUrl;
++ (nonnull NSString*)v4Url;
++ (nonnull NSString*)topAdsUrl;
++ (nonnull NSString*)keroUrl;
++ (nonnull NSString*)accountsUrl;
++ (nonnull NSString*)hadesUrl;
++ (nonnull NSString*)mojitoUrl;
++ (nonnull NSString*)pulsaApiUrl;
++ (nonnull NSString*)pulsaUrl;
++ (nonnull NSString*)jsUrl;
++ (nonnull NSString*)kunyitUrl;
++ (nonnull NSString*)goldMerchantUrl;
++ (nonnull NSString*)pointUrl;
++ (nonnull NSString*)wvloginUrl;
++ (nonnull NSString*)tokopediaUrl;
++ (nonnull NSString*)walletUrl;
++ (nonnull NSString*)mobileSiteUrl;
 
 @end

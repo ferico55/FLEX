@@ -10,13 +10,13 @@
 
 @interface OrderDestination : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSString *receiver_name;
-@property (strong, nonatomic) NSString *address_country;
-@property (strong, nonatomic) NSString *address_postal;
-@property (strong, nonatomic) NSString *address_district;
-@property (strong, nonatomic) NSString *receiver_phone;
-@property (strong, nonatomic) NSString *address_street;
-@property (strong, nonatomic) NSString *address_city;
-@property (strong, nonatomic) NSString *address_province;
+@property (strong, nonatomic, nonnull) NSString *receiver_name;
+@property (strong, nonatomic, nonnull) NSString *address_country;
+@property (strong, nonatomic, nonnull) NSString *address_postal;
+@property (strong, nonatomic, nonnull) NSString *address_district;
+@property (strong, nonatomic, nonnull) NSString *receiver_phone;
+@property (strong, nonatomic, nonnull) NSString *address_street;
+@property (strong, nonatomic, nonnull) NSString *address_city;
+@property (strong, nonatomic, nonnull) NSString *address_province;
 
 @end

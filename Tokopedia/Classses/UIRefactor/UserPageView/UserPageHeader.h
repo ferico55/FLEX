@@ -33,4 +33,5 @@
 
 
 - (UIView *)getManipulatedView;
+- (void)setHeaderProfile:(ProfileInfo*)profile;
 @end

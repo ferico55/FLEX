@@ -76,41 +76,40 @@ public protocol BaseRowType: Taggable {
 }
 
 public protocol TypedRowType: BaseRowType {
-    
-    associatedtype Value: Equatable
+
     associatedtype Cell: BaseCell, TypedCellType
 
     /// The typed cell associated to this row.
-    var cell : Self.Cell! { get }
+    var cell : Cell! { get }
 
     /// The typed value this row stores.
-    var value : Self.Value? { get set }
+    var value : Cell.Value? { get set }
 
-    func addRule<Rule: RuleType where Rule.RowValueType == Cell.Value>(rule: Rule) 
-//    func removeRule<Rule: RuleType where Rule.RowValueType == Cell.Value>(rule: Rule)
+    func add<Rule: RuleType>(rule: Rule) where Rule.RowValueType == Cell.Value
+    func remove(ruleWithIdentifier: String)
 }
 
 /**
  *  Protocol that every row type has to conform to.
  */
-public protocol RowType {
-    init(_ tag: String?, @noescape _ initializer: (Self -> ()))
+public protocol RowType: TypedRowType {
+    init(_ tag: String?, _ initializer: (Self) -> ())
 }
 
-extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Self.Value {
+extension RowType where Self: BaseRow {
 
     /**
      Default initializer for a row
      */
-    public init(_ tag: String? = nil, @noescape _ initializer: (Self -> ()) = { _ in }) {
+    public init(_ tag: String? = nil, _ initializer: (Self) -> () = { _ in }) {
         self.init(tag: tag)
-        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
+        RowDefaults.rowInitialization["\(type(of: self))"]?(self)
         initializer(self)
     }
 }
 
 
-extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Self.Value {
+extension RowType where Self: BaseRow {
 
     /// The default block executed when the cell is updated. Applies to every row of this type.
     public static var defaultCellUpdate:((Cell, Self) -> ())? {
@@ -167,7 +166,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
     }
 
     /// The default block executed to initialize a row. Applies to every row of this type.
-    public static var defaultRowInitializer:(Self -> ())? {
+    public static var defaultRowInitializer:((Self) -> ())? {
         set {
             if let newValue = newValue {
                 let wrapper : (BaseRow) -> Void = { (baseRow: BaseRow) in
@@ -181,7 +180,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
                 RowDefaults.rawRowInitialization["\(self)"] = nil
             }
         }
-        get { return RowDefaults.rawRowInitialization["\(self)"] as? (Self -> ()) }
+        get { return RowDefaults.rawRowInitialization["\(self)"] as? ((Self) -> ()) }
     }
 
     /// The default block executed to initialize a row. Applies to every row of this type.
@@ -207,7 +206,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 
      - returns: this row
      */
-    public func onChange(callback: Self -> ()) -> Self{
+    @discardableResult
+    public func onChange(_ callback: @escaping (Self) -> ()) -> Self{
         callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
@@ -217,8 +217,9 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 
      - returns: this row
      */
-    public func cellUpdate(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellUpdate = { [unowned self] in  callback(cell: self.cell, row: self) }
+    @discardableResult
+    public func cellUpdate(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellUpdate = { [unowned self] in  callback(self.cell, self) }
         return self
     }
 
@@ -227,8 +228,9 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 
      - returns: this row
      */
-    public func cellSetup(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellSetup = { [unowned self] (cell: Cell) in  callback(cell: cell, row: self) }
+    @discardableResult
+    public func cellSetup(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellSetup = { [unowned self] (cell: Cell) in  callback(cell, self) }
         return self
     }
 
@@ -237,8 +239,9 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 
      - returns: this row
      */
-    public func onCellSelection(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellOnSelection = { [unowned self] in  callback(cell: self.cell, row: self) }
+    @discardableResult
+    public func onCellSelection(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellOnSelection = { [unowned self] in  callback(self.cell, self) }
         return self
     }
 
@@ -247,13 +250,15 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 
      - returns: this row
      */
-    public func onCellHighlightChanged(callback: (cell: Cell, row: Self)->()) -> Self {
-        callbackOnCellHighlightChanged = { [unowned self] in callback(cell: self.cell, row: self) }
+    @discardableResult
+    public func onCellHighlightChanged(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self {
+        callbackOnCellHighlightChanged = { [unowned self] in callback(self.cell, self) }
         return self
     }
 
-    public func onRowValidationChanged(callback: (cell: Cell, row: Self)->()) -> Self {
-        callbackOnRowValidationChanged = { [unowned self] in  callback(cell: self.cell, row: self) }
+    @discardableResult
+    public func onRowValidationChanged(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self {
+        callbackOnRowValidationChanged = { [unowned self] in  callback(self.cell, self) }
         return self
     }
 }

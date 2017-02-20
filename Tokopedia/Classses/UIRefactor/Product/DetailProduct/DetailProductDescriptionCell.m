@@ -26,6 +26,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     if (_descriptionText) [self updateLabel];
 }
 

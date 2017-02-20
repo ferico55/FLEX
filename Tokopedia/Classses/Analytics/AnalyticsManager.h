@@ -33,7 +33,7 @@
 + (void)localyticsIncrementValue:(NSInteger)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
 
 + (void)localyticsTrackCartView:(TransactionCartResult *)cart;
-+ (void)localyticsTrackRegistration:(NSString *)method success:(BOOL)success;
++ (void)localyticsTrackRegistration:(NSString *)providerName success:(BOOL)success;
 + (void)localyticsTrackLogin:(BOOL)success;
 
 + (void)localyticsTrackWithdraw:(BOOL)success;

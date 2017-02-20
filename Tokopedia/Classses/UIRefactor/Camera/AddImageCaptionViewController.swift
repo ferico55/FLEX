@@ -19,11 +19,11 @@ import UIKit
         super.viewDidLoad()
         self.title = isEdit ? "Ubah Gambar" : "Tambah Gambar"
         
-        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .Bordered, target: self, action: nil)
+        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .bordered, target: self, action: nil)
         cancelBarButton.tag = 10
         self.navigationItem.rightBarButtonItem = cancelBarButton
         
-        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .Bordered, target: self, action: nil)
+        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .bordered, target: self, action: nil)
         doneBarButton.tag = 11
         self.navigationItem.rightBarButtonItem = doneBarButton
         
@@ -37,7 +37,7 @@ import UIKit
         self.view.addSubview(collectionView)
         
         // Keyboard Notification
-        let notification = NSNotificationCenter.defaultCenter()
+        let notification = NotificationCenter.default
 //        notification.addObserver(self, selector: Selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
 //        notification.addObserver(self, selector: Selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
         
@@ -51,7 +51,7 @@ import UIKit
     
     
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (section == 0) {
             return attachedImages.count
         } else if (section == 1) {
@@ -63,11 +63,11 @@ import UIKit
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (indexPath.section == 0) {
             
         } else if (indexPath.section == 1) {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AddCaptionTextFieldCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! AddCaptionTextFieldCell
             cell.addCaptionTextField.placeholder = "Keterangan Gambar"
         } else if (indexPath.section == 2) {
             
@@ -76,12 +76,12 @@ import UIKit
         return UICollectionViewCell()
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        var itemSize = CGSizeZero
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var itemSize = CGSize.zero
         if (indexPath.section == 0) {
             itemSize = CGSize(width: self.view.frame.width, height: 329)
         } else if (indexPath.section == 1) {

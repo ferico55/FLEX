@@ -17,17 +17,17 @@
 #import "CatalogViewController.h"
 #import "NotificationManager.h"
 #import "HotlistResultViewController.h"
-
+#import "NSString+MD5.h"
 #import "SearchAutoCompleteDomains.h"
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
 #import "UIView+HVDLayout.h"
-
+#import "SearchAutoCompleteShopCell.h"
 #import "ImagePickerCategoryController.h"
 
 #import "Tokopedia-Swift.h"
-
+@import SwiftOverlays;
 NSString *const searchPath = @"/search/%@";
 
 @interface SearchViewController ()
@@ -93,6 +93,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    UINib *cellShopNib = [UINib nibWithNibName:@"SearchAutoCompleteShopCell" bundle:nil];
+    [_collectionView registerNib:cellShopNib forCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
     _requestManager = [TokopediaNetworkManager new];
@@ -129,7 +131,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
     [self getUserSearchSuggestionDataWithQuery:@""];
     
     [self initNotificationManager];
@@ -143,7 +144,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [AnalyticsManager trackScreenName:@"Search Page"];
     
     self.hidesBottomBarWhenPushed = NO;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -153,6 +155,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
     [self.searchBar resignFirstResponder];
 }
 
@@ -223,7 +227,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         userId = [_authManager getMyDeviceToken];
     }
     
-    return userId;
+    return [userId encryptWithMD5];
 }
 
 #pragma mark - API
@@ -231,13 +235,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
      __weak typeof(self) weakSelf = self;
     [debouncer setCallback:^{
-        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v2" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *result = [successResult dictionary];
                     [weakSelf.searchSuggestionDataArray removeAllObjects];
                     _searchSuggestionDataArray = [[NSMutableArray alloc] init];
                     GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
-                    
                     NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
                     for (SearchSuggestionData* data in searchSuggestionDatas) {
                         if (data.items.count > 0) {
@@ -292,31 +295,27 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     UICollectionViewCell *cell = nil;
-    SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+    
     if (_searchSuggestionDataArray.count > 0){
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-        
         SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-        searchCell.searchTitle.text = searchSuggestionItem.keyword;
         
-        searchCell.closeButton.hidden = YES;
-        searchCell.searchLoopImageView.hidden = YES;
-        searchCell.searchTitleLeadingToSuperViewConstraint.constant = 21;
-        if([searchSuggestionData.id isEqual: RECENT_SEARCH]) {
-            searchCell.closeButton.hidden = NO;
+        if ([searchSuggestionData.id isEqual: @"shop"]) {
+            SearchAutoCompleteShopCell *shopCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier" forIndexPath:indexPath];
+            [shopCell setSearchItem:searchSuggestionItem];
+            
+            cell = shopCell;
+        } else {
+            SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+            [searchCell setSearchCell:searchSuggestionItem section:searchSuggestionData];
             [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-        } else if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]){
-            searchCell.searchLoopImageView.hidden = NO;
-            searchCell.searchTitleLeadingToSuperViewConstraint.constant = 46;
-
+            [searchCell setGreenSearchText:_searchBar.text];
+            
+            cell = searchCell;
         }
-        [searchCell setGreenSearchText:_searchBar.text];
-    }
-    
-    cell = searchCell;
-    cell.hidden = NO;
+        cell.hidden = NO;
+      }
     
     return cell;
 }
@@ -346,24 +345,45 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
     SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
     
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
+
+    NSString *url = searchSuggestionItem.redirectUrl;
+    if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
+        url = searchSuggestionItem.url;
+    }
     
     if ([searchSuggestionData.id isEqual: @"hotlist"]){
-        NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
+        [TPRoutes routeURL:[NSURL URLWithString:url]];
+    } else if ([searchSuggestionData.id isEqual: @"shop"]) {
+        [self navigateToIntermediaryPage];
         
-        HotlistResultViewController *controller = [HotlistResultViewController new];
-        NSString *hotListUrl = [keys lastObject]; // hotListValue example: iphone-5s?source=jahe . But we only need 'iphone-5s' value, so we need to cut ?source=jahe
+        NSString *path = [self shopDomainForUrl:url];
         
-        NSString *hotListName = [[hotListUrl componentsSeparatedByString:@"?"] objectAtIndex: 0];
-        controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : hotListName};
-        controller.isFromAutoComplete = YES;
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [self.presentingViewController.navigationController pushViewController:controller animated:YES];
+        UINavigationController *nav = self.presentingViewController.navigationController;
+        [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
+            [nav popViewControllerAnimated:NO];
+            
+            if (exists) {
+                ShopViewController *shopViewController = [ShopViewController new];
+                shopViewController.data = @{
+                                            @"shop_domain": path
+                                            };
+                
+                [nav pushViewController:shopViewController animated:NO];
+                
+            } else {
+                WebViewController *webViewController = [WebViewController new];
+                webViewController.strTitle = @"Tokopedia";
+                webViewController.strURL = url;
+                
+                if(nav != nil) {
+                    [nav pushViewController:webViewController animated:NO];
+                }
+            }
+        }];
     } else {
         _searchSuggestionDataArray = [NSMutableArray new];
         [_collectionView reloadData];
@@ -448,7 +468,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     
-    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -513,12 +533,11 @@ NSString *const RECENT_SEARCH = @"recent_search";
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc.isFromAutoComplete = autocomplete;
-    vc.delegate = self;
+    vc1.isFromAutoComplete = autocomplete;
+    vc1.delegate = self;
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc.isFromAutoComplete = autocomplete;
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
@@ -572,6 +591,27 @@ NSString *const RECENT_SEARCH = @"recent_search";
     UICollectionView *collectionView = self.collectionView;
     UIEdgeInsets collectionInset = collectionView.contentInset;
     [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top) animated:YES];
+}
+
+- (void)navigateToIntermediaryPage {
+    UIViewController *viewController = [UIViewController new];
+    viewController.view.frame = self.presentingViewController.navigationController.viewControllers.lastObject.view.frame;
+    viewController.view.backgroundColor = [UIColor whiteColor];
+    viewController.hidesBottomBarWhenPushed = YES;
+    [SwiftOverlays showCenteredWaitOverlay:viewController.view];
+    
+    [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
+}
+
+- (NSString *)shopDomainForUrl:(NSString *)urlString {
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSString *path = [[url.pathComponents
+                       bk_reject:^BOOL(NSString *path) {
+                           return [path isEqualToString:@"/"];
+                       }]
+                      componentsJoinedByString:@"/"];
+    return path;
 }
 
 @end

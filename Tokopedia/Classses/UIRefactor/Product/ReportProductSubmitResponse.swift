@@ -16,9 +16,9 @@ class ReportProductSubmitResponse: NSObject {
     var data: ReportProductSubmitResult!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: ReportProductSubmitResponse.self)
-        mapping.addAttributeMappingsFromArray(["message_error", "status", "server_process_time"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: ReportProductSubmitResult.mapping()))
+        let mapping: RKObjectMapping = RKObjectMapping(for: ReportProductSubmitResponse.self)
+        mapping.addAttributeMappings(from:["message_error", "status", "server_process_time"])
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: ReportProductSubmitResult.mapping()))
         return mapping;
     }
 

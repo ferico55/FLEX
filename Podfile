@@ -3,6 +3,38 @@
 
 use_frameworks!
 
+def jasonette_pods
+    pod 'UICKeyChainStore'
+    pod 'TWMessageBarManager'
+    pod 'SWTableViewCell', :git => "https://github.com/gliechtenstein/SWTableViewCell.git"
+    pod 'TTTAttributedLabel'
+    pod 'BBBadgeBarButtonItem'
+    pod 'IQAudioRecorderController', :git => 'https://github.com/hackiftekhar/IQAudioRecorderController.git'
+    pod 'REMenu'
+    pod 'JDStatusBarNotification'
+    pod "SWFrameButton"
+    pod 'libPhoneNumber-iOS'
+    pod "NSGIF", "~> 1.0"
+    pod 'INTULocationManager'
+    pod "AHKActionSheet"
+    pod 'TDOAuth'
+    pod "AFOAuth2Manager"
+    pod "CYRTextView"
+    pod 'FreeStreamer', :git => "https://github.com/muhku/FreeStreamer.git"
+    pod 'SDWebImage', :git => "https://github.com/rs/SDWebImage.git"
+    pod 'SZTextView'
+    pod 'SBJson', '~> 4.0.4'
+    pod 'DHSmartScreenshot'
+    pod 'NSHash'
+    pod 'JSCoreBom', '~> 1.1.1'
+    pod "RMDateSelectionViewController"
+    pod 'DTCoreText'
+    pod 'PBJVision'
+    pod 'PHFComposeBarView'
+    pod 'DAKeyboardControl'
+    pod 'SVPullToRefresh', :git => 'https://github.com/samvermette/SVPullToRefresh.git', :branch => 'master'
+end
+
 def common_pods
     # Tweaks is installed manually, the use_frameworks! makes the Tweaks options not showing.
     
@@ -12,8 +44,7 @@ def common_pods
     pod 'GoogleAppIndexing'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
-    #pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-    pod 'Rollout.io', '~> 1.7.1'
+    pod 'Rollout.io', '~> 1.10.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
@@ -23,54 +54,32 @@ def common_pods
     pod 'JLPermissions/Notification'
     pod "JLPermissions/Contacts"
     pod 'GoogleSignIn', '~> 2.4.0'
-    pod 'SPTPersistentCache', '~> 1.0'
+    pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
     pod 'FBSDKLoginKit'
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
-    pod 'TPKeyboardAvoiding', '~> 1.3'
+    pod 'TPKeyboardAvoiding'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
     pod 'JSQMessagesViewController'
+    pod 'MXSegmentedPager', '~> 3.2.0'    
     pod 'MMNumberKeyboard'
     pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
-    
-    pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch =>'swift2.3'
+    pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
+    pod 'BEMCheckBox' , '~>1.2.0'
+    pod 'VMaskTextField'
 
-    pod 'UICKeyChainStore'
-  pod 'TWMessageBarManager'
-  pod 'AFNetworking'
-  pod 'SWTableViewCell', :git => "https://github.com/gliechtenstein/SWTableViewCell.git"
-  pod 'APAddressBook'
-  pod 'TTTAttributedLabel'
-  pod 'BBBadgeBarButtonItem'
-  pod 'IQAudioRecorderController', :git => 'https://github.com/hackiftekhar/IQAudioRecorderController.git'
-  pod 'REMenu'
-  pod 'JDStatusBarNotification'
-  pod 'HMSegmentedControl'
-  pod "SWFrameButton"
-  pod 'libPhoneNumber-iOS'
-  pod "NSGIF", "~> 1.0"
-  pod 'INTULocationManager'
-  pod "AHKActionSheet"
-  pod 'TDOAuth'
-  pod "AFOAuth2Manager"
-  pod "CYRTextView"
-  pod 'FreeStreamer', :git => "https://github.com/muhku/FreeStreamer.git"
-  pod 'SDWebImage', :git => "https://github.com/rs/SDWebImage.git"
-  pod 'SZTextView'
-  pod 'SBJson'
-  pod 'DHSmartScreenshot'
-  pod 'NSHash'
-  pod 'JSCoreBom', '~> 1.1.1'
-  pod "RMDateSelectionViewController"
-  pod 'DTCoreText'
-  pod 'PBJVision'
-  pod 'PHFComposeBarView'
-  pod 'DAKeyboardControl'
-  pod 'SVPullToRefresh', :git => 'https://github.com/samvermette/SVPullToRefresh.git', :branch => 'master'
+    #Swift 3.0 pods
+    pod 'RSKGrowingTextView'
+    pod 'RSKPlaceholderTextView'
+    pod 'SwiftOverlays' 
+    pod 'Eureka' , '~>2.0.0-beta.1'
+    pod 'RxSwift', '~> 3.1.0'
+    pod 'DKImagePickerController', '~> 3.5.0'
+
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -79,11 +88,13 @@ end
 
 target "Tokopedia" do
     common_pods
+    jasonette_pods
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do
     common_pods
+    jasonette_pods
 end
 
 post_install do |installer|

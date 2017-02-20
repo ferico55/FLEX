@@ -8,6 +8,7 @@
 
 #import "ShopPageRequest.h"
 #import "TokopediaNetworkManager.h"
+#import "Tokopedia-Swift.h"
 
 #define PRODUCT_PER_PAGE 12
 #define REVIEW_PER_PAGE 5

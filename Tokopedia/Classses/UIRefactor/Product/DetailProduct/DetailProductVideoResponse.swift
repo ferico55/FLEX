@@ -15,11 +15,11 @@ class DetailProductVideoResponse: NSObject {
     var data: [DetailProductVideoData]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: DetailProductVideoResponse.self)
+        let mapping = RKObjectMapping(for: DetailProductVideoResponse.self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "links", toKeyPath: "links", withMapping: DetailProductVideoLinks.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: DetailProductVideoData.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "links", toKeyPath: "links", with: DetailProductVideoLinks.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: DetailProductVideoData.mapping()))
         
-        return mapping
+        return mapping!
     }
 }

@@ -16,6 +16,7 @@
 #import "InboxTicketDetailAttachment.h"
 #import "Tokopedia-Swift.h"
 
+
 //only visible in this file
 static NSInteger const EACH_PHOTO_WITH_SPACING_WIDTH = 90;
 static NSInteger const MAX_PHOTO_COUNT = 5;
@@ -195,7 +196,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     __weak typeof(self) wself = self;
     [TKPImagePickerController
      showImagePicker:self
-     assetType:DKImagePickerControllerAssetTypeallPhotos
+     assetType:DKImagePickerControllerAssetTypeAllPhotos
      allowMultipleSelect:YES
      showCancel:YES
      showCamera:YES
@@ -250,7 +251,10 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     for (int i = 0; i<_selectedImages.count; i++) {
         if (i<_photosImageView.count) {
             ((UIImageView*)_photosImageView[i]).hidden = NO;
-            ((UIImageView*)_photosImageView[i]).image = _selectedImages[i].asset.thumbnailImage;
+            
+            [_selectedImages[i].asset fetchImageWithSize:((UIImageView*)_photosImageView[i]).frame.size completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+                ((UIImageView*)_photosImageView[i]).image = image;
+            }];
             ((UIButton*)_removePhotoButton[i]).hidden = NO;
             ((UIImageView*)_photosImageView[i]).userInteractionEnabled = NO;
         }
@@ -343,19 +347,20 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     
     NSMutableArray *attachments = [NSMutableArray new];
     for (int i= 0;i< _selectedImages.count; i++) {
-        InboxTicketDetailAttachment *attachment = [InboxTicketDetailAttachment new];
-        attachment.img = _selectedImages[i].asset.thumbnailImage;
-        [attachments addObject:attachment];
+        [_selectedImages[i].asset fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            InboxTicketDetailAttachment *attachment = [InboxTicketDetailAttachment new];
+            attachment.img = image;
+            [attachments addObject:attachment];
+            InboxTicketDetail *ticket = [InboxTicketDetail new];
+            ticket.ticket_detail_create_time = [dateFormatter stringFromDate:[NSDate new]];
+            ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
+            ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
+            ticket.ticket_detail_is_cs = @"0";
+            ticket.ticket_detail_message = self.textView.text;
+            ticket.ticket_detail_attachment = attachments;
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
+        }];
     }
-
-    InboxTicketDetail *ticket = [InboxTicketDetail new];
-    ticket.ticket_detail_create_time = [dateFormatter stringFromDate:[NSDate new]];
-    ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
-    ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
-    ticket.ticket_detail_is_cs = @"0";
-    ticket.ticket_detail_message = self.textView.text;
-    ticket.ticket_detail_attachment = attachments;
-    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
 }
 
 #pragma mark - Request

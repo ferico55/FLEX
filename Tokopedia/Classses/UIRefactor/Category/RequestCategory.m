@@ -12,6 +12,7 @@
 #import "TokopediaCacheManager.h"
 #import "UserAuthentificationManager.h"
 #import "CategoryList.h"
+#import "Tokopedia-Swift.h"
 
 @interface RequestCategory ()<TokopediaNetworkManagerDelegate>
 

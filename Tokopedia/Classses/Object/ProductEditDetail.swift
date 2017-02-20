@@ -25,15 +25,14 @@ class ProductEditDetail: NSObject {
     var product_status: String = ""
     var product_short_desc: String = ""
     var product_weight_unit_name: String = ""
-    var product_returnable: String = "0"
     var product_catalog: CatalogList = CatalogList()
     var product_category :CategoryDetail = CategoryDetail()
     var product_name_editable: String = ""
     
     
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping .addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping .addAttributeMappings(from:[
             "product_min_order" : "product_min_order",
             "product_id" : "product_id",
             "product_currency_id" : "product_currency_id",

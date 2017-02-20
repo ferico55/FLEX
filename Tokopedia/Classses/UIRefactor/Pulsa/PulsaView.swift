@@ -10,51 +10,146 @@ import UIKit
 import Foundation
 import OAStackView
 import MMNumberKeyboard
+import HMSegmentedControl
+import BEMCheckBox
 
 @objc
-class PulsaView: OAStackView, MMNumberKeyboardDelegate {
+class PulsaView: UIView, MMNumberKeyboardDelegate {
     
+    fileprivate var stackView: OAStackView = OAStackView()
+    fileprivate var pulsaCategoryControl: HMSegmentedControl = {
+        let pulsaCategoryControl = HMSegmentedControl(sectionTitles: [])
+        pulsaCategoryControl?.segmentWidthStyle = .fixed
+        pulsaCategoryControl?.selectionIndicatorBoxOpacity = 0
+        pulsaCategoryControl?.selectionStyle = .box;
+        pulsaCategoryControl?.selectedSegmentIndex = HMSegmentedControlNoSegment;
+        pulsaCategoryControl?.type = .text
+        pulsaCategoryControl?.selectionIndicatorLocation = .down;
+        pulsaCategoryControl?.selectionIndicatorHeight = 2
+        return pulsaCategoryControl!
+    }()
+    lazy fileprivate var noHandphoneLabel: UILabel = {
+        var noHandphoneLabel = UILabel()
+        noHandphoneLabel.font = UIFont.microTheme()
+        noHandphoneLabel.textColor = self.titleTextColor
+        return noHandphoneLabel
+    }()
     var numberField: UITextField!
-    var productButton: UIButton!
+    lazy var productButton: UIButton = {
+        var productButton = UIButton(frame: CGRect.zero)
+        productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
+        productButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.54), for: UIControlState())
+        productButton.backgroundColor = UIColor.white
+        productButton.layer.borderWidth = 0
+        productButton.contentHorizontalAlignment = .left
+        return productButton
+    }()
+    lazy fileprivate var productButtonUnderlineView: UIView = {
+        let productButtonUnderlineView = UIView()
+        productButtonUnderlineView.backgroundColor = self.underlineViewColor
+        return productButtonUnderlineView
+    }()
+    lazy fileprivate var numberFieldUnderlineView: UIView = {
+        let numberFieldUnderlineView = UIView()
+        numberFieldUnderlineView.backgroundColor = self.underlineViewColor
+        return numberFieldUnderlineView
+    }()
+    fileprivate var buyButton: UIButton = {
+        let buyButton = UIButton(frame: CGRect.zero)
+        buyButton.setTitle("Beli", for: UIControlState())
+        buyButton.layer.cornerRadius = 3
+        buyButton.setTitleColor(UIColor.white, for: UIControlState())
+        buyButton.backgroundColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 34.0/255, alpha: 1)
+        buyButton.isHidden = true
+        buyButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        return buyButton
+    }()
+    fileprivate var buttonsPlaceholder: UIView!
+    fileprivate var fieldPlaceholder: UIView!
+    fileprivate var saldoButtonPlaceholder: UIView!
+    fileprivate var buyButtonPlaceholder:UIView!
+    fileprivate var phoneBook: UIImageView = {
+        var phoneBook = UIImageView(image: UIImage(named: "icon_phonebook"))
+        phoneBook.isUserInteractionEnabled = true
+        return phoneBook
+    }()
+    lazy fileprivate var nominalLabel: UILabel = {
+        let nominalLabel = UILabel()
+        nominalLabel.text = "Nominal"
+        nominalLabel.font = UIFont.microTheme()
+        nominalLabel.textColor = self.titleTextColor
+        return nominalLabel
+    }()
     
-    private var pulsaCategoryControl: UISegmentedControl!
-    private var numberErrorLabel: UILabel!
-    private var buttonErrorLabel: UILabel!
+    lazy fileprivate var saldoCheckBox: BEMCheckBox = {
+        let saldoCheckBox = BEMCheckBox()
+        saldoCheckBox.boxType = .square
+        saldoCheckBox.lineWidth = 1
+        saldoCheckBox.onTintColor = UIColor.white
+        saldoCheckBox.onCheckColor = UIColor.white
+        saldoCheckBox.onFillColor = self.tokopediaGreenColor
+        saldoCheckBox.animationDuration = 0
+        saldoCheckBox.isHidden = true
+        return saldoCheckBox
+    }()
+    lazy fileprivate var saldoLabel: UILabel = {
+        let saldoLabel = UILabel(frame: CGRect.zero)
+        saldoLabel.text = "Bayar Instan"
+        saldoLabel.numberOfLines = 2
+        saldoLabel.textColor = UIColor.gray
+        saldoLabel.font = UIFont.largeTheme()
+        saldoLabel.isHidden = true
+        return saldoLabel
+    }()
     
-    private var buyButton: UIButton!
-    private var buttonsPlaceholder: UIView!
-    private var operatorPickerPlaceholder: UIView!
-    private var operatorButton: UIButton!
-    private var operatorErrorLabel: UILabel!
+    fileprivate var numberErrorPlaceholder: UIView!
+    lazy fileprivate var numberErrorLabel: UILabel = {
+        let numberErrorLabel = UILabel(frame: CGRect.zero)
+        numberErrorLabel.backgroundColor = UIColor.white
+        numberErrorLabel.text = "Error"
+        numberErrorLabel.textColor = UIColor.red
+        numberErrorLabel.font = UIFont.microTheme()
+        return numberErrorLabel
+    }()
+    fileprivate var buttonErrorPlaceholder: UIView!
+    lazy fileprivate var buttonErrorLabel: UILabel = {
+        let buttonErrorLabel = UILabel(frame: CGRect.zero)
+        buttonErrorLabel.backgroundColor = UIColor.white
+        buttonErrorLabel.textColor = UIColor.red
+        buttonErrorLabel.font = UIFont.microTheme()
+        return buttonErrorLabel
+    }()
     
-    private var fieldPlaceholder: UIView!
-    private var saldoButtonPlaceholder: UIView!
-    private var phoneBook: UIImageView!
-    
-    private var saldoSwitch = UISwitch()
-    private var saldoLabel: UILabel!
+    fileprivate var operatorPickerPlaceholder: UIView!
+    fileprivate var operatorButton: UIButton!
+    fileprivate var operatorErrorLabel: UILabel!
     
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
     var selectedProduct = PulsaProduct()
     
-    private var userManager = UserAuthentificationManager()
-    private var prefixView: UIView?
-    private var inputtedNumber: String?
-    private var listOperators: [PulsaOperator]?
+    fileprivate var userManager = UserAuthentificationManager()
+    fileprivate var prefixView: UIView?
+    fileprivate var inputtedNumber: String?
+    fileprivate var listOperators: [PulsaOperator]?
     
-    var didTapAddressbook: (Void -> Void)?
-    var didTapProduct:([PulsaProduct] -> Void)?
-    var didTapOperator:([PulsaOperator] -> Void)?
-    var didAskedForLogin: (Void -> Void)?
-    var didShowAlertPermission: (Void -> Void)?
-    var didSuccessPressBuy: (NSURL -> Void)?
+    var didTapAddressbook: ((Void) -> Void)?
+    var didTapProduct:(([PulsaProduct]) -> Void)?
+    var didTapOperator:(([PulsaOperator]) -> Void)?
+    var didAskedForLogin: ((Void) -> Void)?
+    var didShowAlertPermission: ((Void) -> Void)?
+    var didSuccessPressBuy: ((URL) -> Void)?
     
-    let WIDGET_LEFT_MARGIN: CGFloat = 20
-    let WIDGET_RIGHT_MARGIN: CGFloat = 20
+    fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 15
+    fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 15
+    fileprivate let underlineOffset: CGFloat = 5
     
-    private var arrangedPrefix = [Prefix]()
-
+    fileprivate var arrangedPrefix = [Prefix]()
+    
+    fileprivate let tokopediaGreenColor = UIColor(red: 66.0/255, green: 181.0/255, blue: 73.0/255, alpha: 1)
+    fileprivate let underlineViewColor = UIColor(red: 216.0/255, green: 216.0/255, blue: 216.0/255, alpha: 1)
+    fileprivate let titleTextColor = UIColor(red: 158.0/255, green: 158.0/255, blue: 158.0/255, alpha: 1)
+    
     struct Prefix {
         var phoneNumber: String
         var image: String
@@ -72,51 +167,51 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     init(categories: [PulsaCategory]) {
-        super.init(arrangedSubviews: [])
+        super.init(frame: .zero)
         
+        self.setCornerRadius()
         setupStackViewFormat()
+        NotificationCenter .default.addObserver(self, selector: #selector(self.didSwipeHomePage), name: NSNotification.Name(rawValue: "didSwipeHomePage"), object: nil)
+        NotificationCenter .default.addObserver(self, selector: #selector(self.didSwipeHomePage), name: NSNotification.Name(rawValue: "didSwipeHomeTab"), object: nil)
         
-        NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomePage", object: nil)
-        NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomeTab", object: nil)
-        
-        
-        pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
-        
-        categories.enumerate().forEach { index, category in
-            pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
-        }
-        
-        //set new icon for new category
-        pulsaCategoryControl.subviews.reverse().enumerate().forEach { controlIndex, segment in
-            if(categories[controlIndex].attributes.is_new == true) {
-                let new = UIImageView(image: UIImage(named: "red_dot.png"))
-                new.frame = CGRectMake(5, 5, 10, 10)
-                segment .addSubview(new)
-            }
-            
-            segment.subviews.enumerate().forEach { index, view in
-                if(view is UILabel) {
-                    let label = view as! UILabel
-                    label.frame = CGRectMake(0, 0, 97, 50)
-                    label.numberOfLines = 0
-                }
+        pulsaCategoryControl.redDotImage = UIImage(named: "red_dot")
+        categories.enumerated().forEach { index, category in
+            pulsaCategoryControl.sectionTitles.append(category.attributes.name)
+            if category.attributes.is_new {
+                pulsaCategoryControl.showRedDot(at: index)
             }
         }
         
-        self.layoutMarginsRelativeArrangement = true
-        self.layoutMargins = UIEdgeInsets(top: 0, left: self.WIDGET_LEFT_MARGIN, bottom: 0, right: self.WIDGET_RIGHT_MARGIN)
-        self.addArrangedSubview(pulsaCategoryControl)
+        let categoryControlPlaceHolder = UIView()
+        categoryControlPlaceHolder.mas_makeConstraints { (make) in
+            make?.height.equalTo()(51)
+        }
+        stackView.addArrangedSubview(categoryControlPlaceHolder)
+        categoryControlPlaceHolder.addSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
-            make.height.equalTo()(44)
+            make?.top.left().right().mas_equalTo()(categoryControlPlaceHolder)
+            make?.bottom.mas_equalTo()(categoryControlPlaceHolder)?.offset()(-1)
         }
-        
-        
-        pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
+        pulsaCategoryControl.selectedTitleTextAttributes = [NSForegroundColorAttributeName : self.tokopediaGreenColor, NSFontAttributeName : UIFont.largeThemeMedium()]
+        pulsaCategoryControl.titleTextAttributes = [NSForegroundColorAttributeName : self.titleTextColor
+            , NSFontAttributeName : UIFont.largeTheme()]
+        pulsaCategoryControl.selectionIndicatorColor = self.tokopediaGreenColor
+        pulsaCategoryControl.bk_addEventHandler({[unowned self] (control: Any) in
+            guard let control = control as? HMSegmentedControl else { return }
             self.buildViewByCategory(categories[control.selectedSegmentIndex])
-        }, forControlEvents: .ValueChanged)
+            }, for: .valueChanged)
+        
+        let categoryControlUnderline = UIView()
+        categoryControlUnderline.backgroundColor = underlineViewColor
+        categoryControlPlaceHolder.addSubview(categoryControlUnderline)
+        categoryControlUnderline.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.pulsaCategoryControl.mas_bottom)
+            make?.left.right().mas_equalTo()(categoryControlPlaceHolder)
+            make?.height.mas_equalTo()(1)
+        }
         
         requestOperatorsWithInitialCategory(categories.first!)
-
+        
     }
     
     required init(coder: NSCoder) {
@@ -124,14 +219,14 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    private func requestOperatorsWithInitialCategory(category: PulsaCategory) {
+    fileprivate func requestOperatorsWithInitialCategory(_ category: PulsaCategory) {
         let requestManager = PulsaRequest()
         
         requestManager.didReceiveOperator = { operators in
-            let sortedOperators = operators.sort({ (op0, op1) -> Bool in
+            let sortedOperators = operators.sorted(by: { (op0, op1) -> Bool in
                 op0.attributes.weight < op1.attributes.weight
             })
             
@@ -143,13 +238,13 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
             //and if we show view, when there is no prefix, this will cause crash
             self.buildViewByCategory(category)
             self.pulsaCategoryControl.selectedSegmentIndex = 0
-            self.pulsaCategoryControl.backgroundColor = UIColor.whiteColor()
+            self.pulsaCategoryControl.backgroundColor = UIColor.white
         }
         requestManager.requestOperator()
     }
     
-    private func createPrefixCollection(operators: [PulsaOperator]) {
-        operators.enumerate().forEach { id, op in
+    fileprivate func createPrefixCollection(_ operators: [PulsaOperator]) {
+        operators.enumerated().forEach { id, op in
             op.attributes.prefix.forEach { prefix in
                 let prefix = Prefix(phoneNumber: prefix, image: op.attributes.image, id: op.id!)
                 arrangedPrefix.append(prefix)
@@ -157,8 +252,72 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         }
     }
     
-    private func buildViewByCategory(category: PulsaCategory) {
+    fileprivate func findProducts(_ operatorId: String, categoryId: String, didReceiveProduct: (([PulsaProduct]) -> Void)?) {
+        let requestProductsManager = PulsaRequest()
+        requestProductsManager.didReceiveProduct = {[unowned self] products in
+            if(products.count > 0) {
+                self.showProductButton(products)
+                didReceiveProduct?(products)
+            } else {
+                self.hideProductButton()
+            }
+        }
+        requestProductsManager.requestProduct(operatorId, categoryId: categoryId)
+        
+    }
+    
+    fileprivate func findOperatorsFromProducts(_ products: [PulsaProduct]) -> [PulsaOperator]{
+        var operators = [PulsaOperator]()
+        
+        products.enumerated().forEach { (index, product) in
+            let operatorId = product.relationships.relationOperator.data.id
+            let foundOperator = self .findOperatorById(operatorId!)! as PulsaOperator
+            
+            if(!operators.contains(foundOperator)) {
+                operators.append(foundOperator)
+            }
+        }
+        
+        return operators
+    }
+    
+    func findOperatorById(_ id: String) -> PulsaOperator? {
+        return self.listOperators?.filter({ (op) -> Bool in
+            op.id == id
+        }).first
+    }
+    
+    fileprivate func setSelectedOperatorWithOperatorId(_ id : String) {
+        if let selectedOperator = self.findOperatorById(id) {
+            self.selectedOperator = selectedOperator
+        }
+    }
+    
+    fileprivate func setDefaultProductWithOperatorId(_ operatorId: String) {
+        self.findProducts(operatorId, categoryId: self.selectedCategory.id!) { (product) in
+            self.selectedProduct = product.first!
+        }
+    }
+    
+    // MARK: Build View
+    
+    func buildViewByOperator(_ pulsaOperator: PulsaOperator) {
+        self.resetPulsaOperator()
+        self.buildAllView(self.selectedCategory)
+        
+        self.findProducts(pulsaOperator.id!, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+        self.setSelectedOperatorWithOperatorId(pulsaOperator.id!)
+        self.operatorButton.setTitle(pulsaOperator.attributes.name, for: .normal)
+        
+        if(self.selectedOperator.id != nil && !self.selectedOperator.attributes.rule.show_product) {
+            self.setDefaultProductWithOperatorId(self.selectedOperator.id!)
+        }
+    }
+    
+    
+    fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
+        self.resetCheckBox()
         self.resetPulsaOperator()
         self.buildAllView(category)
         
@@ -182,71 +341,119 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
     }
     
-    func buildViewByOperator(pulsaOperator: PulsaOperator) {
-        self.resetPulsaOperator()
-        self.buildAllView(self.selectedCategory)
-        
-        self.findProducts(pulsaOperator.id!, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
-        self.setSelectedOperatorWithOperatorId(pulsaOperator.id!)
-        self.operatorButton.setTitle(pulsaOperator.attributes.name, forState: .Normal)
-        
-        if(self.selectedOperator.id != nil && !self.selectedOperator.attributes.rule.show_product) {
-            self.setDefaultProductWithOperatorId(self.selectedOperator.id!)
-        }
-    }
     
-    private func findProducts(operatorId: String, categoryId: String, didReceiveProduct: ([PulsaProduct] -> Void)?) {
-        let requestProductsManager = PulsaRequest()
-        requestProductsManager.didReceiveProduct = {[unowned self] products in
-            if(products.count > 0) {
-                self.showProductButton(products)
-                didReceiveProduct?(products)
-            } else {
-                self.hideProductButton()
-            }
+    fileprivate func buildOperatorButton() {
+        let operatorTitle = (self.selectedOperator.attributes.name != "") ? self.selectedOperator.attributes.name : ButtonConstant.defaultProductButtonTitle
+        operatorPickerPlaceholder = UIView(frame: CGRect.zero)
+        operatorPickerPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(operatorPickerPlaceholder)
+        
+        operatorButton = UIButton(frame: CGRect.zero)
+        operatorButton.setTitle(operatorTitle, for: .normal)
+        
+        operatorButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.54), for: UIControlState())
+        operatorButton.contentHorizontalAlignment = .left
+        operatorButton.contentEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0)
+        
+        operatorPickerPlaceholder.addSubview(operatorButton)
+        
+        operatorPickerPlaceholder.mas_makeConstraints { (make) in
+            make?.height.equalTo()(self.selectedCategory.attributes.show_operator ? 38 : 0)
         }
-        requestProductsManager.requestProduct(operatorId, categoryId: categoryId)
         
-    }
-    
-    private func findOperatorsFromProducts(products: [PulsaProduct]) -> [PulsaOperator]{
-        var operators = [PulsaOperator]()
+        operatorButton.mas_makeConstraints { make in
+            make?.centerY.mas_equalTo()(self.operatorPickerPlaceholder)
+            make?.height.mas_equalTo()(25)
+            make?.left.mas_equalTo()(self.operatorPickerPlaceholder.mas_left)?.offset()(15)
+            make?.right.equalTo()(self.operatorPickerPlaceholder.mas_right)?.offset()(-15)
+        }
         
-        products.enumerate().forEach { (index, product) in
-            let operatorId = product.relationships.relationOperator.data.id
-            let foundOperator = self .findOperatorById(operatorId!)! as PulsaOperator
+        operatorButton.bk_removeEventHandlers(for: .touchUpInside)
+        operatorButton.bk_addEventHandler({ [weak self](button) in
+            guard let `self` = self else { return }
             
-            if(!operators.contains(foundOperator)) {
-                operators.append(foundOperator)
-            }
+            self.findProducts("", categoryId: self.selectedCategory.id!, didReceiveProduct: { receivedProducts in
+                let operators = self.findOperatorsFromProducts(receivedProducts)
+                self.didTapOperator?(operators)
+            })
+            
+            }, for: .touchUpInside)
+        let operatorButtonUnderline = UIView()
+        operatorButtonUnderline.backgroundColor = underlineViewColor
+        operatorPickerPlaceholder.addSubview(operatorButtonUnderline)
+        operatorButtonUnderline.mas_makeConstraints({ make in
+            make?.height.mas_equalTo()(1)
+            make?.top.mas_equalTo()(self.operatorButton.mas_bottom)?.offset()(self.underlineOffset)
+            make?.left.mas_equalTo()(self.operatorButton.mas_left)
+            make?.right.mas_equalTo()(self.operatorButton.mas_right)
+        })
+        
+        operatorErrorLabel = UILabel(frame: CGRect.zero)
+        operatorErrorLabel.textColor = UIColor.red
+        operatorErrorLabel.font = UIFont.systemFont(ofSize: 12)
+        stackView.addArrangedSubview(operatorErrorLabel)
+        
+        operatorErrorLabel.mas_makeConstraints { make in
+            make?.height.equalTo()(0)
+        }
+        self.attachArrowToButton(operatorButton)
+    }
+    
+    fileprivate func buildButtons(_ category: PulsaCategory) {
+        buttonsPlaceholder = UIView(frame: CGRect.zero)
+        buttonsPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(buttonsPlaceholder)
+
+        buttonsPlaceholder.addSubview(nominalLabel)
+        nominalLabel.mas_makeConstraints{ make in
+            make?.top.equalTo()(self.buttonsPlaceholder.mas_top)?.with().offset()(10)
+            make?.left.equalTo()(self.buttonsPlaceholder)?.with().offset()(15)
+        }
+    
+        buttonsPlaceholder.addSubview(productButton)
+        
+        productButton.mas_makeConstraints { make in
+            make?.top.equalTo()(self.nominalLabel.mas_bottom)?.with().offset()(5)
+            make?.height.equalTo()(25)
+            make?.left.equalTo()(self.nominalLabel)
+            make?.right.equalTo()(self.buttonsPlaceholder)?.with().offset()(-15)
         }
         
-        return operators
-    }
-    
-    func findOperatorById(id: String) -> PulsaOperator? {
-        return self.listOperators?.filter({ (op) -> Bool in
-            op.id == id
-        }).first
-    }
-    
-    private func setSelectedOperatorWithOperatorId(id : String) {
-        if let selectedOperator = self.findOperatorById(id) {
-            self.selectedOperator = selectedOperator
+        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0)
+        
+        buttonsPlaceholder.mas_makeConstraints { make in
+            make?.height.equalTo()(0)
         }
-    }
-    
-    private func setDefaultProductWithOperatorId(operatorId: String) {
-        self.findProducts(operatorId, categoryId: self.selectedCategory.id!) { (product) in
-            self.selectedProduct = product.first!
+        
+        buttonsPlaceholder.addSubview(productButtonUnderlineView)
+        productButtonUnderlineView.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.productButton.mas_bottom)?.with().offset()(self.underlineOffset)
+            make?.left.right().mas_equalTo()(self.productButton)
+            make?.height.mas_equalTo()(1)
         }
+        
+        buttonErrorPlaceholder = UIView()
+        buttonErrorPlaceholder.backgroundColor = UIColor.white
+        buttonErrorPlaceholder.clipsToBounds = true
+        buttonErrorPlaceholder.mas_makeConstraints { (make) in
+            make?.height.equalTo()(0)
+        }
+        
+        stackView.addArrangedSubview(buttonErrorPlaceholder)
+        buttonErrorPlaceholder.addSubview(buttonErrorLabel)
+        
+        buttonErrorLabel.mas_makeConstraints { make in
+            make?.left.mas_equalTo()(self.nominalLabel)
+            make?.centerY.mas_equalTo()(self.buttonErrorPlaceholder)
+        }
+        attachArrowToButton(productButton)
     }
     
     
-    func buildAllView(category: PulsaCategory) {
-        self.arrangedSubviews.enumerate().forEach { index, subview in
+    fileprivate func buildAllView(_ category: PulsaCategory) {
+        stackView.arrangedSubviews.enumerated().forEach { index, subview in
             if(index > 0) {
-                self.removeArrangedSubview(subview)
+                stackView.removeArrangedSubview(subview)
             }
         }
         
@@ -267,6 +474,7 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
         
         self.buildButtons(category)
         self.buildUseSaldoView()
+        self.buildBuyButtonPlaceholder()
         
         
         // jika user sudah input angka kemudian berganti category widget, maka angka tersebut tidak akan tereset
@@ -279,494 +487,264 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
     }
     
     
-    func buildUseSaldoView() {
-        saldoButtonPlaceholder = UIView(frame: CGRectZero)
-        self.addArrangedSubview(saldoButtonPlaceholder)
+    fileprivate func buildUseSaldoView() {
+        saldoButtonPlaceholder = UIView(frame: CGRect.zero)
+        saldoButtonPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(saldoButtonPlaceholder)
         saldoButtonPlaceholder.mas_makeConstraints { make in
-            make.height.equalTo()(44)
+            make?.height.equalTo()(41)
         }
+        saldoButtonPlaceholder.clipsToBounds = true
         
-        self.saldoSwitch = UISwitch(frame: CGRectZero)
-        self.saldoSwitch.on = false
-        self.saldoSwitch.hidden = !self.selectedCategory.attributes.instant_checkout_available
+        saldoButtonPlaceholder.addSubview(self.saldoCheckBox)
         
-        saldoButtonPlaceholder.addSubview(self.saldoSwitch)
-        
-        self.saldoSwitch.mas_makeConstraints { make in
-            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
-            make.width.equalTo()(51)
-            make.left.equalTo()(self.saldoButtonPlaceholder.mas_left)
+        self.saldoCheckBox.mas_makeConstraints { make in
+            make?.centerY.equalTo()(self.saldoButtonPlaceholder)
+            make?.width.height().equalTo()(18)
+            make?.left.equalTo()(self.productButton.mas_left)
         }
         
         
-        //saldo label
-        saldoLabel = UILabel(frame: CGRectZero)
-        saldoLabel.text = "Bayar instan"
-        saldoLabel.numberOfLines = 2
-        saldoLabel.textColor = UIColor.grayColor()
-        saldoLabel.font = UIFont.systemFontOfSize(12)
-        saldoLabel.hidden = !self.selectedCategory.attributes.instant_checkout_available
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
         saldoLabel.mas_makeConstraints { make in
-            make.height.equalTo()(44)
-            make.top.equalTo()(self.saldoButtonPlaceholder)
-            make.width.equalTo()(120)
-            make.left.equalTo()(self.saldoSwitch.mas_right).offset()(5)
+            make?.centerY.equalTo()(self.saldoCheckBox)
+            make?.width.equalTo()(120)
+            make?.left.equalTo()(self.saldoCheckBox.mas_right)?.offset()(5)
         }
-        
-        buyButton = UIButton(frame: CGRectZero)
-        buyButton.setTitle("BELI", forState: .Normal)
-        buyButton.layer.cornerRadius = 3
-        buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        buyButton.backgroundColor = UIColor.orangeColor()
-        buyButton.titleLabel?.font = UIFont.systemFontOfSize(14)
-        
-        saldoButtonPlaceholder.addSubview(buyButton)
-        
-        buyButton.mas_makeConstraints { make in
-            make.height.equalTo()(44)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
-            make.left.equalTo()(self.saldoLabel.mas_right).offset()(10)
-            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
-        }
-        
-        buyButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
-        buyButton.bk_addEventHandler({ button -> Void in
-            self.didPressBuyButton()
-        }, forControlEvents: .TouchUpInside)
     }
     
-    func buildNumberField(category: PulsaCategory) {
+    fileprivate func buildBuyButtonPlaceholder() {
+        buyButtonPlaceholder = UIView(frame: CGRect.zero)
+        buyButtonPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(buyButtonPlaceholder)
+        buyButtonPlaceholder.mas_makeConstraints { make in
+            make?.height.equalTo()(0)
+        }
+        
+        buyButtonPlaceholder.addSubview(buyButton)
+        
+        buyButton.mas_makeConstraints { make in
+            make?.height.equalTo()(0)
+            make?.top.equalTo()(self.buyButtonPlaceholder.mas_top)
+            make?.left.equalTo()(self.buyButtonPlaceholder.mas_left)?.offset()(15)
+            make?.right.equalTo()(self.buyButtonPlaceholder.mas_right)?.with().offset()(-15)
+        }
+        
+        buyButton.bk_removeEventHandlers(for: .touchUpInside)
+        buyButton.bk_addEventHandler({ button -> Void in
+            self.didPressBuyButton()
+            }, for: .touchUpInside)
+        showBuyButton()
+    }
+    
+    fileprivate func buildNumberField(_ category: PulsaCategory) {
         //if no client number shown, then skip build field control
         if(!self.selectedCategory.attributes.client_number.is_shown) {
             return;
         }
         
-        fieldPlaceholder = UIView(frame: CGRectZero)
-          self.addArrangedSubview(fieldPlaceholder)
+        fieldPlaceholder = UIView(frame: CGRect.zero)
+        fieldPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(fieldPlaceholder)
         fieldPlaceholder.mas_makeConstraints { make in
-            make.height.mas_equalTo()(44)
+            make?.height.mas_equalTo()(62)
+        }
+
+        noHandphoneLabel.text = category.attributes.client_number.text
+        fieldPlaceholder.addSubview(noHandphoneLabel)
+        
+        noHandphoneLabel.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.fieldPlaceholder.mas_top)?.offset()(10)
+            make?.left.equalTo()(self.fieldPlaceholder.mas_left)?.offset()(self.WIDGET_LEFT_MARGIN)
         }
         
         if numberField != nil {
             self.inputtedNumber = numberField.text!
         }
-        numberField = UITextField(frame: CGRectZero)
-        
+        numberField = UITextField(frame: CGRect.zero)
         numberField.placeholder = category.attributes.client_number.placeholder
-        numberField.borderStyle = .RoundedRect
-        numberField.rightViewMode = .Always
-        numberField.keyboardType = .NumberPad
-        numberField.clearButtonMode = .Always
+        numberField.borderStyle = .none
+        numberField.rightViewMode = .always
+        numberField.keyboardType = .numberPad
+        numberField.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.54)
+        numberField.clearButtonMode = .always
         
-        let keyboard =  MMNumberKeyboard(frame: CGRectZero)
+        let keyboard =  MMNumberKeyboard(frame: CGRect.zero)
         keyboard.allowsDecimalPoint = false
         keyboard.delegate = self
         keyboard.returnKeyTitle = "Beli"
         
         numberField.inputView = keyboard
         
+        if(category.attributes.use_phonebook) {
+            phoneBook = UIImageView(image: UIImage(named: "icon_phonebook"))
+            phoneBook.isUserInteractionEnabled = true
+            fieldPlaceholder.addSubview(phoneBook)
+            
+            phoneBook.mas_makeConstraints { make in
+                make?.height.equalTo()(25)
+                make?.width.equalTo()(25)
+                make?.right.equalTo()(self.fieldPlaceholder.mas_right)?.offset()(-15)
+                make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(5)
+            }
+            
+            phoneBook.bk_(whenTapped: { [unowned self] in
+                self.activateContactPermission()
+            })
+        }
         
         fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
-            make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
-            make.top.equalTo()(self.fieldPlaceholder.mas_top)
-            make.left.equalTo()(self.mas_left).offset()(self.WIDGET_LEFT_MARGIN)
-            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -55 : -self.WIDGET_RIGHT_MARGIN)
+            make?.height.equalTo()(25)
+            make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(5)
+            make?.left.equalTo()(self.noHandphoneLabel.mas_left)
+            if(category.attributes.use_phonebook) {
+                make?.right.equalTo()(self.phoneBook.mas_left)?.offset()(-15)
+            } else {
+                make?.right.equalTo()(self.fieldPlaceholder.mas_right)?.offset()(-15)
+            }
+
+        }
+        
+        fieldPlaceholder.addSubview(numberFieldUnderlineView)
+        numberFieldUnderlineView.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.numberField.mas_bottom)?.offset()(self.underlineOffset)
+            make?.left.mas_equalTo()(self.numberField.mas_left)
+            make?.right.mas_equalTo()(self.numberField.mas_right)
+            make?.height.mas_equalTo()(1)
         }
         
         self.prefixView = UIView()
         self.numberField.addSubview(self.prefixView!)
         self.prefixView!.mas_makeConstraints({ (make) in
-            make.right.mas_equalTo()(self.numberField.mas_right).with().offset()(-90)
-            make.centerY.mas_equalTo()(self.numberField.mas_centerY).with().offset()(-15)
+            make?.right.mas_equalTo()(self.numberField.mas_right)?.with().offset()(-75)
+            make?.centerY.mas_equalTo()(self.numberField.mas_centerY)?.with().offset()(-15)
         })
         
-        if(category.attributes.use_phonebook) {
-            phoneBook = UIImageView(image: UIImage(named: "icon_phonebook.png"))
-            phoneBook.userInteractionEnabled = true
-            fieldPlaceholder.addSubview(phoneBook)
-            
-            phoneBook.mas_makeConstraints { make in
-                make.height.equalTo()(32)
-                make.width.equalTo()(32)
-                make.left.equalTo()(self.numberField.mas_right).offset()(5)
-                make.centerY.equalTo()(self.numberField.mas_centerY)
-            }
-            
-            phoneBook.bk_whenTapped { [unowned self] in
-                self.activateContactPermission()
-            }
+        numberErrorPlaceholder = UIView()
+        numberErrorPlaceholder.backgroundColor = UIColor.white
+        numberErrorPlaceholder.clipsToBounds = true
+        numberErrorPlaceholder.mas_makeConstraints { (make) in
+            make?.height.mas_equalTo()(0)
         }
         
-        numberErrorLabel = UILabel(frame: CGRectZero)
-        numberErrorLabel.text = "Error"
-        numberErrorLabel.textColor = UIColor.redColor()
-        numberErrorLabel.font = UIFont.systemFontOfSize(12)
-        
-        self.addArrangedSubview(numberErrorLabel)
+        stackView.addArrangedSubview(numberErrorPlaceholder)
+        numberErrorPlaceholder.addSubview(numberErrorLabel)
         
         numberErrorLabel.mas_makeConstraints { make in
-            make.height.equalTo()(0)
+            make?.left.mas_equalTo()(self.noHandphoneLabel)
+            make?.centerY.mas_equalTo()(self.numberErrorPlaceholder)
         }
     }
     
-    func activateContactPermission() {
-        let permission = JLContactsPermission.sharedInstance()
-        let permissionStatus = permission.authorizationStatus()
+    
+    
+    //MARK: Show or Hide View
+    
+    func hideErrors() {
+        self.numberErrorPlaceholder?.mas_updateConstraints { make in
+            make?.height.equalTo()(0)
+        }
         
-        if(permissionStatus == JLAuthorizationStatus.PermissionNotDetermined) {
-            permission.extraAlertEnabled = false
-            permission.authorize({ (granted, error) in
-                if(granted) {
-                    self.showAddressBook()
-                } else {
-                    self.showContactAlertPermission()
-                }
-            })
-        } else if(permissionStatus == JLAuthorizationStatus.PermissionDenied) {
-            self.showContactAlertPermission()
-        } else {
-            self.showAddressBook()
+        self.buttonErrorPlaceholder?.mas_updateConstraints { make in
+            make?.height.equalTo()(0)
+        }
+        
+        self.operatorErrorLabel?.mas_updateConstraints { make in
+            make?.height.equalTo()(0)
         }
     }
     
-    func showAddressBook() {
+    fileprivate func showProductButton(_ products: [PulsaProduct]) {
+        UIView.animate(withDuration: 0.25) {
+            self.saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
+                make?.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 41 : 0)
+            })
+            self.buttonsPlaceholder.mas_updateConstraints { make in
+                make?.height.equalTo()(self.selectedOperator.attributes.rule.show_product ? 66 : 0)
+            }
+            self.layoutIfNeeded()
+        }
+        //prevent keep adding button to handler
+        productButton.bk_removeEventHandlers(for: .touchUpInside)
+        productButton.bk_addEventHandler({ button -> Void in
+            self.didTapProduct!(products)
+            }, for: .touchUpInside)
+    }
+    
+    fileprivate func hideBuyButtons() {
+        buttonsPlaceholder.mas_updateConstraints { (make) in
+            make?.height.equalTo()(0)
+        }
+        
+        buyButton.mas_updateConstraints { make in
+            make?.height.equalTo()(0)
+        }
+        
+        buyButtonPlaceholder.mas_updateConstraints { (make) in
+            make?.height.equalTo()(0)
+        }
+        self.saldoCheckBox.isHidden = true
+        self.saldoLabel.isHidden = true
+        
+        saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
+            make?.height.equalTo()(0)
+        })
+    }
+    
+    fileprivate func showBuyButton() {
+        
+        buyButton.mas_updateConstraints { make in
+            make?.height.equalTo()(52)
+        }
+        
+        buyButtonPlaceholder.mas_updateConstraints { (make) in
+            make?.height.equalTo()(60)
+        }
+        
+        
+        self.saldoCheckBox.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
+        self.saldoLabel.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
+        
+        self.buyButton.isHidden = false
+    }
+    
+    fileprivate func hideProductButton() {
+        buttonsPlaceholder.mas_updateConstraints { (make) in
+            make?.height.equalTo()(0)
+        }
+        
+        buyButton.bk_removeEventHandlers(for: .touchUpInside)
+        buyButton.bk_addEventHandler({ button -> Void in
+            self.didPressBuyButton()
+            }, for: .touchUpInside)
+        self.prefixView?.isHidden = true
+    }
+    
+    fileprivate func showAddressBook() {
         self.didTapAddressbook?()
     }
     
-    func showContactAlertPermission() {
+    fileprivate func showContactAlertPermission() {
         self.didShowAlertPermission?()
     }
     
-    func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {
-        self.didPressBuyButton()
-        return true
-    }
+    // MARK: Did Press Button
     
-    // set custom keyboard to textField inputview will remove shouldChangeCharactersInRange:replacementString delegate
-    // as an alternative, i tried to check maximum length through MMNumberKeyboard's delegate to estimate maximum length
-    func numberKeyboard(numberKeyboard: MMNumberKeyboard!, shouldInsertText text: String!) -> Bool {
-        if(self.selectedOperator.attributes.name != "") {
-            if(self.numberField.text?.characters.count <= self.selectedOperator.attributes.maximum_length - 1) {
-                return true
-            }
-            
-            return false
-        }
-        
-        return true
-    }
-    
-    func addActionNumberField() {
-        numberField?.bk_addEventHandler ({[unowned self] number in
-            self.hideErrors()
-            self.checkInputtedNumber()
-            self.numberField.rightViewMode = .Always
-            self.numberField.clearButtonMode = .Always
-            }, forControlEvents: .EditingChanged)
-    }
-    
-    func checkInputtedNumber() {
-        self.hideErrors()
-        //operator must exists first
-        //fix this to prevent crash using serial dispatch
-        var inputtedText = self.numberField.text!
-        
-        if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
-            inputtedText = self.convertAreaNumber(inputtedText)
-        }
-        
-        self.setRightViewNumberField(inputtedText)
-        self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
-    }
-    
-    //convert code area from +62 into 0
-    private func convertAreaNumber(phoneNumber: String) -> String{
-        var convertedNumber = phoneNumber
-        if(phoneNumber.characters.count >= 2) {
-            let countryCode = phoneNumber.substringWithRange(phoneNumber.startIndex.advancedBy(0)..<phoneNumber.startIndex.advancedBy(2))
-            if(countryCode == "62") {
-                convertedNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex..<phoneNumber.startIndex.advancedBy(2), withString: "0")
-            }
-        }
-        
-        return convertedNumber
-    }
-    
-    func resetPulsaOperator() {
-        selectedOperator = PulsaOperator()
-    }
-    
-    func hideErrors() {
-        self.numberErrorLabel?.mas_updateConstraints { make in
-            make.height.equalTo()(0)
-        }
-        
-        self.buttonErrorLabel?.mas_updateConstraints { make in
-            make.height.equalTo()(0)
-        }
-        
-        self.operatorErrorLabel?.mas_updateConstraints { make in
-            make.height.equalTo()(0)
-        }
-    }
-    
-    private func findPrefix(inputtedString: String) -> Prefix {
-        var returnPrefix = Prefix(phoneNumber: "", image: "", id: "")
-        self.arrangedPrefix.forEach { (prefix) in
-            if(inputtedString.hasPrefix(prefix.phoneNumber)) {
-                returnPrefix = prefix
-            }
-        }
-        
-        return returnPrefix
-    }
-    
-    func setRightViewNumberField(inputtedPrefix: String) {
-        if(self.selectedCategory.attributes.validate_prefix) {
-            let prefix = self.findPrefix(inputtedPrefix)
-            
-            if(prefix.phoneNumber != "") {
-                self.findProducts((prefix.id), categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
-                self.setSelectedOperatorWithOperatorId(prefix.id)
-                
-                let prefixImage = UIImageView(frame: CGRectMake(0, 0, 60, 30))
-                prefixView?.removeAllSubviews()
-                prefixView?.addSubview(prefixImage)
-                prefixImage.setImageWithURL((NSURL(string: (prefix.image))))
-                self.prefixView?.hidden = false
-                
-                self.numberField.rightViewMode = .Always
-                self.numberField.clearButtonMode = .Always
-            } else {
-                if let prefixView = self.prefixView {
-                    prefixView.hidden = true
-                }
-                
-                resetPulsaOperator()
-                self.hideProductButton()
-            }
-        } else {
-            self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
-            self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
-            
-            let prefixImage = UIImageView(frame: CGRectMake(0, 0, 60, 30))
-            self.prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
-            self.prefixView!.addSubview(prefixImage)
-            
-            prefixImage.contentMode = .ScaleAspectFill
-            prefixImage.setImageWithURL((NSURL(string: self.selectedOperator.attributes.image)))
-            self.numberField.rightView = prefixView
-            self.numberField.rightViewMode = .Always
-            self.numberField.clearButtonMode = .Always
-
-        }
-                
-        self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { textField, range, string in
-            guard let text = textField.text else { return true }
-            
-            let newLength = text.characters.count + string.characters.count - range.length
-            return newLength <= self.selectedOperator.attributes.maximum_length
-        }
-    }
-    
-    func buildOperatorButton() {
-        let operatorTitle = (self.selectedOperator.attributes.name != "") ? self.selectedOperator.attributes.name : ButtonConstant.defaultProductButtonTitle
-        operatorPickerPlaceholder = UIView(frame: CGRectZero)
-        self.addArrangedSubview(operatorPickerPlaceholder)
-        
-        operatorButton = UIButton(frame: CGRectZero)
-        operatorButton.setTitle(operatorTitle, forState: .Normal)
-        operatorButton.layer.cornerRadius = 3
-        
-        operatorButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        operatorButton.backgroundColor = UIColor.whiteColor()
-        operatorButton.layer.borderColor = UIColor(red: (231.0/255.0), green: (231.0/255.0), blue: (231/255.0), alpha: 1).CGColor
-        operatorButton.layer.borderWidth = 1.0
-        operatorButton.contentHorizontalAlignment = .Left
-        operatorButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        
-        operatorPickerPlaceholder.addSubview(operatorButton)
-        
-        operatorPickerPlaceholder.mas_makeConstraints { (make) in
-            make.height.equalTo()(self.selectedCategory.attributes.show_operator ? 44 : 0)
-            make.width.equalTo()(self.operatorButton.mas_width)
-        }
-        
-        operatorButton.mas_makeConstraints { make in
-            make.top.equalTo()(self.operatorPickerPlaceholder.mas_top)
-            make.bottom.equalTo()(self.operatorPickerPlaceholder.mas_bottom)
-            make.left.right().equalTo()(self.operatorPickerPlaceholder)
-        }
-        
-        operatorButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
-        operatorButton.bk_addEventHandler({ [weak self](button) in
-            guard let `self` = self else { return }
-            
-            self.findProducts("", categoryId: self.selectedCategory.id!, didReceiveProduct: { receivedProducts in
-                let operators = self.findOperatorsFromProducts(receivedProducts)
-                self.didTapOperator?(operators)
-            })
-            
-        }, forControlEvents: .TouchUpInside)
-        
-        operatorErrorLabel = UILabel(frame: CGRectZero)
-        operatorErrorLabel.textColor = UIColor.redColor()
-        operatorErrorLabel.font = UIFont.systemFontOfSize(12)
-        self.addArrangedSubview(operatorErrorLabel)
-        
-        operatorErrorLabel.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-        }
-        self.attachArrowToButton(operatorButton)
-    }
-
-    func buildButtons(category: PulsaCategory) {
-        buttonsPlaceholder = UIView(frame: CGRectZero)
-        self.addArrangedSubview(buttonsPlaceholder)
-        
-        
-        productButton = UIButton(frame: CGRectZero)
-        productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
-        productButton.layer.cornerRadius = 3
-
-        productButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        productButton.backgroundColor = UIColor.whiteColor()
-        productButton.hidden = true
-        productButton.layer.borderColor = UIColor(red: (231.0/255.0), green: (231.0/255.0), blue: (231/255.0), alpha: 1).CGColor
-        productButton.layer.borderWidth = 1.0
-        productButton.contentHorizontalAlignment = .Left
-        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        
-        buttonsPlaceholder.addSubview(productButton)
-        
-        buttonsPlaceholder.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-            make.width.equalTo()(self.productButton.mas_width)
-        }
-        
-        productButton.mas_makeConstraints { make in
-            make.top.equalTo()(self.buttonsPlaceholder.mas_top)
-            make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
-            make.left.equalTo()(self.buttonsPlaceholder.mas_left)
-        }
-        
-        buttonErrorLabel = UILabel(frame: CGRectZero)
-        buttonErrorLabel.textColor = UIColor.redColor()
-        buttonErrorLabel.font = UIFont.systemFontOfSize(12)
-        self.addArrangedSubview(buttonErrorLabel)
-        
-        buttonErrorLabel.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-        }
-        
-        self.attachArrowToButton(productButton)
-    }
-    
-    private func attachArrowToButton(button: UIButton) {
-        let arrowImage = UIImageView(image: UIImage(named: "icon_arrow_down.png"))
-        button .addSubview(arrowImage)
-        
-        arrowImage.mas_makeConstraints { (make) in
-            make.top.equalTo()(button.mas_top).offset()(15)
-            make.width.height().equalTo()(14)
-            make.right.equalTo()(button.mas_right).offset()(-10)
-        }
-    }
-    
-    private func isValidNumber(number: String) -> Bool{
-        guard self.selectedOperator.id != nil else {
-            if(self.selectedCategory.attributes.validate_prefix) {
-                return self.isValidNumberLength(number)
-            }
-            
-            return true
-        }
-        
-        return self.isValidNumberLength(number)
-        
-    }
-    
-    private func isValidNumberLength(number: String) -> Bool {
-        if self.selectedOperator.attributes.maximum_length > 0 {
-            if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
-                self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
-                return false
-            } else if(number.characters.count > self.selectedOperator.attributes.maximum_length) {
-                self.numberErrorLabel.text = "Nomor terlalu panjang, maksimal "+String(self.selectedOperator.attributes.maximum_length)+" karakter"
-                return false
-            }
-        } else {
-            self.numberErrorLabel.text = "Nomor tidak valid"
-            return false
-        }
-        
-        return true
-    }
-    
-    private func isValidOperator() -> Bool {
-        if(self.operatorButton?.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedCategory.attributes.show_operator == true) {
-            operatorErrorLabel.text = "Pilih operator terlebih dahulu"
-            return false
-        }
-        
-        return true
-    }
-    
-    private func isValidProduct() -> Bool {
-        if(self.productButton.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedOperator.attributes.rule.show_product == true) {
-            buttonErrorLabel.text = "Pilih nominal terlebih dahulu"
-            return false
-        }
-        
-        return true
-    }
-    
-    func showProductButton(products: [PulsaProduct]) {
-        productButton.hidden = false
-        self.buttonsPlaceholder.mas_updateConstraints { make in
-            make.height.equalTo()(self.selectedOperator.attributes.rule.show_product ? 44 : 0)
-        }
-        
-        UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
-            self.productButton.hidden = !self.selectedOperator.attributes.rule.show_product
-        }, completion: { finished in
-        
-        })
-        
-        //prevent keep adding button to handler
-        productButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
-        productButton.bk_addEventHandler({ button -> Void in
-            self.didTapProduct!(products)
-        }, forControlEvents: .TouchUpInside)
-   
-    }
-    
-    private func hideProductButton() {
-        buttonsPlaceholder.mas_updateConstraints { (make) in
-            make.height.equalTo()(0)
-        }
-        
-        productButton.hidden = true
-        self.prefixView?.hidden = true
-    }
-    
-    func didPressBuyButton() {
+    fileprivate func didPressBuyButton() {
         let isValidNumber = (!self.selectedCategory.attributes.client_number.is_shown || self.isValidNumber(self.numberField.text!))
         
-        self.numberErrorLabel?.mas_updateConstraints { make in
-            make.height.equalTo()(!isValidNumber ? 22 : 0)
+        self.numberErrorPlaceholder?.mas_updateConstraints { make in
+            make?.height.equalTo()(!isValidNumber ? 22 : 0)
         }
-
-        self.buttonErrorLabel.mas_updateConstraints { make in
-            make.height.equalTo()((self.productButton.hidden == false && !self.isValidProduct()) ? 22 : 0)
+        
+        self.buttonErrorPlaceholder.mas_updateConstraints { make in
+            make?.height.equalTo()((!self.isValidProduct()) ? 22 : 0)
         }
         
         self.operatorErrorLabel?.mas_updateConstraints { make in
-            make.height.equalTo()((!self.operatorButton.hidden && !self.isValidOperator()) ? 22 : 0)
+            make?.height.equalTo()((!self.operatorButton.isHidden && !self.isValidOperator()) ? 22 : 0)
         }
         
         
@@ -783,35 +761,251 @@ class PulsaView: OAStackView, MMNumberKeyboardDelegate {
                     clientNumber = numberField.text!
                 }
                 
-                let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoSwitch.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(NSString.encodeString(self.selectedCategory.attributes.name))"
+                let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoCheckBox.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(NSString.encode(self.selectedCategory.attributes.name))"
                 
-                self.didSuccessPressBuy?(NSURL(string: self.userManager.webViewUrlFromUrl(pulsaUrl))!)
+                
+                self.didSuccessPressBuy?(URL(string: self.userManager.webViewUrl(fromUrl: pulsaUrl))!)
             }
         }
     }
     
+    // MARK: MMNumberKeyboard Delegate
     
-    func attachToView(container: UIView) {
+    func numberKeyboardShouldReturn(_ numberKeyboard: MMNumberKeyboard!) -> Bool {
+        self.didPressBuyButton()
+        return true
+    }
+    
+    // set custom keyboard to textField inputview will remove shouldChangeCharactersInRange:replacementString delegate
+    // as an alternative, i tried to check maximum length through MMNumberKeyboard's delegate to estimate maximum length
+    func numberKeyboard(_ numberKeyboard: MMNumberKeyboard!, shouldInsertText text: String!) -> Bool {
+        if(self.selectedOperator.attributes.name != "") {
+            if((self.numberField.text?.characters.count)! <= self.selectedOperator.attributes.maximum_length - 1) {
+                return true
+            }
+            
+            return false
+        }
+        
+        return true
+    }
+    
+    
+    
+    // MARK: Validation Checking
+    
+    fileprivate func isValidNumber(_ number: String) -> Bool{
+        guard self.selectedOperator.id != nil else {
+            if(self.selectedCategory.attributes.validate_prefix) {
+                return self.isValidNumberLength(number)
+            }
+            
+            return true
+        }
+        
+        return self.isValidNumberLength(number)
+        
+    }
+    
+    fileprivate func isValidNumberLength(_ number: String) -> Bool {
+        if self.selectedOperator.attributes.maximum_length > 0 {
+            if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
+                self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
+                return false
+            } else if(number.characters.count > self.selectedOperator.attributes.maximum_length) {
+                self.numberErrorLabel.text = "Nomor terlalu panjang, maksimal "+String(self.selectedOperator.attributes.maximum_length)+" karakter"
+                return false
+            }
+        } else {
+            self.numberErrorLabel.text = "Nomor tidak valid"
+            return false
+        }
+        
+        return true
+    }
+    
+    fileprivate func isValidOperator() -> Bool {
+        if(self.operatorButton?.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedCategory.attributes.show_operator == true) {
+            operatorErrorLabel.text = "Pilih operator terlebih dahulu"
+            return false
+        }
+        
+        return true
+    }
+    
+    
+    
+    fileprivate func isValidProduct() -> Bool {
+        if(self.productButton.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedOperator.attributes.rule.show_product == true) {
+            buttonErrorLabel.text = "Pilih nominal terlebih dahulu"
+            return false
+        }
+        
+        return true
+    }
+    
+    fileprivate func attachToView(_ container: UIView) {
         container.addSubview(self)
         
         self.mas_makeConstraints {make in
-            make.left.equalTo()(container.mas_left).offset()(10)
-            make.top.equalTo()(container.mas_top).offset()(10)
-            make.right.equalTo()(container.mas_right).offset()(-10)
-            make.bottom.equalTo()(container.mas_bottom)
+            make?.left.equalTo()(container.mas_left)?.offset()(10)
+            make?.top.equalTo()(container.mas_top)?.offset()(10)
+            make?.right.equalTo()(container.mas_right)?.offset()(-10)
+            make?.bottom.equalTo()(container.mas_bottom)
         }
+    }
+    
+    // MARK: Common Method
+    
+    func setCornerRadius() {
+        self.layer.cornerRadius = 2
+        self.layer.masksToBounds = true
     }
     
     func didSwipeHomePage() {
         self.numberField?.resignFirstResponder()
     }
     
-    func setupStackViewFormat() {
-        self.axis = .Vertical
-        self.distribution = .Fill
-        self.alignment = .Fill
-        self.spacing = 5.0
+    fileprivate func setupStackViewFormat() {
+        self.addSubview(stackView)
+        stackView.mas_makeConstraints { (make) in
+            make?.edges.mas_equalTo()(self)
+        }
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 0
     }
     
+    fileprivate func resetPulsaOperator() {
+        selectedOperator = PulsaOperator()
+    }
+    
+    fileprivate func resetCheckBox() {
+        saldoCheckBox.on = false
+    }
+    
+    fileprivate func findPrefix(_ inputtedString: String) -> Prefix {
+        var returnPrefix = Prefix(phoneNumber: "", image: "", id: "")
+        self.arrangedPrefix.forEach { (prefix) in
+            if(inputtedString.hasPrefix(prefix.phoneNumber)) {
+                returnPrefix = prefix
+            }
+        }
+        
+        return returnPrefix
+    }
+    
+    fileprivate func setRightViewNumberField(_ inputtedPrefix: String) {
+        if(self.selectedCategory.attributes.validate_prefix) {
+            let prefix = self.findPrefix(inputtedPrefix)
+            
+            if(prefix.phoneNumber != "") {
+                self.findProducts((prefix.id), categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+                self.setSelectedOperatorWithOperatorId(prefix.id)
+                
+                let prefixImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 30))
+                prefixView?.removeAllSubviews()
+                prefixView?.addSubview(prefixImage)
+                prefixImage.setImageWith((URL(string: (prefix.image))))
+                prefixImage.contentMode = .scaleAspectFit
+                self.prefixView?.isHidden = false
+                
+                self.numberField.rightViewMode = .always
+                self.numberField.clearButtonMode = .always
+            } else {
+                if let prefixView = self.prefixView {
+                    prefixView.isHidden = true
+                }
+                
+                resetPulsaOperator()
+                self.hideProductButton()
+            }
+        } else {
+            self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+            self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
+            
+            let prefixImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
+            self.prefixView!.addSubview(prefixImage)
+            prefixImage.setImageWith((URL(string: self.selectedOperator.attributes.image)))
+            
+            self.numberField.rightViewMode = .always
+            self.numberField.clearButtonMode = .always
+            
+        }
+    
+        self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { [unowned self] textField, range, string in
+            guard let text = textField?.text else { return true }
+            
+            let convertedString = self.convertAreaNumber(string!)
+            let newLength = text.characters.count + convertedString.characters.count - range.length
+            // 14 is longest phone number existed
+            return newLength <= (self.selectedOperator.attributes.maximum_length > 0 ? self.selectedOperator.attributes.maximum_length : 14)
+        }
+    }
+    
+    
+    
+    fileprivate func attachArrowToButton(_ button: UIButton) {
+        button.setImage(UIImage(named: "icon_arrow_down_grey"), for: UIControlState())
+        button.layoutIfNeeded()
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 15, 0, 0)
+    }
+    
+    fileprivate func activateContactPermission() {
+        let permission = JLContactsPermission.sharedInstance()
+        let permissionStatus = permission.authorizationStatus()
+        
+        if(permissionStatus == JLAuthorizationStatus.permissionNotDetermined) {
+            permission.isExtraAlertEnabled = false
+            permission.authorize({ (granted, error) in
+                if(granted) {
+                    self.showAddressBook()
+                } else {
+                    self.showContactAlertPermission()
+                }
+            })
+        } else if(permissionStatus == JLAuthorizationStatus.permissionDenied) {
+            self.showContactAlertPermission()
+        } else {
+            self.showAddressBook()
+        }
+    }
+    
+    fileprivate func addActionNumberField() {
+        numberField?.bk_addEventHandler ({[unowned self] number in
+            self.hideErrors()
+            self.checkInputtedNumber()
+            self.numberField.rightViewMode = .always
+            self.numberField.clearButtonMode = .always
+            }, for: .editingChanged)
+    }
+    
+    func checkInputtedNumber() {
+        self.hideErrors()
+        //operator must exists first
+        //fix this to prevent crash using serial dispatch
+        var inputtedText = self.numberField.text!
+        
+        if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
+            inputtedText = self.convertAreaNumber(inputtedText)
+            self.numberField.text = inputtedText
+        }
+        
+        self.setRightViewNumberField(inputtedText)
+        self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
+    }
+    
+    //convert code area from +62 into 0
+    fileprivate func convertAreaNumber(_ phoneNumber: String) -> String{
+        var convertedNumber = phoneNumber
+        convertedNumber = convertedNumber.replacingOccurrences(of: " ", with: "")
+        if(phoneNumber.characters.count >= 3) {
+            convertedNumber = convertedNumber.replacingOccurrences(of: "+62", with: "0", options: .caseInsensitive, range: phoneNumber.startIndex..<convertedNumber.index(convertedNumber.startIndex, offsetBy: 3))
+            convertedNumber = convertedNumber.replacingOccurrences(of: "62", with: "0", options: .caseInsensitive, range: phoneNumber.startIndex..<convertedNumber.index(convertedNumber.startIndex, offsetBy: 2))
+        }
+        return convertedNumber
+    }
 }
 

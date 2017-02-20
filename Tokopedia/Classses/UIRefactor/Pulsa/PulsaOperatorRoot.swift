@@ -12,9 +12,9 @@ class PulsaOperatorRoot: NSObject, NSCoding {
     var data : [PulsaOperator] = []
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaOperator.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: PulsaOperator.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -26,11 +26,11 @@ class PulsaOperatorRoot: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let data = aDecoder.decodeObjectForKey("data") as? [PulsaOperator] {
+        if let data = aDecoder.decodeObject(forKey:"data") as? [PulsaOperator] {
             self.data = data
         }
     }
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(data, forKey: "data")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(data, forKey: "data")
     }
 }

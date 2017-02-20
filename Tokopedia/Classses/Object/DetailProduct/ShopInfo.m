@@ -78,5 +78,10 @@
     return mapping;
 }
 
+- (void)setShop_already_favorited:(NSInteger)shop_already_favorited {
+    _shop_already_favorited = shop_already_favorited;
+    _favorite = shop_already_favorited;
+}
+
 
 @end

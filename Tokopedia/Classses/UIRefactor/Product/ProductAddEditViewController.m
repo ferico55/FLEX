@@ -94,7 +94,7 @@ FilterCategoryViewDelegate
     BOOL isBeingPresented = self.navigationController.isBeingPresented;
     if (isBeingPresented) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(onTapBackBarButton:)];
         self.navigationItem.leftBarButtonItem = barButtonItem;
@@ -291,7 +291,7 @@ FilterCategoryViewDelegate
 -(void)selectImageFromCameraOrAlbum{
     __weak typeof(self) wself = self;
     [TKPImagePickerController showImagePicker:self
-                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                                 assetType:DKImagePickerControllerAssetTypeAllPhotos
                        allowMultipleSelect:YES
                                 showCancel:YES
                                 showCamera:YES
@@ -628,7 +628,6 @@ FilterCategoryViewDelegate
 
     _productPriceTextField.text = price;
     _productWeightTextField.text = product.product_weight?:@"";
-    _form.product.product_returnable = ([_form.info.product_returnable integerValue]==3)?@"0":_form.info.product_returnable;
     
     _form.product.product_catalog = _form.catalog;
 }
@@ -675,18 +674,18 @@ FilterCategoryViewDelegate
         }
     }
     for (DKAsset* selectedImage in _selectedAsset) {
-        ProductEditImages *imageObject = [ProductEditImages new];
-        imageObject.image = selectedImage.resizedImage;
-        imageObject.isFromAsset = YES;
-        imageObject.asset = selectedImage;
-        imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
-        
-        [selectedImages addObject:imageObject];
+        [selectedImage fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            ProductEditImages *imageObject = [ProductEditImages new];
+            imageObject.image = image;
+            imageObject.isFromAsset = YES;
+            imageObject.asset = selectedImage;
+            imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
+            
+            [selectedImages addObject:imageObject];
+            _form.product_images = [selectedImages copy];
+            [self setImageButtons];
+        }];
     }
-    
-    _form.product_images = [selectedImages copy];
-    
-    [self setImageButtons];
 }
 
 -(void)setImageButtons{

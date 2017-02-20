@@ -38,7 +38,6 @@
 @property (weak, nonatomic) id<NotificationManagerDelegate> delegate;
 
 - (void)clearCacheNotificationPanel;
-- (void)selectViewControllerToOpen:(NSString *)notificationCode;
 - (void)tapNotificationBar;
 - (void)tapWindowBar;
 - (void)setViewController:(UIViewController*)vc;

@@ -14,16 +14,16 @@ class NotesList : NSObject{
     var note_status : NSString = ""
     var note_title : NSString = ""
     
-    class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["note_id" :"note_id",
                 "note_status" : "note_status",
                 "note_title" : "note_title"]
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
         return mapping
     }

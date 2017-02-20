@@ -36,7 +36,7 @@
     }
 }
 
-- (id)getUserLoginData {
+- (NSDictionary *)getUserLoginData {
     if([self isLogin]) {
         return [self secureStorageDictionary];
     } else {
@@ -247,6 +247,20 @@
     NSString *deviceId = self.getMyDeviceToken;
     NSString *jsUrl = [NSString stringWithFormat:@"%@/seamless?uid=%@&token=%@&url=%@", [NSString jsUrl], userId, deviceId, [NSString encodeString:url]];
     return jsUrl;
+}
+
+- (BOOL)isOfficialStore {
+    return [[self secureStorageDictionary][@"shop_is_official"] boolValue];
+}
+
+- (ShopType)shopType {
+    if ([[self secureStorageDictionary][@"shop_is_official"] boolValue]) {
+        return ShopTypeOfficial;
+    } else if ([[self secureStorageDictionary][@"shop_is_gold"] boolValue]) {
+        return ShopTypeGold;
+    } else {
+        return ShopTypeRegular;
+    }
 }
 
 @end

@@ -10,9 +10,9 @@ import UIKit
 
 @objc
 class IntroViewController: UIViewController, EAIntroDelegate {
-    @IBOutlet private var presentationContainer: UIView!
+    @IBOutlet fileprivate var presentationContainer: UIView!
     
-    @IBOutlet private var topedImageView: UIImageView! {
+    @IBOutlet fileprivate var topedImageView: UIImageView! {
         didSet {
             topedImageView.animationDuration = 4.2
             topedImageView.animationRepeatCount = 1
@@ -27,49 +27,49 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         }
     }
     
-    @IBOutlet private var page1View: UIView!
-    @IBOutlet private var page2View: UIView!
-    @IBOutlet private var page3View: UIView!
-    @IBOutlet private var page4View: UIView!
-    @IBOutlet private var page5View: UIView!
-    @IBOutlet private var page6View: UIView!
+    @IBOutlet fileprivate var page1View: UIView!
+    @IBOutlet fileprivate var page2View: UIView!
+    @IBOutlet fileprivate var page3View: UIView!
+    @IBOutlet fileprivate var page4View: UIView!
+    @IBOutlet fileprivate var page5View: UIView!
+    @IBOutlet fileprivate var page6View: UIView!
     
-    @IBOutlet private var spoonFork: UIImageView!
-    @IBOutlet private var babyBottle: UIImageView!
-    @IBOutlet private var fabulousShoe: UIImageView!
-    @IBOutlet private var tshirt: UIImageView!
-    @IBOutlet private var soccerBall: UIImageView!
-    @IBOutlet private var giftbox: UIImageView!
+    @IBOutlet fileprivate var spoonFork: UIImageView!
+    @IBOutlet fileprivate var babyBottle: UIImageView!
+    @IBOutlet fileprivate var fabulousShoe: UIImageView!
+    @IBOutlet fileprivate var tshirt: UIImageView!
+    @IBOutlet fileprivate var soccerBall: UIImageView!
+    @IBOutlet fileprivate var giftbox: UIImageView!
     
     
-    @IBOutlet private var slide3Content: UIImageView!
+    @IBOutlet fileprivate var slide3Content: UIImageView!
     
-    @IBOutlet private var page4Top: UIImageView!
-    @IBOutlet private var page4Door: UIImageView!
-    @IBOutlet private var page4Label: UIImageView!
+    @IBOutlet fileprivate var page4Top: UIImageView!
+    @IBOutlet fileprivate var page4Door: UIImageView!
+    @IBOutlet fileprivate var page4Label: UIImageView!
     
-    @IBOutlet private var page5Bling: UIImageView!
+    @IBOutlet fileprivate var page5Bling: UIImageView!
     
-    @IBOutlet private var labelsToReRender: [UILabel]!
+    @IBOutlet fileprivate var labelsToReRender: [UILabel]!
     
-    private var pageControl: UIPageControl = {
+    fileprivate var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
         pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
         return pageControl
     }()
     
-    @IBOutlet private var btnRejectNotification: UIButton! {
+    @IBOutlet fileprivate var btnRejectNotification: UIButton! {
         didSet {
             btnRejectNotification.layer.borderWidth = 1
-            btnRejectNotification.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
+            btnRejectNotification.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).cgColor
         }
     }
     
     @IBOutlet var btnLogin: UIButton! {
         didSet {
             btnLogin.layer.borderWidth = 1
-            btnLogin.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
+            btnLogin.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).cgColor
         }
     }
     
@@ -80,82 +80,82 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         
         AnalyticsManager.trackScreenName("Onboarding")
         
-        UIApplication.sharedApplication().statusBarStyle = .Default
+        UIApplication.shared.statusBarStyle = .default
         
         reRenderLabels()
         
         introView = {
-            let view = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
+            let view = EAIntroView(frame: UIScreen.main.bounds, andPages: [
                 {
                     let page = EAIntroPage(customView: page1View)
-                    page.onPageDidAppear = topedImageView.startAnimating
-                    page.onPageDidDisappear = topedImageView.stopAnimating
+                    page?.onPageDidAppear = topedImageView.startAnimating
+                    page?.onPageDidDisappear = topedImageView.stopAnimating
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page2View)
-                    page.onPageDidAppear = {[unowned self] in
+                    page?.onPageDidAppear = {[unowned self] in
                         self.animatePage2()
                     }
                     
-                    page.onPageDidDisappear = {[unowned self] in
+                    page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage2Animations()
                     }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page3View)
-                    page.onPageDidAppear = {[unowned self] in
+                    page?.onPageDidAppear = {[unowned self] in
                         self.animatePage3()
                     }
-                    page.onPageDidDisappear = {[unowned self] in
+                    page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage3Animations()
                     }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page4View)
-                    page.onPageDidAppear = {[unowned self] in
+                    page?.onPageDidAppear = {[unowned self] in
                         self.animatePage4()
                     }
-                    page.onPageDidDisappear = {[unowned self] in
+                    page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage4Animations()
                     }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page5View)
-                    page.onPageDidAppear = {[unowned self] in
+                    page?.onPageDidAppear = {[unowned self] in
                         self.animatePage5()
                     }
                     return page
                 }(),
                 EAIntroPage(customView: page6View)])
             
-            view.pageControl = pageControl
-            view.swipeToExit = false
-            view.showInView(presentationContainer)
-            view.skipButton = nil
-            view.backgroundColor = UIColor.clearColor()
-            view.delegate = self
+            view?.pageControl = pageControl
+            view?.swipeToExit = false
+            view?.show(in: presentationContainer)
+            view?.skipButton = nil
+            view?.backgroundColor = UIColor.clear
+            view?.delegate = self
             
             return view
         }()
     }
     
-    private func togglePageControlVisibility(pageIndex: UInt) {
-        pageControl.hidden = pageIndex > 3
+    fileprivate func togglePageControlVisibility(_ pageIndex: UInt) {
+        pageControl.isHidden = pageIndex > 3
     }
     
-    func intro(introView: EAIntroView!, pageAppeared page: EAIntroPage!, withIndex pageIndex: UInt) {
+    func intro(_ introView: EAIntroView!, pageAppeared page: EAIntroPage!, with pageIndex: UInt) {
         togglePageControlVisibility(pageIndex)
 
         if (pageIndex > 3) {
-            introView.scrollView.scrollEnabled = false
+            introView.scrollView.isScrollEnabled = false
         }
     }
     
-    private func reRenderLabels() {
+    fileprivate func reRenderLabels() {
         // At first, the line spacings won't be rendered correctly, because IBInspectable properties are set after
         // each label's text is rendered. As a workaround, we simply need to re-set the texts so that
         // the line spacings are applied.
@@ -164,15 +164,15 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         }
     }
         
-    private func stopPage2Animations() {
+    fileprivate func stopPage2Animations() {
         [spoonFork, babyBottle, fabulousShoe, tshirt, soccerBall, giftbox].forEach { view in
-            view.layer.removeAllAnimations()
-            view.alpha = 0
+            view?.layer.removeAllAnimations()
+            view?.alpha = 0
         }
     }
     
-    private func animatePage2() {
-        UIView.animateKeyframesWithDuration(1, delay: 0.5, options: .CalculationModeLinear, animations: {
+    fileprivate func animatePage2() {
+        UIView.animateKeyframes(withDuration: 1, delay: 0.5, options: UIViewKeyframeAnimationOptions(), animations: {
             self.showView(self.giftbox, atRelativeStartTime: 0.05)
             self.showView(self.fabulousShoe, atRelativeStartTime: 0.2)
             self.showView(self.tshirt, atRelativeStartTime: 0.35)
@@ -182,49 +182,49 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         }, completion: nil)
     }
     
-    private func showView(view:UIView, atRelativeStartTime startTime:Double) {
-        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0.2, animations: {
+    fileprivate func showView(_ view:UIView, atRelativeStartTime startTime:Double) {
+        UIView.addKeyframe(withRelativeStartTime: startTime, relativeDuration: 0.2, animations: {
             view.alpha = 1
         })
     }
     
-    private func stopPage3Animations() {
+    fileprivate func stopPage3Animations() {
         slide3Content.layer.removeAllAnimations()
     }
     
-    private func animatePage3() {
+    fileprivate func animatePage3() {
         let initialY = slide3Content.frame.origin.y
         let targetY = initialY - slide3Content.frame.size.height +
             slide3Content.superview!.frame.size.height
         
-        UIView.animateKeyframesWithDuration(1.4, delay: 0.5, options: .CalculationModeCubic, animations: {
-            UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0.5, animations: {
+        UIView.animateKeyframes(withDuration: 1.4, delay: 0.5, options: .calculationModeCubic, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.5, animations: {
                 self.slide3Content.frame.origin.y = targetY
             })
             
-            UIView.addKeyframeWithRelativeStartTime(0.51, relativeDuration: 0.5, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.51, relativeDuration: 0.5, animations: {
                 self.slide3Content.frame.origin.y = initialY
             })
         }, completion: nil)
     }
     
-    private func stopPage4Animations() {
+    fileprivate func stopPage4Animations() {
         [page4Top, page4Door, page4Label].forEach { view in
-            view.layer.removeAllAnimations()
-            view.alpha = 0
+            view?.layer.removeAllAnimations()
+            view?.alpha = 0
         }
     }
     
-    private func animatePage4() {
-        UIView.animateKeyframesWithDuration(0.8, delay: 0.3, options: .CalculationModeLinear, animations: {
+    fileprivate func animatePage4() {
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0.3, options: UIViewKeyframeAnimationOptions(), animations: {
             self.showView(self.page4Top, atRelativeStartTime: 0.1)
             self.showView(self.page4Door, atRelativeStartTime: 0.75)
             self.showView(self.page4Label, atRelativeStartTime: 0.95)
         }, completion: nil)
     }
     
-    private func animatePage5() {
-        UIView.animateWithDuration(1, delay: 0.3, options: [.Autoreverse, .Repeat, .CurveEaseInOut], animations: {
+    fileprivate func animatePage5() {
+        UIView.animate(withDuration: 1, delay: 0.3, options: [.autoreverse, .repeat], animations: {
             self.page5Bling.alpha = 1
         }, completion: nil)
     }
@@ -241,57 +241,57 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    private func navigateToMainViewControllerWithPage(page: MainViewControllerPage) {
-        let window = UIApplication.sharedApplication().keyWindow!
-        window.backgroundColor = UIColor.clearColor()
+    fileprivate func navigateToMainViewControllerWithPage(_ page: MainViewControllerPage) {
+        let window = UIApplication.shared.keyWindow!
+        window.backgroundColor = UIColor.clear
         let nextViewController = MainViewController(page: page)
         
-        nextViewController.view.frame = self.view.frame
+        nextViewController?.view.frame = self.view.frame
 
         //need to call this to prevent stale notification observer
-        introView.hideWithFadeOutDuration(1)
+        introView.hide(withFadeOutDuration: 1)
 
-        UIView.transitionWithView(
-            window,
+        UIView.transition(
+            with: window,
             duration: 0.5,
-            options: .TransitionCrossDissolve,
+            options: .transitionCrossDissolve,
             animations: {
                 window.rootViewController = nextViewController
             },
             completion: nil)
     }
     
-    private func markOnboardingPlayed() {
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "has_shown_onboarding")
-        NSUserDefaults.standardUserDefaults().synchronize()
+    fileprivate func markOnboardingPlayed() {
+        UserDefaults.standard.set(true, forKey: "has_shown_onboarding")
+        UserDefaults.standard.synchronize()
     }
     
-    @IBAction func btnSearchTapped(sender: AnyObject) {
+    @IBAction func btnSearchTapped(_ sender: AnyObject) {
         markOnboardingPlayed()
-        AnalyticsManager.trackOnBoardingClickButton("Search")
-        navigateToMainViewControllerWithPage(.Search)
+        AnalyticsManager.track(onBoardingClickButton: "Search")
+        navigateToMainViewControllerWithPage(.search)
     }
     
-    @IBAction func btnLoginTapped(sender: AnyObject) {
+    @IBAction func btnLoginTapped(_ sender: AnyObject) {
         markOnboardingPlayed()
-        AnalyticsManager.trackOnBoardingClickButton("Login")
-        navigateToMainViewControllerWithPage(.Login)
+        AnalyticsManager.track(onBoardingClickButton: "Login")
+        navigateToMainViewControllerWithPage(.login)
     }
     
-    @IBAction func btnRegisterTapped(sender: AnyObject) {
+    @IBAction func btnRegisterTapped(_ sender: AnyObject) {
         markOnboardingPlayed()
-        AnalyticsManager.trackOnBoardingClickButton("Register")
-        navigateToMainViewControllerWithPage(.Register)
+        AnalyticsManager.track(onBoardingClickButton: "Register")
+        navigateToMainViewControllerWithPage(.register)
     }
     
-    @IBAction func btnNotificationTapped(sender: AnyObject) {
-        JLNotificationPermission.sharedInstance().extraAlertEnabled = false
+    @IBAction func btnNotificationTapped(_ sender: AnyObject) {
+        JLNotificationPermission.sharedInstance().isExtraAlertEnabled = false
         JLNotificationPermission.sharedInstance().authorize({[unowned self] deviceId, error in
-            let deniedCode = JLAuthorizationErrorCode.PermissionSystemDenied.rawValue
-            if let errorCode = error?.code where errorCode == deniedCode {
+            let deniedCode = JLAuthorizationErrorCode.permissionSystemDenied.rawValue
+            if let errorCode = error?._code, errorCode == deniedCode {
                 guard #available(iOS 8, *) else { return }
                 let url = NSURL(string: UIApplicationOpenSettingsURLString)!
-                UIApplication.sharedApplication().openURL(url)
+                UIApplication.shared.openURL(url as URL)
             }
             
             if let _ = deviceId {
@@ -299,12 +299,12 @@ class IntroViewController: UIViewController, EAIntroDelegate {
             }
         })
         
-        AnalyticsManager.trackOnBoardingClickButton("Activate push notification")
+        AnalyticsManager.track(onBoardingClickButton: "Activate push notification")
     }
     
-    @IBAction func btnRejectNotificationTapped(sender: AnyObject) {
+    @IBAction func btnRejectNotificationTapped(_ sender: AnyObject) {
         introView.scrollingEnabled = true
         introView.setCurrentPageIndex(5, animated: true)
-        AnalyticsManager.trackOnBoardingClickButton("Reject push notification")
+        AnalyticsManager.track(onBoardingClickButton: "Reject push notification")
     }
 }

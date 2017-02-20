@@ -13,6 +13,7 @@
 #import "stringregister.h"
 #import "RegisterViewController.h"
 #import "CreatePasswordViewController.h"
+#import "ForgotPasswordViewController.h"
 
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
@@ -22,7 +23,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <AppsFlyer/AppsFlyer.h>
 #import "WebViewController.h"
-#import "TransactionCartRootViewController.h"
 
 #import "TAGDataLayer.h"
 
@@ -33,6 +33,12 @@
 #import "MMNumberKeyboard.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
+
+typedef NS_ENUM(NSInteger, RegisterActionType) {
+    RegisterActionTypeActivation = 1,
+    RegisterActionTypeLogin,
+    RegisterActionTypeResetPassword
+};
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -179,10 +185,18 @@ MMNumberKeyboardDelegate
     [providerListView attachToView:_signInProviderContainer];
     
     providerListView.onWebViewProviderSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [self webViewLoginWithProvider:provider];
     };
     
-    providerListView.onFacebookSelected = ^{
+    providerListView.onFacebookSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
                             fromViewController:weakSelf
@@ -191,7 +205,11 @@ MMNumberKeyboardDelegate
                                        }];
     };
     
-    providerListView.onGoogleSelected = ^{
+    providerListView.onGoogleSelected = ^(SignInProvider *provider) {
+        [AnalyticsManager trackEventName:@"clickRegister"
+                                category:GA_EVENT_CATEGORY_REGISTER
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
         [[GIDSignIn sharedInstance] signIn];
     };
 }
@@ -257,7 +275,7 @@ MMNumberKeyboardDelegate
     [FBSDKAccessToken setCurrentAccessToken:nil];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.title = @"";
@@ -275,7 +293,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
+- (IBAction)tap:(id)sender
 {
     [self.view endEditing:YES];
     
@@ -323,15 +341,14 @@ MMNumberKeyboardDelegate
                 
                 if (fullname && ![fullname isEqualToString:@""] &&
                     [test evaluateWithObject:fullname] &&
-                    phone &&
+                    phone && ![phone isEqualToString:@""] &&
                     email && [email isEmail] &&
                     pass && ![pass isEqualToString:@""] &&
                     confirmpass && ![confirmpass isEqualToString:@""]&&
                     [pass isEqualToString:confirmpass] &&
-                    phone.length >= 6 &&
                     pass.length >= 6 &&
                     isagree) {
-                    [self LoadDataAction:_datainput];
+                    [self doRegisterRequest:_datainput];
                 }
                 else
                 {
@@ -348,10 +365,8 @@ MMNumberKeyboardDelegate
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
-                    } else if (phone.length < 6) {
-                        [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
-                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
                     }
+                    
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
@@ -428,7 +443,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+- (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 - (void)didReceiveMemoryWarning
@@ -438,12 +453,12 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Request + Mapping
--(void)cancel
+- (void)cancel
 {
     _loadingView.hidden = YES;
 }
 
--(void)LoadDataAction:(NSDictionary *)data
+- (void)doRegisterRequest:(NSDictionary *)data
 {
     _act.hidden = NO;
     [_act startAnimating];
@@ -479,23 +494,28 @@ MMNumberKeyboardDelegate
                               }];
 }
 
--(void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
-{
+- (void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation {
     _register = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [_register.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
+    
+    if (_register.result.action == RegisterActionTypeActivation) {
+        [self displayActivationAlert];
+    } else if (_register.result.action == RegisterActionTypeLogin) {
+        [self loginExistingUser];
+    } else if (_register.result.action == RegisterActionTypeResetPassword) {
+        [self redirectToForgetPasswordPage];
+    } else {
         if (_register.message_error) {
             StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:_register.message_error
                                                                                delegate:self];
             [alertView show];
             
-            [AnalyticsManager localyticsTrackRegistration:@"0" success:NO];
+            [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             
-            [AnalyticsManager localyticsTrackRegistration:@"0" success:YES];
+            [AnalyticsManager localyticsTrackRegistration:@"Email" success:YES];
             [AnalyticsManager localyticsValue:@"Yes" profileAttribute:@"Is Login"];
             [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
             
@@ -509,24 +529,57 @@ MMNumberKeyboardDelegate
             self.navigationItem.leftBarButtonItem = nil;
         }
     }
+    
     _texfieldfullname.enabled = YES;
 }
 
 - (void)requestfailure {
     [self cancel];
-    
+    [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
     _act.hidden = YES;
     [_act stopAnimating];
     _texfieldfullname.enabled = YES;
 }
 
--(void)requesttimeout
+- (void)requesttimeout
 {
     [self cancel];
 }
 
+- (void)displayActivationAlert {
+    __weak typeof(self) weakSelf = self;
+    NSString *defaultText = [NSString stringWithFormat:@"Petunjuk aktivasi akun Tokopedia telah kami kirimkan ke email %@. Silakan periksa email Anda.", _textfieldemail.text];
+    TKPDAlert *alert = [TKPDAlert newview];
+    alert.text = _register.message_error?[_register.message_error firstObject]:defaultText;
+    alert.delegate = self;
+    alert.didTapActionButton = ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"4"];
+        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+    };
+    [alert show];
+}
+
+- (void)loginExistingUser {
+    AuthenticationService *authService = [AuthenticationService new];
+    [authService loginWithEmail:[_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]
+                       password:[_datainput objectForKey:kTKPDREGISTER_APIPASSKEY]
+             fromViewController:self
+                successCallback:^(Login *login) {
+                    [self onLoginSuccess:login];
+                }
+                failureCallback:^(NSError *error) {
+                    
+                }];
+}
+
+- (void)redirectToForgetPasswordPage {
+    NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]?:@"";
+    ResetPasswordSuccessViewController *controller = [[ResetPasswordSuccessViewController alloc] initWithEmail:email];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - Text Field Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     if (textField == _textfielddob) {
         // display datepicker
@@ -553,27 +606,27 @@ MMNumberKeyboardDelegate
     return YES;
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
-    if(textField == _texfieldfullname){
+    if (textField == _texfieldfullname) {
         [_textfieldphonenumber becomeFirstResponder];
         _activetextfield = _textfieldphonenumber;
     }
-    else if (textField ==_textfieldemail){
+    else if (textField ==_textfieldemail) {
         [_textfieldemail resignFirstResponder];
     }
-    else if (textField ==_textfieldpassword){
+    else if (textField ==_textfieldpassword) {
         [_textfieldconfirmpass becomeFirstResponder];
         _activetextfield = _textfieldconfirmpass;
     }
-    else if (textField ==_textfieldconfirmpass){
+    else if (textField ==_textfieldconfirmpass) {
         [_textfieldconfirmpass resignFirstResponder];
     }
     return YES;
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     if (textField == _texfieldfullname) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIFULLNAMEKEY];
@@ -586,6 +639,9 @@ MMNumberKeyboardDelegate
     }
     if (textField == _textfieldconfirmpass) {
         [_datainput setObject:textField.text forKey:kTKPDREGISTER_APICONFIRMPASSKEY];
+    }
+    if (textField == _textfieldphonenumber) {
+        [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
     }
     return YES;
 }
@@ -620,7 +676,7 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - Alert View Delegate
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
         case 10:
@@ -662,7 +718,7 @@ MMNumberKeyboardDelegate
     }
 }
 
--(void)alertViewCancel:(TKPDAlertView *)alertView
+- (void)alertViewCancel:(TKPDAlertView *)alertView
 {
     switch (alertView.tag) {
         case 11:
@@ -738,7 +794,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self showLoadingMode];
     
     [[AuthenticationService sharedService]
-     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebookWithUserData:data]
      fromViewController:self
      onSignInComplete:^(Login *login) {
          [self onLoginSuccess:login];
@@ -760,14 +816,13 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             [loginController.delegate redirectViewController:loginController.redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else {
+            UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
             [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
     } else {
         [self.navigationController popViewControllerAnimated:YES];
-        self.onLoginSuccess();
     }
     
     
@@ -821,7 +876,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
     [[AuthenticationService sharedService]
-     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogleWithUser:user]
      fromViewController:self
      onSignInComplete:^(Login *login) {
          [self onLoginSuccess:login];
@@ -838,14 +893,14 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
     
     
-    if(login.result.user_image != nil) {
+    if (login.result.user_image != nil) {
         [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
     }
     
     [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
     [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
     
-    if(login.result.shop_avatar != nil) {
+    if (login.result.shop_avatar != nil) {
         [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
     }
     
@@ -855,7 +910,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
     [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
     
-    if(login.result.user_reputation != nil) {
+    if (login.result.user_reputation != nil) {
         ReputationDetail *reputation = login.result.user_reputation;
         [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
         [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
@@ -870,12 +925,20 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
     
-    [self storeCredentialToKeychain:login];
+    AuthenticationService *authService = [AuthenticationService new];
+    [authService storeCredentialToKeychain:login];
     [self navigateToProperPage];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                        object:nil
+                                                      userInfo:nil];
     
     [AnalyticsManager trackLogin:login];
+    
+    if (_onLoginSuccess) {
+        _onLoginSuccess();
+    }
 }
 
 @end

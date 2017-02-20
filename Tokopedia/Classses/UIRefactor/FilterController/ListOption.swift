@@ -27,11 +27,11 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying {
         isSelected = model.isSelected
     }
     
-    func copyWithZone(zone: NSZone) -> AnyObject {
-        return self.dynamicType.init(self)
+    func copy(with zone: NSZone?) -> Any {
+        return type(of: self).init(self)
     }
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "name"  : "name",
             "value" : "value",
@@ -41,8 +41,8 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: self.attributeMappingDictionary())
                 
         return mapping
     }

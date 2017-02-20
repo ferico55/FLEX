@@ -105,7 +105,7 @@
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
     
     [productFeedNetworkManager requestWithBaseUrl:[NSString aceUrl]
-                                             path:@"/search/v2.4/product"
+                                             path:@"/search/v2.5/product"
                                            method:RKRequestMethodGET
                                         parameter:@{@"device":@"ios",
                                                     @"rows":@(PER_PAGE),

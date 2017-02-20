@@ -38,6 +38,7 @@
                                                                 @"product_wholesale",
                                                                 @"product_normal_price",
                                                                 @"product_image_300",
+                                                                @"product_image_700",
                                                                 @"shop_name",
                                                                 @"product_review_count",
                                                                 @"shop_is_owner",
@@ -72,6 +73,7 @@
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
+        [viewModel setProductLargeUrl:self.product_image_700];
         [viewModel setBadges:self.badges];
         [viewModel setLabels:self.labels];
         

@@ -12,8 +12,8 @@ class LabelCopyable: UILabel {
     
     var onCopy : ((String) -> Void)?
     
-    private func attachTapHandler(){
-        self.userInteractionEnabled = true
+    fileprivate func attachTapHandler(){
+        self.isUserInteractionEnabled = true
         
         let longTap = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongTap(_:)))
         self.addGestureRecognizer(longTap)
@@ -26,28 +26,28 @@ class LabelCopyable: UILabel {
         self.attachTapHandler()
     }
     
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
     
-    override func canResignFirstResponder() -> Bool {
+    override var canResignFirstResponder : Bool {
         return true
     }
     
-    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return (action == #selector(onTapCopy(_:)))
     }
     
-    @objc private func handleLongTap(sender:UILongPressGestureRecognizer){
+    @objc fileprivate func handleLongTap(_ sender:UILongPressGestureRecognizer){
         self.becomeFirstResponder()
         
-        let menu = UIMenuController.sharedMenuController()
-        menu.setTargetRect(self.frame, inView: self.superview!)
+        let menu = UIMenuController.shared
+        menu.setTargetRect(self.frame, in: self.superview!)
         menu.setMenuVisible(true, animated: true)
         
     }
     
-    @objc private func onTapCopy(sender: AnyObject?) {
+    @objc fileprivate func onTapCopy(_ sender: AnyObject?) {
         onCopy?(self.text ?? "")
     }
 

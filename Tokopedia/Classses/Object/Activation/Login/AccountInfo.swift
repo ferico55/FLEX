@@ -16,22 +16,24 @@ class AccountInfo: NSObject {
     var name = ""
     var requiredFields = [String]()
     var phoneNumber = ""
+    var phoneMasked = ""
     var error: String?
     var errorDescription: String?
 
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "user_id": "userId",
             "created_password": "createdPassword",
             "email":"email",
             "name":"name",
             "create_password_list": "requiredFields",
             "phone": "phoneNumber",
+            "phone_masked" : "phoneMasked",
             "error": "error",
             "error_description": "errorDescription"
         ])
         
-        return mapping
+        return mapping!
     }
 }

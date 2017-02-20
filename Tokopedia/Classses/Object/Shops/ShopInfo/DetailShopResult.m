@@ -41,4 +41,17 @@
                                                                                 withMapping:[Address mapping]]];
     return resultMapping;
 }
+
+- (void)setIs_open:(NSNumber *)is_open {
+    _is_open = is_open;
+    
+    if (_is_open.intValue == 1) {
+        self.activity = ShopActivityOpen;
+    } else if (_is_open.intValue == 2) {
+        self.activity = ShopActivityClosed;
+    } else {
+        self.activity = ShopActivityOther;
+    }
+}
+
 @end

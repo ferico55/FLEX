@@ -21,6 +21,12 @@
 #define CResponseSpeed @"respond_speed"
 #define CRatings @"ratings"
 
+typedef NS_ENUM(NSInteger, ShopActivity) {
+    ShopActivityOpen,
+    ShopActivityClosed,
+    ShopActivityOther // inactive, in moderation
+};
+
 @interface DetailShopResult : NSObject
 
 @property (nonatomic, strong) ClosedInfo *closed_info;
@@ -34,6 +40,8 @@
 @property (nonatomic, strong) Rating *ratings;
 @property (nonatomic, strong) ShopTransactionStats *shop_tx_stats;
 @property (nonatomic, strong) NSNumber *is_open;
+@property (nonatomic) ShopActivity activity;
+
 
 +(RKObjectMapping*)mapping;
 

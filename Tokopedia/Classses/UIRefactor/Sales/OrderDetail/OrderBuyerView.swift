@@ -10,27 +10,27 @@ import UIKit
 
 class OrderBuyerView: UIView {
     
-    @IBOutlet private var dayLeftViews: [UILabel]!
-    @IBOutlet private var dayLeftLabel: UILabel!
-    @IBOutlet private var invoiceLabel: UILabel!
-    @IBOutlet private var orderDateLabel: UILabel!
-    @IBOutlet private var buyerNameLabel: UILabel!
-    @IBOutlet private var automaticallyRejectedLabel: UILabel!
-    @IBOutlet private var buyerThumbnail: UIImageView!
+    @IBOutlet fileprivate var dayLeftViews: [UILabel]!
+    @IBOutlet fileprivate var dayLeftLabel: UILabel!
+    @IBOutlet fileprivate var invoiceLabel: UILabel!
+    @IBOutlet fileprivate var orderDateLabel: UILabel!
+    @IBOutlet fileprivate var buyerNameLabel: UILabel!
+    @IBOutlet fileprivate var automaticallyRejectedLabel: UILabel!
+    @IBOutlet fileprivate var buyerThumbnail: UIImageView!
     
     var order: OrderTransaction!
     
     var didTapInvoice : ((OrderTransaction?) -> Void)?
     var didTapBuyer : ((OrderTransaction?) -> Void)?
     
-    static func newView(order : OrderTransaction, showDaysLeft: Bool)-> UIView {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("OrderBuyerView", owner: nil, options: nil)!
+    static func newView(_ order : OrderTransaction, showDaysLeft: Bool)-> UIView {
+        let views:Array = Bundle.main.loadNibNamed("OrderBuyerView", owner: nil, options: nil)!
         let view = views.first as! OrderBuyerView
         view.setOrder(order, showDaysLeft: showDaysLeft)
         return view
     }
     
-    private func setLabelDayLeft(dayLeft:NSInteger){
+    fileprivate func setLabelDayLeft(_ dayLeft:NSInteger){
         if (dayLeft == 1) {
             
             dayLeftLabel.backgroundColor = UIColor(red: 255.0/255.0, green: 145.0/255.0, blue: 0/255.0, alpha: 1)
@@ -46,7 +46,7 @@ class OrderBuyerView: UIView {
             dayLeftLabel.backgroundColor = UIColor(red: 158.0/255.0, green: 158.0/255.0, blue: 158.0/255.0, alpha: 1)
             dayLeftLabel.text = "Expired"
             
-            automaticallyRejectedLabel.hidden = true;
+            automaticallyRejectedLabel.isHidden = true;
             
         } else {
             
@@ -55,27 +55,27 @@ class OrderBuyerView: UIView {
         }
     }
     
-    func setOrder(order: OrderTransaction, showDaysLeft:Bool){
+    func setOrder(_ order: OrderTransaction, showDaysLeft:Bool){
         self.order = order
         buyerNameLabel.text = order.order_customer.customer_name;
         invoiceLabel.text = order.order_detail.detail_invoice;
-        buyerThumbnail.setImageWithUrl(NSURL(string: order.order_customer.customer_image)!)
+        buyerThumbnail.setImageWithUrl(URL(string: order.order_customer.customer_image)!)
         buyerThumbnail.layer.cornerRadius = buyerThumbnail.frame.size.width/2
         orderDateLabel.text = order.order_payment.payment_verify_date
         if !(showDaysLeft) {
-            self.dayLeftViews.forEach{$0.hidden = true}
+            self.dayLeftViews.forEach{$0.isHidden = true}
         }
         self.setLabelDayLeft(order.order_payment.payment_process_day_left)
     }
     
-    @IBAction private func onTapInvoice(sender:UITapGestureRecognizer){
+    @IBAction fileprivate func onTapInvoice(_ sender:UITapGestureRecognizer){
         
         if didTapInvoice != nil {
             didTapInvoice!(order)
         }
     }
     
-    @IBAction private func onTapBuyer(sender:UITapGestureRecognizer){
+    @IBAction fileprivate func onTapBuyer(_ sender:UITapGestureRecognizer){
         
         if didTapBuyer != nil {
             didTapBuyer!(order)

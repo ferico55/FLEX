@@ -22,7 +22,7 @@ class EditSolutionSellerCell: UITableViewCell {
         
     }
     
-    func setViewModel(viewModel:ProductResolutionViewModel) {
+    func setViewModel(_ viewModel:ProductResolutionViewModel) {
         troubleLabel.text = viewModel.productTrouble
         troubleDescriptionLabel.text = viewModel.productTroubleDescription
         productNameLabel.text = viewModel.productName
