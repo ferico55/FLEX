@@ -1057,7 +1057,6 @@
 		7A9E7FF31E57000B00C827DD /* InboxTicketSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E76F81E56FFFF00C827DD /* InboxTicketSplitViewController.m */; };
 		7A9E7FF41E57000B00C827DD /* InboxTicketSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9E76F91E56FFFF00C827DD /* InboxTicketSplitViewController.xib */; };
 		7A9E7FF51E57000B00C827DD /* InboxTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E76FB1E56FFFF00C827DD /* InboxTicketViewController.m */; };
-		7A9E7FF61E57000B00C827DD /* JasonBannerComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E76FE1E56FFFF00C827DD /* JasonBannerComponent.m */; };
 		7A9E7FF71E57000B00C827DD /* LoginSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E77001E56FFFF00C827DD /* LoginSecurity.m */; };
 		7A9E7FF81E57000B00C827DD /* LogoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E77011E56FFFF00C827DD /* LogoutRequest.swift */; };
 		7A9E7FF91E57000B00C827DD /* MiniSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E77031E56FFFF00C827DD /* MiniSlide.m */; };
@@ -1779,6 +1778,8 @@
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AEE442A1E5A9C18008139CD /* JasonBannerComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEE44291E5A9C18008139CD /* JasonBannerComponent.m */; };
+		7AEE44301E5A9F42008139CD /* JasonToolsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEE442F1E5A9F42008139CD /* JasonToolsAction.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3717,8 +3718,6 @@
 		7A9E76FA1E56FFFF00C827DD /* InboxTicketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTicketViewController.h; sourceTree = "<group>"; };
 		7A9E76FB1E56FFFF00C827DD /* InboxTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTicketViewController.m; sourceTree = "<group>"; };
 		7A9E76FC1E56FFFF00C827DD /* string_inbox_ticket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_ticket.h; sourceTree = "<group>"; };
-		7A9E76FD1E56FFFF00C827DD /* JasonBannerComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonBannerComponent.h; sourceTree = "<group>"; };
-		7A9E76FE1E56FFFF00C827DD /* JasonBannerComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonBannerComponent.m; sourceTree = "<group>"; };
 		7A9E76FF1E56FFFF00C827DD /* LoginSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginSecurity.h; sourceTree = "<group>"; };
 		7A9E77001E56FFFF00C827DD /* LoginSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginSecurity.m; sourceTree = "<group>"; };
 		7A9E77011E56FFFF00C827DD /* LogoutRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutRequest.swift; sourceTree = "<group>"; };
@@ -4816,6 +4815,10 @@
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AEE44281E5A9C18008139CD /* JasonBannerComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonBannerComponent.h; sourceTree = "<group>"; };
+		7AEE44291E5A9C18008139CD /* JasonBannerComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonBannerComponent.m; sourceTree = "<group>"; };
+		7AEE442E1E5A9F42008139CD /* JasonToolsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonToolsAction.h; sourceTree = "<group>"; };
+		7AEE442F1E5A9F42008139CD /* JasonToolsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonToolsAction.m; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -7344,6 +7347,7 @@
 		7A9E74A11E56FFFD00C827DD /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AEE44271E5A9C18008139CD /* Jasonette */,
 				7A9E74A21E56FFFD00C827DD /* Activation */,
 				7A9E74C71E56FFFD00C827DD /* Address */,
 				7A9E74D21E56FFFD00C827DD /* Alert */,
@@ -7373,8 +7377,6 @@
 				7A9E76E11E56FFFF00C827DD /* InboxReview */,
 				7A9E76E31E56FFFF00C827DD /* InboxTalk */,
 				7A9E76EC1E56FFFF00C827DD /* InboxTicket */,
-				7A9E76FD1E56FFFF00C827DD /* JasonBannerComponent.h */,
-				7A9E76FE1E56FFFF00C827DD /* JasonBannerComponent.m */,
 				7A9E76FF1E56FFFF00C827DD /* LoginSecurity.h */,
 				7A9E77001E56FFFF00C827DD /* LoginSecurity.m */,
 				7A9E77011E56FFFF00C827DD /* LogoutRequest.swift */,
@@ -10640,6 +10642,17 @@
 			path = ServiceExtensi;
 			sourceTree = "<group>";
 		};
+		7AEE44271E5A9C18008139CD /* Jasonette */ = {
+			isa = PBXGroup;
+			children = (
+				7AEE442E1E5A9F42008139CD /* JasonToolsAction.h */,
+				7AEE442F1E5A9F42008139CD /* JasonToolsAction.m */,
+				7AEE44281E5A9C18008139CD /* JasonBannerComponent.h */,
+				7AEE44291E5A9C18008139CD /* JasonBannerComponent.m */,
+			);
+			path = Jasonette;
+			sourceTree = "<group>";
+		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -12330,6 +12343,7 @@
 				7A9E7D921E57000900C827DD /* EtalaseList.m in Sources */,
 				7A9E813C1E57000D00C827DD /* CancelShipmentViewController.m in Sources */,
 				7A9E82411E57000E00C827DD /* HeaderInvoiceComponent.mm in Sources */,
+				7AEE44301E5A9F42008139CD /* JasonToolsAction.m in Sources */,
 				7A9E7CF51E57000800C827DD /* TotalLikeDislike.m in Sources */,
 				7A9E80F21E57000D00C827DD /* HeaderCollectionReusableView.m in Sources */,
 				7A9E7F2D1E57000A00C827DD /* BackgroundLayer.m in Sources */,
@@ -12384,6 +12398,7 @@
 				7A9E7F981E57000B00C827DD /* MyWishlistShopReputation.swift in Sources */,
 				7A9E7DB21E57000900C827DD /* AddProductValidation.m in Sources */,
 				7A9E820F1E57000E00C827DD /* RequestTrack.m in Sources */,
+				7AEE442A1E5A9C18008139CD /* JasonBannerComponent.m in Sources */,
 				7A9E7CC41E57000800C827DD /* ResolutionAttachment.m in Sources */,
 				7A9E7D491E57000900C827DD /* PromoShopImage.m in Sources */,
 				7A9E81AE1E57000E00C827DD /* EditShopDescriptionViewCell.m in Sources */,
@@ -12457,7 +12472,6 @@
 				7A9E7C761E57000800C827DD /* ProductReturnInfo.swift in Sources */,
 				7A9E81781E57000D00C827DD /* SettingAddressExpandedCell.m in Sources */,
 				7A9E80131E57000B00C827DD /* MyShopNoteRequest.swift in Sources */,
-				7A9E7FF61E57000B00C827DD /* JasonBannerComponent.m in Sources */,
 				7A9E7DB51E57000900C827DD /* SettingLocationResult.m in Sources */,
 				7A9E80A71E57000C00C827DD /* PromoCollectionReusableView.m in Sources */,
 				7A9E7E181E57000900C827DD /* TxOrderPaymentEditMethod.m in Sources */,
