@@ -98,6 +98,11 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
+    func navigateToWKWebView(_ url: URL) {
+        let controller = WKWebViewController(urlString: url.absoluteString, shouldAuthorizeRequest: true)
+        self.controller.navigationController!.pushViewController(controller, animated: true)
+    }
+    
     func navigateToWebTicker(_ url: URL) {
         let controller = WebViewController()
         controller.strURL = url.absoluteString

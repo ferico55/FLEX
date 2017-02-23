@@ -21,8 +21,11 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
+        
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
+        
+        
         view = webView
         initProgressView()
     }
@@ -34,8 +37,25 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
         
+        let emptyLeftButton = UIBarButtonItem(
+            title: "Back Asu",
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        navigationItem.leftBarButtonItem = emptyLeftButton
+        
         initNoInternetView()
         loadWebView()
+    }
+    
+    func didTapBackButton() {
+        if webView.canGoBack {
+           webView.goBack()
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     init(urlString: String, shouldAuthorizeRequest: Bool) {
@@ -105,6 +125,22 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     //MARK: WKNavigation Delegate
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url
+
+        if(self.webView.canGoBack) {
+            if (url?.absoluteString == "https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios&app_version=196#/") {
+                self.navigationController?.popViewController(animated: true)
+            }
+            
+            if(navigationAction.navigationType == .backForward && url?.host == "pay.tokopedia.com") {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        decisionHandler(.allow)
+    }
+    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
