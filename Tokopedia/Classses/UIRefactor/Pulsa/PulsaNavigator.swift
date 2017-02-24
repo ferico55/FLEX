@@ -100,6 +100,14 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     func navigateToWKWebView(_ url: URL) {
         let controller = WKWebViewController(urlString: url.absoluteString, shouldAuthorizeRequest: true)
+        controller.didReceiveNavigationAction = { action in
+            let url = action.request.url
+            
+            if(action.navigationType == .backForward && url?.host == "pay.tokopedia.com") {
+                controller.navigationController?.popViewController(animated: true)
+            }
+        }
+        controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     

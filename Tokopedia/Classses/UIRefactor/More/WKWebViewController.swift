@@ -19,6 +19,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     fileprivate var progressView: UIProgressView!
     fileprivate var noInternetView: NoResultReusableView!
     
+    //intercept when user click on action here
+    var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
+    
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         
@@ -37,13 +40,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
         
-        let emptyLeftButton = UIBarButtonItem(
-            title: "Back Asu",
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton)
-        )
-        
+        let emptyLeftButton = UIBarButtonItem(title: "Kembali", style: .plain, target: self, action: #selector(didTapBackButton))
         navigationItem.leftBarButtonItem = emptyLeftButton
         
         initNoInternetView()
@@ -126,16 +123,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //MARK: WKNavigation Delegate
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let url = navigationAction.request.url
 
         if(self.webView.canGoBack) {
-            if (url?.absoluteString == "https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios&app_version=196#/") {
-                self.navigationController?.popViewController(animated: true)
-            }
-            
-            if(navigationAction.navigationType == .backForward && url?.host == "pay.tokopedia.com") {
-                self.navigationController?.popViewController(animated: true)
-            }
+            self.didReceiveNavigationAction?(navigationAction)
         }
         
         decisionHandler(.allow)

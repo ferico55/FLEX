@@ -205,6 +205,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         let auth = UserAuthentificationManager()
         let urlString = "\(NSString.tokopediaUrl())/contact-us?sid=54&flag_app=1&utm_source=ios&app_version=\(UIApplication.getAppVersionStringWithoutDot())"
         let controller = WKWebViewController(urlString: auth.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: true)
+
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

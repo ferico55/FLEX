@@ -561,11 +561,7 @@
 }
 
 - (void)navigateToContactUs {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *contactUsURL = @"https://www.tokopedia.com/contact-us?flag_app=1&utm_source=ios";
-    WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
-    controller.title = @"Tokopedia Contact";
-    [self.delegate pushViewController:controller];
+    [NavigateViewController navigateToContactUsFromViewController:self.delegate];
 }
 
 #pragma mark - Memory Management
