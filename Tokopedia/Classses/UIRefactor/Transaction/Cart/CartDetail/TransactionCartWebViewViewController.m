@@ -217,6 +217,8 @@
 {
     [super viewWillDisappear:animated];
     self.title = @"";
+    
+    [_webView endEditing:YES];
 
 }
 
