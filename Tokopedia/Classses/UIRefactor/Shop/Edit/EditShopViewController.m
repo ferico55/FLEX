@@ -41,7 +41,7 @@
 @property (strong, nonatomic) EditShopDataSource *dataSource;
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 @property (strong, nonatomic) GeneratedHost *generatedHost;
-@property (strong, nonatomic) UploadImageResult *uploadImageObject;
+@property (strong, nonatomic) UploadDataImage *uploadImageObject;
 @property (strong, nonatomic) CloseShopViewController *closeShopController;
 
 @end
@@ -165,8 +165,8 @@
     NSDictionary *parameters = @{
         @"new_add":@(1),
         @"action":@"update_shop_picture",
-        @"pic_code":_uploadImageObject.image.pic_code?:@"",
-        @"pic_src": _uploadImageObject.image.pic_src?:@"",
+        @"pic_code":_uploadImageObject.pic_code?:@"",
+        @"pic_src": _uploadImageObject.pic_src?:@"",
         @"server_id" : _generatedHost.server_id?:@""
     };
     
@@ -195,8 +195,8 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengubah gambar toko"] delegate:self];
         [alert show];
         NSDictionary *userinfo = @{
-            kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_uploadImageObject.image.pic_src?:@"",
-            kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_uploadImageObject.file_path?:@""
+            kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_uploadImageObject.pic_src?:@"",
+            kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_uploadImageObject.pic_src?:@""
         };
         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                             object:nil
@@ -204,7 +204,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
                                                             object:nil
                                                           userInfo:userinfo];
-        self.dataSource.shop.image.logo = _uploadImageObject.image.pic_src;
+        self.dataSource.shop.image.logo = _uploadImageObject.pic_src;
         [self.tableView reloadData];
     } else {
         NSArray *errorMessages = settings.message_error?:@[@"Anda gagal mengubah gambar toko. Mohon coba kembali"];
@@ -287,28 +287,33 @@
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
     NSIndexPath *shopImageIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+    
     EditShopImageViewCell *imageViewCell = [self.tableView cellForRowAtIndexPath:shopImageIndexPath];
+
+    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
+    UIImage* image = photo[kTKPDCAMERA_DATAPHOTOKEY];
     
-    NSDictionary *object = @{
-        DATA_SELECTED_PHOTO_KEY : userInfo,
-        DATA_SELECTED_IMAGE_VIEW_KEY : imageViewCell.shopImageView,
-    };
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
+    requestObject.server_id = _generatedHost.server_id;
+    requestObject.user_id = [auth getUserId];
     
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:object
-                             generatedHost:_generatedHost
-                                    action:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME
-                                   success:^(id imageObject, UploadImage *image) {
-                                       self.uploadImageObject = image.result;
-                                       [self uploadShopImage];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
-                                       [alert show];
-                                   }];
+    NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",_generatedHost.upload_host];
+    [RequestUploadImage requestUploadImage:image
+                            withUploadHost:uploadImageBaseURL
+                                      path:@"/web-service/v4/action/upload-image/upload_shop_image.pl"
+                                      name:@"logo"
+                                  fileName:imageName
+                             requestObject:requestObject
+                                 onSuccess:^(ImageResult *imageResult) {
+                                     
+                                     self.uploadImageObject = imageResult.image;
+                                     [self uploadShopImage];
+                                     
+                                 } onFailure:^(NSError *error) {
+                                     
+                                 }];
 }
 
 #pragma mark - Edit shop delegate

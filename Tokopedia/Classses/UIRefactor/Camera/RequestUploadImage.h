@@ -47,7 +47,7 @@
                         paymentID:(NSString*)paymentID
                         fieldName:(NSString*)fieldName
                           success:(void (^)(id imageObject, UploadImage*image))success
-                          failure:(void(^)(id imageObject, NSError *error))failure;
+                          failure:(void(^)(id imageObject, NSError *error))failure DEPRECATED_ATTRIBUTE_MESSAGE("use requestUploadImage:withUploadHost:path:name:fileName:requestObject:onSuccess:onFailure: instead");
 
 + (void)requestUploadImage:(UIImage*)image
             withUploadHost:(NSString*)host
