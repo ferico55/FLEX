@@ -65,6 +65,9 @@
 		34232F1D1E4D7370006A0B9C /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 342328741E4D7369006A0B9C /* XYPieChart.m */; };
 		34232F1F1E4D7370006A0B9C /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3423287D1E4D7369006A0B9C /* Tokopedia-Info.plist */; };
 		34232F201E4D7370006A0B9C /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 342328801E4D7369006A0B9C /* Tokopedia.xcworkspace */; };
+		5215E94C1E555ABA00F16680 /* EnvelopeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215E94B1E555ABA00F16680 /* EnvelopeResponse.swift */; };
+		5215E94E1E555CB500F16680 /* EnvelopeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215E94D1E555CB500F16680 /* EnvelopeHeader.swift */; };
+		5215E9501E555E1B00F16680 /* EnvelopeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215E94F1E555E1B00F16680 /* EnvelopeData.swift */; };
 		526CA4131E52B1F60086D883 /* RetryPickupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526CA4121E52B1F60086D883 /* RetryPickupRequest.swift */; };
 		52743BD11E52DB81008F1806 /* SearchAutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52743BCC1E52DB81008F1806 /* SearchAutoCompleteCell.m */; };
 		52743BD21E52DB81008F1806 /* SearchAutoCompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52743BCD1E52DB81008F1806 /* SearchAutoCompleteCell.xib */; };
@@ -1873,6 +1876,9 @@
 		3423287E1E4D7369006A0B9C /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		3423287F1E4D7369006A0B9C /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		342328801E4D7369006A0B9C /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		5215E94B1E555ABA00F16680 /* EnvelopeResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeResponse.swift; sourceTree = "<group>"; };
+		5215E94D1E555CB500F16680 /* EnvelopeHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeHeader.swift; sourceTree = "<group>"; };
+		5215E94F1E555E1B00F16680 /* EnvelopeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeData.swift; sourceTree = "<group>"; };
 		526CA4121E52B1F60086D883 /* RetryPickupRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryPickupRequest.swift; sourceTree = "<group>"; };
 		52743BCB1E52DB81008F1806 /* SearchAutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteCell.h; sourceTree = "<group>"; };
 		52743BCC1E52DB81008F1806 /* SearchAutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteCell.m; sourceTree = "<group>"; };
@@ -5213,6 +5219,9 @@
 				92C1830B1E4DBD1A00287C18 /* V4Response.m */,
 				92C1830C1E4DBD1A00287C18 /* Wallet */,
 				92C183101E4DBD1A00287C18 /* WishList */,
+				5215E94B1E555ABA00F16680 /* EnvelopeResponse.swift */,
+				5215E94D1E555CB500F16680 /* EnvelopeHeader.swift */,
+				5215E94F1E555E1B00F16680 /* EnvelopeData.swift */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -11621,6 +11630,7 @@
 				92C18FD11E4DBD2300287C18 /* ProductTalkFormViewController.m in Sources */,
 				92C18B001E4DBD1E00287C18 /* InboxTicketList.m in Sources */,
 				92C18F1B1E4DBD2200287C18 /* FilterShipmentConfirmationViewController.m in Sources */,
+				5215E94C1E555ABA00F16680 /* EnvelopeResponse.swift in Sources */,
 				92C18E161E4DBD2100287C18 /* DetailProductDescriptionCell.m in Sources */,
 				92C18C721E4DBD1F00287C18 /* LoginViewController.m in Sources */,
 				92C18BEB1E4DBD1F00287C18 /* RateAttributes.m in Sources */,
@@ -11807,11 +11817,13 @@
 				92C18E4B1E4DBD2100287C18 /* ReportProductSubmitResponse.swift in Sources */,
 				92C18C8C1E4DBD1F00287C18 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				92C18CA31E4DBD1F00287C18 /* AlertVerifyOTP.m in Sources */,
+				5215E9501E555E1B00F16680 /* EnvelopeData.swift in Sources */,
 				92C18F3E1E4DBD2200287C18 /* ProductLabel.m in Sources */,
 				92C18CD71E4DBD2000287C18 /* CatalogSpecificationCell.m in Sources */,
 				92C18AF61E4DBD1E00287C18 /* InboxReviewResponse.m in Sources */,
 				92C18EC91E4DBD2200287C18 /* ResolutionProductData.m in Sources */,
 				92C18C0C1E4DBD1F00287C18 /* TxOrderConfirmationListOrder.m in Sources */,
+				5215E94E1E555CB500F16680 /* EnvelopeHeader.swift in Sources */,
 				92C18A3B1E4DBD1E00287C18 /* UserData.m in Sources */,
 				92C18A3A1E4DBD1E00287C18 /* UserAuthentificationManager.m in Sources */,
 				92C18CCC1E4DBD1F00287C18 /* UploadImageObserver.swift in Sources */,

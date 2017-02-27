@@ -56,6 +56,7 @@ RetryViewDelegate
     
     __weak RKObjectManager *_objectmanager;
     NoResultReusableView *_noResultView;
+    UserAuthentificationManager *_user;
 }
 
 #pragma mark - Initialization
@@ -84,6 +85,7 @@ RetryViewDelegate
     //todo with variable
     _product = [NSMutableArray new];
     _isNoData = (_product.count > 0);
+    _user = [[UserAuthentificationManager alloc]init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
@@ -105,8 +107,8 @@ RetryViewDelegate
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
     //request product history
-    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
-        [self showProductsAfterRequest:productHistory];
+    [ProductRequest requestHistoryProduct:[_user getUserId] OnSuccess:^(EnvelopeResponse *result) {
+        [self showProductsAfterRequest:result];
     } OnFailure:^(NSError *error) {
         [self showRetryButtonIfEmpty];
     }];
@@ -172,8 +174,8 @@ RetryViewDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     _isShowRefreshControl = YES;
     
-    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
-        [self showProductsAfterRequest:productHistory];
+    [ProductRequest requestHistoryProduct:[_user getUserId] OnSuccess:^(EnvelopeResponse *result) {
+        [self showProductsAfterRequest:result];
     } OnFailure:^(NSError *error) {
         [self stopRefreshing];
     }];
@@ -186,8 +188,8 @@ RetryViewDelegate
 }
 
 #pragma mark - RequestWithBaseUrl Methods
-- (void)showProductsAfterRequest:(HistoryProduct *)productHistory{
-    _product = [productHistory.data.list mutableCopy];
+- (void)showProductsAfterRequest:(EnvelopeResponse *)result{
+    _product = [result.data.list mutableCopy];
     
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
@@ -252,8 +254,8 @@ RetryViewDelegate
 
 #pragma mark - Other Method
 - (void)pressRetryButton {
-    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
-        [self showProductsAfterRequest:productHistory];
+    [ProductRequest requestHistoryProduct:[_user getUserId] OnSuccess:^(EnvelopeResponse *result) {
+        [self showProductsAfterRequest:result];
     } OnFailure:^(NSError *error) {
         
     }];
