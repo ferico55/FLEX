@@ -565,8 +565,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     //MARK: Login Delegate
-    
-    func redirectViewController(viewController: AnyObject!) {
+    func redirectViewController(_ viewController: Any!) {
         
     }
 }
