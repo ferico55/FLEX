@@ -37,6 +37,7 @@
     controller.delegate = vc;
     controller.callbackURL = data.callback_url;
     controller.title = @"Pembayaran";
+    controller.hidesBottomBarWhenPushed = YES;
     
     [vc.navigationController pushViewController:controller animated:YES];
 }

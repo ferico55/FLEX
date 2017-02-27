@@ -546,6 +546,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
                     let webViewController = WebViewController()
+                    webViewController.hidesBottomBarWhenPushed = true;
+
                     let userManager = UserAuthentificationManager()
                     
                     webViewController.shouldAuthorizeRequest = true
