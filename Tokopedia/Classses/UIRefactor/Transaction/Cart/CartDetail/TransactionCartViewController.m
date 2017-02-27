@@ -112,7 +112,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *voucherAmountLabel;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucerCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *totalInvoiceCell;
 
 @property (strong, nonatomic) IBOutlet UIView *checkoutView;
 
@@ -126,6 +125,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 @property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *LPCashbackCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *donasiCell;
 
 - (IBAction)tap:(id)sender;
 @end
@@ -352,7 +352,7 @@
         rowCount = 2; // Kode Promo Tokopedia, LPcell
     }
     else if (section == listCount+2)
-        rowCount = 0;
+        rowCount = _cart.donation?1:0; //donation
 
     else rowCount = 1; // total pembayaran
     
@@ -371,8 +371,13 @@
         cell =  [self cellLoyaltyPointAtIndexPath:indexPath];
     else if (indexPath.section == shopCount+1)
         cell = [self cellPaymentInformationAtIndexPath:indexPath];
-    else if (indexPath.section == shopCount+2)
-        cell = nil;
+    else if (indexPath.section == shopCount+2){
+        cell = [[TransactionCartDonationCell alloc] initWithDonation: _cart.donation];
+        ((TransactionCartDonationCell*)cell).onTapCheckBox = ^(BOOL isOn) {
+            _cart.donation.isSelected = isOn;
+            [self adjustGrandTotal];
+        };
+    }
     else
     {
         cell = _totalPaymentCell;
@@ -1087,6 +1092,8 @@
         grandTotalCartFromWS = 0;
     }
     
+    grandTotalCartFromWS += [_cart.donation.usedDonationValue integerValue];
+    
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalCartFromWS]];
     
     _cart.grand_total_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:grandTotalCartFromWS]];
@@ -1295,6 +1302,8 @@
         else if (indexPath.row >1) {
             return 0;
         }
+    } else if (indexPath.section == _list.count+2){
+        return 75;
     }
 
     return DEFAULT_ROW_HEIGHT;
@@ -1567,7 +1576,8 @@
                           listPartial:[partialStrList copy]
                         partialDetail:partialDetail
                           voucherCode:voucherCode
-							  success:^(TransactionActionResult *data) {
+                       donationAmount:_cart.donation.usedDonationValue
+                              success:^(TransactionActionResult *data) {
                               
                               [TransactionCartWebViewViewController pushToppayFrom:self data:data];
                               _popFromToppay = YES;

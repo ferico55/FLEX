@@ -39,7 +39,7 @@
 }
 
 
-+(void)fetchToppayWithToken:(NSString *)token listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail voucherCode:(NSString *)voucherCode success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error{
++(void)fetchToppayWithToken:(NSString *)token listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail voucherCode:(NSString *)voucherCode donationAmount:(NSString*)donationAmount success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error{
     
     NSMutableArray *tempDropshipStringList = [NSMutableArray new];
     for (NSString *dropshipString in listDropship) {
@@ -67,6 +67,7 @@
                                       @"dropship_str"   :dropshipString,
                                       @"partial_str"    :partialString,
                                       @"lp_flag"        :@"1",
+                                      @"donation_amt"   :donationAmount?:@"0"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
