@@ -42,6 +42,16 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //webview
+        JLRoutes.global().addRoute("/webview") { (params: [String : Any]!) -> Bool in
+            let encodedURL = params["url"] as! String
+            let decodedURL = encodedURL.removingPercentEncoding!
+            
+            openWebView(URL(string: decodedURL)!)
+            
+            return true
+        }
+        
         //promo
         JLRoutes.global().addRoute("/promo") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params as [String : AnyObject])
@@ -287,9 +297,7 @@ class TPRoutes: NSObject {
         
     }
     
-    static func getUTMString(_ params: [String : Any
-        
-        ]) -> String {
+    static func getUTMString(_ params: [String : Any]) -> String {
         if params["utm_source"] != nil && params["utm_medium"] != nil && params["utm_campaign"] != nil {
             let utmSource = params["utm_source"] as! String
             let utmMedium = params["utm_medium"] as! String
