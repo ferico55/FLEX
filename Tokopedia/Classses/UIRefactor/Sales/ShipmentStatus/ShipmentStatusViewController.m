@@ -554,7 +554,9 @@
     if ([result.data.is_success isEqualToString:@"1"]) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status delegate:self];
         [alert show];
-        [self refreshData];
+        _selectedOrder.order_shipping_retry = 0;
+        [self.tableView reloadData];
+        
     } else {
         NSString *title = result.message_error[0];
         NSString *message = result.message_error[1];
