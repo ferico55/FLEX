@@ -1036,7 +1036,7 @@
         if (_list.count>0) {
             _tableView.tableFooterView = _checkoutView;
         } else _tableView.tableFooterView = nil;
-        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:YES];
+        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:NO];
         [_tableView setContentOffset:CGPointZero];
     }
 }
