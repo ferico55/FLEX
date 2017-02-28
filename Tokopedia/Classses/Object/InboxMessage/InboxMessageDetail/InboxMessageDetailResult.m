@@ -23,6 +23,8 @@
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]];
     [resultMapping addPropertyMapping:pageRel];
     
+    [resultMapping addAttributeMappingsFromDictionary:@{@"textarea_reply":@"textarea_reply"}];
+    
     return resultMapping;
 }
 
