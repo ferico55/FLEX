@@ -197,6 +197,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             , NSFontAttributeName : UIFont.largeTheme()]
         pulsaCategoryControl.selectionIndicatorColor = self.tokopediaGreenColor
         pulsaCategoryControl.bk_addEventHandler({[unowned self] (control: Any) in
+            self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
             guard let control = control as? HMSegmentedControl else { return }
             self.buildViewByCategory(categories[control.selectedSegmentIndex])
             }, for: .valueChanged)
@@ -374,6 +375,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             
             self.findProducts("", categoryId: self.selectedCategory.id!, didReceiveProduct: { receivedProducts in
                 let operators = self.findOperatorsFromProducts(receivedProducts)
+                self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
                 self.didTapOperator?(operators)
             })
             
