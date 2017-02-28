@@ -11,6 +11,9 @@
 
 static const NSString* SEARCH_AUTOCOMPLETE = @"autocomplete";
 static const NSString* RECENT_SEARCH = @"recent_search";
+@interface SearchAutoCompleteCell()
+    @property (strong, nonatomic) IBOutlet UIButton *autoFillButton;
+@end
 
 @implementation SearchAutoCompleteCell
 
@@ -19,13 +22,14 @@ static const NSString* RECENT_SEARCH = @"recent_search";
     
     _closeButton.hidden = YES;
     _searchLoopImageView.hidden = YES;
+    _autoFillButton.hidden = NO;
     _searchTitleLeadingToSuperViewConstraint.constant = 21;
     if([data.id isEqual: RECENT_SEARCH]) {
         _closeButton.hidden = NO;
+        _autoFillButton.hidden = YES;
     } else if ([data.id isEqual: SEARCH_AUTOCOMPLETE]){
         _searchLoopImageView.hidden = NO;
         _searchTitleLeadingToSuperViewConstraint.constant = 46;
-        
     }
 }
 
@@ -45,6 +49,11 @@ static const NSString* RECENT_SEARCH = @"recent_search";
         UIColor *tokopediaGreenColor = [UIColor colorWithRed:65.0/255 green:181.0/255 blue:73.0/255 alpha:1.0];
         [attributedText setAttributes:@{NSForegroundColorAttributeName:tokopediaGreenColor} range: range];
         [_searchTitle setAttributedText:attributedText];
+    }
+}
+- (IBAction)didTapAutoFillButton:(UIButton *)sender {
+    if (self. didTapAutoFillButton) {
+        self.didTapAutoFillButton(_searchTitle.text);
     }
 }
 
