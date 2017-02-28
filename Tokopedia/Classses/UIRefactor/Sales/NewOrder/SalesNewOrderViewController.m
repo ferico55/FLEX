@@ -706,7 +706,7 @@
 - (void)didReceiveActionType:(ProceedType)actionType orderId:(NSString *)orderId mappingResult:(RKMappingResult *)mappingResult {
     ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status && [actionOrder.result.is_success boolValue]) {
+    if (status && actionOrder.data.isOrderAccepted) {
         
         _numberOfProcessedOrder++;
         [_orderInProcess removeObjectForKey:orderId];

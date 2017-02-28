@@ -37,11 +37,11 @@ class RequestSales: NSObject {
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
                                             if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
@@ -51,7 +51,7 @@ class RequestSales: NSObject {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }
@@ -77,11 +77,11 @@ class RequestSales: NSObject {
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
                                             if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
@@ -91,7 +91,7 @@ class RequestSales: NSObject {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }
@@ -118,11 +118,11 @@ class RequestSales: NSObject {
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
                                             if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
@@ -132,7 +132,7 @@ class RequestSales: NSObject {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }
