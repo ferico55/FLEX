@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -30,8 +30,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="IkR-FG-1ah">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="IkR-FG-1ah">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="FrQ-zR-mNJ">
                         <size key="itemSize" width="50" height="50"/>
@@ -93,9 +93,9 @@
             <constraints>
                 <constraint firstItem="IkR-FG-1ah" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="09t-5T-pv9"/>
                 <constraint firstItem="0Tb-3r-e2G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NZd-NN-Aas"/>
-                <constraint firstAttribute="bottom" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="T58-DS-cFG"/>
                 <constraint firstAttribute="trailing" secondItem="IkR-FG-1ah" secondAttribute="trailing" id="c3N-gZ-FpI"/>
                 <constraint firstAttribute="bottom" secondItem="0Tb-3r-e2G" secondAttribute="bottom" id="nAi-z3-Fs0"/>
+                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="oJr-P2-tAG"/>
                 <constraint firstAttribute="trailing" secondItem="0Tb-3r-e2G" secondAttribute="trailing" id="pT6-WC-E3R"/>
                 <constraint firstItem="IkR-FG-1ah" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qx0-5b-T6H"/>
             </constraints>

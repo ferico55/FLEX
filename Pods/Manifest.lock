@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - AHKActionSheet (0.5.4)
   - APAddressBook/Core (0.2.3)
   - APAddressBook/Swift (0.2.3):
     - APAddressBook/Core
@@ -35,12 +36,12 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
+  - Bolts/Tasks (1.8.4)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - DKImagePickerController (3.5.0):
@@ -53,9 +54,11 @@ PODS:
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
   - Eureka (2.0.0-beta.1)
-  - FBSDKCoreKit (4.11.0):
+  - FBSDKCoreKit (4.19.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.11.0):
+  - FBSDKLoginKit (4.19.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.19.0):
     - FBSDKCoreKit
   - FLEX (2.1.1)
   - GoogleAnalytics (3.13.0)
@@ -147,6 +150,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
+  - AHKActionSheet (~> 0.5.4)
   - APAddressBook/Swift
   - Appsee
   - AppsFlyerFramework
@@ -157,7 +161,9 @@ DEPENDENCIES:
   - DownPicker
   - EAIntroView (~> 2.8.0)
   - Eureka (~> 2.0.0-beta.1)
-  - FBSDKLoginKit
+  - FBSDKCoreKit (~> 4.19.0)
+  - FBSDKLoginKit (~> 4.19.0)
+  - FBSDKShareKit (~> 4.19.0)
   - FLEX (~> 2.0)
   - GoogleAppIndexing
   - GoogleMaps
@@ -206,12 +212,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
   APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BEMCheckBox: 264b8b72aa92adbfefa265cc58a0cdb86b207b9f
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
@@ -219,8 +226,9 @@ SPEC CHECKSUMS:
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
-  FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
-  FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
+  FBSDKCoreKit: 894b2b6eda6a4c8c4204e92e59cc355709ef045c
+  FBSDKLoginKit: 83ca4d8f12a2022570af9fd6aacf27f6b425b99f
+  FBSDKShareKit: 5953758366278430dc322d5cdc906db361ed7f81
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
@@ -263,6 +271,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: c4cc235cbbe57e8d6a301c16a4b2704253e1d42e
+PODFILE CHECKSUM: 932b261b6489d830b3fb80ffc2486473d7f37ddf
 
 COCOAPODS: 1.1.1

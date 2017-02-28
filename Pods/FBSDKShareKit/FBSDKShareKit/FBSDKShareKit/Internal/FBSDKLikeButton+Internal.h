@@ -18,8 +18,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import <FBSDKCoreKit/FBSDKAppLinkUtility.h>
+#import "FBSDKCoreKit+Internal.h"
+#import "FBSDKLikeActionController.h"
+#import "FBSDKLikeButton.h"
 
-@interface FBSDKOrganicDeeplinkHelper: NSObject
-- (bool)fetchOrganicDeeplink:(FBSDKDeferredAppInviteHandler)handler;
+@interface FBSDKLikeButton () <FBSDKButtonImpressionTracking>
+
+@property (nonatomic, strong, readwrite) FBSDKLikeActionController *likeActionController;
+
 @end

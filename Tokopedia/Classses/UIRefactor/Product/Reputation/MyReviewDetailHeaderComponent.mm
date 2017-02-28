@@ -13,6 +13,7 @@
 #import "ShopBadgeLevel.h"
 #import "AFNetworkingImageDownloader.h"
 #import "ImageStorage.h"
+#import "UIColor+Theme.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
@@ -221,7 +222,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                                 .string = inbox.reviewee_name,
                                                                                                 .font = [UIFont smallThemeMedium],
                                                                                                 .maximumNumberOfLines = 1,
-                                                                                                .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+                                                                                                .color = [UIColor tpGreen]
                                                                                             }
                                                                                             viewAttributes:{}
                                                                                             size:{}]

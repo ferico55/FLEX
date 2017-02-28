@@ -4,7 +4,6 @@
 
 #import "APContactBuilder.h"
 #import "APContactListBuilder.h"
-#import "APDeprecated.h"
 #import "APContactDataExtractor.h"
 #import "APImageExtractor.h"
 #import "APSocialServiceHelper.h"

@@ -19,6 +19,7 @@
 #import "MyReviewDetailViewController.h"
 #import "ReviewImageAttachment.h"
 #import "NavigateViewController.h"
+#import "UIColor+Theme.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewResponseViewController () <
@@ -196,7 +197,7 @@
     [_revieweeImage setClipsToBounds:YES];
     
     [_revieweeNameLabel setText:_inbox.reviewee_name];
-    [_revieweeNameLabel setText:[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+    [_revieweeNameLabel setText:[UIColor tpGreen]
                        withFont:[UIFont smallThemeMedium]];
     [_revieweeNameLabel setLabelBackground:[_inbox.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
     

@@ -23,7 +23,8 @@ def common_pods
     pod "JLPermissions/Contacts"
     pod 'GoogleSignIn', '~> 2.4.0'
     pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
-    pod 'FBSDKLoginKit'
+    pod 'FBSDKCoreKit', '~>4.19.0'
+    pod 'FBSDKLoginKit', '~>4.19.0'
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
@@ -39,6 +40,8 @@ def common_pods
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'VMaskTextField'
+    pod 'FBSDKShareKit', '~>4.19.0'
+    pod 'AHKActionSheet', '~>0.5.4'
 
     #Swift 3.0 pods
     pod 'RSKGrowingTextView'
