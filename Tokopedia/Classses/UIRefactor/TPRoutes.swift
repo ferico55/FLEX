@@ -344,6 +344,8 @@ class TPRoutes: NSObject {
     }
     
     static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
+        UIApplication.topViewController()?.showWaitOverlay()
+        
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
@@ -353,6 +355,7 @@ class TPRoutes: NSObject {
                                           parameter: ["shop_domain" : domain],
                                           mapping: Shop.mapping(),
                                           onSuccess: { (mappingResult, operation) in
+                                            UIApplication.topViewController()?.removeAllOverlays()
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response = result[""] as! Shop
                                             
@@ -365,6 +368,7 @@ class TPRoutes: NSObject {
                 shopExists(false)
         }
     }
+
     
 }
 

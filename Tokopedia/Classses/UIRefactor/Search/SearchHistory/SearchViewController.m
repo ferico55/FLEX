@@ -590,7 +590,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     viewController.view.frame = self.presentingViewController.navigationController.viewControllers.lastObject.view.frame;
     viewController.view.backgroundColor = [UIColor whiteColor];
     viewController.hidesBottomBarWhenPushed = YES;
-    [SwiftOverlays showCenteredWaitOverlay:viewController.view];
     
     [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
 }
