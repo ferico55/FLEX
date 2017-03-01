@@ -11,5 +11,5 @@
 @interface ProductFeedViewController : GAITrackedViewController
 
 @property NSInteger index;
-
+- (void) scrollToTop;
 @end

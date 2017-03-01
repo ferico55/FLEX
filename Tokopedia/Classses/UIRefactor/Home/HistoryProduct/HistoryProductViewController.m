@@ -276,4 +276,8 @@ RetryViewDelegate
     [_collectionView reloadData];
 }
 
+- (void)scrollToTop
+{
+    [self.collectionView scrollToTop];
+}
 @end

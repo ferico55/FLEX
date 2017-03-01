@@ -397,7 +397,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         _requestManager = [TokopediaNetworkManager new];
         _requestManager.isUsingHmac = YES;
         [self getUserSearchSuggestionDataWithQuery:searchText];
-        [self scrollToTop];
+        [_collectionView scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -583,13 +583,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
-}
-
-- (void)scrollToTop
-{
-    UICollectionView *collectionView = self.collectionView;
-    UIEdgeInsets collectionInset = collectionView.contentInset;
-    [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top) animated:YES];
 }
 
 - (void)navigateToIntermediaryPage {

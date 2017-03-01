@@ -306,7 +306,8 @@
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
     if (page >= 0 && page < _viewControllers.count) {
-        [self goToPage:page];
+        [self setIndexPage:page];
+        [self goToPage:_page];
     }
 }
 
@@ -340,7 +341,8 @@
 - (void)didSwipeHomePage:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
-    [self goToPage:index-1];
+    [self setIndexPage:index-1];
+    [self goToPage:_page];
     [self tapButtonAnimate:_scrollView.frame.size.width*(index-1)];
 }
 
@@ -495,6 +497,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         weakSelf.searchController.searchResultsController.view.hidden = hidden;
     });
+}
+
+- (void)scrollToTop
+{
+    NSArray *vcs = [_viewControllers mutableCopy];
+    if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
+        [vcs[_page] scrollToTop];
+    }
 }
 
 @end
