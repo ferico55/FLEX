@@ -158,16 +158,23 @@ FilterCategoryViewDelegate
 
 -(void)onTapNextButton:(UIBarButtonItem*)button{
     [[self.tableView superview] endEditing:YES];
+    ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
+    detailVC.type = _type;
     if ([self dataInputIsValid]) {
-        
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
-        ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
         detailVC.title = self.title;
         detailVC.form = _form;
-        detailVC.type = _type;
         [self.navigationController pushViewController:detailVC animated:YES];
+    } else if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Kendala Koneksi Internet"
+                                                                       message:@"Silakan cek kembali jaringan internet Anda."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
