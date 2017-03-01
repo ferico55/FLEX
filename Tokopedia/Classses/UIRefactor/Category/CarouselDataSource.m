@@ -134,5 +134,9 @@ NSInteger const bannerIpadWidth = 450;
     }
 }
 
+- (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
+    [_timer invalidate];
+    _timer = nil;
+}
 
 @end

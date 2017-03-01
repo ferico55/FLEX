@@ -66,6 +66,7 @@ class HomeSliderView: UIView {
             slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
             }, repeats: true)
         RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
+        self.carouselDataSource.timer = timer
         
         customPageControl.numberOfPages = banner.count
         customPageControl.mas_makeConstraints { (make) in
