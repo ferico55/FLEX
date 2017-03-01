@@ -444,10 +444,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [self.delegate redirectViewController:_redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else {
-            UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
             [self.tabBarController setSelectedIndex:0];
-            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
     }else{
         //to hotlist, so it will trigger the phoneverifviewcontroller
