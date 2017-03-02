@@ -40,8 +40,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
         
-        let emptyLeftButton = UIBarButtonItem(title: "Kembali", style: .plain, target: self, action: #selector(didTapBackButton))
+        let emptyLeftButton = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(didTapBackButton))
         navigationItem.leftBarButtonItem = emptyLeftButton
+        navigationItem.hidesBackButton = true
         
         initNoInternetView()
         loadWebView()
@@ -123,9 +124,12 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //MARK: WKNavigation Delegate
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
-        if(self.webView.canGoBack) {
-            self.didReceiveNavigationAction?(navigationAction)
+        self.didReceiveNavigationAction?(navigationAction)
+        
+        
+        //hit _blank url
+        if(!(navigationAction.targetFrame != nil)) {
+            webView.load(navigationAction.request)
         }
         
         decisionHandler(.allow)
