@@ -19,7 +19,6 @@
 #import "detail.h"
 
 #import "ReputationDetail.h"
-#import "ShopPageHeader.h"
 #import "string_inbox_message.h"
 #import "NoResultReusableView.h"
 #import "NSString+HTML.h"

@@ -42,6 +42,9 @@ def common_pods
     pod 'VMaskTextField'
     pod 'FBSDKShareKit', '~>4.19.0'
     pod 'AHKActionSheet', '~>0.5.4'
+    pod 'NSAttributedString-DDHTML', '1.2.0'
+    pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView.git', :commit => '2cc2633d2e711b3af45912b2718b4df1c360b8f5'
+    
 
     #Swift 3.0 pods
     pod 'RSKGrowingTextView'

@@ -51,7 +51,7 @@
                      CKComponentTapGestureAttribute(sel)
                  }
              }
-             size:{}
+             size:{.minWidth = 50} //prevent bounding rect from being too small to touch
              style:{
                  .direction = CKStackLayoutDirectionHorizontal
              }

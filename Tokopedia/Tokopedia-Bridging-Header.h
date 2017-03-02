@@ -39,8 +39,6 @@
 
 #import "ProductAddEditViewController.h"
 
-#import "ShopContainerViewController.h"
-
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "EtalaseList.h"
@@ -135,8 +133,6 @@
 #import "PromoteResult.h"
 #import "SearchAWSResult.h"
 #import "LoyaltyPointResult.h"
-#import "ShopPageHeader.h"
-#import "ShopTabView.h"
 #import "LogoutResult.h"
 #import "TKPStoreManager.h"
 #import "Shop.h"
