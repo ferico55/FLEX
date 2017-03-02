@@ -259,12 +259,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
                                             mapping:[GetSearchSuggestionGeneralResponse mapping]
                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                               NSDictionary *result = [successResult dictionary];
-                                              weakSelf.searchSuggestionDataArray = [[NSMutableArray alloc] init];
                                               GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
-                                              NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
-                                              weakSelf.searchSuggestionDataArray = [[searchSuggestionDatas bk_select:^BOOL(SearchSuggestionData *suggestion) {
+                                              weakSelf.searchSuggestionDataArray = [[searchResponse.data bk_select:^BOOL(SearchSuggestionData *suggestion) {
                                                   return suggestion.items.count > 0;
-                                              }] copy];
+                                              }] mutableCopy];
                                               [weakSelf.collectionView reloadData];
                                           } onFailure:^(NSError *errorResult) {
                                               StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:weakSelf];
@@ -320,7 +318,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
         __weak typeof(self) weakSelf = self;
         if ([searchSuggestionData.id isEqual: @"shop"]) {
             SearchAutoCompleteShopCell *shopCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier" forIndexPath:indexPath];
+            
             [shopCell setSearchItem:searchSuggestionItem];
+            
+            [SearchAutoCompleteHelper setBoldTextWithLabel:shopCell.shopName searchText:_searchBar.text];
             
             cell = shopCell;
         } else if ([searchSuggestionData.id isEqual: kTKPDSEARCH_IN_CATEGORY]) {
@@ -330,7 +331,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
             categoryCell.didTapAutoFillButton = ^(NSString *searchText) {
                 [weakSelf autoFillSearchBarWithText:searchText];
             };
-            [categoryCell setGreenSearchTextWithSearchText: _searchBar.text];
+            [SearchAutoCompleteHelper setBoldTextWithLabel:categoryCell.searchTextLabel searchText:_searchBar.text];
+
             cell = categoryCell;
             
         } else {
@@ -341,7 +343,11 @@ NSString *const RECENT_SEARCH = @"recent_search";
                 [weakSelf autoFillSearchBarWithText: suggestionText ];
             };
             [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-            [searchCell setGreenSearchText:_searchBar.text];
+            
+            if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]) {
+                [SearchAutoCompleteHelper setBoldTextWithLabel:searchCell.searchTitle searchText:_searchBar.text];
+            }
+
             cell = searchCell;
         }
         cell.hidden = NO;

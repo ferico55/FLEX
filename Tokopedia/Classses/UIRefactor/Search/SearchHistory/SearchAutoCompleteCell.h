@@ -19,8 +19,5 @@
 @property (nonatomic, copy, nullable) void (^didTapAutoFillButton)(NSString* text);
 
 - (void)setSearchCell:(SearchSuggestionItem*) item section:(SearchSuggestionData*) data;
-- (void)setBoldSearchText:(NSString*)searchText;
-- (void)setGreenSearchText:(NSString*)searchText;
-
 
 @end

@@ -25,17 +25,4 @@ class SearchAutoCompleteCategoryCell: UICollectionViewCell {
         searchTextLabel.text = item.keyword
     }
     
-    func setGreenSearchText(searchText: String) {
-        guard searchText != "" else { return }
-        
-        let attributedText = NSMutableAttributedString(string: searchTextLabel.text!)
-        let range = NSString(string: searchTextLabel.text!).range(of: searchText, options: .caseInsensitive)
-        
-        attributedText.setAttributes([NSForegroundColorAttributeName: UIColor.tpGreen()], range: range)
-        
-        searchTextLabel.attributedText = attributedText
-        
-    }
-    
-    
 }
