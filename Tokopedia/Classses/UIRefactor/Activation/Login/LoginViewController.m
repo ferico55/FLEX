@@ -445,6 +445,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else {
             [self.tabBarController setSelectedIndex:0];
+            UINavigationController *homeNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+            [homeNavController popToRootViewControllerAnimated:NO];
         }
     }else{
         //to hotlist, so it will trigger the phoneverifviewcontroller

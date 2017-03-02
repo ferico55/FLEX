@@ -475,7 +475,6 @@
     [self setSearchByImage];
     [self redirectToProductFeed];
     [self setIndexPage:1];
-    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
