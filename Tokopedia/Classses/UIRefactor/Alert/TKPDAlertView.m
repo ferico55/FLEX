@@ -59,14 +59,13 @@
 	return [[self class] newview];
 }
 
-//- (id)initWithFrame:(CGRect)frame
-//{
-//    self = [super initWithFrame:frame];
-//    if (self) {
-//        // Initialization code
-//    }
-//    return self;
-//}
+-(instancetype)initWithFrame:(CGRect)frame{
+    return [[self class] newview];
+}
+
+-(instancetype)initWithCoder:(NSCoder *)aDecoder{
+    return [super initWithCoder:aDecoder];
+}
 
 #pragma mark - View lifecycle
 

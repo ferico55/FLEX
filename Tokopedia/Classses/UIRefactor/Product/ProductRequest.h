@@ -10,6 +10,7 @@
 #import "EtalaseList.h"
 #import "ShopSettings.h"
 #import "HistoryProduct.h"
+#import "Tokopedia-Swift.h"
 
 @interface ProductRequest : NSObject
 
@@ -27,6 +28,9 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                     failure:(void (^)(NSArray *errorMessages))failure;
 
 + (void)requestHistoryProductOnSuccess:(void (^)(HistoryProduct *productHistory))success
+                             OnFailure:(void (^)(NSError *error))failure;
+
++ (void)requestHistoryProduct:(NSString *)userId OnSuccess:(void (^)(EnvelopeResponse *result))success
                              OnFailure:(void (^)(NSError *error))failure;
 
 @end

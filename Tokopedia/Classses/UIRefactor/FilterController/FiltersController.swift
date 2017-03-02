@@ -227,7 +227,11 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         let listKeyFilters = ListFilters.map({$0.key})
         for selectedFilter in selectedFilters {
             if selectedFilter.input_type == self.textInputType() {
-                if listKeyFilters .contains(selectedFilter.key) && Int(selectedFilter.value)! > 0 {
+                guard let value = Int(selectedFilter.value) else {
+                    textFieldIsActive = false
+                    break
+                }
+                if listKeyFilters .contains(selectedFilter.key) && value > 0 {
                     textFieldIsActive = true
                 }
             }

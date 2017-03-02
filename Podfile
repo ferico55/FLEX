@@ -79,7 +79,7 @@ def common_pods
     pod 'Eureka' , '~>2.0.0-beta.1'
     pod 'RxSwift', '~> 3.1.0'
     pod 'DKImagePickerController', '~> 3.5.0'
-
+    pod 'RestKit/Testing', '~> 0.27.0'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
