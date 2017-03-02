@@ -62,10 +62,12 @@ class OrderBuyerView: UIView {
         buyerThumbnail.setImageWithUrl(URL(string: order.order_customer.customer_image)!)
         buyerThumbnail.layer.cornerRadius = buyerThumbnail.frame.size.width/2
         orderDateLabel.text = order.order_payment.payment_verify_date
-        if !(showDaysLeft) {
-            self.dayLeftViews.forEach{$0.isHidden = true}
-        }
-        self.setLabelDayLeft(order.order_payment.payment_process_day_left)
+        
+        self.dayLeftLabel.backgroundColor = UIColor .fromHexString(order.order_deadline.deadline_color)
+        self.dayLeftLabel.text = order.deadline_string;
+        self.automaticallyRejectedLabel.text = order.deadline_label;
+        self.dayLeftLabel.isHidden = order.deadline_hidden
+        self.automaticallyRejectedLabel.isHidden = order.deadline_hidden
     }
     
     @IBAction fileprivate func onTapInvoice(_ sender:UITapGestureRecognizer){

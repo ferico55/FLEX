@@ -83,12 +83,12 @@ class RequestSales: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
-                                            if ((response.message_error?.count)! > 0) {
-                                                StickyAlertView.showErrorMessage(response.message_error)
+                                            if let error = response.message_error {
+                                                StickyAlertView.showErrorMessage(error)
                                             }
                                             
-                                            if ((response.message_status?.count)! > 0) {
-                                                StickyAlertView.showSuccessMessage(response.message_status)
+                                            if let success = response.message_status {
+                                                StickyAlertView.showSuccessMessage(success)
                                             }
                                             
                                             guard (response.data.isOrderAccepted) else {

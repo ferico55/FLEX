@@ -174,6 +174,7 @@
 #import "FavoriteShopRequest.h"
 #import "UIColor+Theme.h"
 #import "OAStackViewCategory.h"
+#import "Tkpd.h"
 
 // TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
 @import NJKWebViewProgress;
