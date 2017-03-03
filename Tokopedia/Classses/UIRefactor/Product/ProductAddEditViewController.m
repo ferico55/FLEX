@@ -167,7 +167,7 @@ FilterCategoryViewDelegate
         detailVC.title = self.title;
         detailVC.form = _form;
         [self.navigationController pushViewController:detailVC animated:YES];
-    } else if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+    } else if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT && _form == nil) {
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Kendala Koneksi Internet"
                                                                        message:@"Silakan cek kembali jaringan internet Anda."
                                                                 preferredStyle:UIAlertControllerStyleAlert];
