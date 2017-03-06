@@ -148,7 +148,8 @@
                                         options:{}
                                         attributes:{
                                             {@selector(setBackgroundColor:), [UIColor colorWithRed:0.259 green:0.741 blue:0.255 alpha:1.00]},
-                                            {@selector(setContentMode:), UIViewContentModeScaleAspectFill}
+                                            {@selector(setContentMode:), UIViewContentModeScaleAspectFill},
+                                            {@selector(setClipsToBounds:), YES}
                                         }]
                                    },
                                    {
