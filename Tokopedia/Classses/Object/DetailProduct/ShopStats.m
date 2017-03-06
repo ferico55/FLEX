@@ -58,7 +58,7 @@
 
 - (NSString *)pointsText {
     NSInteger score = self.shop_reputation_score.integerValue;
-    NSString *text = score == 0? @"Belum ada nilai reputasi": [NSString stringWithFormat:@"%@ poin", score];
+    NSString *text = score == 0? @"Belum ada nilai reputasi": [NSString stringWithFormat:@"%ld poin", (long)score];
     return text;
 }
 
