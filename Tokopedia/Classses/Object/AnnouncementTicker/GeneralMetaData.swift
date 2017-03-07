@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class GeneralMetaData: NSObject {
     var total_data: String = ""

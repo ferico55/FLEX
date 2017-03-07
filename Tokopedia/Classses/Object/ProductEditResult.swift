@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEditResult: NSObject {
     var info: ProductEditInfo = ProductEditInfo()

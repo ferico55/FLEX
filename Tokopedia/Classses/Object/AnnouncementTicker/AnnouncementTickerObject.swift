@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class AnnouncementTickerObject: NSObject {
     var ticker_id: String = ""

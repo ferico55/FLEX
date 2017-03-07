@@ -8,6 +8,8 @@
 
 import UIKit
 import BlocksKit
+import RestKit
+import DownPicker
 
 @objc(ReportProductViewController)
 class ReportProductViewController: UIViewController, UITextViewDelegate{

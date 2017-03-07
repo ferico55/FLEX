@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProductRoot: NSObject, NSCoding {
     var data : [PulsaProduct] = []

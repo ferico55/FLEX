@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class DiscoverResponse: NSObject {
     var message_error: [String]!

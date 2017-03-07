@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc (DetailProductVideoData)
 class DetailProductVideoData: NSObject {

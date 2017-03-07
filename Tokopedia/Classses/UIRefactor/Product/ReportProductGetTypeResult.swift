@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ReportProductGetTypeResult: NSObject {
     var is_success: String!

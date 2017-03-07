@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaOperatorRoot: NSObject, NSCoding {
     var data : [PulsaOperator] = []

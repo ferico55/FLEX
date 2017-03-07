@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEdit: NSObject {
     var message_error: [String] = []

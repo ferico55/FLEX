@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEditInfo: NSObject {
     var shop_has_terms: String = ""

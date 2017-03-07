@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaCategoryClientNumber: NSObject {
     var is_shown : Bool = false

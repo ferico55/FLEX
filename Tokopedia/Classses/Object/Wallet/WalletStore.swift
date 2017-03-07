@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class WalletStore: NSObject {
     var code: String = ""

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class HomePageCategoryResponse: NSObject {
     var headers: [String : String]!

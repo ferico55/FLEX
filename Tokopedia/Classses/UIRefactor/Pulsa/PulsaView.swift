@@ -12,6 +12,7 @@ import OAStackView
 import MMNumberKeyboard
 import HMSegmentedControl
 import BEMCheckBox
+import JLPermissions
 
 @objc
 class PulsaView: UIView, MMNumberKeyboardDelegate {

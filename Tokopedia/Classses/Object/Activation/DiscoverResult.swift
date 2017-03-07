@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class DiscoverResult: NSObject {
     var providers: [SignInProvider]!

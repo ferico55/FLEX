@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc(MyWishlistLabel)
 class MyWishlistLabel: NSObject {
