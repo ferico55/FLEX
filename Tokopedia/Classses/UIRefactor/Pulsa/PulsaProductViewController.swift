@@ -9,9 +9,9 @@
 import UIKit
 
 public enum ProductStatus : Int {
-    case Active = 1
-    case Inactive = 2
-    case OutOfStock = 3
+    case active = 1
+    case inactive = 2
+    case outOfStock = 3
 }
 
 class PulsaProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -19,7 +19,7 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var tableView: UITableView!
     var products: [PulsaProduct]!
     var selectedOperator: PulsaOperator!
-    var didSelectProduct: (PulsaProduct -> Void)?
+    var didSelectProduct: ((PulsaProduct) -> Void)?
     
     init() {
         super.init(nibName: "PulsaProductViewController", bundle: nil)
@@ -36,20 +36,20 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 68
         
-        self.tableView.registerNib(UINib(nibName: "PulsaProductCell", bundle: nil), forCellReuseIdentifier: "PulsaProductCellId")
+        self.tableView.register(UINib(nibName: "PulsaProductCell", bundle: nil), forCellReuseIdentifier: "PulsaProductCellId")
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView .dequeueReusableCellWithIdentifier("PulsaProductCellId") as! PulsaProductCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.tableView .dequeueReusableCell(withIdentifier: "PulsaProductCellId") as! PulsaProductCell
         
         let product = self.products[indexPath.row]
         cell.productName.text = product.attributes.desc
         cell.productName.translatesAutoresizingMaskIntoConstraints = true
-        let frame = CGRectMake(cell.productName.frame.origin.x, cell.productName.frame.origin.y, cell.productName.intrinsicContentSize().width, cell.productName.frame.size.height)
+        let frame = CGRect(x: cell.productName.frame.origin.x, y: cell.productName.frame.origin.y, width: cell.productName.intrinsicContentSize.width, height: cell.productName.frame.size.height)
         cell.productName.frame = frame
         
         if(product.attributes.detail == "") {
@@ -68,51 +68,51 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
                 
                 cell.promoPrice.text = promo.new_price
                 cell.currentPrice.attributedText = attributeString
-                cell.promoPrice.hidden = false
+                cell.promoPrice.isHidden = false
             } else {
-                cell.promoPrice.hidden = true
+                cell.promoPrice.isHidden = true
                 cell.currentPrice.text = product.attributes.price
             }
             
             if(promo.tag != "") {
-                cell.productTag.hidden = false
+                cell.productTag.isHidden = false
                 cell.productTag.text = promo.tag
             } else {
-                cell.productTag.hidden = true
+                cell.productTag.isHidden = true
             }
         } else {
-            cell.promoPrice.hidden = true
-            cell.productTag.hidden = true
+            cell.promoPrice.isHidden = true
+            cell.productTag.isHidden = true
             if(self.selectedOperator.attributes.rule.show_price == true) {
-                cell.currentPrice.hidden = false
+                cell.currentPrice.isHidden = false
                 cell.currentPrice.text = product.attributes.price
             } else {
-                cell.currentPrice.hidden = true
+                cell.currentPrice.isHidden = true
             }
             
         }
         
-        if(product.attributes.status == ProductStatus.Active.rawValue) {
-            cell.productStatus.hidden = true
-            cell.userInteractionEnabled = true
-            cell.hidden = false
-        } else if (product.attributes.status == ProductStatus.Inactive.rawValue) {
-            cell.productStatus.hidden = true
-            cell.userInteractionEnabled = false
-            cell.hidden = true
-        } else if (product.attributes.status == ProductStatus.OutOfStock.rawValue) {
-            cell.productStatus.hidden = false
-            cell.userInteractionEnabled = false
-            cell.hidden = false
+        if(product.attributes.status == ProductStatus.active.rawValue) {
+            cell.productStatus.isHidden = true
+            cell.isUserInteractionEnabled = true
+            cell.isHidden = false
+        } else if (product.attributes.status == ProductStatus.inactive.rawValue) {
+            cell.productStatus.isHidden = true
+            cell.isUserInteractionEnabled = false
+            cell.isHidden = true
+        } else if (product.attributes.status == ProductStatus.outOfStock.rawValue) {
+            cell.productStatus.isHidden = false
+            cell.isUserInteractionEnabled = false
+            cell.isHidden = false
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let product = self.products[indexPath.row]
         
-        if(product.attributes.status == ProductStatus.Inactive.rawValue) {
+        if(product.attributes.status == ProductStatus.inactive.rawValue) {
             return 0
         } else {
             return UITableViewAutomaticDimension
@@ -120,9 +120,9 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.didSelectProduct!(products[indexPath.row])
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 
 }

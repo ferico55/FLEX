@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaCategoryRoot: NSObject, NSCoding {
     var data : [PulsaCategory] = []
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaCategory.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: PulsaCategory.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -26,11 +27,11 @@ class PulsaCategoryRoot: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let data = aDecoder.decodeObjectForKey("data") as? [PulsaCategory] {
+        if let data = aDecoder.decodeObject(forKey:"data") as? [PulsaCategory] {
             self.data = data
         }
     }
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(data, forKey: "data")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(data, forKey: "data")
     }
 }

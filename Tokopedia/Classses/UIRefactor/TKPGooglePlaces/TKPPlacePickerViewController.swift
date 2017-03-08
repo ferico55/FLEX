@@ -12,16 +12,16 @@ import GoogleMaps
 
 
 @objc public enum TypePlacePicker : Int{
-    case TypeEditPlace
-    case TypeShowPlace
+    case typeEditPlace
+    case typeShowPlace
 }
 
 @objc class TKPAddressStreet : NSObject {
     
-    func getStreetAddress(street : String)->String{
+    func getStreetAddress(_ street : String)->String{
         let str = street
-        let streetNumber = str.componentsSeparatedByCharactersInSet(
-            NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        let streetNumber = str.components(
+            separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
         print(streetNumber)
         
         var address = street
@@ -33,7 +33,7 @@ import GoogleMaps
             // Checks if the char is a number
             if (Int(str) != nil){
                 // If it is it appends it to number
-                address = address.stringByReplacingOccurrencesOfString(str, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                address = address.replacingOccurrences(of: str, with: "", options: NSString.CompareOptions.literal, range: nil)
                 // Here we set the hasValue to true, beacause the street number will come in one order
                 // 531 in this case
                 hasValue = true
@@ -45,15 +45,15 @@ import GoogleMaps
                 }
             }
         }
-        address = address.stringByReplacingOccurrencesOfString("Kav", withString: "")
-        address = address.stringByReplacingOccurrencesOfString("-", withString: "")
+        address = address.replacingOccurrences(of: "Kav", with: "")
+        address = address.replacingOccurrences(of: "-", with: "")
         return address
     }
     
 }
 
 @objc protocol TKPPlacePickerDelegate {
-    func pickAddress(address: GMSAddress, suggestion:(String), longitude:Double, latitude:Double, mapImage:UIImage)
+    func pickAddress(_ address: GMSAddress, suggestion:(String), longitude:Double, latitude:Double, mapImage:UIImage)
 }
 
 @objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -83,7 +83,7 @@ import GoogleMaps
     var firstCoordinate = CLLocationCoordinate2D()
     var type : Int = 0
     var autoCompleteResults : [GMSAutocompletePrediction] = []
-    var placeHistories : NSMutableArray = NSMutableArray()
+    var placeHistories = NSMutableArray()
     
     var placePicker : GMSPlacePicker?
     var placesClient : GMSPlacesClient!
@@ -108,12 +108,12 @@ import GoogleMaps
     var infoAddress : AddressViewModel!
 
     override func loadView() {
-        var className:NSString = NSStringFromClass(self.classForCoder)
-        className = className.componentsSeparatedByString(".").last! as NSString
-        NSBundle.mainBundle().loadNibNamed(className as String, owner:self, options:nil)
+        var className:NSString = NSStringFromClass(self.classForCoder) as NSString
+        className = className.components(separatedBy: ".").last! as NSString
+        Bundle.main.loadNibNamed(className as String, owner:self, options:nil)
         
         whiteLocationView.layer.cornerRadius = 5
-        doneButton = doneButton.roundCorners(UIRectCorner.TopRight.union(UIRectCorner.BottomRight), radius: 5)
+        doneButton = doneButton.roundCorners(UIRectCorner.topRight.union(UIRectCorner.bottomRight), radius: 5)
     }
     
     func initLocationManager() {
@@ -136,21 +136,21 @@ import GoogleMaps
     }
     
     //MARK: - View Action
-    @IBAction func tapDone(sender: AnyObject) {
-        let mapImage : UIImage = UIImage.init(named: "map_gokil.png")!
+    @IBAction func tapDone(_ sender: AnyObject) {
+        let mapImage : UIImage = UIImage(named: "map_gokil.png")!
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func tapTransparantInfoView(sender: AnyObject) {
+    @IBAction func tapTransparantInfoView(_ sender: AnyObject) {
         hideInfo()
     }
     
-    @IBAction func tapTransparentSearchBar(sender: AnyObject) {
+    @IBAction func tapTransparentSearchBar(_ sender: AnyObject) {
         setSearchBarActive(false, animated: true)
     }
     
-    @IBAction func tapShowInfoAddress(sender: AnyObject) {
+    @IBAction func tapShowInfoAddress(_ sender: AnyObject) {
         if(_infoTopConstraint.constant <= -60){
             infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
             showInfo()
@@ -158,13 +158,13 @@ import GoogleMaps
     }
     
     //MARK: - Location Manager Delegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // stop updating location in order to save battery power
         locationManager.stopUpdatingLocation();
     }
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        guard status != CLAuthorizationStatus.Denied else{
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard status != CLAuthorizationStatus.denied else{
             return;
         }
         guard locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0) else{
@@ -174,16 +174,16 @@ import GoogleMaps
     }
     
     //MARK: - GMSMapView Delegate
-    func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
+    func mapView(_ mapView: GMSMapView!, didChange position: GMSCameraPosition!) {
         self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
         self.mapView.updateAddress("Tandai lokasi Anda")
     }
     
-    func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
+    func mapView(_ mapView: GMSMapView!, willMove gesture: Bool) {
     }
     
-    func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
-        if(type == TypePlacePicker.TypeEditPlace.rawValue){
+    func mapView(_ mapView: GMSMapView!, idleAt position: GMSCameraPosition!) {
+        if(type == TypePlacePicker.typeEditPlace.rawValue){
             if(position != nil && mapView.selectedMarker != nil){
                 mapView.selectedMarker.position = position.target
                 updateAddressSaveHistory(false, addressSugestion: nil)
@@ -191,11 +191,11 @@ import GoogleMaps
         }
     }
     
-    func mapView(mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
+    func mapView(_ mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
         return self.mapView.infoWindowView;
     }
     
-    func didTapMyLocationButtonForMapView(mapView: GMSMapView!) -> Bool {
+    func didTapMyLocationButton(for mapView: GMSMapView!) -> Bool {
         if (locationManager.location != nil){
             self.mapView.updateCameraPosition((locationManager.location?.coordinate)!)
         }
@@ -214,29 +214,29 @@ import GoogleMaps
         self.mapWarningLabel.attributedText = attributedString;
     }
     
-    func adustBehaviorType(type: Int){
+    func adustBehaviorType(_ type: Int){
         switch type {
-        case TypePlacePicker.TypeEditPlace.rawValue :
-            let doneBarButton = UIBarButtonItem(title: "Selesai", style: .Plain, target: self, action: #selector(TKPPlacePickerViewController.tapDone(_:)))
-            doneBarButton.tintColor = UIColor.whiteColor()
+        case TypePlacePicker.typeEditPlace.rawValue :
+            let doneBarButton = UIBarButtonItem(title: "Selesai", style: .plain, target: self, action: #selector(TKPPlacePickerViewController.tapDone(_:)))
+            doneBarButton.tintColor = UIColor.white
             self.navigationItem.rightBarButtonItem = doneBarButton
             self.title = "Pilih Lokasi"
-            locationView.hidden = false
-            pinPointImageView.hidden = false
+            locationView.isHidden = false
+            pinPointImageView.isHidden = false
             mapView.updateIsShowMarker(false)
-            mapView.myLocationEnabled = true
+            mapView.isMyLocationEnabled = true
             if (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0 && locationManager.location != nil) {
                 firstCoordinate =  locationManager.location!.coordinate
             }
             break;
-        case TypePlacePicker.TypeShowPlace.rawValue:
+        case TypePlacePicker.typeShowPlace.rawValue:
             self.title = "Lokasi"
-            searchBar.hidden = true
-            searchBar.hidden = true
+            searchBar.isHidden = true
+            searchBar.isHidden = true
             mapView.updateIsShowMarker(true)
             mapView.updateCameraPosition(firstCoordinate)
-            locationView.hidden = true
-            pinPointImageView.hidden = true
+            locationView.isHidden = true
+            pinPointImageView.isHidden = true
             mapView.showButtonCurrentLocation(false)
             break;
             
@@ -246,16 +246,16 @@ import GoogleMaps
         mapView.updateCameraPosition(firstCoordinate)
         self.updateAddressSaveHistory(false, addressSugestion:nil)
         searchBar.placeholder = "Cari Alamat";
-        searchBar.tintColor = UIColor.whiteColor()
+        searchBar.tintColor = UIColor.white
         searchBar.delegate = self
-        searchBar.setBackgroundImage(UIImage(named: "NavBar"), forBarPosition: .Top, barMetrics: .Default)
+        searchBar.setBackgroundImage(UIImage(named: "NavBar"), for: .top, barMetrics: .default)
         if((infoAddress) != nil){
             _infoTopConstraint = NSLayoutConstraint(
                 item: self.infoAddressView,
-                attribute: .Top,
-                relatedBy: .Equal,
+                attribute: .top,
+                relatedBy: .equal,
                 toItem: self.view,
-                attribute: .Bottom,
+                attribute: .bottom,
                 multiplier: 1.0,
                 constant: -60.0)
             self.view .addConstraint(_infoTopConstraint)
@@ -266,10 +266,10 @@ import GoogleMaps
         {
             _infoTopConstraint = NSLayoutConstraint(
                 item: self.infoAddressView,
-                attribute: .Top,
-                relatedBy: .Equal,
+                attribute: .top,
+                relatedBy: .equal,
                 toItem: self.view,
-                attribute: .Bottom,
+                attribute: .bottom,
                 multiplier: 1.0,
                 constant: 0.0)
             self.view .addConstraint(_infoTopConstraint)
@@ -278,7 +278,7 @@ import GoogleMaps
         }
     }
     
-    func adjustInfoAddress(address:AddressViewModel) {
+    func adjustInfoAddress(_ address:AddressViewModel) {
         receiverNumberLabel.setCustomAttributedText(address.receiverNumber)
         receiverNumberLabel.sizeToFit()
         addressStreetLabel.setCustomAttributedText("\(address.addressStreet)\n\(address.addressDistrict),\n\(address.addressCity),\n\(address.addressProvince), \(address.addressCountry) \(address.addressPostalCode)")
@@ -290,19 +290,19 @@ import GoogleMaps
 
     }
     
-    @IBAction func panInfoAddress(gestureRecognizer: UIPanGestureRecognizer) {
+    @IBAction func panInfoAddress(_ gestureRecognizer: UIPanGestureRecognizer) {
         infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
 
-        let touchPoint: CGPoint = gestureRecognizer.locationInView(self.view)
+        let touchPoint: CGPoint = gestureRecognizer.location(in: self.view)
         switch (gestureRecognizer.state){
-        case .Began:
+        case .began:
             break
-        case .Changed:
+        case .changed:
             let delta:CGFloat = touchPoint.y - _previousY
             _infoTopConstraint.constant+=delta
             break
-        case .Failed, .Cancelled, .Ended:
-            let yVelocity:CGFloat = gestureRecognizer.velocityInView(gestureRecognizer.view).y
+        case .failed, .cancelled, .ended:
+            let yVelocity:CGFloat = gestureRecognizer.velocity(in: gestureRecognizer.view).y
             if (abs(yVelocity) > 50) {
                 if (yVelocity > 0) {
                     hideInfo()
@@ -322,9 +322,9 @@ import GoogleMaps
     }
     
     func hideInfo() -> Void{
-        transparantInfoView.hidden = true
+        transparantInfoView.isHidden = true
         _infoTopConstraint.constant = -60
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .curveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
             }) { (finished: Bool) -> Void in
@@ -333,9 +333,9 @@ import GoogleMaps
     }
     
     func showInfo() -> Void{
-        transparantInfoView.hidden = false
+        transparantInfoView.isHidden = false
         _infoTopConstraint.constant = -infoViewConstraintHeight.constant
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
             }) { (finished: Bool) -> Void in
@@ -343,7 +343,7 @@ import GoogleMaps
         }
     }
     
-    func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
+    func updateAddressSaveHistory(_ shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
         self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
         self.mapView.updateAddress("Tandai lokasi Anda")
@@ -352,8 +352,8 @@ import GoogleMaps
                 return
             }
             
-            if (response != nil && response.results().count > 0){
-                let placemark :GMSAddress = response.firstResult()
+            if (response != nil && (response?.results().count)! > 0){
+                let placemark :GMSAddress = response!.firstResult()
                 
                 self.address = placemark
                 self.addressLabel.setCustomAttributedText(self.addressString(placemark))
@@ -372,25 +372,25 @@ import GoogleMaps
     
     func loadHistory()
     {
-        var destinationPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
+        var destinationPath:String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
         destinationPath += "/history_places.plist"
-        let filemgr = NSFileManager.defaultManager()
-        if filemgr.fileExistsAtPath(destinationPath) {
+        let filemgr = FileManager.default
+        if filemgr.fileExists(atPath: destinationPath) {
             print("File exists")
             if let histories = NSArray(contentsOfFile: destinationPath)
             {
                 placeHistories.removeAllObjects()
-                placeHistories.addObjectsFromArray(histories as [AnyObject])
+                placeHistories.addObjects(from: histories as [AnyObject])
                 self.dataTableView[1] = []
                 for index in 0 ..< self.placeHistories.count-1{
-                    self.dataTableView[1].insert(placeHistories[index]["addressSugestion"] as! String, atIndex: index)
+                    self.dataTableView[1].insert((placeHistories[index] as! Dictionary)["addressSugestion"]!, at: index)
                 }
                 // the above prints "some text"
             }
         }
     }
     
-    func addressString(address:GMSAddress)-> String{
+    func addressString(_ address:GMSAddress)-> String{
         var strSnippet : String = ""
         //MARK:: IBR-372 PO Wishes
         if (address.thoroughfare != nil) {
@@ -405,7 +405,7 @@ import GoogleMaps
         return strSnippet
     }
     
-    func adjustStrSnippet(address : String?, strSnippet: String) -> String
+    func adjustStrSnippet(_ address : String?, strSnippet: String) -> String
     {
         var strSnippet : String = strSnippet
         if (address != nil){
@@ -418,9 +418,9 @@ import GoogleMaps
         return strSnippet;
     }
     
-    func saveHistory (address :GMSAddress, addressSuggestions :GMSAutocompletePrediction?)
+    func saveHistory (_ address :GMSAddress, addressSuggestions :GMSAutocompletePrediction?)
     {
-        var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
+        var documentsPath:String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
         var addressString : String = ""
@@ -443,56 +443,56 @@ import GoogleMaps
             latitude = address.coordinate.latitude
         }
         
-        let history: [String: AnyObject]! = [
+        let history = [
             "addressSugestion"   :addressSugestionString,
             "address"            :addressString,
             "postal_code"        :postalCode,
             "place_id"           :placeID,
             "longitude"          :longitude,
             "latitude"           :latitude
-        ]
+        ] as [String : Any]
         let array : Array = dataTableView[1] as Array
         if(array.contains(history["addressSugestion"] as! String) == false)
         {
-            placeHistories.insertObject(history, atIndex: 0)
-            placeHistories.writeToFile(documentsPath, atomically: true)
+            placeHistories.insert(history, at: 0)
+            placeHistories.write(toFile: documentsPath, atomically: true)
         }
     }
     
-    func handleSearchForSearchString(searchString:String){
+    func handleSearchForSearchString(_ searchString:String){
         let visibleRegion : GMSVisibleRegion = mapView.projection.visibleRegion()
-        let bounds : GMSCoordinateBounds = GMSCoordinateBounds.init(coordinate: visibleRegion.farLeft, coordinate:visibleRegion.nearRight)
+        let bounds : GMSCoordinateBounds = GMSCoordinateBounds(coordinate: visibleRegion.farLeft, coordinate:visibleRegion.nearRight)
         let filter : GMSAutocompleteFilter = GMSAutocompleteFilter()
-        filter.type = GMSPlacesAutocompleteTypeFilter.NoFilter
+        filter.type = GMSPlacesAutocompleteTypeFilter.noFilter
         
         placesClient?.autocompleteQuery(searchString, bounds: bounds, filter: filter, callback: { (results, error) -> Void in
             if (error != nil){
                 return
             }
-            if(results?.count > 0){
+            if(results!.count > 0){
                 self.autoCompleteResults = results as! Array
                 self.dataTableView[0]=[]
                 for index in 0 ..< self.autoCompleteResults.count-1{
                     let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
-                    self.dataTableView[0].insert(place.attributedFullText.string, atIndex: index)
+                    self.dataTableView[0].insert(place.attributedFullText.string, at: index)
                 }
                 
-                self.tableView.hidden = false
+                self.tableView.isHidden = false
                 self.tableView.reloadData()
             }
         })
     }
     // MARK: - Table view data source
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataTableView.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataTableView[section].count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: "reuseIdentifier")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "reuseIdentifier")
         
         cell.textLabel!.font = UIFont.smallTheme();
         cell.textLabel!.numberOfLines = 0;
@@ -501,17 +501,17 @@ import GoogleMaps
         return cell
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return titleSection[section]
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setSearchBarActive(false, animated: true)
         
         if (indexPath.section == 0) {
             doGeneratePlaceDetail(autoCompleteResults[indexPath.row].placeID, addressSuggestion: autoCompleteResults[indexPath.row])
         } else {
-            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake(placeHistories[indexPath.row]["latitude"] as! Double, placeHistories[indexPath.row]["longitude"] as! Double)
+            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake((placeHistories[indexPath.row] as! Dictionary)["latitude"]! , (placeHistories[indexPath.row] as! Dictionary)["longitude"]!)
             mapView.updateCameraPosition(coordinate)
         }
         
@@ -520,7 +520,7 @@ import GoogleMaps
     }
 
     //MARK: - Place Detail Request
-    func doGeneratePlaceDetail(placeID:String, addressSuggestion:(GMSAutocompletePrediction))
+    func doGeneratePlaceDetail(_ placeID:String, addressSuggestion:(GMSAutocompletePrediction))
     {
         placesClient?.lookUpPlaceID(placeID, callback: { (result, error) -> Void in
             if (error != nil){
@@ -538,18 +538,18 @@ import GoogleMaps
     }
     
     //MARK: - SearchBar Delegate
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if((searchBar.text?.isEmpty) != nil){
             dataTableView[0].removeAll()
             tableView.reloadData()
         }
         handleSearchForSearchString(searchBar.text!)
     }
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
     }
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if (searchBar.text == ""){
             dataTableView[0] = []
             tableView.reloadData()
@@ -558,19 +558,19 @@ import GoogleMaps
         setSearchBarActive(true, animated: true)
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         setSearchBarActive(false, animated: true)
     }
     
-    func setSearchBarActive(isActive:Bool, animated:Bool)
+    func setSearchBarActive(_ isActive:Bool, animated:Bool)
     {
         searchBar.setShowsCancelButton(isActive, animated: animated)
         self.navigationController?.setNavigationBarHidden(isActive, animated: animated)
-        UIApplication.sharedApplication().setStatusBarHidden(isActive, withAnimation: UIStatusBarAnimation.Slide)
-        transparentView.hidden = !isActive
+        UIApplication.shared.setStatusBarHidden(isActive, with: UIStatusBarAnimation.slide)
+        transparentView.isHidden = !isActive
         
         if (animated){
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 self.activeSearchBar(isActive)
                 if (!isActive){
                     self.searchBar.resignFirstResponder()
@@ -584,10 +584,10 @@ import GoogleMaps
         }
     }
     
-    func activeSearchBar(isActive: Bool)
+    func activeSearchBar(_ isActive: Bool)
     {
-        searchBar.frame = CGRectMake(0, 0, searchBar.frame.size.width, searchBar.frame.size.height)
-        tableView.hidden = !(isActive && (dataTableView[0].count>0 || dataTableView[1].count>0))
+        searchBar.frame = CGRect(x: 0, y: 0, width: searchBar.frame.size.width, height: searchBar.frame.size.height)
+        tableView.isHidden = !(isActive && (dataTableView[0].count>0 || dataTableView[1].count>0))
     }
     
 }

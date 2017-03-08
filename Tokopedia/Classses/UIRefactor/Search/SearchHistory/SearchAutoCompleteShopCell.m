@@ -13,7 +13,6 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *shopImage;
 @property (strong, nonatomic) IBOutlet UIImageView *shopBadge;
-@property (strong, nonatomic) IBOutlet UILabel *shopName;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *shopNameLeading;
 
 @end
@@ -25,10 +24,10 @@
     [_shopImage setImageWithURL:[NSURL URLWithString:searchItem.imageURI]];
 
     if (searchItem.isOfficial) {
-        _shopNameLeading.constant = 30;
+        _shopNameLeading.constant = 40;
         _shopBadge.hidden = NO;
     } else {
-        _shopNameLeading.constant = 10;
+        _shopNameLeading.constant = 20;
         _shopBadge.hidden = YES;
     }
 }

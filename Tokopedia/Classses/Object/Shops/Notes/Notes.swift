@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class Notes: NSObject {
     
@@ -15,16 +16,16 @@ class Notes: NSObject {
     var result : NotesResult = NotesResult()
     
     
-    class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status" : "status",
                 "server_process_time" : "server_process_time"]
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "result", withMapping: NotesResult.mapping()))
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "result", with: NotesResult.mapping()))
         
         return mapping
     }

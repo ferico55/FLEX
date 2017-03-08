@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc class CategoryResponse: NSObject {
     
@@ -18,15 +19,15 @@ import UIKit
     }
     var data:CategoryData = CategoryData()
     
-    private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    fileprivate class func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status": "status"]
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "result", toKeyPath: "result", withMapping: CategoryData.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: CategoryData.mapping()))
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "result", toKeyPath: "result", with: CategoryData.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: CategoryData.mapping()))
         
         return mapping
     }

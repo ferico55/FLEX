@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import RSKPlaceholderTextView
 
 @objc(CancelOrderViewController) class CancelOrderViewController: UIViewController {
 
-    @IBOutlet private weak var reasonTextView: RSKPlaceholderTextView!
+    @IBOutlet fileprivate weak var reasonTextView: RSKPlaceholderTextView!
     
     var order : TxOrderStatusList = TxOrderStatusList()
-    private var barButtonDone : UIBarButtonItem = UIBarButtonItem()
+    fileprivate var barButtonDone : UIBarButtonItem = UIBarButtonItem()
     var didRequestCancelOrder: (TxOrderStatusList) -> Void = {_ in }
     
     override func viewDidLoad() {
@@ -24,18 +25,18 @@ import UIKit
         self.reasonTextView.placeholder = "Jelaskan Alasan Pembatalan"
     }
     
-    private func adjustBarButtonIsLoading(isLoading:Bool){
+    fileprivate func adjustBarButtonIsLoading(_ isLoading:Bool){
         if isLoading {
-            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
             indicator.startAnimating()
             barButtonDone = UIBarButtonItem(customView: indicator)
         } else {
-            barButtonDone = UIBarButtonItem(title: "Ajukan", style: .Plain, target: self, action: #selector(requestCancelOrder))
+            barButtonDone = UIBarButtonItem(title: "Ajukan", style: .plain, target: self, action: #selector(requestCancelOrder))
         }
         self.navigationItem.rightBarButtonItem = barButtonDone
     }
     
-    @objc private func requestCancelOrder(){
+    @objc fileprivate func requestCancelOrder(){
         self.adjustBarButtonIsLoading(true)
         
         RequestOrderAction.fetchRequestCancelOrderID(order.order_detail.detail_order_id, reason: reasonTextView.text, onSuccess: { [weak self] in
@@ -44,7 +45,7 @@ import UIKit
                 wself.adjustBarButtonIsLoading(false)
                 wself.didRequestCancelOrder(wself.order)
                 
-                wself.navigationController?.popViewControllerAnimated(true)
+                wself.navigationController?.popViewController(animated: true)
             }
 
         }) {  [weak self] in

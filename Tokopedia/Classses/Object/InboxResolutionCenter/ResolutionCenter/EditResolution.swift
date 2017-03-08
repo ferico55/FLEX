@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class EditResolution: NSObject {
     
@@ -15,15 +16,15 @@ class EditResolution: NSObject {
     var data          : EditResolutionFormData = EditResolutionFormData()
     
     class func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromArray([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:[
             "message_error",
             "status"
             ])
         
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data",
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data",
             toKeyPath: "data",
-            withMapping: EditResolutionFormData.mapping()))
+            with: EditResolutionFormData.mapping()))
         
         return mapping
     }

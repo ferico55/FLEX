@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
-#import "Tokopedia-Swift.h"
 #import "ResolutionConversation.h"
+
+@class ResolutionLast;
+@class DKAsset;
 
 #pragma mark - Delegate
 @protocol InboxResolutionCenterOpenViewControllerDelegate <NSObject>

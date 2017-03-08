@@ -13,7 +13,7 @@ class PulsaRequest: NSObject {
     
     var didReceiveCategory: (([PulsaCategory]) -> Void)!
     var didReceiveOperator: (([PulsaOperator]) -> Void)!
-    var didReceiveProduct: ([PulsaProduct] -> Void)!
+    var didReceiveProduct: (([PulsaProduct]) -> Void)!
     var didNotSuccessReceiveCategory: (() -> Void)!
     
     override init() {
@@ -21,7 +21,7 @@ class PulsaRequest: NSObject {
     }
     
     func requestCategory() {
-        self.checkMaintenanceStatus(didReceiveMaintenanceStatus: { (status) in
+        self.checkMaintenanceStatus({ (status) in
             if(!status.attributes.is_maintenance) {
                 self.cache.loadCategories { (cachedCategory) in
                     if(cachedCategory == nil) {
@@ -38,11 +38,11 @@ class PulsaRequest: NSObject {
         })
     }
     
-    private func requestCategoryFromNetwork() {
+    fileprivate func requestCategoryFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaApiUrl(),
+            request(withBaseUrl: NSString.pulsaApiUrl(),
                                path: "/v1.1/category/list",
                                method: .GET,
                                parameter: nil,
@@ -68,11 +68,11 @@ class PulsaRequest: NSObject {
         
     }
     
-    private func requestOperatorFromNetwork() {
+    fileprivate func requestOperatorFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaApiUrl(),
+            request(withBaseUrl: NSString.pulsaApiUrl(),
                                path: "/v1.1/operator/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
@@ -87,7 +87,7 @@ class PulsaRequest: NSObject {
             });
     }
     
-    func requestProduct(operatorId: String, categoryId: String) {
+    func requestProduct(_ operatorId: String, categoryId: String) {
         self.cache.loadProducts{ (cachedProduct) in
             if(cachedProduct == nil) {
                 self.requestProductFromNetwork(operatorId,  categoryId: categoryId)
@@ -98,11 +98,11 @@ class PulsaRequest: NSObject {
         }
     }
     
-    private func requestProductFromNetwork(operatorId: String, categoryId: String) {
+    fileprivate func requestProductFromNetwork(_ operatorId: String, categoryId: String) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaApiUrl(),
+            request(withBaseUrl: NSString.pulsaApiUrl(),
                                path: "/v1.1/product/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
@@ -127,7 +127,7 @@ class PulsaRequest: NSObject {
 
     }
     
-    private func filterProductBy(products: [PulsaProduct], operatorId: String, categoryId: String) -> [PulsaProduct] {
+    fileprivate func filterProductBy(_ products: [PulsaProduct], operatorId: String, categoryId: String) -> [PulsaProduct] {
         let filteredProducts = products.filter({ (product) -> Bool in
             categoryId != "" ? product.relationships.relationCategory.data.id == categoryId : true
         }).filter({ (product) -> Bool in
@@ -137,11 +137,11 @@ class PulsaRequest: NSObject {
         return filteredProducts
     }
     
-    private func checkMaintenanceStatus(didReceiveMaintenanceStatus didReceiveMaintenanceStatus: (PulsaStatus -> Void)!, onFailure: (() -> Void)!) {
+    fileprivate func checkMaintenanceStatus(_ didReceiveMaintenanceStatus: ((PulsaStatus) -> Void)!, onFailure: (() -> Void)!) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl(NSString.pulsaApiUrl(),
+            request(withBaseUrl: NSString.pulsaApiUrl(),
                                path: "/v1/status",
                                method: .GET,
                                parameter: nil,

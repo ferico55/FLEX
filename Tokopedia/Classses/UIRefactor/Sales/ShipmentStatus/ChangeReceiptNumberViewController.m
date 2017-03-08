@@ -101,7 +101,7 @@
                                     [StickyAlertView showErrorMessage:actionOrder.message_error];
                                 }
                                 
-                                if ([actionOrder.result.is_success isEqualToString:@"1"]) {
+                                if (actionOrder.data.isOrderAccepted) {
                                     if(_didSuccessEditReceipt){
                                         _didSuccessEditReceipt(_textField.text);
                                     }

@@ -24,7 +24,7 @@ class GenerateHostObservable: NSObject {
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
             
-            networkManager.requestWithBaseUrl(NSString.v4Url(),
+            networkManager.request(withBaseUrl: NSString.v4Url(),
                 path: "/v4/action/generate-host/generate_host.pl",
                 method: .GET,
                 parameter: param,
@@ -38,11 +38,11 @@ class GenerateHostObservable: NSObject {
                     observer.onCompleted()
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
                 StickyAlertView.showErrorMessage(["Error"])
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
 

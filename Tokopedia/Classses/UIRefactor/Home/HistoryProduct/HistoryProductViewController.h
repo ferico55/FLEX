@@ -11,5 +11,5 @@
 @interface HistoryProductViewController : GAITrackedViewController
 
 @property NSInteger index;
-
+- (void) scrollToTop;
 @end

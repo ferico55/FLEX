@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEditInfo: NSObject {
     var shop_has_terms: String = ""
     var product_returnable: String = "0"
     
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping .addAttributeMappingsFromDictionary(["shop_has_terms" : "shop_has_terms", "product_returnable" : "product_returnable"])
+        mapping .addAttributeMappings(from:["shop_has_terms" : "shop_has_terms", "product_returnable" : "product_returnable"])
         
         return mapping
     }

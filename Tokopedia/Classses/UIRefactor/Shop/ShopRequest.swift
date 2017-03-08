@@ -10,7 +10,7 @@ import UIKit
 
 class ShopRequest: NSObject {
     
-    class func fetchListShopFavorited(page:NSInteger, shopID:String, onSuccess: ((FavoritedResult) -> Void), onFailure:(()->Void)) {
+    class func fetchListShopFavorited(_ page:NSInteger, shopID:String, onSuccess: @escaping ((FavoritedResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -20,21 +20,21 @@ class ShopRequest: NSObject {
             "shop_id":shopID
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/shop/get_people_who_favorite_myshop.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(FavoritedResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: FavoritedResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
+                                            let response: V4Response = result[""] as! V4Response<FavoritedResult>
                                             
                                             if response.message_error.count > 0 {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                                 onFailure()
                                             } else {
-                                                onSuccess(response.data as! FavoritedResult)
+                                                onSuccess(response.data as FavoritedResult)
                                             }
                                             
         }) { (error) in

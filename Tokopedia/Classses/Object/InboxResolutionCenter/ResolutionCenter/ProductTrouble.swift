@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductTrouble: NSObject {
     
@@ -66,8 +67,8 @@ class ProductTrouble: NSObject {
     }
     
     class func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromArray([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:[
             "pt_snapshot_uri",
             "pt_product_name",
             "pt_trouble_name",

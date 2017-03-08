@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *conversation_between;
+@property (nonatomic, strong) NSString *textarea_reply;
 
 + (RKObjectMapping*)mapping;
 

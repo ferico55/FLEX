@@ -18,7 +18,7 @@ class IDropCodeRequestObject: NSObject {
 
 class SalesOrderRequest: NSObject {
     
-    class func fetchIDropCode(requestURLString: String, objectRequest: IDropCodeRequestObject, onSuccess: ((OrderBookingData) -> Void)) {
+    class func fetchIDropCode(_ requestURLString: String, objectRequest: IDropCodeRequestObject, onSuccess: @escaping ((OrderBookingData) -> Void)) {
         
         let param : [String : String] = [
             "shopid"    : objectRequest.shopID,
@@ -32,11 +32,11 @@ class SalesOrderRequest: NSObject {
         networkManager.isUsingHmac = true
         networkManager.isUsingDefaultError = false
         
-        let requestURL = NSURL(string: requestURLString)
+        let requestURL = URL(string: requestURLString)
         let baseURLString = "\(requestURL!.scheme ?? "")://\(requestURL!.host ?? "")"
         let pathURLString = requestURL!.path ?? ""
         
-        networkManager.requestWithBaseUrl(baseURLString,
+        networkManager.request(withBaseUrl: baseURLString,
                                           path: pathURLString,
                                           method: .GET,
                                           parameter: param,

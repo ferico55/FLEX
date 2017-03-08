@@ -10,16 +10,16 @@
 
 @interface AddressViewModel : NSObject
 
-@property (strong, nonatomic) NSString *receiverNumber;
-@property (strong, nonatomic) NSString *addressStreet;
-@property (strong, nonatomic) NSString *addressPostalCode;
-@property (strong, nonatomic) NSString *addressDistrict;
-@property (strong, nonatomic) NSString *addressProvince;
-@property (strong, nonatomic) NSString *addressCountry;
-@property (strong, nonatomic) NSString *addressCity;
-@property (strong, nonatomic) NSString *receiverName;
-@property (strong, nonatomic) NSString *addressName;
-@property (strong, nonatomic) NSString *latitude;
-@property (strong, nonatomic) NSString *longitude;
+@property (strong, nonatomic, nonnull) NSString *receiverNumber;
+@property (strong, nonatomic, nonnull) NSString *addressStreet;
+@property (strong, nonatomic, nonnull) NSString *addressPostalCode;
+@property (strong, nonatomic, nonnull) NSString *addressDistrict;
+@property (strong, nonatomic, nonnull) NSString *addressProvince;
+@property (strong, nonatomic, nonnull) NSString *addressCountry;
+@property (strong, nonatomic, nonnull) NSString *addressCity;
+@property (strong, nonatomic, nonnull) NSString *receiverName;
+@property (strong, nonatomic, nonnull) NSString *addressName;
+@property (strong, nonatomic, nonnull) NSString *latitude;
+@property (strong, nonatomic, nonnull) NSString *longitude;
 
 @end

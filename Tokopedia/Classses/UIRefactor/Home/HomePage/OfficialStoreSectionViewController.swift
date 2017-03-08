@@ -10,6 +10,7 @@ import UIKit
 import OAStackView
 import Masonry
 import BlocksKit
+import RestKit
 
 @objc
 class OfficialStoreHomeItem: NSObject {
@@ -18,14 +19,14 @@ class OfficialStoreHomeItem: NSObject {
     var shopName: String = ""
     
     static func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: OfficialStoreHomeItem.self)
+        let mapping = RKObjectMapping(for: OfficialStoreHomeItem.self)
         
-        mapping.addAttributeMappingsFromDictionary([
+        mapping?.addAttributeMappings(from: [
             "shop_id": "shopId",
             "logo_url": "imageUrl",
             "shop_name": "shopName"
         ])
-        return mapping
+        return mapping!
     }
 }
 
@@ -50,39 +51,39 @@ class OfficialStoreSectionViewController: UIViewController {
         
         shops.forEach { shop in
             let view = UIView()
-            view.backgroundColor = .whiteColor()
+            view.backgroundColor = .white
             view.mas_makeConstraints { make in
-                make.width.equalTo()(view.mas_height)
-                make.width.greaterThanOrEqualTo()(1)
+                make?.width.equalTo()(view.mas_height)
+                make?.width.greaterThanOrEqualTo()(1)
             }
             
             let imageView = UIImageView()
-            imageView.contentMode = .ScaleAspectFit
+            imageView.contentMode = .scaleAspectFit
             view.addSubview(imageView)
             
             imageView.mas_makeConstraints { make in
-                make.top.left().equalTo()(view).offset()(5)
-                make.bottom.right().equalTo()(view).offset()(-5)
+                make?.top.left().equalTo()(view)?.offset()(5)
+                make?.bottom.right().equalTo()(view)?.offset()(-5)
             }
 
-            imageView.setImageWithURL(NSURL(string: shop.imageUrl)!)
+            imageView.setImageWith(NSURL(string: shop.imageUrl)! as URL!)
             
             imageContainer.addArrangedSubview(view)
             
-            view.bk_whenTapped { [unowned self] in
+            view.bk_(whenTapped: { [unowned self] in
                 self.openShopWithItem(shop)
-            }
+            })
         }
         
-        for _ in 0.stride(to: 4-shops.count, by: 1) {
+        for _ in stride(from: 0, to: 4-shops.count, by: 1) {
             let stretchView = UIView()
-            stretchView.backgroundColor = .clearColor()
+            stretchView.backgroundColor = .clear
             
             imageContainer.addArrangedSubview(stretchView)
         }
     }
 
-    private func openShopWithItem(shop: OfficialStoreHomeItem) {
+    private func openShopWithItem(_ shop: OfficialStoreHomeItem) {
         AnalyticsManager.trackEventName(
             "clickOfficialStore",
             category: GA_EVENT_CATEGORY_HOMEPAGE,

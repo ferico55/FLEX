@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEditDetail: NSObject {
     var product_min_order: String = ""
@@ -31,8 +32,8 @@ class ProductEditDetail: NSObject {
     
     
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping .addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping .addAttributeMappings(from:[
             "product_min_order" : "product_min_order",
             "product_id" : "product_id",
             "product_currency_id" : "product_currency_id",

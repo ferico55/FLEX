@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class DiscoverResponse: NSObject {
     var message_error: [String]!
@@ -15,8 +16,8 @@ class DiscoverResponse: NSObject {
     var data: DiscoverResult!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "message_error": "message_error",
             "status": "status"
         ])
@@ -24,10 +25,10 @@ class DiscoverResponse: NSObject {
         let relationshipMapping = RKRelationshipMapping(
             fromKeyPath: "data",
             toKeyPath: "data",
-            withMapping: DiscoverResult.mapping())
+            with: DiscoverResult.mapping())
         
-        mapping.addPropertyMapping(relationshipMapping)
+        mapping?.addPropertyMapping(relationshipMapping)
         
-        return mapping
+        return mapping!
     }
 }

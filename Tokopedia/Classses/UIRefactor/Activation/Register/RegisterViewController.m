@@ -794,7 +794,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self showLoadingMode];
     
     [[AuthenticationService sharedService]
-     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebookWithUserData:data]
      fromViewController:self
      onSignInComplete:^(Login *login) {
          [self onLoginSuccess:login];
@@ -876,7 +876,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
     [[AuthenticationService sharedService]
-     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+     doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogleWithUser:user]
      fromViewController:self
      onSignInComplete:^(Login *login) {
          [self onLoginSuccess:login];

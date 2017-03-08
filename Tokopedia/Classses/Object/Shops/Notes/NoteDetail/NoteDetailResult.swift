@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import RestKit
 
 class NoteDetailResult : NSObject, TKPObjectMapping
 {
     var detail : NoteDetails = NoteDetails()
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "detail", toKeyPath: "detail", withMapping: NoteDetails.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "detail", toKeyPath: "detail", with: NoteDetails.mapping()))
         
         return mapping
     }

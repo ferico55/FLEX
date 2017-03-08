@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProductRoot: NSObject, NSCoding {
     var data : [PulsaProduct] = []
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaProduct.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: PulsaProduct.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -26,11 +27,11 @@ class PulsaProductRoot: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let data = aDecoder.decodeObjectForKey("data") as? [PulsaProduct] {
+        if let data = aDecoder.decodeObject(forKey: "data") as? [PulsaProduct] {
             self.data = data
         }
     }
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(data, forKey: "data")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(data, forKey: "data")
     }
 }

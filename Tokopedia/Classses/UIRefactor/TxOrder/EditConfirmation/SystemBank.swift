@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class SystemBank: NSObject {
     
@@ -14,13 +15,13 @@ class SystemBank: NSObject {
     var bankName   = ""
     
     class func mapping() -> RKObjectMapping{
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "bank_id":"bankId",
             "bank_name":"bankName"
             ])
         
-        return mapping
+        return mapping!
     }
 
 }

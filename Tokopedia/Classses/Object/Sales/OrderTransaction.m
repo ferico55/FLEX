@@ -26,4 +26,35 @@
     return mapping;
 }
 
+-(NSString*) deadline_string {
+    if (self.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
+        return self.order_deadline.deadline_process;
+    } else if (self.order_detail.detail_order_status == ORDER_DELIVERED ||
+               (self.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE && self.order_deadline.deadline_finish_day_left)) {
+        return self.order_deadline.deadline_finish_date;
+    } else {
+        return self.order_deadline.deadline_shipping;
+    }
+}
+
+-(NSString*) deadline_label {
+    if (self.order_detail.detail_order_status == ORDER_DELIVERED ||
+        (self.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE &&
+         self.order_deadline.deadline_finish_day_left)) {
+            return @"Selesai Otomatis";
+        } else {
+            return @"Batal Otomatis";
+        }
+}
+
+-(BOOL) deadline_hidden {
+    if (self.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED || self.order_detail.detail_order_status == ORDER_DELIVERED ||
+        (self.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE && self.order_deadline.deadline_finish_day_left) ||
+        self.order_detail.detail_order_status == ORDER_PROCESS || self.order_detail.detail_order_status == ORDER_PROCESS_PARTIAL) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 @end

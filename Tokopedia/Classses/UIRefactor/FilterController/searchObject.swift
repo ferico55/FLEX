@@ -7,21 +7,22 @@
 //
 
 import UIKit
+import RestKit
 
 class searchObject: NSObject, TKPObjectMapping {
     
     var searchable : NSString = ""
     var placeholder : NSString = ""
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["searchable"   : "searchable",
                 "placeholder"  : "placeholder"
         ]
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: self.attributeMappingDictionary())
         
         return mapping
     }

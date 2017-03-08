@@ -17,10 +17,10 @@ class MyWishlistSearchCollectionReusableView: UICollectionReusableView {
     var didTapResetButton: (() -> Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
-        let spaceLoveIconView = UIView(frame: CGRectMake(0, 0, 30, 20))
+        let spaceLoveIconView = UIView(frame: CGRect(x:0, y:0, width:30, height:20))
     
         searchWishlistTextField.leftView = spaceLoveIconView
-        searchWishlistTextField.leftViewMode = .Always
+        searchWishlistTextField.leftViewMode = .always
         
         let str = NSAttributedString(string: "Cari wishlist kamu", attributes: [NSForegroundColorAttributeName:UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.32)])
         searchWishlistTextField.attributedPlaceholder = str

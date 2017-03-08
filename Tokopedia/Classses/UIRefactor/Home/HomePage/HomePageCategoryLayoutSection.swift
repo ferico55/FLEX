@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class HomePageCategoryLayoutSection: NSObject {
     var id: String!
@@ -14,9 +15,9 @@ class HomePageCategoryLayoutSection: NSObject {
     var layout_rows: [HomePageCategoryLayoutRow]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: HomePageCategoryLayoutSection.self)
-        mapping.addAttributeMappingsFromArray(["id", "title"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "layout_rows", toKeyPath: "layout_rows", withMapping: HomePageCategoryLayoutRow.mapping()))
+        let mapping: RKObjectMapping = RKObjectMapping(for: HomePageCategoryLayoutSection.self)
+        mapping.addAttributeMappings(from:["id", "title"])
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "layout_rows", toKeyPath: "layout_rows", with: HomePageCategoryLayoutRow.mapping()))
         
         return mapping
     }

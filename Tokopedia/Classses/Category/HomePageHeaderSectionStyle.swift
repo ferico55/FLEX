@@ -17,7 +17,7 @@ class HomePageHeaderSectionStyle {
         categoryTitlelabel.font = UIFont.largeTheme()
         categoryTitlelabel.textColor = UIColor(red: 102.0/255, green: 102.0/255, blue: 102.0/255, alpha: 1.0)
         categoryTitlelabel.mas_makeConstraints({ (make) in
-            make.height.equalTo()(38)
+            make?.height.equalTo()(38)
         })
         stackView.addArrangedSubview(categoryTitlelabel)
     }
@@ -25,7 +25,7 @@ class HomePageHeaderSectionStyle {
     class func setHeaderUpperSeparator(forStackView stackView: OAStackView) {
         let upperSeparatorView = UIView()
         upperSeparatorView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(2)
+            make?.height.mas_equalTo()(2)
         })
         let tinyOrangeView = UIView()
         tinyOrangeView.backgroundColor = UIColor(red: 255.0/255, green: 87.0/255, blue: 34.0/255, alpha: 1.0)
@@ -34,7 +34,7 @@ class HomePageHeaderSectionStyle {
         stackView.addArrangedSubview(upperSeparatorView)
         let topEmptyView = UIView()
         topEmptyView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(15)
+            make?.height.mas_equalTo()(15)
         })
         stackView.addArrangedSubview(topEmptyView)
     }

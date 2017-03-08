@@ -7,6 +7,7 @@
 //
 
 #import "SearchResultShopCell.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SearchResultShopCell
 

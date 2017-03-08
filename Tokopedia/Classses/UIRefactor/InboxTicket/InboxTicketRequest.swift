@@ -8,14 +8,15 @@
 
 import UIKit
 import RxSwift
+import DKImagePickerController
 
 @objc enum InboxTicketFilterType :Int {
-    case All, Unread
+    case all, unread
     func description() -> String {
         switch self {
-        case .All:
+        case .all:
             return "all"
-        case .Unread:
+        case .unread:
             return "unread"
         }
     }
@@ -29,8 +30,8 @@ class AttachedImageObject: NSObject {
 
 class TicketListRequestObject: NSObject {
     var keyword = ""
-    var filter  : InboxTicketFilterType = .All
-    var status  : InboxCustomerServiceType  = .All
+    var filter  : InboxTicketFilterType = .all
+    var status  : InboxCustomerServiceType  = .all
 }
 
 class ReplyTicketRequestObject: NSObject {
@@ -50,7 +51,7 @@ class ReplyTicketRequestObject: NSObject {
 
 class InboxTicketRequest: NSObject {
     
-    class func fetchListTicket(objectRequest: TicketListRequestObject, page: NSInteger, onSuccess: ((InboxTicketResult) -> Void), onFailure: (() -> Void)) {
+    class func fetchListTicket(_ objectRequest: TicketListRequestObject, page: NSInteger, onSuccess: @escaping ((InboxTicketResult) -> Void), onFailure: @escaping (() -> Void)) {
         
         let param : [String : String] = [
             "filter"  : objectRequest.filter.description(),
@@ -61,15 +62,15 @@ class InboxTicketRequest: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/inbox-ticket/get_inbox_ticket.pl",
                                           method: .GET,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(InboxTicketResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: InboxTicketResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
+                                            let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
                                             let data = response.data as! InboxTicketResult
                                             
                                             if response.message_error.count > 0{
@@ -83,7 +84,7 @@ class InboxTicketRequest: NSObject {
         }
     }
     
-    class func fetchDetailTicket(ticketID: String, isLoadMore: Bool, page: NSInteger, onSuccess: ((InboxTicketResultDetail) -> Void), onFailure: (() -> Void)) {
+    class func fetchDetailTicket(_ ticketID: String, isLoadMore: Bool, page: NSInteger, onSuccess: @escaping ((InboxTicketResultDetail) -> Void), onFailure: @escaping (() -> Void)) {
         
         var param : [String : String] = [:]
         var path = ""
@@ -101,16 +102,16 @@ class InboxTicketRequest: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: path,
                                           method: .GET,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(InboxTicketResultDetail.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: InboxTicketResultDetail.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
-                                            let data = response.data as! InboxTicketResultDetail
+                                            let response : V4Response = result[""] as! V4Response<InboxTicketResultDetail>
+                                            let data = response.data as InboxTicketResultDetail
                                             
                                             if response.message_error.count > 0{
                                                 StickyAlertView.showErrorMessage(response.message_error)
@@ -123,7 +124,7 @@ class InboxTicketRequest: NSObject {
         }
     }
     
-    class func fetchReplyTicket(objectRequest: ReplyTicketRequestObject, onSuccess: (() -> Void), onFailure: (() -> Void)) {
+    class func fetchReplyTicket(_ objectRequest: ReplyTicketRequestObject, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
         
         var host : GeneratedHost?
         var postKeyParam : String?
@@ -132,7 +133,7 @@ class InboxTicketRequest: NSObject {
             .flatMap { (generatedHost) -> Observable<String> in
                 host = generatedHost
                 
-                return self.getPostKeyReplyTicket(objectRequest, host: host!).doOnCompleted({ 
+                return self.getPostKeyReplyTicket(objectRequest, host: host!).do(onCompleted: {
                     onSuccess()
                     return
                 })
@@ -161,10 +162,10 @@ class InboxTicketRequest: NSObject {
             )
     }
     
-    private class func getPostKeyReplyTicket(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
+    fileprivate class func getPostKeyReplyTicket(_ postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
         
         let imageIds = postData.selectedImages.map{$0.imageID}
-        let imageIdParam = imageIds.joinWithSeparator("~")
+        let imageIdParam = imageIds.joined(separator: "~")
         
         let imagesDictionary : NSMutableDictionary = NSMutableDictionary()
         postData.selectedImages.forEach { (imageObj) in
@@ -189,20 +190,20 @@ class InboxTicketRequest: NSObject {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/ticket/reply_ticket_validation.pl",
                 method: .POST,
                 parameter: param,
-                mapping: V4Response.mappingWithData(ReplyInboxTicketResult.mapping()),
+                mapping: V4Response<AnyObject>.mapping(withData: ReplyInboxTicketResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response = result[""] as! V4Response
+                    let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
                     let data = response.data as! ReplyInboxTicketResult
                     
                     guard response.message_error.count == 0 else {
                         StickyAlertView.showErrorMessage(response.message_error)
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                         return;
                     }
                     
@@ -214,15 +215,15 @@ class InboxTicketRequest: NSObject {
                     observer.onNext(data.post_key)
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
         
     }
     
-    private class func getFileUploaded(postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
+    fileprivate class func getFileUploaded(_ postData:ReplyTicketRequestObject, host: GeneratedHost)-> Observable<String>{
         
         let imagesDictionary : NSMutableDictionary = NSMutableDictionary()
         postData.selectedImages.forEach { (imageObj) in
@@ -232,12 +233,12 @@ class InboxTicketRequest: NSObject {
         return Observable.create({ (observer) -> Disposable in
             observer.onNext(imagesDictionary.json)
             
-            return NopDisposable.instance
+            return Disposables.create()
             
         })
     }
     
-    private class func submitReplyTicket(fileUploaded: String, postKey: String, ticketID: String)-> Observable<String>{
+    fileprivate class func submitReplyTicket(_ fileUploaded: String, postKey: String, ticketID: String)-> Observable<String>{
         
         let param : [String : String] = [
             "file_uploaded" : fileUploaded,
@@ -249,15 +250,15 @@ class InboxTicketRequest: NSObject {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/ticket/reply_ticket_submit.pl",
                 method: .POST,
                 parameter: param,
-                mapping: V4Response.mappingWithData(ReplyInboxTicketResult.mapping()),
+                mapping: V4Response<AnyObject>.mapping(withData: ReplyInboxTicketResult.mapping()),
                 onSuccess: { (mappingResult, operation) in
                     
                     let result : Dictionary = mappingResult.dictionary() as Dictionary
-                    let response = result[""] as! V4Response
+                    let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
                     
                     if response.message_error.count > 0{
                         StickyAlertView.showErrorMessage(response.message_error)
@@ -267,14 +268,14 @@ class InboxTicketRequest: NSObject {
                         observer.onNext("1")
                         observer.onCompleted()
                     } else {
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
         
     }
@@ -285,9 +286,9 @@ extension NSDictionary {
     var json: String {
         let invalidJson = ""
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions(rawValue: 0))
+            let jsonData = try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
             return String(data: jsonData,
-                encoding: NSASCIIStringEncoding) ?? invalidJson
+                encoding: String.Encoding.ascii) ?? invalidJson
         } catch {
             return invalidJson
         }

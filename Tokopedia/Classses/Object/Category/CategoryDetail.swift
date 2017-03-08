@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc class CategoryDetail: NSObject, NSCopying {
     //MARK : Use categoryId rather than d_id or department_id
@@ -84,11 +85,11 @@ import UIKit
         self.isSelected = model.isSelected
     }
     
-    func copyWithZone(zone: NSZone) -> AnyObject {
-        return self.dynamicType.init(self)
+    func copy(with zone: NSZone?) -> Any {
+        return type(of: self).init(self)
     }
     
-    private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    fileprivate class func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["name"          :"name",
                 "weight"        :"weight",
                 "parent"        :"parent",
@@ -105,26 +106,26 @@ import UIKit
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: self.attributeMappingDictionary())
         
-        let childmapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        childmapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let childmapping : RKObjectMapping = RKObjectMapping(for: self)
+        childmapping.addAttributeMappings(from: self.attributeMappingDictionary())
         
-        let lastmapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        lastmapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let lastmapping : RKObjectMapping = RKObjectMapping(for: self)
+        lastmapping.addAttributeMappings(from: self.attributeMappingDictionary())
         
-        let relChildMapping = RKRelationshipMapping.init(fromKeyPath: "child", toKeyPath: "child", withMapping: childmapping)
+        let relChildMapping = RKRelationshipMapping(fromKeyPath: "child", toKeyPath: "child", with: childmapping)
         mapping.addPropertyMapping(relChildMapping)
         
-        let relLastChildMapping = RKRelationshipMapping.init(fromKeyPath: "child", toKeyPath: "child", withMapping: lastmapping)
+        let relLastChildMapping = RKRelationshipMapping(fromKeyPath: "child", toKeyPath: "child", with: lastmapping)
         childmapping.addPropertyMapping(relLastChildMapping)
         
         return mapping
     }
 
-    override func isEqual(object: AnyObject?) -> Bool {
-        if (object?.name == name && object?.categoryId == categoryId) {
+    override func isEqual(_ object: Any?) -> Bool {
+        if ((object as? CategoryDetail)?.name == name && (object as? CategoryDetail)?.categoryId == categoryId) {
             return true
         } else {
             return false

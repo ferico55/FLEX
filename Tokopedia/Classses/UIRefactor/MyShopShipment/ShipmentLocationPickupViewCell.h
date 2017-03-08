@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDTextView.h"
-#import "Tokopedia-Swift.h"
+
+@class RSKPlaceholderTextView;
 
 @interface ShipmentLocationPickupViewCell : UITableViewCell <UITextViewDelegate>
 

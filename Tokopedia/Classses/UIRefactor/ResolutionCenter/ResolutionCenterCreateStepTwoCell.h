@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DownPicker.h"
-#import "Tokopedia-Swift.h"
+@class RSKPlaceholderTextView;
 
 @protocol ResolutionCenterCreateStepTwoCellDelegate <NSObject>
 - (void)didChangeStepperValue:(UIStepper*)stepper;

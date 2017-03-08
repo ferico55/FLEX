@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RestKit
 
 class RequestSales: NSObject {
     
-    class func fetchAcceptOrderPartial(products: [OrderProduct], productQuantities: [[String : String]], orderID: String, shippingLeft:String, reason: String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptOrderPartial(_ products: [OrderProduct], productQuantities: [[String : String]], orderID: String, shippingLeft:String, reason: String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         var productIDs = ""
         products.forEach { (product) in
@@ -33,25 +34,25 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
-                                            if (response.message_error?.count > 0) {
+                                            if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
+                                            if ((response.message_status?.count)! > 0) {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }
@@ -63,7 +64,7 @@ class RequestSales: NSObject {
         })
     }
     
-    class func fetchAcceptOrder( orderID: String, shippingLeft:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptOrder( _ orderID: String, shippingLeft:String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let parameters = [
             "action_type": "accept",
@@ -73,25 +74,25 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
-                                            if (response.message_error?.count > 0) {
-                                                StickyAlertView.showErrorMessage(response.message_error)
+                                            if let error = response.message_error {
+                                                StickyAlertView.showErrorMessage(error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
-                                                StickyAlertView.showSuccessMessage(response.message_status)
+                                            if let success = response.message_status {
+                                                StickyAlertView.showSuccessMessage(success)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }
@@ -103,7 +104,7 @@ class RequestSales: NSObject {
         })
     }
     
-    class func fetchAcceptExpiredOrder( orderID: String, shippingLeft:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchAcceptExpiredOrder( _ orderID: String, shippingLeft:String, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let parameters = [
             "action_type": "reject",
@@ -114,25 +115,25 @@ class RequestSales: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path:"/v4/action/myshop-order/proceed_order.pl",
                                           method: .POST,
                                           parameter: parameters,
-                                          mapping: ActionOrder.mapping(),
+                                          mapping: V4Response<AnyObject>.mapping(withData: ActionOrderResult.mapping()) as RKObjectMapping,
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : ActionOrder = result[""] as! ActionOrder
+                                            let response : V4Response = result[""] as! V4Response<ActionOrderResult>
                                             
-                                            if (response.message_error?.count > 0) {
+                                            if ((response.message_error?.count)! > 0) {
                                                 StickyAlertView.showErrorMessage(response.message_error)
                                             }
                                             
-                                            if (response.message_status?.count > 0) {
+                                            if ((response.message_status?.count)! > 0) {
                                                 StickyAlertView.showSuccessMessage(response.message_status)
                                             }
                                             
-                                            guard (response.result.is_success == "1") else {
+                                            guard (response.data.isOrderAccepted) else {
                                                 onFailure()
                                                 return
                                             }

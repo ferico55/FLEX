@@ -28,7 +28,7 @@
 #import "NotificationManager.h"
 #import "PhoneVerifRequest.h"
 #import "PhoneVerifViewController.h"
-
+#import "Tokopedia-Swift.h"
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()<UIGestureRecognizerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NotificationDelegate, RetryViewDelegate> {
@@ -440,10 +440,7 @@
 #pragma - Scroll to Top
 - (void)scrollToTop
 {
-    UICollectionView *collectionView = self.collectionView;
-    UIEdgeInsets collectionInset = collectionView.contentInset;
-    [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top)
-                            animated:YES];
+    [_collectionView scrollToTop];
 }
 
 

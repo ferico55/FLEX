@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class WalletStore: NSObject {
     var code: String = ""
@@ -15,14 +16,14 @@ class WalletStore: NSObject {
     var data: WalletData?
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: [
             "code" : "code",
             "message" : "message",
             "error" : "error"
             ])
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: WalletData.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: WalletData.mapping()))
         
         return mapping
     }
@@ -31,7 +32,7 @@ class WalletStore: NSObject {
         let userAuth = UserAuthentificationManager()
         let userInformation = userAuth.getUserLoginData()
         
-        if let tokenType = userInformation["oAuthToken.tokenType"] {
+        if let tokenType = userInformation?["oAuthToken.tokenType"] {
             if tokenType != nil {
                 return self.error == "invalid_request"
             }

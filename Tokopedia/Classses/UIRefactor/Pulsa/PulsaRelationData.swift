@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaRelationData: NSObject {
     var id : String?
     var type : String?
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "id"  : "id",
             "type" : "type",
@@ -20,8 +21,8 @@ class PulsaRelationData: NSObject {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
         return mapping
     }
@@ -32,18 +33,18 @@ class PulsaRelationData: NSObject {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let id = aDecoder.decodeObjectForKey("id") as? String {
+        if let id = aDecoder.decodeObject(forKey: "id") as? String {
             self.id = id
         }
         
-        if let type = aDecoder.decodeObjectForKey("type") as? String {
+        if let type = aDecoder.decodeObject(forKey: "type") as? String {
             self.type = type
         }
 
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(type, forKey: "type")
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(id as Any?, forKey: "id")
+        aCoder.encode(type as Any?, forKey: "type")
     }
 }

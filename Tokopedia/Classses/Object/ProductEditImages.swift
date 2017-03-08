@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import DKImagePickerController
+import RestKit
 
 class ProductEditImages: NSObject {
     var image_description: String = ""
@@ -21,9 +23,9 @@ class ProductEditImages: NSObject {
     var isFromAsset : Bool = false
     
     static func mapping() -> RKObjectMapping! {
-        let mapping = RKObjectMapping(forClass: self)
+        let mapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary([
+        mapping?.addAttributeMappings(from:[
             "image_description" : "image_description",
             "image_src" : "image_src",
             "image_id" : "image_id",

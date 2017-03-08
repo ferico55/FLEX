@@ -11,4 +11,6 @@ import UIKit
 @objc
 protocol ShopTabChild {
     func refreshContent()
+    
+    @objc optional func tabWillChange()
 }

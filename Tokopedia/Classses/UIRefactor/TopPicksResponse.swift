@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import RestKit
 
 class TopPicksResponse: NSObject {
 
     var data: TopPicksResponseData!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: TopPicksResponse.self)
+        let mapping = RKObjectMapping(for: TopPicksResponse.self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: TopPicksResponseData.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: TopPicksResponseData.mapping()))
         
-        return mapping
+        return mapping!
     }
 }

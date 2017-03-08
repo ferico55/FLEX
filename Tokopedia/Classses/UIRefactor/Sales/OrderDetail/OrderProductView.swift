@@ -10,19 +10,19 @@ import UIKit
 
 class OrderProductView: UIView {
     
-    @IBOutlet private var productNameLabel: UILabel!
-    @IBOutlet private var productPriceLabel: UILabel!
-    @IBOutlet private var productWeightLabel: UILabel!
-    @IBOutlet private var productTotalPriceLabel: UILabel!
-    @IBOutlet private var productNote: UILabel!
-    @IBOutlet private var productImageView: UIImageView!
+    @IBOutlet fileprivate var productNameLabel: UILabel!
+    @IBOutlet fileprivate var productPriceLabel: UILabel!
+    @IBOutlet fileprivate var productWeightLabel: UILabel!
+    @IBOutlet fileprivate var productTotalPriceLabel: UILabel!
+    @IBOutlet fileprivate var productNote: UILabel!
+    @IBOutlet fileprivate var productImageView: UIImageView!
     
     var didTapProduct:(() -> Void)?
     
-    private var product = OrderProduct() {
+    fileprivate var product = OrderProduct() {
         didSet{
             productNameLabel.text = product.product_name;
-            productImageView.setImageWithURL(NSURL(string: product.product_picture))
+            productImageView.setImageWith(URL(string: product.product_picture))
             productPriceLabel.text = product.product_price;
             productWeightLabel.text = "\(product.product_quantity) Barang (\(product.product_weight) kg)"
             productTotalPriceLabel.text = product.order_subtotal_price_idr
@@ -32,8 +32,8 @@ class OrderProductView: UIView {
         }
     }
     
-    static func newView(product: OrderProduct)-> UIView {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("OrderProductView", owner: nil, options: nil)!
+    static func newView(_ product: OrderProduct)-> UIView {
+        let views:Array = Bundle.main.loadNibNamed("OrderProductView", owner: nil, options: nil)!
         for view in views{
             let view = view as! OrderProductView;
             view.product = product
@@ -43,7 +43,7 @@ class OrderProductView: UIView {
         return OrderProductView()
     }
     
-    @IBAction private func onTapProduct(){
+    @IBAction fileprivate func onTapProduct(){
         didTapProduct?()
     }
 }

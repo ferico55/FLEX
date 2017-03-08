@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class HomePageCategoryLayoutRow: NSObject {
     var id: String!
@@ -18,10 +19,10 @@ class HomePageCategoryLayoutRow: NSObject {
     var category_id: String!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: HomePageCategoryLayoutRow.self)
-        mapping.addAttributeMappingsFromArray(["id", "name", "url", "image_url", "type", "additional_info", "category_id"])
+        let mapping = RKObjectMapping(for: HomePageCategoryLayoutRow.self)
+        mapping?.addAttributeMappings(from:["id", "name", "url", "image_url", "type", "additional_info", "category_id"])
         
-        return mapping
+        return mapping!
     }
     
 }

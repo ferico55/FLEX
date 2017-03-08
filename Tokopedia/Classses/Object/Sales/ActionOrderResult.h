@@ -11,5 +11,6 @@
 @interface ActionOrderResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_success;
+@property (nonatomic) BOOL isOrderAccepted;
 
 @end

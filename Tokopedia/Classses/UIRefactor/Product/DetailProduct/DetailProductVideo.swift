@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import RestKit
 
 @objc(DetailProductVideo)
 class DetailProductVideo: NSObject {
-    var url: String!
-    var type: String!
+    var url: String = ""
+    var type: String = ""
     var varDefault: Int!
     var status: NSNumber! {
         didSet {
@@ -23,11 +24,11 @@ class DetailProductVideo: NSObject {
     var banned: Bool = true
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: DetailProductVideo.self)
+        let mapping = RKObjectMapping(for: DetailProductVideo.self)
         
-        mapping.addAttributeMappingsFromDictionary(["varDefault" : "default"])
-        mapping.addAttributeMappingsFromArray(["url", "type", "status"])
+        mapping?.addAttributeMappings(from:["varDefault" : "default"])
+        mapping?.addAttributeMappings(from: ["url", "type", "status"])
         
-        return mapping
+        return mapping!
     }
 }

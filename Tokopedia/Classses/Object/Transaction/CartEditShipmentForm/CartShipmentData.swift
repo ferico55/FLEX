@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import RestKit
 
 class CartShipmentData: NSObject {
     
     var form : CartShipmentForm = CartShipmentForm()
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "form", toKeyPath: "form", withMapping: CartShipmentForm.mapping()))
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "form", toKeyPath: "form", with: CartShipmentForm.mapping()))
         
         return mapping
     }

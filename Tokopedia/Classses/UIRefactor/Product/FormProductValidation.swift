@@ -7,15 +7,61 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-enum Errors:ErrorType{
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+enum Errors:Error{
     case errorMessage(String)
 }
 
 enum FormType:Int{
-    case AddProduct = 1
-    case EditProduct = 2
-    case CopyProduct = 3
+    case addProduct = 1
+    case editProduct = 2
+    case copyProduct = 3
 }
 
 enum PriceCurrencyType:String{
@@ -30,12 +76,16 @@ enum WeightUnitType:String{
 
 class FormProductValidation: NSObject {
     
-    private var errorMessages : [String] = []
-    private var type : FormType = FormType.AddProduct
+    fileprivate var errorMessages : [String] = []
+    fileprivate var type : FormType = FormType.addProduct
     
-    func isValidFormFirstStep(form: ProductEditResult, type:Int, productNameBeforeCopy: String) -> Bool {
+    func isValidFormFirstStep(_ form: ProductEditResult?, type:Int, productNameBeforeCopy: String) -> Bool {
         
-        self.type = FormType.init(rawValue: type)!
+        guard let form = form else {
+            return false
+        }
+        
+        self.type = FormType(rawValue: type)!
         
         do{
             try self.imageValidation(form.product_images)
@@ -91,8 +141,8 @@ class FormProductValidation: NSObject {
         
         return errorMessages.count == 0
     }
-    
-    func isValidFormSecondStep(form: ProductEditResult, type:Int) -> Bool {
+
+    func isValidFormSecondStep(_ form: ProductEditResult, type:Int) -> Bool {
         do{
             try self.etalaseValidation(form.product.product_etalase_id, etalaseName: form.product.product_etalase)
         } catch Errors.errorMessage(let message) {
@@ -108,7 +158,7 @@ class FormProductValidation: NSObject {
         return errorMessages.count == 0
     }
     
-    func isValidFormProductWholesale(wholesales: [WholesalePrice], product: ProductEditDetail) -> Bool {
+    func isValidFormProductWholesale(_ wholesales: [WholesalePrice], product: ProductEditDetail) -> Bool {
         do{
             try self.wholesaleValidation(wholesales, product: product)
         } catch Errors.errorMessage(let message) {
@@ -124,41 +174,41 @@ class FormProductValidation: NSObject {
         return errorMessages.count == 0
     }
     
-    private func imageValidation(selectedImages: [ProductEditImages]) throws {
+    fileprivate func imageValidation(_ selectedImages: [ProductEditImages]) throws {
         
         guard selectedImages.count > 0 else {
             throw Errors.errorMessage("Gambar harus tersedia")
         }
     }
     
-    private func nameValidation(name: String, nameBeforeCopy: String) throws {
+    fileprivate func nameValidation(_ name: String, nameBeforeCopy: String) throws {
         
         guard name != "" else {
             throw Errors.errorMessage("Nama produk harus diisi.")
         }
         
-        if type == .CopyProduct {
+        if type == .copyProduct {
             guard name != nameBeforeCopy else {
                 throw Errors.errorMessage("Tidak dapat menyalin dengan Nama Produk yang sama.")
             }
         }
     }
     
-    private func categoryValidation(category: CategoryDetail) throws {
+    fileprivate func categoryValidation(_ category: CategoryDetail) throws {
         
         guard category.categoryId != "" else {
             throw Errors.errorMessage("Kategori tidak benar")
         }
     }
     
-    private func minimalOrderValidation(minimalOrder: String) throws {
+    fileprivate func minimalOrderValidation(_ minimalOrder: String) throws {
         
         guard Int(minimalOrder) <= ProductDetail.maximumPurchaseQuantity() else {
             throw Errors.errorMessage("Maksimal minimum pembelian untuk 1 produk adalah \(ProductDetail.maximumPurchaseQuantity())")
         }
     }
     
-    private func priceValidation(price: String?, currency:String) throws {
+    fileprivate func priceValidation(_ price: String?, currency:String) throws {
         
         guard price != "" && price != nil else {
             throw Errors.errorMessage("Harga harus diisi.")
@@ -177,7 +227,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func weightValidation(weight: String, unit: String) throws {
+    fileprivate func weightValidation(_ weight: String, unit: String) throws {
         
         guard weight != "" else {
             throw Errors.errorMessage("Berat produk harus diisi .")
@@ -196,7 +246,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func etalaseValidation(etalaseID: String ,etalaseName: String) throws {
+    fileprivate func etalaseValidation(_ etalaseID: String ,etalaseName: String) throws {
         guard etalaseID != "" else {
             throw Errors.errorMessage("Etalase belum dipilih")
         }
@@ -204,7 +254,7 @@ class FormProductValidation: NSObject {
     
     
     //MARK: - Wholesale
-    private func wholesaleValidation(wholesales: [WholesalePrice], product:ProductEditDetail) throws {
+    fileprivate func wholesaleValidation(_ wholesales: [WholesalePrice], product:ProductEditDetail) throws {
         
         wholesales.forEach({ (wholesale) in
             do{
@@ -236,7 +286,7 @@ class FormProductValidation: NSObject {
         
     }
     
-    private func wholesaleQuantityValidation(quantityMin:String, quantityMax:String, product:ProductEditDetail) throws {
+    fileprivate func wholesaleQuantityValidation(_ quantityMin:String, quantityMax:String, product:ProductEditDetail) throws {
         
         do{
             try self.wholesaleQuantityMinValidation(quantityMin, product: product)
@@ -258,7 +308,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func wholesaleQuantityMinValidation(quantityMin:String, product:ProductEditDetail) throws {
+    fileprivate func wholesaleQuantityMinValidation(_ quantityMin:String, product:ProductEditDetail) throws {
         guard quantityMin != "" else {
             throw Errors.errorMessage("Jumlah minimum harus diisi")
         }
@@ -268,7 +318,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func wholesaleQuantityMaxValidation(quantityMax:String, product:ProductEditDetail) throws {
+    fileprivate func wholesaleQuantityMaxValidation(_ quantityMax:String, product:ProductEditDetail) throws {
         guard quantityMax != "" else {
             throw Errors.errorMessage("Jumlah maksimum harus diisi")
         }
@@ -278,7 +328,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func wholesalePriceValidation(price: String?, product: ProductEditDetail) throws {
+    fileprivate func wholesalePriceValidation(_ price: String?, product: ProductEditDetail) throws {
         guard price != "" && price != nil else {
             throw Errors.errorMessage("Harga harus diisi")
         }
@@ -296,7 +346,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    private func lastWholesaleValidation(lastWholesale: WholesalePrice, newWholesale: WholesalePrice) throws {
+    fileprivate func lastWholesaleValidation(_ lastWholesale: WholesalePrice, newWholesale: WholesalePrice) throws {
         
         guard Int(newWholesale.wholesale_min) > Int(lastWholesale.wholesale_min) else {
             throw Errors.errorMessage("Total produk tidak valid")

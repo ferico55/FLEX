@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyShopNoteDetailViewController">
             <connections>
-                <outlet property="contentNoteTextView" destination="Q7v-o7-4nJ" id="jMd-PG-yQe"/>
+                <outlet property="noteTextEditor" destination="uoG-9Y-y8L" id="j9P-nD-gts"/>
                 <outlet property="timeNoteLabel" destination="Tww-wo-38B" id="rBg-Jo-pPA"/>
                 <outlet property="titleNoteTextField" destination="1gX-EH-jNo" id="sqk-s9-fjr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="qCh-in-6Zw"/>
@@ -35,40 +39,35 @@
                         <constraint firstAttribute="height" constant="21" id="A69-e3-cUH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.22205999493598938" green="0.22205334901809692" blue="0.22205713391304016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3CR-Go-hoS" userLabel="Border">
                     <rect key="frame" x="0.0" y="82" width="320" height="4"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="4" id="e7O-4p-KKy"/>
                     </constraints>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7v-o7-4nJ" customClass="TKPDTextView">
-                    <rect key="frame" x="12" y="86" width="308" height="482"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="MuQ-r8-gRb"/>
-                    </connections>
-                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uoG-9Y-y8L" customClass="RichEditorView" customModule="RichEditorView">
+                    <rect key="frame" x="8" y="86" width="304" height="482"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="29E-AD-WdH"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="6IH-rb-ZUt"/>
-                <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="7uO-uu-sfg"/>
                 <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="82O-EU-AqM"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="BHY-PJ-Ujs"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="N3p-gy-RJg"/>
                 <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="NZE-Eh-noK"/>
-                <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="d53-6l-thv"/>
+                <constraint firstAttribute="bottom" secondItem="uoG-9Y-y8L" secondAttribute="bottom" id="WcE-5N-jPb"/>
+                <constraint firstAttribute="trailing" secondItem="uoG-9Y-y8L" secondAttribute="trailing" constant="8" id="XCD-KV-Zqm"/>
+                <constraint firstItem="uoG-9Y-y8L" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="XvT-o5-tL3"/>
                 <constraint firstAttribute="trailing" secondItem="1gX-EH-jNo" secondAttribute="trailing" constant="17" id="eaA-gf-BAj"/>
                 <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="1gX-EH-jNo" secondAttribute="bottom" constant="5" id="ihf-hU-Axm"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="krn-HN-p1B"/>
+                <constraint firstItem="uoG-9Y-y8L" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="oHJ-cx-8aT"/>
                 <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="uyh-ZR-fMh"/>
                 <constraint firstItem="3CR-Go-hoS" firstAttribute="top" secondItem="Tww-wo-38B" secondAttribute="bottom" constant="16" id="vfE-ZT-u19"/>
             </constraints>
@@ -83,4 +82,9 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PaymentConfirmationForm: NSObject {
     
@@ -18,15 +19,15 @@ class PaymentConfirmationForm: NSObject {
     var system_bank_list : [SystemBank] = []
     
     class func mapping() -> RKObjectMapping{
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromArray([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "user_acc_no",
             "user_acc_name",
             "system_bank_id"
             ])
-        mapping.addRelationshipMappingWithSourceKeyPath("system_bank_list", mapping: SystemBank.mapping())
+        mapping?.addRelationshipMapping(withSourceKeyPath: "system_bank_list", mapping: SystemBank.mapping())
         
-        return mapping
+        return mapping!
     }
 
 }

@@ -9,22 +9,22 @@
 import UIKit
 
 @objc enum Source :Int {
-    case Hotlist, Product, Catalog, CatalogProduct, Shop, Directory, Default
+    case hotlist, product, catalog, catalogProduct, shop, directory, `default`
     func description() -> String {
         switch self {
-        case .Hotlist:
+        case .hotlist:
             return "hot_product"
-        case .Product:
+        case .product:
             return "search_product"
-        case .Catalog:
+        case .catalog:
             return "search_catalog"
-        case .CatalogProduct:
+        case .catalogProduct:
             return "catalog_product"
-        case .Shop:
+        case .shop:
             return "search_shop"
-        case .Directory:
+        case .directory:
             return "directory"
-        case .Default:
+        case .default:
             return ""
         }
     }
@@ -32,28 +32,28 @@ import UIKit
 
 class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
-    private var filterResponse : FilterData = FilterData()
-    private var selectedCategories: [CategoryDetail] = []
-    private var selectedFilters:[ListOption] = []
-    private var listControllers : [UIViewController] = []
-    private var completionHandlerFilter:([CategoryDetail], [ListOption], [String:String])->Void = {(CategoryDetail, ListOption, param) -> Void in}
-    private var categories: [CategoryDetail] = []
-    private let tabBarController:MHVerticalTabBarController = MHVerticalTabBarController()
-    private var presentedController : UIViewController = UIViewController()
+    fileprivate var filterResponse : FilterData = FilterData()
+    fileprivate var selectedCategories: [CategoryDetail] = []
+    fileprivate var selectedFilters:[ListOption] = []
+    fileprivate var listControllers : [UIViewController] = []
+    fileprivate var completionHandlerFilter:([CategoryDetail], [ListOption], [String:String])->Void = {(CategoryDetail, ListOption, param) -> Void in}
+    fileprivate var categories: [CategoryDetail] = []
+    fileprivate let tabBarController:MHVerticalTabBarController = MHVerticalTabBarController()
+    fileprivate var presentedController : UIViewController = UIViewController()
     
-    private var selectedSort : ListOption = ListOption()
-    private var completionHandlerSort:(ListOption, [String:String])->Void = {_ in }
+    fileprivate var selectedSort : ListOption = ListOption()
+    fileprivate var completionHandlerSort:(ListOption, [String:String])->Void = {_ in }
     
-    private var source : String = ""
+    fileprivate var source : String = ""
     
-    private var completionHandlerResponse:(FilterData)->Void = {_ in }
+    fileprivate var completionHandlerResponse:(FilterData)->Void = {_ in }
     
-    private var rootCategoryID : String = ""
+    fileprivate var rootCategoryID : String = ""
     
     /*
         The designated initializer for filter option view controller. filterResponse (optional) is data option filter from previous fetch dynamic attibute. 
      */
-    init(searchDataSource: Source, filterResponse:FilterData?, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
+    init(searchDataSource: Source, filterResponse:FilterData?, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: @escaping ((_ selectedCategories:[CategoryDetail], _ selectedFilters:[ListOption], _ paramFilter:[String : String]) -> Void), onReceivedFilterDataOption:@escaping ((FilterData) -> Void)){
         
         if filterResponse != nil { self.filterResponse = filterResponse! }
         self.categories = categories
@@ -72,7 +72,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     /*
         The designated initializer for sorting list view controller. sortResponse (optional) is list sort option from previous fetch dynamic attibute.
      */
-    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
+    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: @escaping ((_ selectedSort:ListOption, _ paramSort:[String:String]) -> Void), onReceivedFilterDataOption:@escaping ((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
@@ -88,13 +88,13 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self .presentControllerSort()
     }
     
-    private func requestFilter(){
+    fileprivate func requestFilter(){
         RequestFilter.fetchFilter(source,
                                   departmentID: self.rootCategoryID,
                                   success: { (response) in
             if(response.filter.count == 0){
                 let vc : UIViewController = UIViewController()
-                vc.view.backgroundColor = UIColor.whiteColor()
+                vc.view.backgroundColor = UIColor.white
                 self.setTabbarViewController([vc])
             } else {
                 self.filterResponse = self.addFilterCategory(response)
@@ -104,20 +104,20 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             }
             }) { (error) in
                 let vc : UIViewController = UIViewController()
-                vc.view.backgroundColor = UIColor.whiteColor()
+                vc.view.backgroundColor = UIColor.white
                 self.setTabbarViewController([vc])
         }
     }
     
-    private func setTabbarViewController(viewControllers:[UIViewController]){
+    fileprivate func setTabbarViewController(_ viewControllers:[UIViewController]){
         tabBarController.viewControllers = viewControllers as [AnyObject]
     }
     
-    private func getTitle() -> String{
+    fileprivate func getTitle() -> String{
         return "Filter"
     }
     
-    private func presentControllerFilter(){
+    fileprivate func presentControllerFilter(){
         
         tabBarController.delegate = self
         tabBarController.title = self.getTitle()
@@ -126,17 +126,17 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         tabBarController.showResetButton = true
         tabBarController.selectedIndex = 0
         let vc : UIViewController = UIViewController()
-        vc.view.backgroundColor = UIColor.whiteColor()
-        let loading : UIActivityIndicatorView = UIActivityIndicatorView.init(activityIndicatorStyle: .Gray)
+        vc.view.backgroundColor = UIColor.white
+        let loading : UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         loading.frame.origin.y = 10
         loading.frame.origin.x = vc.view.frame.size.width/2 - tabBarController.tabBarWidth/2 - loading.frame.size.width/2
         loading.startAnimating()
         vc.view .addSubview(loading)
         self.setTabbarViewController([vc]);
         
-        let navigation: UINavigationController = UINavigationController.init(rootViewController: tabBarController)
-        navigation.navigationBar.translucent = false
-        presentedController.navigationController!.presentViewController(navigation, animated: true, completion: nil)
+        let navigation: UINavigationController = UINavigationController(rootViewController: tabBarController)
+        navigation.navigationBar.isTranslucent = false
+        presentedController.navigationController!.present(navigation, animated: true, completion: nil)
         
         if filterResponse.filter.isEmpty {
             self.requestFilter()
@@ -146,8 +146,8 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         }
     }
     
-    private func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
+    fileprivate func presentControllerSort(){
+        let controller : FilterSortViewController = FilterSortViewController(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
             self.selectedSort = selectedSort
             if selectedSort.name != "" {
                 AnalyticsManager.trackEventName("clickSort", category: GA_EVENT_CATEGORY_SORT, action: GA_EVENT_ACTION_CLICK, label: selectedSort.name)
@@ -158,33 +158,33 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             self.completionHandlerResponse(response)
         }
         
-        let navigation: UINavigationController = UINavigationController.init(rootViewController: controller)
-        navigation.navigationBar.translucent = false
-        presentedController.navigationController!.presentViewController(navigation, animated: true, completion: nil)
+        let navigation: UINavigationController = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isTranslucent = false
+        presentedController.navigationController!.present(navigation, animated: true, completion: nil)
     }
     
-    private func addFilterCategory(response:FilterData) -> FilterData{
-        if self.source == Source.Directory.description() {
+    fileprivate func addFilterCategory(_ response:FilterData) -> FilterData{
+        if self.source == Source.directory.description() {
             let filter : ListFilter = ListFilter()
             filter.title = self.categoryTitle()
             filter.isMultipleSelect = false
-            response.filter.insert(filter, atIndex: 0)
+            response.filter.insert(filter, at: 0)
             return response
             
         }
         return response
     }
     
-    private func adjustControllers(){
+    fileprivate func adjustControllers(){
         for filter in filterResponse.filter {
             if filter.title == categoryTitle() {
-                let controller : CategoryFilterViewController = CategoryFilterViewController.init(rootCategoryID:rootCategoryID, selectedCategories: selectedCategories, initialCategories:categories, isMultipleSelect: filter.isMultipleSelect) { (selectedCategory) in
+                let controller : CategoryFilterViewController = CategoryFilterViewController(rootCategoryID:rootCategoryID, selectedCategories: selectedCategories, initialCategories:categories, isMultipleSelect: filter.isMultipleSelect) { (selectedCategory) in
                     self.selectedCategories = selectedCategory
                     self .adjustImageTabBarButton((self.selectedCategories.count>0))
                 }
                 
                 if (self.selectedCategories.count>0) {
-                    controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+                    controller.tabBarItem.image = UIImage(named: "icon_unread.png")
                 }
                 else {
                     controller.tabBarItem.image = UIImage()
@@ -194,10 +194,10 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 
                 listControllers .append(controller)
             } else {
-                let controller: FiltersTableViewController = FiltersTableViewController.init(items: filter.options , selectedObjects: selectedFilters, showSearchBar: (filter.search.searchable.integerValue == 1), searchBarPlaceholder: filter.search.placeholder as String) { (selectedFilters) in
+                let controller: FiltersTableViewController = FiltersTableViewController(items: filter.options , selectedObjects: selectedFilters, showSearchBar: (filter.search.searchable.integerValue == 1), searchBarPlaceholder: filter.search.placeholder as String) { (selectedFilters) in
                     self.selectedFilters = selectedFilters
                     self.listControllers.forEach({ (controller) in
-                        if controller.isKindOfClass(FiltersTableViewController){
+                        if controller is FiltersTableViewController {
                             (controller as! FiltersTableViewController).selectedObjects = selectedFilters
                         }
                     })
@@ -205,7 +205,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 }
 
                 if (self.filterIsActive(filter.options, selectedFilters: selectedFilters)) {
-                    controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+                    controller.tabBarItem.image = UIImage(named: "icon_unread.png")
                 }
                 else {
                     controller.tabBarItem.image = UIImage()
@@ -217,17 +217,21 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         }
     }
     
-    private func filterIsActive(ListFilters:[ListOption],selectedFilters:[ListOption]) -> Bool{
+    fileprivate func filterIsActive(_ ListFilters:[ListOption],selectedFilters:[ListOption]) -> Bool{
         var textFieldIsActive: Bool = false
         
         let listSet = Set(ListFilters)
         let findListSet = Set(selectedFilters)
-        let allElemsContained = findListSet.intersect(listSet)
+        let allElemsContained = findListSet.intersection(listSet)
         
         let listKeyFilters = ListFilters.map({$0.key})
         for selectedFilter in selectedFilters {
             if selectedFilter.input_type == self.textInputType() {
-                if listKeyFilters .contains(selectedFilter.key) && Int(selectedFilter.value) > 0 {
+                guard let value = Int(selectedFilter.value) else {
+                    textFieldIsActive = false
+                    break
+                }
+                if listKeyFilters .contains(selectedFilter.key) && value > 0 {
                     textFieldIsActive = true
                 }
             }
@@ -236,15 +240,15 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         return ((allElemsContained.count>0) || textFieldIsActive)
     }
     
-    private func textInputType()-> String{
+    fileprivate func textInputType()-> String{
         return "textbox"
     }
     
-    private func categoryTitle() -> String{
+    fileprivate func categoryTitle() -> String{
         return "Kategori"
     }
     
-    private func adjustImageTabBarButton(isActive:Bool){
+    fileprivate func adjustImageTabBarButton(_ isActive:Bool){
         if isActive {
             var index : Int = Int(self.tabBarController.selectedIndex)
             if index == Int(UInt8.max){
@@ -252,7 +256,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             }
             if self.tabBarController.tabBar.tabBarButtons?.isEmpty == false {
                 let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[Int(self.tabBarController.selectedIndex)];
-                button.imageView.image = UIImage.init(named: "icon_unread.png")
+                button.imageView.image = UIImage(named: "icon_unread.png")
             }
         }
         else {
@@ -303,15 +307,15 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         completionHandlerFilter(selectedCategories, selectedFilters, params)
     }
     
-    func didTapResetButton(button: UIButton!) {
+    func didTapResetButton(_ button: UIButton!) {
         selectedCategories = []
         selectedFilters = []
         
         listControllers.forEach { (controller) in
-            if controller.isKindOfClass(CategoryFilterViewController){
+            if controller is CategoryFilterViewController {
                 (controller as! CategoryFilterViewController).resetSelectedFilter()
             }
-            if controller.isKindOfClass(FiltersTableViewController){
+            if controller is FiltersTableViewController {
                 (controller as! FiltersTableViewController).resetSelectedFilter()
             }
         }
@@ -319,7 +323,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.tabBarController.tabBar.tabBarButtons.forEach({$0.imageView.image = UIImage()})
     }
     
-    func tabBarController(tabBarController: MHVerticalTabBarController!, didSelectViewController viewController: UIViewController!) {
+    func tabBarController(_ tabBarController: MHVerticalTabBarController!, didSelect viewController: UIViewController!) {
     }
     
 }

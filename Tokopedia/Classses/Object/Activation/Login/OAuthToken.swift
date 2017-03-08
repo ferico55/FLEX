@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc(OAuthToken)
 class OAuthToken: NSObject {
@@ -15,8 +16,8 @@ class OAuthToken: NSObject {
     var errorDescription: String?
 
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "access_token": "accessToken",
             "token_type": "tokenType",
             "expires_in": "expiry",
@@ -25,6 +26,6 @@ class OAuthToken: NSObject {
             "error_description": "errorDescription"
         ])
 
-        return mapping
+        return mapping!
     }
 }

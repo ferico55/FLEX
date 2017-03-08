@@ -9,23 +9,23 @@
 import UIKit
 
 @objc enum ProceedType: NSInteger {
-    case Confirm, Reject, Accept, Partial
+    case confirm, reject, accept, partial
     func stringDescription() -> String {
         switch self {
-        case .Confirm:
+        case .confirm:
             return "confirm"
-        case .Reject:
+        case .reject:
             return "reject"
-        case .Accept:
+        case .accept:
             return "accept"
-        case .Partial:
+        case .partial:
             return "partial"
         }
     }
 }
 
 class ProceedShippingObjectRequest: NSObject {
-    var type : ProceedType = .Confirm
+    var type : ProceedType = .confirm
     var orderID : String = ""
     var reason : String = ""
     var day : String = ""
@@ -39,7 +39,7 @@ class ProceedShippingObjectRequest: NSObject {
 
 class ShipmentRequest: NSObject {
     
-    class func fetchProceedShipping(requestObject:ProceedShippingObjectRequest, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchProceedShipping(_ requestObject:ProceedShippingObjectRequest, onSuccess: @escaping (() -> Void), onFailure: @escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -60,18 +60,18 @@ class ShipmentRequest: NSObject {
             "user_id"       : auth.getUserId()
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/myshop-order/proceed_shipping.pl",
                                           method: .POST,
                                           parameter: param,
                                           mapping: GeneralAction.mapping(),
                                           onSuccess: { (mappingResult, operation) in
                                             
-                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let result : [AnyHashable : Any] = mappingResult.dictionary() as [AnyHashable : Any]
                                             let response : GeneralAction = result[""] as! GeneralAction
                                             
                                             if response.data.is_success == "1"{
-                                                if response.message_status?.count>0 {
+                                                if (response.message_status?.count)!>0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
                                                 onSuccess()

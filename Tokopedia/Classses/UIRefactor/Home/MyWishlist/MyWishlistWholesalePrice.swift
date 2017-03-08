@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc(MyWishlistWholesalePrice)
 class MyWishlistWholesalePrice: NSObject {
@@ -16,9 +17,9 @@ class MyWishlistWholesalePrice: NSObject {
     var price: NSNumber!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistWholesalePrice.self)
-        mapping.addAttributeMappingsFromArray(["minimum", "maximum", "price"])
+        let mapping = RKObjectMapping(for: MyWishlistWholesalePrice.self)
+        mapping?.addAttributeMappings(from:["minimum", "maximum", "price"])
         
-        return mapping
+        return mapping!
     }
 }

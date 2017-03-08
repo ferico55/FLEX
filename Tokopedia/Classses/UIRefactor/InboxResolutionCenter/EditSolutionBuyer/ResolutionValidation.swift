@@ -10,9 +10,9 @@ import UIKit
 
 class ResolutionValidation: NSObject {
     
-    private var errorMessages : [String] = []
+    fileprivate var errorMessages : [String] = []
     
-    func isValidInputProblem(postObject: ReplayConversationPostData) -> Bool {
+    func isValidInputProblem(_ postObject: ReplayConversationPostData) -> Bool {
         
         if postObject.category_trouble_id == "1"{
             do{
@@ -39,7 +39,7 @@ class ResolutionValidation: NSObject {
         return errorMessages.count == 0
     }
     
-    func isValidSubmitEditResolution(postObject : ReplayConversationPostData) -> Bool{
+    func isValidSubmitEditResolution(_ postObject : ReplayConversationPostData) -> Bool{
         do{
             try self.validateSolution(postObject)
         } catch Errors.errorMessage(let message) {
@@ -55,9 +55,9 @@ class ResolutionValidation: NSObject {
         return errorMessages.count == 0
     }
     
-    private func validateSolution(postObject : ReplayConversationPostData) throws {
+    fileprivate func validateSolution(_ postObject : ReplayConversationPostData) throws {
         
-        guard Int(postObject.refundAmount) <= Int(postObject.maxRefundAmount) else {
+        guard Int(postObject.refundAmount)! <= Int(postObject.maxRefundAmount)! else {
             throw Errors.errorMessage("Nominal maksimal pengembalian dana sebesar \(postObject.maxRefundAmountIDR) .")
         }
         
@@ -66,13 +66,13 @@ class ResolutionValidation: NSObject {
         }
     }
     
-    private func validateProductRelatedProblem(postObject: ReplayConversationPostData) throws {
+    fileprivate func validateProductRelatedProblem(_ postObject: ReplayConversationPostData) throws {
         guard postObject.selectedProducts.count > 0 else{
             throw Errors.errorMessage("Pilih produk yang bermasalah.")
         }
         
         try postObject.selectedProducts.forEach { (product) in
-            guard product.pt_last_selected_quantity != "" && Int(product.pt_last_selected_quantity) > 0 else {
+            guard product.pt_last_selected_quantity != "" && Int(product.pt_last_selected_quantity)! > 0 else {
                 throw Errors.errorMessage("Jumlah produk \(product.pt_product_name) belum diisi")
             }
             
@@ -85,7 +85,7 @@ class ResolutionValidation: NSObject {
         }
     }
     
-    private func validateNonProductRelatedProblem(postObject: ReplayConversationPostData) throws {
+    fileprivate func validateNonProductRelatedProblem(_ postObject: ReplayConversationPostData) throws {
         guard postObject.troubleType != "" && Int(postObject.troubleType) != 0 else {
             throw Errors.errorMessage("Pilih detail masalah")
         }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class SearchSuggestionData: NSObject {
     var name = ""
@@ -14,9 +15,9 @@ class SearchSuggestionData: NSObject {
     var items: [SearchSuggestionItem]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: SearchSuggestionData.self)
-        mapping.addAttributeMappingsFromArray(["name", "id"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "items", toKeyPath: "items", withMapping: SearchSuggestionItem.mapping()))
+        let mapping: RKObjectMapping = RKObjectMapping(for: SearchSuggestionData.self)
+        mapping.addAttributeMappings(from:["name", "id"])
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "items", toKeyPath: "items", with: SearchSuggestionItem.mapping()))
         return mapping
     }
 }

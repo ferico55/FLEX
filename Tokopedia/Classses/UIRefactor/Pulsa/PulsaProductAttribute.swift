@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProductAttribute: NSObject, NSCoding {
     var desc : String = ""
@@ -18,7 +19,7 @@ class PulsaProductAttribute: NSObject, NSCoding {
     var weight : Int = 1
     var promo : PulsaProductPromo?
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "desc"  : "desc",
             "info"  : "info",
@@ -31,10 +32,10 @@ class PulsaProductAttribute: NSObject, NSCoding {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "promo", toKeyPath: "promo", withMapping: PulsaProductPromo.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "promo", toKeyPath: "promo", with: PulsaProductPromo.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -46,47 +47,47 @@ class PulsaProductAttribute: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let desc = aDecoder.decodeObjectForKey("desc") as? String {
+        if let desc = aDecoder.decodeObject(forKey: "desc") as? String {
             self.desc = desc
         }
         
-        if let info = aDecoder.decodeObjectForKey("info") as? String {
+        if let info = aDecoder.decodeObject(forKey: "info") as? String {
             self.info = info
         }
         
-        if let detail = aDecoder.decodeObjectForKey("detail") as? String {
+        if let detail = aDecoder.decodeObject(forKey: "detail") as? String {
             self.detail = detail
         }
         
-        if let detail_url = aDecoder.decodeObjectForKey("detail_url") as? String {
+        if let detail_url = aDecoder.decodeObject(forKey: "detail_url") as? String {
             self.detail_url = detail_url
         }
         
-        if let price = aDecoder.decodeObjectForKey("price") as? String {
+        if let price = aDecoder.decodeObject(forKey: "price") as? String {
             self.price = price
         }
         
-        if let status = aDecoder.decodeObjectForKey("status") as? Int {
+        if let status = aDecoder.decodeObject(forKey: "status") as? Int {
             self.status = status
         }
         
-        if let weight = aDecoder.decodeObjectForKey("weight") as? Int {
+        if let weight = aDecoder.decodeObject(forKey: "weight") as? Int {
             self.weight = weight
         }
         
-        if let promo = aDecoder.decodeObjectForKey("promo") as? PulsaProductPromo {
+        if let promo = aDecoder.decodeObject(forKey:"promo") as? PulsaProductPromo {
             self.promo = promo
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(desc, forKey: "desc")
-        aCoder.encodeObject(weight, forKey: "weight")
-        aCoder.encodeObject(info, forKey: "info")
-        aCoder.encodeObject(detail, forKey: "detail")
-        aCoder.encodeObject(detail_url, forKey: "detail_url")
-        aCoder.encodeObject(price, forKey: "price")
-        aCoder.encodeObject(status, forKey: "status")
-        aCoder.encodeObject(promo, forKey: "promo")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(desc as Any?, forKey: "desc")
+        aCoder.encode(weight as Any?, forKey: "weight")
+        aCoder.encode(info as Any?, forKey: "info")
+        aCoder.encode(detail as Any?, forKey: "detail")
+        aCoder.encode(detail_url as Any?, forKey: "detail_url")
+        aCoder.encode(price as Any?, forKey: "price")
+        aCoder.encode(status as Any?, forKey: "status")
+        aCoder.encode(promo as Any?, forKey: "promo")
     }
 }

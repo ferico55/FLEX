@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc (DetailProductVideoData)
 class DetailProductVideoData: NSObject {
@@ -15,9 +16,9 @@ class DetailProductVideoData: NSObject {
     var videos: [DetailProductVideo]!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: DetailProductVideoData.self)
-        mapping.addAttributeMappingsFromArray(["product_id"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "video", toKeyPath: "videos", withMapping: DetailProductVideo.mapping()))
-        return mapping
+        let mapping = RKObjectMapping(for: DetailProductVideoData.self)
+        mapping?.addAttributeMappings(from:["product_id"])
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "video", toKeyPath: "videos", with: DetailProductVideo.mapping()))
+        return mapping!
     }
 }

@@ -366,7 +366,6 @@
         vc.onMessagePosted = ^(NSString* replyMessage) {
             [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
         };
-        vc.hideInputMessage = list.user_label_id==Administrator?YES:NO;
         [AnalyticsManager trackEventName:@"clickMessage"
                                 category:GA_EVENT_CATEGORY_INBOX_MESSAGE
                                   action:GA_EVENT_ACTION_VIEW

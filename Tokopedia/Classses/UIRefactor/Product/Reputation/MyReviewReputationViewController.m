@@ -439,7 +439,7 @@
     [cell.theirUserImage setClipsToBounds:YES];
     
     [cell.theirUserName setText:current.reviewee_name];
-    [cell.theirUserName setText:[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+    [cell.theirUserName setText:[UIColor tpGreen]
                        withFont:[UIFont smallThemeMedium]];
     [cell.theirUserName setLabelBackground:[current.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
     

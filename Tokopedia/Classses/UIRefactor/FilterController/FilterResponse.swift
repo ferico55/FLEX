@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class FilterResponse: NSObject {
 
@@ -14,15 +15,15 @@ class FilterResponse: NSObject {
     var data : FilterData = FilterData()
     
     
-    class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status" : "status"]
     }
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: FilterData.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: FilterData.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping

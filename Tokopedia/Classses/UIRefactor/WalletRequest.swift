@@ -10,7 +10,7 @@ import UIKit
 
 class WalletRequest: NSObject {
     
-    class func fetchStatusWithUserId(userId: String, onSuccess: ((WalletStore) -> Void), onFailure:((NSError)->Void)) {
+    class func fetchStatusWithUserId(_ userId: String, onSuccess: @escaping ((WalletStore) -> Void), onFailure: @escaping ((Error)->Void)){
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager.isUsingDefaultError = false
@@ -18,12 +18,23 @@ class WalletRequest: NSObject {
         let userManager = UserAuthentificationManager()
         let userInformation = userManager.getUserLoginData()
         
-        guard let type = userInformation["oAuthToken.tokenType"] else { return }
-        guard let token = userInformation["oAuthToken.accessToken"] else { return }
+        guard let type = userInformation?["oAuthToken.tokenType"] as? String else {
+            let error = NSError(domain: "Wallet", code: 9991, userInfo: nil)
+            onFailure(error)
+            
+            return
+        }
+        
+        guard let token = userInformation?["oAuthToken.accessToken"] as? String else {
+            let error = NSError(domain: "Wallet", code: 9992, userInfo: nil)
+            onFailure(error)
+            
+            return
+        }
         
         let header = ["Authorization" : "\(type) \(token)"]
         
-        networkManager.requestWithBaseUrl(NSString.accountsUrl(),
+        networkManager.request(withBaseUrl: NSString.accountsUrl(),
                                           path: "/api/v1/wallet/balance",
                                           method: .GET,
                                           header: header,

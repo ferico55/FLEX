@@ -17,6 +17,7 @@
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
 #import "AttachedPicture.h"
+#import "FBSDKShareKit.h"
 
 @interface ReviewSummaryViewController ()
 <
@@ -34,7 +35,7 @@ TokopediaNetworkManagerDelegate
 @property (weak, nonatomic) IBOutlet UILabel *accuracyLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachedImagesViewHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
-
+@property (strong, nonatomic) IBOutlet UISwitch *shareOnFacebookSwitch;
 
 @end
 
@@ -124,8 +125,8 @@ TokopediaNetworkManagerDelegate
         _attachedImagesViewHeight.constant = 8;
         _textViewHeight.constant = 139.0;
     } else {
-        for (NSInteger ii = 0; ii < _attachedImages.count; ii++) {
-            AttachedPicture *pict = _attachedImages[ii];
+        for (NSInteger ii = 0; ii < [self attachedImageWithoutDeletedImage].count; ii++) {
+            AttachedPicture *pict = [self attachedImageWithoutDeletedImage][ii];
             
             if (![pict.thumbnailUrl isEqualToString:@""]) {
                 [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
@@ -139,6 +140,18 @@ TokopediaNetworkManagerDelegate
             
         }
     }
+}
+
+-(NSArray<AttachedPicture *> *)attachedImageWithoutDeletedImage{
+    NSMutableArray *attached = [NSMutableArray new];
+    
+    for (AttachedPicture *pict in _attachedImages) {
+        if (![pict.isDeleted isEqualToString:@"1"]) {
+            [attached addObject:pict];
+        }
+    }
+    
+    return [attached copy];
 }
 
 - (void)setQualityLabel {
@@ -251,7 +264,6 @@ TokopediaNetworkManagerDelegate
 - (IBAction)tapToSend:(id)sender {
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
-        
         if (_isEdit) {
             [_reviewRequest requestEditReviewWithImageWithReviewID:_review.review_id
                                                          productID:_review.product_id
@@ -273,7 +285,7 @@ TokopediaNetworkManagerDelegate
                                                                                                                               delegate:self];
                                                              [alert show];
                                                              
-                                                             for (UIViewController *aViewController in allViewControllers) {
+                                                        for (UIViewController *aViewController in allViewControllers) {
                                                                  if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
                                                                      [self.navigationController popToViewController:aViewController animated:YES];
                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
@@ -284,6 +296,7 @@ TokopediaNetworkManagerDelegate
                                                                                                                        userInfo:nil];
                                                                  }
                                                              }
+                                                             [self shareToFacebook];
                                                          }
                                                          onFailure:^(NSError *error) {
                                                              [self sendButtonIsLoading:NO];
@@ -323,6 +336,8 @@ TokopediaNetworkManagerDelegate
                                                                                                                              userInfo:nil];
                                                                        }
                                                                    }
+                                                                   
+                                                                   [self shareToFacebook];
                                                                }
                                                                onFailure:^(NSError *error) {
                                                                    [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_ERROR label:@"Review"];
@@ -332,6 +347,19 @@ TokopediaNetworkManagerDelegate
                                                                }];
         }
         
+        
+    }
+}
+
+- (void) shareToFacebook {
+    if (_shareOnFacebookSwitch.on) {
+        FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
+        fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , _review.product_uri]];
+        fbShareContent.quote = _reviewMessageTextView.text;
+        
+        [FBSDKShareDialog showFromViewController:self
+                                     withContent:fbShareContent
+                                        delegate:nil];
     }
 }
 

@@ -17,22 +17,22 @@ class InfoAddressView: UIView {
 
     // MARK: Initialization
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func newView()-> AnyObject! {
-        let views:Array = NSBundle.mainBundle().loadNibNamed("InfoAddressView", owner: nil, options: nil)!
-        for view:AnyObject in views{
+    func newView()-> Any! {
+        let views: Array = Bundle.main.loadNibNamed("InfoAddressView", owner: nil, options: nil)!
+        for view: Any in views{
             return view;
         }
         return nil
     }
     
-    func setViewModel(viewModel:AddressViewModel){
+    func setViewModel(_ viewModel:AddressViewModel){
         receiverNumberLabel.text = viewModel.receiverNumber;
         addressStreetLabel.text = viewModel.addressStreet;
         receiverNameLabel.text = viewModel.receiverName;

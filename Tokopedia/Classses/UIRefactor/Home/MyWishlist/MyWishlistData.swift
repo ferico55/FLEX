@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc(MyWishlistData)
 class MyWishlistData: NSObject {
@@ -29,16 +30,16 @@ class MyWishlistData: NSObject {
     var productModelView: ProductModelView!
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: MyWishlistData.self)
+        let mapping = RKObjectMapping(for: MyWishlistData.self)
         
-        mapping.addAttributeMappingsFromArray(["id", "name", "url", "image", "price", "price_formatted", "minimum_order", "condition", "available", "status", "preorder"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "wholesale_price", toKeyPath: "wholesale_price", withMapping: MyWishlistWholesalePrice.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "shop", toKeyPath: "shop", withMapping: MyWishlistShop.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", withMapping: ProductBadge.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", withMapping: ProductLabel.mapping()))
+        mapping?.addAttributeMappings(from:["id", "name", "url", "image", "price", "price_formatted", "minimum_order", "condition", "available", "status", "preorder"])
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "wholesale_price", toKeyPath: "wholesale_price", with: MyWishlistWholesalePrice.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "shop", toKeyPath: "shop", with: MyWishlistShop.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", with: ProductBadge.mapping()))
+        mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", with: ProductLabel.mapping()))
         
         
-        return mapping
+        return mapping!
     }
     
     func viewModel() -> ProductModelView {
@@ -81,7 +82,7 @@ class MyWishlistData: NSObject {
             "name" : self.name,
             "id" : self.id,
             "price" : self.price,
-            "brand" : self.shop.name]
-        return productFieldObjects
+            "brand" : self.shop.name] as [String : Any]
+        return productFieldObjects as NSDictionary
     }
 }

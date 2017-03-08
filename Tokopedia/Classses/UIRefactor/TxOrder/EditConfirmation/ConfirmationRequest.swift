@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import RestKit
 
 class ConfirmationRequest: NSObject {
-    class func fetchEditForm(paymentID:String, onSuccess: ((PaymentConfirmationForm) -> Void), onFailure:(()->Void)) {
+    class func fetchEditForm(_ paymentID:String, onSuccess: @escaping ((PaymentConfirmationForm) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -18,30 +19,30 @@ class ConfirmationRequest: NSObject {
             "payment_id":paymentID
         ]
         
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
-                                          path: "/v4/tx-order/get_edit_payment_toppay_form.pl",
-                                          method: .POST,
-                                          parameter: param,
-                                          mapping: V4Response.mappingWithData(PaymentConfirmation.mapping()),
-                                          onSuccess: { (mappingResult, operation) in
-                                            
-                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
-                                            let data = response.data as! PaymentConfirmation
-                                            
-                                            if response.message_error.count > 0 {
-                                                StickyAlertView.showErrorMessage(response.message_error)
-                                                onFailure()
-                                            } else {
-                                                onSuccess(data.form)
-                                            }
-                                            
+        networkManager.request(withBaseUrl: NSString.v4Url(),
+                                      path: "/v4/tx-order/get_edit_payment_toppay_form.pl",
+                                      method: .POST,
+                                      parameter: param,
+                                      mapping: V4Response<AnyObject>.mapping(withData: PaymentConfirmation.mapping()) as RKObjectMapping,
+                                      onSuccess: { (mappingResult, operation) in
+                                        
+                                        let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                        let response : V4Response = result[""] as! V4Response<PaymentConfirmation>
+                                        let data = response.data as PaymentConfirmation
+                                        
+                                        if response.message_error.count > 0 {
+                                            StickyAlertView.showErrorMessage(response.message_error)
+                                            onFailure()
+                                        } else {
+                                            onSuccess(data.form)
+                                        }
+                                        
         }) { (error) in
             onFailure()
         }
     }
     
-    class func fetchEdit(form:PaymentConfirmationForm, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchEdit(_ form:PaymentConfirmationForm, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -54,16 +55,16 @@ class ConfirmationRequest: NSObject {
             "comments"              : form.comment
         ]
         
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                           path: "/v4/action/tx-order/edit_payment_toppay.pl",
                                           method: .POST,
                                           parameter: param,
-                                          mapping: V4Response.mappingWithData(GeneralActionResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: GeneralActionResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
-                                            let data = response.data as! GeneralActionResult
+                                            let response : V4Response = result[""] as! V4Response<GeneralActionResult>
+                                            let data = response.data as GeneralActionResult
                                             
                                             if data.is_success == "1" {
                                                 

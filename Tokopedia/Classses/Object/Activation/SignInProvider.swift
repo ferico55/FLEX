@@ -7,24 +7,25 @@
 //
 
 import UIKit
+import RestKit
 
 class SignInProvider: NSObject {
-    var id: String!
-    var name: String!
-    var signInUrl: String!
-    var imageUrl: String!
-    var color: String!
+    var id: String = ""
+    var name: String = ""
+    var signInUrl: String = ""
+    var imageUrl: String = ""
+    var color: String = ""
     
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping!.addAttributeMappings(from: [
             "id": "id",
             "name": "name",
             "url": "signInUrl",
             "image": "imageUrl",
             "color": "color"
         ])
-        return mapping
+        return mapping!
     }
     
     class func defaultProviders() -> [SignInProvider] {

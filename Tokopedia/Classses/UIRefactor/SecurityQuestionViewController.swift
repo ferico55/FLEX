@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import TPKeyboardAvoiding
 import VMaskTextField
+import RestKit
 
 @objc(SecurityQuestionViewController)
 class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
@@ -23,33 +24,33 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     var questionType1 : String!
     var questionType2 : String!
     
-    private let userID : String
-    private let deviceID : String
-    private let phoneNumber: String
-    private let name: String
-    private let token : OAuthToken
+    fileprivate let userID : String
+    fileprivate let deviceID : String
+    fileprivate let phoneNumber: String
+    fileprivate let name: String
+    fileprivate let token : OAuthToken
     
     var successAnswerCallback: ((SecurityAnswer) -> Void)!
     
-    @IBOutlet private var questionViewType1: UIView!
-    @IBOutlet private var questionTitle: UILabel!
-    @IBOutlet private var answerField: UITextField!
-    @IBOutlet private var infoLabel: UILabel!
+    @IBOutlet fileprivate var questionViewType1: UIView!
+    @IBOutlet fileprivate var questionTitle: UILabel!
+    @IBOutlet fileprivate var answerField: UITextField!
+    @IBOutlet fileprivate var infoLabel: UILabel!
     
-    @IBOutlet private var questionViewType2: UIView!
-    @IBOutlet private var requestOTPButton: UIButton!
-    @IBOutlet private var otpInfoLabel: UILabel!
+    @IBOutlet fileprivate var questionViewType2: UIView!
+    @IBOutlet fileprivate var requestOTPButton: UIButton!
+    @IBOutlet fileprivate var otpInfoLabel: UILabel!
     
     @IBOutlet var scrollView: TPKeyboardAvoidingScrollView!
-    @IBOutlet private var userNameLabel: UILabel!
-    @IBOutlet private var verificationNumberLengthLabel: UILabel!
+    @IBOutlet fileprivate var userNameLabel: UILabel!
+    @IBOutlet fileprivate var verificationNumberLengthLabel: UILabel!
     
-    @IBOutlet private var phoneNumberLabel: TTTAttributedLabel!
+    @IBOutlet fileprivate var phoneNumberLabel: TTTAttributedLabel!
     
-    @IBOutlet private var otpOnCallView: UIView!
-    @IBOutlet private var changeNumberButton: UIButton!
+    @IBOutlet fileprivate var otpOnCallView: UIView!
+    @IBOutlet fileprivate var changeNumberButton: UIButton!
     
-    @IBOutlet private var otpInputField: VMaskTextField!
+    @IBOutlet fileprivate var otpInputField: VMaskTextField!
     
     lazy var networkManager : TokopediaNetworkManager = {
         let networkManager = TokopediaNetworkManager()
@@ -58,25 +59,25 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         return networkManager
     }()
     
-    private var _securityQuestion : SecurityQuestion!
+    fileprivate var _securityQuestion : SecurityQuestion!
     
-    @IBOutlet private var resendOTPLabel: UILabel!
+    @IBOutlet fileprivate var resendOTPLabel: UILabel!
     
-    @IBOutlet private var otpOnCallButton: UIButton!
-    private var otpOnCallTimer: NSTimer!
+    @IBOutlet fileprivate var otpOnCallButton: UIButton!
+    fileprivate var otpOnCallTimer: Timer!
     
-    @IBOutlet private var resendOTPButton: UIButton!
-    private var resendOTPTimer: NSTimer!
+    @IBOutlet fileprivate var resendOTPButton: UIButton!
+    fileprivate var resendOTPTimer: Timer!
     
-    @IBOutlet private var verifyButton: UIButton!
+    @IBOutlet fileprivate var verifyButton: UIButton!
     
-    private var resendOTPSecondsLeftDefault: Int = 90
-    private var resendOTPSecondsLeftIfFailed: Int = 5
+    fileprivate var resendOTPSecondsLeftDefault: Int = 90
+    fileprivate var resendOTPSecondsLeftIfFailed: Int = 5
     
-    private var isOTPOnCallEnabled = false
+    fileprivate var isOTPOnCallEnabled = false
     
-    private var activityIndicator : UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+    fileprivate var activityIndicator : UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         
         return activityIndicator
     }()
@@ -103,7 +104,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Security Question Page")
         
@@ -114,12 +115,12 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Initial View
-    private func setupView() {
+    fileprivate func setupView() {
         self.setupInfoLabel()
         
         self.userNameLabel.text = name
         
-        self.otpOnCallView.hidden = true
+        self.otpOnCallView.isHidden = true
         
         self.otpInputField.delegate = self
         self.otpInputField.mask = "# # # # # #"
@@ -127,34 +128,34 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         let halfButtonHeight = verifyButton.bounds.size.height / 2
         let buttonWidth = verifyButton.bounds.size.width
         
-        activityIndicator.center = CGPointMake(buttonWidth - halfButtonHeight, halfButtonHeight)
+        activityIndicator.center = CGPoint(x: buttonWidth - halfButtonHeight, y: halfButtonHeight)
         
         verifyButton.addSubview(activityIndicator)
         activityIndicator.mas_makeConstraints({ (make) in
-            make.centerX.equalTo()(self.verifyButton.mas_centerX)
-            make.centerY.equalTo()(self.verifyButton.mas_centerY)
+            make?.centerX.equalTo()(self.verifyButton.mas_centerX)
+            make?.centerY.equalTo()(self.verifyButton.mas_centerY)
         })
     }
     
-    private func setupInfoLabel() {
+    fileprivate func setupInfoLabel() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4.0
         
         let infoAttributedString = NSMutableAttributedString(string: "Kami akan mengirimkan kode verifikasi ke nomor ponsel ")
         
         let numberAttributedString = NSMutableAttributedString(string: phoneNumber)
-        numberAttributedString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(14), range: NSMakeRange(0, phoneNumber.characters.count))
+        numberAttributedString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 14), range: NSMakeRange(0, phoneNumber.characters.count))
         
-        infoAttributedString.appendAttributedString(numberAttributedString)
+        infoAttributedString.append(numberAttributedString)
         
-        infoAttributedString.addAttributes([NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : UIColor.blackColor().colorWithAlphaComponent(0.54)], range: NSMakeRange(0, infoAttributedString.length))
+        infoAttributedString.addAttributes([NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : UIColor.black.withAlphaComponent(0.54)], range: NSMakeRange(0, infoAttributedString.length))
         
         self.phoneNumberLabel.attributedText = infoAttributedString
     }
     
     //MARK: Request Security Question Form
-    private func requestQuestionForm() {
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+    fileprivate func requestQuestionForm() {
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                path: "/v4/interrupt/get_question_form.pl",
                                method: .GET,
                                parameter: ["user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID, "device_id" : deviceID],
@@ -168,7 +169,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             });
     }
     
-    private func didReceiveSecurityForm(securityQuestion : SecurityQuestion) {
+    fileprivate func didReceiveSecurityForm(_ securityQuestion : SecurityQuestion) {
         _securityQuestion = securityQuestion
         
         if((_securityQuestion.message_error) != nil) {
@@ -178,7 +179,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 self.view.addSubview(questionViewType2)
                 
                 questionViewType2.mas_makeConstraints({ (make) in
-                    make.edges.mas_equalTo()(self.view)
+                    make?.edges.mas_equalTo()(self.view)
                 })
                 
                 self.setupOTPBySMS()
@@ -186,33 +187,33 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func setupOTPBySMS() {
+    fileprivate func setupOTPBySMS() {
         if shouldAutoSendOTPBySMS() {
             requestOTPOnSMS()
         } else {
-            self.resendOTPLabel.hidden = true
+            self.resendOTPLabel.isHidden = true
             disableOTPCallButton()
         }
     }
     
-    private func shouldAutoSendOTPBySMS() -> Bool {
+    fileprivate func shouldAutoSendOTPBySMS() -> Bool {
         return SecurityQuestionTweaks.autoSendOTPBySMS()
     }
     
     //MARK: Change Number Method
-    @IBAction func didTapToChangePhoneNumber(sender: AnyObject) {
+    @IBAction func didTapToChangePhoneNumber(_ sender: AnyObject) {
         AnalyticsManager.trackEventName("clickChangePhoneNumber", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_CLICK, label: "Change Phone Number")
         let auth = UserAuthentificationManager()
         let urlString = "\(NSString.tokopediaUrl())/contact-us?sid=54&flag_app=1&utm_source=ios&app_version=\(UIApplication.getAppVersionStringWithoutDot())"
-        let controller = WKWebViewController(urlString: auth.webViewUrlFromUrl(urlString), shouldAuthorizeRequest: true)
+        let controller = WKWebViewController(urlString: auth.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: true)
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
     //MARK: Timer Methods
-    private func startTimerCountdown(secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: () -> ()) -> NSTimer {
+    fileprivate func startTimerCountdown(_ secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: @escaping () -> ()) -> Timer {
         var timeLeft = secondsLeft
-        let buttonTimer = NSTimer.bk_scheduledTimerWithTimeInterval(
-            1,
+        let buttonTimer = Timer.bk_scheduledTimer(
+            withTimeInterval: 1,
             block: { (timer) in
                 onTick?(timeLeft)
                 timeLeft = timeLeft - 1
@@ -223,27 +224,27 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             },
             repeats: true)
         
-        return buttonTimer
+        return buttonTimer!
     }
     
-    private func enableOTPOnSMSInSeconds(seconds: Int) {
+    fileprivate func enableOTPOnSMSInSeconds(_ seconds: Int) {
         self.disableResendOTPButton()
         resendOTPTimer = startTimerCountdown(
             seconds,
             onTick: { [weak self] timeLeft in
                 guard let `self` = self else { return }
-                self.resendOTPButton.setTitle("\(timeLeft) Detik", forState: .Normal)
+                self.resendOTPButton.setTitle("\(timeLeft) Detik", for: UIControlState())
             },
             onTimeout: { [weak self] in
                 guard let `self` = self else { return }
-                self.resendOTPLabel.hidden = true
-                self.resendOTPButton.setTitle("Kirim SMS Verifikasi", forState: .Normal)
+                self.resendOTPLabel.isHidden = true
+                self.resendOTPButton.setTitle("Kirim SMS Verifikasi", for: UIControlState())
                 self.enableResendOTPButton()
                 self.resendOTPTimer.invalidate()
             })
     }
     
-    private func enableOTPOnCallInSeconds(seconds: Int) {
+    fileprivate func enableOTPOnCallInSeconds(_ seconds: Int) {
         self.disableOTPCallButton()
         otpOnCallTimer = startTimerCountdown(
             seconds,
@@ -251,39 +252,39 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             onTimeout: { [weak self] in
                 guard let `self` = self else { return }
                 self.enableOTPCallButton()
-                self.otpOnCallView.hidden = false
+                self.otpOnCallView.isHidden = false
                 self.otpOnCallTimer.invalidate()
             })
     }
     
-    private func stopTimer() {
+    fileprivate func stopTimer() {
         otpOnCallTimer?.invalidate()
         resendOTPTimer?.invalidate()
     }
     
     //MARK: Verify OTP Button Methods
-    private func showVerificationButtonIsLoading(isLoading: Bool) {
+    fileprivate func showVerificationButtonIsLoading(_ isLoading: Bool) {
         isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-        verifyButton.enabled = !isLoading
-        verifyButton.setTitle(isLoading ? "" : "Verifikasi", forState: .Normal)
+        verifyButton.isEnabled = !isLoading
+        verifyButton.setTitle(isLoading ? "" : "Verifikasi", for: UIControlState())
     }
     
-    @IBAction private func didSubmitOTP(sender: AnyObject?) {
+    @IBAction fileprivate func didSubmitOTP(_ sender: AnyObject?) {
         showVerificationButtonIsLoading(true)
         
-        guard let text = otpInputField.text where !text.isEmpty else {
+        guard let text = otpInputField.text, !text.isEmpty else {
             StickyAlertView.showErrorMessage(["Kode Verifikasi Tidak Boleh Kosong."])
             showVerificationButtonIsLoading(false)
             return
         }
         
-        let answer = otpInputField.text?.stringByReplacingOccurrencesOfString(" ", withString: "")
+        let answer = otpInputField.text?.replacingOccurrences(of:" ", with: "")
         self.submitSecurityAnswer(answer!)
     }
     
-    private func submitSecurityAnswer(answer : String) {
-        networkManager.requestWithBaseUrl(
-            NSString.v4Url(),
+    fileprivate func submitSecurityAnswer(_ answer : String) {
+        networkManager.request(
+            withBaseUrl: NSString.v4Url(),
             path: "/v4/action/interrupt/answer_question.pl",
             method: .GET,
             parameter: ["question" : _securityQuestion.data.question, "answer" : answer, "user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID],
@@ -297,7 +298,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         })
     }
     
-    private func didReceiveAnswerRespond(answer : SecurityAnswer) {
+    fileprivate func didReceiveAnswerRespond(_ answer : SecurityAnswer) {
         if answer.message_error != nil {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Failed")
             StickyAlertView.showErrorMessage(answer.message_error)
@@ -316,33 +317,33 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Resend OTP Button Methods
-    private func disableResendOTPButton() {
-        self.resendOTPButton.userInteractionEnabled = false
-        self.resendOTPButton.setTitleColor(UIColor.blackColor().colorWithAlphaComponent(0.38), forState: .Normal)
-        self.resendOTPButton.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.38)
+    fileprivate func disableResendOTPButton() {
+        self.resendOTPButton.isUserInteractionEnabled = false
+        self.resendOTPButton.setTitleColor(UIColor.black.withAlphaComponent(0.38), for: UIControlState())
+        self.resendOTPButton.borderColor = UIColor.black.withAlphaComponent(0.38)
     }
     
-    private func enableResendOTPButton() {
-        self.resendOTPButton.userInteractionEnabled = true
-        self.resendOTPButton.setTitleColor(UIColor.blackColor().colorWithAlphaComponent(0.54), forState: .Normal)
-        self.resendOTPButton.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.54)
+    fileprivate func enableResendOTPButton() {
+        self.resendOTPButton.isUserInteractionEnabled = true
+        self.resendOTPButton.setTitleColor(UIColor.black.withAlphaComponent(0.54), for: UIControlState())
+        self.resendOTPButton.borderColor = UIColor.black.withAlphaComponent(0.54)
     }
     
-    @IBAction private func didTapRequestOTP(sender: AnyObject) {
+    @IBAction fileprivate func didTapRequestOTP(_ sender: AnyObject) {
         disableResendOTPButton()
         disableOTPCallButton()
         requestOTPOnSMS()
     }
     
-    private func requestOTPOnSMS() {
-        networkManager.requestWithBaseUrl(NSString.v4Url(),
+    fileprivate func requestOTPOnSMS() {
+        networkManager.request(withBaseUrl: NSString.v4Url(),
                                            path: "/v4/action/interrupt/request_otp.pl",
                                            method: .GET,
                                            parameter: ["user_id" : userID, "user_check_question_2" : questionType2],
                                            mapping: SecurityRequestOTP.mapping(),
                                            onSuccess: { [unowned self](mappingResult, operation) -> Void in
                                             let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
-                                            self.resendOTPLabel.hidden = false
+                                            self.resendOTPLabel.isHidden = false
                                             
                                             if otp.message_error != nil {
                                                 AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
@@ -370,7 +371,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                                         },
                                            onFailure: { (error) in
                                             AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
-                                            self.resendOTPLabel.hidden = false
+                                            self.resendOTPLabel.isHidden = false
                                             self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
                                             
                                             if self.isOTPOnCallEnabled {
@@ -381,34 +382,34 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
 
     
     //MARK: OTP Call Button Methods
-    private func disableOTPCallButton() {
-        self.otpOnCallButton.userInteractionEnabled = false
-        self.otpOnCallButton.setTitleColor(UIColor.grayColor(), forState: .Normal)
+    fileprivate func disableOTPCallButton() {
+        self.otpOnCallButton.isUserInteractionEnabled = false
+        self.otpOnCallButton.setTitleColor(UIColor.gray, for: UIControlState())
     }
     
-    private func enableOTPCallButton() {
+    fileprivate func enableOTPCallButton() {
         self.isOTPOnCallEnabled = true
-        self.otpOnCallButton.userInteractionEnabled = true
-        self.otpOnCallButton.setTitleColor(UIColor.fromHexString("#42B549"), forState: .Normal)
+        self.otpOnCallButton.isUserInteractionEnabled = true
+        self.otpOnCallButton.setTitleColor(UIColor.fromHexString("#42B549"), for: .normal)
     }
     
-    @IBAction private func didTapOTPOnCall(sender: AnyObject) {
+    @IBAction fileprivate func didTapOTPOnCall(_ sender: AnyObject) {
         disableOTPCallButton()
         disableResendOTPButton()
         requestOTPOnCall()
     }
     
-    private func requestOTPOnCall() {
-        networkManager.requestWithBaseUrl(NSString.accountsUrl(),
+    fileprivate func requestOTPOnCall() {
+        networkManager.request(withBaseUrl: NSString.accountsUrl(),
                                            path: "/otp/request",
                                            method: .POST,
-                                           header: ["Tkpd-UserId" : userID, "Authorization" : "\(self.token.tokenType) \(self.token.accessToken)"],
+                                           header: ["Tkpd-UserId" : userID, "Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
                                            parameter: ["mode" : "call"],
-                                           mapping: V4Response.mappingWithData(OTPOnCall.mapping()),
+                                           mapping: V4Response<OTPOnCall>.mapping(withData: OTPOnCall.mapping()) as RKObjectMapping,
                                            onSuccess: { (mappingResult, operation) in
-                                            self.resendOTPLabel.hidden = false
+                                            self.resendOTPLabel.isHidden = false
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
+                                            let response: V4Response<OTPOnCall> = result[""] as! V4Response
                                             
                                             if response.message_error != nil && response.message_error.count > 0 {
                                                 AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
@@ -429,7 +430,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                                             },
                                            onFailure: { (error) in
                                             AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
-                                            self.resendOTPLabel.hidden = false
+                                            self.resendOTPLabel.isHidden = false
                                             self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
                                             self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
         })
@@ -438,7 +439,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     
     //MARK: UITextField Delegate
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        return otpInputField.shouldChangeCharactersInRange(range, replacementString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return otpInputField.shouldChangeCharacters(in: range, replacementString: string)
     }
 }

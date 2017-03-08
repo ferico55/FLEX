@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProduct: NSObject, NSCoding {
     var id : String?
@@ -14,7 +15,7 @@ class PulsaProduct: NSObject, NSCoding {
     var attributes : PulsaProductAttribute = PulsaProductAttribute()
     var relationships : PulsaRelationships = PulsaRelationships()
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "id"  : "id",
             "type" : "type",
@@ -22,13 +23,13 @@ class PulsaProduct: NSObject, NSCoding {
     }
 
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: self.attributeMappingDictionary())
         
-        let attributesMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "attributes", toKeyPath: "attributes", withMapping: PulsaProductAttribute.mapping())
+        let attributesMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "attributes", toKeyPath: "attributes", with: PulsaProductAttribute.mapping())
         mapping.addPropertyMapping(attributesMapping)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "relationships", toKeyPath: "relationships", withMapping: PulsaRelationships.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "relationships", toKeyPath: "relationships", with: PulsaRelationships.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
@@ -40,28 +41,28 @@ class PulsaProduct: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let id = aDecoder.decodeObjectForKey("id") as? String {
+        if let id = aDecoder.decodeObject(forKey: "id") as? String {
             self.id = id
         }
         
-        if let type = aDecoder.decodeObjectForKey("type") as? String {
+        if let type = aDecoder.decodeObject(forKey: "type") as? String {
             self.type = type
         }
         
-        if let attributes = aDecoder.decodeObjectForKey("attributes") as? PulsaProductAttribute {
+        if let attributes = aDecoder.decodeObject(forKey: "attributes") as? PulsaProductAttribute {
             self.attributes = attributes
         }
         
-        if let relationships = aDecoder.decodeObjectForKey("relationships") as? PulsaRelationships {
+        if let relationships = aDecoder.decodeObject(forKey: "relationships") as? PulsaRelationships {
             self.relationships = relationships
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(type, forKey: "type")
-        aCoder.encodeObject(attributes, forKey: "attributes")
-        aCoder.encodeObject(relationships, forKey: "relationships")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(type, forKey: "type")
+        aCoder.encode(attributes, forKey: "attributes")
+        aCoder.encode(relationships, forKey: "relationships")
     }
 
 }

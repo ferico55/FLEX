@@ -27,7 +27,7 @@
 #import "ImagePickerCategoryController.h"
 
 #import "Tokopedia-Swift.h"
-
+@import SwiftOverlays;
 NSString *const searchPath = @"/search/%@";
 
 @interface SearchViewController ()
@@ -95,6 +95,9 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     UINib *cellShopNib = [UINib nibWithNibName:@"SearchAutoCompleteShopCell" bundle:nil];
     [_collectionView registerNib:cellShopNib forCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier"];
+    UINib *cellCategoryNib = [UINib nibWithNibName:@"SearchAutoCompleteCategoryCell" bundle:nil];
+    [_collectionView registerNib:cellCategoryNib forCellWithReuseIdentifier:@"SearchAutoCompleteCategoryCellIdentifier"];
+
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
     _requestManager = [TokopediaNetworkManager new];
@@ -171,6 +174,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 #pragma mark - Methods
+-(void) autoFillSearchBarWithText: (NSString *) string {
+    [_searchBar setText:[string stringByAppendingString:@" "]];
+}
+
 -(void) clearHistory:(UIButton *) button {
     CGPoint buttonPoint = [button convertPoint:CGPointZero toView:_collectionView];
     
@@ -179,7 +186,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     SearchAutoCompleteCell *searchAutoCompleteCell = (SearchAutoCompleteCell *)[_collectionView cellForItemAtIndexPath:buttonIndexPath];
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl]
+                                   path:@"/recent_search/v1"
+                                 method:RKRequestMethodDELETE
+                              parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text}
+                                mapping:[SearchSuggestionItem mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
@@ -202,7 +214,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 -(void)clearAllHistory {
     
-    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [_requestManager requestWithBaseUrl:[NSString aceUrl]
+                                   path:@"/recent_search/v1"
+                                 method:RKRequestMethodDELETE
+                              parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]}
+                                mapping:[SearchSuggestionItem mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         dispatch_async(dispatch_get_main_queue(), ^{
             for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
                 if ([searchSuggestionData.id isEqual: RECENT_SEARCH]){
@@ -235,24 +252,22 @@ NSString *const RECENT_SEARCH = @"recent_search";
 -(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
      __weak typeof(self) weakSelf = self;
     [debouncer setCallback:^{
-        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v2" method:RKRequestMethodGET parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSDictionary *result = [successResult dictionary];
-                    [weakSelf.searchSuggestionDataArray removeAllObjects];
-                    _searchSuggestionDataArray = [[NSMutableArray alloc] init];
-                    GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
-                    NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
-                    for (SearchSuggestionData* data in searchSuggestionDatas) {
-                        if (data.items.count > 0) {
-                            [weakSelf.searchSuggestionDataArray addObject:data];
-                        }
-                    }
-                    [weakSelf.collectionView reloadData];
-                });
-        } onFailure:^(NSError *errorResult) {
-            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:weakSelf];
-            [alertView show];
-        }];
+        [weakSelf.requestManager requestWithBaseUrl:[NSString aceUrl]
+                                               path:@"/universe/v3"
+                                             method:RKRequestMethodGET
+                                          parameter:@{@"unique_id": [weakSelf getUniqueId], @"q" : query}
+                                            mapping:[GetSearchSuggestionGeneralResponse mapping]
+                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                              NSDictionary *result = [successResult dictionary];
+                                              GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
+                                              weakSelf.searchSuggestionDataArray = [[searchResponse.data bk_select:^BOOL(SearchSuggestionData *suggestion) {
+                                                  return suggestion.items.count > 0;
+                                              }] mutableCopy];
+                                              [weakSelf.collectionView reloadData];
+                                          } onFailure:^(NSError *errorResult) {
+                                              StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:weakSelf];
+                                              [alertView show];
+                                          }];
     }];
     
     [debouncer call];
@@ -296,22 +311,43 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = nil;
-    
+
     if (_searchSuggestionDataArray.count > 0){
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
         SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-        
+        __weak typeof(self) weakSelf = self;
         if ([searchSuggestionData.id isEqual: @"shop"]) {
             SearchAutoCompleteShopCell *shopCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteShopCellIdentifier" forIndexPath:indexPath];
+            
             [shopCell setSearchItem:searchSuggestionItem];
             
+            [SearchAutoCompleteHelper setBoldTextWithLabel:shopCell.shopName searchText:_searchBar.text];
+            
             cell = shopCell;
+        } else if ([searchSuggestionData.id isEqual: kTKPDSEARCH_IN_CATEGORY]) {
+            SearchAutoCompleteCategoryCell *categoryCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCategoryCellIdentifier" forIndexPath:indexPath];
+            
+            [categoryCell setSearchItemWithItem:searchSuggestionItem];
+            categoryCell.didTapAutoFillButton = ^(NSString *searchText) {
+                [weakSelf autoFillSearchBarWithText:searchText];
+            };
+            [SearchAutoCompleteHelper setBoldTextWithLabel:categoryCell.searchTextLabel searchText:_searchBar.text];
+
+            cell = categoryCell;
+            
         } else {
             SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+
             [searchCell setSearchCell:searchSuggestionItem section:searchSuggestionData];
+            searchCell.didTapAutoFillButton = ^(NSString *suggestionText) {
+                [weakSelf autoFillSearchBarWithText: suggestionText ];
+            };
             [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-            [searchCell setGreenSearchText:_searchBar.text];
             
+            if ([searchSuggestionData.id isEqual: SEARCH_AUTOCOMPLETE]) {
+                [SearchAutoCompleteHelper setBoldTextWithLabel:searchCell.searchTitle searchText:_searchBar.text];
+            }
+
             cell = searchCell;
         }
         cell.hidden = NO;
@@ -333,7 +369,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     CGSize size = CGSizeZero;
     if (_searchSuggestionDataArray.count > 0){
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
-        if (![searchSuggestionData.id isEqual: @"autocomplete"]) {
+        if (![searchSuggestionData.id isEqual: @"autocomplete"] && ![searchSuggestionData.id isEqual: kTKPDSEARCH_IN_CATEGORY]) {
             size = CGSizeMake(collectionView.bounds.size.width, 50);
         }
     }
@@ -348,48 +384,17 @@ NSString *const RECENT_SEARCH = @"recent_search";
     SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
     
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
-    [AnalyticsManager trackSearch:searchSuggestionData.id keyword:searchSuggestionItem.keyword];
+    
+    NSString *trackKeyword = [searchSuggestionData.id  isEqual: kTKPDSEARCH_IN_CATEGORY] ? [NSString stringWithFormat:@"%@ | %@", searchSuggestionItem.sc, searchSuggestionItem.keyword] : searchSuggestionItem.keyword;
+    [AnalyticsManager trackSearch:searchSuggestionData.id keyword:trackKeyword];
 
     NSString *url = searchSuggestionItem.redirectUrl;
     if (url == nil || [[url stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] length] == 0) {
         url = searchSuggestionItem.url;
     }
     
-    if ([searchSuggestionData.id isEqual: @"hotlist"]){
-        [TPRoutes routeURL:[NSURL URLWithString:url]];
-    } else if ([searchSuggestionData.id isEqual: @"shop"]) {
-        [self navigateToIntermediaryPage];
-        
-        NSString *path = [self shopDomainForUrl:url];
-        
-        UINavigationController *nav = self.presentingViewController.navigationController;
-        [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
-            [nav popViewControllerAnimated:NO];
-            
-            if (exists) {
-                ShopViewController *shopViewController = [ShopViewController new];
-                shopViewController.data = @{
-                                            @"shop_domain": path
-                                            };
-                
-                [nav pushViewController:shopViewController animated:NO];
-                
-            } else {
-                WebViewController *webViewController = [WebViewController new];
-                webViewController.strTitle = @"Tokopedia";
-                webViewController.strURL = url;
-                
-                if(nav != nil) {
-                    [nav pushViewController:webViewController animated:NO];
-                }
-            }
-        }];
-    } else {
-        _searchSuggestionDataArray = [NSMutableArray new];
-        [_collectionView reloadData];
-        [_searchBar setText:searchSuggestionItem.keyword];
-        [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
-    }
+    [TPRoutes routeURL:[NSURL URLWithString:url]];
+    
 }
 
 
@@ -398,7 +403,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         _requestManager = [TokopediaNetworkManager new];
         _requestManager.isUsingHmac = YES;
         [self getUserSearchSuggestionDataWithQuery:searchText];
-        [self scrollToTop];
+        [_collectionView scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -586,19 +591,11 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [self takePhoto:nil];
 }
 
-- (void)scrollToTop
-{
-    UICollectionView *collectionView = self.collectionView;
-    UIEdgeInsets collectionInset = collectionView.contentInset;
-    [collectionView setContentOffset:CGPointMake(- collectionInset.left, - collectionInset.top) animated:YES];
-}
-
 - (void)navigateToIntermediaryPage {
     UIViewController *viewController = [UIViewController new];
     viewController.view.frame = self.presentingViewController.navigationController.viewControllers.lastObject.view.frame;
     viewController.view.backgroundColor = [UIColor whiteColor];
     viewController.hidesBottomBarWhenPushed = YES;
-    [SwiftOverlays showCenteredWaitOverlay:viewController.view];
     
     [self.presentingViewController.navigationController pushViewController:viewController animated:YES];
 }

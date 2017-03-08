@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class EditSolution: NSObject {
     var refund_text_desc : String = ""
@@ -20,8 +21,8 @@ class EditSolution: NSObject {
     var refund_amt : String = ""
     
     class func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addAttributeMappingsFromArray([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from:[
                 "refund_text_desc",
                 "show_refund_box",
                 "refund_type",

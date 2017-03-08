@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 import OAStackView
+import RestKit
+import JLPermissions
 
 @IBDesignable
 @objc
@@ -42,8 +44,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private lazy var layoutRows: [HomePageCategoryLayoutRow] = [HomePageCategoryLayoutRow]()
     private lazy var categoryVerticalView: OAStackView = OAStackView()
     
-    private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 275.0 : 225.0
-    private let screenWidth = UIScreen.mainScreen().bounds.size.width
+    private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .pad) ? 275.0 : 225.0
+    private let screenWidth = UIScreen.main.bounds.size.width
     private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     private let imageCategoryWidth: CGFloat = 25.0
     private let iconSeparatorGrayColor: UIColor = UIColor(red: 241.0/255.0, green: 241.0/255.0, blue: 241.0/255.0, alpha: 1)
@@ -68,12 +70,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        homePageScrollView.keyboardDismissMode = .OnDrag
+        homePageScrollView.keyboardDismissMode = .onDrag
         self.initOuterStackView()
         self.initViewLayout()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if isRequestingBanner == false {
             self.requestBanner()
@@ -100,18 +102,18 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.addChildViewController(topPicksWidgetViewController)
             self.topPicksPlaceholder.addSubview(topPicksWidgetViewController.view)
             topPicksWidgetViewController.view.mas_makeConstraints { (make) in
-                make.edges.mas_equalTo()(self.topPicksPlaceholder)
+                make?.edges.mas_equalTo()(self.topPicksPlaceholder)
             }
         }
     
         AnalyticsManager.trackScreenName("Top Category")
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         let bannersStore = self.storeManager.homeBannerStore
-        bannersStore.stopBannerRequest()
+        bannersStore?.stopBannerRequest()
     }
     
     
@@ -119,12 +121,12 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     private func initOuterStackView() {
         self.outerStackView = OAStackView()
-        setStackViewAttribute(self.outerStackView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        setStackViewAttribute(self.outerStackView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
         self.homePageScrollView.addSubview(self.outerStackView)
         setupOuterStackViewConstraint()
     }
     
-    private func setStackViewAttribute(stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
+    private func setStackViewAttribute(_ stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
         stackView.axis = axis
         stackView.alignment = alignment
         stackView.distribution = distribution
@@ -133,58 +135,58 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     private func setupOuterStackViewConstraint() {
         self.outerStackView.mas_makeConstraints { (make) in
-            make.top.mas_equalTo()(self.homePageScrollView.mas_top)
-            make.bottom.mas_equalTo()(self.homePageScrollView.mas_bottom)
-            make.left.mas_equalTo()(self.homePageScrollView.mas_left)
-            make.right.mas_equalTo()(self.homePageScrollView.mas_right)
-            make.width.mas_equalTo()(self.view.mas_width)
+            make?.top.mas_equalTo()(self.homePageScrollView.mas_top)
+            make?.bottom.mas_equalTo()(self.homePageScrollView.mas_bottom)
+            make?.left.mas_equalTo()(self.homePageScrollView.mas_left)
+            make?.right.mas_equalTo()(self.homePageScrollView.mas_right)
+            make?.width.mas_equalTo()(self.view.mas_width)
         }
     }
     
-    private func setCategoryTitleLabel(title: String) {
+    private func setCategoryTitleLabel(_ title: String) {
         HomePageHeaderSectionStyle.setHeaderTitle(forStackView: categoryVerticalView, title: title)
     }
     
-    private func setIconImageContainerToIconStackView(iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
+    private func setIconImageContainerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
         let url: NSURL? = NSURL(string: layoutRow.image_url)
         let iconImageView: UIImageView = UIImageView()
         if let url = url {
-            iconImageView.setImageWithURL(url)
+            iconImageView.setImageWith(url as URL!)
         }
         let imageViewContainer = UIView()
         imageViewContainer.addSubview(iconImageView)
         iconImageView.mas_makeConstraints({ (make) in
-            make.left.equalTo()(imageViewContainer)
-            make.centerY.equalTo()(imageViewContainer)
-            make.height.width().mas_equalTo()(self.imageCategoryWidth)
+            make?.left.equalTo()(imageViewContainer)
+            make?.centerY.equalTo()(imageViewContainer)
+            make?.height.width().mas_equalTo()(self.imageCategoryWidth)
         })
-        iconImageView.contentMode = .ScaleAspectFit
+        iconImageView.contentMode = .scaleAspectFit
         iconStackView.addArrangedSubview(imageViewContainer)
         imageViewContainer.mas_makeConstraints({ (make) in
-            make.width.mas_equalTo()(self.imageCategoryWidth)
+            make?.width.mas_equalTo()(self.imageCategoryWidth)
         })
     }
     
-    private func setCategoryNameLabelContainerToIconStackView(iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) -> UIView{
+    private func setCategoryNameLabelContainerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) -> UIView{
         let categoryNameContainer = UIView()
         let categoryNameLabel = UILabel()
         categoryNameLabel.text = layoutRow.name
         categoryNameLabel.font = UIFont.microTheme()
         categoryNameLabel.textColor = UIColor(red: 102.0/255, green: 102.0/255, blue: 102.0/255, alpha: 1.0)
-        categoryNameLabel.textAlignment = .Left
+        categoryNameLabel.textAlignment = .left
         categoryNameLabel.numberOfLines = 2
         categoryNameContainer.addSubview(categoryNameLabel)
         categoryNameLabel.mas_makeConstraints({ (make) in
-            make.left.right().mas_equalTo()(categoryNameContainer)
-            make.centerY.mas_equalTo()(categoryNameContainer)
+            make?.left.right().mas_equalTo()(categoryNameContainer)
+            make?.centerY.mas_equalTo()(categoryNameContainer)
         })
         iconStackView.addArrangedSubview(categoryNameContainer)
         
         return categoryNameContainer
     }
     
-    private func setTapGestureRecognizerToIconStackView(iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
-        let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizerWithHandler({ (recognizer, state, point) in
+    private func setTapGestureRecognizerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
+        let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizer(handler: { (recognizer, state, point) in
             self.didTapCategory(recognizer as! UITapGestureRecognizer)
         }) as! UITapGestureRecognizer
         
@@ -193,11 +195,11 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         self.layoutRows.append(layoutRow)
     }
     
-    private func setHorizontalCategoryLayoutWithLayoutSections(layoutRows: [HomePageCategoryLayoutRow]) {
+    private func setHorizontalCategoryLayoutWithLayoutSections(_ layoutRows: [HomePageCategoryLayoutRow]) {
         var horizontalStackView = refreshHorizontalStackView()
-        for (index,layoutRow) in layoutRows.enumerate() {
+        for (index,layoutRow) in layoutRows.enumerated() {
             let iconStackView = OAStackView()
-            self.setStackViewAttribute(iconStackView, axis: .Horizontal, alignment: .Fill, distribution: .Fill, spacing: 8.0)
+            self.setStackViewAttribute(iconStackView, axis: .horizontal, alignment: .fill, distribution: .fill, spacing: 8.0)
             self.setIconImageContainerToIconStackView(iconStackView, withLayoutRow: layoutRow)
             let categoryNameContainer = self.setCategoryNameLabelContainerToIconStackView(iconStackView, withLayoutRow: layoutRow)
             horizontalStackView.addArrangedSubview(iconStackView)
@@ -214,10 +216,10 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 verticalIconSeparator.backgroundColor = iconSeparatorGrayColor
                 categoryNameContainer.addSubview(verticalIconSeparator)
                 verticalIconSeparator.mas_makeConstraints({ (make) in
-                    make.width.mas_equalTo()(1)
-                    make.right.mas_equalTo()(categoryNameContainer).with().offset()(self.horizontalStackViewSpacing / 2)
-                    make.top.mas_equalTo()(categoryNameContainer).with().offset()(5)
-                    make.bottom.mas_equalTo()(categoryNameContainer).with().offset()(-5)
+                    make?.width.mas_equalTo()(1)
+                    make?.right.mas_equalTo()(categoryNameContainer)?.with().offset()(self.horizontalStackViewSpacing / 2)
+                    make?.top.mas_equalTo()(categoryNameContainer)?.with().offset()(5)
+                    make?.bottom.mas_equalTo()(categoryNameContainer)?.with().offset()(-5)
                 })
                 
                 for _ in 1...self.totalColumnInOneRow() - (index % self.totalColumnInOneRow() + 1)
@@ -231,17 +233,17 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 verticalIconSeparator.backgroundColor = iconSeparatorGrayColor
                 categoryNameContainer.addSubview(verticalIconSeparator)
                 verticalIconSeparator.mas_makeConstraints({ (make) in
-                    make.width.mas_equalTo()(1)
-                    make.right.mas_equalTo()(categoryNameContainer).with().offset()(self.horizontalStackViewSpacing/2)
-                    make.top.mas_equalTo()(categoryNameContainer).with().offset()(5)
-                    make.bottom.mas_equalTo()(categoryNameContainer).with().offset()(-5)
+                    make?.width.mas_equalTo()(1)
+                    make?.right.mas_equalTo()(categoryNameContainer)?.with().offset()(self.horizontalStackViewSpacing/2)
+                    make?.top.mas_equalTo()(categoryNameContainer)?.with().offset()(5)
+                    make?.bottom.mas_equalTo()(categoryNameContainer)?.with().offset()(-5)
                 })
             }
         }
     }
     
     private func totalColumnInOneRow() -> Int {
-        return UI_USER_INTERFACE_IDIOM() == .Pad ? 4 : 2
+        return UI_USER_INTERFACE_IDIOM() == .pad ? 4 : 2
     }
     
     private func numberNeededToChangeRow() -> Int {
@@ -255,21 +257,21 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private func setOuterCategorySeparatorView() {
         let outerCategorySeparatorView = UIView()
         outerCategorySeparatorView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(10)
+            make?.height.mas_equalTo()(10)
         })
         outerCategorySeparatorView.backgroundColor = UIColor(red: 241.0/255, green: 241.0/255, blue: 241.0/255, alpha: 1.0)
         categoryPlaceholder.addArrangedSubview(outerCategorySeparatorView)
     }
     
-    private func setupOuterStackCategoryWithData(homePageCategoryData: HomePageCategoryData) {
+    private func setupOuterStackCategoryWithData(_ homePageCategoryData: HomePageCategoryData) {
         
-        for (index,layout_section) in homePageCategoryData.layout_sections.enumerate() {
+        for (index,layout_section) in homePageCategoryData.layout_sections.enumerated() {
             
             setOuterCategorySeparatorView()
             categoryVerticalView = OAStackView()
-            categoryVerticalView.layoutMarginsRelativeArrangement = true
+            categoryVerticalView.isLayoutMarginsRelativeArrangement = true
             categoryVerticalView.layoutMargins = UIEdgeInsets(top: 5, left: 20, bottom: 0, right: 20)
-            self.setStackViewAttribute(categoryVerticalView, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+            self.setStackViewAttribute(categoryVerticalView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
             
             setCategoryTitleLabel(layout_section.title)
             
@@ -285,14 +287,14 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     private func initViewLayout() {
         self.sliderPlaceholder = UIView()
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
-        self.tickerPlaceholder = UIView(frame: CGRectZero)
+        self.tickerPlaceholder = UIView(frame: .zero)
         self.pulsaPlaceholder = UIView()
         self.categoryPlaceholder = OAStackView()
-        self.setStackViewAttribute(self.categoryPlaceholder, axis: .Vertical, alignment: .Fill, distribution: .Fill, spacing: 0.0)
+        self.setStackViewAttribute(self.categoryPlaceholder, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
         
         // init slider
         self.sliderPlaceholder.mas_makeConstraints { make in
-            make.height.mas_equalTo()(self.sliderHeight)
+            make?.height.mas_equalTo()(self.sliderHeight)
         }
         self.outerStackView.addArrangedSubview(self.sliderPlaceholder)
         
@@ -310,9 +312,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     private func refreshHorizontalStackView() -> OAStackView {
         let horizontalStackView = OAStackView()
-        self.setStackViewAttribute(horizontalStackView, axis: .Horizontal, alignment: .Fill, distribution: .FillProportionally, spacing: horizontalStackViewSpacing)
+        self.setStackViewAttribute(horizontalStackView, axis: .horizontal, alignment: .fill, distribution: .fillProportionally, spacing: horizontalStackViewSpacing)
         horizontalStackView.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(50)
+            make?.height.mas_equalTo()(50)
         })
         return horizontalStackView
     }
@@ -322,7 +324,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         horizontalIconSeparator.backgroundColor = iconSeparatorGrayColor
         self.categoryVerticalView.addArrangedSubview(horizontalIconSeparator)
         horizontalIconSeparator.mas_makeConstraints({ (make) in
-            make.height.mas_equalTo()(1)
+            make?.height.mas_equalTo()(1)
         })
     }
     
@@ -332,16 +334,16 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         isRequestingCategory = true
-        networkManager.requestWithBaseUrl(NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
+        networkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
             self.isRequestingCategory = false
-            let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+            let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
             self.homePageCategoryData = homePageCategoryResponse.data
             self.setupOuterStackCategoryWithData(self.homePageCategoryData!)
         }) { [unowned self] (error) in
             self.isRequestingCategory = false
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-            stickyAlertView.show()
+            stickyAlertView?.show()
         }
     }
     
@@ -350,18 +352,18 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         
         let backgroundColor = self.backgroundColor
         isRequestingBanner = true
-        bannersStore.fetchBannerWithCompletion({[unowned self] (banner, error) in
+        bannersStore?.fetchBanner(completion: {[unowned self] (banner, error) in
             self.isRequestingBanner = false
             guard banner != nil else {
                 return
             }
-            let homeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! HomeSliderView
-            homeSliderView.generateSliderView(withBanner: banner, withNavigationController: self.navigationController!)
+            let homeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! HomeSliderView
+            homeSliderView.generateSliderView(withBanner: banner!, withNavigationController: self.navigationController!)
             
             self.sliderPlaceholder.addSubview(homeSliderView)
             
             homeSliderView.mas_makeConstraints { make in
-                make.edges.mas_equalTo()(self.sliderPlaceholder)
+                make?.edges.mas_equalTo()(self.sliderPlaceholder)
             }
             
             })
@@ -378,7 +380,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             })
             
             var sortedCategories = self.pulsaActiveCategories!
-            sortedCategories.sortInPlace({
+            sortedCategories.sort(by: {
                 $0.attributes.weight < $1.attributes.weight
             })
             
@@ -388,9 +390,9 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.pulsaPlaceholder.backgroundColor = self.iconSeparatorGrayColor
             self.pulsaPlaceholder.addSubview(self.pulsaView)
             self.pulsaView.mas_makeConstraints({ (make) in
-                make.top.bottom().equalTo()(self.pulsaPlaceholder)
-                make.left.mas_equalTo()(self.pulsaPlaceholder).offset()(7)
-                make.right.mas_equalTo()(self.pulsaPlaceholder).offset()(-7)
+                make?.top.bottom().equalTo()(self.pulsaPlaceholder)
+                make?.left.mas_equalTo()(self.pulsaPlaceholder)?.offset()(7)
+                make?.right.mas_equalTo()(self.pulsaPlaceholder)?.offset()(-7)
             })
             
             self.navigator = PulsaNavigator()
@@ -420,20 +422,20 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             }
             
             self.pulsaView.didShowAlertPermission = { [unowned self] in
-                let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Aktifkan", style: .Default, handler: { (action) in
+                let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Aktifkan", style: .default, handler: { (action) in
                     switch action.style{
-                    case .Default:
+                    case .default:
                         JLContactsPermission.sharedInstance().displayAppSystemSettings()
                         
-                    case .Cancel:
+                    case .cancel:
                         print("cancel")
                         
-                    case .Destructive:
+                    case .destructive:
                         print("destructive")
                     }
                 }))
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             }
         }
         self.requestManager.didNotSuccessReceiveCategory = {
@@ -445,19 +447,19 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(
-            NSString.mojitoUrl(),
+        networkManager.request(
+            withBaseUrl: NSString.mojitoUrl(),
             path: "/os/api/v1/brands/list",
             method: .GET,
             parameter: ["device":"ios"],
-            mapping: V4Response.mappingWithData(OfficialStoreHomeItem.mapping()),
+            mapping: V4Response<AnyObject>.mapping(withData: OfficialStoreHomeItem.mapping()),
             onSuccess: { [weak self] (mappingResult, operation) in
                 guard let `self` = self else { return }
                 
                 self.isRequestingOfficialStore = false
                 self.officialStoreRequestSuccess = true
                 
-                let result = mappingResult.dictionary()[""] as! V4Response
+                let result = mappingResult.dictionary()[""] as! V4Response<NSArray>
                 let shops = result.data as! [OfficialStoreHomeItem]
                 
                 guard !shops.isEmpty else { return }
@@ -468,7 +470,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 self.officialStorePlaceholder.addSubview(officialStoreSection.view)
                 
                 officialStoreSection.view.mas_makeConstraints { (make) in
-                    make.edges.equalTo()(self.officialStorePlaceholder)
+                    make?.edges.equalTo()(self.officialStorePlaceholder)
                 }
             },
             onFailure: {error in
@@ -485,7 +487,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 
                 let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
                 let tick = ticker.tickers[randomIndex]
-                self.tickerPlaceholder.hidden = false
+                self.tickerPlaceholder.isHidden = false
                 
                 if self.tickerView == nil {
                     
@@ -493,23 +495,23 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     self.tickerPlaceholder.addSubview((self.tickerView)!)
                     
                     self.tickerView.onTapMessageWithUrl = {[weak self] (url) in
-                        self!.navigator.navigateToWebTicker(url)
+                        self!.navigator.navigateToWebTicker(url!)
                     }
                     
                     self.tickerView.onTapCloseButton = {[unowned self] in
                         self.canRequestTicker = false
-                        self.tickerPlaceholder.hidden = true
+                        self.tickerPlaceholder.isHidden = true
                     }
                     
-                    self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, atIndex: 0)
+                    self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, at: 0)
                     
                     self.tickerPlaceholder.mas_makeConstraints { make in
-                        make.left.right().equalTo()(self.view)
+                        make?.left.right().equalTo()(self.view)
                     }
                     
                     self.tickerView.mas_makeConstraints { make in
-                        make.left.right().equalTo()(self.view)
-                        make.top.bottom().equalTo()(self.tickerPlaceholder)
+                        make?.left.right().equalTo()(self.view)
+                        make?.top.bottom().equalTo()(self.tickerPlaceholder)
                     }
                     
                     self.tickerPlaceholder.addSubview(self.tickerView)
@@ -519,7 +521,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             
             } else {
                 
-                self.tickerPlaceholder.hidden = true
+                self.tickerPlaceholder.isHidden = true
             }
             
         }) { (error) in
@@ -529,8 +531,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     
     // MARK: Method
     
-    private func didTapCategory(tapGestureRecognizer: UITapGestureRecognizer) {
-        var selectedIconStackView = tapGestureRecognizer.view as! OAStackView
+    private func didTapCategory(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        let selectedIconStackView = tapGestureRecognizer.view as! OAStackView
         
         for layoutRow in layoutRows {
             if Int(layoutRow.id) == selectedIconStackView.tag {
@@ -542,18 +544,20 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
                     let navigateViewController = NavigateViewController()
                     let categoryId = layoutRow.category_id
-                    navigateViewController.navigateToCategoryFromViewController(self, withCategoryId: categoryId, categoryName: categoryName)
+                    navigateViewController.navigateToCategory(from: self, withCategoryId: categoryId, categoryName: categoryName)
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
                     let webViewController = WebViewController()
+                    webViewController.hidesBottomBarWhenPushed = true;
+
                     let userManager = UserAuthentificationManager()
                     
                     webViewController.shouldAuthorizeRequest = true
-                    webViewController.strURL = userManager.webViewUrlFromUrl(layoutRow.url)
+                    webViewController.strURL = userManager.webViewUrl(fromUrl: layoutRow.url)
                     webViewController.onTapLinkWithUrl = { [weak self] (url) in
                         if let weakSelf = self {
-                            if url.absoluteString == "https://www.tokopedia.com/" {
-                                weakSelf.navigationController?.popViewControllerAnimated(true)
+                            if url?.absoluteString == "https://www.tokopedia.com/" {
+                                weakSelf.navigationController?.popViewController(animated: true)
                             }
                         }
                     }
@@ -565,8 +569,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     //MARK: Login Delegate
-    
-    func redirectViewController(viewController: AnyObject!) {
+    func redirectViewController(_ viewController: Any!) {
         
     }
 }

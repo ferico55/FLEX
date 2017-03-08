@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ResolutionTroubleSolution: NSObject {
     
@@ -19,9 +20,9 @@ class ResolutionTroubleSolution: NSObject {
     var category_trouble_text : String = ""
     
     class func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromArray([
+        mapping.addAttributeMappings(from:[
             "attachment",
             "product_is_received",
             "product_related",
@@ -29,10 +30,10 @@ class ResolutionTroubleSolution: NSObject {
             "category_trouble_text"
             ])
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "trouble_list", toKeyPath: "trouble_list", withMapping: ResolutionCenterCreateTroubleList.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "trouble_list", toKeyPath: "trouble_list", with: ResolutionCenterCreateTroubleList.mapping())
         mapping.addPropertyMapping(relMapping)
         
-        let relSolutionMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "possible_solution", toKeyPath: "possible_solution", withMapping: ResolutionCenterCreateSolutionList.mapping())
+        let relSolutionMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "possible_solution", toKeyPath: "possible_solution", with: ResolutionCenterCreateSolutionList.mapping())
         mapping.addPropertyMapping(relSolutionMapping)
         
         return mapping

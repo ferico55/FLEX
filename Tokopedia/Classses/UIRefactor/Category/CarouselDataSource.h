@@ -19,5 +19,6 @@
 - (instancetype)initWithBanner:(NSArray <Slide*>*)banners withPageControl: (StyledPageControl*) pageControl;
 
 @property(nonatomic, weak) UINavigationController *navigationDelegate;
+@property(nullable, nonatomic, weak) NSTimer *timer;
 
 @end

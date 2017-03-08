@@ -8,10 +8,12 @@
 
 import UIKit
 import RxSwift
+import DKImagePickerController
+import RestKit
 
 class RequestResolution: NSObject {
     
-    class func fetchEditAddressID(addressID:String, resolutionID: String, oldAddressID: String, oldConversationID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+    class func fetchEditAddressID(_ addressID:String, resolutionID: String, oldAddressID: String, oldConversationID: String, onSuccess:@escaping ((_ data:ResolutionActionResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -24,7 +26,7 @@ class RequestResolution: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/resolution-center/edit_address_resolution.pl",
                                           method: .POST,
                                           parameter: param,
@@ -41,7 +43,7 @@ class RequestResolution: NSObject {
                                                 if response.message_status.count > 0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
-                                                onSuccess(data: response.data)
+                                                onSuccess(response.data)
                                             } else {
                                                 StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
                                                 onFailure()
@@ -57,7 +59,7 @@ class RequestResolution: NSObject {
         }
     }
     
-    class func fetchInputAddressID(addressID:String, resolutionID: String, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+    class func fetchInputAddressID(_ addressID:String, resolutionID: String, onSuccess:@escaping ((_ data:ResolutionActionResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
 
@@ -70,7 +72,7 @@ class RequestResolution: NSObject {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/resolution-center/input_address_resolution.pl",
                                           method: .POST,
                                           parameter: param,
@@ -87,7 +89,7 @@ class RequestResolution: NSObject {
                                                 if response.message_status.count > 0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
-                                                onSuccess(data: response.data)
+                                                onSuccess(response.data)
                                             } else {
                                                 StickyAlertView.showErrorMessage(["Gagal Mengubah Alamat"])
                                                 onFailure()
@@ -103,25 +105,23 @@ class RequestResolution: NSObject {
         }
     }
     
-    class func fetchReplayConversation(postData:ReplayConversationPostData, onSuccess: ((data:ResolutionActionResult) -> Void), onFailure:(()->Void)) {
+    class func fetchReplayConversation(_ postData:ReplayConversationPostData, onSuccess: @escaping ((_ data:ResolutionActionResult) -> Void), onFailure:@escaping (()->Void)) {
         
         if postData.selectedAssets.count == 0 {
-            self.getPostKey(postData).doOnNext({ (postData) in
-                onSuccess(data: postData)
-            }).doOnError({ (error) in
+            self.getPostKey(postData).do(onNext : { (postData) in
+                onSuccess(postData)
+            }, onError : {error in
                 onFailure()
             }).subscribe()
             
         } else {
-            
-            
-            GenerateHostObservable.getGeneratedHost().doOnError({ (error) in
+            GenerateHostObservable.getGeneratedHost().do(onError : { (error) in
                 onFailure()
             })
             .flatMap({ (host) -> Observable<[ImageResult]> in
                 postData.generatedHost = host
                 
-                return self.getUploadedImages(postData).doOnError({ (error) in
+                return self.getUploadedImages(postData).do(onError : { (error) in
                     onFailure()
                 })
                 
@@ -129,7 +129,7 @@ class RequestResolution: NSObject {
             .flatMap({ (uploadedImages) -> Observable<ResolutionActionResult> in
                 postData.uploadedImages = uploadedImages
                 
-                return self.getPostKey(postData).doOnError({ (error) in
+                return self.getPostKey(postData).do(onError : { (error) in
                     onFailure()
                 })
 
@@ -137,7 +137,7 @@ class RequestResolution: NSObject {
             .flatMap({ (data) -> Observable<String> in
                 postData.postKey = data.post_key
                 
-                return self.getFileUploaded(postData).doOnError({ (error) in
+                return self.getFileUploaded(postData).do(onError : { (error) in
                     onFailure()
                 })
             })
@@ -146,52 +146,50 @@ class RequestResolution: NSObject {
                 
                 return self.submitReplayConversation(postData)
             })
-            .subscribeNext { (data) in
-                    onSuccess(data: data)
-            }
+            .subscribe (onNext : { (data) in
+                    onSuccess(data)
+            })
         }
         
     }
     
-    private class func jsonStringProductList(postData: ReplayConversationPostData)-> String {
+    fileprivate class func jsonStringProductList(_ postData: ReplayConversationPostData)-> String {
         var jsonString : String = "{\"data\" : ["
         if postData.postObjectProducts.count > 0 {
-            for (index,product) in postData.postObjectProducts.enumerate() {
-                let requestDescriptor : RKRequestDescriptor = RKRequestDescriptor.init(mapping: ResolutionCenterCreatePOSTProduct.mapping().inverseMapping(), objectClass: ResolutionCenterCreatePOSTProduct.self, rootKeyPath: nil, method: .POST)
+            for (index,product) in postData.postObjectProducts.enumerated() {
+                let requestDescriptor : RKRequestDescriptor = RKRequestDescriptor(mapping: ResolutionCenterCreatePOSTProduct.mapping().inverse(), objectClass: ResolutionCenterCreatePOSTProduct.self, rootKeyPath: nil, method: .POST)
                 var paramForObject : NSDictionary = NSDictionary()
                 do {
-                    paramForObject = try RKObjectParameterization.parametersWithObject(product, requestDescriptor: requestDescriptor)
+                    paramForObject = try RKObjectParameterization.parameters(with: product, requestDescriptor: requestDescriptor) as NSDictionary
                     // use anyObj here
                 } catch {
                 }
                 var jsonData: NSData = NSData()
                 
                 do {
-                    jsonData = try NSJSONSerialization.dataWithJSONObject(paramForObject, options: NSJSONWritingOptions())
+                    jsonData = try JSONSerialization.data(withJSONObject: paramForObject, options: JSONSerialization.WritingOptions()) as NSData
                     // use anyObj here
                 } catch {
                     print("json error: \(error)")
                 }
                 
-                let jsonStr = String.init(data: jsonData, encoding: NSUTF8StringEncoding)
-                jsonString = jsonString.stringByAppendingString(jsonStr!)
+                let jsonStr = String(data: jsonData as Data, encoding: String.Encoding.utf8)
+                jsonString = jsonString.appending(jsonStr!)
 
                 if index <  postData.postObjectProducts.count-1 {
-                    jsonString = jsonString.stringByAppendingString(",")
+                    jsonString = jsonString.appending(",")
                 }
             }
-            jsonString = jsonString.substringToIndex(jsonString.endIndex)
-            jsonString = jsonString.stringByAppendingString("]}")
+            jsonString = jsonString.substring(to: jsonString.endIndex)
+            jsonString = jsonString + "]}"
         }
         
         return jsonString
     }
     
     //MARK: - Replay Conversation
-    private class func getUploadedImages(postData:ReplayConversationPostData) -> Observable<[ImageResult]> {
-        
-        return postData.selectedAssets
-            .toObservable()
+    fileprivate class func getUploadedImages(_ postData:ReplayConversationPostData) -> Observable<[ImageResult]> {
+        return Observable.from(postData.selectedAssets)
             .flatMap({ (asset) -> Observable<ImageResult> in
                 
                 return Observable.create({ (observer) -> Disposable in
@@ -201,20 +199,26 @@ class RequestResolution: NSObject {
                     postObject.user_id = auth.getUserId()
                     postObject.server_id = postData.generatedHost.server_id
                     
-                    RequestUploadImage.requestUploadImage(asset.resizedImage,
-                        withUploadHost: "https://\(postData.generatedHost.upload_host)",
-                        path: "/web-service/v4/action/upload-image/upload_contact_image.pl",
-                        name: "fileToUpload",
-                        fileName: "Image",
-                        requestObject: postObject,
-                        onSuccess: { (imageResult) in
-                            observer.onNext(imageResult)
-                            observer.onCompleted()
-                        }, onFailure: { (error) in
-                            observer.onError(RequestError.networkError)
+                    asset.fetchOriginalImage(false, completeBlock: {(image, info) in
+                        
+                        let resizedImage = TKPImagePickerController.resizedImage(image!)
+                        
+                        RequestUploadImage.requestUploadImage(resizedImage,
+                          withUploadHost: "https://\(postData.generatedHost.upload_host)",
+                            path: "/web-service/v4/action/upload-image/upload_contact_image.pl",
+                            name: "fileToUpload",
+                            fileName: "Image",
+                            request: postObject,
+                            onSuccess: { (imageResult) in
+                                observer.onNext(imageResult!)
+                                observer.onCompleted()
+                            }, onFailure: { (error) in
+                                observer.onError(RequestError.networkError)
+                        })
+                    
                     })
                     
-                    return NopDisposable.instance
+                    return Disposables.create()
                 })
                 
             })
@@ -222,7 +226,7 @@ class RequestResolution: NSObject {
         
     }
     
-    private class func getPostKey(postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
+    fileprivate class func getPostKey(_ postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
         
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
@@ -241,7 +245,7 @@ class RequestResolution: NSObject {
         
         if postData.uploadedImages.count > 0 {
             let filePaths : [String] = postData.uploadedImages.map{$0.file_path}
-            let photos : String = filePaths.joinWithSeparator("~")
+            let photos : String = filePaths.joined(separator: "~")
             param["photos"] = photos
             param["server_id"] = postData.generatedHost.server_id
         }
@@ -257,7 +261,7 @@ class RequestResolution: NSObject {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString .v4Url(),
+            networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/resolution-center/reply_conversation_validation_new.pl",
                 method: .POST,
                 parameter: param,
@@ -275,24 +279,24 @@ class RequestResolution: NSObject {
                         observer.onNext(response.data)
                         observer.onCompleted()
                     } else {
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError((RequestError.networkError as? Error)!)
                 StickyAlertView.showErrorMessage(["Gagal membalas resolusi"])
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
         
     }
     
     
-    private class func getFileUploaded(postData:ReplayConversationPostData)-> Observable<String>{
+    fileprivate class func getFileUploaded(_ postData:ReplayConversationPostData)-> Observable<String>{
         
         let filePaths : [String] = postData.uploadedImages.map{$0.file_path}
-        let photos : String = filePaths.joinWithSeparator("~")
+        let photos : String = filePaths.joined(separator: "~")
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -306,7 +310,7 @@ class RequestResolution: NSObject {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl("https://\(postData.generatedHost.upload_host)",
+            networkManager.request(withBaseUrl: "https://\(postData.generatedHost.upload_host)",
                 path: "/web-service/v4/action/upload-image-helper/create_resolution_picture.pl",
                 method: .POST,
                 parameter: param,
@@ -320,21 +324,21 @@ class RequestResolution: NSObject {
                         observer.onNext(response.data.file_uploaded)
                         observer.onCompleted()
                     } else {
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
                 StickyAlertView.showErrorMessage(["Gagal membalas resolusi"])
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
         
     }
     
     
-    private class func submitReplayConversation(postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
+    fileprivate class func submitReplayConversation(_ postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -348,7 +352,7 @@ class RequestResolution: NSObject {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
-            networkManager.requestWithBaseUrl(NSString.v4Url(),
+            networkManager.request(withBaseUrl: NSString.v4Url(),
                 path: "/v4/action/resolution-center/reply_conversation_submit.pl",
                 method: .POST,
                 parameter: param,
@@ -362,15 +366,15 @@ class RequestResolution: NSObject {
                         observer.onNext(response.data)
                         observer.onCompleted()
                     } else {
-                        observer.onError(RequestError.networkError)
+                        observer.onError(RequestError.networkError as Error)
                     }
                     
             }) { (error) in
-                observer.onError(RequestError.networkError)
+                observer.onError(RequestError.networkError as Error)
                 StickyAlertView.showErrorMessage(["Gagal membalas resolusi"])
             }
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
         
     }

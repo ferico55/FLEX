@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import DKImagePickerController
 
 class UploadImageRequestObject : NSObject{
     var selectedImages : [AttachedImageObject] = []
@@ -16,17 +17,16 @@ class UploadImageRequestObject : NSObject{
 
 class UploadImageObserver: NSObject {
     
-    class func getUploadedAttachments(postData: UploadImageRequestObject) -> Observable<[ImageResult]> {
+    class func getUploadedAttachments(_ postData: UploadImageRequestObject) -> Observable<[ImageResult]> {
         
-        return postData.selectedImages
-            .toObservable()
+        return Observable.from(postData.selectedImages)
             .flatMap({ (imageObject) -> Observable<ImageResult> in
                 self.requestUploadImage(postData, imageObject: imageObject)
             })
             .toArray()
     }
 
-    class func requestUploadImage(postData: UploadImageRequestObject, imageObject: AttachedImageObject) -> Observable<ImageResult> {
+    class func requestUploadImage(_ postData: UploadImageRequestObject, imageObject: AttachedImageObject) -> Observable<ImageResult> {
         
         return Observable.create({ (observer) -> Disposable in
             
@@ -40,21 +40,24 @@ class UploadImageObserver: NSObject {
             
             let baseURLString = "https://\(postData.host.upload_host)"
             
-            RequestUploadImage.requestUploadImage(imageObject.asset.resizedImage,
-                withUploadHost: baseURLString,
-                path: "/upload/attachment",
-                name: "fileToUpload",
-                fileName: "image.png",
-                requestObject: postObject,
-                onSuccess: { (imageResult) in
-                    imageObject.picObj = imageResult.pic_obj
-                    observer.onNext(imageResult)
-                    observer.onCompleted()
-                }, onFailure: { (error) in
-                    observer.onError(RequestError.networkError)
+            imageObject.asset.fetchOriginalImage(false, completeBlock: { (image, info) in
+                let resizedImage = TKPImagePickerController.resizedImage(image!)
+                RequestUploadImage.requestUploadImage(resizedImage,
+                    withUploadHost: baseURLString,
+                    path: "/upload/attachment",
+                    name: "fileToUpload",
+                    fileName: "image.png",
+                    request: postObject,
+                    onSuccess: { (imageResult) in
+                        imageObject.picObj = (imageResult?.pic_obj)!
+                        observer.onNext(imageResult!)
+                        observer.onCompleted()
+                    }, onFailure: { (error) in
+                        observer.onError(RequestError.networkError as Error)
+                })
             })
             
-            return NopDisposable.instance
+            return Disposables.create()
         })
     }
     

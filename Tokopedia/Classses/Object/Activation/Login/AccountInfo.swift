@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc(AccountInfo)
 class AccountInfo: NSObject {
@@ -21,8 +22,8 @@ class AccountInfo: NSObject {
     var errorDescription: String?
 
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping = RKObjectMapping(for: self)
+        mapping?.addAttributeMappings(from:[
             "user_id": "userId",
             "created_password": "createdPassword",
             "email":"email",
@@ -34,6 +35,6 @@ class AccountInfo: NSObject {
             "error_description": "errorDescription"
         ])
         
-        return mapping
+        return mapping!
     }
 }

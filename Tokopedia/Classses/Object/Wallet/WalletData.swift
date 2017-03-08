@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class WalletData: NSObject {
     var action: WalletAction!
@@ -17,8 +18,8 @@ class WalletData: NSObject {
     var link: String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: [
             "balance" : "balance",
             "wallet_id" : "wallet_id",
             "text" : "text",
@@ -26,7 +27,7 @@ class WalletData: NSObject {
             "link" : "link"
             ])
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "action", toKeyPath: "action", withMapping: WalletAction.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "action", toKeyPath: "action", with: WalletAction.mapping()))
         
         return mapping
     }

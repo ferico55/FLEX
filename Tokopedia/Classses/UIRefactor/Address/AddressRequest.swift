@@ -10,7 +10,7 @@ import UIKit
 
 @objc class AddressRequest: NSObject {
     
-    class func fetchListAddressPage(page:(NSInteger), query:(String), onSuccess: ((AddressFormResult) -> Void), onFailure:(()->Void)){
+    class func fetchListAddressPage(_ page:(NSInteger), query:(String), onSuccess: @escaping ((AddressFormResult) -> Void), onFailure:@escaping (()->Void)){
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -23,7 +23,7 @@ import UIKit
             "per_page"  : "5",
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/people/get_address.pl",
                                           method: .GET,
                                           parameter: param,
@@ -49,7 +49,7 @@ import UIKit
 
     }
     
-  class func fetchSetDefaultAddressID(addressID:String, onSuccess: ((ProfileSettingsResult) -> Void), onFailure:(()->Void)) {
+  class func fetchSetDefaultAddressID(_ addressID:String, onSuccess: @escaping ((ProfileSettingsResult) -> Void), onFailure:@escaping (()->Void)) {
     
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -58,7 +58,7 @@ import UIKit
             "address_id":addressID,
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/people/edit_default_address.pl",
                                           method: .GET,
                                           parameter: param,
@@ -83,7 +83,7 @@ import UIKit
         }
     }
     
-    class func fetchDeleteAddressID(addressID:String, onSuccess: ((ProfileSettingsResult) -> Void), onFailure:(()->Void)) {
+    class func fetchDeleteAddressID(_ addressID:String, onSuccess: @escaping ((ProfileSettingsResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -92,7 +92,7 @@ import UIKit
             "address_id":addressID,
         ]
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/action/people/delete_address.pl",
                                           method: .GET,
                                           parameter: param,

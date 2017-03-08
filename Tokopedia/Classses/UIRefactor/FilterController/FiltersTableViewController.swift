@@ -10,16 +10,16 @@ import UIKit
 
 class FiltersTableViewController: UIViewController {
 
-    private var tableView: UITableView = UITableView()
-    private var filtersDatasource : FiltersListDataSource = FiltersListDataSource()
-    private var items: [ListOption] = []
-    private var showSearchBar: Bool = false
+    fileprivate var tableView: UITableView = UITableView()
+    fileprivate var filtersDatasource : FiltersListDataSource = FiltersListDataSource()
+    fileprivate var items: [ListOption] = []
+    fileprivate var showSearchBar: Bool = false
     var selectedObjects : [ListOption] = []
-    private var searchBarPlaceholder : String = ""
+    fileprivate var searchBarPlaceholder : String = ""
     
-    private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
+    fileprivate var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
     
-    init(items:[ListOption],selectedObjects:[ListOption], showSearchBar:Bool, searchBarPlaceholder:String, onCompletion: (([ListOption]) -> Void)){
+    init(items:[ListOption],selectedObjects:[ListOption], showSearchBar:Bool, searchBarPlaceholder:String, onCompletion: @escaping (([ListOption]) -> Void)){
         completionHandler = onCompletion
         self.items = items
         self.selectedObjects = selectedObjects
@@ -34,12 +34,12 @@ class FiltersTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
+        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), style: .plain)
         
         tableView.dataSource = filtersDatasource
         tableView.delegate = filtersDatasource
         
-        filtersDatasource =   FiltersListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects, searchBarPlaceholder: self.searchBarPlaceholder) { (selectedObjects) in
+        filtersDatasource =   FiltersListDataSource(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects, searchBarPlaceholder: self.searchBarPlaceholder) { (selectedObjects) in
             self.selectedObjects = selectedObjects
             self.completionHandler(selectedObjects)
         }
@@ -47,10 +47,10 @@ class FiltersTableViewController: UIViewController {
         self.view.addSubview(self.tableView)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+        tableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         
     }
     

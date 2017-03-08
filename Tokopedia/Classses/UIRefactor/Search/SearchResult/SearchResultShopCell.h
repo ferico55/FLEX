@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Tokopedia-Swift.h"
+
+@class SearchShopModelView;
 
 @interface SearchResultShopCell : UITableViewCell
 

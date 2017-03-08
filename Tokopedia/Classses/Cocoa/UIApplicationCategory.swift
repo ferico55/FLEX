@@ -8,13 +8,13 @@
 
 extension UIApplication {
     class func getAppVersionStringWithoutDot() -> String {
-        var appVersion: String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
-        appVersion = appVersion.stringByReplacingOccurrencesOfString(".", withString: "")
+        var appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+        appVersion = appVersion.replacingOccurrences(of: ".", with: "")
         return appVersion
     }
     
     class func getAppVersionString() -> String {
-        let appVersion: String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+        let appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
         return appVersion
     }
 }

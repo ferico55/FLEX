@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class AnnouncementTickerObject: NSObject {
     var ticker_id: String = ""
@@ -23,9 +24,9 @@ class AnnouncementTickerObject: NSObject {
     var color : String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping = RKObjectMapping(forClass: self)
+        let mapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromDictionary(
+        mapping?.addAttributeMappings(from:
             [
                 "id" : "ticker_id",
                 "title" : "title",

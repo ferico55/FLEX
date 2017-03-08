@@ -94,7 +94,7 @@ FilterCategoryViewDelegate
     BOOL isBeingPresented = self.navigationController.isBeingPresented;
     if (isBeingPresented) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(onTapBackBarButton:)];
         self.navigationItem.leftBarButtonItem = barButtonItem;
@@ -158,16 +158,23 @@ FilterCategoryViewDelegate
 
 -(void)onTapNextButton:(UIBarButtonItem*)button{
     [[self.tableView superview] endEditing:YES];
+    ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
+    detailVC.type = _type;
     if ([self dataInputIsValid]) {
-        
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
-        ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
         detailVC.title = self.title;
         detailVC.form = _form;
-        detailVC.type = _type;
         [self.navigationController pushViewController:detailVC animated:YES];
+    } else if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT && _form == nil) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Kendala Koneksi Internet"
+                                                                       message:@"Silakan cek kembali jaringan internet Anda."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -291,7 +298,7 @@ FilterCategoryViewDelegate
 -(void)selectImageFromCameraOrAlbum{
     __weak typeof(self) wself = self;
     [TKPImagePickerController showImagePicker:self
-                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                                 assetType:DKImagePickerControllerAssetTypeAllPhotos
                        allowMultipleSelect:YES
                                 showCancel:YES
                                 showCamera:YES
@@ -674,18 +681,18 @@ FilterCategoryViewDelegate
         }
     }
     for (DKAsset* selectedImage in _selectedAsset) {
-        ProductEditImages *imageObject = [ProductEditImages new];
-        imageObject.image = selectedImage.resizedImage;
-        imageObject.isFromAsset = YES;
-        imageObject.asset = selectedImage;
-        imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
-        
-        [selectedImages addObject:imageObject];
+        [selectedImage fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            ProductEditImages *imageObject = [ProductEditImages new];
+            imageObject.image = image;
+            imageObject.isFromAsset = YES;
+            imageObject.asset = selectedImage;
+            imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
+            
+            [selectedImages addObject:imageObject];
+            _form.product_images = [selectedImages copy];
+            [self setImageButtons];
+        }];
     }
-    
-    _form.product_images = [selectedImages copy];
-    
-    [self setImageButtons];
 }
 
 -(void)setImageButtons{

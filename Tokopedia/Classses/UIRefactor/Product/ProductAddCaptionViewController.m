@@ -30,10 +30,8 @@
     UIImageView *_selectedImageIcon;
     BOOL _isAttachedImageModified;
     
-    NSMutableArray *_uploadedPicts;
-    NSMutableArray *_attachedPicts;
+    NSMutableArray<AttachedPicture*> *_uploadedPicts;
     
-    NSMutableArray *_tempUploadedPicts;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -52,7 +50,20 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _attachedImagesArray = [NSMutableArray new];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithSelectedAssets:(NSMutableArray<DKAsset*>*)selectedAssets isEdit:(BOOL)isEdit uploadedPicture:(NSMutableArray<AttachedPicture*>*)uploadedPicture selectedImageIndex:(int)selectedImageIndex delegate:(id<ProductAddCaptionDelegate>)delegate{
+    
+    self = [super init];
+    if (self) {
+        _selectedAssets = [[NSMutableArray alloc] initWithArray:[selectedAssets copy]];
+        _isEdit = isEdit;
+        _uploadedPicts = [[NSMutableArray alloc] initWithArray:[uploadedPicture copy]];
+        _selectedImageTag = selectedImageIndex;
+        _delegate = delegate;
     }
     
     return self;
@@ -67,14 +78,14 @@
     _addCaptionCells = [NSArray sortViewsWithTagInArray:_addCaptionCells];
     
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
     leftBarButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
-                                                                           style:UIBarButtonItemStyleBordered
+                                                                           style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(tap:)];
     rightBarButtonItem.tag = 11;
@@ -93,22 +104,8 @@
     
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     _imageCaptionTextField.delegate = self;
-    
-    _uploadedPicts = [NSMutableArray new];
-    _attachedPicts = [NSMutableArray new];
-    _tempUploadedPicts = [NSMutableArray new];
-    
-    [_uploadedPicts addObjectsFromArray:_uploadedPictures];
-    [_attachedPicts addObjectsFromArray:_attachedPictures];
-    [_tempUploadedPicts addObjectsFromArray:_tempUploadedPictures];
-    
-    NSInteger imageTag = _selectedImageTag - 20;
-    
-    if (imageTag >= _attachedPicts.count) {
-        imageTag = imageTag - 1;
-    }
-    
-    [self setDataWithImageTag:_attachedPicts.count-1];
+        
+    [self adjustImageViews];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -121,45 +118,30 @@
     [AnalyticsManager trackScreenName:@"Give Review Attachments Caption Page"];
 }
 
-- (void)setDataWithImageTag:(NSInteger)imageTag {
-    if (imageTag < 0) {
-        imageTag = imageTag + 20;
-    }
-    
-    _imageCaptionTextField.text = ((AttachedPicture*)_attachedPicts[imageTag]).imageDescription;
-    
+-(void)adjustImageViews{
     for (UIImageView *imageView in _attachedImages) {
-        imageView.image = nil;
-        imageView.userInteractionEnabled = NO;
+        imageView.hidden = YES;
+        imageView.image = [UIImage imageNamed:@"icon_upload_image"];
     }
     
-    for (int ii = 0; ii < _attachedPicts.count; ii++) {
-        AttachedPicture *pict = _attachedPicts[ii];
-        
-        for (UIImageView *imageView in _attachedImages) {
-            if (imageView.tag == 20 + ii) {
-                if (![pict.thumbnailUrl isEqualToString:@""]) {
-                    [imageView setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
-                              placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
-                    imageView.userInteractionEnabled = YES;
-                } else {
-                    imageView.image = pict.image;
-                    imageView.userInteractionEnabled = YES;
-                }
-                
-            }
-            
-            if (imageView.tag == 21 + ii) {
-                if (imageView.image == nil) {
-                    imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
-                    imageView.userInteractionEnabled = YES;
-                    imageView.hidden = NO;
-                }
-            }
+    
+    int i = 0;
+    for (AttachedPicture *pic in [self attachedImageWithoutDeletedImage]) {
+        if (![pic.isDeleted isEqualToString:@"1"] && i<_attachedImages.count) {
+            ((UIImageView*)_attachedImages[i]).hidden = NO;
+            ((UIImageView*)_attachedImages[i]).image = [self attachedImageWithoutDeletedImage][i].image;
+            i++;
         }
     }
     
-    [self setScrollViewImagesFocusAtIndex:imageTag];
+    if ([self attachedImageWithoutDeletedImage].count < _attachedImages.count) {
+        UIImageView *uploadedButton = _attachedImages[[self attachedImageWithoutDeletedImage].count];
+        uploadedButton.hidden = NO;
+    }
+    
+    if (_imagesScrollView) {
+        [self setScrollViewImages];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -260,10 +242,8 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             case 11: { // Tombol "Simpan"
-                [_delegate updateAttachedPictures:_attachedPicts
-                                   selectedAssets:_selectedAssets
-                                 uploadedPictures:_uploadedPicts
-                             tempUploadedPictures:_tempUploadedPicts];
+                [_delegate updateSelectedAssets:self.selectedAssets
+                               uploadedPictures:_uploadedPicts];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -273,110 +253,106 @@
     }
 }
 
-- (IBAction)gesture:(UITapGestureRecognizer*)sender {
-    if (sender.view.tag == 0) {
-        [_activeTextField resignFirstResponder];
-    } else {
-        if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
-            [TKPImagePickerController showImagePicker:self
-                                         assetType:DKImagePickerControllerAssetTypeallPhotos
-                               allowMultipleSelect:YES
-                                        showCancel:YES
-                                        showCamera:YES
-                                       maxSelected:(5 - _tempUploadedPicts.count)
-                                    selectedAssets:_selectedAssets
-                                        completion:^(NSArray<DKAsset *> *asset) {
-                                            if (asset.count == 0) {
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    _selectedAssets = [NSArray new];
-                                                    if (_tempUploadedPicts.count > 0) {
-                                                        NSMutableArray *temp = [NSMutableArray new];
-                                                        [temp addObjectsFromArray:_attachedPicts];
-                                                        for (AttachedPicture *pict in temp) {
-                                                            if ([pict.isPreviouslyUploaded isEqualToString:@"0"]) {
-                                                                [_attachedPicts removeObject:pict];
-                                                            }
-                                                        }
-                                                        [self setDataWithImageTag:_tempUploadedPicts.count - 1];
-                                                    } else {
-                                                        [_attachedPicts removeAllObjects];
-                                                        
-                                                        [_delegate updateAttachedPictures:_attachedPicts
-                                                                           selectedAssets:_selectedAssets
-                                                                         uploadedPictures:_uploadedPicts
-                                                                     tempUploadedPictures:_tempUploadedPicts];
-                                                        [self.navigationController popViewControllerAnimated:YES];
-                                                    }
+-(NSArray<AttachedPicture *> *)attachedImageWithoutDeletedImage{
+    NSMutableArray *attached = [NSMutableArray new];
+    
+    for (AttachedPicture *pict in _uploadedPicts) {
+        if (![pict.isDeleted isEqualToString:@"1"]) {
+            [attached addObject:pict];
+        }
+    }
+    
+    return [attached copy];
+}
 
-                                                });
-                                            } else if (asset.count > 0) {
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    NSMutableArray *temp = [_tempUploadedPicts mutableCopy];
-                                                    _selectedAssets = asset;
-                                                    
-                                                    for (int ii = 0; ii < asset.count; ii++) {
-                                                        DKAsset *dk = asset[ii];
-                                                        AttachedPicture *pict = [AttachedPicture new];
-                                                        BOOL isAdded = NO;
-                                                        
-                                                        for (int jj = 0; jj < _attachedPicts.count; jj++) {
-                                                            AttachedPicture *tempPict = _attachedPicts[jj];
-                                                            if ([tempPict.fileName isEqualToString:dk.fileName]) {
-                                                                pict = tempPict;
-                                                                
-                                                                [temp addObject:pict];
-                                                                isAdded = YES;
-                                                            }
-                                                        }
-                                                        
-                                                        if (!isAdded) {
-                                                            pict.image = dk.resizedImage;
-                                                            pict.fileName = dk.fileName;
-                                                            pict.thumbnailUrl = @"";
-                                                            pict.largeUrl = @"";
-                                                            pict.imageDescription = @"";
-                                                            pict.attachmentID = @"0";
-                                                            pict.isDeleted = @"0";
-                                                            pict.isPreviouslyUploaded = @"0";
-                                                            
-                                                            [temp addObject:pict];
-                                                            isAdded = YES;
-                                                        }
-                                                    }
-                                                    
-                                                    _attachedPicts = temp;
-                                                    
-                                                    NSInteger imageTag = sender.view.tag - 20;
-                                                    
-                                                    if (imageTag >= _attachedPicts.count) {
-                                                        imageTag = imageTag - 1;
-                                                    }
-                                                    
-                                                    [self setDataWithImageTag:_attachedPicts.count - 1];
-                                                    
-                                                });
-                                            }
-                                            
-                                        }];
-        } else {
-            AttachedPicture *selectedPict = _attachedPicts[sender.view.tag - 20];
+- (IBAction)gestureBackground:(UITapGestureRecognizer*)sender {
+    [_activeTextField resignFirstResponder];
+}
+
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    [_activeTextField resignFirstResponder];
+    if (sender.view.tag == [self attachedImageWithoutDeletedImage].count) {
+        __weak typeof(self) wself = self;
+        [TKPImagePickerController showImagePicker:self
+                                     assetType:DKImagePickerControllerAssetTypeAllPhotos
+                           allowMultipleSelect:YES
+                                    showCancel:YES
+                                    showCamera:YES
+                                   maxSelected:5 - ([self attachedImageWithoutDeletedImage].count-self.selectedAssets.count)
+                                selectedAssets:self.selectedAssets
+                                    completion:^(NSArray<DKAsset *> *asset) {
+                                        dispatch_async (dispatch_get_main_queue(), ^{
+                                            [wself setSelectedAsset:asset];
+                                            [wself addImageFromAsset];
+                                        });
+                                    }];
+    } else {
+        AttachedPicture *selectedPict = [self attachedImageWithoutDeletedImage][sender.view.tag];
+        
+        _selectedImageTag = sender.view.tag;
+        _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag]);
+        [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
+        [_selectedImageIcon.layer setBorderWidth:2.0];
+        
+        for (UIImageView *image in _attachedImages) {
+            if (image.tag != _selectedImageIcon.tag) {
+                [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+                [image.layer setBorderWidth:0];
+            }
+        }
+        
+        [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag) * _imagesScrollView.frame.size.width, 0) animated:NO];
+        
+        [_imageCaptionTextField setText:selectedPict.imageDescription];
+    }
+}
+
+-(void)setSelectedAsset:(NSArray<DKAsset*>*)selectedAsset{
+    [self.selectedAssets removeAllObjects];
+    [self.selectedAssets addObjectsFromArray:selectedAsset];
+}
+
+-(void)addImageFromAsset{
+    
+    NSArray <AttachedPicture*> *selectedImagesReview = _uploadedPicts;
+    
+    NSMutableArray <AttachedPicture*>*selectedImages = [[NSMutableArray alloc]initWithArray:selectedImagesReview];
+    
+    for (AttachedPicture *selected in selectedImagesReview) {
+        if (selected.asset != nil) {
+            [selectedImages removeObject:selected];
+        }
+    }
+    for (DKAsset* selectedImage in self.selectedAssets) {
+        
+        __block AttachedPicture *pict = [AttachedPicture new];
+        pict.thumbnailUrl = @"";
+        pict.largeUrl = @"";
+        pict.imageDescription = @"";
+        pict.attachmentID = @"0";
+        pict.isDeleted = @"0";
+        pict.isPreviouslyUploaded = @"0";
+        pict.asset = selectedImage;
+        
+        [selectedImage fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+            pict.image = [TKPImagePickerController resizedImage:image];
+            NSString *fileName = ((NSURL *)info[@"PHImageFileURLKey"]).lastPathComponent;
+            pict.fileName = fileName;
             
-            _selectedImageTag = sender.view.tag - 20;
-            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag - 20]);
-            [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
-            [_selectedImageIcon.layer setBorderWidth:2.0];
-            
-            for (UIImageView *image in _attachedImages) {
-                if (image.tag != _selectedImageIcon.tag) {
-                    [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
-                    [image.layer setBorderWidth:0];
+            for (AttachedPicture *lastSelected in _uploadedPicts) {
+                if ([lastSelected.fileName isEqualToString:fileName]){
+                    pict = lastSelected;
                 }
             }
             
-            [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0) animated:NO];
+            [selectedImages addObject:pict];
+
+            _uploadedPicts = [selectedImages mutableCopy];
+            _selectedImageTag = [self attachedImageWithoutDeletedImage].count-1;
             
-            [_imageCaptionTextField setText:selectedPict.imageDescription];
-        }
+            [self adjustImageViews];
+            
+        }];
     }
 }
 
@@ -384,8 +360,8 @@
     CGFloat pageWidth = _imagesScrollView.frame.size.width;
     int page = floor((_imagesScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     
-    if (page < _attachedPicts.count) {
-        AttachedPicture *selectedPict = _attachedPicts[page];
+    if (page < [self attachedImageWithoutDeletedImage].count) {
+        AttachedPicture *selectedPict = [self attachedImageWithoutDeletedImage][page];
         
         _selectedImageTag = page;
         _selectedImageIcon = ((UIImageView*)self.attachedImages[page]);
@@ -436,14 +412,16 @@
     [textField resignFirstResponder];
     NSString *imageCaption = textField.text;
     
-    if (_selectedImageTag - 20 < 0) {
-        _selectedImageTag = _selectedImageTag + 20;
+    if (_selectedImageTag < 0) {
+        _selectedImageTag = 0;
     }
     
-    AttachedPicture *selectedPict = _attachedPicts[_selectedImageTag-20];
-    selectedPict.imageDescription = imageCaption;
+    AttachedPicture *selectedPict = [self attachedImageWithoutDeletedImage][_selectedImageTag];
+    AttachedPicture *selectedPictCopy = [selectedPict copy];
+    selectedPictCopy.imageDescription = imageCaption;
 
-    [_attachedPicts replaceObjectAtIndex:_selectedImageTag-20 withObject:selectedPict];
+    
+    [_uploadedPicts replaceObjectAtIndex:_selectedImageTag withObject:selectedPictCopy];
     
     return YES;
 }
@@ -459,11 +437,11 @@
 //}
 
 #pragma mark - Methods
-- (void)setScrollViewImagesFocusAtIndex:(NSInteger)tag {
+- (void)setScrollViewImages {
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    for(int ii = 0; ii < _attachedPicts.count; ii++) {
-        AttachedPicture *pict = _attachedPicts[ii];
+    for(int ii = 0; ii < [self attachedImageWithoutDeletedImage].count; ii++) {
+        AttachedPicture *pict = [self attachedImageWithoutDeletedImage][ii];
         CGRect screenRect;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -512,64 +490,41 @@
         [deleteButton HVD_pinToRightOfSuperviewWithMargin:deleteButton.frame.size.width + 8];
     }
     
-    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _attachedPicts.count, _imagesScrollView.frame.size.height);
+    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * [self attachedImageWithoutDeletedImage].count, _imagesScrollView.frame.size.height);
     
-    [_imagesScrollView setContentOffset:CGPointMake(tag * _imagesScrollView.frame.size.width, 0) animated:NO];
+    [_imagesScrollView setContentOffset:CGPointMake(_selectedImageTag * _imagesScrollView.frame.size.width, 0) animated:NO];
+    
+    
+    if ([self attachedImageWithoutDeletedImage].count > 0){
+        if (_selectedImageTag >= _uploadedPicts.count)
+            _selectedImageTag = 0;
+        _imageCaptionTextField.text = ((AttachedPicture*)[self attachedImageWithoutDeletedImage][_selectedImageTag]).imageDescription?:@"";
+    }
 }
 
 - (void)deleteImageAtIndex:(NSInteger)index {
     _isAttachedImageModified = YES;
-    AttachedPicture *deletedPict = _attachedPicts[index];
+    
+    AttachedPicture *deletedPict = [self attachedImageWithoutDeletedImage][index];
+    AttachedPicture *deletedPictCopy = [deletedPict copy];
     
     if ([deletedPict.isPreviouslyUploaded isEqualToString:@"1"]) {
-        deletedPict.isDeleted = @"1";
+        [_uploadedPicts removeObject:deletedPict];
         
-        for (int ii = 0; ii < _uploadedPicts.count; ii++) {
-            if ([_uploadedPicts[ii] isEqual:deletedPict]) {
-                [_uploadedPicts replaceObjectAtIndex:ii withObject:deletedPict];
-            }
-        }
+        deletedPictCopy.isDeleted = @"1";
+        [_uploadedPicts addObject:deletedPictCopy];
         
-        [_tempUploadedPicts removeObjectAtIndex:index];
     } else {
-        NSMutableArray *tempSelectedPicts = [_selectedAssets mutableCopy];
-        [tempSelectedPicts removeObjectAtIndex:(index - _tempUploadedPicts.count)];
-        _selectedAssets = tempSelectedPicts;
+        [self.selectedAssets removeObject:deletedPict.asset];
+        [_uploadedPicts removeObject:deletedPict];
     }
     
-    _imageCaptionTextField.text = @"";
+    [self adjustImageViews];
     
-    NSInteger temp = _selectedImageTag;
-    
-    if (temp == _attachedPicts.count - 1) {
-        temp--;
-    }
-    
-    [_attachedPicts removeObjectAtIndex:index];
-    
-    for (int ii = 0; ii < _attachedImages.count; ii++) {
-        UIImageView *imageView = _attachedImages[ii];
-        imageView.image = nil;
-        imageView.userInteractionEnabled = NO;
-    }
-    
-    if (_attachedPicts.count < 5) {
-        for (UIImageView *imageView in _attachedImages) {
-            if (imageView.tag == 20 + _attachedPicts.count) {
-                imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
-                imageView.userInteractionEnabled = YES;
-            }
-        }
-    }
-    
-    if (_attachedPicts.count == 0) {
-        [_delegate updateAttachedPictures:_attachedPicts
-                           selectedAssets:_selectedAssets
-                         uploadedPictures:_uploadedPicts
-                     tempUploadedPictures:_tempUploadedPicts];
+    if ([self attachedImageWithoutDeletedImage].count == 0) {
+        [_delegate updateSelectedAssets:self.selectedAssets
+                         uploadedPictures:_uploadedPicts];
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        [self setDataWithImageTag:temp-20];
     }
 }
 

@@ -123,4 +123,6 @@
 #define kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT @"searchshop%@"
 #define kTKPDSEARCH_SEARCHHISTORYPATHKEY @"history_search.plist"
 
+#define kTKPDSEARCH_IN_CATEGORY @"in_category"
+
 #endif

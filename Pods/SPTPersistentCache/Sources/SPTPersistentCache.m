@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#import <SPTPersistentCache/SPTPersistentCache.h>
+#import "SPTPersistentCache+Private.h"
 
 #import <SPTPersistentCache/SPTPersistentCacheHeader.h>
 
@@ -33,6 +33,7 @@
 #import "SPTPersistentCachePosixWrapper.h"
 
 #include <sys/stat.h>
+#import <mach/mach_time.h>
 
 #include "crc32iso3309.h"
 
@@ -48,19 +49,17 @@ static NSString * const SPTDataCacheFileAttributesKey = @"SPTDataCacheFileAttrib
 
 static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
 
-@interface SPTPersistentCache ()
+void SPTPersistentCacheSafeDispatch(_Nullable dispatch_queue_t queue, _Nonnull dispatch_block_t block)
+{
+    const dispatch_queue_t dispatchQueue = queue ?: dispatch_get_main_queue();
+    if (dispatchQueue == dispatch_get_main_queue() && [NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_async(dispatchQueue, block);
+    }
+}
 
-@property (nonatomic, copy) SPTPersistentCacheOptions *options;
-/// Serial queue used to run all internal stuff
-@property (nonatomic, strong) dispatch_queue_t workQueue;
-@property (nonatomic, strong) NSFileManager *fileManager;
-@property (nonatomic, strong) SPTPersistentCacheGarbageCollector *garbageCollector;
-@property (nonatomic, copy) SPTPersistentCacheDebugCallback debugOutput;
-@property (nonatomic, strong) SPTPersistentCacheFileManager *dataCacheFileManager;
-@property (nonatomic, readonly) NSTimeInterval currentDateTimeInterval;
-@property (nonatomic, strong) SPTPersistentCachePosixWrapper *posixWrapper;
-
-@end
+// Class extension exists in SPTPersistentCache+Private.h
 
 #pragma mark - SPTPersistentCache
 
@@ -75,18 +74,21 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
 {
     self = [super init];
     if (self) {
-        _options = options ?: [SPTPersistentCacheOptions new];
-        _workQueue = dispatch_queue_create([options.identifierForQueue UTF8String], DISPATCH_QUEUE_CONCURRENT);
+        _workQueue = [[NSOperationQueue alloc] init];
+        _workQueue.name = options.identifierForQueue;
+        _workQueue.maxConcurrentOperationCount = options.maxConcurrentOperations;
+        NSAssert(_workQueue, @"The work queue couldn’t be created using the given options: %@", options);
+
+        _options = [options copy];
         _fileManager = [NSFileManager defaultManager];
         _debugOutput = [self.options.debugOutput copy];
         _dataCacheFileManager = [[SPTPersistentCacheFileManager alloc] initWithOptions:_options];
+        _posixWrapper = [SPTPersistentCachePosixWrapper new];
         _garbageCollector = [[SPTPersistentCacheGarbageCollector alloc] initWithCache:self
                                                                               options:_options
                                                                                 queue:_workQueue];
 
-        _posixWrapper = [SPTPersistentCachePosixWrapper new];
 
-        NSAssert(_workQueue, @"The work queue can never be nil, otherwise the cache won't run");
         if (![_dataCacheFileManager createCacheDirectory]) {
             return nil;
         }
@@ -103,9 +105,12 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     }
 
     callback = [callback copy];
-    [self dispatchBlock:^ {
+    [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeStarting];
         [self loadDataForKeySync:key withCallback:callback onQueue:queue];
-    } on:self.workQueue];
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.readPriority qos:self.options.readQualityOfService];
     return YES;
 }
 
@@ -117,8 +122,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     if (callback == nil || queue == nil || chooseKeyCallback == nil) {
         return NO;
     }
-
-    [self dispatchBlock:^{
+    [self logTimingForKey:prefix method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:prefix method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeStarting];
         NSString *path = [self.dataCacheFileManager subDirectoryPathForKey:prefix];
         NSMutableArray * __block keys = [NSMutableArray array];
 
@@ -184,7 +190,8 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
         }
         
         [self loadDataForKeySync:keyToOpen withCallback:callback onQueue:queue];
-    } on:self.workQueue];
+        [self logTimingForKey:prefix method:SPTPersistentCacheDebugMethodTypeRead type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.readPriority qos:self.options.readQualityOfService];
 
     return YES;
 }
@@ -212,9 +219,12 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     }
 
     callback = [callback copy];
-    [self dispatchBlock:^{
+    [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeStarting];
         [self storeDataSync:data forKey:key ttl:ttl locked:locked withCallback:callback onQueue:queue];
-    } on:self.workQueue];
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.writePriority qos:self.options.writeQualityOfService];
     return YES;
 }
 
@@ -228,8 +238,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
         NSAssert(queue, @"You must specify the queue");
     }
 
-
-    [self dispatchBlock:^{
+    [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeStarting];
         NSString *filePath = [self.dataCacheFileManager pathForKey:key];
 
         BOOL __block expired = NO;
@@ -257,11 +268,12 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
         }
 
         if (callback) {
-            [self dispatchBlock:^ {
+            SPTPersistentCacheSafeDispatch(queue, ^{
                 callback(response);
-            } on:queue];
+            });
         }
-    } on:self.workQueue];
+        [self logTimingForKey:key method:SPTPersistentCacheDebugMethodTypeStore type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.writePriority qos:self.options.writeQualityOfService];
 }
 
 - (void)removeDataForKeysSync:(NSArray<NSString *> *)keys
@@ -272,10 +284,25 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
 }
 
 - (void)removeDataForKeys:(NSArray<NSString *> *)keys
+                 callback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                  onQueue:(dispatch_queue_t _Nullable)queue
 {
-    dispatch_barrier_async(self.workQueue, ^{
+    [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeStarting];
+
         [self removeDataForKeysSync:keys];
-    });
+        if (callback) {
+                    SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:SPTPersistentCacheResponseCodeOperationSucceeded
+                                                                            error:nil
+                                                                           record:nil];
+                    SPTPersistentCacheSafeDispatch(queue, ^{
+                        callback(response);
+                    });
+                }
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.deletePriority qos:self.options.deleteQualityOfService];
+
 }
 
 - (BOOL)lockDataForKeys:(NSArray<NSString *> *)keys
@@ -285,8 +312,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     if ((callback != nil && queue == nil) || keys.count == 0) {
         return NO;
     }
-
-    [self dispatchBlock:^{
+    [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeLock type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeLock type:SPTPersistentCacheDebugTimingTypeStarting];
         for (NSString *key in keys) {
             NSString *filePath = [self.dataCacheFileManager pathForKey:key];
             BOOL __block expired = NO;
@@ -309,13 +337,14 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
                                                                        record:nil];
             }
             if (callback) {
-                [self dispatchBlock:^{
+                SPTPersistentCacheSafeDispatch(queue, ^{
                     callback(response);
-                } on:queue];
+                });
             }
             
         } // for
-    } on:self.workQueue];
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeLock type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.writePriority qos:self.options.writeQualityOfService];
     return YES;
 }
 
@@ -326,8 +355,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     if ((callback != nil && queue == nil) || keys.count == 0) {
         return NO;
     }
-
-    [self dispatchBlock:^{
+    [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeUnlock type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeUnlock type:SPTPersistentCacheDebugTimingTypeStarting];
         for (NSString *key in keys) {
             NSString *filePath = [self.dataCacheFileManager pathForKey:key];
             SPTPersistentCacheResponse *response = [self alterHeaderForFileAtPath:filePath
@@ -341,12 +371,13 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
                                                                         writeBack:YES
                                                                          complain:YES];
             if (callback) {
-                [self dispatchBlock:^{
+                SPTPersistentCacheSafeDispatch(queue, ^{
                     callback(response);
-                } on:queue];
+                });
             }
         } // for
-    } on:self.workQueue];
+        [self logTimingForKey:[keys description] method:SPTPersistentCacheDebugMethodTypeUnlock type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.deletePriority qos:self.options.deleteQualityOfService];
     return YES;
 }
 
@@ -360,24 +391,62 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     [self.garbageCollector unschedule];
 }
 
-- (void)prune
+- (void)pruneWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                  onQueue:(dispatch_queue_t _Nullable)queue
 {
-    dispatch_barrier_async(self.workQueue, ^{
+    [self logTimingForKey:@"prune" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:@"prune" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeStarting];
         [self.dataCacheFileManager removeAllData];
-    });
+        if (callback) {
+            SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:SPTPersistentCacheResponseCodeOperationSucceeded
+                                                                                                error:nil
+                                                                                               record:nil];
+            SPTPersistentCacheSafeDispatch(queue, ^{
+                callback(response);
+            });
+        }
+        [self logTimingForKey:@"prune" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.deletePriority qos:self.options.deleteQualityOfService];
 }
 
-- (void)wipeLockedFiles
+- (void)wipeLockedFilesWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                            onQueue:(dispatch_queue_t _Nullable)queue
 {
-    dispatch_barrier_async(self.workQueue, ^{
+    [self logTimingForKey:@"wipeLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:@"wipeLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeStarting];
         [self collectGarbageForceExpire:NO forceLocked:YES];
-    });
+        if (callback) {
+            SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:SPTPersistentCacheResponseCodeOperationSucceeded
+                                                                                                error:nil
+                                                                                               record:nil];
+            SPTPersistentCacheSafeDispatch(queue, ^{
+                callback(response);
+            });
+        }
+        [self logTimingForKey:@"wipeLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.deletePriority qos:self.options.deleteQualityOfService];
+
 }
 
-- (void)wipeNonLockedFiles{
-    dispatch_barrier_async(self.workQueue, ^{
+- (void)wipeNonLockedFilesWithCallback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                               onQueue:(dispatch_queue_t _Nullable)queue
+{
+    [self logTimingForKey:@"wipeNonLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeQueued];
+    [self doWork:^{
+        [self logTimingForKey:@"wipeNonLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeStarting];
         [self collectGarbageForceExpire:YES forceLocked:NO];
-    });
+        if (callback) {
+            SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:SPTPersistentCacheResponseCodeOperationSucceeded
+                                                                                                error:nil
+                                                                                               record:nil];
+            SPTPersistentCacheSafeDispatch(queue, ^{
+                callback(response);
+            });
+        }
+        [self logTimingForKey:@"wipeNonLocked" method:SPTPersistentCacheDebugMethodTypeRemove type:SPTPersistentCacheDebugTimingTypeFinished];
+    } priority:self.options.deletePriority qos:self.options.deleteQualityOfService];
 }
 
 - (NSUInteger)totalUsedSizeInBytes
@@ -509,9 +578,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
 
 
             SPTPersistentCacheRecord *record = [[SPTPersistentCacheRecord alloc] initWithData:payload
-                                                                              key:key
-                                                                         refCount:refCount
-                                                                              ttl:ttl];
+                                                                                          key:key
+                                                                                     refCount:refCount
+                                                                                          ttl:ttl];
 
             SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:SPTPersistentCacheResponseCodeOperationSucceeded
                                                                                                 error:nil
@@ -534,9 +603,9 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
             }
 
             // Callback only after we finished everyhing to avoid situation when user gets notified and we are still writting
-            [self dispatchBlock:^{
+            SPTPersistentCacheSafeDispatch(queue, ^{
                 callback(response);
-            } on:queue];
+            });
 
         } // if rawData
     } // file exist
@@ -583,7 +652,7 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
                                                                                                 error:nil
                                                                                                record:nil];
 
-            dispatch_async(queue, ^{
+            SPTPersistentCacheSafeDispatch(queue, ^{
                 callback(response);
             });
         }
@@ -757,7 +826,7 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     assert(header != nil);
     uint64_t ttl = header->ttl;
     uint64_t current = spt_uint64rint(self.currentDateTimeInterval);
-    int64_t threshold = (int64_t)((ttl > 0) ? ttl : self.options.defaultExpirationPeriodSec);
+    int64_t threshold = (int64_t)((ttl > 0) ? ttl : self.options.defaultExpirationPeriod);
 
     if (ttl > SPTPersistentCacheTTLUpperBoundInSec) {
         [self debugOutput:@"PersistentDataCache: WARNING: TTL seems too big: %llu > %llu sec", ttl, SPTPersistentCacheTTLUpperBoundInSec];
@@ -779,10 +848,6 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     [self collectGarbageForceExpire:NO forceLocked:NO];
 }
 
-/**
- * forceExpire = YES treat all unlocked files like they expired
- * forceLocked = YES ignore lock status
- */
 - (void)collectGarbageForceExpire:(BOOL)forceExpire forceLocked:(BOOL)forceLocked
 {
     [self debugOutput:@"PersistentDataCache: Run GC with forceExpire:%d forceLock:%d", forceExpire, forceLocked];
@@ -839,38 +904,50 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
 }
 
 - (void)dispatchEmptyResponseWithResult:(SPTPersistentCacheResponseCode)result
-                               callback:(SPTPersistentCacheResponseCallback)callback
-                                onQueue:(dispatch_queue_t)queue
+                               callback:(SPTPersistentCacheResponseCallback _Nullable)callback
+                                onQueue:(dispatch_queue_t _Nullable)queue
 {
-    [self dispatchBlock:^ {
+    if (callback == nil) {
+        return;
+    }
+
+    SPTPersistentCacheSafeDispatch(queue, ^{
         SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:result
                                                                                             error:nil
                                                                                            record:nil];
         callback(response);
-    } on:queue];
+    });
 }
 
 - (void)dispatchError:(NSError *)error
                result:(SPTPersistentCacheResponseCode)result
-             callback:(SPTPersistentCacheResponseCallback)callback
-              onQueue:(dispatch_queue_t)queue
+             callback:(SPTPersistentCacheResponseCallback _Nullable)callback
+              onQueue:(dispatch_queue_t _Nullable)queue
 {
-    [self dispatchBlock:^{
+    if (callback == nil) {
+        return;
+    }
+
+    SPTPersistentCacheSafeDispatch(queue, ^{
         SPTPersistentCacheResponse *response = [[SPTPersistentCacheResponse alloc] initWithResult:result
                                                                                             error:error
                                                                                            record:nil];
         callback(response);
-    } on:queue];
+    });
 }
 
 - (void)debugOutput:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2)
 {
-    va_list list;
-    va_start(list, format);
-    NSString *debugString = [[NSString alloc ] initWithFormat:format arguments:list];
-    va_end(list);
-    
-    SPTPersistentCacheSafeDebugCallback(debugString, self.debugOutput);
+    SPTPersistentCacheDebugCallback const debugOutput = self.debugOutput;
+
+    if (debugOutput && format.length > 0) {
+        va_list list;
+        va_start(list, format);
+        NSString * const message = [[NSString alloc] initWithFormat:format arguments:list];
+        va_end(list);
+
+        debugOutput(message);
+    }
 }
 
 - (BOOL)pruneBySize
@@ -991,14 +1068,20 @@ static const uint64_t SPTPersistentCacheTTLUpperBoundInSec = 86400 * 31 * 2;
     return [[NSDate date] timeIntervalSince1970];
 }
 
-#pragma mark SPTPersistentCache
-
-- (void)dispatchBlock:(dispatch_block_t)block on:(dispatch_queue_t)queue
+- (void)doWork:(void (^)(void))block priority:(NSOperationQueuePriority)priority qos:(NSQualityOfService)qos
 {
-    if (queue == dispatch_get_main_queue() && [NSThread isMainThread]) {
-        block();
-    } else {
-        dispatch_async(queue, block);
+    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:block];
+    operation.qualityOfService = qos;
+    operation.queuePriority = priority;
+    [self.workQueue addOperation:operation];
+}
+
+- (void)logTimingForKey:(NSString *)key method:(SPTPersistentCacheDebugMethodType)method type:(SPTPersistentCacheDebugTimingType)type
+{
+    if (self.options.timingCallback) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.options.timingCallback(key, method, type, mach_absolute_time());
+        });
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductPreorder: NSObject {
     var update_time = ""
@@ -24,8 +25,8 @@ class ProductPreorder: NSObject {
     }()
 
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping .addAttributeMappingsFromDictionary([
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping .addAttributeMappings(from:[
             "process_time_type_string"  : "process_time_type_string",
             "process_day"               : "process_day",
             "process_time_type"         : "process_time_type",

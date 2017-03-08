@@ -8,6 +8,8 @@
 
 #import "TransactionCartResult.h"
 
+#import "Tokopedia-Swift.h"
+
 @implementation TransactionCartResult
 +(NSDictionary *)attributeMappingDictionary
 {
@@ -40,6 +42,9 @@
     
     RKRelationshipMapping *relGatewayMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"gateway_list" toKeyPath:@"gateway_list" withMapping:[TransactionCartGateway mapping]];
     [mapping addPropertyMapping:relGatewayMapping];
+    
+    RKRelationshipMapping *donationGatewayMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"donation" toKeyPath:@"donation" withMapping:[Donation mapping]];
+    [mapping addPropertyMapping:donationGatewayMapping];
     
     return mapping;
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class EditResolutionForm : NSObject {
     
@@ -18,26 +19,26 @@ class EditResolutionForm : NSObject {
     var resolution_trouble_list : [ResolutionCenterCreateTroubleList] = []
     
     class func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "resolution_last",
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "resolution_last",
             toKeyPath: "resolution_last",
-            withMapping: ResolutionLast.mapping()))
+            with: ResolutionLast.mapping()))
         
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "resolution_order",
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "resolution_order",
             toKeyPath: "resolution_order",
-            withMapping: ResolutionOrder.mapping()))
+            with: ResolutionOrder.mapping()))
         
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "resolution_by",
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "resolution_by",
             toKeyPath: "resolution_by",
-            withMapping: ResolutionBy.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "resolution_customer",
+            with: ResolutionBy.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "resolution_customer",
             toKeyPath: "resolution_customer",
-            withMapping: ResolutionCustomer.mapping()))
+            with: ResolutionCustomer.mapping()))
         
-        let relSolutionMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "resolution_solution_list",
+        let relSolutionMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "resolution_solution_list",
                                                                                     toKeyPath: "resolution_solution_list",
-                                                                                    withMapping: EditSolution.mapping())
+                                                                                    with: EditSolution.mapping())
         mapping.addPropertyMapping(relSolutionMapping)
         
         return mapping

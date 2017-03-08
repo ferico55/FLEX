@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class NoteAction : NSObject, TKPObjectMapping
 {
@@ -16,10 +17,10 @@ class NoteAction : NSObject, TKPObjectMapping
     var result : NoteActionResult = NoteActionResult()
     
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
         
-        mapping.addAttributeMappingsFromArray(["status", "message_status", "server_process_time"])
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "result", withMapping: NoteActionResult.mapping()))
+        mapping.addAttributeMappings(from:["status", "message_status", "server_process_time"])
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "result", with: NoteActionResult.mapping()))
         
         return mapping
     }

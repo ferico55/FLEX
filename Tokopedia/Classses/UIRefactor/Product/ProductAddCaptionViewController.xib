@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductAddCaptionViewController">
@@ -29,14 +33,14 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="gE7-hD-qga">
                     <rect key="frame" x="0.0" y="0.0" width="321" height="516"/>
-                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="eQt-4f-Ade"/>
                         <outlet property="delegate" destination="-1" id="Uvq-8H-qGn"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="gE7-hD-qga" secondAttribute="trailing" id="Fyz-VK-OJa"/>
@@ -45,7 +49,6 @@
                 <constraint firstAttribute="bottom" secondItem="gE7-hD-qga" secondAttribute="bottom" id="qKn-ZC-frK"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="ojj-46-NUc" appends="YES" id="A1o-PG-pDR"/>
@@ -87,7 +90,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ef-ml-3Jh" userLabel="Border Top">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.33000000000000002" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.33000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="3ZR-fS-mO2"/>
                                 </constraints>
@@ -102,13 +105,13 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GbS-j5-47H" userLabel="Border Bottom">
                                 <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="929-FZ-qwB"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GbS-j5-47H" secondAttribute="trailing" id="4Ie-8Q-Euj"/>
                             <constraint firstAttribute="bottom" secondItem="GbS-j5-47H" secondAttribute="bottom" constant="-1" id="GXF-NE-btF"/>
@@ -144,12 +147,12 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-Ar-Aed" userLabel="Border Top">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.33000000000000002" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.33000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="FZx-gM-cLx"/>
                                 </constraints>
                             </view>
-                            <imageView tag="20" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LaD-sQ-uaD" userLabel="1">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LaD-sQ-uaD" userLabel="1">
                                 <rect key="frame" x="8" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="3AJ-tK-3fM"/>
@@ -159,7 +162,7 @@
                                     <outletCollection property="gestureRecognizers" destination="DLu-C1-eY2" appends="YES" id="fcs-rr-4aj"/>
                                 </connections>
                             </imageView>
-                            <imageView tag="21" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hHD-y4-7lO" userLabel="2">
+                            <imageView tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hHD-y4-7lO" userLabel="2">
                                 <rect key="frame" x="62" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Cxg-Yr-AVn"/>
@@ -169,7 +172,7 @@
                                     <outletCollection property="gestureRecognizers" destination="A6q-Gf-h7h" appends="YES" id="VHj-lO-Eza"/>
                                 </connections>
                             </imageView>
-                            <imageView tag="22" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UmR-P9-4gz" userLabel="3">
+                            <imageView tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UmR-P9-4gz" userLabel="3">
                                 <rect key="frame" x="116" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="2Kc-6k-O7g"/>
@@ -179,7 +182,7 @@
                                     <outletCollection property="gestureRecognizers" destination="gtH-85-YOD" appends="YES" id="s0a-Jq-5DX"/>
                                 </connections>
                             </imageView>
-                            <imageView tag="23" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lUp-if-vv3" userLabel="4">
+                            <imageView tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lUp-if-vv3" userLabel="4">
                                 <rect key="frame" x="170" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="miB-N1-Twh"/>
@@ -189,7 +192,7 @@
                                     <outletCollection property="gestureRecognizers" destination="DKB-w7-eRI" appends="YES" id="6Lt-OI-GR6"/>
                                 </connections>
                             </imageView>
-                            <imageView tag="24" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7mm-fP-cs3" userLabel="5">
+                            <imageView tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7mm-fP-cs3" userLabel="5">
                                 <rect key="frame" x="224" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Ggc-jW-SbF"/>
@@ -201,13 +204,13 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeG-am-8L2" userLabel="Border Bottom">
                                 <rect key="frame" x="0.0" y="59" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="FU9-gg-o6I"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hHD-y4-7lO" firstAttribute="top" secondItem="S3Y-Ar-Aed" secondAttribute="bottom" constant="7" id="29d-jB-ImG"/>
                             <constraint firstItem="lUp-if-vv3" firstAttribute="leading" secondItem="UmR-P9-4gz" secondAttribute="trailing" constant="8" id="2Fc-bb-C6B"/>
@@ -269,7 +272,7 @@
         </tapGestureRecognizer>
         <tapGestureRecognizer id="ojj-46-NUc">
             <connections>
-                <action selector="gesture:" destination="-1" id="pVs-hB-Ozj"/>
+                <action selector="gestureBackground:" destination="-1" id="0ny-h1-KpI"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class TopPicksGroup: NSObject {
     
@@ -14,11 +15,11 @@ class TopPicksGroup: NSObject {
     var toppicks: [TopPick]!
 
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(forClass: TopPicksGroup.self)
+        let mapping = RKObjectMapping(for: TopPicksGroup.self)
         
-        mapping.addAttributeMappingsFromArray(["name"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "toppicks", toKeyPath: "toppicks", withMapping: TopPick.mapping()))
+        mapping!.addAttributeMappings(from: ["name"])
+        mapping!.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "toppicks", toKeyPath: "toppicks", with: TopPick.mapping()))
         
-        return mapping
+        return mapping!
     }
 }

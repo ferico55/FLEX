@@ -10,20 +10,20 @@ import UIKit
 
 @objc class DepositBankRequest: NSObject {
 
-    class func fetchListAccountBank(onSuccess:(([BankAccountFormList]) -> Void), onFailure:(()->Void)) {
+    class func fetchListAccountBank(_ onSuccess:@escaping (([BankAccountFormList]) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl(NSString .v4Url(),
+        networkManager.request(withBaseUrl: NSString .v4Url(),
                                           path: "/v4/people/get_bank_account.pl",
                                           method: .POST,
                                           parameter: [:],
-                                          mapping: V4Response.mappingWithData(BankAccountFormResult.mapping()),
+                                          mapping: V4Response<AnyObject>.mapping(withData: BankAccountFormResult.mapping()),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result = mappingResult.dictionary() as Dictionary
-                                            let response = result[""] as! V4Response
+                                            let response : V4Response = result[""] as! V4Response<BankAccountFormResult>
                                             
                                             if response.message_error.count > 0 {
                                                 StickyAlertView.showSuccessMessage(response.message_status)

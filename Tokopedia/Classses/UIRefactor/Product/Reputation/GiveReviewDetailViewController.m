@@ -24,9 +24,7 @@
 @interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, CameraControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
     BOOL _hasImages;
     
-    NSMutableArray *_attachedPictures;
     NSMutableArray *_uploadedPictures;
-    NSMutableArray *_tempUploadedPictures;
     NSMutableArray *_imageIDs;
     
     NSArray *_selectedAssets;
@@ -57,7 +55,7 @@
                                                                              action:@selector(tapToContinue:)];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
+                                                                             style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:nil];
     
@@ -66,7 +64,7 @@
     _tempUploadedPictures = [NSMutableArray new];
     _imageIDs = [NSMutableArray new];
     
-    _selectedAssets = [NSArray new];
+    _selectedAssets = [NSMutableArray new];
     _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
     _productReviewPhotoObjects = [NSMutableDictionary new];
     _imagesToUpload = [NSMutableDictionary new];
@@ -141,38 +139,60 @@
     [AnalyticsManager trackScreenName:@"Give Review Detail Page"];
 }
 
-- (void)setAttachedPictures {
-    if (_attachedPictures.count > 0) {
-        for (int jj = 0; jj < _attachedPictures.count; jj++) {
-            for (UIImageView *imageView in _attachedImagesArray) {
-                if (imageView.tag == 20 + jj) {
-                    AttachedPicture *pict = _attachedPictures[jj];
-                    
-                    if (![pict.thumbnailUrl isEqualToString:@""]) {
-                        [imageView setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
-                                  placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
-                    } else {
-                        imageView.image = pict.image;
-                    }
-                    
-                    
-                    imageView.userInteractionEnabled = YES;
-                }
-            }
+-(NSArray<AttachedPicture *> *)attachedImageWithoutDeletedImage{
+    NSMutableArray *attached = [NSMutableArray new];
+    
+    for (AttachedPicture *pict in _attachedPictures) {
+        if (![pict.isDeleted isEqualToString:@"1"]) {
+            [attached addObject:pict];
         }
-        
-        if (_attachedPictures.count < 5) {
-            [self initCameraIconAtIndex:_attachedPictures.count];
-        }
-    } else {
-        [self initCameraIconAtIndex:0];
     }
+    
+    return [attached copy];
+}
+
+-(void)setAttachedPictures{
+    
+    for (UIImageView *imageView in _attachedImagesArray) {
+        imageView.hidden = YES;
+        [imageView setUserInteractionEnabled:YES];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [imageView.layer setBorderColor:[[UIColor clearColor] CGColor]];
+        [imageView.layer setBorderWidth:0];
+        [imageView.layer setCornerRadius:0];
+        [imageView.layer setMasksToBounds:NO];
+    }
+    
+    int i = 0;
+    for (AttachedPicture *pict in _attachedPictures) {
+        if (![pict.isDeleted isEqualToString:@"1"] && i<_attachedImagesArray.count) {
+            
+            ((UIImageView*)_attachedImagesArray[i]).hidden = NO;
+            
+            AttachedPicture *picture = [self attachedImageWithoutDeletedImage][i];
+            
+            if (![picture.thumbnailUrl isEqualToString:@""]) {
+                
+                [((UIImageView*)_attachedImagesArray[i]) setImageWithURL:[NSURL URLWithString:picture.thumbnailUrl]
+                          placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
+                
+            } else {
+                ((UIImageView*)_attachedImagesArray[i]).image = picture.image;
+            }
+            i++;
+        }
+    }
+    
+    if ([self attachedImageWithoutDeletedImage].count<_attachedImagesArray.count) {
+        [self initCameraIconAtIndex:[self attachedImageWithoutDeletedImage].count];
+    }
+    
 }
 
 #pragma mark - Methods
 - (void)initCameraIconAtIndex:(NSInteger)index {
     for (UIImageView *image in _attachedImagesArray) {
-        if (image.tag == 20 + index) {
+        if (image.tag == index) {
             image.image = [UIImage imageNamed:@"icon_camera.png"];
             image.alpha = 1;
             image.hidden = NO;
@@ -324,117 +344,43 @@
 }
 
 - (IBAction)tapImage:(UITapGestureRecognizer*)sender {
-    if ([self image:((UIImageView*)_attachedImagesArray[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
+    if (sender.view.tag == [self attachedImageWithoutDeletedImage].count) {
+        
         [TKPImagePickerController showImagePicker:self
-                                     assetType:DKImagePickerControllerAssetTypeallPhotos
+                                     assetType:DKImagePickerControllerAssetTypeAllPhotos
                            allowMultipleSelect:YES
                                     showCancel:YES
                                     showCamera:YES
-                                   maxSelected:(5 - _tempUploadedPictures.count)
+                                   maxSelected:(5 - ([self attachedImageWithoutDeletedImage].count-_selectedAssets.count))
                                 selectedAssets:_selectedAssets
                                     completion:^(NSArray<DKAsset *> *asset) {
-                                        if (asset.count == 0) {
-                                            if (_attachedPictures.count > 0) {
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
-                                                    _selectedAssets = [NSArray new];
-                                                    
-                                                    ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-                                                    vc.delegate = self;
-                                                    vc.attachedPictures = temp;
-                                                    vc.isEdit = _isEdit;
-                                                    vc.selectedAssets = asset;
-                                                    vc.uploadedPictures = _uploadedPictures;
-                                                    vc.tempUploadedPictures = _tempUploadedPictures;
-                                                    vc.selectedImageTag = sender.view.tag;
-                                                    
-                                                    [self.navigationController pushViewController:vc animated:NO];
-                                                });
-                                            }
-                                        } else if (asset.count > 0) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
-                                                
-                                                for (int ii = 0; ii < asset.count; ii++) {
-                                                    DKAsset *dk = asset[ii];
-                                                    AttachedPicture *pict = [AttachedPicture new];
-                                                    BOOL isAdded = NO;
-                                                    
-                                                    for (int jj = 0; jj < _attachedPictures.count; jj++) {
-                                                        AttachedPicture *tempPict = _attachedPictures[jj];
-                                                        if ([tempPict.fileName isEqualToString:dk.fileName]) {
-                                                            pict = tempPict;
-                                                            
-                                                            [temp addObject:pict];
-                                                            isAdded = YES;
-                                                        }
-                                                    }
-                                                    
-                                                    if (!isAdded) {
-                                                        pict.image = dk.resizedImage;
-                                                        pict.fileName = dk.fileName;
-                                                        pict.thumbnailUrl = @"";
-                                                        pict.largeUrl = @"";
-                                                        pict.imageDescription = @"";
-                                                        pict.attachmentID = @"0";
-                                                        pict.isDeleted = @"0";
-                                                        pict.isPreviouslyUploaded = @"0";
-                                                        
-                                                        [temp addObject:pict];
-                                                        isAdded = YES;
-                                                    }
-                                                }
-                                                
-                                                ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-                                                vc.delegate = self;
-                                                vc.attachedPictures = temp;
-                                                vc.isEdit = _isEdit;
-                                                vc.selectedAssets = asset;
-                                                vc.uploadedPictures = _uploadedPictures;
-                                                vc.tempUploadedPictures = _tempUploadedPictures;
-                                                vc.selectedImageTag = sender.view.tag;
-                                                
-                                                [self.navigationController pushViewController:vc animated:NO];
-                                            });
-                                        }
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            
+                                            ProductAddCaptionViewController *vc = [[ProductAddCaptionViewController alloc] initWithSelectedAssets:[asset mutableCopy] isEdit:_isEdit uploadedPicture:[_uploadedPictures mutableCopy] selectedImageIndex:(int)([self attachedImageWithoutDeletedImage].count+asset.count-1) delegate:self];
+                                            [vc addImageFromAsset];
+
+                                            
+                                            [self.navigationController pushViewController:vc animated:NO];
+                                        });
                                     }];
         
     } else {
-        ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-        vc.delegate = self;
-        vc.attachedPictures = _attachedPictures;
-        vc.isEdit = _isEdit;
-        vc.selectedAssets = _selectedAssets;
-        vc.uploadedPictures = _uploadedPictures;
-        vc.tempUploadedPictures = _tempUploadedPictures;
-        vc.selectedImageTag = sender.view.tag;
+        ProductAddCaptionViewController *vc = [[ProductAddCaptionViewController alloc] initWithSelectedAssets:[_selectedAssets mutableCopy] isEdit:_isEdit uploadedPicture:[_uploadedPictures mutableCopy] selectedImageIndex:(int)sender.view.tag delegate:self];
+
         
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 #pragma mark - Product Add Caption Delegate
-- (void)updateAttachedPictures:(NSArray *)attachedPictures
-                selectedAssets:(NSArray *)selectedAssets
-              uploadedPictures:(NSArray *)uploadedPictures
-          tempUploadedPictures:(NSArray *)tempUploadedPictures {
-    _attachedPictures = [attachedPictures mutableCopy];
-    _selectedAssets = selectedAssets;
-    _uploadedPictures = [uploadedPictures mutableCopy];
-    _tempUploadedPictures = [tempUploadedPictures mutableCopy];
+- (void)updateSelectedAssets:(NSMutableArray *)selectedAssets uploadedPictures:(NSMutableArray *)uploadedPictures{
     
-    if (_attachedPictures.count == 0) {
+    _attachedPictures = [uploadedPictures copy];
+    _selectedAssets = [selectedAssets copy];
+    _uploadedPictures = [uploadedPictures copy];
+    
+    if ([self attachedImageWithoutDeletedImage].count == 0) {
         _hasImages = NO;
-    }
-    
-    for (UIImageView *imageView in _attachedImagesArray) {
-        imageView.image = nil;
-        imageView.userInteractionEnabled = NO;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        [imageView.layer setBorderColor:[[UIColor clearColor] CGColor]];
-        [imageView.layer setBorderWidth:0];
-        [imageView.layer setCornerRadius:0];
-        [imageView.layer setMasksToBounds:NO];
     }
     
     [self setAttachedPictures];

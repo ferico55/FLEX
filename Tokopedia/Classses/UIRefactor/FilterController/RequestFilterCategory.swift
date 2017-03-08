@@ -10,7 +10,7 @@ import UIKit
 
 class RequestFilterCategory: NSObject {
     
-    class func fetchListFilterCategory(ID:String, success: (([CategoryDetail]) -> Void), failed:((NSError)->Void)) {
+    class func fetchListFilterCategory(_ ID:String, success: @escaping (([CategoryDetail]) -> Void), failed:@escaping ((Error)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
@@ -20,22 +20,24 @@ class RequestFilterCategory: NSObject {
             path = "/v1/categories/\(ID)"
         }
         
-        networkManager.requestWithBaseUrl(NSString .hadesUrl(),
-                                          path: path,
-                                          method: .GET,
-                                          parameter: ["filter":"type==tree"],
-                                          mapping: CategoryResponse.mapping(),
-                                          onSuccess: { (mappingResult, operation) in
-                                            
-                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : CategoryResponse = result[""] as! CategoryResponse
-                                            
-                                            success(response.data.categories)
-                                            
-                                            
-        }) { (error) in
-            failed(error)
-        }
+        networkManager.request(
+            withBaseUrl: NSString.hadesUrl(),
+            path: path,
+            method: .GET,
+            parameter: ["filter":"type==tree"],
+            mapping: CategoryResponse.mapping(),
+            onSuccess: { (mappingResult, operation) in
+                
+                let result : Dictionary = mappingResult.dictionary() as Dictionary
+                let response : CategoryResponse = result[""] as! CategoryResponse
+                
+                success(response.data.categories)
+                
+                
+            },
+            onFailure: { (error) in
+                failed(error)
+            })
     }
 
 

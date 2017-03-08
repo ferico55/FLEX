@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaOperatorAttributeRule: NSObject {
 
@@ -14,7 +15,7 @@ class PulsaOperatorAttributeRule: NSObject {
     var show_price : Bool = false
     var show_product : Bool = false
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "product_text"  : "product_text",
             "show_price" : "show_price",
@@ -23,8 +24,8 @@ class PulsaOperatorAttributeRule: NSObject {
     }
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        mapping.addAttributeMappings(from: self.attributeMappingDictionary())
 
         return mapping
     }
@@ -35,22 +36,22 @@ class PulsaOperatorAttributeRule: NSObject {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let product_text = aDecoder.decodeObjectForKey("product_text") as? String {
+        if let product_text = aDecoder.decodeObject(forKey: "product_text") as? String {
             self.product_text = product_text
         }
         
-        if let show_price = aDecoder.decodeObjectForKey("show_price") as? Bool {
+        if let show_price = aDecoder.decodeObject(forKey: "show_price") as? Bool {
             self.show_price = show_price
         }
         
-        if let show_product = aDecoder.decodeObjectForKey("show_product") as? Bool {
+        if let show_product = aDecoder.decodeObject(forKey: "show_product") as? Bool {
             self.show_product = show_product
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(product_text, forKey: "product_text")
-        aCoder.encodeObject(show_price, forKey: "show_price")
-        aCoder.encodeObject(show_product, forKey: "show_product")
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(product_text as Any?, forKey: "product_text")
+        aCoder.encode(show_price as Any?, forKey: "show_price")
+        aCoder.encode(show_product as Any?, forKey: "show_product")
     }
 }

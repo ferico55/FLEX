@@ -237,7 +237,11 @@
             }
         }
     } onFailure:^(NSError * error) {
-        [weakSelf hideWalletCell];
+        if(error.code == 9991) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        } else {
+            [weakSelf hideWalletCell];
+        }
     }];
 }
 

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,8 +25,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="S8B-WM-3ht">
-                    <frame key="frameInset" width="320" height="518"/>
+                <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="S8B-WM-3ht">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
@@ -31,18 +34,18 @@
                         <outlet property="delegate" destination="-1" id="Tlm-Qc-aRL"/>
                     </connections>
                 </tableView>
-                <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0qe-6u-X0z" userLabel="Bottom View">
-                    <frame key="frameInset" minY="518" width="320" height="50"/>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0qe-6u-X0z" userLabel="Bottom View">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <subviews>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-kx-nQw" userLabel="Horizontal Border">
-                            <frame key="frameInset" width="320" height="1"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-kx-nQw" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="GNo-Fg-FxC"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
-                            <frame key="frameInset" minX="250" minY="10" width="65" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
+                            <rect key="frame" x="250" y="10" width="65" height="30"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="65" id="43i-ky-8oI"/>
@@ -60,8 +63,8 @@
                                 <action selector="btnSendTapped" destination="-1" eventType="touchUpInside" id="2b7-jV-hhZ"/>
                             </connections>
                         </button>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6u1-H4-Esw" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
-                            <frame key="frameInset" minX="10" minY="10" width="238" height="30"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6u1-H4-Esw" customClass="RSKGrowingTextView" customModule="RSKGrowingTextView">
+                            <rect key="frame" x="10" y="10" width="238" height="30"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -95,6 +98,7 @@
                         <constraint firstItem="I0F-UY-vER" firstAttribute="leading" secondItem="6u1-H4-Esw" secondAttribute="trailing" constant="2" id="8XI-O6-9cA"/>
                         <constraint firstItem="6u1-H4-Esw" firstAttribute="leading" secondItem="0qe-6u-X0z" secondAttribute="leading" constant="10" id="Djv-wE-hJd"/>
                         <constraint firstItem="I0F-UY-vER" firstAttribute="top" secondItem="JEw-kx-nQw" secondAttribute="bottom" constant="9" id="Ho1-4B-emc"/>
+                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="NP2-zM-0IZ"/>
                         <constraint firstAttribute="bottom" secondItem="6u1-H4-Esw" secondAttribute="bottom" constant="10" id="ZuY-gW-lxQ"/>
                         <constraint firstItem="JEw-kx-nQw" firstAttribute="leading" secondItem="0qe-6u-X0z" secondAttribute="leading" id="szB-ip-2e2"/>
                         <constraint firstItem="6u1-H4-Esw" firstAttribute="top" secondItem="0qe-6u-X0z" secondAttribute="top" constant="10" id="uQi-MV-VAM"/>
@@ -121,6 +125,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="HT4-sT-0SH">
+                    <rect key="frame" x="150" y="8" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="KA6-Kp-Dsi"/>
                         <constraint firstAttribute="height" constant="20" id="kdS-1q-C9S"/>
