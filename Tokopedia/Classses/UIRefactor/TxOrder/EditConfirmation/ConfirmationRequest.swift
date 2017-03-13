@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ConfirmationRequest: NSObject {
     class func fetchEditForm(_ paymentID:String, onSuccess: @escaping ((PaymentConfirmationForm) -> Void), onFailure:@escaping (()->Void)) {

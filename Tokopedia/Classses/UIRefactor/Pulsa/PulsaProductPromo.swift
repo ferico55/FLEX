@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProductPromo: NSObject, NSCoding {
     var tag : String = ""

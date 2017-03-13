@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class ProductEditDetail: NSObject {
     var product_min_order: String = ""

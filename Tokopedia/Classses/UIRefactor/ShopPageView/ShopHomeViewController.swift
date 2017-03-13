@@ -15,11 +15,8 @@ class ShopHomeViewController: UIViewController {
 
     var onEtalaseSelected: ((String, String) -> Void)?
     var onFilterSelected: ((ShopProductFilter) -> Void)?
-    var onTabSelected: ((ShopPageTab) -> Void)?
     var onProductSelected: ((String) -> Void)?
     var data: [NSObject: AnyObject]?
-    var shopPageHeader: ShopPageHeader!
-    var showHomeTab: Bool = false
     
     let url: String
     
@@ -32,7 +29,6 @@ class ShopHomeViewController: UIViewController {
     
     fileprivate let router = JLRoutes()
     
-    fileprivate var fakeTab: ShopTabView!
     fileprivate let progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.progressTintColor = UIColor(red:0.071, green:0.780, blue:0, alpha:1)
@@ -77,7 +73,7 @@ class ShopHomeViewController: UIViewController {
         
         webView.navigationDelegate = self
         
-        webView.load(NSURLRequest(url: NSURL(string: self.url)! as URL) as URLRequest)
+        webView.load(URLRequest(url: URL(string: self.url)!))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -96,6 +92,12 @@ class ShopHomeViewController: UIViewController {
     
     deinit {
         webView.bk_removeAllBlockObservers()
+    }
+}
+
+extension ShopHomeViewController: ShopTabChild {
+    func refreshContent() {
+        self.webView.load(URLRequest(url: URL(string: self.url)!))
     }
 }
 
@@ -122,6 +124,7 @@ extension ShopHomeViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        progressView.isHidden = false
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -139,5 +142,6 @@ extension ShopHomeViewController: WKNavigationDelegate {
     private func hideLoadingIndicators() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         progressView.isHidden = true
+        progressView.progress = 0
     }
 }

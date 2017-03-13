@@ -39,8 +39,6 @@
 
 #import "ProductAddEditViewController.h"
 
-#import "ShopContainerViewController.h"
-
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "EtalaseList.h"
@@ -135,8 +133,6 @@
 #import "PromoteResult.h"
 #import "SearchAWSResult.h"
 #import "LoyaltyPointResult.h"
-#import "ShopPageHeader.h"
-#import "ShopTabView.h"
 #import "LogoutResult.h"
 #import "TKPStoreManager.h"
 #import "Shop.h"
@@ -174,13 +170,5 @@
 #import "FavoriteShopRequest.h"
 #import "UIColor+Theme.h"
 #import "OAStackViewCategory.h"
+#import "Tkpd.h"
 
-// TODO: move the following imports to each swift files, don't put 3rd party imports here anymore
-@import NJKWebViewProgress;
-@import SPTPersistentCache;
-@import RestKit;
-@import APAddressBook;
-@import JLPermissions;
-@import EAIntroView;
-@import DownPicker;
-@import BlocksKit;

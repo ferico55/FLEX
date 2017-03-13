@@ -17,6 +17,7 @@
 #import "TKPDTabViewController.h"
 #import "ProductAddEditViewController.h"
 #import "GAIDictionaryBuilder.h"
+#import "search.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -679,6 +680,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         actionForTracker = @"Search Hotlist";
     } else if ([searchID isEqualToString:@"shop"]) {
         actionForTracker = @"Search Shop";
+    } else if ([searchID isEqualToString:kTKPDSEARCH_IN_CATEGORY]) {
+        actionForTracker = @"Autocomplete in Category";
     }
     
     return actionForTracker;

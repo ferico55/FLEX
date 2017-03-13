@@ -92,6 +92,8 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     func navigateToSuccess(_ url: URL) {
         let controller = WebViewController()
+        controller.hidesBottomBarWhenPushed = true;
+
         controller.strURL = url.absoluteString
         controller.shouldAuthorizeRequest = true
         
@@ -113,6 +115,8 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     func navigateToWebTicker(_ url: URL) {
         let controller = WebViewController()
+        controller.hidesBottomBarWhenPushed = true;
+
         controller.strURL = url.absoluteString
         controller.strTitle = ""
         controller.onTapLinkWithUrl = {[weak self] (url) in

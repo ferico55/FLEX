@@ -51,6 +51,7 @@ import Foundation
     func swipeView(_ swipeView: SwipeView!, didSelectItemAt index: Int) {
         let controller = WebViewController()
         controller.strURL = _goods[index].redirect_url
+        controller.hidesBottomBarWhenPushed = true
         
         self.delegate.navigationController?.pushViewController(controller, animated: true)
     }

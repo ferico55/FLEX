@@ -95,14 +95,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-    if(_scheduleDetail.close_start && ![_scheduleDetail.close_start isEqualToString:@""]){
+    [self clearViewData];
+    if(![_scheduleDetail.close_start isEqualToString:@""]){
         _dateMulaiDari = [self NSDatefromString:_scheduleDetail.close_start];
     }
-    if(_scheduleDetail.close_end && ![_scheduleDetail.close_end isEqualToString:@""]){
+    if(![_scheduleDetail.close_end isEqualToString:@""]){
         _dateSampaiDengan = [self NSDatefromString:_scheduleDetail.close_end];
     }
-    
     [self initializeView];
 }
 
@@ -215,9 +214,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _isFormEnabled = NO;
     if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
         [self adjustView:CenterViewAturJadwalButton withAnimation:YES];
+        [self clearViewData];
     }else{
         [self adjustView:CenterViewFormView withAnimation:NO];
     }
+    
 }
 - (IBAction)tutupSekarangSwitchValueChanged:(id)sender {
     if([_tutupSekarangSwitch isOn]){
@@ -429,6 +430,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
             _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
             _isFormEnabled = YES;
+            [self clearViewData];
             [self adjustView:CenterViewSuccessView withAnimation:NO];
             [self.delegate didChangeShopStatus];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
@@ -455,9 +457,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
         if([result.data.is_success isEqualToString:@"1"]){
             _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-            _dateMulaiDari = nil;
-            _dateSampaiDengan = nil;
-            [self setDateButton];
+            [self clearViewData];
             
             _isFormEnabled = YES;
             [self adjustView:CenterViewSuccessView withAnimation:YES];
@@ -772,4 +772,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _failLabel.numberOfLines = 0;
 }
 
+- (void)clearViewData {
+    _dateMulaiDari = nil;
+    _dateSampaiDengan = nil;
+    [self setDateButton];
+    _catatanTextView.text = @"";
+    [_tutupSekarangSwitch setOn:NO];
+}
 @end

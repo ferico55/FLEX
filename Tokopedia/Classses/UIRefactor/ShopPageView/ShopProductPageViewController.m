@@ -179,8 +179,14 @@ ShopTabChild
                               btnTitle:nil];
 }
 
+#pragma mark - Shop tab child
+
 - (void)refreshContent {
     [self refreshView:nil];
+}
+
+- (void)tabWillChange {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - Life Cycle

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import JLPermissions
+import EAIntroView
 
 @objc
 class IntroViewController: UIViewController, EAIntroDelegate {

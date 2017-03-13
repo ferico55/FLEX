@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "EtalaseList.h"
-#import "ShopPageHeader.h"
 
 @class ShopProductFilter;
+@class Shop;
 
 @interface ShopProductPageViewController : GAITrackedViewController
 
@@ -19,11 +19,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 
-@property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 @property (nonatomic, strong) EtalaseList *initialEtalase;
 
-@property(nonatomic, copy) void(^onTabSelected)(ShopPageTab);
-@property BOOL showHomeTab;
 @property (nonatomic) Shop *shop;
 
 - (void)showProductsWithFilter:(ShopProductFilter *)filter;

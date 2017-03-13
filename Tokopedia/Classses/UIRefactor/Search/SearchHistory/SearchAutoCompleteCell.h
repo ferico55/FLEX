@@ -16,10 +16,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *closeButton;
 @property (strong, nonatomic) IBOutlet UIImageView *searchLoopImageView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchTitleLeadingToSuperViewConstraint;
+@property (nonatomic, copy, nullable) void (^didTapAutoFillButton)(NSString* text);
 
 - (void)setSearchCell:(SearchSuggestionItem*) item section:(SearchSuggestionData*) data;
-- (void)setBoldSearchText:(NSString*)searchText;
-- (void)setGreenSearchText:(NSString*)searchText;
-
 
 @end

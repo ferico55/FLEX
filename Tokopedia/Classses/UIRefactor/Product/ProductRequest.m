@@ -123,4 +123,24 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                               }];
 }
 
++ (void)requestHistoryProduct:(NSString *)userId
+                    OnSuccess:(void (^)(EnvelopeResponse *result))success
+                    OnFailure:(void (^)(NSError *error))failure
+{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString mojitoUrl]
+                                  path:[NSString stringWithFormat:@"%@%@%@", @"/users/", userId, @"/recentview/products/v1"]
+                                method:RKRequestMethodGET
+                             parameter:@{}
+                               mapping:[EnvelopeResponse mappingWithChildMapping:[HistoryProductList mapping]]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 EnvelopeResponse *response = [successResult.dictionary objectForKey:@""];
+                                 success(response);
+                             }
+                             onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
 @end

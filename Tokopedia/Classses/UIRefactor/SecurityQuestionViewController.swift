@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import TPKeyboardAvoiding
 import VMaskTextField
+import RestKit
 
 @objc(SecurityQuestionViewController)
 class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
@@ -412,7 +413,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         networkManager.request(withBaseUrl: NSString.accountsUrl(),
                                            path: "/otp/request",
                                            method: .POST,
-                                           header: ["Tkpd-UserId" : userID, "Authorization" : "\(self.token.tokenType) \(self.token.accessToken)"],
+                                           header: ["Tkpd-UserId" : userID, "Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
                                            parameter: ["mode" : "call"],
                                            mapping: V4Response<OTPOnCall>.mapping(withData: OTPOnCall.mapping()) as RKObjectMapping,
                                            onSuccess: { (mappingResult, operation) in

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc class CategoryDetail: NSObject, NSCopying {
     //MARK : Use categoryId rather than d_id or department_id

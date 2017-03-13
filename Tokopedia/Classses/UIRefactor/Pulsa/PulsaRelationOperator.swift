@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaRelationOperator: NSObject {
     var data : PulsaRelationData = PulsaRelationData()

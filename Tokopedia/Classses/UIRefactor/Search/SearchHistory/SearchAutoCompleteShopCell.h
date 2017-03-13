@@ -12,4 +12,5 @@
 
 @interface SearchAutoCompleteShopCell : UICollectionViewCell
 @property (strong, nonatomic) SearchSuggestionItem* searchItem;
+@property (strong, nonatomic) IBOutlet UILabel *shopName;
 @end

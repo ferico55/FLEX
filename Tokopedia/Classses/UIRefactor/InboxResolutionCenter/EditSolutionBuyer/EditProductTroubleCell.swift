@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DownPicker
 
 class EditProductTroubleCell: UITableViewCell, UITextViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var productImageView: UIImageView!

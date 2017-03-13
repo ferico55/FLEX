@@ -49,4 +49,6 @@
 @property (nonatomic, strong) NSString *shop_reputation_score;
 @property (nonatomic, strong) NSString *rate_success;
 @property (nonatomic, strong) NSString *tooltip;
+
+@property (readonly) NSString *pointsText;
 @end

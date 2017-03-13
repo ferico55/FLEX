@@ -12,24 +12,7 @@
 @implementation TxOrderStatusList
 
 -(NSString *)dayLeftString{
-    
-    if (self.dayLeft<0) {
-        return @"Expired";
-    }
-    
-    switch (self.dayLeft) {
-        case 1:
-            return @"Besok";
-            break;
-        case  0:
-            return @"Hari Ini";
-            break;
-        default:
-            return [NSString stringWithFormat:@"%zd Hari Lagi",self.dayLeft];
-            break;
-    }
-    
-    return @"";
+    return (self.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED)?self.order_deadline.deadline_process:self.order_deadline.deadline_shipping;
 }
 
 -(NSInteger)dayLeft{

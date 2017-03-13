@@ -351,16 +351,18 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
             InboxTicketDetailAttachment *attachment = [InboxTicketDetailAttachment new];
             attachment.img = image;
             [attachments addObject:attachment];
-            InboxTicketDetail *ticket = [InboxTicketDetail new];
-            ticket.ticket_detail_create_time = [dateFormatter stringFromDate:[NSDate new]];
-            ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
-            ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
-            ticket.ticket_detail_is_cs = @"0";
-            ticket.ticket_detail_message = self.textView.text;
-            ticket.ticket_detail_attachment = attachments;
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
         }];
     }
+    
+    InboxTicketDetail *ticket = [InboxTicketDetail new];
+    ticket.ticket_detail_create_time = [dateFormatter stringFromDate:[NSDate new]];
+    ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
+    ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
+    ticket.ticket_detail_is_cs = @"0";
+    ticket.ticket_detail_message = self.textView.text;
+    ticket.ticket_detail_attachment = attachments;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
+    
 }
 
 #pragma mark - Request

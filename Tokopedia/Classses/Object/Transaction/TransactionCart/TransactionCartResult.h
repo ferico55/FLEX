@@ -10,6 +10,8 @@
 #import "TransactionCartList.h"
 #import "TransactionCartGateway.h"
 
+@class Donation;
+
 @interface TransactionCartResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong) NSArray *list;
@@ -29,5 +31,6 @@
 @property (nonatomic,strong) NSString *cashback;
 @property (nonatomic,strong) NSString *grand_total_without_lp_idr;
 @property (nonatomic,strong) NSString *grand_total_without_lp;
+@property (nonatomic, strong) Donation *donation;
 
 @end

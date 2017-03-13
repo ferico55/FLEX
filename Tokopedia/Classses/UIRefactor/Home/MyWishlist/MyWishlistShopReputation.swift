@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 @objc(MyWishlistShopReputation)
 class MyWishlistShopReputation: NSObject {

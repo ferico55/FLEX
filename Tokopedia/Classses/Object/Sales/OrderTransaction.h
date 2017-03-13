@@ -17,6 +17,7 @@
 #import "OrderHistory.h"
 #import "OrderDestination.h"
 #import "OrderSellerShop.h"
+#import "Tkpd.h"
 
 @interface OrderTransaction : NSObject <TKPObjectMapping>
 
@@ -36,4 +37,7 @@
 @property NSInteger order_is_pickup;
 @property NSInteger order_shipping_retry;
 
+@property (strong, nonatomic) NSString *deadline_string;
+@property (strong, nonatomic) NSString *deadline_label;
+@property (nonatomic) BOOL deadline_hidden;
 @end

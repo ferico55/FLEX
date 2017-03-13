@@ -397,10 +397,7 @@ typedef enum TagRequest {
     [self initTabBar];
 }
 
-- (void)updateTabBarMore:(NSNotification*)notification
-{
-    [self popToRootAllViewControllers];
-   
+- (void)updateTabBarMore:(NSNotification*)notification {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];

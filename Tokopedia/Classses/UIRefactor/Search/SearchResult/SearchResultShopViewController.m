@@ -410,7 +410,9 @@ static NSString const *rows = @"12";
                   @"device" : @"ios",
                   };
     } else {
-        param = @{@"sc"   :   deptid?:@"",
+        param = @{
+                  @"q"     : querry?:@"",
+                  @"sc"   :   deptid?:@"",
                   @"start" : @(_start),
                   @"rows" : rows,
                   @"device" : @"ios",

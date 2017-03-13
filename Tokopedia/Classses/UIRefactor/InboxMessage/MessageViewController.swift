@@ -9,9 +9,9 @@
 import UIKit
 import JSQMessagesViewController
 import JLRoutes
+import SwiftOverlays
 
 class MessageViewController: JSQMessagesViewController {
-    var hideInputMessage: Bool = false
     var messageTitle = ""
     var messageSubtitle = ""
     var messageId: String!
@@ -56,7 +56,7 @@ class MessageViewController: JSQMessagesViewController {
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
         
         self.topContentAdditionalInset = 30
-        if (self.hideInputMessage) {inputToolbar.isHidden = true}
+        self.inputToolbar.isHidden = true
         inputToolbar.contentView.leftBarButtonItem = nil
         title = messageTitle
         setupBubbles()
@@ -256,20 +256,15 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     //MARK: TextView Delegate
-    override func textView(_ textView: UITextView, shouldInteractWith URL: Foundation.URL, in characterRange: NSRange) -> Bool {
-        var urlString : String!
+    override func textView(_ textView: UITextView, shouldInteractWith url: Foundation.URL, in characterRange: NSRange) -> Bool {
+        guard !route.routeURL(url) else {return false}
         
-        guard !route.routeURL(URL) else {return false}
-        
-        if(URL.scheme?.lowercased() == "http" || URL.scheme?.lowercased() == "https") {
-            if(URL.host == "www.tokopedia.com") {
-                urlString = URL.absoluteString
+        if(url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https") {
+            if(url.host == "www.tokopedia.com") {
+                TPRoutes.routeURL(url)
             } else {
-                urlString = "https://tkp.me/r?url=\(URL.absoluteString.replacingOccurrences(of: "*", with: "."))"
+                self.openWebViewWithUrl("https://tkp.me/r?url=\(url.absoluteString.replacingOccurrences(of: "*", with: "."))")
             }
-            
-            self.openWebViewWithUrl(urlString)
-            
             return false
         }
         
@@ -327,7 +322,10 @@ class MessageViewController: JSQMessagesViewController {
                 let messageDetail = result.dictionary()[""] as! InboxMessageDetail
                 if((messageDetail.message_error == nil)) {
                     self.didReceiveMessages(messageDetail.result.list as! [InboxMessageDetailList])
-                    
+                    let detailResult = messageDetail.result
+                    if (detailResult?.textarea_reply == "1") {
+                        self.inputToolbar.isHidden = false
+                    }
                     let messageUsers = messageDetail.result.conversation_between.map({"\(($0 as! InboxMessageDetailBetween).user_name)"}).joined(separator: ", ")
                     if(messageUsers != "") {
                         self.messageSubtitle = "Antara : \(messageUsers)"

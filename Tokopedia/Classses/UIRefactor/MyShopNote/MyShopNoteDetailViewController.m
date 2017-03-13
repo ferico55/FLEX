@@ -16,22 +16,25 @@
 
 #import "Tokopedia-Swift.h"
 
+@import RichEditorView;
+
+@import NSAttributedString_DDHTML;
+
 #pragma mark - MyShopNoteDetailViewController
 
 @interface MyShopNoteDetailViewController ()
 <
     UITextFieldDelegate,
     UITextViewDelegate,
-    MyShopNoteDetailDelegate
+    MyShopNoteDetailDelegate,
+    RichEditorDelegate
 >
 {
-    NSInteger _requestcount;
     NoteDetail *_note;
     
     NSInteger _type;
     
     NSMutableDictionary *_auth;
-    NSMutableDictionary *_datainput;
     
     UITextView *_activetextview;
     
@@ -40,18 +43,6 @@
     
     BOOL _isnodata;
     
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKObjectManager *_objectmanagerActionNote;
-    __weak RKManagedObjectRequestOperation *_requestActionNote;
-    
-    NSOperationQueue *_operationQueue;
-    
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
-    
     BOOL _isBeingPresented;
     BOOL _isNewNoteReturnableProduct;
 }
@@ -59,6 +50,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
+@property (strong, nonatomic) IBOutlet RichEditorView *noteTextEditor;
+@property (strong, nonatomic) RichEditorViewKeyboardManager *keyboardManager;
 
 @end
 
@@ -75,14 +68,24 @@
 }
 
 #pragma mark - Life Cycle
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    CGRect frame = self.keyboardManager.toolbar.frame;
+    frame.size.width = self.view.frame.size.width;
+    
+    self.keyboardManager.toolbar.frame = frame;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    _datainput = [NSMutableDictionary new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
-    _operationQueue = [NSOperationQueue new];
+    self.keyboardManager = [[RichEditorViewKeyboardManager alloc] initWithView:self.view];
+    self.keyboardManager.toolbar.editor = self.noteTextEditor;
+    
+    self.noteTextEditor.delegate = self;
+    
     _auth = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
     
@@ -178,28 +181,15 @@
                             action:@selector(textFieldValueChanged:)
                   forControlEvents:UIControlEventEditingChanged];
 
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
-    
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 0;
-    [_cachecontroller initCacheWithDocumentPath:path];
-    
-    _contentNoteTextView.contentInset = UIEdgeInsetsMake(8, 0, 0, 0);
-    _contentNoteTextView.delegate = self;
     
 
     
-    if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+    if (_titleNoteTextField.text.length > 0 && _noteTextEditor.text.length > 0) {
         _barbuttonedit.enabled = YES;
         _barbuttonedit.tintColor = [UIColor whiteColor];
     }
     
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(keyboardWillShow:)
-                               name:UIKeyboardWillShowNotification
-                             object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(didEditNote:)
                                name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
@@ -212,11 +202,22 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [self.keyboardManager beginMonitoring];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self.keyboardManager stopMonitoring];
 }
 
 #pragma mark - Memory Management
@@ -238,8 +239,8 @@
             case 11: {
                 //save
                 NSMutableArray *messages = [NSMutableArray new];
-                NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities]?:@"";
-                NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
+                NSString *notetitle = _titleNoteTextField.text;
+                NSString *content = _noteTextEditor.html;
                 
                 notetitle = [notetitle stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
                 content = [content stringByTrimmingCharactersInSet:
@@ -259,7 +260,7 @@
                     if ((!notetitle || [notetitle isEqualToString:@""])&& _type!=NOTES_RETURNABLE_PRODUCT) {
                         [messages addObject:@"Title harus diisi."];
                     }
-                    if (!content || [content isEqualToString:@""]) {
+                    if (_noteTextEditor.text.empty) {
                         [messages addObject:@"Content harus diisi."];
                     }
                 }
@@ -310,22 +311,9 @@
                                noteId:@([[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue])
                                 terms:(_type == NOTES_RETURNABLE_PRODUCT)? @1:@0
                             onSuccess:^(NoteDetail *noteDetail, RKObjectRequestOperation *operation) {
-                                [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-                                [_cachecontroller connectionDidFinish:_cacheconnection];
-                                [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-                                
                                 [self actionUponSuccessfulRequestNoteDetail:noteDetail];
                             }
                             onFailure:^(NSError * error) {
-                                if ([error code] == NSURLErrorCancelled) {
-                                    if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                                        NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                                    }
-                                }
-                                else
-                                {
-                                    NSLog(@" ==== Failure on requesting note detail ====");
-                                }
                             }];
 }
 
@@ -338,34 +326,13 @@
     }
     _barbuttonedit.enabled = YES;
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 5.0;
-    
-    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    
-    UIFont *font = [UIFont smallTheme];
-    [attributes setObject:font forKey:NSFontAttributeName];
-    
-    NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
-    contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
     
     if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
         _isNewNoteReturnableProduct = YES;
     }
     
-    NSData *data = [contentNote dataUsingEncoding:NSUnicodeStringEncoding];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-                                                                                          options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                                                                               documentAttributes:nil
-                                                                                            error:nil];
-    NSRange range = (NSRange){0,[attributedString length]};
-    [attributedString enumerateAttribute:NSFontAttributeName
-                                 inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                              usingBlock:^(id value, NSRange range, BOOL *stop) {
-                                  [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                                  [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                              }];
-    _contentNoteTextView.attributedText = attributedString;
+    _noteTextEditor.html = contentNote;
     
     if (_type == NOTES_RETURNABLE_PRODUCT)
     {
@@ -381,6 +348,7 @@
         dateFormatter.dateFormat = @"yyyyMMdd";
         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
         
+        
         dateFormatter.dateFormat=@"MMMM";
         NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
         NSLog(@"month: %@", monthString);
@@ -389,7 +357,6 @@
         
         _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
                                day, monthString, year, currentTime];
-        [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
     }
     else
     {
@@ -398,9 +365,11 @@
             _timeNoteLabel.hidden = NO;
         }
         _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities];
+        
+        
     }
     
-    if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+    if (_titleNoteTextField.text.length > 0 && _noteTextEditor.text.length > 0) {
         _barbuttonedit.enabled = YES;
         _barbuttonedit.tintColor = [UIColor whiteColor];
     }
@@ -411,11 +380,11 @@
 {
     MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
     
-    NSString *noteTitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:[_note.result.detail.notes_title kv_decodeHTMLCharacterEntities]?:@"";
+    NSString *noteTitle = _titleNoteTextField.text;
     if (_type == NOTES_RETURNABLE_PRODUCT) {
         noteTitle = @"Kebijakan Pengembalian Produk";
     }
-    NSString *noteContent = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:[_note.result.detail.notes_content kv_decodeHTMLCharacterEntities]]?:@"";
+    NSString *noteContent = _noteTextEditor.html;
     NSString *terms = (_type == NOTES_RETURNABLE_PRODUCT)?@"1":@"0";
     
     if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
@@ -488,7 +457,7 @@
         } else {
             if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
                 _noteList.note_title = _titleNoteTextField.text;
-                _noteList.note_status = _contentNoteTextView.text;
+                _noteList.note_status = _noteTextEditor.html;
                 [_delegate successEditNote:_noteList];
             }
         }
@@ -513,8 +482,7 @@
 
 - (void)textFieldValueChanged:(UITextField *)textField
 {
-    [_datainput setObject:textField.text forKey:kTKPDNOTE_APINOTESTITLEKEY];
-    [self updateSaveTabbarTitle:textField.text content:_contentNoteTextView.text];
+    [self updateSaveTabbarTitle:textField.text content:_noteTextEditor.text];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -526,16 +494,12 @@
     }
 }
 
-#pragma mark - Text View Delegate
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    [_datainput setObject:textView.text forKey:kTKPDNOTE_APINOTESCONTENTKEY];
-    [self updateSaveTabbarTitle:_titleNoteTextField.text content:textView.text];
-}
-
 - (void)updateSaveTabbarTitle:(NSString *)title content:(NSString *)content
 {
+    title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    content = [content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] integerValue] != 2) {
         if (title.length == 0 || content.length == 0) {
             _barbuttonedit.enabled = NO;
@@ -555,11 +519,9 @@
         _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY] integerValue];
         switch (_type) {
             case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY: {
-                [_contentNoteTextView setPlaceholder:@"Konten"];
+                _noteTextEditor.placeholder = @"Konten";
+                _noteTextEditor.html = @"";
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@""
-                                                                                       attributes:[self attributes]];
-                _contentNoteTextView.attributedText = attributedString;
                 
                 [self setTimeLabelBecomeCurrentDate];
 
@@ -573,34 +535,11 @@
                 _titleNoteTextField.text = [_note.result.detail.notes_title kv_decodeHTMLCharacterEntities];
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
                 
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 5.0;
-
-                UIFont *font = [UIFont smallTheme];
-                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-                [attributes setObject:font forKey:NSFontAttributeName];
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
-                
-                NSString *note = [_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
-                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
-                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                                                                                           documentAttributes:nil
-                                                                                                        error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName
-                                             inRange:range
-                                             options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
-                _contentNoteTextView.attributedText = attributedString;
+                _noteTextEditor.html = _note.result.detail.notes_content;
                 
                [self setTimeLabelBecomeCurrentDate];
                 
-                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+                if (_titleNoteTextField.text.length > 0 && _noteTextEditor.text.length > 0) {
                     _barbuttonedit.enabled = YES;
                     _barbuttonedit.tintColor = [UIColor whiteColor];
                 }
@@ -609,7 +548,7 @@
             }
             case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY: {
 
-                _contentNoteTextView.editable = NO;
+                _noteTextEditor.isEditingEnabled = NO;
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
 
@@ -618,26 +557,7 @@
                 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 5.0;
-                
-                UIFont *font = [UIFont smallTheme];
-                NSString *note = [_note.result.detail.notes_content kv_decodeHTMLCharacterEntities];
-                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
-                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                                                                                           documentAttributes:nil
-                                                                                                        error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName
-                                             inRange:range
-                                             options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
-                _contentNoteTextView.attributedText = attributedString;
+                _noteTextEditor.html = _note.result.detail.notes_content?:@"";
                 
                 [self showShopNoteDetail];
                 break;
@@ -706,7 +626,7 @@
     
     _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
                            day, monthString, year, currentTime];
-    [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+    
     _timeNoteLabel.hidden = NO;
 }
 
@@ -721,7 +641,11 @@
     NSDictionary* keyboardInfo = [notification userInfo];
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    self.contentNoteTextView.contentInset = UIEdgeInsetsMake(8, 0, keyboardFrameBeginRect.size.height, 0);
+    
+    UIEdgeInsets editorInset = _noteTextEditor.webView.scrollView.contentInset;
+    editorInset.bottom = keyboardFrameBeginRect.size.height + _keyboardManager.toolbar.frame.size.height;
+    
+    _noteTextEditor.webView.scrollView.contentInset = editorInset;
 }
 
 #pragma mark - My shop note delegate
@@ -740,12 +664,18 @@
     
     [self setTimeLabelBecomeCurrentDate];
     
-    _contentNoteTextView.text = _noteList.note_status;
+    _noteTextEditor.html = _noteList.note_status;
     
     //set delegate
     if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
         [_delegate successEditNote:_noteList];
     }
+}
+
+#pragma mark - Rich editor delegate
+
+- (void)richEditor:(RichEditorView *)editor contentDidChange:(NSString *)content {
+    [self updateSaveTabbarTitle:_titleNoteTextField.text content:_noteTextEditor.text];
 }
 
 @end

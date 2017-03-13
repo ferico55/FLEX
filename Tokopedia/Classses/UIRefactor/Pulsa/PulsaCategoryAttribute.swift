@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaCategoryAttribute: NSObject, NSCoding {
     var name : String = ""

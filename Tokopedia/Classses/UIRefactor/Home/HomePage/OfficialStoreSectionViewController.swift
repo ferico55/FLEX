@@ -10,6 +10,7 @@ import UIKit
 import OAStackView
 import Masonry
 import BlocksKit
+import RestKit
 
 @objc
 class OfficialStoreHomeItem: NSObject {

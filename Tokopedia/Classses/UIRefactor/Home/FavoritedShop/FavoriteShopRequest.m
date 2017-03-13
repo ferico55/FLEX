@@ -73,6 +73,8 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     
+    if (shopId == nil) return;
+        
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"shop_id":shopId}];
     
     if (adKey && ![adKey isEqualToString:@""]){
@@ -91,7 +93,7 @@
                                  if ([response.data.is_success integerValue] == 1) {
                                      onSuccess(response.data);
                                  } else {
-                                    onFailure();
+                                     onFailure();
                                  }
                              }
                              onFailure:^(NSError *errorResult) {

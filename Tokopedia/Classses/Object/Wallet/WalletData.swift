@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class WalletData: NSObject {
     var action: WalletAction!

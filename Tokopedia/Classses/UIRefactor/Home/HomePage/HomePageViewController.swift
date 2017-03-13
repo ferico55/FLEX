@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 import OAStackView
+import RestKit
+import JLPermissions
 
 @IBDesignable
 @objc
@@ -546,6 +548,8 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                     break
                 } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
                     let webViewController = WebViewController()
+                    webViewController.hidesBottomBarWhenPushed = true;
+
                     let userManager = UserAuthentificationManager()
                     
                     webViewController.shouldAuthorizeRequest = true
@@ -565,8 +569,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
     }
     
     //MARK: Login Delegate
-    
-    func redirectViewController(viewController: AnyObject!) {
+    func redirectViewController(_ viewController: Any!) {
         
     }
 }

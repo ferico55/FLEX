@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class MyShopNoteRequest: NSObject {
     func requestNoteList(_ onSuccess:@escaping ((Notes) -> Void), onFailure:@escaping ((Error) -> Void))

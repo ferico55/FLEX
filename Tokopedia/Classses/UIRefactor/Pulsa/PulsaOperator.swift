@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaOperator: NSObject, NSCoding {
     var id : String?

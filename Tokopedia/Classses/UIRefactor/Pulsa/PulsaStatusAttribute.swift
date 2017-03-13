@@ -5,7 +5,7 @@
 //  Created by Tonito Acen on 9/1/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
-
+import RestKit
 
 class PulsaStatusAttribute: NSObject {
     var is_maintenance : Bool = false

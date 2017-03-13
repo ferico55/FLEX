@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class SignInProvider: NSObject {
     var id: String = ""

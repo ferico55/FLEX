@@ -520,4 +520,9 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     NSDictionary *userInfo = @{@"page" : @5};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
+
+- (void)scrollToTop
+{
+    [self.collectionView scrollToTop];
+}
 @end

@@ -24,7 +24,7 @@
 #import "ShipmentCourier.h"
 #import "UITableView+IndexPath.h"
 #import "Tokopedia-Swift.h"
-
+#import "UIColor+Theme.h"
 #define IDropShipmentPackageID @"19"
 
 @interface ShipmentConfirmationViewController ()
@@ -183,49 +183,15 @@
     OrderTransaction *transaction = [_orders objectAtIndex:indexPath.row];
     
     cell.invoiceNumberLabel.text = transaction.order_detail.detail_invoice;
-    
-    if (transaction.order_deadline.deadline_shipping_day_left == 1) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:145.0/255.0
-                                                                   blue:0.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Besok";
-        
-    } else if (transaction.order_deadline.deadline_shipping_day_left == 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:59.0/255.0
-                                                                   blue:48.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Hari ini";
-        
-    } else if (transaction.order_deadline.deadline_shipping_day_left < 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
-                                                                  green:158.0/255.0
-                                                                   blue:158.0/255.0
-                                                                  alpha:1];
-        
-        cell.automaticallyCanceledLabel.hidden = YES;
-        
-        cell.remainingDaysLabel.text = @"Expired";
-        
-        CGRect frame = cell.remainingDaysLabel.frame;
-        frame.origin.y = 17;
-        cell.remainingDaysLabel.frame = frame;
-        
+    cell.remainingDaysLabel.backgroundColor = [UIColor fromHexString:transaction.order_deadline.deadline_color];
+    cell.remainingDaysLabel.text = transaction.deadline_string;
+    cell.automaticallyCanceledLabel.text = transaction.deadline_label;
+    cell.remainingDaysLabel.hidden = transaction.deadline_hidden;
+    cell.automaticallyCanceledLabel.hidden = transaction.deadline_hidden;
+
+    if (transaction.order_deadline.deadline_shipping_day_left < 0) {
         cell.acceptButton.enabled = NO;
         cell.acceptButton.layer.opacity = 0.25;
-        
-    } else {
-        
-        cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)transaction.order_deadline.deadline_shipping_day_left];
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
-                                                                  green:121.0/255.0
-                                                                   blue:255.0/255.0
-                                                                  alpha:1];
     }
     
     cell.userNameLabel.text = transaction.order_customer.customer_name;
