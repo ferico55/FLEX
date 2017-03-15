@@ -16,6 +16,7 @@
 #import "TKPMappingManager.h"
 #import "RequestObject.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestUploadImage
 {
@@ -231,6 +232,7 @@
     RKObjectManager *objectManager = [TKPMappingManager objectManagerUploadImageWithBaseURL:host
                                                                                 pathPattern:path];
     
+    UIImage *resizedImage = [image resizedImage];
     
     // Serialize the Article attributes then attach a file
     NSMutableURLRequest *request = [objectManager multipartFormRequestWithObject:object
@@ -238,7 +240,7 @@
                                                                             path:path
                                                                       parameters:nil
                                                        constructingBodyWithBlock:^(id<AFRKMultipartFormData> formData) {
-                                                           [formData appendPartWithFileData:UIImagePNGRepresentation(image)
+                                                           [formData appendPartWithFileData:UIImagePNGRepresentation(resizedImage)
                                                                                        name:name
                                                                                    fileName:fileName
                                                                                    mimeType:@"image/png"];
