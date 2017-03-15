@@ -817,10 +817,6 @@
 		92549A441E68226F00F8E6E7 /* GenerateHostObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925491631E68226A00F8E6E7 /* GenerateHostObservable.swift */; };
 		92549A451E68226F00F8E6E7 /* GenerateHostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 925491651E68226A00F8E6E7 /* GenerateHostRequest.m */; };
 		92549A461E68226F00F8E6E7 /* ImageThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925491661E68226A00F8E6E7 /* ImageThumbnailCell.swift */; };
-		92549A471E68226F00F8E6E7 /* RequestUploadImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 925491691E68226A00F8E6E7 /* RequestUploadImageHelper.m */; };
-		92549A481E68226F00F8E6E7 /* RequestUploadImageSteps.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254916B1E68226A00F8E6E7 /* RequestUploadImageSteps.m */; };
-		92549A491E68226F00F8E6E7 /* RequestUploadImageSubmit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254916D1E68226A00F8E6E7 /* RequestUploadImageSubmit.m */; };
-		92549A4A1E68226F00F8E6E7 /* RequestUploadImageValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254916F1E68226A00F8E6E7 /* RequestUploadImageValidation.m */; };
 		92549A4B1E68226F00F8E6E7 /* RequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 925491711E68226A00F8E6E7 /* RequestUploadImage.m */; };
 		92549A4C1E68226F00F8E6E7 /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 925491731E68226A00F8E6E7 /* TKPDPhotoPicker.m */; };
 		92549A4D1E68226F00F8E6E7 /* TKPImagePickerCameraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925491741E68226A00F8E6E7 /* TKPImagePickerCameraCell.swift */; };
@@ -1017,8 +1013,6 @@
 		92549B0C1E68227000F8E6E7 /* HotlistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492B51E68226A00F8E6E7 /* HotlistViewController.xib */; };
 		92549B0D1E68227000F8E6E7 /* HotlistViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492B71E68226A00F8E6E7 /* HotlistViewModel.m */; };
 		92549B0E1E68227000F8E6E7 /* HotlistBannerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492BA1E68226A00F8E6E7 /* HotlistBannerRequest.m */; };
-		92549B0F1E68227000F8E6E7 /* HotlistResultAWSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492BC1E68226A00F8E6E7 /* HotlistResultAWSViewController.m */; };
-		92549B101E68227000F8E6E7 /* HotlistResultAWSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492BD1E68226A00F8E6E7 /* HotlistResultAWSViewController.xib */; };
 		92549B111E68227000F8E6E7 /* HotlistResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492BF1E68226A00F8E6E7 /* HotlistResultViewController.m */; };
 		92549B121E68227000F8E6E7 /* HotlistResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492C01E68226A00F8E6E7 /* HotlistResultViewController.xib */; };
 		92549B131E68227000F8E6E7 /* UIView+HVDLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492C41E68226A00F8E6E7 /* UIView+HVDLayout.m */; };
@@ -1061,10 +1055,8 @@
 		92549B381E68227000F8E6E7 /* InboxResolutionCenterTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492FA1E68226A00F8E6E7 /* InboxResolutionCenterTabViewController.xib */; };
 		92549B391E68227000F8E6E7 /* InboxResolutionCenterOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492FD1E68226A00F8E6E7 /* InboxResolutionCenterOpenViewController.m */; };
 		92549B3A1E68227000F8E6E7 /* InboxResolutionCenterOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492FE1E68226A00F8E6E7 /* InboxResolutionCenterOpenViewController.xib */; };
-		92549B3B1E68227000F8E6E7 /* RequestResoInputAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493001E68226A00F8E6E7 /* RequestResoInputAddress.m */; };
 		92549B3C1E68227000F8E6E7 /* RequestResolutionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493021E68226A00F8E6E7 /* RequestResolutionAction.m */; };
 		92549B3D1E68227000F8E6E7 /* RequestResolutionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493041E68226A00F8E6E7 /* RequestResolutionData.m */; };
-		92549B3E1E68227000F8E6E7 /* RequestCancelResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493071E68226A00F8E6E7 /* RequestCancelResolution.m */; };
 		92549B3F1E68227000F8E6E7 /* ResolutionCenterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493091E68226A00F8E6E7 /* ResolutionCenterDetailCell.m */; };
 		92549B401E68227000F8E6E7 /* ResolutionCenterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9254930A1E68226A00F8E6E7 /* ResolutionCenterDetailCell.xib */; };
 		92549B411E68227000F8E6E7 /* ResolutionCenterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254930C1E68226A00F8E6E7 /* ResolutionCenterInputViewController.m */; };
@@ -1154,8 +1146,6 @@
 		92549B951E68227100F8E6E7 /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493A41E68226B00F8E6E7 /* PriceAlertCell.m */; };
 		92549B961E68227100F8E6E7 /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925493A51E68226B00F8E6E7 /* PriceAlertCell.xib */; };
 		92549B971E68227100F8E6E7 /* PriceAlertRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493A71E68226B00F8E6E7 /* PriceAlertRequest.m */; };
-		92549B981E68227100F8E6E7 /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493A91E68226B00F8E6E7 /* PriceAlertViewController.m */; };
-		92549B991E68227100F8E6E7 /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925493AA1E68226B00F8E6E7 /* PriceAlertViewController.xib */; };
 		92549B9A1E68227100F8E6E7 /* DetailProductDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493AF1E68226B00F8E6E7 /* DetailProductDescriptionCell.m */; };
 		92549B9B1E68227100F8E6E7 /* DetailProductDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925493B01E68226B00F8E6E7 /* DetailProductDescriptionCell.xib */; };
 		92549B9C1E68227100F8E6E7 /* DetailProductInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 925493B21E68226B00F8E6E7 /* DetailProductInfoCell.m */; };
@@ -3278,14 +3268,6 @@
 		925491641E68226A00F8E6E7 /* GenerateHostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateHostRequest.h; sourceTree = "<group>"; };
 		925491651E68226A00F8E6E7 /* GenerateHostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateHostRequest.m; sourceTree = "<group>"; };
 		925491661E68226A00F8E6E7 /* ImageThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageThumbnailCell.swift; sourceTree = "<group>"; };
-		925491681E68226A00F8E6E7 /* RequestUploadImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageHelper.h; sourceTree = "<group>"; };
-		925491691E68226A00F8E6E7 /* RequestUploadImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageHelper.m; sourceTree = "<group>"; };
-		9254916A1E68226A00F8E6E7 /* RequestUploadImageSteps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageSteps.h; sourceTree = "<group>"; };
-		9254916B1E68226A00F8E6E7 /* RequestUploadImageSteps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageSteps.m; sourceTree = "<group>"; };
-		9254916C1E68226A00F8E6E7 /* RequestUploadImageSubmit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageSubmit.h; sourceTree = "<group>"; };
-		9254916D1E68226A00F8E6E7 /* RequestUploadImageSubmit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageSubmit.m; sourceTree = "<group>"; };
-		9254916E1E68226A00F8E6E7 /* RequestUploadImageValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageValidation.h; sourceTree = "<group>"; };
-		9254916F1E68226A00F8E6E7 /* RequestUploadImageValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageValidation.m; sourceTree = "<group>"; };
 		925491701E68226A00F8E6E7 /* RequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImage.h; sourceTree = "<group>"; };
 		925491711E68226A00F8E6E7 /* RequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImage.m; sourceTree = "<group>"; };
 		925491721E68226A00F8E6E7 /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
@@ -3587,9 +3569,6 @@
 		925492B71E68226A00F8E6E7 /* HotlistViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistViewModel.m; sourceTree = "<group>"; };
 		925492B91E68226A00F8E6E7 /* HotlistBannerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBannerRequest.h; sourceTree = "<group>"; };
 		925492BA1E68226A00F8E6E7 /* HotlistBannerRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBannerRequest.m; sourceTree = "<group>"; };
-		925492BB1E68226A00F8E6E7 /* HotlistResultAWSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultAWSViewController.h; sourceTree = "<group>"; };
-		925492BC1E68226A00F8E6E7 /* HotlistResultAWSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultAWSViewController.m; sourceTree = "<group>"; };
-		925492BD1E68226A00F8E6E7 /* HotlistResultAWSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultAWSViewController.xib; sourceTree = "<group>"; };
 		925492BE1E68226A00F8E6E7 /* HotlistResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultViewController.h; sourceTree = "<group>"; };
 		925492BF1E68226A00F8E6E7 /* HotlistResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultViewController.m; sourceTree = "<group>"; };
 		925492C01E68226A00F8E6E7 /* HotlistResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewController.xib; sourceTree = "<group>"; };
@@ -3648,14 +3627,10 @@
 		925492FC1E68226A00F8E6E7 /* InboxResolutionCenterOpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterOpenViewController.h; sourceTree = "<group>"; };
 		925492FD1E68226A00F8E6E7 /* InboxResolutionCenterOpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterOpenViewController.m; sourceTree = "<group>"; };
 		925492FE1E68226A00F8E6E7 /* InboxResolutionCenterOpenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterOpenViewController.xib; sourceTree = "<group>"; };
-		925492FF1E68226A00F8E6E7 /* RequestResoInputAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResoInputAddress.h; sourceTree = "<group>"; };
-		925493001E68226A00F8E6E7 /* RequestResoInputAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResoInputAddress.m; sourceTree = "<group>"; };
 		925493011E68226A00F8E6E7 /* RequestResolutionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionAction.h; sourceTree = "<group>"; };
 		925493021E68226A00F8E6E7 /* RequestResolutionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionAction.m; sourceTree = "<group>"; };
 		925493031E68226A00F8E6E7 /* RequestResolutionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionData.h; sourceTree = "<group>"; };
 		925493041E68226A00F8E6E7 /* RequestResolutionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionData.m; sourceTree = "<group>"; };
-		925493061E68226A00F8E6E7 /* RequestCancelResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCancelResolution.h; sourceTree = "<group>"; };
-		925493071E68226A00F8E6E7 /* RequestCancelResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCancelResolution.m; sourceTree = "<group>"; };
 		925493081E68226A00F8E6E7 /* ResolutionCenterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterDetailCell.h; sourceTree = "<group>"; };
 		925493091E68226A00F8E6E7 /* ResolutionCenterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterDetailCell.m; sourceTree = "<group>"; };
 		9254930A1E68226A00F8E6E7 /* ResolutionCenterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterDetailCell.xib; sourceTree = "<group>"; };
@@ -3803,9 +3778,6 @@
 		925493A51E68226B00F8E6E7 /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
 		925493A61E68226B00F8E6E7 /* PriceAlertRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertRequest.h; sourceTree = "<group>"; };
 		925493A71E68226B00F8E6E7 /* PriceAlertRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertRequest.m; sourceTree = "<group>"; };
-		925493A81E68226B00F8E6E7 /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
-		925493A91E68226B00F8E6E7 /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
-		925493AA1E68226B00F8E6E7 /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
 		925493AB1E68226B00F8E6E7 /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
 		925493AE1E68226B00F8E6E7 /* DetailProductDescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProductDescriptionCell.h; sourceTree = "<group>"; };
 		925493AF1E68226B00F8E6E7 /* DetailProductDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductDescriptionCell.m; sourceTree = "<group>"; };
@@ -7558,7 +7530,6 @@
 				925491641E68226A00F8E6E7 /* GenerateHostRequest.h */,
 				925491651E68226A00F8E6E7 /* GenerateHostRequest.m */,
 				925491661E68226A00F8E6E7 /* ImageThumbnailCell.swift */,
-				925491671E68226A00F8E6E7 /* Request */,
 				925491701E68226A00F8E6E7 /* RequestUploadImage.h */,
 				925491711E68226A00F8E6E7 /* RequestUploadImage.m */,
 				925491721E68226A00F8E6E7 /* TKPDPhotoPicker.h */,
@@ -7592,21 +7563,6 @@
 				925491601E68226A00F8E6E7 /* TPLiveCameraView.m */,
 			);
 			path = CameraCustom;
-			sourceTree = "<group>";
-		};
-		925491671E68226A00F8E6E7 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				925491681E68226A00F8E6E7 /* RequestUploadImageHelper.h */,
-				925491691E68226A00F8E6E7 /* RequestUploadImageHelper.m */,
-				9254916A1E68226A00F8E6E7 /* RequestUploadImageSteps.h */,
-				9254916B1E68226A00F8E6E7 /* RequestUploadImageSteps.m */,
-				9254916C1E68226A00F8E6E7 /* RequestUploadImageSubmit.h */,
-				9254916D1E68226A00F8E6E7 /* RequestUploadImageSubmit.m */,
-				9254916E1E68226A00F8E6E7 /* RequestUploadImageValidation.h */,
-				9254916F1E68226A00F8E6E7 /* RequestUploadImageValidation.m */,
-			);
-			path = Request;
 			sourceTree = "<group>";
 		};
 		925491781E68226A00F8E6E7 /* Catalog */ = {
@@ -8121,9 +8077,6 @@
 			children = (
 				925492B91E68226A00F8E6E7 /* HotlistBannerRequest.h */,
 				925492BA1E68226A00F8E6E7 /* HotlistBannerRequest.m */,
-				925492BB1E68226A00F8E6E7 /* HotlistResultAWSViewController.h */,
-				925492BC1E68226A00F8E6E7 /* HotlistResultAWSViewController.m */,
-				925492BD1E68226A00F8E6E7 /* HotlistResultAWSViewController.xib */,
 				925492BE1E68226A00F8E6E7 /* HotlistResultViewController.h */,
 				925492BF1E68226A00F8E6E7 /* HotlistResultViewController.m */,
 				925492C01E68226A00F8E6E7 /* HotlistResultViewController.xib */,
@@ -8180,8 +8133,6 @@
 				925492F91E68226A00F8E6E7 /* InboxResolutionCenterTabViewController.m */,
 				925492FA1E68226A00F8E6E7 /* InboxResolutionCenterTabViewController.xib */,
 				925492FB1E68226A00F8E6E7 /* OpenResolutionCenter */,
-				925492FF1E68226A00F8E6E7 /* RequestResoInputAddress.h */,
-				925493001E68226A00F8E6E7 /* RequestResoInputAddress.m */,
 				925493011E68226A00F8E6E7 /* RequestResolutionAction.h */,
 				925493021E68226A00F8E6E7 /* RequestResolutionAction.m */,
 				925493031E68226A00F8E6E7 /* RequestResolutionData.h */,
@@ -8249,8 +8200,6 @@
 		925493051E68226A00F8E6E7 /* ResolutionCenterDetail */ = {
 			isa = PBXGroup;
 			children = (
-				925493061E68226A00F8E6E7 /* RequestCancelResolution.h */,
-				925493071E68226A00F8E6E7 /* RequestCancelResolution.m */,
 				925493081E68226A00F8E6E7 /* ResolutionCenterDetailCell.h */,
 				925493091E68226A00F8E6E7 /* ResolutionCenterDetailCell.m */,
 				9254930A1E68226A00F8E6E7 /* ResolutionCenterDetailCell.xib */,
@@ -8479,9 +8428,6 @@
 				925493A51E68226B00F8E6E7 /* PriceAlertCell.xib */,
 				925493A61E68226B00F8E6E7 /* PriceAlertRequest.h */,
 				925493A71E68226B00F8E6E7 /* PriceAlertRequest.m */,
-				925493A81E68226B00F8E6E7 /* PriceAlertViewController.h */,
-				925493A91E68226B00F8E6E7 /* PriceAlertViewController.m */,
-				925493AA1E68226B00F8E6E7 /* PriceAlertViewController.xib */,
 				925493AB1E68226B00F8E6E7 /* string_price_alert.h */,
 			);
 			path = PriceAlert;
@@ -10385,7 +10331,6 @@
 				92549A951E68226F00F8E6E7 /* NoResultView.xib in Resources */,
 				92549C491E68227200F8E6E7 /* ResolutionCenterCreateViewController.xib in Resources */,
 				92549D291E68227400F8E6E7 /* ShopInfoPaymentCell.xib in Resources */,
-				92549B991E68227100F8E6E7 /* PriceAlertViewController.xib in Resources */,
 				92549A301E68226F00F8E6E7 /* StickyAlertView.xib in Resources */,
 				92549A371E68226F00F8E6E7 /* CameraController.xib in Resources */,
 				92549BBC1E68227100F8E6E7 /* ProductAddEditViewController.xib in Resources */,
@@ -10451,7 +10396,6 @@
 				92549DB81E68227500F8E6E7 /* TxOrderConfirmedCell.xib in Resources */,
 				92549B511E68227000F8E6E7 /* InboxTicketReplyViewController.xib in Resources */,
 				92549D5D1E68227400F8E6E7 /* TKPInfoWindowMapView.xib in Resources */,
-				92549B101E68227000F8E6E7 /* HotlistResultAWSViewController.xib in Resources */,
 				92549AC61E68227000F8E6E7 /* GeneralList1GestureCell.xib in Resources */,
 				92549C7E1E68227200F8E6E7 /* OrderDateView.xib in Resources */,
 				92549D581E68227400F8E6E7 /* ProductTalkFormViewController.xib in Resources */,
@@ -11229,7 +11173,6 @@
 				9254995B1E68226E00F8E6E7 /* RPX.m in Sources */,
 				92549A1E1E68226F00F8E6E7 /* AlertLuckyView.m in Sources */,
 				925499F71E68226E00F8E6E7 /* PhoneVerifRequest.m in Sources */,
-				92549A491E68226F00F8E6E7 /* RequestUploadImageSubmit.m in Sources */,
 				92549D641E68227400F8E6E7 /* TokopediaCacheManager.m in Sources */,
 				9254985F1E68226D00F8E6E7 /* ResolutionButton.m in Sources */,
 				92549BD61E68227100F8E6E7 /* GiveReviewDetailViewController.m in Sources */,
@@ -11377,7 +11320,6 @@
 				925499E71E68226E00F8E6E7 /* SwipeView.m in Sources */,
 				925498A71E68226D00F8E6E7 /* SubmitReview.m in Sources */,
 				925499581E68226E00F8E6E7 /* POSIndonesia.m in Sources */,
-				92549B0F1E68227000F8E6E7 /* HotlistResultAWSViewController.m in Sources */,
 				92549A1A1E68226F00F8E6E7 /* AlertListView.m in Sources */,
 				92549A4E1E68226F00F8E6E7 /* TKPImagePickerController.swift in Sources */,
 				92549C921E68227200F8E6E7 /* RequestSales.swift in Sources */,
@@ -11491,7 +11433,6 @@
 				92549D671E68227400F8E6E7 /* TopPickItem.swift in Sources */,
 				9254999A1E68226E00F8E6E7 /* TransactionVoucherResult.m in Sources */,
 				92549AFE1E68227000F8E6E7 /* ProductInfoTableViewController.m in Sources */,
-				92549A481E68226F00F8E6E7 /* RequestUploadImageSteps.m in Sources */,
 				925498331E68226D00F8E6E7 /* GoogleDistanceMatrixDetail.m in Sources */,
 				92549C731E68227200F8E6E7 /* RejectReasonWrongPriceCell.m in Sources */,
 				925499A41E68226E00F8E6E7 /* TxOrderConfirmedDetail.m in Sources */,
@@ -11533,7 +11474,6 @@
 				92549B221E68227000F8E6E7 /* InboxResolutionCenterComplainCell.m in Sources */,
 				92549B6A1E68227100F8E6E7 /* MyShopAddressViewController.m in Sources */,
 				925498911E68226D00F8E6E7 /* LoyaltyPoint.m in Sources */,
-				92549A471E68226F00F8E6E7 /* RequestUploadImageHelper.m in Sources */,
 				925499B71E68226E00F8E6E7 /* TxOrderStatus.m in Sources */,
 				925499181E68226D00F8E6E7 /* SearchResult.m in Sources */,
 				925498201E68226D00F8E6E7 /* TheOtherProductList.m in Sources */,
@@ -11610,7 +11550,6 @@
 				92549BAE1E68227100F8E6E7 /* OtherProductDataSource.m in Sources */,
 				925497F11E68226C00F8E6E7 /* DepositResult.m in Sources */,
 				925498DA1E68226D00F8E6E7 /* PrivacyForm.m in Sources */,
-				92549B3B1E68227000F8E6E7 /* RequestResoInputAddress.m in Sources */,
 				92549C4E1E68227200F8E6E7 /* ResolutionProductData.m in Sources */,
 				925499031E68226D00F8E6E7 /* WarehouseResponse.m in Sources */,
 				92549AA51E68226F00F8E6E7 /* DepositListBankCell.m in Sources */,
@@ -11657,7 +11596,6 @@
 				92549C7F1E68227200F8E6E7 /* OrderDetailDropshipView.swift in Sources */,
 				92549DA31E68227400F8E6E7 /* ListOrderComponent.mm in Sources */,
 				925499791E68226E00F8E6E7 /* TransactionAddressShippingResult.m in Sources */,
-				92549A4A1E68226F00F8E6E7 /* RequestUploadImageValidation.m in Sources */,
 				92549C811E68227200F8E6E7 /* OrderDetailProductCell.m in Sources */,
 				92549DBD1E68227500F8E6E7 /* RequestOrderAction.m in Sources */,
 				9254989E1E68226D00F8E6E7 /* MyReviewReputation.m in Sources */,
@@ -11817,7 +11755,6 @@
 				92549A0E1E68226E00F8E6E7 /* AlertDonation.swift in Sources */,
 				92549B1E1E68227000F8E6E7 /* MessageViewController.swift in Sources */,
 				342217D91E66CC190021E389 /* MoreWrapperViewController.m in Sources */,
-				92549B981E68227100F8E6E7 /* PriceAlertViewController.m in Sources */,
 				9254991C1E68226D00F8E6E7 /* ShipmentCourier.m in Sources */,
 				925497BB1E68226C00F8E6E7 /* CreatePasswordResult.m in Sources */,
 				92549BE01E68227100F8E6E7 /* InboxReviewCell.m in Sources */,
@@ -11982,7 +11919,6 @@
 				925498081E68226D00F8E6E7 /* Info.m in Sources */,
 				92549BF51E68227100F8E6E7 /* RatingComponent.mm in Sources */,
 				92549A941E68226F00F8E6E7 /* NoResultView.m in Sources */,
-				92549B3E1E68227000F8E6E7 /* RequestCancelResolution.m in Sources */,
 				925499AC1E68226E00F8E6E7 /* TxOrderConfirmPaymentForm.m in Sources */,
 				92549B0B1E68227000F8E6E7 /* HotlistViewController.m in Sources */,
 				925498111E68226D00F8E6E7 /* Review.m in Sources */,

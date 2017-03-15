@@ -210,7 +210,6 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_requestHotlistManager requestCancel];
-    _requestHotlistManager.delegate = nil;
     _requestHotlistManager.isUsingHmac = YES;
     _requestHotlistManager = nil;
 }

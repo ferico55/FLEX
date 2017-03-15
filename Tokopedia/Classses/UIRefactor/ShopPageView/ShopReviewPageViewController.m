@@ -53,7 +53,6 @@
     TKPDTabInboxTalkNavigationControllerDelegate,
     TTTAttributedLabelDelegate,
     CMPopTipViewDelegate,
-    TokopediaNetworkManagerDelegate,
     LoginViewDelegate,
     ReportViewControllerDelegate,
     UIActionSheetDelegate,

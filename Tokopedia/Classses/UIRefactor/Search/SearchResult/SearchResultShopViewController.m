@@ -155,7 +155,6 @@ static NSString const *rows = @"12";
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
 }
 
@@ -319,7 +318,6 @@ static NSString const *rows = @"12";
     if(tokopediaNetworkManager == nil)
     {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
-        tokopediaNetworkManager.delegate = self;
         tokopediaNetworkManager.isParameterNotEncrypted = YES;
     }
     

@@ -296,7 +296,6 @@
 -(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    _networkManager.delegate = nil;
     _networkManager = nil;
 }
 

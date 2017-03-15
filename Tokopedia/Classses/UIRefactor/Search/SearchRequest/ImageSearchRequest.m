@@ -11,8 +11,7 @@
 #import "GenerateHostRequest.h"
 
 @interface ImageSearchRequest()<
-RequestUploadImageDelegate,
-TokopediaNetworkManagerDelegate
+RequestUploadImageDelegate
 >
 @end
 
@@ -21,7 +20,6 @@ TokopediaNetworkManagerDelegate
     RequestUploadImage *requestUploadImage;
     NSString *uploadedImageURL;
     NSDictionary* imageQueryInfo;
-    TokopediaNetworkManager *networkManager;
     RKObjectManager *_objectmanager;
 }
 -(instancetype)init{
@@ -29,11 +27,6 @@ TokopediaNetworkManagerDelegate
     if(self){
         requestUploadImage = [RequestUploadImage new];
         requestUploadImage.delegate = self;
-        
-        networkManager = [TokopediaNetworkManager new];
-        networkManager.delegate = self;
-        networkManager.isUsingHmac = YES;
-        networkManager.isParameterNotEncrypted = YES;
     }
     return self;
 }

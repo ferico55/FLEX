@@ -591,7 +591,6 @@ static NSInteger userViewHeight = 70;
 #pragma mark - Method
 - (void)unloadRequesting {
     [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
 }
 - (void)reloadTable {
@@ -745,7 +744,6 @@ static NSInteger userViewHeight = 70;
         if(tokopediaNetworkManager == nil) {
             tokopediaNetworkManager = [TokopediaNetworkManager new];
             tokopediaNetworkManager.tagRequest = tag;
-            tokopediaNetworkManager.delegate = self;
         }
         
         return tokopediaNetworkManager;

@@ -101,7 +101,6 @@ static NSString const *rows = @"12";
     
     PromoRequest *_promoRequest;
     
-    HotlistBannerRequest *_bannerRequest;
     BOOL _shouldUseHashtag;
     
     NSIndexPath *_sortIndexPath;

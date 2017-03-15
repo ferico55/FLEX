@@ -49,7 +49,6 @@
     FilterCatalogDelegate,
     CatalogShopDelegate,
     CMPopTipViewDelegate,
-    TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
     NoResultDelegate
 >
@@ -130,7 +129,6 @@
     _start = 0;
     
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     _networkManager.isUsingHmac = YES;
     _networkManager.isParameterNotEncrypted = YES;
     

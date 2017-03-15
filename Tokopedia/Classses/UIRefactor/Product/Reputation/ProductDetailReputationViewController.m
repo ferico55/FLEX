@@ -49,7 +49,6 @@
 
 @interface ProductDetailReputationViewController () <
     productReputationDelegate,
-    TokopediaNetworkManagerDelegate,
     CMPopTipViewDelegate,
     HPGrowingTextViewDelegate,
     ProductDetailReputationDelegate,
@@ -61,7 +60,6 @@
 
 @implementation ProductDetailReputationViewController {
     ProductReputationCell *productReputationCell;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     NSOperationQueue *operationQueueLikeDislike;
     CMPopTipView *popTipView;
     
@@ -173,8 +171,6 @@
 }
 
 - (void)dealloc {
-    tokopediaNetworkManager.delegate = nil;
-    [tokopediaNetworkManager requestCancel];
     [_timer invalidate];
     [operationQueueLikeDislike cancelAllOperations];
 }

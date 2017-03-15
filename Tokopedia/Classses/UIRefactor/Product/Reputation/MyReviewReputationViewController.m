@@ -43,7 +43,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
+@interface MyReviewReputationViewController ()<LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -54,7 +54,6 @@
     LoadingView *loadingView;
     NSMutableArray *arrList;
     NSString *strRequestingInsertReputation;
-    TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkInsertReputation;
     NSString *emoticonState, *strInsertReputationRole;
     
     NSString *givenSmileyImageString;
@@ -76,13 +75,7 @@
 
 - (void)dealloc
 {
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-    tokopediaNetworkManager = nil;
     
-    [tokopediaNetworkInsertReputation requestCancel];
-    tokopediaNetworkInsertReputation.delegate = nil;
-    tokopediaNetworkInsertReputation = nil;
 }
 
 - (void)initNoResultView{
@@ -255,29 +248,6 @@
     }
     
     return loadingView;
-}
-
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        if(tokopediaNetworkManager == nil) {
-            tokopediaNetworkManager = [TokopediaNetworkManager new];
-            tokopediaNetworkManager.tagRequest = tag;
-            tokopediaNetworkManager.delegate = self;
-        }
-
-        return tokopediaNetworkManager;
-    }
-    else if(tag == CTagInsertReputation) {
-        if(tokopediaNetworkInsertReputation == nil) {
-            tokopediaNetworkInsertReputation = [TokopediaNetworkManager new];
-            tokopediaNetworkInsertReputation.tagRequest = tag;
-            tokopediaNetworkInsertReputation.delegate = self;
-        }
-        
-        return tokopediaNetworkInsertReputation;
-    }
-    
-    return nil;
 }
 
 - (void)getInboxReputation {
