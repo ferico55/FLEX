@@ -10,6 +10,9 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
 
+#import "GAI.h"
+#import "GAIFields.h"
+
 #define CICILAN_KARTU_KREDIT_GATEWAY_ID @"12"
 
 @implementation RequestCart
@@ -41,6 +44,9 @@
 
 +(void)fetchToppayWithToken:(NSString *)token listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail voucherCode:(NSString *)voucherCode donationAmount:(NSString*)donationAmount success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error{
     
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-9801603-10"];
+    NSString *clientID = [tracker get:kGAIClientId];
+    
     NSMutableArray *tempDropshipStringList = [NSMutableArray new];
     for (NSString *dropshipString in listDropship) {
         if (![dropshipString isEqualToString:@""]) {
@@ -67,7 +73,8 @@
                                       @"dropship_str"   :dropshipString,
                                       @"partial_str"    :partialString,
                                       @"lp_flag"        :@"1",
-                                      @"donation_amt"   :donationAmount?:@"0"
+                                      @"donation_amt"   :donationAmount?:@"0",
+                                      @"client_id"      :clientID?:@""
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
