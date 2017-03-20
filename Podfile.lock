@@ -99,6 +99,8 @@ PODS:
   - Localytics (4.1.0)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.5)
+  - MoEngage-iOS-SDK (3.3.0)
+  - MORichNotification (1.1.1)
   - MXPagerView (0.1.4)
   - MXParallaxHeader (0.6.0)
   - MXSegmentedPager (3.2.0):
@@ -179,6 +181,8 @@ DEPENDENCIES:
   - Localytics
   - Masonry
   - MMNumberKeyboard
+  - MoEngage-iOS-SDK (~> 3.3.0)
+  - MORichNotification (~> 1.1.1)
   - MXSegmentedPager (~> 3.2.0)
   - NJKWebViewProgress
   - NSAttributedString-DDHTML (= 1.2.0)
@@ -259,6 +263,8 @@ SPEC CHECKSUMS:
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
+  MoEngage-iOS-SDK: 7862a1933fb5fd181309955b3a7dbe18dcaa717f
+  MORichNotification: 1dbb16cfcda6d51a12c161594137e8217220f42b
   MXPagerView: 8798126c2e629695474eb16cbe1a6da6e0b02915
   MXParallaxHeader: 2997592b8349baf8557ae0e4346f6b17e141de39
   MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
@@ -283,6 +289,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 75c10336a738d2f631ce597aecd976857178329f
+PODFILE CHECKSUM: 6dfb6dd369d8c2c42c207f61deadb7ec2b6d9c42
 
 COCOAPODS: 1.1.1

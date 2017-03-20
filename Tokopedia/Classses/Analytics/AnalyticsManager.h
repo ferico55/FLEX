@@ -19,6 +19,10 @@
 #import "InboxTicketViewController.h"
 #import "string_product.h"
 #import "AddressFormList.h"
+#import <MoEngage_iOS_SDK/MoEngage.h>
+#import <MoEngage_iOS_SDK/MOInbox.h>
+#import <MoEngage_iOS_SDK/MOEHelperConstants.h>
+#import <MoEngage_iOS_SDK/MOGeofenceHandler.h>
 
 @interface AnalyticsManager : NSObject
 
@@ -66,6 +70,11 @@
 + (void)trackOpenPushNotificationSetting;
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
+
+// MoEngage
++ (void)moEngageTrackEventWithName:(NSString *)eventName attributes:(NSDictionary *)attributes;
++ (void)moEngageTrackLogin:(Login *)login;
++ (void)moEngageTrackLogout;
 
 // Specific trackers
 + (void)trackLogin:(Login *)login;

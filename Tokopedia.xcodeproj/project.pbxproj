@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D9EF0E0B2CC5CD17496FF9D /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A585D1546CB749AF8B4B22D /* Pods_ServiceExtension.framework */; };
 		3422115A1E66CC110021E389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3422050E1E66CC030021E389 /* AppDelegate.m */; };
 		342217D11E66CC190021E389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 342210FB1E66CC0F0021E389 /* InfoPlist.strings */; };
 		342217D21E66CC190021E389 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 342210FD1E66CC0F0021E389 /* GTM-NCTWRP */; };
@@ -70,6 +71,7 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		452E95891E64108F001191E0 /* DonationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95861E64108F001191E0 /* DonationUITests.swift */; };
 		452E958A1E64108F001191E0 /* LoginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95871E64108F001191E0 /* LoginUITests.swift */; };
+		6252D6091E6FEC2300A937CC /* UIViewController+Swizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 6252D6081E6FEC2300A937CC /* UIViewController+Swizzling.m */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -93,7 +95,6 @@
 		8565E1E51B9404D100843388 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E41B9404D100843388 /* CoreText.framework */; };
 		8565E1E71B9404D900843388 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E61B9404D900843388 /* MediaPlayer.framework */; };
 		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; };
-		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1798,6 +1799,8 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		06EC2897AB18F0034607D0A8 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		216D7946B9B1FE4D2525D6DB /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		3422050D1E66CC030021E389 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1891,9 +1894,13 @@
 		452E95861E64108F001191E0 /* DonationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationUITests.swift; sourceTree = "<group>"; };
 		452E95871E64108F001191E0 /* LoginUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUITests.swift; sourceTree = "<group>"; };
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		6229A9401E6EB07900EA15A0 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		6252D6071E6FEC2300A937CC /* UIViewController+Swizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Swizzling.h"; sourceTree = "<group>"; };
+		6252D6081E6FEC2300A937CC /* UIViewController+Swizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzling.m"; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		62C4330C1E6E58B700877DA4 /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -4678,6 +4685,7 @@
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
+		9A585D1546CB749AF8B4B22D /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4709,6 +4717,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D9EF0E0B2CC5CD17496FF9D /* Pods_ServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4716,7 +4725,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -5029,6 +5037,8 @@
 		92548BA01E68226600F8E6E7 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				6252D6071E6FEC2300A937CC /* UIViewController+Swizzling.h */,
+				6252D6081E6FEC2300A937CC /* UIViewController+Swizzling.m */,
 				92548BA11E68226600F8E6E7 /* ALAsset+Date.h */,
 				92548BA21E68226600F8E6E7 /* ALAsset+Date.m */,
 				92548BA31E68226600F8E6E7 /* HomePageHeaderSectionStyle.swift */,
@@ -9888,6 +9898,7 @@
 				925BA63A1E518ACE001CED3A /* NotificationService.swift */,
 				925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */,
 				925BA6321E518A54001CED3A /* Info.plist */,
+				62C4330C1E6E58B700877DA4 /* ServiceExtension-Bridging-Header.h */,
 			);
 			path = ServiceExtension;
 			sourceTree = "<group>";
@@ -9899,6 +9910,8 @@
 				7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */,
 				C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */,
 				2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */,
+				216D7946B9B1FE4D2525D6DB /* Pods-ServiceExtension.debug.xcconfig */,
+				06EC2897AB18F0034607D0A8 /* Pods-ServiceExtension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -9930,6 +9943,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6229A9401E6EB07900EA15A0 /* UserNotifications.framework */,
 				6270659B1D7EB80600BDE9F8 /* Localytics.framework */,
 				627065971D7EAFC900BDE9F8 /* libz.tbd */,
 				627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */,
@@ -9970,6 +9984,7 @@
 				FC36DF9F19B0656400AF74C1 /* XCTest.framework */,
 				037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */,
 				AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */,
+				9A585D1546CB749AF8B4B22D /* Pods_ServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -10020,9 +10035,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 925BA6381E518A54001CED3A /* Build configuration list for PBXNativeTarget "ServiceExtension" */;
 			buildPhases = (
+				AADE0652502F64054F57C118 /* [CP] Check Pods Manifest.lock */,
 				925BA62A1E518A54001CED3A /* Sources */,
 				925BA62B1E518A54001CED3A /* Frameworks */,
 				925BA62C1E518A54001CED3A /* Resources */,
+				6B967F00D7DA8DE9269B3BE1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -10620,6 +10637,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6B967F00D7DA8DE9269B3BE1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -10651,6 +10683,21 @@
 			showEnvVarsInLog = 0;
 		};
 		9852790493753292549B327E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AADE0652502F64054F57C118 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -11382,6 +11429,7 @@
 				925498411E68226D00F8E6E7 /* HotlistBanner.m in Sources */,
 				92549D151E68227300F8E6E7 /* EditShopNoteViewCell.m in Sources */,
 				92549C001E68227100F8E6E7 /* RequestMoveTo.m in Sources */,
+				6252D6091E6FEC2300A937CC /* UIViewController+Swizzling.m in Sources */,
 				925497DE1E68226C00F8E6E7 /* CatalogResult.m in Sources */,
 				92549B2C1E68227000F8E6E7 /* ResolutionValidation.swift in Sources */,
 				9254994A1E68226E00F8E6E7 /* AddProductSubmit.m in Sources */,
@@ -12113,6 +12161,7 @@
 		};
 		925BA6361E518A54001CED3A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 216D7946B9B1FE4D2525D6DB /* Pods-ServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -12134,7 +12183,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ServiceExtension/ServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -12142,6 +12191,7 @@
 		};
 		925BA6371E518A54001CED3A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06EC2897AB18F0034607D0A8 /* Pods-ServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -12164,7 +12214,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia.ServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ServiceExtension/ServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};

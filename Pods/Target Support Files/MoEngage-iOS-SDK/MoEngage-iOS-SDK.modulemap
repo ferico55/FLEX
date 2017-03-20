@@ -1,0 +1,6 @@
+framework module MoEngage_iOS_SDK {
+  umbrella header "MoEngage-iOS-SDK-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -54,6 +54,7 @@ def common_pods
     pod 'RxSwift', '~> 3.1.0'
     pod 'DKImagePickerController', '~> 3.5.0'
     pod 'RestKit/Testing', '~> 0.27.0'
+    pod 'MoEngage-iOS-SDK', '~> 3.3.0'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -69,6 +70,10 @@ target "TokopediaTests" do
     common_pods
 end
 
+target "ServiceExtension" do
+    pod 'MORichNotification', '~> 1.1.1'
+end
+
 post_install do |installer|
     
     installer.pods_project.targets.each do |target|
@@ -78,6 +83,9 @@ post_install do |installer|
         
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
+            if target.name == "MoEngage-iOS-SDK"
+                config.build_settings["OTHER_LDFLAGS"] = '$(inherited) "-ObjC"'
+            end
         end
     end
 

@@ -60,6 +60,7 @@
 #import "DepositRequest.h"
 
 #import <JLPermissions/JLNotificationPermission.h>
+#import <MoEngage_iOS_SDK/MoEngage.h>
 
 #import "Tokopedia-Swift.h"
 
@@ -697,6 +698,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)activatePushNotification {
+    [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil andCategoriesForPreviousVersions:nil andWithUserNotificationCenterDelegate:self];
     JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
     
     JLAuthorizationStatus permissionStatus = permission.authorizationStatus;
