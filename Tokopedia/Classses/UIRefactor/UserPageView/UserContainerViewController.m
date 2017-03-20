@@ -38,7 +38,6 @@
 @interface UserContainerViewController ()
 <
     UIScrollViewDelegate,
-    LoginViewDelegate,
     SettingUserProfileDelegate,
     UIPageViewControllerDelegate
 >
@@ -376,15 +375,6 @@
                 break;
         }
     }
-}
-
-#pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController
-{
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *tempAuth = [secureStorage keychainDictionary];
-    _auth = [tempAuth mutableCopy];
-    
 }
 
 #pragma mark - Reload Profile

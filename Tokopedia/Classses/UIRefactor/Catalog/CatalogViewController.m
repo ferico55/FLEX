@@ -37,7 +37,6 @@ static CGFloat rowHeight = 40;
     UITableViewDataSource,
     UITableViewDelegate,
     UIScrollViewDelegate,
-    LoginViewDelegate,
     GalleryViewControllerDelegate
 >
 {
@@ -522,19 +521,10 @@ static CGFloat rowHeight = 40;
     }
 }
 
-#pragma mark - Login view delegate
-- (void)cancelLoginView {
-    doActionPriceAlert = NO;
-}
-
 - (void)userDidLogin:(id)sender {
     if(doActionPriceAlert) {
         doActionPriceAlert = NO;
     }
-}
-
-- (void)redirectViewController:(id)viewController
-{
 }
 
 #pragma mark - Scroll view delegate

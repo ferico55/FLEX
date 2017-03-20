@@ -48,7 +48,6 @@
 <
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
-    LoginViewDelegate,
     TKPAppFlow
 >
 {
@@ -379,6 +378,13 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
+        
+        more.onLoginFinished = ^(LoginResult* result){
+            [_tabBarController setSelectedIndex:0];
+            UINavigationController *homeNavController = (UINavigationController *)[_tabBarController.viewControllers firstObject];
+            [homeNavController popToRootViewControllerAnimated:NO];
+        };
+        
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
@@ -542,10 +548,6 @@ typedef enum TagRequest {
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     return YES;
-}
-
--(void)redirectViewController:(id)viewController {
-    
 }
 
 - (void)redirectToSearch {

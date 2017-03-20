@@ -271,7 +271,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func messageButtonDidTappedWithShop(_ shop: Shop) {
-        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -283,7 +283,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func toggleFavoriteForShop(_ shop: Shop) {
-        authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)

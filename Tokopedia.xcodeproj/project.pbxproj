@@ -901,7 +901,6 @@
 		92549A9C1E68226F00F8E6E7 /* TableViewScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492071E68226A00F8E6E7 /* TableViewScrollAndSwipe.m */; };
 		92549A9D1E68226F00F8E6E7 /* TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492091E68226A00F8E6E7 /* TextField.m */; };
 		92549A9E1E68226F00F8E6E7 /* TKPDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254920B1E68226A00F8E6E7 /* TKPDTextView.m */; };
-		92549A9F1E68226F00F8E6E7 /* DeeplinkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9254920E1E68226A00F8E6E7 /* DeeplinkController.m */; };
 		92549AA01E68226F00F8E6E7 /* DepositBankRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925492101E68226A00F8E6E7 /* DepositBankRequest.swift */; };
 		92549AA11E68226F00F8E6E7 /* DepositFormAccountBankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 925492121E68226A00F8E6E7 /* DepositFormAccountBankViewController.m */; };
 		92549AA21E68226F00F8E6E7 /* DepositFormAccountBankViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925492131E68226A00F8E6E7 /* DepositFormAccountBankViewController.xib */; };
@@ -3414,8 +3413,6 @@
 		925492091E68226A00F8E6E7 /* TextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextField.m; sourceTree = "<group>"; };
 		9254920A1E68226A00F8E6E7 /* TKPDTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTextView.h; sourceTree = "<group>"; };
 		9254920B1E68226A00F8E6E7 /* TKPDTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTextView.m; sourceTree = "<group>"; };
-		9254920D1E68226A00F8E6E7 /* DeeplinkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeeplinkController.h; sourceTree = "<group>"; };
-		9254920E1E68226A00F8E6E7 /* DeeplinkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeeplinkController.m; sourceTree = "<group>"; };
 		925492101E68226A00F8E6E7 /* DepositBankRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepositBankRequest.swift; sourceTree = "<group>"; };
 		925492111E68226A00F8E6E7 /* DepositFormAccountBankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositFormAccountBankViewController.h; sourceTree = "<group>"; };
 		925492121E68226A00F8E6E7 /* DepositFormAccountBankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositFormAccountBankViewController.m; sourceTree = "<group>"; };
@@ -7268,7 +7265,6 @@
 				925491A31E68226A00F8E6E7 /* ContactUs */,
 				925491DB1E68226A00F8E6E7 /* Controller */,
 				925491EC1E68226A00F8E6E7 /* CustomViews */,
-				9254920C1E68226A00F8E6E7 /* Deeplink */,
 				9254920F1E68226A00F8E6E7 /* Deposit */,
 				925492251E68226A00F8E6E7 /* DigitalGoodsDataSource.swift */,
 				925492261E68226A00F8E6E7 /* FilterController */,
@@ -7776,15 +7772,6 @@
 				9254920B1E68226A00F8E6E7 /* TKPDTextView.m */,
 			);
 			path = CustomViews;
-			sourceTree = "<group>";
-		};
-		9254920C1E68226A00F8E6E7 /* Deeplink */ = {
-			isa = PBXGroup;
-			children = (
-				9254920D1E68226A00F8E6E7 /* DeeplinkController.h */,
-				9254920E1E68226A00F8E6E7 /* DeeplinkController.m */,
-			);
-			path = Deeplink;
 			sourceTree = "<group>";
 		};
 		9254920F1E68226A00F8E6E7 /* Deposit */ = {
@@ -10814,7 +10801,6 @@
 				925498E71E68226D00F8E6E7 /* ReputationDetail.m in Sources */,
 				92549AB31E68226F00F8E6E7 /* FiltersController.swift in Sources */,
 				925499991E68226E00F8E6E7 /* TransactionVoucherData.m in Sources */,
-				92549A9F1E68226F00F8E6E7 /* DeeplinkController.m in Sources */,
 				925498EA1E68226D00F8E6E7 /* ShopBadgeLevel.m in Sources */,
 				925497901E68226C00F8E6E7 /* UIKitCategory.m in Sources */,
 				925499431E68226D00F8E6E7 /* ShopInfoResult.m in Sources */,

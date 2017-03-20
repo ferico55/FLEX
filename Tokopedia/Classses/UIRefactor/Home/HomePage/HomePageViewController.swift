@@ -15,7 +15,7 @@ import JLPermissions
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, LoginViewDelegate {
+class HomePageViewController: UIViewController {
     
     private var digitalGoodsDataSource: DigitalGoodsDataSource!
     
@@ -400,7 +400,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.navigator.controller = self
             
             self.pulsaView.didAskedForLogin = { [unowned self] in
-                self.navigator.loginDelegate = self
                 self.navigator.navigateToLoginIfRequired()
             }
             
@@ -566,10 +565,5 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 }
             }
         }
-    }
-    
-    //MARK: Login Delegate
-    func redirectViewController(_ viewController: Any!) {
-        
     }
 }

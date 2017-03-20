@@ -12,7 +12,6 @@ import AddressBookUI
 
 class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
     var controller: UIViewController!
-    var loginDelegate: LoginViewDelegate?
     var pulsaView: PulsaView!
     
     override init() {
@@ -75,19 +74,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToLoginIfRequired() {
-        let navigation = UINavigationController()
-        navigation.navigationBar.backgroundColor = UIColor(red: (18.0/255.0), green: (199.0/255.0), blue: (0/255.0), alpha: 1)
-        navigation.navigationBar.isTranslucent = false
-        navigation.navigationBar.tintColor = UIColor.white
-        
-        let controller = LoginViewController()
-        controller.isPresentedViewController = true
-        controller.redirectViewController = self.controller
-        controller.delegate = self.loginDelegate
-        
-        navigation.viewControllers = [controller]
-        
-        self.controller.navigationController!.present(navigation, animated: true, completion: nil)
+        AuthenticationService.shared().ensureLoggedInFromViewController(self.controller, onSuccess: nil)
     }
     
     func navigateToSuccess(_ url: URL) {

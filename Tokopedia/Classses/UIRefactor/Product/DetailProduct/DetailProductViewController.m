@@ -58,7 +58,6 @@
 #import "SearchAWSProduct.h"
 #import "SearchAWSResult.h"
 
-#import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
 #import "NavigateViewController.h"
@@ -98,7 +97,6 @@ GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
-LoginViewDelegate,
 EtalaseViewControllerDelegate,
 UIAlertViewDelegate,
 CMPopTipViewDelegate,
@@ -122,7 +120,6 @@ TTTAttributedLabelDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
-    BOOL isDoingWishList, isDoingFavorite;
     
     NSInteger _requestcount;
     
@@ -148,7 +145,7 @@ TTTAttributedLabelDelegate
     
     TTTAttributedLabel* _descriptionLabel;
     
-    BOOL isExpandDesc, isNeedLogin;
+    BOOL isExpandDesc;
     UIActivityIndicatorView *activityIndicator, *actFav;
     UIFont *fontDesc;
     
@@ -344,12 +341,21 @@ TTTAttributedLabelDelegate
     [self unsetWarehouse];
     _detailProductVideoDataArray = [NSArray<DetailProductVideo*> new];
     self.navigationItem.title = @"";
+    
+    // Wishlist loading
+    activityIndicator = [[UIActivityIndicatorView alloc] init];
+    activityIndicator.frame = CGRectZero;
+    activityIndicator.color = [UIColor lightGrayColor];
+    
+    // Favorite store loading
+    actFav = [[UIActivityIndicatorView alloc] init];
+    actFav.frame = CGRectZero;
+    actFav.color = [UIColor lightGrayColor];
 }
 
 - (void)initNotification {
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
-    [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [center addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
 
@@ -384,6 +390,12 @@ TTTAttributedLabelDelegate
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
+    if([_userManager isMyShopWithShopId:_product.data.shop_info.shop_id]) {
+        _favButton.hidden = YES;
+    } else {
+        _favButton.hidden = NO;
+    }
+    
     _favButton.enabled = YES;
     
     if (_isnodata || _product.data.shop_info.shop_id == nil) {
@@ -410,7 +422,7 @@ TTTAttributedLabelDelegate
         product.isDummyProduct = YES;
         [self requestprocess:product];
         
-        [self loadData];
+        [self loadData:nil];
 
         [self.table reloadData];
     }
@@ -556,18 +568,7 @@ TTTAttributedLabelDelegate
                     transactionVC.isSnapSearchProduct = _isSnapSearchProduct;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
-                    UINavigationController *navigationController = [[UINavigationController alloc] init];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                    navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                    
-                    LoginViewController *controller = [LoginViewController new];
-                    controller.delegate = self;
-                    controller.isPresentedViewController = YES;
-                    controller.redirectViewController = self;
-                    navigationController.viewControllers = @[controller];
-                    
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    [self callAuthService:^(bool isLoginNeeded){}];
                 }
                 break;
             }
@@ -577,23 +578,22 @@ TTTAttributedLabelDelegate
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
 
-                if(_auth) {
-                    [self favoriteShop:_product.data.shop_info.shop_id];
-                } else {
-                    UINavigationController *navigationController = [[UINavigationController alloc] init];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                    navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                [self callAuthService:^(bool isLoginNeeded){
+                    [self setFavoriteStoreRequestingAction:true];
                     
-                    
-                    LoginViewController *controller = [LoginViewController new];
-                    controller.delegate = self;
-                    controller.isPresentedViewController = YES;
-                    controller.redirectViewController = self;
-                    navigationController.viewControllers = @[controller];
-                    isDoingFavorite = isNeedLogin = YES;
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                }
+                    if(isLoginNeeded){
+                        [self loadData:^(bool isSuccess){
+                            if(isSuccess && _favButton.tag != 18){
+                                [self requestFavoriteShopID:_product.data.shop_info.shop_id];
+                            }else{
+                                [self setFavoriteStoreRequestingAction:false];
+                            }
+                        }];
+                    }else{
+                        [self requestFavoriteShopID:_product.data.shop_info.shop_id];
+                    }
+                }];
+
                 break;
             }
             case 18 : {
@@ -601,25 +601,20 @@ TTTAttributedLabelDelegate
                                         category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
-                if(_auth) {
-                    //UnLove Shop
-                    [self configureFavoriteRestkit];
-                    [self favoriteShop:_product.data.shop_info.shop_id];
-                } else {
-                    UINavigationController *navigationController = [[UINavigationController alloc] init];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                    navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                
+                [self callAuthService:^(bool isLoginNeeded){
+                    [self setFavoriteStoreRequestingAction:true];
                     
-                    
-                    LoginViewController *controller = [LoginViewController new];
-                    controller.delegate = self;
-                    controller.isPresentedViewController = YES;
-                    controller.redirectViewController = self;
-                    navigationController.viewControllers = @[controller];
-                    isDoingFavorite = isNeedLogin = YES;
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                }
+                    if(isLoginNeeded){
+                        [self loadData:^(bool isSuccess){
+                            [self setFavoriteStoreRequestingAction:false];
+                        }];
+                    }else{
+                        [self configureFavoriteRestkit];
+                        [self requestFavoriteShopID:_product.data.shop_info.shop_id];
+                    }
+                }];
+
                 break;
             }
             case 20 : {
@@ -1132,18 +1127,12 @@ TTTAttributedLabelDelegate
         [self setButtonFav];
         
         //Change this block to method (Any in branch f_bug_fixing)
-        [actFav stopAnimating];
-        [actFav removeFromSuperview];
-        actFav = nil;
-        _favButton.hidden = NO;
+        [self setFavoriteStoreRequestingAction:false];
         
     } onFailure:^{
         
         //Change this block to method (Any in branch f_bug_fixing)
-        [actFav stopAnimating];
-        [actFav removeFromSuperview];
-        actFav = nil;
-        _favButton.hidden = NO;
+        [self setFavoriteStoreRequestingAction:false];
         
     }];
 }
@@ -1179,7 +1168,7 @@ TTTAttributedLabelDelegate
 }
 
 
-- (void)loadData {
+- (void)loadData:(void (^)(bool isSuccess))callback {
     TokopediaNetworkManager *networkManager = [[TokopediaNetworkManager alloc] init];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
@@ -1194,8 +1183,13 @@ TTTAttributedLabelDelegate
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  [self requestsuccess:successResult withOperation:operation];
                                  [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.data];
+                                 if(callback){
+                                     callback(true);
+                                 }
                              } onFailure:^(NSError *errorResult) {
-                                 
+                                 if(callback){
+                                     callback(false);
+                                 }
                              }];
 }
 
@@ -1460,9 +1454,6 @@ TTTAttributedLabelDelegate
                     [_buyButton setHidden:NO];
                 }
                 
-                
-                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
-                activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = NO;
                 
                 //Set background wishlist
@@ -1531,13 +1522,6 @@ TTTAttributedLabelDelegate
             } else {
                 _favButton.tag = 18;
                 [self setButtonFav];
-            }
-            
-            if([_userManager isMyShopWithShopId:_product.data.shop_info.shop_id]) {
-                _favButton.hidden = YES;
-            } else {
-                _favButton.hidden = NO;
-                
             }
             
             // UIView below table view (View More Product button)
@@ -1659,18 +1643,35 @@ TTTAttributedLabelDelegate
 }
 
 
-- (void)setRequestingAction:(UIButton *)tempBtn isLoading:(BOOL)isLoading
+- (void)setWishlistRequestingAction:(BOOL)isLoading
 {
+    activityIndicator.frame = btnWishList.frame;
+    
     if(isLoading) {
-        activityIndicator.frame = tempBtn.frame;
         [viewContentWishList addSubview:activityIndicator];
         [activityIndicator startAnimating];
-        [tempBtn setHidden:YES];
+        [btnWishList setHidden:YES];
     }
     else {
         [activityIndicator removeFromSuperview];
         [activityIndicator stopAnimating];
-        [tempBtn setHidden:NO];
+        [btnWishList setHidden:NO];
+    }
+}
+
+- (void)setFavoriteStoreRequestingAction:(BOOL)isLoading
+{
+    actFav.frame = _favButton.frame;
+    
+    if(isLoading) {
+        [_favButton.superview addSubview:actFav];
+        [actFav startAnimating];
+        [_favButton setHidden:YES];
+    }
+    else {
+        [actFav removeFromSuperview];
+        [actFav stopAnimating];
+        [_favButton setHidden:NO];
     }
 }
 
@@ -1809,18 +1810,15 @@ TTTAttributedLabelDelegate
 }
 
 - (IBAction)actionReport:(UIButton *)sender {
-    if ([_userManager isLogin]) {
-        [AnalyticsManager trackEventName:@"clickReport"
-                                category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:@"Report"];
-        [self goToReportProductViewController];
-    } else {
+    [AnalyticsManager trackEventName:@"clickReport"
+                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Report"];
+    
+    [self callAuthService:^(bool isLoginNeeded){
         __weak __typeof(self) weakSelf = self;
-        [[AuthenticationService sharedService] signInFromViewController:self onSignInSuccess:^(LoginResult * loginResult) {
-            [weakSelf goToReportProductViewController];
-        }];
-    }
+        [weakSelf goToReportProductViewController];
+    }];
 }
 
 - (void) goToReportProductViewController {
@@ -2065,7 +2063,7 @@ TTTAttributedLabelDelegate
 - (void)setUnWishList
 {
     if(_auth) {
-        [self setRequestingAction:btnWishList isLoading:YES];
+        [self setWishlistRequestingAction:YES];
         __weak __typeof(self) weakSelf = self;
         NSString *productId = _product.data.info.product_id?:@"";
         tokopediaNetworkManagerWishList.isUsingHmac = YES;
@@ -2075,20 +2073,7 @@ TTTAttributedLabelDelegate
             [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
         }];
     } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        isNeedLogin = YES;
-        isDoingWishList = YES;
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        [self callAuthService:^(bool isLoginNeeded){}];
     }
 }
 
@@ -2098,80 +2083,89 @@ TTTAttributedLabelDelegate
                             category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                               action:GA_EVENT_ACTION_CLICK
                                label:@"Add to Wishlist"];
-    if(_auth) {
-        [self setRequestingAction:btnWishList isLoading:YES];
+
+    [self callAuthService:^(bool isLoginNeeded){
+        [self setWishlistRequestingAction:YES];
         
-        NSString *productId = _product.data.info.product_id?:@"";
-        __weak __typeof(self) weakSelf = self;
-        tokopediaNetworkManagerWishList.isUsingHmac = YES;
-       
-        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodPOST header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-            [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
-        } onFailure:^(NSError *errorResult) {
-            [weakSelf didFailedAddWishListWithErrorResult:errorResult];
-        }];
-        
-        NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
-        
-        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
-                                                                                       AFEventParamPrice : price?:@"",
-                                                                                       AFEventParamContentType : @"Product",
-                                                                                       AFEventParamContentId : _product.data.info.product_id?:@"",
-                                                                                       AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
-                                                                                       AFEventParamQuantity : @(1)
-                                                                                       }];
-        
-        NSArray *categories = _product.data.breadcrumb;
-        Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-        NSString *productCategory = lastCategory.department_name?:@"";
-        
-        NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        NSString *productPrice = [[_product.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
-        
-        NSDictionary *attributes = @{
-                                     @"Product Id" : _product.data.info.product_id,
-                                     @"Product Name" : _product.data.info.product_name,
-                                     @"Product Price" : productPrice,
-                                     @"Product Category" : productCategory
-                                     };
-        
-        [AnalyticsManager localyticsEvent:@"Event : Add To Wishlist" attributes:attributes];
-        
-        [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
-                
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
-    } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        isNeedLogin = YES;
-        isDoingWishList = YES;
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    }
+        if(isLoginNeeded){
+            [self loadData:^(bool isSuccess){
+                if(isSuccess && btnWishList.tag != 0){
+                    [self processSetWishlist];
+                }else{
+                    [self setWishlistRequestingAction:NO];
+                }
+            }];
+        }else{
+            [self processSetWishlist];
+        }
+    }];
 }
 
--(void)favoriteShop:(NSString*)shop_id
-{
-    //Change this block to method (Any in branch f_bug_fixing)
-    if(actFav == nil) {
-        actFav = [[UIActivityIndicatorView alloc] init];
-        actFav.color = [UIColor lightGrayColor];
-    }
-    actFav.frame = _favButton.frame;
-    [actFav startAnimating];
-    [_favButton.superview addSubview:actFav];
-    _favButton.hidden = YES;
+-(void)processSetWishlist {
     
-    [self requestFavoriteShopID:shop_id];
+    NSString *productId = _product.data.info.product_id?:@"";
+    __weak __typeof(self) weakSelf = self;
+    tokopediaNetworkManagerWishList.isUsingHmac = YES;
+    
+    [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodPOST header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
+    } onFailure:^(NSError *errorResult) {
+        [weakSelf didFailedAddWishListWithErrorResult:errorResult];
+    }];
+    
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
+                                                                                   AFEventParamPrice : price?:@"",
+                                                                                   AFEventParamContentType : @"Product",
+                                                                                   AFEventParamContentId : _product.data.info.product_id?:@"",
+                                                                                   AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
+                                                                                   AFEventParamQuantity : @(1)
+                                                                                   }];
+    
+    NSArray *categories = _product.data.breadcrumb;
+    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+    NSString *productCategory = lastCategory.department_name?:@"";
+    
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[_product.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
+    
+    NSDictionary *attributes = @{
+                                 @"Product Id" : _product.data.info.product_id,
+                                 @"Product Name" : _product.data.info.product_name,
+                                 @"Product Price" : productPrice,
+                                 @"Product Category" : productCategory
+                                 };
+    
+    [AnalyticsManager localyticsEvent:@"Event : Add To Wishlist" attributes:attributes];
+    
+    [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
 }
+
+- (void)callAuthService:(void (^)(bool isLoginNeeded))successCallback {
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:^(bool isLoginNeeded){
+        if(isLoginNeeded){
+            _userManager = [UserAuthentificationManager new];
+            _auth = [_userManager getUserLoginData];
+            
+            if([_userManager isMyShopWithShopId:_product.data.shop_info.shop_id]) {
+                _favButton.hidden = YES;
+            } else {
+                _favButton.hidden = NO;
+            }
+        }
+        
+        successCallback(isLoginNeeded);
+    }];
+}
+
+//-(void)setFavoriteStor
+//{
+//    //Change this block to method (Any in branch f_bug_fixing)
+//    [self requestFavoriteShopID:shop_id];
+//}
 
 -(void)requestFavoriteResult:(id)mappingResult withOperation:(RKObjectRequestOperation *)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
@@ -2183,15 +2177,6 @@ TTTAttributedLabelDelegate
 
 - (void)requestTimeoutFavorite {
     
-}
-
-#pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController{
-
-}
-
-- (void)cancelLoginView {
-    isDoingWishList = isDoingFavorite = isNeedLogin = NO;
 }
 
 #pragma mark - Tap View
@@ -2229,7 +2214,7 @@ TTTAttributedLabelDelegate
 }
 
 -(void)refreshRequest:(NSNotification*)notification {
-    [self loadData];
+    [self loadData:nil];
 }
 
 #pragma mark - GalleryPhoto Delegate
@@ -2317,20 +2302,10 @@ TTTAttributedLabelDelegate
   }];
 }
 
-- (void)userDidLogin:(NSNotification*)notification {
-    _userManager = [UserAuthentificationManager new];
-    _auth = [_userManager getUserLoginData];
-    
-    if(isNeedLogin) {
-        [self loadData];
-    }
-}
-
 - (void)userDidLogout:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
 }
-
 
 
 #pragma mark - PopUp
@@ -2410,7 +2385,7 @@ TTTAttributedLabelDelegate
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.data.info.product_id];
 
-    [self setRequestingAction:btnWishList isLoading:NO];
+    [self setWishlistRequestingAction:NO];
     [alert show];
 }
 
@@ -2420,7 +2395,7 @@ TTTAttributedLabelDelegate
     alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
     [self setBackgroundWishlist:YES];
     btnWishList.tag = 0;
-    [self setRequestingAction:btnWishList isLoading:NO];
+    [self setWishlistRequestingAction:NO];
     [alert show];
     [self bk_performBlock:^(id obj) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
@@ -2432,7 +2407,7 @@ TTTAttributedLabelDelegate
     [alert show];
     [self setBackgroundWishlist:NO];
     btnWishList.tag = 1;
-    [self setRequestingAction:btnWishList isLoading:NO];
+    [self setWishlistRequestingAction:NO];
 }
 
 -(void) didFailedRemoveWishListWithErrorResult: (NSError *) error {
@@ -2440,7 +2415,7 @@ TTTAttributedLabelDelegate
     [self setBackgroundWishlist:YES];
     [alert show];
     btnWishList.tag = 0;
-    [self setRequestingAction:btnWishList isLoading:NO];
+    [self setWishlistRequestingAction:NO];
 }
 
 

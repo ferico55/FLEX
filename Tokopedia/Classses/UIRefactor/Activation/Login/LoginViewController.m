@@ -44,7 +44,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @interface LoginViewController ()
 <
     FBSDKLoginButtonDelegate,
-    LoginViewDelegate,
     GIDSignInUIDelegate,
     GIDSignInDelegate
 >
@@ -310,9 +309,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)didTapCancelButton {
-    if(_delegate !=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
-                    [_delegate cancelLoginView];
-                }
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -425,34 +421,13 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self notifyUserDidLogin];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(didLoginSuccess:)]) {
-            [self.delegate didLoginSuccess:login];
-        }
+        if (self.onLoginFinished)
+            self.onLoginFinished(login.result);
     });
-
-    [self navigateToProperPage:login];
-
 
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
                                                       userInfo:nil];    
-}
-
-- (void)navigateToProperPage:(Login *)login {
-    if(!_triggerPhoneVerification){
-        if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-            [self.delegate redirectViewController:_redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            UINavigationController *homeNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-            [homeNavController popToRootViewControllerAnimated:NO];
-        }
-    }else{
-        //to hotlist, so it will trigger the phoneverifviewcontroller
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 - (void)notifyUserDidLogin {
@@ -604,14 +579,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
     [self showLoginUi];
-}
-
-#pragma mark - Login delegate
-
-- (void)redirectViewController:(id)viewController
-{
-    [self.delegate redirectViewController:_redirectViewController];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateFormViewAppearance {

@@ -20,7 +20,7 @@
 
 
 
-@interface UserPageHeader () <UIScrollViewDelegate, UISearchBarDelegate, LoginViewDelegate> {
+@interface UserPageHeader () <UIScrollViewDelegate, UISearchBarDelegate> {
     ShopDescriptionView *_descriptionView;
     ShopStatView *_statView;
     UserAuthentificationManager *_userManager;
@@ -171,11 +171,6 @@
 - (IBAction)tapButton:(id)sender
 {
     [_delegate didReceiveNavigationController];
-}
-
-#pragma mark - Login Delegate
-- (void)redirectViewController:(id)viewController {
-    
 }
 
 #pragma mark - Change profile pic notif

@@ -40,7 +40,7 @@
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -697,24 +697,7 @@ static NSInteger userViewHeight = 70;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 - (void)showLoginView {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
-    LoginViewController *controller = [LoginViewController new];
-    controller.delegate = self;
-    controller.isPresentedViewController = YES;
-    //controller.redirectViewController = self;
-    navigationController.viewControllers = @[controller];
-    
-    //prevent crash because of phone verif
-    //will fix this after revamp-review finished
-    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
-    [alert show];
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
 }
 
 - (ProductReputationCell *)getCell:(UIView *)btn {
