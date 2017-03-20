@@ -15,7 +15,7 @@ class WalletData: NSObject {
     var text: String = ""
     var wallet_id: String = ""
     var redirect_url: String = ""
-    var link: String = ""
+    var link: Int = 0
     
     static func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)
@@ -30,6 +30,14 @@ class WalletData: NSObject {
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "action", toKeyPath: "action", with: WalletAction.mapping()))
         
         return mapping
+    }
+    
+    func walletActionFullUrl() -> String {
+        if let action = self.action {
+            return "\(action.redirect_url)?flag_app=1"
+        }
+        
+        return ""
     }
 
 }

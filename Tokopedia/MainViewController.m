@@ -439,21 +439,25 @@ typedef enum TagRequest {
     [alertView show];
 }
 
-- (void)doApplicationLogout {
+- (void)removeWebViewCookies {
     /*
-    remove all cache from webview, all credential that been logged in, will be removed
-    example : login kereta api, login pulsa
-    */
+     remove all cache from webview, all credential that been logged in, will be removed
+     example : login kereta api, login pulsa, tokocash
+     */
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [cookieStorage cookies]) {
         NSString* domainName = [cookie domain];
-        NSRange domainRange = [domainName rangeOfString:@"tokopedia"];
-        if(domainRange.length > 0) {
+        NSRange domainToko = [domainName rangeOfString:@"toko"];
+        
+        if(domainToko.length > 0) {
             [cookieStorage deleteCookie:cookie];
         }
     }
-    
+}
+
+
+- (void)doApplicationLogout {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -566,7 +570,9 @@ typedef enum TagRequest {
 }
 
 -(void)requestLogout{
-    [LogoutRequest fetchLogout:[self logoutObjectRequest] onSuccess:^(LogoutResult * data) {}];
+    [LogoutRequest fetchLogout:[self logoutObjectRequest] onSuccess:^(LogoutResult * data) {
+        [self removeWebViewCookies];
+    }];
 }
 
 - (void)redirectNotification:(NSNotification*)notification {
