@@ -244,7 +244,10 @@ typedef enum TagRequest {
     A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
     __block NSUInteger idx = 0;
     [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
-        
+        [AnalyticsManager trackEventName:@"clickTabBar"
+                                category:GA_EVENT_CATEGORY_TAB_BAR
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:tabBarController.tabBar.selectedItem.title];
         if (idx == tabBarController.selectedIndex) {
             if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
                 [viewControllers[tabBarController.selectedIndex] scrollToTop];
@@ -534,10 +537,6 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [AnalyticsManager trackEventName:@"clickTabBar"
-                            category:GA_EVENT_CATEGORY_TAB_BAR
-                              action:GA_EVENT_ACTION_CLICK
-                               label:tabBarController.tabBar.selectedItem.title];
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];

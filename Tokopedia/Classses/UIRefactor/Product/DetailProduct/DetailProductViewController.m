@@ -1791,10 +1791,11 @@ TTTAttributedLabelDelegate
                                                                                        anchor:sender];
         
         [self presentViewController:controller animated:YES completion:^{
+            NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _product.data.info.product_name];
             [AnalyticsManager trackEventName:@"clickPDP"
                                     category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                                       action:GA_EVENT_ACTION_CLICK
-                                       label:@"Share"];
+                                       label:eventLabel];
         }];
         
     }

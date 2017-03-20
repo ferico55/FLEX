@@ -408,7 +408,11 @@ FavoriteShopRequestDelegate
                            PromoRefKey                  :promoResult.ad_ref_key,
                            PromoClickURL                :promoResult.shop_click_url
                            };
-        
+        NSString *eventLabel = [NSString stringWithFormat:@"Add to Favorite - %@", promoResult.shop.name];
+        [AnalyticsManager trackEventName:@"clickFavorite"
+                                category:GA_EVENT_CATEGORY_FAVORITE
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:eventLabel];
     } else {
         id shopTemp = [_shops objectAtIndex:indexpath.row];
         FavoritedShopList* favShop;

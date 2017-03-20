@@ -64,6 +64,11 @@
 - (void)didTapShare:(id)sender {
     AHKActionSheet *actionSheet = [[AHKActionSheet alloc] initWithTitle:nil];
     
+    [AnalyticsManager trackEventName:@"clickShare"
+                            category:@"Share Review"
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Share - Review"];
+    
     // Ini untuk mengubah warna icon menjadi berwarna, kalau di set 1 jadi hitam putih
     actionSheet.automaticallyTintButtonImages = 0;
     

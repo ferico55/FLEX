@@ -351,6 +351,11 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
+        AnalyticsManager.trackEventName(
+            "clickShopHome",
+            category: GA_EVENT_CATEGORY_SHOP_HOME,
+            action: GA_EVENT_ACTION_CLICK,
+            label: "Send Message")
         let viewController = SendMessageViewController(to: shop)
         viewController?.display(from: self)
     }

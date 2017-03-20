@@ -532,6 +532,12 @@ ShopTabChild
 
 - (IBAction)tapToShare:(id)sender {
     if (_shop) {
+        NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _shop.result.info.shop_name];
+        [AnalyticsManager trackEventName:@"clickShare"
+                                category:@"Share Shop"
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:eventLabel];
+        
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];

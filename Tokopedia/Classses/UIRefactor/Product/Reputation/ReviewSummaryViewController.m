@@ -343,8 +343,13 @@
     }
 }
 
-- (void) shareToFacebook {
+- (void)shareToFacebook {
     if (_shareOnFacebookSwitch.on) {
+        [AnalyticsManager trackEventName:@"clickShare"
+                                category:@"Auto Share Review"
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Auto Share - Review"];
+        
         FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
         fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , _review.product_uri]];
         fbShareContent.quote = _reviewMessageTextView.text;

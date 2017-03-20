@@ -385,6 +385,7 @@
 
 - (void)tapNotificationBar {
     [_notifManager tapNotificationBar];
+    [AnalyticsManager trackEventName:@"clickTopedIcon" category:GA_EVENT_CATEGORY_NOTIFICATION action:GA_EVENT_ACTION_CLICK label:@"Bell Notification"];
 }
 
 - (void)tapWindowBar {
