@@ -383,9 +383,8 @@ import GoogleMaps
                 placeHistories.addObjects(from: histories as [AnyObject])
                 self.dataTableView[1] = []
                 for index in 0 ..< self.placeHistories.count-1{
-                    self.dataTableView[1].insert((placeHistories[index] as! Dictionary)["addressSugestion"]!, at: index)
+                    self.dataTableView[1].insert((placeHistories[index] as! NSDictionary)["addressSugestion"]! as! String, at: index)
                 }
-                // the above prints "some text"
             }
         }
     }
@@ -511,7 +510,7 @@ import GoogleMaps
         if (indexPath.section == 0) {
             doGeneratePlaceDetail(autoCompleteResults[indexPath.row].placeID, addressSuggestion: autoCompleteResults[indexPath.row])
         } else {
-            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake((placeHistories[indexPath.row] as! Dictionary)["latitude"]! , (placeHistories[indexPath.row] as! Dictionary)["longitude"]!)
+            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake((placeHistories[indexPath.row] as! NSDictionary)["latitude"]! as! CLLocationDegrees , (placeHistories[indexPath.row] as! NSDictionary)["longitude"]! as! CLLocationDegrees)
             mapView.updateCameraPosition(coordinate)
         }
         
