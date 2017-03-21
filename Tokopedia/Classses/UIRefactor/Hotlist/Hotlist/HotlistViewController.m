@@ -26,8 +26,6 @@
 #import "TableViewScrollAndSwipe.h"
 
 #import "NotificationManager.h"
-#import "PhoneVerifRequest.h"
-#import "PhoneVerifViewController.h"
 #import "Tokopedia-Swift.h"
 #pragma mark - HotlistView
 
@@ -50,7 +48,6 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readonly) UICollectionViewFlowLayout *flowLayout;
-@property (nonatomic, strong) PhoneVerifRequest *phoneVerifRequest;
 
 @end
 
@@ -89,7 +86,6 @@
     _requestHotlistManager.isUsingHmac = YES;
     
     [self requestHotlist];
-    _phoneVerifRequest  = [PhoneVerifRequest new];
     
     UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
@@ -139,19 +135,20 @@
 
 -(void)checkForPhoneVerification{
     if([self shouldShowPhoneVerif]){
-        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
-            if(![isVerified isEqualToString:@"1"]){
-                PhoneVerifViewController *controller = [PhoneVerifViewController new];
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                navigationController.navigationBar.translucent = NO;
-                navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            }else{
-                
-            }
-        } onFailure:^(NSError *error) {
-            
-        }];
+        [PhoneVerificationRequest
+         checkPhoneVerifiedStatusOnSuccess:^(NSString * _Nonnull isVerified) {
+             if (![isVerified isEqualToString:@"1"]) {
+                 PhoneVerificationViewController *controller = [[PhoneVerificationViewController alloc]
+                                                                initWithPhoneNumber: @""
+                                                                isFirstTimeVisit: NO];
+                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                 navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+             }
+         }
+         onFailure:^{
+             
+         }];
     }
 }
 
@@ -168,7 +165,7 @@
  
 */
 - (BOOL)shouldShowPhoneVerif{
-    NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
+    NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:@"phone_verif_last_appear"];
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
     
     if([userAuth isLogin]){

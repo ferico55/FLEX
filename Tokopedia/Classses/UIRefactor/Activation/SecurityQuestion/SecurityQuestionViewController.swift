@@ -84,7 +84,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Verifikasi Nomor HP"
+        self.title = "Pertanyaan Keamanan"
         
         self.requestQuestionForm()
         
