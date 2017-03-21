@@ -496,7 +496,7 @@
                                                         <constraint firstAttribute="width" constant="30" id="f7q-zZ-pNq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TopCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TokoCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
                                                     <rect key="frame" x="56" y="13" width="107" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="107" id="KrX-8M-m6N"/>
