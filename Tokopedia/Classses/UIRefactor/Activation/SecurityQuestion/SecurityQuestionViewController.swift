@@ -84,7 +84,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Verifikasi Nomor HP"
+        self.title = "Pertanyaan Keamanan"
         
         self.requestQuestionForm()
         
@@ -336,50 +336,55 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func requestOTPOnSMS() {
-        networkManager.request(withBaseUrl: NSString.v4Url(),
-                                           path: "/v4/action/interrupt/request_otp.pl",
-                                           method: .GET,
-                                           parameter: ["user_id" : userID, "user_check_question_2" : questionType2],
-                                           mapping: SecurityRequestOTP.mapping(),
-                                           onSuccess: { [unowned self](mappingResult, operation) -> Void in
-                                            let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
-                                            self.resendOTPLabel.isHidden = false
-                                            
-                                            if otp.message_error != nil {
-                                                AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
-                                                StickyAlertView.showErrorMessage(otp.message_error)
-                                                
-                                                self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                                if self.isOTPOnCallEnabled {
-                                                    self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                                }
-                                            }
-                                            
-                                            if otp.data.is_success != nil && otp.data.is_success == "1" {
-                                                AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Success")
-                                                
-                                                if otp.message_status != nil && otp.message_status.count > 0 {
-                                                    StickyAlertView.showSuccessMessage(otp.message_status)
-                                                } else {
-                                                    StickyAlertView.showSuccessMessage(["Kode Verifikasi Telah Terkirim."])
-                                                }
-                                                
-                                                
-                                                self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftDefault)
-                                                self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftDefault)
-                                            }
-                                        },
-                                           onFailure: { (error) in
-                                            AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
-                                            self.resendOTPLabel.isHidden = false
-                                            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                            
-                                            if self.isOTPOnCallEnabled {
-                                                self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                            }
+        networkManager.request(
+            withBaseUrl: NSString.accountsUrl(),
+            path: "/otp/request",
+            method: .POST,
+            header: ["Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
+            parameter: ["mode" : "sms", "otp_type" : "13"],
+            mapping: V4Response<SecurityRequestOTP>.mapping(withData: SecurityRequestOTP.mapping()),
+            onSuccess: { (mappingResult, operation) in
+                self.resendOTPLabel.isHidden = false
+                let result : Dictionary = mappingResult.dictionary() as Dictionary
+                let response: V4Response<SecurityRequestOTP> = result[""] as! V4Response
+                self.onRequestOTPOnSMSSuccess(response)
+        },
+            onFailure: { (error) in
+                self.onRequestOTPOnSMSFailed()
         })
     }
+    
+    fileprivate func onRequestOTPOnSMSSuccess(_ response: V4Response<SecurityRequestOTP>) {
+        if response.message_error != nil && response.message_error.count > 0 {
+            AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
+            StickyAlertView.showErrorMessage(response.message_error)
+            
+            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
+            if self.isOTPOnCallEnabled {
+                self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
+            }
+        }
+        
+        if response.message_status != nil && response.message_status.count > 0 {
+            AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Success")
+            
+            StickyAlertView.showSuccessMessage(response.message_status)
+            
+            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftDefault)
+            self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftDefault)
+        }
+    }
+    
+    fileprivate func onRequestOTPOnSMSFailed() {
+        AnalyticsManager.trackEventName("requestOTPOnSMS", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_SMS, label: "SMS Failed")
+        self.resendOTPLabel.isHidden = false
+        self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
+        
+        if self.isOTPOnCallEnabled {
+            self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
+        }
 
+    }
     
     //MARK: OTP Call Button Methods
     fileprivate func disableOTPCallButton() {
@@ -400,42 +405,48 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func requestOTPOnCall() {
-        networkManager.request(withBaseUrl: NSString.accountsUrl(),
-                                           path: "/otp/request",
-                                           method: .POST,
-                                           header: ["Tkpd-UserId" : userID, "Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
-                                           parameter: ["mode" : "call"],
-                                           mapping: V4Response<OTPOnCall>.mapping(withData: OTPOnCall.mapping()) as RKObjectMapping,
-                                           onSuccess: { (mappingResult, operation) in
-                                            self.resendOTPLabel.isHidden = false
-                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response: V4Response<OTPOnCall> = result[""] as! V4Response
-                                            
-                                            if response.message_error != nil && response.message_error.count > 0 {
-                                                AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
-                                                StickyAlertView.showErrorMessage(response.message_error)
-                                                
-                                                self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                                self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                            }
-                                            
-                                            if response.message_status != nil && response.message_status.count > 0 {
-                                                AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Success")
-                                                StickyAlertView.showSuccessMessage(response.message_status)
-                                                
-                                                self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftDefault)
-                                                self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftDefault)
-                                            }
-                                            
-                                            },
-                                           onFailure: { (error) in
-                                            AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
-                                            self.resendOTPLabel.isHidden = false
-                                            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
-                                            self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
+        networkManager.request(
+            withBaseUrl: NSString.accountsUrl(),
+            path: "/otp/request",
+            method: .POST,
+            header: ["Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
+            parameter: ["mode" : "call", "otp_type" : "13"],
+            mapping: V4Response<SecurityRequestOTP>.mapping(withData: SecurityRequestOTP.mapping()) as RKObjectMapping,
+            onSuccess: { (mappingResult, operation) in
+                self.resendOTPLabel.isHidden = false
+                let result : Dictionary = mappingResult.dictionary() as Dictionary
+                let response: V4Response<OTPOnCall> = result[""] as! V4Response
+                self.onRequestOTPOnCallSuccess(response as! V4Response<SecurityRequestOTP>)
+        },
+            onFailure: { (error) in
+                self.onRequestOTPOnCallFailed()
         })
     }
     
+    fileprivate func onRequestOTPOnCallSuccess(_ response: V4Response<SecurityRequestOTP>) {
+        if response.message_error != nil && response.message_error.count > 0 {
+            AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
+            StickyAlertView.showErrorMessage(response.message_error)
+            
+            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
+            self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
+        }
+        
+        if response.message_status != nil && response.message_status.count > 0 {
+            AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Success")
+            StickyAlertView.showSuccessMessage(response.message_status)
+            
+            self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftDefault)
+            self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftDefault)
+        }
+    }
+    
+    fileprivate func onRequestOTPOnCallFailed() {
+        AnalyticsManager.trackEventName("requestOTPOnCall", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_ON_CALL, label: "On Call Failed")
+        self.resendOTPLabel.isHidden = false
+        self.enableOTPOnSMSInSeconds(self.resendOTPSecondsLeftIfFailed)
+        self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
+    }
     
     
     //MARK: UITextField Delegate

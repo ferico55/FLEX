@@ -2441,7 +2441,7 @@ TTTAttributedLabelDelegate
 
 
 -(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
-    return [NSString stringWithFormat:@"/v1/products/%@/wishlist", productId];
+    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", [_userManager getUserId], productId];
 }
 
 -(BOOL) isAbleToLoadVideo {

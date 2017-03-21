@@ -38,7 +38,6 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
-#import "PhoneVerifViewController.h"
 #import "Tokopedia-Swift.h"
 #import "MyWishlistViewController.h"
 
@@ -513,7 +512,7 @@ typedef enum TagRequest {
         _logingOutAlertView = nil;
     }
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PHONE_VERIF_LAST_APPEAR];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"phone_verif_last_appear"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
