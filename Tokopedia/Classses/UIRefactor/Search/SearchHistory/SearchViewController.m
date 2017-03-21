@@ -24,7 +24,6 @@
 #import "SearchAutoCompleteHeaderView.h"
 #import "UIView+HVDLayout.h"
 #import "SearchAutoCompleteShopCell.h"
-#import "ImagePickerCategoryController.h"
 
 #import "Tokopedia-Swift.h"
 @import SwiftOverlays;
@@ -36,7 +35,6 @@ UISearchBarDelegate,
 UISearchDisplayDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
-UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 SearchResultDelegate,
 NotificationDelegate,
@@ -559,36 +557,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
-}
-
-#pragma mark - Image search
-
-- (void)takePhoto:(UIButton *)sender {
-    [AnalyticsManager trackScreenName:@"Snap Search Camera"];
-    
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.presentController.navigationController presentViewController:imagePicker animated:YES completion:NULL];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [picker dismissViewControllerAnimated:YES completion:^{
-        ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
-        controller.imageQuery = info;
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.presentController.navigationController pushViewController:controller animated:YES];
-    }];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
-
--(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
-    [self takePhoto:nil];
 }
 
 - (void)navigateToIntermediaryPage {

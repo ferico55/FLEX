@@ -22,7 +22,6 @@
 #import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-#import "ImagePickerCategoryController.h"
 
 #import "MyWishlistViewController.h"
 

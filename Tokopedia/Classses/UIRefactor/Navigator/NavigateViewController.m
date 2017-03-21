@@ -45,7 +45,6 @@
 #import "Tokopedia-Swift.h"
 
 #import "GalleryViewController.h"
-#import "ContactUsWebViewController.h"
 #import "TkpdHMAC.h"
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
