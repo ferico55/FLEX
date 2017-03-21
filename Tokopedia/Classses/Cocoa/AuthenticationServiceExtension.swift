@@ -37,15 +37,15 @@ extension AuthenticationService {
         }
     }
     
-    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: ((_ isLoginNeeded:Bool) -> ())?) {
+    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: (() -> Void)?) {
         if UserAuthentificationManager().isLogin {
             if let theOnSuccess = onSuccess {
-                theOnSuccess(false)
+                theOnSuccess()
             }
         } else {
             self.signInFromViewController(viewController) { result in
                 if let theOnSuccess = onSuccess {
-                    theOnSuccess(true)
+                    theOnSuccess()
                 }
             }
         }

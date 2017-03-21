@@ -398,6 +398,8 @@ TTTAttributedLabelDelegate
     
     _favButton.enabled = YES;
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:TKPDUserDidLoginNotification object:nil];
+    
     if (_isnodata || _product.data.shop_info.shop_id == nil) {
         
         ProductDetail *detailProduct = [ProductDetail new];
@@ -430,6 +432,8 @@ TTTAttributedLabelDelegate
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -568,7 +572,7 @@ TTTAttributedLabelDelegate
                     transactionVC.isSnapSearchProduct = _isSnapSearchProduct;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
-                    [self callAuthService:^(bool isLoginNeeded){}];
+                    [self callAuthService:^{}];
                 }
                 break;
             }
@@ -577,12 +581,14 @@ TTTAttributedLabelDelegate
                                         category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
+                
+                BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
 
-                [self callAuthService:^(bool isLoginNeeded){
+                [self callAuthService:^{
                     [self setFavoriteStoreRequestingAction:true];
                     
-                    if(isLoginNeeded){
-                        [self loadData:^(bool isSuccess){
+                    if(!isLoggedIn){
+                        [self loadData:^(BOOL isSuccess){
                             if(isSuccess && _favButton.tag != 18){
                                 [self requestFavoriteShopID:_product.data.shop_info.shop_id];
                             }else{
@@ -602,11 +608,13 @@ TTTAttributedLabelDelegate
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Favorite Shop"];
                 
-                [self callAuthService:^(bool isLoginNeeded){
+                BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
+                
+                [self callAuthService:^{
                     [self setFavoriteStoreRequestingAction:true];
                     
-                    if(isLoginNeeded){
-                        [self loadData:^(bool isSuccess){
+                    if(!isLoggedIn){
+                        [self loadData:^(BOOL isSuccess){
                             [self setFavoriteStoreRequestingAction:false];
                         }];
                     }else{
@@ -1168,7 +1176,7 @@ TTTAttributedLabelDelegate
 }
 
 
-- (void)loadData:(void (^)(bool isSuccess))callback {
+- (void)loadData:(void (^)(BOOL isSuccess))callback {
     TokopediaNetworkManager *networkManager = [[TokopediaNetworkManager alloc] init];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
@@ -1816,7 +1824,7 @@ TTTAttributedLabelDelegate
                               action:GA_EVENT_ACTION_CLICK
                                label:@"Report"];
     
-    [self callAuthService:^(bool isLoginNeeded){
+    [self callAuthService:^{
         __weak __typeof(self) weakSelf = self;
         [weakSelf goToReportProductViewController];
     }];
@@ -2074,7 +2082,7 @@ TTTAttributedLabelDelegate
             [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
         }];
     } else {
-        [self callAuthService:^(bool isLoginNeeded){}];
+        [self callAuthService:^{}];
     }
 }
 
@@ -2085,11 +2093,13 @@ TTTAttributedLabelDelegate
                               action:GA_EVENT_ACTION_CLICK
                                label:@"Add to Wishlist"];
 
-    [self callAuthService:^(bool isLoginNeeded){
+    BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
+    
+    [self callAuthService:^{
         [self setWishlistRequestingAction:YES];
         
-        if(isLoginNeeded){
-            [self loadData:^(bool isSuccess){
+        if (!isLoggedIn){
+            [self loadData:^(BOOL isSuccess){
                 if(isSuccess && btnWishList.tag != 0){
                     [self processSetWishlist];
                 }else{
@@ -2145,9 +2155,11 @@ TTTAttributedLabelDelegate
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
 }
 
-- (void)callAuthService:(void (^)(bool isLoginNeeded))successCallback {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:^(bool isLoginNeeded){
-        if(isLoginNeeded){
+- (void)callAuthService:(void (^)())successCallback {
+    BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
+    
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:^{
+        if(!isLoggedIn){
             _userManager = [UserAuthentificationManager new];
             _auth = [_userManager getUserLoginData];
             
@@ -2158,7 +2170,7 @@ TTTAttributedLabelDelegate
             }
         }
         
-        successCallback(isLoginNeeded);
+        successCallback();
     }];
 }
 
@@ -2217,6 +2229,14 @@ TTTAttributedLabelDelegate
 -(void)refreshRequest:(NSNotification*)notification {
     [self loadData:nil];
 }
+
+- (void)userDidLogin:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
+    
+    [self loadData:nil];
+}
+
 
 #pragma mark - GalleryPhoto Delegate
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery

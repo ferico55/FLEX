@@ -136,7 +136,9 @@
 - (void)displayFrom:(UIViewController *)viewController {
     _userManager = [UserAuthentificationManager new];
     _viewControllerToNavigate = viewController;
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:nil];
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:^{
+        [viewController.navigationController pushViewController:self animated:YES];
+    }];
 }
 
 @end
