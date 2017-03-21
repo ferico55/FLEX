@@ -520,6 +520,8 @@ typedef enum TagRequest {
     [AnalyticsManager localyticsValue:@"No" profileAttribute:@"Is Login"];
     
     [self reinitCartTabBar];
+    
+    [[QuickActionHelper sharedInstance] registerShortcutItems];
 }
 
 - (void)removeCacheUser {

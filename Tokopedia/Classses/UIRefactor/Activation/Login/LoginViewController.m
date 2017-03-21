@@ -426,6 +426,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             self.onLoginFinished(login.result);
     });
 
+    [[QuickActionHelper sharedInstance] registerShortcutItems];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
                                                       userInfo:nil];    

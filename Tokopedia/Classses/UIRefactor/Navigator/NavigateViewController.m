@@ -555,6 +555,15 @@
     [viewController.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)navigateToAddProductFromViewController:(UIViewController*)viewController {
+    ProductAddEditViewController *controller = [ProductAddEditViewController new];
+    controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+    nav.navigationBar.translucent = NO;
+    
+    [viewController presentViewController:nav animated:YES completion:nil];
+}
 
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {

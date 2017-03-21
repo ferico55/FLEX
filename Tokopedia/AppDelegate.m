@@ -116,6 +116,9 @@
         
         [self preparePersistData];
         
+        //register quick action items
+        [[QuickActionHelper sharedInstance] registerShortcutItems];
+        
         //change app language for google mapp address become indonesia
         NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
         if (![[languages firstObject] isEqualToString:@"id"]) {
@@ -152,7 +155,15 @@
         }
     });
     
-    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.1")) {
+        //opening Quick Action in background state
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UIApplicationShortcutItem *shortcutItem = [launchOptions objectForKey:UIApplicationLaunchOptionsShortcutItemKey];
+            if(shortcutItem){
+                [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
+            }
+        });
+    }
     
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
@@ -356,6 +367,12 @@
     }
     return shouldContinue;
 }
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+    
+    [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
+}
+
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData

@@ -1719,6 +1719,8 @@
 		85E182F11E8103D100EE6082 /* Donation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E17B4F1E81007100EE6082 /* Donation.swift */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		DA461A381E8124810085C2E6 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A361E8124810085C2E6 /* MigrationHelper.swift */; };
+		DA461A391E8124810085C2E6 /* QuickActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A371E8124810085C2E6 /* QuickActionHelper.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -4610,6 +4612,8 @@
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA461A361E8124810085C2E6 /* MigrationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationHelper.swift; sourceTree = "<group>"; };
+		DA461A371E8124810085C2E6 /* QuickActionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickActionHelper.swift; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -7119,6 +7123,8 @@
 		85E175BC1E81006D00EE6082 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				DA461A361E8124810085C2E6 /* MigrationHelper.swift */,
+				DA461A371E8124810085C2E6 /* QuickActionHelper.swift */,
 				85E175BD1E81006D00EE6082 /* activation.h */,
 				85E175BE1E81006D00EE6082 /* ActivationRequest.h */,
 				85E175BF1E81006D00EE6082 /* ActivationRequest.m */,
@@ -11273,6 +11279,7 @@
 				85E182B21E81007900EE6082 /* VTCustomerDetails.m in Sources */,
 				85E17C8D1E81007300EE6082 /* ImageDownloader.m in Sources */,
 				85E17F6A1E81007500EE6082 /* NoResult.m in Sources */,
+				DA461A381E8124810085C2E6 /* MigrationHelper.swift in Sources */,
 				85E17DEA1E81007400EE6082 /* OrderDeadline.m in Sources */,
 				85E17E281E81007400EE6082 /* Notes.swift in Sources */,
 				85E181091E81007700EE6082 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
@@ -11662,6 +11669,7 @@
 				85E17E401E81007400EE6082 /* AddProductValidation.m in Sources */,
 				85E182641E81007800EE6082 /* TransactionObjectMapping.m in Sources */,
 				85E17E0D1E81007400EE6082 /* SendMessage.m in Sources */,
+				DA461A391E8124810085C2E6 /* QuickActionHelper.swift in Sources */,
 				85E182721E81007900EE6082 /* ListOrderShopComponent.mm in Sources */,
 				85E17EC51E81007400EE6082 /* TPSpotlight.m in Sources */,
 				85E17E1B1E81007400EE6082 /* AddShop.m in Sources */,
