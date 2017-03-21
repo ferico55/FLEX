@@ -436,21 +436,21 @@
                     allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
                     allInbox.delegate = controller;
                     allInbox.onTapContactUsButton = ^{
-                        [weakSelf navigateToContactUs];
+                        [NavigateViewController navigateToContactUsFromViewController:controller];
                     };
                     
                     InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
                     unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
                     unreadInbox.delegate = controller;
                     unreadInbox.onTapContactUsButton = ^{
-                        [weakSelf navigateToContactUs];
+                        [NavigateViewController navigateToContactUsFromViewController:controller];
                     };
                     
                     InboxTicketViewController *closedInbox = [InboxTicketViewController new];
                     closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
                     closedInbox.delegate = controller;
                     closedInbox.onTapContactUsButton = ^{
-                        [weakSelf navigateToContactUs];
+                        [NavigateViewController navigateToContactUsFromViewController:controller];
                     };
                     
                     controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
@@ -559,9 +559,6 @@
     }
 }
 
-- (void)navigateToContactUs {
-    [NavigateViewController navigateToContactUsFromViewController:self.delegate];
-}
 
 #pragma mark - Memory Management
 -(void)dealloc{

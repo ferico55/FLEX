@@ -124,8 +124,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //MARK: WKNavigation Delegate
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        self.didReceiveNavigationAction?(navigationAction)
-        
+        if(webView.canGoBack) {
+            self.didReceiveNavigationAction?(navigationAction)
+        }
         
         //hit _blank url
         if(!(navigationAction.targetFrame != nil)) {
