@@ -106,7 +106,6 @@
 #import "TransactionAction.h"
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
-#import "TPContactUsDependencies.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"

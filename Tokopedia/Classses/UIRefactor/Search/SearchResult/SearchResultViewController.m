@@ -49,7 +49,6 @@
 #import "Tokopedia-Swift.h"
 
 #import "ImageSearchResponse.h"
-#import "ImageSearchRequest.h"
 
 #pragma mark - Search Result View Controller
 
@@ -78,8 +77,7 @@ SortViewControllerDelegate,
 FilterViewControllerDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
-SpellCheckRequestDelegate,
-ImageSearchRequestDelegate
+SpellCheckRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -103,8 +101,6 @@ ImageSearchRequestDelegate
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
-
-@property (strong, nonatomic) ImageSearchRequest *imageSearchRequest;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeSortImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeFilterImageViews;
@@ -282,11 +278,6 @@ ImageSearchRequestDelegate
     _networkManager.isUsingHmac = YES;
     
     if(_isFromImageSearch){
-        _imageSearchRequest = [[ImageSearchRequest alloc]init];
-        _imageSearchRequest.delegate = self;
-        _imageSearchRequest.view = self.view;
-        
-        [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
         [_fourButtonsToolbar setHidden:YES];
         [_threeButtonsToolbar setHidden:NO];
         [_fourButtonsToolbar setUserInteractionEnabled:NO];
@@ -727,9 +718,7 @@ ImageSearchRequestDelegate
 - (IBAction)didTapTryAgainButton:(UIButton *)sender {
     [_tryAgainButton setHidden:YES];
     [_act setHidden:NO];
-    [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
 }
-
 
 #pragma mark - Filter Delegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
@@ -1532,33 +1521,9 @@ ImageSearchRequestDelegate
     }
 }
 
-#pragma mark - ImageSearchRequest Delegate
--(void)didReceiveUploadedImageURL:(NSString *)imageURL{
-    _image_url = imageURL;
-
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/search/snapsearch.pl"
-                                 method:RKRequestMethodGET
-                              parameter:[self getParameter]
-                                mapping:[ImageSearchResponse mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self reloadView];
-                                  [self imageSearchMappingResult:successResult];
-                              } onFailure:nil];
-}
-
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
 }
-
--(void)failToReceiveImageSearchResult:(NSString*)errorMessage {
-    NSArray *errorMessageArray = [[NSArray alloc] initWithObjects:errorMessage, nil];
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessageArray delegate:self];
-    [alert show];
-    [_act setHidden:YES];
-    [_tryAgainButton setHidden:NO];
-}
-
 
 
 @end
