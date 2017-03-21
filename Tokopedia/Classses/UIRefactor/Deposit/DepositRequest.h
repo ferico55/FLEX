@@ -12,6 +12,7 @@
 #import "DepositFormResult.h"
 #import "GeneralAction.h"
 #import "DepositResult.h"
+#import "SecurityRequestOTP.h"
 
 @interface DepositRequest : NSObject
 
@@ -25,7 +26,7 @@
 - (void)requestGetWithdrawFormOnSuccess:(void(^)(DepositFormResult *result))successCallback
                               onFailure:(void(^)(NSError *errorResult))errorCallback;
 
-- (void)requestSendOTPVerifyBankAccountOnSuccess:(void(^)(GeneralAction *action))successCallback
+- (void)requestSendOTPVerifyBankAccountOnSuccess:(void(^)(SecurityRequestOTP *action))successCallback
                                        onFailure:(void(^)(NSError *errorResult))errorCallback;
 
 - (void)requestGetDepositOnSuccess:(void(^)(DepositResult *result))successCallback

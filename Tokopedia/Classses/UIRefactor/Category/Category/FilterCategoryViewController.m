@@ -13,7 +13,7 @@
 
 #define cellIdentifier @"filterCategoryViewCell"
 
-@interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface FilterCategoryViewController () <LoadingViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *initialCategories;
 @property BOOL requestError;

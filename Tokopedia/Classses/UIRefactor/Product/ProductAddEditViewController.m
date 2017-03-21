@@ -161,6 +161,7 @@ FilterCategoryViewDelegate
     ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
     detailVC.type = _type;
     if ([self dataInputIsValid]) {
+        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_SUCCESS label:@"Page 1"];
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
@@ -168,6 +169,7 @@ FilterCategoryViewDelegate
         detailVC.form = _form;
         [self.navigationController pushViewController:detailVC animated:YES];
     } else if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT && _form == nil) {
+        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ERROR label:@"Page 1"];
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Kendala Koneksi Internet"
                                                                        message:@"Silakan cek kembali jaringan internet Anda."
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -179,6 +181,7 @@ FilterCategoryViewDelegate
 }
 
 -(void)onTapBackBarButton:(UIBarButtonItem*)button{
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ABANDON label:@"Page 1"];
     if (self.navigationItem.leftBarButtonItem) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {

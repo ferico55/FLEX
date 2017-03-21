@@ -38,7 +38,6 @@
     UIScrollViewDelegate,
     UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
     SmileyDelegate,
     CMPopTipViewDelegate
@@ -536,19 +535,7 @@
     }
     else
     {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
-
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
     }
 }
 
@@ -898,11 +885,6 @@
                                     }];
 }
 
-#pragma mark - LoginView Delegate
-
-- (void)redirectViewController:(id)viewController {
-
-}
 #pragma mark - Notification Delegate
 
 - (void)userDidLogin:(NSNotification*)notification {

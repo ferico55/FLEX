@@ -20,9 +20,6 @@
 #import "FBSDKShareKit.h"
 
 @interface ReviewSummaryViewController ()
-<
-TokopediaNetworkManagerDelegate
->
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
 @property (weak, nonatomic) IBOutlet UILabel *productName;
@@ -40,7 +37,6 @@ TokopediaNetworkManagerDelegate
 @end
 
 @implementation ReviewSummaryViewController {
-    TokopediaNetworkManager *_networkManager;
     GenerateHostRequest *_generateHostRequest;
     __weak RKObjectManager *_objectManager;
     
@@ -68,10 +64,6 @@ TokopediaNetworkManagerDelegate
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
     [self setData];
-    
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.isUsingHmac = NO;
     
     [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
         _generatedHost = host;
@@ -351,8 +343,13 @@ TokopediaNetworkManagerDelegate
     }
 }
 
-- (void) shareToFacebook {
+- (void)shareToFacebook {
     if (_shareOnFacebookSwitch.on) {
+        [AnalyticsManager trackEventName:@"clickShare"
+                                category:@"Auto Share Review"
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:@"Auto Share - Review"];
+        
         FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
         fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , _review.product_uri]];
         fbShareContent.quote = _reviewMessageTextView.text;

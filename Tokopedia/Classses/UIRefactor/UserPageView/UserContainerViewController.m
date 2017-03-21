@@ -38,7 +38,6 @@
 @interface UserContainerViewController ()
 <
     UIScrollViewDelegate,
-    LoginViewDelegate,
     SettingUserProfileDelegate,
     UIPageViewControllerDelegate
 >
@@ -296,7 +295,6 @@
 -(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    _networkManager.delegate = nil;
     _networkManager = nil;
 }
 
@@ -377,15 +375,6 @@
                 break;
         }
     }
-}
-
-#pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController
-{
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *tempAuth = [secureStorage keychainDictionary];
-    _auth = [tempAuth mutableCopy];
-    
 }
 
 #pragma mark - Reload Profile

@@ -38,7 +38,6 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
-#import "PhoneVerifViewController.h"
 #import "Tokopedia-Swift.h"
 #import "MyWishlistViewController.h"
 
@@ -48,7 +47,6 @@
 <
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
-    LoginViewDelegate,
     TKPAppFlow
 >
 {
@@ -245,7 +243,10 @@ typedef enum TagRequest {
     A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
     __block NSUInteger idx = 0;
     [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
-        
+        [AnalyticsManager trackEventName:@"clickTabBar"
+                                category:GA_EVENT_CATEGORY_TAB_BAR
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:tabBarController.tabBar.selectedItem.title];
         if (idx == tabBarController.selectedIndex) {
             if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
                 [viewControllers[tabBarController.selectedIndex] scrollToTop];
@@ -379,6 +380,13 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
+        
+        more.onLoginFinished = ^(LoginResult* result){
+            [_tabBarController setSelectedIndex:0];
+            UINavigationController *homeNavController = (UINavigationController *)[_tabBarController.viewControllers firstObject];
+            [homeNavController popToRootViewControllerAnimated:NO];
+        };
+        
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
@@ -430,21 +438,25 @@ typedef enum TagRequest {
     [alertView show];
 }
 
-- (void)doApplicationLogout {
+- (void)removeWebViewCookies {
     /*
-    remove all cache from webview, all credential that been logged in, will be removed
-    example : login kereta api, login pulsa
-    */
+     remove all cache from webview, all credential that been logged in, will be removed
+     example : login kereta api, login pulsa, tokocash
+     */
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [cookieStorage cookies]) {
         NSString* domainName = [cookie domain];
-        NSRange domainRange = [domainName rangeOfString:@"tokopedia"];
-        if(domainRange.length > 0) {
+        NSRange domainToko = [domainName rangeOfString:@"toko"];
+        
+        if(domainToko.length > 0) {
             [cookieStorage deleteCookie:cookie];
         }
     }
-    
+}
+
+
+- (void)doApplicationLogout {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -500,7 +512,7 @@ typedef enum TagRequest {
         _logingOutAlertView = nil;
     }
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PHONE_VERIF_LAST_APPEAR];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"phone_verif_last_appear"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
@@ -528,10 +540,6 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [AnalyticsManager trackEventName:@"clickTabBar"
-                            category:GA_EVENT_CATEGORY_TAB_BAR
-                              action:GA_EVENT_ACTION_CLICK
-                               label:tabBarController.tabBar.selectedItem.title];
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];
@@ -542,10 +550,6 @@ typedef enum TagRequest {
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     return YES;
-}
-
--(void)redirectViewController:(id)viewController {
-    
 }
 
 - (void)redirectToSearch {
@@ -565,7 +569,9 @@ typedef enum TagRequest {
 }
 
 -(void)requestLogout{
-    [LogoutRequest fetchLogout:[self logoutObjectRequest] onSuccess:^(LogoutResult * data) {}];
+    [LogoutRequest fetchLogout:[self logoutObjectRequest] onSuccess:^(LogoutResult * data) {
+        [self removeWebViewCookies];
+    }];
 }
 
 - (void)redirectNotification:(NSNotification*)notification {

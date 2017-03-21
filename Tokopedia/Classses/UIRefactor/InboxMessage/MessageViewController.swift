@@ -107,8 +107,8 @@ class MessageViewController: JSQMessagesViewController {
         
         if(message.senderId != self.senderId) {
             var senderName = message.senderDisplayName
-            if((senderName?.characters.count)! > 30) {
-                senderName = "\(senderName?[(senderName?.index((senderName?.startIndex)!, offsetBy: 0))!...(senderName?.index((senderName?.startIndex)!, offsetBy: 30))!])..."
+            if((senderName!.characters.count) > 30) {
+                senderName = "\(senderName![(senderName!.index((senderName!.startIndex), offsetBy: 0))...(senderName!.index((senderName!.startIndex), offsetBy: 30))])..."
             }
             
             return NSAttributedString(string: senderName!, attributes: [NSForegroundColorAttributeName : userLabelColors[message.senderId]!, NSFontAttributeName : UIFont.microThemeMedium()])

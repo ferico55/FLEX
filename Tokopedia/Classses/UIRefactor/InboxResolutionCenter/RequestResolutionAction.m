@@ -75,8 +75,7 @@ static failedCompletionBlock failedRequest;
             requestObject.user_id = [auth getUserId];
             
             [imageObjects[i] fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
-                UIImage *resizedImage = [TKPImagePickerController resizedImage:image];
-                [RequestUploadImage requestUploadImage:resizedImage
+                [RequestUploadImage requestUploadImage:image
                                         withUploadHost:uploadImageBaseURL
                                                   path:@"/web-service/v4/action/upload-image/upload_contact_image.pl"
                                                   name:@"fileToUpload"

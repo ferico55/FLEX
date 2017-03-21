@@ -271,7 +271,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func messageButtonDidTappedWithShop(_ shop: Shop) {
-        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -283,7 +283,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func toggleFavoriteForShop(_ shop: Shop) {
-        authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -293,6 +293,12 @@ class ShopViewController: UIViewController {
             self.renderBarButtonsWithShop(shop, favoriteRequestInProgress: true)
             
             let adKey = self.data!["ad_ref_key"] as? String ?? ""
+            
+            AnalyticsManager.trackEventName(
+                "clickShopHome",
+                category: GA_EVENT_CATEGORY_SHOP_HOME,
+                action: GA_EVENT_ACTION_CLICK,
+                label: "Add to Favorite - \(shop.result.info.shop_name)")
             
             FavoriteShopRequest.requestActionButtonFavoriteShop(
                 shop.result.info.shop_id,
@@ -351,6 +357,11 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
+        AnalyticsManager.trackEventName(
+            "clickShopHome",
+            category: GA_EVENT_CATEGORY_SHOP_HOME,
+            action: GA_EVENT_ACTION_CLICK,
+            label: "Send Message")
         let viewController = SendMessageViewController(to: shop)
         viewController?.display(from: self)
     }

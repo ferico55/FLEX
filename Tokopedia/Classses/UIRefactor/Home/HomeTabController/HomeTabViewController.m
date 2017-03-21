@@ -22,7 +22,6 @@
 #import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-#import "ImagePickerCategoryController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -385,6 +384,7 @@
 
 - (void)tapNotificationBar {
     [_notifManager tapNotificationBar];
+    [AnalyticsManager trackEventName:@"clickTopedIcon" category:GA_EVENT_CATEGORY_NOTIFICATION action:GA_EVENT_ACTION_CLICK label:@"Bell Notification"];
 }
 
 - (void)tapWindowBar {

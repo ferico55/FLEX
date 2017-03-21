@@ -8,23 +8,25 @@
 
 import Foundation
 
-extension AuthenticationService: LoginViewDelegate {
-
-    public func redirectViewController(_ viewController: Any!) {
-        
-    }
-    
-    public func didLoginSuccess(_ loginResult: LoginResult) {
-        loginSuccessBlock(loginResult)
-        loginSuccessBlock = nil
-    }
+extension AuthenticationService {
     
     func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void){
         
         let loginViewController: LoginViewController = LoginViewController()
         loginViewController.isPresentedViewController = true
-        loginViewController.delegate = self
-        loginViewController.redirectViewController = viewController
+        loginViewController.onLoginFinished = { loginResult in
+            if let loginNavCon = loginViewController.navigationController {
+                loginNavCon.dismiss(animated: true, completion: {
+                    self.loginSuccessBlock(loginResult)
+                    self.loginSuccessBlock = nil
+                })
+            }else{
+                loginViewController.dismiss(animated: true, completion: {
+                    self.loginSuccessBlock(loginResult)
+                    self.loginSuccessBlock = nil
+                })
+            }
+        }
         
         let navigationController: UINavigationController = UINavigationController(rootViewController: loginViewController)
         navigationController.navigationBar.isTranslucent = false;
@@ -35,12 +37,16 @@ extension AuthenticationService: LoginViewDelegate {
         }
     }
     
-    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: @escaping () -> ()) {
+    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: (() -> Void)?) {
         if UserAuthentificationManager().isLogin {
-            onSuccess()
+            if let theOnSuccess = onSuccess {
+                theOnSuccess()
+            }
         } else {
             self.signInFromViewController(viewController) { result in
-                onSuccess()
+                if let theOnSuccess = onSuccess {
+                    theOnSuccess()
+                }
             }
         }
     }

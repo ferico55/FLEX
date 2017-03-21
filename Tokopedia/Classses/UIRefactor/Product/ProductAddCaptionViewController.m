@@ -335,7 +335,7 @@
         pict.asset = selectedImage;
         
         [selectedImage fetchOriginalImage:NO completeBlock:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
-            pict.image = [TKPImagePickerController resizedImage:image];
+            pict.image = image;
             NSString *fileName = ((NSURL *)info[@"PHImageFileURLKey"]).lastPathComponent;
             pict.fileName = fileName;
             

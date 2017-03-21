@@ -52,14 +52,13 @@
 
 #import <MessageUI/MessageUI.h>
 
-#import "ContactUsWebViewController.h"
-
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
 
 #import "DepositRequest.h"
 
 #import <JLPermissions/JLNotificationPermission.h>
+#import <MoEngage_iOS_SDK/MoEngage.h>
 
 #import "Tokopedia-Swift.h"
 
@@ -226,43 +225,31 @@
             return;
         }
         
-        if(wallet.shouldShowWallet) {
-            [weakSelf showWalletCell:wallet];
-        } else {
-            if(wallet.shouldShowActivation) {
-                [weakSelf showWalletCell:wallet];
-                [weakSelf showActivationButton:wallet];
-            } else {
-                [weakSelf hideWalletCell];
-            }
-        }
+        _walletNameLabel.text = wallet.data.text;
+        _walletBalanceLabel.text = wallet.data.balance;
+        _walletUrl = wallet.walletFullUrl;
+        
+        [weakSelf showActivationButton:wallet];
+        
     } onFailure:^(NSError * error) {
         if(error.code == 9991) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-        } else {
-            [weakSelf hideWalletCell];
         }
     }];
 }
 
 - (void)showActivationButton:(WalletStore*)wallet {
-    [_walletActivationButton setHidden:NO];
+    [_walletActivationButton setHidden:!wallet.shouldShowActivation];
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
+    [_walletActivationButton bk_whenTapped:^{
+        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:wallet.data.walletActionFullUrl shouldAuthorizeRequest:NO];
+        controller.title = _walletNameLabel.text;
+        
+        [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+    }];
 }
 
-- (void)showWalletCell:(WalletStore*)wallet {
-    _walletNameLabel.text = wallet.data.text;
-    _walletBalanceLabel.text = wallet.data.balance;
-    _walletUrl = wallet.walletFullUrl;
-    
-    _shouldDisplayWalletCell = YES;
-    [self.tableView reloadData];
-}
 
-- (void)hideWalletCell {
-    _shouldDisplayWalletCell = NO;
-    [self.tableView reloadData];
-}
 
 
 - (void)appDidResume {
@@ -404,7 +391,7 @@
 {
     switch (section) {
         case 0:{
-            return _shouldDisplayWalletCell ? 2 : 1;
+            return 2;
             break;
         }
         
@@ -697,6 +684,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)activatePushNotification {
+    [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil andCategoriesForPreviousVersions:nil andWithUserNotificationCenterDelegate:self];
     JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
     
     JLAuthorizationStatus permissionStatus = permission.authorizationStatus;
