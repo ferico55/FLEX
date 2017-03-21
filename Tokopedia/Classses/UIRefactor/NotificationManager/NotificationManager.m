@@ -83,7 +83,7 @@
 }
 
 - (void)tapNotificationBar {
-    
+    [AnalyticsManager trackEventName:@"clickTopedIcon" category:GA_EVENT_CATEGORY_NOTIFICATION action:GA_EVENT_ACTION_CLICK label:@"Bell Notification"];
     [_notificationWindow makeKeyAndVisible];
     
 //    CGRect screenRect = [[UIScreen mainScreen] bounds];

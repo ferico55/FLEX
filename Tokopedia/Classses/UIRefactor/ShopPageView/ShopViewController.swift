@@ -294,6 +294,12 @@ class ShopViewController: UIViewController {
             
             let adKey = self.data!["ad_ref_key"] as? String ?? ""
             
+            AnalyticsManager.trackEventName(
+                "clickShopHome",
+                category: GA_EVENT_CATEGORY_SHOP_HOME,
+                action: GA_EVENT_ACTION_CLICK,
+                label: "Add to Favorite - \(shop.result.info.shop_name)")
+            
             FavoriteShopRequest.requestActionButtonFavoriteShop(
                 shop.result.info.shop_id,
                 withAdKey: adKey,

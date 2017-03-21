@@ -65,6 +65,7 @@
 #define GA_EVENT_CATEGORY_RECEIVED @"Received"
 #define GA_EVENT_CATEGORY_TRACKING @"Tracking"
 #define GA_EVENT_CATEGORY_PULSA @"Pulsa"
+#define GA_EVENT_CATEGORY_ADD_PRODUCT @"Add Product"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
