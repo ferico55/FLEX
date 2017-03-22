@@ -1513,6 +1513,7 @@
                                 }
                                 [self requestCartData];
                                 [self isLoading:NO];
+                                [_tableView reloadData];
                             } error:^(NSError *error) {
                                 [self doClearAllData];
                                 [_noInternetConnectionView generateRequestErrorViewWithError:error];
