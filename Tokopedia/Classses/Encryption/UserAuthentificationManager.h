@@ -24,6 +24,7 @@
 
 - (null_unspecified NSDictionary *)getUserLoginData;
 - (null_unspecified NSString*)getUserId;
+- (null_unspecified NSString*)getUserEmail;
 - (null_unspecified NSString*)getShopId;
 - (null_unspecified NSString*)getShopName;
 - (null_unspecified NSString*)getShopHasTerm;

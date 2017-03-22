@@ -61,8 +61,11 @@
 #import <MoEngage_iOS_SDK/MoEngage.h>
 
 #import "Tokopedia-Swift.h"
+#import "CMPopTipView.h"
 
-@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
+static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
+
+@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -108,6 +111,9 @@
 @property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
+
+@property (strong, nonatomic) CMPopTipView *popTipView;
+
 @end
 
 @implementation MoreViewController
@@ -215,6 +221,77 @@
                                                object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+//    [self initNotificationManager];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
+    [self updateSaldoTokopedia];
+    
+    // Universal Analytics
+    [AnalyticsManager trackScreenName:@"More Navigation Page"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedIndexPath != nil) {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    }
+    
+    [self showTooltipView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.popTipView && self.popTipView != nil) {
+        [self.popTipView dismissAnimated:NO];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.navigationController.tabBarController.title = @"More";
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
+    self.popTipView = nil;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setBool:YES forKey:kPreferenceKeyTooltipSetting];
+    [prefs synchronize];
+}
+
+- (void)showTooltipView {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if (![prefs boolForKey:kPreferenceKeyTooltipSetting] &&
+        [[TouchIDHelper sharedInstance] isTouchIDAvailable] &&
+        [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Pilih halaman setting dan pengaturan Touch ID untuk mengatur Touch ID anda"];
+            self.popTipView.delegate = self;
+            self.popTipView.backgroundColor = [UIColor darkGrayColor];
+            self.popTipView.animation = CMPopTipAnimationPop;
+            self.popTipView.dismissTapAnywhere = YES;
+            
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+            [self.popTipView presentPointingAtView:cell inView:self.view animated:YES];
+        });
+    }
+}
+
+#pragma mark - Method
 - (void)requestWallet {
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
@@ -273,40 +350,6 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-//    [self initNotificationManager];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    [self updateSaldoTokopedia];
-    
-    // Universal Analytics
-    [AnalyticsManager trackScreenName:@"More Navigation Page"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath != nil) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.navigationController.tabBarController.title = @"More";
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Method
 -(void)updateShopPicture:(NSNotification*)notif
 {
     NSDictionary *userInfo = notif.userInfo;

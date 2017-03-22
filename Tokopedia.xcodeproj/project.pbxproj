@@ -1721,6 +1721,9 @@
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		DA461A381E8124810085C2E6 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A361E8124810085C2E6 /* MigrationHelper.swift */; };
 		DA461A391E8124810085C2E6 /* QuickActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A371E8124810085C2E6 /* QuickActionHelper.swift */; };
+		DA461A3B1E812CA60085C2E6 /* TouchIDHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A3A1E812CA60085C2E6 /* TouchIDHelper.swift */; };
+		DA461A411E812E1F0085C2E6 /* SettingTouchIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A3F1E812E1F0085C2E6 /* SettingTouchIDViewController.swift */; };
+		DA461A421E812E1F0085C2E6 /* SettingTouchIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA461A401E812E1F0085C2E6 /* SettingTouchIDViewController.xib */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -4614,6 +4617,9 @@
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA461A361E8124810085C2E6 /* MigrationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationHelper.swift; sourceTree = "<group>"; };
 		DA461A371E8124810085C2E6 /* QuickActionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickActionHelper.swift; sourceTree = "<group>"; };
+		DA461A3A1E812CA60085C2E6 /* TouchIDHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDHelper.swift; sourceTree = "<group>"; };
+		DA461A3F1E812E1F0085C2E6 /* SettingTouchIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTouchIDViewController.swift; sourceTree = "<group>"; };
+		DA461A401E812E1F0085C2E6 /* SettingTouchIDViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingTouchIDViewController.xib; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -7156,6 +7162,7 @@
 		85E175C61E81006D00EE6082 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				DA461A3A1E812CA60085C2E6 /* TouchIDHelper.swift */,
 				85E175C71E81006D00EE6082 /* LoginViewController.h */,
 				85E175C81E81006D00EE6082 /* LoginViewController.m */,
 				85E175C91E81006D00EE6082 /* LoginViewController.xib */,
@@ -8801,6 +8808,7 @@
 		85E17A2B1E81007000EE6082 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				DA461A3E1E812E1F0085C2E6 /* TouchID */,
 				85E17A2C1E81007000EE6082 /* Address */,
 				85E17A391E81007000EE6082 /* BankAccount */,
 				85E17A4C1E81007000EE6082 /* Notification */,
@@ -9755,6 +9763,15 @@
 			path = ServiceExtension;
 			sourceTree = "<group>";
 		};
+		DA461A3E1E812E1F0085C2E6 /* TouchID */ = {
+			isa = PBXGroup;
+			children = (
+				DA461A3F1E812E1F0085C2E6 /* SettingTouchIDViewController.swift */,
+				DA461A401E812E1F0085C2E6 /* SettingTouchIDViewController.xib */,
+			);
+			path = TouchID;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -10217,6 +10234,7 @@
 				85E180851E81007600EE6082 /* ProductTalkDetailViewController.xib in Resources */,
 				85E181A71E81007800EE6082 /* SettingAddressEditViewController.xib in Resources */,
 				85E180B91E81007600EE6082 /* MyReviewDetailViewController.xib in Resources */,
+				DA461A421E812E1F0085C2E6 /* SettingTouchIDViewController.xib in Resources */,
 				85E182C61E81007900EE6082 /* icon_snap@2x.png in Resources */,
 				85E181B81E81007800EE6082 /* SettingNotificationCell.xib in Resources */,
 				85E181C21E81007800EE6082 /* ProfileSettingViewController.xib in Resources */,
@@ -11539,6 +11557,7 @@
 				85E17CFB1E81007300EE6082 /* DetailProductResult.m in Sources */,
 				85E17E201E81007400EE6082 /* EtalaseList.m in Sources */,
 				85E181D11E81007800EE6082 /* OpenShopSuccessViewController.swift in Sources */,
+				DA461A411E812E1F0085C2E6 /* SettingTouchIDViewController.swift in Sources */,
 				85E17D831E81007300EE6082 /* TotalLikeDislike.m in Sources */,
 				85E17F8B1E81007500EE6082 /* FiltersListDataSource.swift in Sources */,
 				85E17C711E81007300EE6082 /* NSData+Encryption.m in Sources */,
@@ -11792,6 +11811,7 @@
 				85E17E121E81007400EE6082 /* ShipmentCourierPackage.m in Sources */,
 				85E17F411E81007500EE6082 /* TKPImagePickerUIDelegate.swift in Sources */,
 				85E17DC21E81007400EE6082 /* ProfileSettings.m in Sources */,
+				DA461A3B1E812CA60085C2E6 /* TouchIDHelper.swift in Sources */,
 				85E17DB71E81007300EE6082 /* DataUser.m in Sources */,
 				85E17D471E81007300EE6082 /* InboxMessageDetailList.m in Sources */,
 				85E182761E81007900EE6082 /* TxOrderStatusDetailViewController.m in Sources */,
