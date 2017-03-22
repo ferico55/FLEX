@@ -18,6 +18,8 @@
 #import "ReviewImageAttachment.h"
 #import "AttachedPicture.h"
 #import "FBSDKShareKit.h"
+#import "FBSDKLoginKit.h"
+#import "FBSDKGraphRequest.h"
 
 @interface ReviewSummaryViewController ()
 
@@ -74,6 +76,10 @@
     
     _reviewRequest = [ReviewRequest new];
     _fileUploaded = [NSMutableDictionary new];
+    
+    [_shareOnFacebookSwitch addTarget:self
+                               action:@selector(didChangeShareOnFaceBookSwitch:)
+                     forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -256,6 +262,7 @@
 - (IBAction)tapToSend:(id)sender {
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
+        __weak typeof(self) weakSelf = self;
         if (_isEdit) {
             [_reviewRequest requestEditReviewWithImageWithReviewID:_review.review_id
                                                          productID:_review.product_id
@@ -277,7 +284,7 @@
                                                                                                                               delegate:self];
                                                              [alert show];
                                                              
-                                                        for (UIViewController *aViewController in allViewControllers) {
+                                                             for (UIViewController *aViewController in allViewControllers) {
                                                                  if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
                                                                      [self.navigationController popToViewController:aViewController animated:YES];
                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
@@ -288,10 +295,10 @@
                                                                                                                        userInfo:nil];
                                                                  }
                                                              }
-                                                             [self shareToFacebook];
+                                                             [weakSelf shareToFacebook];
                                                          }
                                                          onFailure:^(NSError *error) {
-                                                             [self sendButtonIsLoading:NO];
+                                                             [weakSelf sendButtonIsLoading:NO];
                                                          }];
         } else {
             [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_SEND label:@"Review"];
@@ -311,15 +318,15 @@
                                                                onSuccess:^(SubmitReviewResult *result) {
                                                                    [AnalyticsManager localyticsTrackGiveReview:YES accuracy:_accuracyRate quality:_qualityRate];
                                                                    [AnalyticsManager trackSuccessSubmitReview:1];
-                                                                   NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                                   NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
                                                                    
                                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengisi ulasan"]
-                                                                                                                                    delegate:self];
+                                                                                                                                    delegate:weakSelf];
                                                                    [alert show];
                                                                    
                                                                    for (UIViewController *aViewController in allViewControllers) {
                                                                        if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                           [self.navigationController popToViewController:aViewController animated:YES];
+                                                                           [weakSelf.navigationController popToViewController:aViewController animated:YES];
                                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
                                                                                                                                object:nil
                                                                                                                              userInfo:@{@"n" : @"1"}];
@@ -328,36 +335,59 @@
                                                                                                                              userInfo:nil];
                                                                        }
                                                                    }
-                                                                   
-                                                                   [self shareToFacebook];
+                                                                   [weakSelf shareToFacebook];
                                                                }
                                                                onFailure:^(NSError *error) {
                                                                    [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_ERROR label:@"Review"];
                                                                    [AnalyticsManager localyticsTrackGiveReview:NO accuracy:_accuracyRate quality:_qualityRate];
                                                                    [AnalyticsManager trackSuccessSubmitReview:0];
-                                                                   [self sendButtonIsLoading:NO];
+                                                                   [weakSelf sendButtonIsLoading:NO];
                                                                }];
         }
-        
         
     }
 }
 
 - (void)shareToFacebook {
     if (_shareOnFacebookSwitch.on) {
-        [AnalyticsManager trackEventName:@"clickShare"
-                                category:@"Auto Share Review"
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:@"Auto Share - Review"];
-        
-        FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
-        fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , _review.product_uri]];
-        fbShareContent.quote = _reviewMessageTextView.text;
-        
-        [FBSDKShareDialog showFromViewController:self
-                                     withContent:fbShareContent
-                                        delegate:nil];
+        __weak typeof(self) weakSelf = self;
+        if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
+            [weakSelf executeGraphAPI];
+        }
     }
+}
+
+- (void) didChangeShareOnFaceBookSwitch: (id) sender {
+    __weak typeof(self) weakSelf = self;
+    [AnalyticsManager trackEventName:@"clickShare"
+                            category:@"Auto Share Review"
+                              action:GA_EVENT_ACTION_CLICK
+                               label:@"Auto Share - Review"];
+    if ([sender isOn]
+        && ![[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
+        FBSDKLoginManager *fbLoginManager = [[FBSDKLoginManager alloc] init];
+        
+        // kalau iPad pakai loginBehavior native, dia malah ngeluarin blank page
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            fbLoginManager.loginBehavior = FBSDKLoginBehaviorNative;
+        } else {
+            fbLoginManager.loginBehavior = FBSDKLoginBehaviorWeb;
+        }
+        [fbLoginManager logInWithPublishPermissions:@[@"publish_actions"]
+                                 fromViewController:self
+                                            handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                                if (error || result.isCancelled) {
+                                                    weakSelf.shareOnFacebookSwitch.on = NO;
+                                                }
+                                            }];
+    }
+}
+
+- (void) executeGraphAPI {
+    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/feed"
+                                       parameters: @{ @"message" : _reviewMessageTextView.text, @"link" : [NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl], _review.product_uri]}
+                                       HTTPMethod:@"POST"]
+     startWithCompletionHandler:nil];
 }
 
 @end
