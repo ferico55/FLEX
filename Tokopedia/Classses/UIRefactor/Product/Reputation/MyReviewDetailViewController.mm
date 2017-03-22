@@ -29,6 +29,8 @@
 #import "ImageStorage.h"
 #import "LoadingView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AHKActionSheet.h"
+#import "FBSDKShareKit.h"
 
 @interface MyReviewDetailViewController ()
 <
@@ -477,6 +479,32 @@
 - (void)didTapRevieweeReputation:(id)sender onReview:(DetailReputationReview *)review atView:(UIView *)view {
     NSString *strText = [NSString stringWithFormat:@"%@ %@", review.product_owner.shop_reputation_score, CStringPoin];
     [self initPopUp:strText atView:view withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+}
+
+- (void)didTapShareReviewToOtherSource:(DetailReputationReview*)review atView:(UIView*)view {
+    AHKActionSheet *actionSheet = [[AHKActionSheet alloc] initWithTitle:nil];
+    
+    // Ini untuk mengubah warna icon menjadi berwarna, kalau di set 1 jadi hitam putih
+    actionSheet.automaticallyTintButtonImages = 0;
+
+    [actionSheet addButtonWithTitle:@"Facebook" image:[UIImage imageNamed:@"icon_facebook"] type:AHKActionSheetButtonTypeDefault handler:^(AHKActionSheet *actionSheet) {
+        FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
+        fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , review.product_uri]];
+        fbShareContent.quote = review.review_message;
+        
+        [FBSDKShareDialog showFromViewController: self                                    withContent:fbShareContent
+                                        delegate:nil];
+        
+    }];
+    [actionSheet addButtonWithTitle:@"Lainnya"  image: [UIImage imageNamed:@"icon_more_grey"] type:AHKActionSheetButtonTypeDefault handler:^(AHKActionSheet *as) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[review.review_message, [NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl], review.product_uri]] applicationActivities:nil];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            activityVC.popoverPresentationController.sourceView = view;
+        }
+        
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }];
+    [actionSheet show];
 }
 
 -(void)dealloc{

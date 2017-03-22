@@ -12,6 +12,6 @@
 
 @interface ReviewShareComponent : CKCompositeComponent
     
-+ (instancetype)newWithReview:(DetailReputationReview*)review;
++ (instancetype)newWithReview:(DetailReputationReview*)review tapButtonAction:(SEL)buttonAction;
     
 @end
