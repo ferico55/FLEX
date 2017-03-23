@@ -707,8 +707,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [wrapperController presentViewController:controller animated:YES completion:nil];
         } else if(indexPath.row == 4) {
             JasonViewController* controller = [JasonViewController new];
-            controller.url = @"https://jasonbase.com/things/Bkp";
-            [wrapperController.navigationController pushViewController:controller animated:YES];
+            controller.url = @"https://ecs7.tokopedia.net/jasonette/help-index.json";
+            
+            [_wrapperViewController presentViewController:controller animated:YES completion:nil];
+
 
         }
     }
