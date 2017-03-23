@@ -20,6 +20,66 @@
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7A8AB6851E83830E00D62ABF /* csv.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6201E83830E00D62ABF /* csv.js */; };
+		7A8AB6861E83830E00D62ABF /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6211E83830E00D62ABF /* ding.wav */; };
+		7A8AB6871E83830E00D62ABF /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6221E83830E00D62ABF /* icon-error.png */; };
+		7A8AB6881E83830E00D62ABF /* icon-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6231E83830E00D62ABF /* icon-error@2x.png */; };
+		7A8AB6891E83830E00D62ABF /* icon-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6241E83830E00D62ABF /* icon-info.png */; };
+		7A8AB68A1E83830E00D62ABF /* icon-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6251E83830E00D62ABF /* icon-info@2x.png */; };
+		7A8AB68B1E83830E00D62ABF /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6261E83830E00D62ABF /* icon-success.png */; };
+		7A8AB68C1E83830E00D62ABF /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6271E83830E00D62ABF /* icon-success@2x.png */; };
+		7A8AB68D1E83830E00D62ABF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6281E83830E00D62ABF /* Info.plist */; };
+		7A8AB68E1E83830E00D62ABF /* Jason.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB62A1E83830E00D62ABF /* Jason.m */; };
+		7A8AB68F1E83830E00D62ABF /* JasonAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB62C1E83830E00D62ABF /* JasonAction.m */; };
+		7A8AB6901E83830E00D62ABF /* JasonAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB62F1E83830E00D62ABF /* JasonAppDelegate.m */; };
+		7A8AB6911E83830E00D62ABF /* JasonAudioAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6311E83830E00D62ABF /* JasonAudioAction.m */; };
+		7A8AB6921E83830E00D62ABF /* JasonButtonComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6331E83830E00D62ABF /* JasonButtonComponent.m */; };
+		7A8AB6931E83830E00D62ABF /* JasonCacheAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6351E83830E00D62ABF /* JasonCacheAction.m */; };
+		7A8AB6941E83830E00D62ABF /* JasonComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6371E83830E00D62ABF /* JasonComponent.m */; };
+		7A8AB6951E83830E00D62ABF /* JasonComponentFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6391E83830E00D62ABF /* JasonComponentFactory.m */; };
+		7A8AB6961E83830E00D62ABF /* JasonConvertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB63C1E83830E00D62ABF /* JasonConvertAction.m */; };
+		7A8AB6971E83830E00D62ABF /* JasonGeoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB63E1E83830E00D62ABF /* JasonGeoAction.m */; };
+		7A8AB6981E83830E00D62ABF /* JasonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6401E83830E00D62ABF /* JasonHelper.m */; };
+		7A8AB6991E83830E00D62ABF /* JasonHorizontalSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6421E83830E00D62ABF /* JasonHorizontalSection.m */; };
+		7A8AB69A1E83830E00D62ABF /* JasonHorizontalSection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6431E83830E00D62ABF /* JasonHorizontalSection.xib */; };
+		7A8AB69B1E83830E00D62ABF /* JasonHorizontalSectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6451E83830E00D62ABF /* JasonHorizontalSectionItem.m */; };
+		7A8AB69C1E83830E00D62ABF /* JasonHorizontalSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6461E83830E00D62ABF /* JasonHorizontalSectionItem.xib */; };
+		7A8AB69D1E83830E00D62ABF /* JasonHtmlComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6481E83830E00D62ABF /* JasonHtmlComponent.m */; };
+		7A8AB69E1E83830E00D62ABF /* JasonImageComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB64A1E83830E00D62ABF /* JasonImageComponent.m */; };
+		7A8AB69F1E83830E00D62ABF /* JasonLabelComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB64C1E83830E00D62ABF /* JasonLabelComponent.m */; };
+		7A8AB6A01E83830E00D62ABF /* JasonLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB64E1E83830E00D62ABF /* JasonLayer.m */; };
+		7A8AB6A11E83830E00D62ABF /* JasonLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6501E83830E00D62ABF /* JasonLayout.m */; };
+		7A8AB6A21E83830E00D62ABF /* JasonMapComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6521E83830E00D62ABF /* JasonMapComponent.m */; };
+		7A8AB6A31E83830E00D62ABF /* JasonMediaAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6541E83830E00D62ABF /* JasonMediaAction.m */; };
+		7A8AB6A41E83830E00D62ABF /* JasonMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6561E83830E00D62ABF /* JasonMemory.m */; };
+		7A8AB6A51E83830E00D62ABF /* JasonNetworkAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6581E83830E00D62ABF /* JasonNetworkAction.m */; };
+		7A8AB6A61E83830E00D62ABF /* JasonOauthAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB65A1E83830E00D62ABF /* JasonOauthAction.m */; };
+		7A8AB6A71E83830E00D62ABF /* JasonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB65C1E83830E00D62ABF /* JasonParser.m */; };
+		7A8AB6A81E83830E00D62ABF /* JasonPortraitPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB65E1E83830E00D62ABF /* JasonPortraitPicker.m */; };
+		7A8AB6A91E83830E00D62ABF /* JasonSessionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6601E83830E00D62ABF /* JasonSessionAction.m */; };
+		7A8AB6AA1E83830E00D62ABF /* JasonSliderComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6621E83830E00D62ABF /* JasonSliderComponent.m */; };
+		7A8AB6AB1E83830E00D62ABF /* JasonSpaceComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6641E83830E00D62ABF /* JasonSpaceComponent.m */; };
+		7A8AB6AC1E83830E00D62ABF /* JasonStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6661E83830E00D62ABF /* JasonStack.m */; };
+		7A8AB6AD1E83830E00D62ABF /* JasonTextareaComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6681E83830E00D62ABF /* JasonTextareaComponent.m */; };
+		7A8AB6AE1E83830E00D62ABF /* JasonTextfieldComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB66A1E83830E00D62ABF /* JasonTextfieldComponent.m */; };
+		7A8AB6AF1E83830E00D62ABF /* JasonTimerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB66C1E83830E00D62ABF /* JasonTimerAction.m */; };
+		7A8AB6B01E83830E00D62ABF /* JasonUtilAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB66E1E83830E00D62ABF /* JasonUtilAction.m */; };
+		7A8AB6B11E83830E00D62ABF /* JasonVerticalSectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6701E83830E00D62ABF /* JasonVerticalSectionItem.m */; };
+		7A8AB6B21E83830E00D62ABF /* JasonVerticalSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6711E83830E00D62ABF /* JasonVerticalSectionItem.xib */; };
+		7A8AB6B31E83830E00D62ABF /* JasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6731E83830E00D62ABF /* JasonViewController.m */; };
+		7A8AB6B41E83830E00D62ABF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6741E83830E00D62ABF /* LaunchScreen.storyboard */; };
+		7A8AB6B61E83830E00D62ABF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6761E83830E00D62ABF /* Media.xcassets */; };
+		7A8AB6B71E83830E00D62ABF /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6771E83830E00D62ABF /* more@2x.png */; };
+		7A8AB6B81E83830E00D62ABF /* Next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6781E83830E00D62ABF /* Next@2x.png */; };
+		7A8AB6B91E83830E00D62ABF /* parser.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6791E83830E00D62ABF /* parser.js */; };
+		7A8AB6BA1E83830E00D62ABF /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB67A1E83830E00D62ABF /* placeholder@2x.png */; };
+		7A8AB6BB1E83830E00D62ABF /* placeholderr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB67B1E83830E00D62ABF /* placeholderr@2x.png */; };
+		7A8AB6BC1E83830E00D62ABF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB67C1E83830E00D62ABF /* Podfile */; };
+		7A8AB6BD1E83830E00D62ABF /* pop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB67D1E83830E00D62ABF /* pop.wav */; };
+		7A8AB6BE1E83830E00D62ABF /* rss.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB67E1E83830E00D62ABF /* rss.js */; };
+		7A8AB6BF1E83830E00D62ABF /* settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6801E83830E00D62ABF /* settings.plist */; };
+		7A8AB6C01E83830E00D62ABF /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6821E83830E00D62ABF /* UIBarButtonItem+Badge.m */; };
+		7A8AB6C11E83830E00D62ABF /* UIView+JasonComponentPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8AB6841E83830E00D62ABF /* UIView+JasonComponentPayload.m */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -1799,6 +1859,107 @@
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7A8AB6201E83830E00D62ABF /* csv.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = csv.js; sourceTree = "<group>"; };
+		7A8AB6211E83830E00D62ABF /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		7A8AB6221E83830E00D62ABF /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
+		7A8AB6231E83830E00D62ABF /* icon-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error@2x.png"; sourceTree = "<group>"; };
+		7A8AB6241E83830E00D62ABF /* icon-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info.png"; sourceTree = "<group>"; };
+		7A8AB6251E83830E00D62ABF /* icon-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info@2x.png"; sourceTree = "<group>"; };
+		7A8AB6261E83830E00D62ABF /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
+		7A8AB6271E83830E00D62ABF /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
+		7A8AB6281E83830E00D62ABF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A8AB6291E83830E00D62ABF /* Jason.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jason.h; sourceTree = "<group>"; };
+		7A8AB62A1E83830E00D62ABF /* Jason.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Jason.m; sourceTree = "<group>"; };
+		7A8AB62B1E83830E00D62ABF /* JasonAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAction.h; sourceTree = "<group>"; };
+		7A8AB62C1E83830E00D62ABF /* JasonAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAction.m; sourceTree = "<group>"; };
+		7A8AB62D1E83830E00D62ABF /* JasonActionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonActionProtocol.h; sourceTree = "<group>"; };
+		7A8AB62E1E83830E00D62ABF /* JasonAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAppDelegate.h; sourceTree = "<group>"; };
+		7A8AB62F1E83830E00D62ABF /* JasonAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAppDelegate.m; sourceTree = "<group>"; };
+		7A8AB6301E83830E00D62ABF /* JasonAudioAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonAudioAction.h; sourceTree = "<group>"; };
+		7A8AB6311E83830E00D62ABF /* JasonAudioAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonAudioAction.m; sourceTree = "<group>"; };
+		7A8AB6321E83830E00D62ABF /* JasonButtonComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonButtonComponent.h; sourceTree = "<group>"; };
+		7A8AB6331E83830E00D62ABF /* JasonButtonComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonButtonComponent.m; sourceTree = "<group>"; };
+		7A8AB6341E83830E00D62ABF /* JasonCacheAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonCacheAction.h; sourceTree = "<group>"; };
+		7A8AB6351E83830E00D62ABF /* JasonCacheAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonCacheAction.m; sourceTree = "<group>"; };
+		7A8AB6361E83830E00D62ABF /* JasonComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponent.h; sourceTree = "<group>"; };
+		7A8AB6371E83830E00D62ABF /* JasonComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonComponent.m; sourceTree = "<group>"; };
+		7A8AB6381E83830E00D62ABF /* JasonComponentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponentFactory.h; sourceTree = "<group>"; };
+		7A8AB6391E83830E00D62ABF /* JasonComponentFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonComponentFactory.m; sourceTree = "<group>"; };
+		7A8AB63A1E83830E00D62ABF /* JasonComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonComponentProtocol.h; sourceTree = "<group>"; };
+		7A8AB63B1E83830E00D62ABF /* JasonConvertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonConvertAction.h; sourceTree = "<group>"; };
+		7A8AB63C1E83830E00D62ABF /* JasonConvertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonConvertAction.m; sourceTree = "<group>"; };
+		7A8AB63D1E83830E00D62ABF /* JasonGeoAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonGeoAction.h; sourceTree = "<group>"; };
+		7A8AB63E1E83830E00D62ABF /* JasonGeoAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonGeoAction.m; sourceTree = "<group>"; };
+		7A8AB63F1E83830E00D62ABF /* JasonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHelper.h; sourceTree = "<group>"; };
+		7A8AB6401E83830E00D62ABF /* JasonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHelper.m; sourceTree = "<group>"; };
+		7A8AB6411E83830E00D62ABF /* JasonHorizontalSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHorizontalSection.h; sourceTree = "<group>"; };
+		7A8AB6421E83830E00D62ABF /* JasonHorizontalSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHorizontalSection.m; sourceTree = "<group>"; };
+		7A8AB6431E83830E00D62ABF /* JasonHorizontalSection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonHorizontalSection.xib; sourceTree = "<group>"; };
+		7A8AB6441E83830E00D62ABF /* JasonHorizontalSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHorizontalSectionItem.h; sourceTree = "<group>"; };
+		7A8AB6451E83830E00D62ABF /* JasonHorizontalSectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHorizontalSectionItem.m; sourceTree = "<group>"; };
+		7A8AB6461E83830E00D62ABF /* JasonHorizontalSectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonHorizontalSectionItem.xib; sourceTree = "<group>"; };
+		7A8AB6471E83830E00D62ABF /* JasonHtmlComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonHtmlComponent.h; sourceTree = "<group>"; };
+		7A8AB6481E83830E00D62ABF /* JasonHtmlComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonHtmlComponent.m; sourceTree = "<group>"; };
+		7A8AB6491E83830E00D62ABF /* JasonImageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonImageComponent.h; sourceTree = "<group>"; };
+		7A8AB64A1E83830E00D62ABF /* JasonImageComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonImageComponent.m; sourceTree = "<group>"; };
+		7A8AB64B1E83830E00D62ABF /* JasonLabelComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLabelComponent.h; sourceTree = "<group>"; };
+		7A8AB64C1E83830E00D62ABF /* JasonLabelComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLabelComponent.m; sourceTree = "<group>"; };
+		7A8AB64D1E83830E00D62ABF /* JasonLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLayer.h; sourceTree = "<group>"; };
+		7A8AB64E1E83830E00D62ABF /* JasonLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLayer.m; sourceTree = "<group>"; };
+		7A8AB64F1E83830E00D62ABF /* JasonLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonLayout.h; sourceTree = "<group>"; };
+		7A8AB6501E83830E00D62ABF /* JasonLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonLayout.m; sourceTree = "<group>"; };
+		7A8AB6511E83830E00D62ABF /* JasonMapComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMapComponent.h; sourceTree = "<group>"; };
+		7A8AB6521E83830E00D62ABF /* JasonMapComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMapComponent.m; sourceTree = "<group>"; };
+		7A8AB6531E83830E00D62ABF /* JasonMediaAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMediaAction.h; sourceTree = "<group>"; };
+		7A8AB6541E83830E00D62ABF /* JasonMediaAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMediaAction.m; sourceTree = "<group>"; };
+		7A8AB6551E83830E00D62ABF /* JasonMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonMemory.h; sourceTree = "<group>"; };
+		7A8AB6561E83830E00D62ABF /* JasonMemory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonMemory.m; sourceTree = "<group>"; };
+		7A8AB6571E83830E00D62ABF /* JasonNetworkAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonNetworkAction.h; sourceTree = "<group>"; };
+		7A8AB6581E83830E00D62ABF /* JasonNetworkAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonNetworkAction.m; sourceTree = "<group>"; };
+		7A8AB6591E83830E00D62ABF /* JasonOauthAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonOauthAction.h; sourceTree = "<group>"; };
+		7A8AB65A1E83830E00D62ABF /* JasonOauthAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonOauthAction.m; sourceTree = "<group>"; };
+		7A8AB65B1E83830E00D62ABF /* JasonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonParser.h; sourceTree = "<group>"; };
+		7A8AB65C1E83830E00D62ABF /* JasonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonParser.m; sourceTree = "<group>"; };
+		7A8AB65D1E83830E00D62ABF /* JasonPortraitPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonPortraitPicker.h; sourceTree = "<group>"; };
+		7A8AB65E1E83830E00D62ABF /* JasonPortraitPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonPortraitPicker.m; sourceTree = "<group>"; };
+		7A8AB65F1E83830E00D62ABF /* JasonSessionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSessionAction.h; sourceTree = "<group>"; };
+		7A8AB6601E83830E00D62ABF /* JasonSessionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSessionAction.m; sourceTree = "<group>"; };
+		7A8AB6611E83830E00D62ABF /* JasonSliderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSliderComponent.h; sourceTree = "<group>"; };
+		7A8AB6621E83830E00D62ABF /* JasonSliderComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSliderComponent.m; sourceTree = "<group>"; };
+		7A8AB6631E83830E00D62ABF /* JasonSpaceComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonSpaceComponent.h; sourceTree = "<group>"; };
+		7A8AB6641E83830E00D62ABF /* JasonSpaceComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonSpaceComponent.m; sourceTree = "<group>"; };
+		7A8AB6651E83830E00D62ABF /* JasonStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonStack.h; sourceTree = "<group>"; };
+		7A8AB6661E83830E00D62ABF /* JasonStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonStack.m; sourceTree = "<group>"; };
+		7A8AB6671E83830E00D62ABF /* JasonTextareaComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTextareaComponent.h; sourceTree = "<group>"; };
+		7A8AB6681E83830E00D62ABF /* JasonTextareaComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTextareaComponent.m; sourceTree = "<group>"; };
+		7A8AB6691E83830E00D62ABF /* JasonTextfieldComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTextfieldComponent.h; sourceTree = "<group>"; };
+		7A8AB66A1E83830E00D62ABF /* JasonTextfieldComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTextfieldComponent.m; sourceTree = "<group>"; };
+		7A8AB66B1E83830E00D62ABF /* JasonTimerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonTimerAction.h; sourceTree = "<group>"; };
+		7A8AB66C1E83830E00D62ABF /* JasonTimerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonTimerAction.m; sourceTree = "<group>"; };
+		7A8AB66D1E83830E00D62ABF /* JasonUtilAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonUtilAction.h; sourceTree = "<group>"; };
+		7A8AB66E1E83830E00D62ABF /* JasonUtilAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonUtilAction.m; sourceTree = "<group>"; };
+		7A8AB66F1E83830E00D62ABF /* JasonVerticalSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonVerticalSectionItem.h; sourceTree = "<group>"; };
+		7A8AB6701E83830E00D62ABF /* JasonVerticalSectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonVerticalSectionItem.m; sourceTree = "<group>"; };
+		7A8AB6711E83830E00D62ABF /* JasonVerticalSectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JasonVerticalSectionItem.xib; sourceTree = "<group>"; };
+		7A8AB6721E83830E00D62ABF /* JasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonViewController.h; sourceTree = "<group>"; };
+		7A8AB6731E83830E00D62ABF /* JasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonViewController.m; sourceTree = "<group>"; };
+		7A8AB6741E83830E00D62ABF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7A8AB6751E83830E00D62ABF /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7A8AB6761E83830E00D62ABF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		7A8AB6771E83830E00D62ABF /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
+		7A8AB6781E83830E00D62ABF /* Next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Next@2x.png"; sourceTree = "<group>"; };
+		7A8AB6791E83830E00D62ABF /* parser.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = parser.js; sourceTree = "<group>"; };
+		7A8AB67A1E83830E00D62ABF /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
+		7A8AB67B1E83830E00D62ABF /* placeholderr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholderr@2x.png"; sourceTree = "<group>"; };
+		7A8AB67C1E83830E00D62ABF /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		7A8AB67D1E83830E00D62ABF /* pop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop.wav; sourceTree = "<group>"; };
+		7A8AB67E1E83830E00D62ABF /* rss.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rss.js; sourceTree = "<group>"; };
+		7A8AB67F1E83830E00D62ABF /* RussianDollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RussianDollView.h; sourceTree = "<group>"; };
+		7A8AB6801E83830E00D62ABF /* settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = settings.plist; sourceTree = "<group>"; };
+		7A8AB6811E83830E00D62ABF /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
+		7A8AB6821E83830E00D62ABF /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
+		7A8AB6831E83830E00D62ABF /* UIView+JasonComponentPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+JasonComponentPayload.h"; sourceTree = "<group>"; };
+		7A8AB6841E83830E00D62ABF /* UIView+JasonComponentPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JasonComponentPayload.m"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -4734,6 +4895,114 @@
 			path = Fixture;
 			sourceTree = "<group>";
 		};
+		7A8AB61F1E83830D00D62ABF /* Jasonette */ = {
+			isa = PBXGroup;
+			children = (
+				7A8AB6201E83830E00D62ABF /* csv.js */,
+				7A8AB6211E83830E00D62ABF /* ding.wav */,
+				7A8AB6221E83830E00D62ABF /* icon-error.png */,
+				7A8AB6231E83830E00D62ABF /* icon-error@2x.png */,
+				7A8AB6241E83830E00D62ABF /* icon-info.png */,
+				7A8AB6251E83830E00D62ABF /* icon-info@2x.png */,
+				7A8AB6261E83830E00D62ABF /* icon-success.png */,
+				7A8AB6271E83830E00D62ABF /* icon-success@2x.png */,
+				7A8AB6281E83830E00D62ABF /* Info.plist */,
+				7A8AB6291E83830E00D62ABF /* Jason.h */,
+				7A8AB62A1E83830E00D62ABF /* Jason.m */,
+				7A8AB62B1E83830E00D62ABF /* JasonAction.h */,
+				7A8AB62C1E83830E00D62ABF /* JasonAction.m */,
+				7A8AB62D1E83830E00D62ABF /* JasonActionProtocol.h */,
+				7A8AB62E1E83830E00D62ABF /* JasonAppDelegate.h */,
+				7A8AB62F1E83830E00D62ABF /* JasonAppDelegate.m */,
+				7A8AB6301E83830E00D62ABF /* JasonAudioAction.h */,
+				7A8AB6311E83830E00D62ABF /* JasonAudioAction.m */,
+				7A8AB6321E83830E00D62ABF /* JasonButtonComponent.h */,
+				7A8AB6331E83830E00D62ABF /* JasonButtonComponent.m */,
+				7A8AB6341E83830E00D62ABF /* JasonCacheAction.h */,
+				7A8AB6351E83830E00D62ABF /* JasonCacheAction.m */,
+				7A8AB6361E83830E00D62ABF /* JasonComponent.h */,
+				7A8AB6371E83830E00D62ABF /* JasonComponent.m */,
+				7A8AB6381E83830E00D62ABF /* JasonComponentFactory.h */,
+				7A8AB6391E83830E00D62ABF /* JasonComponentFactory.m */,
+				7A8AB63A1E83830E00D62ABF /* JasonComponentProtocol.h */,
+				7A8AB63B1E83830E00D62ABF /* JasonConvertAction.h */,
+				7A8AB63C1E83830E00D62ABF /* JasonConvertAction.m */,
+				7A8AB63D1E83830E00D62ABF /* JasonGeoAction.h */,
+				7A8AB63E1E83830E00D62ABF /* JasonGeoAction.m */,
+				7A8AB63F1E83830E00D62ABF /* JasonHelper.h */,
+				7A8AB6401E83830E00D62ABF /* JasonHelper.m */,
+				7A8AB6411E83830E00D62ABF /* JasonHorizontalSection.h */,
+				7A8AB6421E83830E00D62ABF /* JasonHorizontalSection.m */,
+				7A8AB6431E83830E00D62ABF /* JasonHorizontalSection.xib */,
+				7A8AB6441E83830E00D62ABF /* JasonHorizontalSectionItem.h */,
+				7A8AB6451E83830E00D62ABF /* JasonHorizontalSectionItem.m */,
+				7A8AB6461E83830E00D62ABF /* JasonHorizontalSectionItem.xib */,
+				7A8AB6471E83830E00D62ABF /* JasonHtmlComponent.h */,
+				7A8AB6481E83830E00D62ABF /* JasonHtmlComponent.m */,
+				7A8AB6491E83830E00D62ABF /* JasonImageComponent.h */,
+				7A8AB64A1E83830E00D62ABF /* JasonImageComponent.m */,
+				7A8AB64B1E83830E00D62ABF /* JasonLabelComponent.h */,
+				7A8AB64C1E83830E00D62ABF /* JasonLabelComponent.m */,
+				7A8AB64D1E83830E00D62ABF /* JasonLayer.h */,
+				7A8AB64E1E83830E00D62ABF /* JasonLayer.m */,
+				7A8AB64F1E83830E00D62ABF /* JasonLayout.h */,
+				7A8AB6501E83830E00D62ABF /* JasonLayout.m */,
+				7A8AB6511E83830E00D62ABF /* JasonMapComponent.h */,
+				7A8AB6521E83830E00D62ABF /* JasonMapComponent.m */,
+				7A8AB6531E83830E00D62ABF /* JasonMediaAction.h */,
+				7A8AB6541E83830E00D62ABF /* JasonMediaAction.m */,
+				7A8AB6551E83830E00D62ABF /* JasonMemory.h */,
+				7A8AB6561E83830E00D62ABF /* JasonMemory.m */,
+				7A8AB6571E83830E00D62ABF /* JasonNetworkAction.h */,
+				7A8AB6581E83830E00D62ABF /* JasonNetworkAction.m */,
+				7A8AB6591E83830E00D62ABF /* JasonOauthAction.h */,
+				7A8AB65A1E83830E00D62ABF /* JasonOauthAction.m */,
+				7A8AB65B1E83830E00D62ABF /* JasonParser.h */,
+				7A8AB65C1E83830E00D62ABF /* JasonParser.m */,
+				7A8AB65D1E83830E00D62ABF /* JasonPortraitPicker.h */,
+				7A8AB65E1E83830E00D62ABF /* JasonPortraitPicker.m */,
+				7A8AB65F1E83830E00D62ABF /* JasonSessionAction.h */,
+				7A8AB6601E83830E00D62ABF /* JasonSessionAction.m */,
+				7A8AB6611E83830E00D62ABF /* JasonSliderComponent.h */,
+				7A8AB6621E83830E00D62ABF /* JasonSliderComponent.m */,
+				7A8AB6631E83830E00D62ABF /* JasonSpaceComponent.h */,
+				7A8AB6641E83830E00D62ABF /* JasonSpaceComponent.m */,
+				7A8AB6651E83830E00D62ABF /* JasonStack.h */,
+				7A8AB6661E83830E00D62ABF /* JasonStack.m */,
+				7A8AB6671E83830E00D62ABF /* JasonTextareaComponent.h */,
+				7A8AB6681E83830E00D62ABF /* JasonTextareaComponent.m */,
+				7A8AB6691E83830E00D62ABF /* JasonTextfieldComponent.h */,
+				7A8AB66A1E83830E00D62ABF /* JasonTextfieldComponent.m */,
+				7A8AB66B1E83830E00D62ABF /* JasonTimerAction.h */,
+				7A8AB66C1E83830E00D62ABF /* JasonTimerAction.m */,
+				7A8AB66D1E83830E00D62ABF /* JasonUtilAction.h */,
+				7A8AB66E1E83830E00D62ABF /* JasonUtilAction.m */,
+				7A8AB66F1E83830E00D62ABF /* JasonVerticalSectionItem.h */,
+				7A8AB6701E83830E00D62ABF /* JasonVerticalSectionItem.m */,
+				7A8AB6711E83830E00D62ABF /* JasonVerticalSectionItem.xib */,
+				7A8AB6721E83830E00D62ABF /* JasonViewController.h */,
+				7A8AB6731E83830E00D62ABF /* JasonViewController.m */,
+				7A8AB6741E83830E00D62ABF /* LaunchScreen.storyboard */,
+				7A8AB6751E83830E00D62ABF /* main.m */,
+				7A8AB6761E83830E00D62ABF /* Media.xcassets */,
+				7A8AB6771E83830E00D62ABF /* more@2x.png */,
+				7A8AB6781E83830E00D62ABF /* Next@2x.png */,
+				7A8AB6791E83830E00D62ABF /* parser.js */,
+				7A8AB67A1E83830E00D62ABF /* placeholder@2x.png */,
+				7A8AB67B1E83830E00D62ABF /* placeholderr@2x.png */,
+				7A8AB67C1E83830E00D62ABF /* Podfile */,
+				7A8AB67D1E83830E00D62ABF /* pop.wav */,
+				7A8AB67E1E83830E00D62ABF /* rss.js */,
+				7A8AB67F1E83830E00D62ABF /* RussianDollView.h */,
+				7A8AB6801E83830E00D62ABF /* settings.plist */,
+				7A8AB6811E83830E00D62ABF /* UIBarButtonItem+Badge.h */,
+				7A8AB6821E83830E00D62ABF /* UIBarButtonItem+Badge.m */,
+				7A8AB6831E83830E00D62ABF /* UIView+JasonComponentPayload.h */,
+				7A8AB6841E83830E00D62ABF /* UIView+JasonComponentPayload.m */,
+			);
+			path = Jasonette;
+			sourceTree = "<group>";
+		};
 		85E170701E81006900EE6082 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -6955,6 +7224,7 @@
 		85E1757A1E81006D00EE6082 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				7A8AB61F1E83830D00D62ABF /* Jasonette */,
 				85E1757B1E81006D00EE6082 /* FBTweak */,
 				85E175991E81006D00EE6082 /* iCarousel.h */,
 				85E1759A1E81006D00EE6082 /* iCarousel.m */,
@@ -10063,6 +10333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85E180511E81007600EE6082 /* CourierNoteViewCell.xib in Resources */,
+				7A8AB6B91E83830E00D62ABF /* parser.js in Resources */,
 				85E17FB51E81007500EE6082 /* HistoryProductViewController.xib in Resources */,
 				85E1800F1E81007600EE6082 /* InboxResolutionCenterOpenViewController.xib in Resources */,
 				85E182DC1E81007900EE6082 /* icon_wishlist.png in Resources */,
@@ -10095,6 +10366,7 @@
 				85E17F7F1E81007500EE6082 /* DepositListBankViewController.xib in Resources */,
 				85E181391E81007700EE6082 /* RejectReasonEmptyStockCell.xib in Resources */,
 				85E180E91E81007700EE6082 /* PulsaOperatorCell.xib in Resources */,
+				7A8AB6B41E83830E00D62ABF /* LaunchScreen.storyboard in Resources */,
 				85E180401E81007600EE6082 /* MyShopEtalaseDetailViewController.xib in Resources */,
 				85E182CC1E81007900EE6082 /* icon_cart@3x.png in Resources */,
 				85E17F351E81007500EE6082 /* CameraCollectionViewController.xib in Resources */,
@@ -10107,6 +10379,7 @@
 				85E182151E81007800EE6082 /* FilterConditionCell.xib in Resources */,
 				85E180551E81007600EE6082 /* CourierProductViewCell.xib in Resources */,
 				85E182DB1E81007900EE6082 /* icon_more_active@3x.png in Resources */,
+				7A8AB68A1E83830E00D62ABF /* icon-info@2x.png in Resources */,
 				85E17F6D1E81007500EE6082 /* NoResultView.xib in Resources */,
 				85E181531E81007700EE6082 /* OrderDetailProductCell.xib in Resources */,
 				85E181841E81007700EE6082 /* ShipmentStatusViewController.xib in Resources */,
@@ -10115,6 +10388,7 @@
 				85E1808B1E81007600EE6082 /* ProductAddEditDetailViewController.xib in Resources */,
 				85E17F261E81007500EE6082 /* StickyAlertView.xib in Resources */,
 				85E182C71E81007900EE6082 /* icon_snap@3x.png in Resources */,
+				7A8AB6B21E83830E00D62ABF /* JasonVerticalSectionItem.xib in Resources */,
 				85E180781E81007600EE6082 /* DetailProductVideoTableViewCell.xib in Resources */,
 				85E182E61E81007900EE6082 /* LICENSE in Resources */,
 				85E1805D1E81007600EE6082 /* ShipmentPostalCodeViewCell.xib in Resources */,
@@ -10128,9 +10402,11 @@
 				85E17F331E81007500EE6082 /* CameraCollectionCell.xib in Resources */,
 				85E182E91E81007900EE6082 /* MGSwipeTableCell.podspec in Resources */,
 				85E17F191E81007400EE6082 /* AlertPickerView.xib in Resources */,
+				7A8AB6861E83830E00D62ABF /* ding.wav in Resources */,
 				85E181E51E81007800EE6082 /* EditShopTypeViewCell.xib in Resources */,
 				85E17F441E81007500EE6082 /* CatalogProductCell.xib in Resources */,
 				85E181B61E81007800EE6082 /* SettingBankEditViewController.xib in Resources */,
+				7A8AB6BC1E83830E00D62ABF /* Podfile in Resources */,
 				85E1802F1E81007600EE6082 /* ActivatePushInstructionViewController.xib in Resources */,
 				85E1823E1E81007800EE6082 /* TrackOrderViewController.xib in Resources */,
 				85E17FF81E81007600EE6082 /* InboxResolutionCenterComplainCell.xib in Resources */,
@@ -10223,6 +10499,7 @@
 				85E181F41E81007800EE6082 /* ShopInfoAddressView.xib in Resources */,
 				85E181371E81007700EE6082 /* RejectReasonEditPriceViewController.xib in Resources */,
 				85E1800B1E81007600EE6082 /* InboxResolSplitViewController.xib in Resources */,
+				7A8AB68C1E83830E00D62ABF /* icon-success@2x.png in Resources */,
 				85E181591E81007700EE6082 /* OrderDetailViewController.xib in Resources */,
 				85E181F01E81007800EE6082 /* DetailStatisticViewController.xib in Resources */,
 				85E17FEC1E81007500EE6082 /* InboxMessageDetailCell.xib in Resources */,
@@ -10235,14 +10512,17 @@
 				85E181A71E81007800EE6082 /* SettingAddressEditViewController.xib in Resources */,
 				85E180B91E81007600EE6082 /* MyReviewDetailViewController.xib in Resources */,
 				DA461A421E812E1F0085C2E6 /* SettingTouchIDViewController.xib in Resources */,
+				7A8AB6881E83830E00D62ABF /* icon-error@2x.png in Resources */,
 				85E182C61E81007900EE6082 /* icon_snap@2x.png in Resources */,
 				85E181B81E81007800EE6082 /* SettingNotificationCell.xib in Resources */,
 				85E181C21E81007800EE6082 /* ProfileSettingViewController.xib in Resources */,
+				7A8AB6BB1E83830E00D62ABF /* placeholderr@2x.png in Resources */,
 				85E180371E81007600EE6082 /* WebViewController.xib in Resources */,
 				85E182471E81007800EE6082 /* TransactionShipmentATCTableViewCell.xib in Resources */,
 				85E182C31E81007900EE6082 /* badge_official_small@2x.png in Resources */,
 				85E17FAA1E81007500EE6082 /* GeneralTableViewController.xib in Resources */,
 				85E182571E81007800EE6082 /* TransactionCartEditViewController.xib in Resources */,
+				7A8AB6BA1E83830E00D62ABF /* placeholder@2x.png in Resources */,
 				85E182A91E81007900EE6082 /* TalkCell.xib in Resources */,
 				85E181A01E81007800EE6082 /* SearchResultViewController.xib in Resources */,
 				85E1821B1E81007800EE6082 /* FilterLocationViewCell.xib in Resources */,
@@ -10283,6 +10563,7 @@
 				85E1817B1E81007700EE6082 /* DetailShipmentStatusCell.xib in Resources */,
 				85E1807C1E81007600EE6082 /* DetailProductWholesaleCell.xib in Resources */,
 				85E181E81E81007800EE6082 /* ShopFavoritedCell.xib in Resources */,
+				7A8AB6BE1E83830E00D62ABF /* rss.js in Resources */,
 				85E1814A1E81007700EE6082 /* SalesNewOrderViewController.xib in Resources */,
 				85E182491E81007800EE6082 /* TransactionShipmentATCTableViewController.xib in Resources */,
 				85E1816C1E81007700EE6082 /* CancelOrderShipmentViewController.xib in Resources */,
@@ -10290,6 +10571,7 @@
 				85E1817D1E81007700EE6082 /* DetailShipmentStatusViewController.xib in Resources */,
 				85E17F501E81007500EE6082 /* CatalogViewController.xib in Resources */,
 				85E17F591E81007500EE6082 /* CategoryResultViewController.xib in Resources */,
+				7A8AB6BF1E83830E00D62ABF /* settings.plist in Resources */,
 				85E1815D1E81007700EE6082 /* OrderProductView.xib in Resources */,
 				85E17FC01E81007500EE6082 /* HomeSliderView.xib in Resources */,
 				85E181571E81007700EE6082 /* OrderDetailReceiverView.xib in Resources */,
@@ -10299,6 +10581,7 @@
 				85E17F051E81007400EE6082 /* AlertDonation.xib in Resources */,
 				85E1815F1E81007700EE6082 /* OrderTotalView.xib in Resources */,
 				85E17FC71E81007500EE6082 /* HomeTabViewController.xib in Resources */,
+				7A8AB6891E83830E00D62ABF /* icon-info.png in Resources */,
 				85E17F2D1E81007500EE6082 /* CameraController.xib in Resources */,
 				85E182111E81007800EE6082 /* ShopTalkPageViewController.xib in Resources */,
 				85E17F791E81007500EE6082 /* DepositFormAccountBankViewController.xib in Resources */,
@@ -10313,12 +10596,14 @@
 				85E17F0D1E81007400EE6082 /* AlertListBankView.xib in Resources */,
 				85E181301E81007700EE6082 /* ProductQuantityViewController.xib in Resources */,
 				85E181651E81007700EE6082 /* SalesOrderCell.xib in Resources */,
+				7A8AB6871E83830E00D62ABF /* icon-error.png in Resources */,
 				85E180001E81007600EE6082 /* EditSolutionBuyerViewController.xib in Resources */,
 				85E17FD81E81007500EE6082 /* PromoViewController.xib in Resources */,
 				85E180131E81007600EE6082 /* ResolutionCenterDetailCell.xib in Resources */,
 				85E17F571E81007500EE6082 /* FilterCategoryViewCell.xib in Resources */,
 				85E17EEF1E81007400EE6082 /* PhoneVerificationViewController.xib in Resources */,
 				85E180031E81007600EE6082 /* EditSolutionSellerCell.xib in Resources */,
+				7A8AB68D1E83830E00D62ABF /* Info.plist in Resources */,
 				85E182D51E81007900EE6082 /* icon_login_active.png in Resources */,
 				85E1806C1E81007600EE6082 /* DetailProductDescriptionCell.xib in Resources */,
 				85E181CC1E81007800EE6082 /* OpenShopImageViewCell.xib in Resources */,
@@ -10335,6 +10620,7 @@
 				85E182931E81007900EE6082 /* ProfileFavoriteShopCell.xib in Resources */,
 				85E182891E81007900EE6082 /* WebViewInvoiceViewController.xib in Resources */,
 				85E180EC1E81007700EE6082 /* PulsaOperatorViewController.xib in Resources */,
+				7A8AB6B71E83830E00D62ABF /* more@2x.png in Resources */,
 				85E17FA01E81007500EE6082 /* GeneralProductCollectionViewCell.xib in Resources */,
 				85E17EE71E81007400EE6082 /* CreatePasswordViewController.xib in Resources */,
 				85E180A81E81007600EE6082 /* GiveReviewDetailViewController.xib in Resources */,
@@ -10395,6 +10681,7 @@
 				85E17FB01E81007500EE6082 /* FavoritedShopCell.xib in Resources */,
 				85E181551E81007700EE6082 /* OrderDetailProductInformationCell.xib in Resources */,
 				85E180201E81007600EE6082 /* InboxTicketCell.xib in Resources */,
+				7A8AB6B81E83830E00D62ABF /* Next@2x.png in Resources */,
 				85E181241E81007700EE6082 /* HeaderCollectionReusableView.xib in Resources */,
 				85E182DE1E81007900EE6082 /* icon_wishlist@3x.png in Resources */,
 				85E182771E81007900EE6082 /* TxOrderStatusDetailViewController.xib in Resources */,
@@ -10408,7 +10695,9 @@
 				85E180691E81007600EE6082 /* PriceAlertCell.xib in Resources */,
 				85E1818B1E81007700EE6082 /* SearchAutoCompleteCell.xib in Resources */,
 				85E1812C1E81007700EE6082 /* OrderRejectExplanationViewController.xib in Resources */,
+				7A8AB69A1E83830E00D62ABF /* JasonHorizontalSection.xib in Resources */,
 				85E182081E81007800EE6082 /* ShopNotesPageViewController.xib in Resources */,
+				7A8AB6BD1E83830E00D62ABF /* pop.wav in Resources */,
 				85E17FFC1E81007600EE6082 /* EditProductTroubleCell.xib in Resources */,
 				85E180C31E81007600EE6082 /* ProductReputationTableViewCell.xib in Resources */,
 				85E1814D1E81007700EE6082 /* OrderBuyerView.xib in Resources */,
@@ -10425,6 +10714,7 @@
 				85E181FC1E81007800EE6082 /* SendMessageViewController.xib in Resources */,
 				85E17F6B1E81007500EE6082 /* NoResult.xib in Resources */,
 				85E1801A1E81007600EE6082 /* InboxTalkCell.xib in Resources */,
+				7A8AB68B1E83830E00D62ABF /* icon-success.png in Resources */,
 				85E180861E81007600EE6082 /* ProductTalkViewController.xib in Resources */,
 				85E181FA1E81007800EE6082 /* ShopInfoViewController.xib in Resources */,
 				85E181F21E81007800EE6082 /* ShopInfoAddressCell.xib in Resources */,
@@ -10441,9 +10731,12 @@
 				85E17FD11E81007500EE6082 /* MyWishlistViewController.xib in Resources */,
 				85E181DC1E81007800EE6082 /* CloseShopViewController.xib in Resources */,
 				85E17FA61E81007500EE6082 /* GeneralTextFieldCell.xib in Resources */,
+				7A8AB6B61E83830E00D62ABF /* Media.xcassets in Resources */,
 				85E1820C1E81007800EE6082 /* ShopProductPageViewController.xib in Resources */,
 				85E182AB1E81007900EE6082 /* TalkProductCell.xib in Resources */,
 				85E17F171E81007400EE6082 /* AlertPhoneVerification.xib in Resources */,
+				7A8AB69C1E83830E00D62ABF /* JasonHorizontalSectionItem.xib in Resources */,
+				7A8AB6851E83830E00D62ABF /* csv.js in Resources */,
 				85E182D01E81007900EE6082 /* icon_home@3x.png in Resources */,
 				85E17F091E81007400EE6082 /* AlertInfoView.xib in Resources */,
 				85E182D91E81007900EE6082 /* icon_more_active.png in Resources */,
@@ -10626,6 +10919,7 @@
 				85E17F631E81007500EE6082 /* TKPDTabViewController.m in Sources */,
 				85E17F9A1E81007500EE6082 /* GeneralCheckmarkCell.m in Sources */,
 				85E17EE21E81007400EE6082 /* TKPStoreManager.m in Sources */,
+				7A8AB6981E83830E00D62ABF /* JasonHelper.m in Sources */,
 				85E17D191E81007300EE6082 /* EnvelopeResponse.swift in Sources */,
 				85E180341E81007600EE6082 /* SalesViewController.m in Sources */,
 				85E17D681E81007300EE6082 /* InboxReviewActionResult.m in Sources */,
@@ -10639,6 +10933,7 @@
 				85E17E031E81007400EE6082 /* SearchAutoCompleteCategory.m in Sources */,
 				85E17DD11E81007400EE6082 /* PromoCategory.m in Sources */,
 				85E17C791E81007300EE6082 /* NSURL+TKPURL.m in Sources */,
+				7A8AB6961E83830E00D62ABF /* JasonConvertAction.m in Sources */,
 				85E1827A1E81007900EE6082 /* TxOrderTransactionDetailViewController.m in Sources */,
 				85E17E4D1E81007400EE6082 /* PosMinWeight.m in Sources */,
 				85E180761E81007600EE6082 /* DetailProductVideoResponse.swift in Sources */,
@@ -10654,6 +10949,7 @@
 				85E181EB1E81007800EE6082 /* ShopDescriptionView.m in Sources */,
 				85E17D101E81007300EE6082 /* TalkCommentResult.m in Sources */,
 				85E17D9F1E81007300EE6082 /* NotificationInbox.m in Sources */,
+				7A8AB6AE1E83830E00D62ABF /* JasonTextfieldComponent.m in Sources */,
 				85E181DA1E81007800EE6082 /* CloseShopResult.m in Sources */,
 				85E180721E81007600EE6082 /* DetailProductVideoCollectionViewCell.swift in Sources */,
 				85E182161E81007800EE6082 /* FilterConditionViewController.m in Sources */,
@@ -10770,6 +11066,7 @@
 				85E17CC31E81007300EE6082 /* SecurityQuestionResult.m in Sources */,
 				85E180D21E81007600EE6082 /* ProductReputationSimpleCell.m in Sources */,
 				85E17FAE1E81007500EE6082 /* RedirectHandler.m in Sources */,
+				7A8AB6B31E83830E00D62ABF /* JasonViewController.m in Sources */,
 				85E1804D1E81007600EE6082 /* CourierInfoViewCell.m in Sources */,
 				85E17DF01E81007400EE6082 /* OrderPayment.m in Sources */,
 				85E182401E81007800EE6082 /* RequestATC.m in Sources */,
@@ -10780,6 +11077,7 @@
 				85E17E961E81007400EE6082 /* TxOrderConfirmedList.m in Sources */,
 				85E17D341E81007300EE6082 /* HistoryProductResult.m in Sources */,
 				85E180EE1E81007700EE6082 /* PulsaProductAttribute.swift in Sources */,
+				7A8AB6901E83830E00D62ABF /* JasonAppDelegate.m in Sources */,
 				85E181641E81007700EE6082 /* SalesOrderCell.m in Sources */,
 				85E17E241E81007400EE6082 /* NoteActionResult.swift in Sources */,
 				85E180071E81007600EE6082 /* ReplayConversationPostData.swift in Sources */,
@@ -10815,6 +11113,7 @@
 				85E17D2E1E81007300EE6082 /* GooglePlaceDetailLocation.m in Sources */,
 				85E17D941E81007300EE6082 /* MyReviewReputationViewModel.m in Sources */,
 				85E17EB81E81007400EE6082 /* UploadImageParams.m in Sources */,
+				7A8AB69F1E83830E00D62ABF /* JasonLabelComponent.m in Sources */,
 				85E17D2F1E81007300EE6082 /* GoogleplaceDetailResult.m in Sources */,
 				85E17E5F1E81007400EE6082 /* CartShipmentForm.swift in Sources */,
 				85E17E601E81007400EE6082 /* RateAttributes.m in Sources */,
@@ -10863,12 +11162,14 @@
 				85E182711E81007900EE6082 /* ListOrderInvoiceComponent.mm in Sources */,
 				85E17DC51E81007400EE6082 /* AddressFormList.m in Sources */,
 				85E17EFA1E81007400EE6082 /* AddressRequest.swift in Sources */,
+				7A8AB68E1E83830E00D62ABF /* Jason.m in Sources */,
 				85E17D791E81007300EE6082 /* InboxTicketResultDetail.m in Sources */,
 				85E17EC61E81007400EE6082 /* _FBTweakArrayViewController.m in Sources */,
 				85E17FB41E81007500EE6082 /* HistoryProductViewController.m in Sources */,
 				85E180CD1E81007600EE6082 /* SegmentedReviewReputationViewController.m in Sources */,
 				85E17F1B1E81007500EE6082 /* AlertShipmentCodeView.m in Sources */,
 				85E17DC41E81007400EE6082 /* AddressForm.m in Sources */,
+				7A8AB6AB1E83830E00D62ABF /* JasonSpaceComponent.m in Sources */,
 				85E182601E81007800EE6082 /* RequestCart.m in Sources */,
 				85E181B51E81007800EE6082 /* SettingBankEditViewController.m in Sources */,
 				85E17FED1E81007500EE6082 /* InboxMessageDetailViewController.m in Sources */,
@@ -10904,6 +11205,7 @@
 				85E17F961E81007500EE6082 /* ResetPasswordSuccessViewController.swift in Sources */,
 				85E17C6A1E81007300EE6082 /* URLCacheAlert.m in Sources */,
 				85E180E21E81007700EE6082 /* PulsaCategoryRoot.swift in Sources */,
+				7A8AB69D1E83830E00D62ABF /* JasonHtmlComponent.m in Sources */,
 				85E180461E81007600EE6082 /* MyShopNoteViewController.m in Sources */,
 				85E17D361E81007300EE6082 /* HotlistBannerInfo.m in Sources */,
 				85E17F781E81007500EE6082 /* DepositFormAccountBankViewController.m in Sources */,
@@ -11003,6 +11305,7 @@
 				85E180321E81007600EE6082 /* MoreViewController.m in Sources */,
 				85E17D071E81007300EE6082 /* ReviewProductOwner.m in Sources */,
 				85E181B11E81007800EE6082 /* SettingBankAccountViewController.m in Sources */,
+				7A8AB6A61E83830E00D62ABF /* JasonOauthAction.m in Sources */,
 				85E17F7C1E81007500EE6082 /* DepositListBankCell.m in Sources */,
 				85E180A41E81007600EE6082 /* AttachedPicture.m in Sources */,
 				85E182371E81007800EE6082 /* TopPicksResponseData.swift in Sources */,
@@ -11011,6 +11314,7 @@
 				85E1822B1E81007800EE6082 /* TKPMapView.swift in Sources */,
 				85E17F4F1E81007500EE6082 /* CatalogViewController.m in Sources */,
 				85E182A61E81007900EE6082 /* ProductThumbCell.m in Sources */,
+				7A8AB6991E83830E00D62ABF /* JasonHorizontalSection.m in Sources */,
 				85E17D701E81007300EE6082 /* ConversationViewModel.m in Sources */,
 				85E17FCC1E81007500EE6082 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
 				85E182AD1E81007900EE6082 /* VTAddress.m in Sources */,
@@ -11094,6 +11398,7 @@
 				85E17C9E1E81007300EE6082 /* UIImage+Resize.m in Sources */,
 				85E1813E1E81007700EE6082 /* RejectReasonEmptyVariantViewController.m in Sources */,
 				85E181951E81007700EE6082 /* SearchViewController.m in Sources */,
+				7A8AB6A21E83830E00D62ABF /* JasonMapComponent.m in Sources */,
 				85E180451E81007600EE6082 /* MyShopNoteRequest.swift in Sources */,
 				85E17CA51E81007300EE6082 /* NSString+MD5.m in Sources */,
 				85E17D061E81007300EE6082 /* ReviewList.m in Sources */,
@@ -11172,6 +11477,7 @@
 				85E17ED81E81007400EE6082 /* README.md in Sources */,
 				85E1808F1E81007600EE6082 /* ProductEditImageViewController.m in Sources */,
 				85E17FF11E81007500EE6082 /* InboxRootViewController.m in Sources */,
+				7A8AB6A01E83830E00D62ABF /* JasonLayer.m in Sources */,
 				85E17E8E1E81007400EE6082 /* TransactionVoucherResult.m in Sources */,
 				85E180261E81007600EE6082 /* InboxTicketSplitViewController.m in Sources */,
 				85E17F101E81007400EE6082 /* AlertListView.m in Sources */,
@@ -11211,9 +11517,11 @@
 				85E17D0C1E81007300EE6082 /* Statistic.m in Sources */,
 				85E17C9A1E81007300EE6082 /* TKPDSecureStorage.m in Sources */,
 				85E17DDA1E81007400EE6082 /* Reputation.m in Sources */,
+				7A8AB6A11E83830E00D62ABF /* JasonLayout.m in Sources */,
 				85E17E901E81007400EE6082 /* TxEMoneyData.m in Sources */,
 				85E17E021E81007400EE6082 /* SearchAutoCompleteCatalog.m in Sources */,
 				85E17D801E81007300EE6082 /* LikeDislikePost.m in Sources */,
+				7A8AB6AC1E83830E00D62ABF /* JasonStack.m in Sources */,
 				85E17CC91E81007300EE6082 /* AddressObj.m in Sources */,
 				85E17DB11E81007300EE6082 /* ProductTalkCommentAction.m in Sources */,
 				85E17EDD1E81007400EE6082 /* TKPGoogleDistanceMatrixProductStore.m in Sources */,
@@ -11241,6 +11549,7 @@
 				85E182121E81007800EE6082 /* ShopViewController.swift in Sources */,
 				85E17E071E81007400EE6082 /* SearchAutoCompleteObject.m in Sources */,
 				85E1816F1E81007700EE6082 /* ChangeCourierViewController.m in Sources */,
+				7A8AB6AF1E83830E00D62ABF /* JasonTimerAction.m in Sources */,
 				85E17EDA1E81007400EE6082 /* StyledPageControl.m in Sources */,
 				85E182131E81007800EE6082 /* SmileyAndMedal.m in Sources */,
 				85E17E271E81007400EE6082 /* NoteDetails.swift in Sources */,
@@ -11313,6 +11622,7 @@
 				85E17EC91E81007400EE6082 /* _FBTweakCollectionViewController.m in Sources */,
 				85E180061E81007600EE6082 /* ProductResolutionViewModel.swift in Sources */,
 				85E17F871E81007500EE6082 /* FilterCells.swift in Sources */,
+				7A8AB6A71E83830E00D62ABF /* JasonParser.m in Sources */,
 				85E17DA21E81007300EE6082 /* NotificationSales.m in Sources */,
 				85E1826A1E81007800EE6082 /* MappingLDExtension.m in Sources */,
 				85E17DD31E81007400EE6082 /* PromoProductImage.m in Sources */,
@@ -11348,11 +11658,13 @@
 				85E17C7E1E81007300EE6082 /* UIImage+ImageEffects.m in Sources */,
 				85E181F31E81007800EE6082 /* ShopInfoAddressView.m in Sources */,
 				85E17DA31E81007300EE6082 /* Paging.m in Sources */,
+				7A8AB6A41E83830E00D62ABF /* JasonMemory.m in Sources */,
 				85E17CCB1E81007300EE6082 /* AddressResult.m in Sources */,
 				85E17FE91E81007500EE6082 /* InboxMessageCell.m in Sources */,
 				85E17D561E81007300EE6082 /* EditResolutionForm.swift in Sources */,
 				85E180881E81007600EE6082 /* ProductAddCaptionViewController.m in Sources */,
 				85E182B41E81007900EE6082 /* VTiOSAPI.m in Sources */,
+				7A8AB6A91E83830E00D62ABF /* JasonSessionAction.m in Sources */,
 				85E182671E81007800EE6082 /* PaymentConfirmation.swift in Sources */,
 				85E17EA61E81007400EE6082 /* TxOrderPaymentEditMethod.m in Sources */,
 				85E17E301E81007400EE6082 /* Shipment.m in Sources */,
@@ -11372,6 +11684,7 @@
 				85E17F4D1E81007500EE6082 /* CatalogSpecificationCell.m in Sources */,
 				85E17D841E81007300EE6082 /* TotalLikeDislikePost.m in Sources */,
 				85E17F771E81007500EE6082 /* DepositBankRequest.swift in Sources */,
+				7A8AB6951E83830E00D62ABF /* JasonComponentFactory.m in Sources */,
 				85E1805C1E81007600EE6082 /* ShipmentPostalCodeViewCell.m in Sources */,
 				85E181541E81007700EE6082 /* OrderDetailProductInformationCell.m in Sources */,
 				85E182E51E81007900EE6082 /* MarqueeLabel.m in Sources */,
@@ -11395,6 +11708,7 @@
 				85E17DFF1E81007400EE6082 /* ImageSearchResponseData.m in Sources */,
 				85E17FEF1E81007500EE6082 /* InboxMessageViewController.m in Sources */,
 				85E17F511E81007500EE6082 /* FilterCatalogViewController.m in Sources */,
+				7A8AB6921E83830E00D62ABF /* JasonButtonComponent.m in Sources */,
 				85E17C9C1E81007300EE6082 /* TopAlignedLabel.m in Sources */,
 				85E17DC31E81007400EE6082 /* ProfileSettingsResult.m in Sources */,
 				85E17F611E81007500EE6082 /* TKPDTabNavigationController.m in Sources */,
@@ -11405,6 +11719,7 @@
 				85E180B81E81007600EE6082 /* MyReviewDetailViewController.mm in Sources */,
 				85E17F3F1E81007500EE6082 /* TKPImagePickerCameraCell.swift in Sources */,
 				85E180DD1E81007700EE6082 /* Debouncer.swift in Sources */,
+				7A8AB69B1E83830E00D62ABF /* JasonHorizontalSectionItem.m in Sources */,
 				85E17CC81E81007300EE6082 /* AddressDistrict.m in Sources */,
 				85E17FBA1E81007500EE6082 /* HomePageCategoryLayoutRow.swift in Sources */,
 				85E17EA91E81007400EE6082 /* TxOrderPaymentEditSystemBank.m in Sources */,
@@ -11494,6 +11809,7 @@
 				85E17EF31E81007400EE6082 /* SecurityQuestionViewController.swift in Sources */,
 				85E180FC1E81007700EE6082 /* PulsaStatusRoot.swift in Sources */,
 				85E17E9B1E81007400EE6082 /* TxOrderConfirmedDetailPayment.m in Sources */,
+				7A8AB6AD1E83830E00D62ABF /* JasonTextareaComponent.m in Sources */,
 				85E17CBF1E81007300EE6082 /* OTPOnCall.swift in Sources */,
 				85E180821E81007600EE6082 /* GalleryViewController.m in Sources */,
 				85E17E7E1E81007400EE6082 /* OrderShop.m in Sources */,
@@ -11505,6 +11821,7 @@
 				85E17E541E81007400EE6082 /* ShippingInfoShipments.m in Sources */,
 				85E17C6B1E81007300EE6082 /* URLCacheConnection.m in Sources */,
 				85E17F4B1E81007500EE6082 /* CatalogShopViewController.m in Sources */,
+				7A8AB6931E83830E00D62ABF /* JasonCacheAction.m in Sources */,
 				85E17CB21E81007300EE6082 /* LoginResult.m in Sources */,
 				85E17DBA1E81007400EE6082 /* ProfileEdit.m in Sources */,
 				85E17FD21E81007500EE6082 /* MyWishlistWholesalePrice.swift in Sources */,
@@ -11550,6 +11867,7 @@
 				85E181181E81007700EE6082 /* ResolutionCenterCreateTroubleList.m in Sources */,
 				85E180C01E81007600EE6082 /* ProductReputationCell.m in Sources */,
 				85E181A61E81007800EE6082 /* SettingAddressEditViewController.m in Sources */,
+				7A8AB6A31E83830E00D62ABF /* JasonMediaAction.m in Sources */,
 				85E180AD1E81007600EE6082 /* HelpfulReviewRequest.m in Sources */,
 				85E1810C1E81007700EE6082 /* ResolutionCenterCreateResult.m in Sources */,
 				85E1818D1E81007700EE6082 /* SearchAutoCompleteHelper.swift in Sources */,
@@ -11560,6 +11878,7 @@
 				DA461A411E812E1F0085C2E6 /* SettingTouchIDViewController.swift in Sources */,
 				85E17D831E81007300EE6082 /* TotalLikeDislike.m in Sources */,
 				85E17F8B1E81007500EE6082 /* FiltersListDataSource.swift in Sources */,
+				7A8AB6B01E83830E00D62ABF /* JasonUtilAction.m in Sources */,
 				85E17C711E81007300EE6082 /* NSData+Encryption.m in Sources */,
 				85E17D951E81007300EE6082 /* ProductOwner.m in Sources */,
 				85E180391E81007600EE6082 /* MyShopAddressDetailViewController.m in Sources */,
@@ -11611,6 +11930,7 @@
 				85E17C7F1E81007300EE6082 /* UIImageEffects.m in Sources */,
 				85E17D0E1E81007300EE6082 /* TalkComment.m in Sources */,
 				85E17C9B1E81007300EE6082 /* TKPDStackView.m in Sources */,
+				7A8AB6B11E83830E00D62ABF /* JasonVerticalSectionItem.m in Sources */,
 				85E180DC1E81007700EE6082 /* PromoRequest.m in Sources */,
 				85E17E7D1E81007400EE6082 /* OrderExtraFee.m in Sources */,
 				85E17EC11E81007400EE6082 /* WalletStore.swift in Sources */,
@@ -11651,6 +11971,7 @@
 				85E17E6C1E81007400EE6082 /* TransactionAddressShippingForm.m in Sources */,
 				85E17E551E81007400EE6082 /* ShopShipping.m in Sources */,
 				85E180F71E81007700EE6082 /* PulsaRelationOperator.swift in Sources */,
+				7A8AB6C11E83830E00D62ABF /* UIView+JasonComponentPayload.m in Sources */,
 				85E17FCE1E81007500EE6082 /* MyWishlistShop.swift in Sources */,
 				85E17CA91E81007300EE6082 /* UserAuthentificationManager.m in Sources */,
 				85E17CB11E81007300EE6082 /* Login.m in Sources */,
@@ -11660,12 +11981,14 @@
 				85E1803D1E81007600EE6082 /* MyShopAddressViewController.m in Sources */,
 				85E1824A1E81007800EE6082 /* TransactionShipmentATCViewController.m in Sources */,
 				85E17C7A1E81007300EE6082 /* UIActivityViewController+Extensions.m in Sources */,
+				7A8AB6A51E83830E00D62ABF /* JasonNetworkAction.m in Sources */,
 				85E17C951E81007300EE6082 /* OAStackViewCategory.m in Sources */,
 				85E182001E81007800EE6082 /* EtalaseCell.m in Sources */,
 				85E17E1F1E81007400EE6082 /* Etalase.m in Sources */,
 				85E17EDB1E81007400EE6082 /* SwipeView.m in Sources */,
 				85E17D041E81007300EE6082 /* RatingList.m in Sources */,
 				85E17D611E81007300EE6082 /* ResolutionDispute.m in Sources */,
+				7A8AB6911E83830E00D62ABF /* JasonAudioAction.m in Sources */,
 				85E1809F1E81007600EE6082 /* ReportProductGetTypeResult.swift in Sources */,
 				85E17D2C1E81007300EE6082 /* GoogleDistanceMatrixRows.m in Sources */,
 				85E17E491E81007400EE6082 /* District.m in Sources */,
@@ -11723,6 +12046,7 @@
 				85E17FDD1E81007500EE6082 /* HotlistCell.m in Sources */,
 				85E180B41E81007600EE6082 /* MyReviewDetailDataManager.mm in Sources */,
 				85E182BE1E81007900EE6082 /* MainViewController.m in Sources */,
+				7A8AB69E1E83830E00D62ABF /* JasonImageComponent.m in Sources */,
 				85E17D921E81007300EE6082 /* MyReviewReputation.m in Sources */,
 				85E17E481E81007400EE6082 /* City.m in Sources */,
 				85E17D0F1E81007300EE6082 /* TalkCommentList.m in Sources */,
@@ -11733,6 +12057,7 @@
 				85E180F11E81007700EE6082 /* PulsaProductPromo.swift in Sources */,
 				85E17DA01E81007300EE6082 /* NotificationPurchase.m in Sources */,
 				85E17D9B1E81007300EE6082 /* SubmitReview.m in Sources */,
+				7A8AB6C01E83830E00D62ABF /* UIBarButtonItem+Badge.m in Sources */,
 				85E17F321E81007500EE6082 /* CameraCollectionCell.m in Sources */,
 				85E17F5F1E81007500EE6082 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				85E181251E81007700EE6082 /* NoResultReusableView.m in Sources */,
@@ -11766,6 +12091,7 @@
 				85E17F901E81007500EE6082 /* RequestFilter.swift in Sources */,
 				85E17EE11E81007400EE6082 /* TKPMappingManager.m in Sources */,
 				85E1826F1E81007900EE6082 /* ListOrderButtonsComponent.mm in Sources */,
+				7A8AB6971E83830E00D62ABF /* JasonGeoAction.m in Sources */,
 				85E17F8A1E81007500EE6082 /* FiltersController.swift in Sources */,
 				85E17E891E81007400EE6082 /* TransactionSummaryDetail.m in Sources */,
 				85E17EBB1E81007400EE6082 /* UploadImageSubmitResult.m in Sources */,
@@ -11837,6 +12163,7 @@
 				85E17D371E81007300EE6082 /* HotlistBannerQuery.m in Sources */,
 				85E17E751E81007400EE6082 /* TransactionCalculatePriceResult.m in Sources */,
 				85E17E561E81007400EE6082 /* Tiki.m in Sources */,
+				7A8AB6AA1E83830E00D62ABF /* JasonSliderComponent.m in Sources */,
 				85E17CE51E81007300EE6082 /* DepositResult.m in Sources */,
 				85E181941E81007700EE6082 /* SearchSuggestionItem.swift in Sources */,
 				85E1808E1E81007600EE6082 /* ProductCellSize.swift in Sources */,
@@ -11846,6 +12173,7 @@
 				85E17D311E81007300EE6082 /* GooglePlacesDetail.m in Sources */,
 				85E180B11E81007600EE6082 /* InboxReviewCell.m in Sources */,
 				85E181581E81007700EE6082 /* OrderDetailViewController.m in Sources */,
+				7A8AB68F1E83830E00D62ABF /* JasonAction.m in Sources */,
 				85E17E531E81007400EE6082 /* ShippingInfoShipmentPackage.m in Sources */,
 				85E17D6C1E81007300EE6082 /* InboxReviewResult.m in Sources */,
 				85E17D431E81007300EE6082 /* InboxMessageAction.m in Sources */,
@@ -11863,6 +12191,7 @@
 				85E1823A1E81007800EE6082 /* RequestTrack.m in Sources */,
 				85E17C841E81007300EE6082 /* UITextView+UITextView_Placeholder.m in Sources */,
 				85E17D9D1E81007300EE6082 /* Note.m in Sources */,
+				7A8AB6A81E83830E00D62ABF /* JasonPortraitPicker.m in Sources */,
 				85E17F911E81007500EE6082 /* RequestFilterCategory.swift in Sources */,
 				85E180741E81007600EE6082 /* DetailProductVideoData.swift in Sources */,
 				85E1814B1E81007700EE6082 /* OrderButtonView.swift in Sources */,
@@ -11894,6 +12223,7 @@
 				85E17C8A1E81007300EE6082 /* CMPopTipView.m in Sources */,
 				85E181EF1E81007800EE6082 /* DetailStatisticViewController.m in Sources */,
 				85E17FAD1E81007500EE6082 /* TagManagerHandler.m in Sources */,
+				7A8AB6941E83830E00D62ABF /* JasonComponent.m in Sources */,
 				85E17CBC1E81007300EE6082 /* VerifyOTPResult.m in Sources */,
 				85E181661E81007700EE6082 /* FilterSalesTransactionListViewController.m in Sources */,
 				85E180291E81007600EE6082 /* LoginSecurity.m in Sources */,
