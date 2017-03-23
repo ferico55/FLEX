@@ -2423,16 +2423,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>See http://www.rollout.io/</string>
-			<key>License</key>
-			<string>Commercial</string>
-			<key>Title</key>
-			<string>Rollout.io</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>**The MIT License**
 **Copyright © 2015 Krunoslav Zaher**
 **All rights reserved.**

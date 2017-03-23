@@ -12,7 +12,6 @@ def common_pods
     pod 'GoogleAppIndexing'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
-    pod 'Rollout.io', '~> 1.10.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'

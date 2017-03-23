@@ -140,7 +140,6 @@ PODS:
   - Reveal-iOS-SDK (1.6.2)
   - RichEditorView (3.2.0)
   - RKValueTransformers (1.1.3)
-  - Rollout.io (1.10.0)
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
   - RSKPlaceholderTextView (2.0.0)
@@ -199,7 +198,6 @@ DEPENDENCIES:
   - RestKit/Testing (~> 0.27.0)
   - Reveal-iOS-SDK
   - RichEditorView (from `https://github.com/cjwirth/RichEditorView.git`, commit `2cc2633d2e711b3af45912b2718b4df1c360b8f5`)
-  - Rollout.io (~> 1.10.0)
   - RSKGrowingTextView
   - RSKPlaceholderTextView
   - RxCocoa (~> 3.3.1)
@@ -287,7 +285,6 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RichEditorView: b4ee60a4f5301cbe8f3fcb1f065cdd7de74ddd10
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
-  Rollout.io: 00fff26ab67dd724fa8598fe89ef3261d391fb98
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
@@ -303,6 +300,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: f721fc3bd872f9f729ae91570bb19e08865882b6
+PODFILE CHECKSUM: 8eb86f80b7f0c6cf28d522d930234f6f5f530ddb
 
 COCOAPODS: 1.1.1
