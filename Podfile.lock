@@ -114,6 +114,8 @@ PODS:
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
   - NSAttributedString-DDHTML (1.2.0)
+  - NSObject+Rx (2.0.0):
+    - RxSwift
   - OAStackView (1.0.1)
   - RestKit (0.27.0):
     - RestKit/Core (= 0.27.0)
@@ -142,7 +144,9 @@ PODS:
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
   - RSKPlaceholderTextView (2.0.0)
-  - RxSwift (3.1.0)
+  - RxCocoa (3.3.1):
+    - RxSwift (~> 3.3)
+  - RxSwift (3.3.1)
   - SOCKit (1.1)
   - SPTPersistentCache (1.1.0)
   - SwiftOverlays (3.0.0)
@@ -189,6 +193,7 @@ DEPENDENCIES:
   - MXSegmentedPager (~> 3.2.0)
   - NJKWebViewProgress
   - NSAttributedString-DDHTML (= 1.2.0)
+  - NSObject+Rx (~> 2.0.0)
   - OAStackView (~> 1.0.1)
   - RestKit (~> 0.27.0)
   - RestKit/Testing (~> 0.27.0)
@@ -197,7 +202,8 @@ DEPENDENCIES:
   - Rollout.io (~> 1.10.0)
   - RSKGrowingTextView
   - RSKPlaceholderTextView
-  - RxSwift (~> 3.1.0)
+  - RxCocoa (~> 3.3.1)
+  - RxSwift (~> 3.3.1)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
   - SwiftOverlays
   - TPKeyboardAvoiding
@@ -275,6 +281,7 @@ SPEC CHECKSUMS:
   MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
+  NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
@@ -283,7 +290,8 @@ SPEC CHECKSUMS:
   Rollout.io: 00fff26ab67dd724fa8598fe89ef3261d391fb98
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
-  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
+  RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
+  RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
   SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
@@ -295,6 +303,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 2406689d5307d14735f8bc82fccbef960bb9081d
+PODFILE CHECKSUM: f721fc3bd872f9f729ae91570bb19e08865882b6
 
 COCOAPODS: 1.1.1

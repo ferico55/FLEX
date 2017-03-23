@@ -13,6 +13,10 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		452E95891E64108F001191E0 /* DonationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95861E64108F001191E0 /* DonationUITests.swift */; };
 		452E958A1E64108F001191E0 /* LoginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95871E64108F001191E0 /* LoginUITests.swift */; };
+		455DA67E1E81189D00BF181A /* ListBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA67C1E81189D00BF181A /* ListBankViewController.swift */; };
+		455DA67F1E81189D00BF181A /* ListDetailBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA67D1E81189D00BF181A /* ListDetailBankViewController.swift */; };
+		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
+		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -1601,12 +1605,6 @@
 		85E1827B1E81007900EE6082 /* TxOrderTransactionDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E17B981E81007100EE6082 /* TxOrderTransactionDetailViewController.xib */; };
 		85E1827C1E81007900EE6082 /* UIColor+TextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17B9A1E81007100EE6082 /* UIColor+TextColor.m */; };
 		85E1827D1E81007900EE6082 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17B9D1E81007100EE6082 /* TableViewCell.m */; };
-		85E1827E1E81007900EE6082 /* TxOrderConfirmedBankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17B9F1E81007100EE6082 /* TxOrderConfirmedBankCell.m */; };
-		85E1827F1E81007900EE6082 /* TxOrderConfirmedBankCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E17BA01E81007100EE6082 /* TxOrderConfirmedBankCell.xib */; };
-		85E182801E81007900EE6082 /* TxOrderConfirmedButtonArrowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17BA21E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.m */; };
-		85E182811E81007900EE6082 /* TxOrderConfirmedButtonArrowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E17BA31E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.xib */; };
-		85E182821E81007900EE6082 /* TxOrderConfirmedButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17BA51E81007100EE6082 /* TxOrderConfirmedButtonCell.m */; };
-		85E182831E81007900EE6082 /* TxOrderConfirmedButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E17BA61E81007100EE6082 /* TxOrderConfirmedButtonCell.xib */; };
 		85E182841E81007900EE6082 /* TxOrderConfirmedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17BA81E81007100EE6082 /* TxOrderConfirmedCell.m */; };
 		85E182851E81007900EE6082 /* TxOrderConfirmedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E17BA91E81007100EE6082 /* TxOrderConfirmedCell.xib */; };
 		85E182861E81007900EE6082 /* TxOrderConfirmedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17BAB1E81007100EE6082 /* TxOrderConfirmedViewController.m */; };
@@ -1716,7 +1714,6 @@
 		85E182EE1E81007900EE6082 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E17C5C1E81007200EE6082 /* XYPieChart.m */; };
 		85E182EF1E81007900EE6082 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85E17C641E81007300EE6082 /* Tokopedia-Info.plist */; };
 		85E182F01E81007900EE6082 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 85E17C671E81007300EE6082 /* Tokopedia.xcworkspace */; };
-		85E182F11E8103D100EE6082 /* Donation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E17B4F1E81007100EE6082 /* Donation.swift */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		DA461A381E8124810085C2E6 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA461A361E8124810085C2E6 /* MigrationHelper.swift */; };
@@ -1792,6 +1789,10 @@
 		452E95861E64108F001191E0 /* DonationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationUITests.swift; sourceTree = "<group>"; };
 		452E95871E64108F001191E0 /* LoginUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUITests.swift; sourceTree = "<group>"; };
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		455DA67C1E81189D00BF181A /* ListBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankViewController.swift; sourceTree = "<group>"; };
+		455DA67D1E81189D00BF181A /* ListDetailBankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankViewController.swift; sourceTree = "<group>"; };
+		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
+		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -4430,15 +4431,6 @@
 		85E17B9A1E81007100EE6082 /* UIColor+TextColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+TextColor.m"; sourceTree = "<group>"; };
 		85E17B9C1E81007100EE6082 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		85E17B9D1E81007100EE6082 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
-		85E17B9E1E81007100EE6082 /* TxOrderConfirmedBankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedBankCell.h; sourceTree = "<group>"; };
-		85E17B9F1E81007100EE6082 /* TxOrderConfirmedBankCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedBankCell.m; sourceTree = "<group>"; };
-		85E17BA01E81007100EE6082 /* TxOrderConfirmedBankCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedBankCell.xib; sourceTree = "<group>"; };
-		85E17BA11E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonArrowCell.h; sourceTree = "<group>"; };
-		85E17BA21E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonArrowCell.m; sourceTree = "<group>"; };
-		85E17BA31E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedButtonArrowCell.xib; sourceTree = "<group>"; };
-		85E17BA41E81007100EE6082 /* TxOrderConfirmedButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonCell.h; sourceTree = "<group>"; };
-		85E17BA51E81007100EE6082 /* TxOrderConfirmedButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonCell.m; sourceTree = "<group>"; };
-		85E17BA61E81007100EE6082 /* TxOrderConfirmedButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedButtonCell.xib; sourceTree = "<group>"; };
 		85E17BA71E81007100EE6082 /* TxOrderConfirmedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedCell.h; sourceTree = "<group>"; };
 		85E17BA81E81007100EE6082 /* TxOrderConfirmedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedCell.m; sourceTree = "<group>"; };
 		85E17BA91E81007100EE6082 /* TxOrderConfirmedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedCell.xib; sourceTree = "<group>"; };
@@ -9409,17 +9401,10 @@
 		85E17B9B1E81007100EE6082 /* PaymentConfirmed */ = {
 			isa = PBXGroup;
 			children = (
+				455DA67C1E81189D00BF181A /* ListBankViewController.swift */,
+				455DA67D1E81189D00BF181A /* ListDetailBankViewController.swift */,
 				85E17B9C1E81007100EE6082 /* TableViewCell.h */,
 				85E17B9D1E81007100EE6082 /* TableViewCell.m */,
-				85E17B9E1E81007100EE6082 /* TxOrderConfirmedBankCell.h */,
-				85E17B9F1E81007100EE6082 /* TxOrderConfirmedBankCell.m */,
-				85E17BA01E81007100EE6082 /* TxOrderConfirmedBankCell.xib */,
-				85E17BA11E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.h */,
-				85E17BA21E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.m */,
-				85E17BA31E81007100EE6082 /* TxOrderConfirmedButtonArrowCell.xib */,
-				85E17BA41E81007100EE6082 /* TxOrderConfirmedButtonCell.h */,
-				85E17BA51E81007100EE6082 /* TxOrderConfirmedButtonCell.m */,
-				85E17BA61E81007100EE6082 /* TxOrderConfirmedButtonCell.xib */,
 				85E17BA71E81007100EE6082 /* TxOrderConfirmedCell.h */,
 				85E17BA81E81007100EE6082 /* TxOrderConfirmedCell.m */,
 				85E17BA91E81007100EE6082 /* TxOrderConfirmedCell.xib */,
@@ -9862,6 +9847,8 @@
 		FC36DFA519B0656400AF74C1 /* TokopediaTests */ = {
 			isa = PBXGroup;
 			children = (
+				455DA6821E8118BF00BF181A /* ListBankTests.swift */,
+				455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */,
 				452E95801E64107E001191E0 /* DonationTests.swift */,
 				452E95811E64107E001191E0 /* Fixture */,
 				FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */,
@@ -10073,10 +10060,8 @@
 				85E1807E1E81007600EE6082 /* DetailProductWholesaleTableCell.xib in Resources */,
 				85E181BC1E81007800EE6082 /* SettingPasswordViewController.xib in Resources */,
 				85E180531E81007600EE6082 /* CourierOptionViewCell.xib in Resources */,
-				85E1827F1E81007900EE6082 /* TxOrderConfirmedBankCell.xib in Resources */,
 				85E182851E81007900EE6082 /* TxOrderConfirmedCell.xib in Resources */,
 				85E17F461E81007500EE6082 /* CatalogProductViewController.xib in Resources */,
-				85E182831E81007900EE6082 /* TxOrderConfirmedButtonCell.xib in Resources */,
 				85E180D31E81007600EE6082 /* ProductReputationSimpleCell.xib in Resources */,
 				85E17EF41E81007400EE6082 /* SecurityQuestionViewController.xib in Resources */,
 				85E182E11E81007900EE6082 /* icon_wishlist_active@3x.png in Resources */,
@@ -10256,7 +10241,6 @@
 				85E17F071E81007400EE6082 /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				85E17FFE1E81007600EE6082 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				85E1804C1E81007600EE6082 /* CourierAvailabilityViewCell.xib in Resources */,
-				85E182811E81007900EE6082 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				85E181BA1E81007800EE6082 /* SettingNotificationViewController.xib in Resources */,
 				85E182A71E81007900EE6082 /* ProductThumbCell.xib in Resources */,
 				85E1809D1E81007600EE6082 /* ProductWishlistCell.xib in Resources */,
@@ -10858,7 +10842,6 @@
 				85E17D2A1E81007300EE6082 /* GoogleDistanceMatrixElements.m in Sources */,
 				85E17CC61E81007300EE6082 /* SignInProvider.swift in Sources */,
 				85E17E5B1E81007400EE6082 /* TrackOrderHistory.m in Sources */,
-				85E182801E81007900EE6082 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				85E182691E81007800EE6082 /* SystemBank.swift in Sources */,
 				85E182711E81007900EE6082 /* ListOrderInvoiceComponent.mm in Sources */,
 				85E17DC51E81007400EE6082 /* AddressFormList.m in Sources */,
@@ -10953,6 +10936,7 @@
 				85E17CF21E81007300EE6082 /* CatalogPrice.m in Sources */,
 				85E180ED1E81007700EE6082 /* PulsaProduct.swift in Sources */,
 				85E17EDE1E81007400EE6082 /* TKPGooglePlaceDetailProductStore.m in Sources */,
+				455DA67E1E81189D00BF181A /* ListBankViewController.swift in Sources */,
 				85E182511E81007800EE6082 /* TransactionCartCell.m in Sources */,
 				85E17D1D1E81007300EE6082 /* FavoritedShop.m in Sources */,
 				85E180E01E81007700EE6082 /* PulsaCategoryAttribute.swift in Sources */,
@@ -11465,7 +11449,6 @@
 				85E182051E81007800EE6082 /* ShopHeaderView.mm in Sources */,
 				85E17F291E81007500EE6082 /* TKPDAlertView.m in Sources */,
 				85E181C91E81007800EE6082 /* OpenShopDomainViewCell.m in Sources */,
-				85E1827E1E81007900EE6082 /* TxOrderConfirmedBankCell.m in Sources */,
 				85E17FCA1E81007500EE6082 /* MyWishlistLabel.swift in Sources */,
 				85E17ED21E81007400EE6082 /* FBTweakViewController.m in Sources */,
 				85E17DE71E81007400EE6082 /* OrderBookingData.m in Sources */,
@@ -11537,7 +11520,6 @@
 				85E17DE91E81007400EE6082 /* OrderCustomer.m in Sources */,
 				85E17D6E1E81007300EE6082 /* InboxTalkList.m in Sources */,
 				85E17E061E81007400EE6082 /* SearchAutoCompleteHotlist.m in Sources */,
-				85E182821E81007900EE6082 /* TxOrderConfirmedButtonCell.m in Sources */,
 				85E181CD1E81007800EE6082 /* OpenShopInfo.m in Sources */,
 				85E17E881E81007400EE6082 /* TransactionSummaryBCAParam.m in Sources */,
 				85E17ED31E81007400EE6082 /* iCarousel.m in Sources */,
@@ -11647,6 +11629,7 @@
 				85E181051E81007700EE6082 /* ResolutionCenterCreateForm.m in Sources */,
 				85E17E361E81007400EE6082 /* ShopInfoResponse.m in Sources */,
 				85E182AE1E81007900EE6082 /* VTBaseTransaction.m in Sources */,
+				455DA67F1E81189D00BF181A /* ListDetailBankViewController.swift in Sources */,
 				85E180231E81007600EE6082 /* InboxTicketReplyViewController.m in Sources */,
 				85E17E6C1E81007400EE6082 /* TransactionAddressShippingForm.m in Sources */,
 				85E17E551E81007400EE6082 /* ShopShipping.m in Sources */,
@@ -11907,9 +11890,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85E182F11E8103D100EE6082 /* Donation.swift in Sources */,
 				FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */,
+				455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */,
 				452E95841E64107F001191E0 /* DonationTests.swift in Sources */,
+				455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12174,6 +12158,7 @@
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12225,6 +12210,7 @@
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import Tokopedia
+
 class DonationTests: XCTestCase {
     
     var donation:Donation!

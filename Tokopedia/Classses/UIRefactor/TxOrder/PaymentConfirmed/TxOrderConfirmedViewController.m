@@ -17,9 +17,6 @@
 #import "TransactionAction.h"
 
 #import "TxOrderConfirmedCell.h"
-#import "TxOrderConfirmedBankCell.h"
-#import "TxOrderConfirmedButtonArrowCell.h"
-#import "TxOrderConfirmedButtonCell.h"
 
 #import "WebViewInvoiceViewController.h"
 
@@ -45,8 +42,6 @@
     UITableViewDelegate,
     UITableViewDataSource,
     UIAlertViewDelegate,
-    TxOrderConfirmedButtonCellDelegate,
-    TxOrderConfirmedCellDelegate,
     TKPDPhotoPickerDelegate,
     LoadingViewDelegate,
     GalleryViewControllerDelegate
@@ -83,6 +78,8 @@
     [super viewDidLoad];
     
     self.title = @"Status Pembayaran";
+    
+    _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 10)];
 
     _isNodata = NO;
     _list = [NSMutableArray new];
@@ -154,26 +151,28 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _isNodata ? 0 : _list.count;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    if (section == 0){
+        return 1;
+    }
+    return _list.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
-            cell = [self cellConfirmedAtIndexPath:indexPath];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"rekeningCell"];
+            cell.textLabel.text = @"Nomor Rekening Tokopedia";
+            cell.textLabel.font = [UIFont largeTheme];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         case 1:
-            cell = [self cellConfirmedBankAtIndexPath:indexPath];
-            break;
-        case 2:
-            cell = [self cellButtonAtIndexPath:indexPath];
-        default:
+            cell = [self cellConfirmedAtIndexPath:indexPath];
             break;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -181,38 +180,38 @@
 }
 
 #pragma mark - Table View Delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 1;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
+    return view;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat rowHeight = UITableViewAutomaticDimension;
-
-    if (indexPath.row == 2)
-    {
-        rowHeight = 40;
-    
-        TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-        if (([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1) &&
-            [detailOrder.system_account_no integerValue] == 0)
-                rowHeight = 0;
-    }
-    
     return rowHeight;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [cell setBackgroundColor:[UIColor clearColor]];
-}
-
-#pragma mark - Cell Delegate
--(void)editConfirmation:(NSIndexPath *)indexPath
-{
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    
-    if (detailOrder.has_user_bank == 1) {
-        [self pushEditConfirmationForm:detailOrder];
+    if (indexPath.section == 0){
+        [cell setBackgroundColor:[UIColor whiteColor]];
+    } else {
+        [cell setBackgroundColor:[UIColor clearColor]];
     }
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 0){
+        ListBankViewController *vc = [ListBankViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+#pragma mark - Cell Delegate
 -(void)pushEditConfirmationForm:(TxOrderConfirmedList *)order{
     EditConfirmationViewController *vc = [EditConfirmationViewController new];
     vc.paymentID = order.payment_id;
@@ -222,26 +221,13 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)uploadProofAtIndexPath:(NSIndexPath *)indexPath
+-(void)uploadProofOrder:(TxOrderConfirmedList *)order
 {
-    [_dataInput setObject:_list[indexPath.section] forKey:DATA_SELECTED_ORDER_KEY];
+    [_dataInput setObject:order forKey:DATA_SELECTED_ORDER_KEY];
     
     _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
                                               pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
     _photoPicker.delegate = self;
-    _photoPicker.data = @{@"indexOfCell" : indexPath};
-}
-
--(void)didTapInvoiceButton:(UIButton *)button atIndexPath:(NSIndexPath *)indexPath
-{
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    [self doRequestDetailOrder:detailOrder];
-}
-
--(void)didTapPaymentProofIndexPath:(NSIndexPath *)indexPath
-{
-    _selectedOrder = _list[indexPath.section];
-    [self pushToGallery];
 }
 
 -(void)pushToGallery
@@ -280,76 +266,33 @@
 {
     NSString *cellid = CONFIRMED_CELL_IDENTIFIER;
     
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+    TxOrderConfirmedList *detailOrder = _list[indexPath.row];
     
     TxOrderConfirmedCell *cell = (TxOrderConfirmedCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [TxOrderConfirmedCell newCell];
-        cell.delegate = self;
     }
     
-    [cell.dateLabel setText:detailOrder.payment_date animated:YES];
-    [cell.totalPaymentLabel setText:detailOrder.payment_amount animated:YES];
-    [cell.totalInvoiceButton setTitle:[NSString stringWithFormat:@"%@ Invoice", detailOrder.order_count] forState:UIControlStateNormal];
-    cell.imagePayementProofButton.hidden = ([detailOrder.img_proof_url isEqualToString:@""]||detailOrder.img_proof_url == nil)?YES:NO;
+    [cell setupViewWithOrder:detailOrder];
     
-    cell.indexPath = indexPath;
-    return cell;
-}
-
--(UITableViewCell*)cellConfirmedBankAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = BANK_CELL_IDENTIFIER;
+    cell.didTapInvoice = ^(TxOrderConfirmedList *order) {
+        [self doRequestDetailOrder:order];
+    };
     
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+    cell.didTapPaymentProof = ^(TxOrderConfirmedList *order) {
+        _selectedOrder = order;
+        [self pushToGallery];
+    };
     
-    TxOrderConfirmedBankCell *cell = (TxOrderConfirmedBankCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TxOrderConfirmedBankCell newCell];
-    }
-    NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
-    [cell.recieverNomorRekLabel setCustomAttributedText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber]];
-
-    cell.userBankLabel.text = detailOrder.userBankFullName;
+    cell.didTapEditPayment = ^(TxOrderConfirmedList *order) {
+        if (order.has_user_bank == 1) {
+            [self pushEditConfirmationForm:order];
+        }
+    };
     
-    return cell;
-}
-
--(UITableViewCell*)cellButtonAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = BUTTON_CELL_IDENTIFIER;
-    
-    TxOrderConfirmedButtonCell *cell = (TxOrderConfirmedButtonCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TxOrderConfirmedButtonCell newCell];
-        cell.delegate = self;
-    }
-    
-    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    //cell.editButton.hidden = (detailOrder.has_user_bank != 1);
-    //cell.editButton.enabled = (detailOrder.has_user_bank == 1);
-    cell.uploadProofButton.hidden = ([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1);
-    cell.indexPath = indexPath;
-    
-    
-    if([cell.indexPath isEqual:[_dataInput objectForKey:@"indexOfCell"]]) {
-        [cell.actUploadProof startAnimating];
-    } else {
-        [cell.actUploadProof stopAnimating];
-        [cell.actUploadProof setHidesWhenStopped:YES];
-    }
-    
-    return cell;
-}
-
--(UITableViewCell*)cellButtonArrowAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = BUTTON_ARROW_CELL_IDENTIFIER;
-    
-    TxOrderConfirmedButtonArrowCell *cell = (TxOrderConfirmedButtonArrowCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TxOrderConfirmedButtonArrowCell newCell];
-    }
+    cell.didTapUploadProof = ^(TxOrderConfirmedList *order) {
+        [self uploadProofOrder:order];
+    };
     
     return cell;
 }
@@ -434,7 +377,6 @@
     NSString *imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
 
     [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
-    [_dataInput setObject:[userInfo objectForKey:@"indexOfCell"] forKey:@"indexOfCell"];
 
     [_loadingAlert show];
     
