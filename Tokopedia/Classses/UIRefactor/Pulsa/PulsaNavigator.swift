@@ -93,7 +93,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             let url = action.request.url
             
             if(action.navigationType == .backForward && url?.host == "pay.tokopedia.com") {
-                self.navigationController?.popViewController(animated: true)
+                self?.controller.navigationController?.popViewController(animated: true)
             }
         }
         controller.hidesBottomBarWhenPushed = true
