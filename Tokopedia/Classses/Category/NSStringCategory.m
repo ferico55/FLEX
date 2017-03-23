@@ -42,6 +42,8 @@
     html = [html stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
     html = [html stringByReplacingOccurrencesOfString:@"&#39;" withString:@"'"];
     html = [html stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
+    html = [html stringByReplacingOccurrencesOfString:@"&#40;" withString:@"("];
+    html = [html stringByReplacingOccurrencesOfString:@"&#41;" withString:@")"];
     
     myScanner = [NSScanner scannerWithString:html];
     

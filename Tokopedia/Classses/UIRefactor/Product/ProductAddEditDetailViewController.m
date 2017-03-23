@@ -240,7 +240,7 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":[product.product_etalase kv_decodeHTMLCharacterEntities];;
+                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":product.product_etalase;
             }
             break;
         case 2:
@@ -262,6 +262,9 @@ NSString * const ProductStatusWarehouse = @"3";
             break;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    product.product_short_desc = _productDescriptionTextView.text;
+    
     return cell;
 }
 
