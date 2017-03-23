@@ -696,8 +696,19 @@
 
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    
     NSString *contactUsURL = [self contactUsURL];
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
+    __weak typeof(WKWebViewController) *wcontroller = controller;
+    
+    controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+        NSURL* url = action.request.URL;
+        if ([url.absoluteString isEqualToString:[NSString stringWithFormat:@"%@#/", contactUsURL]]) {
+            [wcontroller.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
     controller.title = @"Tokopedia Contact";
     [viewController.navigationController pushViewController:controller animated:YES];
 }
@@ -707,6 +718,14 @@
     NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/?utm_source=ios";
     
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:pulsaURL] shouldAuthorizeRequest:YES];
+    __weak typeof(WKWebViewController) *wcontroller = controller;
+    
+    controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+        NSURL* url = action.request.URL;
+        if (action.navigationType == WKNavigationTypeBackForward && [url.host isEqualToString:@"pay.tokopedia.com"]) {
+            [wcontroller.navigationController popViewControllerAnimated:YES];
+        }
+    };
     controller.title = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];

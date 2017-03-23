@@ -496,7 +496,7 @@
                                                         <constraint firstAttribute="width" constant="30" id="f7q-zZ-pNq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TopCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TokoCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
                                                     <rect key="frame" x="56" y="13" width="107" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="107" id="KrX-8M-m6N"/>
@@ -507,7 +507,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xib-oJ-bmf">
-                                                    <rect key="frame" x="134" y="7" width="211" height="27"/>
+                                                    <rect key="frame" x="131" y="7" width="211" height="27"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="211" id="K4g-QU-XhL"/>
                                                         <constraint firstAttribute="height" constant="27" id="O2W-IA-aOJ"/>
@@ -539,7 +539,7 @@
                                                 <constraint firstItem="uq9-Y3-TSx" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="7" id="82I-rh-MoX"/>
                                                 <constraint firstAttribute="trailing" secondItem="I6d-y3-oK5" secondAttribute="trailing" constant="6" id="D0G-WD-DSM"/>
                                                 <constraint firstItem="uq9-Y3-TSx" firstAttribute="leading" secondItem="qRK-ub-izr" secondAttribute="leading" constant="16" id="XbK-dt-Uz0"/>
-                                                <constraint firstAttribute="trailing" secondItem="xib-oJ-bmf" secondAttribute="trailing" constant="30" id="Z3q-O6-55q"/>
+                                                <constraint firstAttribute="trailing" secondItem="xib-oJ-bmf" secondAttribute="trailing" constant="33" id="Z3q-O6-55q"/>
                                                 <constraint firstItem="Mqv-k9-Cxf" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="13" id="cVx-FE-81A"/>
                                                 <constraint firstItem="Mqv-k9-Cxf" firstAttribute="leading" secondItem="uq9-Y3-TSx" secondAttribute="trailing" constant="10" id="tUs-WZ-ZEV"/>
                                                 <constraint firstItem="I6d-y3-oK5" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="6" id="ztq-ar-Ak4"/>

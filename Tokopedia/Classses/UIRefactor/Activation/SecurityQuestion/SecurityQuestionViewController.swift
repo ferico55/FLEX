@@ -205,7 +205,17 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
         AnalyticsManager.trackEventName("clickChangePhoneNumber", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_CLICK, label: "Change Phone Number")
         let auth = UserAuthentificationManager()
         let urlString = "\(NSString.tokopediaUrl())/contact-us?sid=54&flag_app=1&utm_source=ios&app_version=\(UIApplication.getAppVersionStringWithoutDot())"
+        
         let controller = WKWebViewController(urlString: auth.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: true)
+        controller.didReceiveNavigationAction = { action in
+            let url = action.request.url
+            
+            if(url?.absoluteString == "\(urlString)#/") {
+                controller.navigationController?.popViewController(animated: true)
+            }
+        }
+        controller.hidesBottomBarWhenPushed = true
+
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

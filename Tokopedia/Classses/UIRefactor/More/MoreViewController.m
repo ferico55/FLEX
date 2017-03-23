@@ -322,6 +322,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:wallet.data.walletActionFullUrl shouldAuthorizeRequest:NO];
         controller.title = _walletNameLabel.text;
         
+        __weak typeof(self) wself = self;
+        controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+            NSURL* url = action.request.URL;
+            NSString* thanksUrl = [NSString stringWithFormat:@"%@/thanks_wallet?flag_app=1", [NSString accountsUrl]];
+            if ([url.absoluteString isEqualToString:thanksUrl]) {
+                [wself.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
         [_wrapperViewController.navigationController pushViewController:controller animated:YES];
     }];
 }

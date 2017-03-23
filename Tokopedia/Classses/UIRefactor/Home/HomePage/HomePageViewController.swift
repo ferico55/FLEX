@@ -412,7 +412,7 @@ class HomePageViewController: UIViewController {
             }
             
             self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
-                self.navigator.navigateToSuccess(url)
+                self.navigator.navigateToWKWebView(url)
             }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
