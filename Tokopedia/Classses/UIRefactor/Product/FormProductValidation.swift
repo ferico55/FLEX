@@ -79,7 +79,11 @@ class FormProductValidation: NSObject {
     fileprivate var errorMessages : [String] = []
     fileprivate var type : FormType = FormType.addProduct
     
-    func isValidFormFirstStep(_ form: ProductEditResult, type:Int, productNameBeforeCopy: String) -> Bool {
+    func isValidFormFirstStep(_ form: ProductEditResult?, type:Int, productNameBeforeCopy: String) -> Bool {
+        
+        guard let form = form else {
+            return false
+        }
         
         self.type = FormType(rawValue: type)!
         
@@ -137,7 +141,7 @@ class FormProductValidation: NSObject {
         
         return errorMessages.count == 0
     }
-    
+
     func isValidFormSecondStep(_ form: ProductEditResult, type:Int) -> Bool {
         do{
             try self.etalaseValidation(form.product.product_etalase_id, etalaseName: form.product.product_etalase)

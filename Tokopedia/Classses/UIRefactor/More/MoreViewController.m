@@ -52,19 +52,21 @@
 
 #import <MessageUI/MessageUI.h>
 
-#import "ContactUsWebViewController.h"
-
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
 
 #import "DepositRequest.h"
 
 #import <JLPermissions/JLNotificationPermission.h>
+#import <MoEngage_iOS_SDK/MoEngage.h>
 
 #import "Tokopedia-Swift.h"
 #import "JasonViewController.h"
+#import "CMPopTipView.h"
 
-@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
+static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
+
+@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -110,6 +112,9 @@
 @property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
+
+@property (strong, nonatomic) CMPopTipView *popTipView;
+
 @end
 
 @implementation MoreViewController
@@ -217,6 +222,77 @@
                                                object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+//    [self initNotificationManager];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
+    [self updateSaldoTokopedia];
+    
+    // Universal Analytics
+    [AnalyticsManager trackScreenName:@"More Navigation Page"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedIndexPath != nil) {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    }
+    
+    [self showTooltipView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.popTipView && self.popTipView != nil) {
+        [self.popTipView dismissAnimated:NO];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.navigationController.tabBarController.title = @"More";
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
+    self.popTipView = nil;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setBool:YES forKey:kPreferenceKeyTooltipSetting];
+    [prefs synchronize];
+}
+
+- (void)showTooltipView {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if (![prefs boolForKey:kPreferenceKeyTooltipSetting] &&
+        [[TouchIDHelper sharedInstance] isTouchIDAvailable] &&
+        [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Pilih halaman setting dan pengaturan Touch ID untuk mengatur Touch ID anda"];
+            self.popTipView.delegate = self;
+            self.popTipView.backgroundColor = [UIColor darkGrayColor];
+            self.popTipView.animation = CMPopTipAnimationPop;
+            self.popTipView.dismissTapAnywhere = YES;
+            
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+            [self.popTipView presentPointingAtView:cell inView:self.view animated:YES];
+        });
+    }
+}
+
+#pragma mark - Method
 - (void)requestWallet {
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
@@ -227,43 +303,31 @@
             return;
         }
         
-        if(wallet.shouldShowWallet) {
-            [weakSelf showWalletCell:wallet];
-        } else {
-            if(wallet.shouldShowActivation) {
-                [weakSelf showWalletCell:wallet];
-                [weakSelf showActivationButton:wallet];
-            } else {
-                [weakSelf hideWalletCell];
-            }
-        }
+        _walletNameLabel.text = wallet.data.text;
+        _walletBalanceLabel.text = wallet.data.balance;
+        _walletUrl = wallet.walletFullUrl;
+        
+        [weakSelf showActivationButton:wallet];
+        
     } onFailure:^(NSError * error) {
         if(error.code == 9991) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-        } else {
-            [weakSelf hideWalletCell];
         }
     }];
 }
 
 - (void)showActivationButton:(WalletStore*)wallet {
-    [_walletActivationButton setHidden:NO];
+    [_walletActivationButton setHidden:!wallet.shouldShowActivation];
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
+    [_walletActivationButton bk_whenTapped:^{
+        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:wallet.data.walletActionFullUrl shouldAuthorizeRequest:NO];
+        controller.title = _walletNameLabel.text;
+        
+        [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+    }];
 }
 
-- (void)showWalletCell:(WalletStore*)wallet {
-    _walletNameLabel.text = wallet.data.text;
-    _walletBalanceLabel.text = wallet.data.balance;
-    _walletUrl = wallet.walletFullUrl;
-    
-    _shouldDisplayWalletCell = YES;
-    [self.tableView reloadData];
-}
 
-- (void)hideWalletCell {
-    _shouldDisplayWalletCell = NO;
-    [self.tableView reloadData];
-}
 
 
 - (void)appDidResume {
@@ -287,40 +351,6 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-//    [self initNotificationManager];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    [self updateSaldoTokopedia];
-    
-    // Universal Analytics
-    [AnalyticsManager trackScreenName:@"More Navigation Page"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath != nil) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.navigationController.tabBarController.title = @"More";
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Method
 -(void)updateShopPicture:(NSNotification*)notif
 {
     NSDictionary *userInfo = notif.userInfo;
@@ -405,7 +435,7 @@
 {
     switch (section) {
         case 0:{
-            return _shouldDisplayWalletCell ? 2 : 1;
+            return 2;
             break;
         }
         
@@ -703,6 +733,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)activatePushNotification {
+    [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil andCategoriesForPreviousVersions:nil andWithUserNotificationCenterDelegate:self];
     JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
     
     JLAuthorizationStatus permissionStatus = permission.authorizationStatus;

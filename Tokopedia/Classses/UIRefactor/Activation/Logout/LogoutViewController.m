@@ -10,20 +10,16 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 
-@interface LogoutViewController () <TokopediaNetworkManagerDelegate>
+@interface LogoutViewController ()
 
 @end
 
 @implementation LogoutViewController {
-    TokopediaNetworkManager *_networkManager;
     UserAuthentificationManager *_userManager;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     
     _userManager = [UserAuthentificationManager new];
 }

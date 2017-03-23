@@ -74,7 +74,6 @@ NSInteger const bannerIpadWidth = 450;
     viewController.view.frame = _navigationDelegate.viewControllers.lastObject.view.frame;
     viewController.view.backgroundColor = [UIColor whiteColor];
     viewController.hidesBottomBarWhenPushed = YES;
-    [SwiftOverlays showCenteredWaitOverlay:viewController.view];
     
     [_navigationDelegate pushViewController:viewController animated:YES];
 }
@@ -135,5 +134,9 @@ NSInteger const bannerIpadWidth = 450;
     }
 }
 
+- (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
+    [_timer invalidate];
+    _timer = nil;
+}
 
 @end

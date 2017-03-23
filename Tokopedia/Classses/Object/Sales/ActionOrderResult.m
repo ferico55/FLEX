@@ -16,4 +16,8 @@
     return mapping;
 }
 
+- (BOOL)isOrderAccepted {
+    return [self.is_success isEqualToString: @"1"];
+}
+
 @end

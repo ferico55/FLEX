@@ -8,6 +8,7 @@
 
 import UIKit
 import RSKPlaceholderTextView
+import RestKit
 
 @objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate {
     

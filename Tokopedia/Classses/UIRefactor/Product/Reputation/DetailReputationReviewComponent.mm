@@ -12,7 +12,9 @@
 #import "ReviewResponseComponent.h"
 #import "AFNetworkingImageDownloader.h"
 #import "ReviewImageAttachment.h"
+#import "ReviewShareComponent.h"
 #import <ComponentKit/ComponentKit.h>
+#import "UIColor+Theme.h"
 
 static CKComponent* skipButton (DetailReputationReview* review) {
     if ([review.review_is_skipable isEqualToString:@"1"]) {
@@ -21,7 +23,7 @@ static CKComponent* skipButton (DetailReputationReview* review) {
                     {UIControlStateNormal, @"Lewati"}
                 }
                 titleColors:{
-                    {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
+                    {UIControlStateNormal, [UIColor tpGreen]}
                 }
                 images:{}
                 backgroundImages:{}
@@ -76,7 +78,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                      {UIControlStateNormal, @"Beri Ulasan"}
                  }
                  titleColors:{
-                     {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
+                     {UIControlStateNormal, [UIColor tpGreen]}
                  }
                  images:{}
                  backgroundImages:{}
@@ -112,7 +114,7 @@ static CKComponent *giveResponseButton(DetailReputationReview *review, NSString 
                      {UIControlStateNormal, @"Balas Ulasan"}
                  }
                  titleColors:{
-                     {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
+                     {UIControlStateNormal, [UIColor tpGreen]}
                  }
                  images:{}
                  backgroundImages:{}
@@ -237,6 +239,10 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
     [_delegate didTapRevieweeReputation:sender onReview:_review atView:((CKStackLayoutComponent*)sender).viewContext.view];
 }
 
+- (void)didTapShareReviewToOtherSource:(id)sender {
+    [_delegate didTapShareReviewToOtherSource:_review atView:((CKButtonComponent*)sender).viewContext.view];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
     
     DetailReputationReviewComponent* component =
@@ -303,6 +309,13 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
            },
            {
                [ReviewRatingComponent newWithReview:review imageCache:context.imageCache]
+           },
+           {
+               horizontalBorder(review),
+               .alignSelf = CKStackLayoutAlignSelfCenter
+           },
+           {
+               [ReviewShareComponent newWithReview:review tapButtonAction:@selector(didTapShareReviewToOtherSource:)]
            },
            {
                [CKComponent

@@ -9,6 +9,7 @@
 #import "ReviewResponseComponent.h"
 #import "MedalComponent.h"
 #import "ShopBadgeLevel.h"
+#import "UIColor+Theme.h"
 
 static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imageCache) {
     if ([role isEqualToString:@"2"]) {
@@ -124,7 +125,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                       .string = review.product_owner.shop_name,
                                                       .font = [UIFont largeThemeMedium],
                                                       .maximumNumberOfLines = 1,
-                                                      .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+                                                      .color = [UIColor tpGreen]
                                                   }
                                                   viewAttributes:{}
                                                   size:{}]

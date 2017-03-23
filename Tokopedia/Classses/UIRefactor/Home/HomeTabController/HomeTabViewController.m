@@ -22,7 +22,6 @@
 #import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-#import "ImagePickerCategoryController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -52,6 +51,8 @@ UINavigationControllerDelegate
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
     NSURL *_deeplinkUrl;
+    BOOL _needToActivateSearch;
+    BOOL _isViewLoaded;
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
@@ -90,6 +91,7 @@ UINavigationControllerDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(activateSearch:) name:@"activateSearch" object:nil];
 }
 
 #pragma mark - Lifecycle
@@ -265,12 +267,23 @@ UINavigationControllerDelegate
     [super viewWillDisappear:animated];
     float fractionalPage = _scrollView.contentOffset.x  / _scrollView.frame.size.width;
     _page = lround(fractionalPage);
+    
+    _isViewLoaded = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.definesPresentationContext = YES;
+    _isViewLoaded = YES;
+    
+    if (_needToActivateSearch && !self.searchController.isActive) {
+        [self.searchController setActive:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.searchController.searchBar becomeFirstResponder];
+        });
+    }
+    _needToActivateSearch = NO; 
 }
 
 - (void)setArrow {
@@ -306,7 +319,8 @@ UINavigationControllerDelegate
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
     if (page >= 0 && page < _viewControllers.count) {
-        [self goToPage:page];
+        [self setIndexPage:page];
+        [self goToPage:_page];
     }
 }
 
@@ -340,7 +354,8 @@ UINavigationControllerDelegate
 - (void)didSwipeHomePage:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
-    [self goToPage:index-1];
+    [self setIndexPage:index-1];
+    [self goToPage:_page];
     [self tapButtonAnimate:_scrollView.frame.size.width*(index-1)];
 }
 
@@ -383,6 +398,7 @@ UINavigationControllerDelegate
 
 - (void)tapNotificationBar {
     [_notifManager tapNotificationBar];
+    [AnalyticsManager trackEventName:@"clickTopedIcon" category:GA_EVENT_CATEGORY_NOTIFICATION action:GA_EVENT_ACTION_CLICK label:@"Bell Notification"];
 }
 
 - (void)tapWindowBar {
@@ -465,12 +481,13 @@ UINavigationControllerDelegate
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
-
 - (void)userDidLogin:(NSNotification*)notification {
     // [self view] gunanya adalah memanggil viewDidLoad dari background. Dipakai di sini untuk ketika untuk mencegah bug crash saat user login langsung dari onboarding.
     [self view];
     [self instantiateViewControllers];
     [self setSearchByImage];
+    [self redirectToProductFeed];
+    [self setIndexPage:1];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
@@ -478,6 +495,20 @@ UINavigationControllerDelegate
     [self instantiateViewControllers];
     [self redirectToHome];
     [self setSearchByImage];
+}
+
+- (void)activateSearch:(NSNotification*)notification {
+    if (_isViewLoaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.searchController setActive:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.searchController.searchBar becomeFirstResponder];
+            });
+        });
+    } else {
+        _needToActivateSearch = YES;
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 #pragma mark - Method
@@ -495,6 +526,14 @@ UINavigationControllerDelegate
     dispatch_async(dispatch_get_main_queue(), ^{
         weakSelf.searchController.searchResultsController.view.hidden = hidden;
     });
+}
+
+- (void)scrollToTop
+{
+    NSArray *vcs = [_viewControllers mutableCopy];
+    if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
+        [vcs[_page] scrollToTop];
+    }
 }
 
 @end

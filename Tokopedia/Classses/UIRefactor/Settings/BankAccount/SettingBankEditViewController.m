@@ -14,6 +14,7 @@
 #import "DepositRequest.h"
 #import "GeneralAction.h"
 #import "BankAccountRequest.h"
+#import "SecurityRequestOTP.h"
 
 @interface SettingBankEditViewController ()<SettingBankNameViewControllerDelegate, UIScrollViewDelegate>
 {
@@ -178,7 +179,7 @@
             case 11:
             {
                 //send OTP
-                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
+                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(SecurityRequestOTP *action) {
                     if(action.message_error) {
                         NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages

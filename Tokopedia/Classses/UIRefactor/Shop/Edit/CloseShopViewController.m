@@ -96,6 +96,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self clearViewData];
+    if(![_scheduleDetail.close_start isEqualToString:@""]){
+        _dateMulaiDari = [self NSDatefromString:_scheduleDetail.close_start];
+    }
+    if(![_scheduleDetail.close_end isEqualToString:@""]){
+        _dateSampaiDengan = [self NSDatefromString:_scheduleDetail.close_end];
+    }
     [self initializeView];
 }
 
@@ -208,10 +214,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _isFormEnabled = NO;
     if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
         [self adjustView:CenterViewAturJadwalButton withAnimation:YES];
+        [self clearViewData];
     }else{
         [self adjustView:CenterViewFormView withAnimation:NO];
     }
-    [self clearViewData];
+    
 }
 - (IBAction)tutupSekarangSwitchValueChanged:(id)sender {
     if([_tutupSekarangSwitch isOn]){
@@ -336,7 +343,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                     }else{
                                                         [self setFailLabelTextWithError:result.message_error];
                                                         [self adjustView:CenterViewFailView withAnimation:NO];
-                                                        [self clearViewData];
                                                     }
                                                     
                                                     [self.delegate didChangeShopStatus];
@@ -370,7 +376,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                             }else{
                                                 [self setFailLabelTextWithError:result.message_error];
                                                 [self adjustView:CenterViewFailView withAnimation:NO];
-                                                [self clearViewData];
                                             }
                                             [self.delegate didChangeShopStatus];
                                             [self returnToFormViewWithDelay];
@@ -403,7 +408,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                    }else{
                                                        [self setFailLabelTextWithError:result.message_error];
                                                        [self adjustView:CenterViewFailView withAnimation:NO];
-                                                       [self clearViewData];
                                                    }
                                                    [self.delegate didChangeShopStatus];
                                                    [self returnToFormViewWithDelay];

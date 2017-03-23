@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RestKit
 
 class NoteDetailResult : NSObject, TKPObjectMapping
 {

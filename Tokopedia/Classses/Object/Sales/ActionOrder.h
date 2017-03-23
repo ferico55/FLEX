@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) ActionOrderResult *result;
+@property (nonatomic, strong) ActionOrderResult *data;
 
 @end

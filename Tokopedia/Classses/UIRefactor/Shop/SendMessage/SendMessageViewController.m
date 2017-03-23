@@ -105,17 +105,6 @@
 
 @end
 
-
-
-
-
-
-
-
-
-
-
-
 @interface SendMessageViewController () <CustomTxtViewProtocol>{
     BOOL _isnodata;
     
@@ -169,20 +158,15 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    UIBarButtonItem *barbuttonleft;
-    UIBarButtonItem *barbuttonright;
-    //NSBundle* bundle = [NSBundle mainBundle];
+    __weak typeof(self) weakSelf = self;
     
-    barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbuttonleft setTintColor:[UIColor whiteColor]];
-    [barbuttonleft setTag:10];
-    self.navigationItem.leftBarButtonItem = barbuttonleft;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain handler:^(id sender) {
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    }];
     
-    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
-    [barbuttonright setTintColor:[UIColor whiteColor]];
-    [barbuttonright setTag:11];
-    
-    self.navigationItem.rightBarButtonItem = barbuttonright;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Kirim" style:UIBarButtonItemStylePlain handler:^(id sender) {
+        [weakSelf onTapRightBarButton];
+    }];
     
     _messagefield.del = self;
     _messagefield.placeholder = kTKPDMESSAGE_PLACEHOLDER;
@@ -205,6 +189,8 @@
 }
 
 -(void)doSendMessage {
+    [self sendButtonConditionIsLoading:YES];
+    
     NSDictionary* param = @{
                             @"message" : _messagefield.text,
                             @"message_subject" : _messagesubjectfield.text,
@@ -222,7 +208,11 @@
                                mapping:[GeneralAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  [self requestsuccess:successResult withOperation:operation];
-                             } onFailure:nil];
+                             }
+                             onFailure:^(NSError * _Nonnull errorResult) {
+                                 [self sendButtonConditionIsLoading:NO];
+                                 [StickyAlertView showErrorMessage:@[KTKPDMESSAGE_UNDELIVERED]];
+                             }];
 
 }
 
@@ -230,14 +220,12 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     GeneralAction* info = [result objectForKey:@""];
     
-    NSString *is_success = [[info data] is_success];
-    
-    if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
+    if([info.data.is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDMESSAGE_DELIVERED] delegate:self];
         [stickyAlertView show];
         [self.navigationController popViewControllerAnimated:TRUE];
     } else {
-        
+        [self sendButtonConditionIsLoading:NO];
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
         [alert show];
@@ -247,42 +235,7 @@
 
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem*)sender;
-        
-        switch (button.tag) {
-            case 10: {
-                [self.navigationController popViewControllerAnimated:TRUE];
-                break;
-            }
-            
-            case 11 : {
-                if (_request.isExecuting) return;
-                if(_messagesubjectfield.text.length == 0) {
-                    NSArray *array = [[NSArray alloc] initWithObjects:kTKPDSUBJECT_EMPTY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                else if(_messagefield.text.length == 0) {
-                    NSArray *array = [[NSArray alloc] initWithObjects:kTKPDMESSAGE_EMPTY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                } else {
-                    [self doSendMessage];
-                }
-                
-                break;
-            }
-                
-                
-            default:
-                break;
-        }
-        
-    }
-    
+-(IBAction)tap:(id)sender {
     if([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
         
@@ -299,6 +252,34 @@
             default:
                 break;
         }
+    }
+}
+
+- (void)sendButtonConditionIsLoading:(BOOL)isLoading {
+    if (isLoading) {
+        UIActivityIndicatorView *act = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        act.color = [UIColor whiteColor];
+        [act startAnimating];
+        self.navigationItem.rightBarButtonItem.customView = act;
+    } else {
+        self.navigationItem.rightBarButtonItem.customView = nil;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Kirim" style:UIBarButtonItemStylePlain handler:^(id sender) {
+            __weak typeof(self) weakSelf = self;
+            [weakSelf onTapRightBarButton];
+        }];
+    }
+}
+
+- (void)onTapRightBarButton {
+    if (_request.isExecuting) return;
+    if (_messagesubjectfield.text.length == 0) {
+        NSArray *array = [[NSArray alloc] initWithObjects:kTKPDSUBJECT_EMPTY, nil];
+        [StickyAlertView showErrorMessage:array];
+    } else if (_messagefield.text.length == 0) {
+        NSArray *array = [[NSArray alloc] initWithObjects:kTKPDMESSAGE_EMPTY, nil];
+        [StickyAlertView showErrorMessage:array];
+    } else {
+        [self doSendMessage];
     }
 }
 

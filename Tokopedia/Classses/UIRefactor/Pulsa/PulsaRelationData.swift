@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaRelationData: NSObject {
     var id : String?

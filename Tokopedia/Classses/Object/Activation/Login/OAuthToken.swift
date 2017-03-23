@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import RestKit
 
 @objc(OAuthToken)
 class OAuthToken: NSObject {

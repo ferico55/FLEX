@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,21 +19,23 @@
                 <outlet property="formViewWidthConstraint" destination="BP0-Wz-plQ" id="4qi-Ca-lPf"/>
                 <outlet property="loadingView" destination="QfQ-ON-DwI" id="aQb-OX-Tg9"/>
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
+                <outlet property="loginButtonTrailingConstraint" destination="cBl-dc-ury" id="c3e-ue-0bo"/>
                 <outlet property="orLabel" destination="3T9-rP-bSY" id="8hU-bC-bhi"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="scrollView" destination="i2V-1Q-6fX" id="8Bd-CM-vuM"/>
                 <outlet property="signInProviderContainer" destination="g0F-wj-qxp" id="uKA-3g-pJa"/>
+                <outlet property="touchIDButton" destination="RaL-Md-U5T" id="prR-zV-IOi"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tapGestureRecognizer id="MgA-86-nNw"/>
         <view contentMode="redraw" id="lpZ-Wc-EfF">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
-                    <rect key="frame" x="187.5" y="333.5" width="0.0" height="0.0"/>
+                    <rect key="frame" x="160" y="240" width="0.0" height="0.0"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
                             <rect key="frame" x="-10" y="-10" width="20" height="20"/>
@@ -47,10 +49,10 @@
                         <constraint firstAttribute="trailing" secondItem="OfY-Za-Mqc" secondAttribute="trailing" constant="-10" id="kHx-iY-Kbm"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="i2V-1Q-6fX" customClass="TPKeyboardAvoidingScrollView">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="i2V-1Q-6fX" customClass="TPKeyboardAvoidingScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <subviews>
-                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VIo-ub-GYT" userLabel="Form View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VIo-ub-GYT" userLabel="Form View">
                             <rect key="frame" x="15" y="0.0" width="290" height="201"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-hL-DlK" customClass="TextField">
@@ -78,7 +80,7 @@
                                     </connections>
                                 </textField>
                                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BjJ-ah-R04">
-                                    <rect key="frame" x="0.0" y="99" width="290" height="44"/>
+                                    <rect key="frame" x="0.0" y="99" width="230" height="44"/>
                                     <color key="backgroundColor" red="0.11844268441200256" green="0.75428462028503418" blue="0.014394762925803661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="ORm-En-alN"/>
@@ -127,9 +129,21 @@
                                         <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-wj-qxp">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-wj-qxp">
                                     <rect key="frame" x="0.0" y="201" width="290" height="0.0"/>
                                 </view>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RaL-Md-U5T">
+                                    <rect key="frame" x="246" y="99" width="44" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="7xA-pG-BEg"/>
+                                        <constraint firstAttribute="width" constant="44" id="lNn-rv-8FN"/>
+                                    </constraints>
+                                    <color key="tintColor" red="0.25490196079999999" green="0.70980392160000005" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" image="icon_touch_id"/>
+                                    <connections>
+                                        <action selector="didTapTouchIDButton:" destination="-1" eventType="touchUpInside" id="Kw4-1M-bzk"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" id="0NJ-MR-s9k"/>
@@ -141,6 +155,7 @@
                                 <constraint firstAttribute="centerX" secondItem="Meb-uf-Mbe" secondAttribute="centerX" id="Fr5-Cv-eTh"/>
                                 <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="VIo-ub-GYT" secondAttribute="top" id="HBI-JD-Q00"/>
                                 <constraint firstAttribute="bottom" secondItem="g0F-wj-qxp" secondAttribute="bottom" id="KHG-bW-tmM"/>
+                                <constraint firstItem="RaL-Md-U5T" firstAttribute="top" secondItem="rJv-0e-sEO" secondAttribute="bottom" constant="12" id="LTh-06-SxK"/>
                                 <constraint firstItem="g0F-wj-qxp" firstAttribute="top" secondItem="3T9-rP-bSY" secondAttribute="bottom" constant="10" id="O6W-2S-Mme"/>
                                 <constraint firstItem="R1P-bi-QzD" firstAttribute="trailing" secondItem="3T9-rP-bSY" secondAttribute="leading" constant="-10" id="OYm-qQ-dBz"/>
                                 <constraint firstItem="rJv-0e-sEO" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="RG5-4U-SVW"/>
@@ -148,13 +163,14 @@
                                 <constraint firstItem="3T9-rP-bSY" firstAttribute="top" secondItem="Meb-uf-Mbe" secondAttribute="bottom" constant="10" id="VBj-gp-osB"/>
                                 <constraint firstItem="g0F-wj-qxp" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="YUF-2i-kGy"/>
                                 <constraint firstItem="uc1-jd-XgD" firstAttribute="leading" secondItem="3T9-rP-bSY" secondAttribute="trailing" constant="10" id="c58-vB-EW7"/>
-                                <constraint firstAttribute="trailing" secondItem="BjJ-ah-R04" secondAttribute="trailing" id="dUp-pA-afS"/>
+                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="BjJ-ah-R04" secondAttribute="trailing" constant="60" id="cBl-dc-ury"/>
                                 <constraint firstItem="uc1-jd-XgD" firstAttribute="centerY" secondItem="3T9-rP-bSY" secondAttribute="centerY" id="fE8-Nx-XTc"/>
                                 <constraint firstItem="3T9-rP-bSY" firstAttribute="centerX" secondItem="VIo-ub-GYT" secondAttribute="centerX" id="h7d-4Y-LGX"/>
                                 <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="oaD-yo-qHy"/>
                                 <constraint firstItem="uc1-jd-XgD" firstAttribute="trailing" secondItem="TaY-hL-DlK" secondAttribute="trailing" id="oqj-cV-Rb8"/>
                                 <constraint firstItem="BjJ-ah-R04" firstAttribute="top" secondItem="rJv-0e-sEO" secondAttribute="bottom" constant="12" id="sFY-Bs-AH9"/>
                                 <constraint firstAttribute="trailing" secondItem="g0F-wj-qxp" secondAttribute="trailing" id="u5Q-zm-uFg"/>
+                                <constraint firstItem="RaL-Md-U5T" firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" id="v37-zp-Y5d"/>
                                 <constraint firstItem="R1P-bi-QzD" firstAttribute="leading" secondItem="TaY-hL-DlK" secondAttribute="leading" id="z1p-hf-gJr"/>
                             </constraints>
                         </view>
@@ -186,9 +202,12 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="icon_touch_id" width="138" height="137"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>

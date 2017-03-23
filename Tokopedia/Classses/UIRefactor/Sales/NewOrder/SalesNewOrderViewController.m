@@ -37,7 +37,7 @@
 
 #import <BlocksKit/BlocksKit.h>
 #import "UIAlertView+BlocksKit.h"
-
+#import "UIColor+Theme.h"
 #import "SendMessageViewController.h"
 #import "Tokopedia-Swift.h"
 
@@ -254,49 +254,12 @@
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
 
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
-
-    if (order.order_payment.payment_process_day_left == 1) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:145.0/255.0
-                                                                   blue:0.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Besok";
-
-    } else if (order.order_payment.payment_process_day_left == 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:59.0/255.0
-                                                                   blue:48.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Hari ini";
-
-    } else if (order.order_payment.payment_process_day_left < 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
-                                                                  green:158.0/255.0
-                                                                   blue:158.0/255.0
-                                                                  alpha:1];
-
-        cell.automaticallyCanceledLabel.hidden = YES;
-
-        cell.remainingDaysLabel.text = @"Expired";
-
-        CGRect frame = cell.remainingDaysLabel.frame;
-        frame.origin.y = 17;
-        cell.remainingDaysLabel.frame = frame;
-        
-    } else {
-        
-        cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi",
-                                        (int)order.order_payment.payment_process_day_left];
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
-                                                                  green:121.0/255.0
-                                                                   blue:255.0/255.0
-                                                                  alpha:1];
+    cell.remainingDaysLabel.backgroundColor = [UIColor fromHexString:order.order_deadline.deadline_color];
+    cell.remainingDaysLabel.text = order.deadline_string;
+    cell.automaticallyCanceledLabel.text = order.deadline_label;
+    cell.remainingDaysLabel.hidden = order.deadline_hidden;
+    cell.automaticallyCanceledLabel.hidden = order.deadline_hidden;
     
-    }
     
     cell.userNameLabel.text = order.order_customer.customer_name;
     cell.purchaseDateLabel.text = order.order_payment.payment_verify_date;
@@ -706,7 +669,7 @@
 - (void)didReceiveActionType:(ProceedType)actionType orderId:(NSString *)orderId mappingResult:(RKMappingResult *)mappingResult {
     ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status && [actionOrder.result.is_success boolValue]) {
+    if (status && actionOrder.data.isOrderAccepted) {
         
         _numberOfProcessedOrder++;
         [_orderInProcess removeObjectForKey:orderId];

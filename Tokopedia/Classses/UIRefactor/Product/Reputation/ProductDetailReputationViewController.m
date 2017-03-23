@@ -13,7 +13,6 @@
 #import "LikeDislike.h"
 #import "LikeDislikePost.h"
 #import "LikeDislikePostResult.h"
-#import "LoginViewController.h"
 #import "MGSwipeButton.h"
 #import "ProductReputationCell.h"
 #import "ProductDetailReputationCell.h"
@@ -49,11 +48,9 @@
 
 @interface ProductDetailReputationViewController () <
     productReputationDelegate,
-    TokopediaNetworkManagerDelegate,
     CMPopTipViewDelegate,
     HPGrowingTextViewDelegate,
     ProductDetailReputationDelegate,
-    LoginViewDelegate,
     SmileyDelegate,
     MGSwipeTableCellDelegate
 >
@@ -61,7 +58,6 @@
 
 @implementation ProductDetailReputationViewController {
     ProductReputationCell *productReputationCell;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     NSOperationQueue *operationQueueLikeDislike;
     CMPopTipView *popTipView;
     
@@ -173,8 +169,6 @@
 }
 
 - (void)dealloc {
-    tokopediaNetworkManager.delegate = nil;
-    [tokopediaNetworkManager requestCancel];
     [_timer invalidate];
     [operationQueueLikeDislike cancelAllOperations];
 }
@@ -771,21 +765,7 @@
 }
 
 - (void)showLoginView {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
-    LoginViewController *controller = [LoginViewController new];
-    controller.delegate = self;
-    controller.isPresentedViewController = YES;
-    //controller.redirectViewController = self;
-    navigationController.viewControllers = @[controller];
-    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
-    [alert show];
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
 }
 
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj {

@@ -14,6 +14,7 @@
 #import "string.h"
 #import "DepositRequest.h"
 #import "MMNumberKeyboard.h"
+#import "SecurityRequestOTP.h"
 
 @interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate, MMNumberKeyboardDelegate> {
     NSString *_clearTotalAmount;
@@ -299,7 +300,7 @@
             }
                 
             case 12 : {
-                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
+                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(SecurityRequestOTP *action) {
                     if(action.message_error) {
                         NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];

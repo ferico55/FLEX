@@ -9,11 +9,13 @@
 import UIKit
 import Foundation
 import OAStackView
+import RestKit
+import JLPermissions
 
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, LoginViewDelegate {
+class HomePageViewController: UIViewController {
     
     private var digitalGoodsDataSource: DigitalGoodsDataSource!
     
@@ -398,7 +400,6 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             self.navigator.controller = self
             
             self.pulsaView.didAskedForLogin = { [unowned self] in
-                self.navigator.loginDelegate = self
                 self.navigator.navigateToLoginIfRequired()
             }
             
@@ -411,7 +412,7 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
             }
             
             self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
-                self.navigator.navigateToSuccess(url)
+                self.navigator.navigateToWKWebView(url)
             }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
@@ -564,10 +565,5 @@ class HomePageViewController: UIViewController, LoginViewDelegate {
                 }
             }
         }
-    }
-    
-    //MARK: Login Delegate
-    func redirectViewController(_ viewController: Any!) {
-        
     }
 }

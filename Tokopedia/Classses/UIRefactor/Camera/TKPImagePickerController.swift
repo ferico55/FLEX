@@ -58,11 +58,14 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         viewController.present(pickerController, animated: true) {}
     }
+}
+
+extension UIImage {
     
-    class func resizedImage(_ originalImage:UIImage) -> (UIImage){
+    func resizedImage() -> (UIImage){
         
-        var actualHeight = originalImage.size.height
-        var actualWidth = originalImage.size.width
+        var actualHeight = self.size.height
+        var actualWidth = self.size.width
         var imgRatio = actualWidth/actualHeight
         let maxImageSize = CGSize(width: 600, height: 600)
         let widthView = maxImageSize.width;
@@ -83,7 +86,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         let rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight);
         UIGraphicsBeginImageContext(rect.size)
-        originalImage.draw(in: rect)
+        self.draw(in: rect)
         let resized : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         

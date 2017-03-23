@@ -41,8 +41,7 @@ class UploadImageObserver: NSObject {
             let baseURLString = "https://\(postData.host.upload_host)"
             
             imageObject.asset.fetchOriginalImage(false, completeBlock: { (image, info) in
-                let resizedImage = TKPImagePickerController.resizedImage(image!)
-                RequestUploadImage.requestUploadImage(resizedImage,
+                RequestUploadImage.requestUploadImage(image!,
                     withUploadHost: baseURLString,
                     path: "/upload/attachment",
                     name: "fileToUpload",

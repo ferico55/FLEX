@@ -15,7 +15,13 @@
                       @"deadline_process_day_left",
                       @"deadline_shipping_day_left",
                       @"deadline_finish_day_left",
-                      @"deadline_finish_date"
+                      @"deadline_process_hour_left",
+                      @"deadline_shipping_hour_left",
+                      @"deadline_finish_hour_left",
+                      @"deadline_process",
+                      @"deadline_shipping",
+                      @"deadline_finish_date",
+                      @"deadline_color"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

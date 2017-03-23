@@ -17,6 +17,7 @@
 #import "TKPDTabViewController.h"
 #import "ProductAddEditViewController.h"
 #import "GAIDictionaryBuilder.h"
+#import "search.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -44,7 +45,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     return self;
 }
 
-// Localytics Tracking
+#pragma mark - Localytics trackers
 
 + (void)localyticsEvent:(NSString *)event {
     [Localytics tagEvent:event?:@""];
@@ -130,7 +131,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                                       @"Quality" : [@(quality) stringValue]?:@""}];
 }
 
-// GA Tracking
+#pragma mark - Google Analytics Trackers
 
 + (void)trackScreenName:(NSString *)name {
     AnalyticsManager *manager = [[self alloc] init];
@@ -595,6 +596,25 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:data];
 }
 
+#pragma mark - MoEngage trackers
++ (void)moEngageTrackEventWithName:(NSString *)eventName attributes:(NSDictionary *)attributes {
+    [[MoEngage sharedInstance] trackEvent:eventName andPayload:[NSMutableDictionary dictionaryWithDictionary:attributes]];
+}
+
++ (void)moEngageTrackLogin:(Login *)login {    
+    id moEngage = [MoEngage sharedInstance];
+    [moEngage setUserUniqueID:login.result.user_id];
+    [moEngage setUserName:login.result.full_name];
+    [moEngage setUserEmailID:login.result.email];
+    [moEngage syncNow];
+}
+
++ (void)moEngageTrackLogout {
+    [[MoEngage sharedInstance] resetUser];
+}
+
+#pragma mark - Specific trackers
+
 + (void)trackLogin:(Login *)login {
     // GA Tracking
     [self trackAuthenticatedWithLoginResult:login.result];
@@ -679,6 +699,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         actionForTracker = @"Search Hotlist";
     } else if ([searchID isEqualToString:@"shop"]) {
         actionForTracker = @"Search Shop";
+    } else if ([searchID isEqualToString:kTKPDSEARCH_IN_CATEGORY]) {
+        actionForTracker = @"Autocomplete in Category";
     }
     
     return actionForTracker;

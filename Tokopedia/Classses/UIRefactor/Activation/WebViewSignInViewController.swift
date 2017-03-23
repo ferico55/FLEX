@@ -8,6 +8,7 @@
 
 import UIKit
 import BlocksKit
+import SPTPersistentCache
 
 @objc(WebViewSignInViewController)
 class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebViewProgressDelegate {

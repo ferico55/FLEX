@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class WalletStore: NSObject {
     var code: String = ""
@@ -42,18 +43,18 @@ class WalletStore: NSObject {
         return true
     }
     
-    func shouldShowWallet() -> Bool {
-        return data?.link == "1" && self.error == ""
-        
-    }
     
     func shouldShowActivation() -> Bool {
-        return data?.action != nil
+        return data?.link == 0
     }
     
     func walletFullUrl() -> String {
         if let data = self.data {
-            return "\(data.redirect_url)?flag_app=1"
+            if(self.shouldShowActivation()) {
+                return "\(data.walletActionFullUrl())"
+            } else {
+                return "\(data.redirect_url)?flag_app=1"
+            }
         }
         
         return ""

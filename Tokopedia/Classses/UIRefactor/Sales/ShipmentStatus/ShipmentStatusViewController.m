@@ -170,9 +170,6 @@
                                                    [cell.buyerProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
                                              } failure:nil];
     
-    cell.dateFinishLabel.hidden = YES;
-    cell.finishLabel.hidden = YES;
-    
     cell.order = order;
     
     if (order.order_detail.detail_ship_ref_num) {
@@ -234,13 +231,6 @@
                 }
             }
         }
-            
-        if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
-            cell.dateFinishLabel.hidden = NO;
-            cell.finishLabel.hidden = NO;
-            OrderHistory *history = [order.order_history objectAtIndex:0];
-            cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
-        }
     }
     
     if (order.order_history.count > 0) {
@@ -251,23 +241,11 @@
     }
 
     cell.invoiceDateLabel.text = order.order_payment.payment_verify_date;
-    
-    if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
-         (order.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE &&
-         order.order_deadline.deadline_finish_day_left)) {
-        cell.dateFinishLabel.hidden = NO;
-        cell.dateFinishLabel.text = @"Selesai Otomatis";
-        cell.dateFinishLabel.font = [UIFont microTheme];
-        cell.finishLabel.hidden = NO;
-             
-         NSString *dateFinishString = order.order_deadline.deadline_finish_date;
-         NSString *todayString = [[NSDate date] stringWithFormat:@"dd-MM-yyyy"];
-         if ([dateFinishString isEqual:todayString]) {
-             dateFinishString = @"Hari ini";
-         }
-     
-        cell.finishLabel.text = dateFinishString;
-    }
+    cell.finishLabel.text = order.deadline_string;
+    cell.dateFinishLabel.text = order.deadline_label;
+    cell.finishLabel.hidden = order.deadline_hidden;
+    cell.dateFinishLabel.hidden = order.deadline_hidden;
+    cell.finishLabel.backgroundColor = [UIColor fromHexString:order.order_deadline.deadline_color];
     
     NSLog(@"%@  -  %ld", order.order_detail.detail_invoice,
           (long)order.order_deadline.deadline_finish_day_left);

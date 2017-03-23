@@ -16,14 +16,10 @@
 
 @end
 
-@interface HotlistBannerRequest : NSObject <TokopediaNetworkManagerDelegate> {
-    TokopediaNetworkManager *_bannerManager;
-}
+@interface HotlistBannerRequest : NSObject;
 
 @property (weak, nonatomic) id<HotlistBannerDelegate> delegate;
 @property (nonatomic) NSString *bannerKey;
-
-- (void)requestBanner;
 
 +(void)fetchHotlistBannerWithQuery:(NSString*)query
                          onSuccess:(void(^)(HotlistBannerResult* data))success

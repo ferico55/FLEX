@@ -55,6 +55,17 @@
     return @"0";
 }
 
+- (NSString *)getUserEmail {
+    if ([[self secureStorageDictionary] objectForKey:@"user_email"]) {
+        if ([[[self secureStorageDictionary] objectForKey:@"user_email"] isKindOfClass:[NSString class]]) {
+            return [[self secureStorageDictionary] objectForKey:@"user_email"];
+        } else {
+            return [[[self secureStorageDictionary] objectForKey:@"user_email"] stringValue];
+        }
+    }
+    return @"0";
+}
+
 - (NSString*)getMyDeviceToken {
     if ([[[self secureStorageDictionary] objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
         return [[self secureStorageDictionary] objectForKey:@"device_token"]?: @"0";

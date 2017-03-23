@@ -1036,7 +1036,7 @@
         if (_list.count>0) {
             _tableView.tableFooterView = _checkoutView;
         } else _tableView.tableFooterView = nil;
-        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:YES];
+        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:NO];
         [_tableView setContentOffset:CGPointZero];
     }
 }
@@ -1513,6 +1513,7 @@
                                 }
                                 [self requestCartData];
                                 [self isLoading:NO];
+                                [_tableView reloadData];
                             } error:^(NSError *error) {
                                 [self doClearAllData];
                                 [_noInternetConnectionView generateRequestErrorViewWithError:error];

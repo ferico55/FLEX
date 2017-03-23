@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import JLPermissions
+import EAIntroView
+import MoEngage_iOS_SDK
 
 @objc
 class IntroViewController: UIViewController, EAIntroDelegate {
@@ -285,6 +288,9 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     }
     
     @IBAction func btnNotificationTapped(_ sender: AnyObject) {
+        MoEngage.sharedInstance().registerForRemoteNotification(withCategories: nil,
+                                                                andCategoriesForPreviousVersions: nil,
+                                                                andWithUserNotificationCenterDelegate: self)
         JLNotificationPermission.sharedInstance().isExtraAlertEnabled = false
         JLNotificationPermission.sharedInstance().authorize({[unowned self] deviceId, error in
             let deniedCode = JLAuthorizationErrorCode.permissionSystemDenied.rawValue

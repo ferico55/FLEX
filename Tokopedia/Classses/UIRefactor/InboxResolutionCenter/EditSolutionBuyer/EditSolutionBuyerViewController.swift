@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DownPicker
 
 @IBDesignable
 @objc(EditSolutionBuyerViewController) class EditSolutionBuyerViewController: UIViewController {

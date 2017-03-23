@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class RetryPickupRequest: NSObject {
     class func retryPickupOrder(orderId: NSString, onSuccess:@escaping ((V4Response<GeneralActionResult>) -> Void), onFailure:@escaping (() -> Void)) {

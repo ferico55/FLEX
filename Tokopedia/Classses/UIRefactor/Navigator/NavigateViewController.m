@@ -45,7 +45,6 @@
 #import "Tokopedia-Swift.h"
 
 #import "GalleryViewController.h"
-#import "ContactUsWebViewController.h"
 #import "TkpdHMAC.h"
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
@@ -504,7 +503,7 @@
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url {
     NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *data = [[urlString URLQueryParametersWithOptions:URLQueryOptionDefault] mutableCopy];
-    [data setObject:url.parameters[@"q"]?:@"" forKey:@"search"];
+    [data setObject:data[@"q"]?:@"" forKey:@"search"];
     
     SearchResultViewController *searchProductController = [[SearchResultViewController alloc] init];
     [data setObject:@"search_product" forKey:@"type"];
@@ -556,6 +555,15 @@
     [viewController.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)navigateToAddProductFromViewController:(UIViewController*)viewController {
+    ProductAddEditViewController *controller = [ProductAddEditViewController new];
+    controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+    nav.navigationBar.translucent = NO;
+    
+    [viewController presentViewController:nav animated:YES completion:nil];
+}
 
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {
@@ -688,8 +696,19 @@
 
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    
     NSString *contactUsURL = [self contactUsURL];
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:contactUsURL] shouldAuthorizeRequest:YES];
+    __weak typeof(WKWebViewController) *wcontroller = controller;
+    
+    controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+        NSURL* url = action.request.URL;
+        if ([url.absoluteString isEqualToString:[NSString stringWithFormat:@"%@#/", contactUsURL]]) {
+            [wcontroller.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
     controller.title = @"Tokopedia Contact";
     [viewController.navigationController pushViewController:controller animated:YES];
 }
@@ -699,6 +718,14 @@
     NSString *pulsaURL = @"https://pulsa.tokopedia.com/saldo/?utm_source=ios";
     
     WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[auth webViewUrlFromUrl:pulsaURL] shouldAuthorizeRequest:YES];
+    __weak typeof(WKWebViewController) *wcontroller = controller;
+    
+    controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+        NSURL* url = action.request.URL;
+        if (action.navigationType == WKNavigationTypeBackForward && [url.host isEqualToString:@"pay.tokopedia.com"]) {
+            [wcontroller.navigationController popViewControllerAnimated:YES];
+        }
+    };
     controller.title = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];

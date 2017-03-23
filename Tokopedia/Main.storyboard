@@ -482,11 +482,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Uhg-NZ-x8S">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Uhg-NZ-x8S">
                                         <rect key="frame" x="0.0" y="79" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uhg-NZ-x8S" id="qRK-ub-izr">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="uq9-Y3-TSx">
@@ -496,7 +496,7 @@
                                                         <constraint firstAttribute="width" constant="30" id="f7q-zZ-pNq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TopCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TokoCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-k9-Cxf">
                                                     <rect key="frame" x="56" y="13" width="107" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="107" id="KrX-8M-m6N"/>
@@ -507,7 +507,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xib-oJ-bmf">
-                                                    <rect key="frame" x="131" y="7" width="211" height="27"/>
+                                                    <rect key="frame" x="134" y="7" width="211" height="27"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="211" id="K4g-QU-XhL"/>
                                                         <constraint firstAttribute="height" constant="27" id="O2W-IA-aOJ"/>
@@ -517,8 +517,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6d-y3-oK5">
-                                                    <rect key="frame" x="226" y="6" width="122" height="30"/>
-                                                    <color key="backgroundColor" red="0.28627450980000002" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <rect key="frame" x="247" y="6" width="122" height="30"/>
+                                                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="CWn-PZ-P9h"/>
                                                         <constraint firstAttribute="width" constant="122" id="vNG-eZ-ldS"/>
@@ -537,9 +537,9 @@
                                             <constraints>
                                                 <constraint firstItem="xib-oJ-bmf" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="7" id="701-kh-bDu"/>
                                                 <constraint firstItem="uq9-Y3-TSx" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="7" id="82I-rh-MoX"/>
-                                                <constraint firstAttribute="trailing" secondItem="I6d-y3-oK5" secondAttribute="trailing" constant="-6" id="D0G-WD-DSM"/>
+                                                <constraint firstAttribute="trailing" secondItem="I6d-y3-oK5" secondAttribute="trailing" constant="6" id="D0G-WD-DSM"/>
                                                 <constraint firstItem="uq9-Y3-TSx" firstAttribute="leading" secondItem="qRK-ub-izr" secondAttribute="leading" constant="16" id="XbK-dt-Uz0"/>
-                                                <constraint firstAttribute="trailing" secondItem="xib-oJ-bmf" secondAttribute="trailing" id="Z3q-O6-55q"/>
+                                                <constraint firstAttribute="trailing" secondItem="xib-oJ-bmf" secondAttribute="trailing" constant="30" id="Z3q-O6-55q"/>
                                                 <constraint firstItem="Mqv-k9-Cxf" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="13" id="cVx-FE-81A"/>
                                                 <constraint firstItem="Mqv-k9-Cxf" firstAttribute="leading" secondItem="uq9-Y3-TSx" secondAttribute="trailing" constant="10" id="tUs-WZ-ZEV"/>
                                                 <constraint firstItem="I6d-y3-oK5" firstAttribute="top" secondItem="qRK-ub-izr" secondAttribute="top" constant="6" id="ztq-ar-Ak4"/>
@@ -2211,6 +2211,11 @@ Transaksi</string>
                             <constraint firstItem="mwS-qg-Bv6" firstAttribute="top" secondItem="WOB-I2-YQV" secondAttribute="top" constant="10" id="t5u-2z-eCp"/>
                             <constraint firstItem="nnH-IK-LDL" firstAttribute="centerY" secondItem="LCW-YV-pjf" secondAttribute="centerY" constant="19.5" id="vXq-bQ-hjw"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <navigationItem key="navigationItem" title="Penjualan" id="eC2-pz-aDI">
                         <barButtonItem key="backBarButtonItem" title=" " id="2a7-Qd-ixk"/>

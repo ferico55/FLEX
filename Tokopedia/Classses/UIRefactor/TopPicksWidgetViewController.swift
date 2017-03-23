@@ -9,6 +9,7 @@
 import UIKit
 import OAStackView
 import JLRoutes
+import RestKit
 
 class TopPicksWidgetViewController: UIViewController {
     

@@ -10,7 +10,7 @@
 #import "UIColor+TextColor.h"
 #import "OrderCellContext.h"
 #import "TxOrderStatusList.h"
-
+#import "UIColor+Theme.h"
 #import "ListOrderInvoiceComponent.h"
 
 @implementation ListOrderInvoiceComponent{
@@ -160,7 +160,7 @@
      newWithView:{
          [UIView class],
          {
-             {@selector(setBackgroundColor:), [self colorWithDayLeft:order.dayLeft]},
+             {@selector(setBackgroundColor:), [UIColor fromHexString:order.order_deadline.deadline_color]},
          }
      }
      insets:{2,2,2,2}

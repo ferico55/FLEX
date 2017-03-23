@@ -70,6 +70,8 @@
     _stackView.alignment = OAStackViewAlignmentFill;
     _stackView.layoutMarginsRelativeArrangement = YES;
     _stackView.layoutMargins = UIEdgeInsetsMake(0, STACKVIEW_LEFTRIGHT_MARGIN, 0, STACKVIEW_LEFTRIGHT_MARGIN);
+    [_scrollView addSubview:_stackView];
+    [self setActiveButton];
 }
 
 #pragma mark - Lifecycle

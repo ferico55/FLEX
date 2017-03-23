@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import SPTPersistentCache
 
 class PulsaCache: NSObject {
     let cacheIdentifier: String = "com.tokopedia.pulsa-\(UIApplication.getAppVersionStringWithoutDot())"

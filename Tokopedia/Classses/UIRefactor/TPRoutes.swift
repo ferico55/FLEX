@@ -18,6 +18,29 @@ class TPRoutes: NSObject {
             self.openWebView(url!)
         }
         
+        JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String : Any]!) -> Bool in
+            let activationCode = params["activationCode"] as! String
+            let attempt = params["a"] as! String
+            
+            let userManager = UserAuthentificationManager()
+            
+            if !userManager.isLogin {
+                let authenticationService = AuthenticationService()
+                
+                authenticationService.login(
+                    withActivationCode: activationCode,
+                    attempt: attempt,
+                    onSuccess: { (login) in
+                        onLoginSuccess(login: login!)
+                },
+                    onFailure: { (error) in
+                        
+                })
+            }
+            
+            return true
+        }
+        
         //create shop
         JLRoutes.global().addRoute("/buka-toko-online-gratis") { (params: [String : Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
@@ -297,6 +320,27 @@ class TPRoutes: NSObject {
         
     }
     
+    static func onLoginSuccess(login: Login) {
+        AnalyticsManager.trackEventName("loginSuccess",
+                                        category: GA_EVENT_CATEGORY_LOGIN,
+                                        action: GA_EVENT_ACTION_LOGIN_SUCCESS,
+                                        label: "Activation Code")
+        AnalyticsManager.trackLogin(login)
+        
+        AuthenticationService.shared().storeCredential(toKeychain: login)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
+        
+        triggerPhoneVerification()
+    }
+    
+    static func triggerPhoneVerification() {
+        let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true)
+        let navigationController = UINavigationController(rootViewController: controller)
+        UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
+    }
+    
     static func getUTMString(_ params: [String : Any]) -> String {
         if params["utm_source"] != nil && params["utm_medium"] != nil && params["utm_campaign"] != nil {
             let utmSource = params["utm_source"] as! String
@@ -344,6 +388,8 @@ class TPRoutes: NSObject {
     }
     
     static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
+        UIApplication.topViewController()?.showWaitOverlay()
+        
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
@@ -353,6 +399,7 @@ class TPRoutes: NSObject {
                                           parameter: ["shop_domain" : domain],
                                           mapping: Shop.mapping(),
                                           onSuccess: { (mappingResult, operation) in
+                                            UIApplication.topViewController()?.removeAllOverlays()
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response = result[""] as! Shop
                                             
@@ -365,6 +412,7 @@ class TPRoutes: NSObject {
                 shopExists(false)
         }
     }
+
     
 }
 

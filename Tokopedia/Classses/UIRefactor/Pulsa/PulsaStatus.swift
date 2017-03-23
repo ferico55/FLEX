@@ -6,6 +6,8 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
+import RestKit
+
 class PulsaStatus: NSObject {
     var type : String!
     var attributes : PulsaStatusAttribute = PulsaStatusAttribute()

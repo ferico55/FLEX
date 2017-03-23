@@ -8,6 +8,7 @@
 
 import UIKit
 import DKImagePickerController
+import RestKit
 
 class ProductEditImages: NSObject {
     var image_description: String = ""

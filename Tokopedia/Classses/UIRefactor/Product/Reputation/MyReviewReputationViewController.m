@@ -43,7 +43,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
+@interface MyReviewReputationViewController ()<LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -54,7 +54,6 @@
     LoadingView *loadingView;
     NSMutableArray *arrList;
     NSString *strRequestingInsertReputation;
-    TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkInsertReputation;
     NSString *emoticonState, *strInsertReputationRole;
     
     NSString *givenSmileyImageString;
@@ -76,13 +75,7 @@
 
 - (void)dealloc
 {
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-    tokopediaNetworkManager = nil;
     
-    [tokopediaNetworkInsertReputation requestCancel];
-    tokopediaNetworkInsertReputation.delegate = nil;
-    tokopediaNetworkInsertReputation = nil;
 }
 
 - (void)initNoResultView{
@@ -257,29 +250,6 @@
     return loadingView;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
-    if(tag == CTagGetInboxReputation) {
-        if(tokopediaNetworkManager == nil) {
-            tokopediaNetworkManager = [TokopediaNetworkManager new];
-            tokopediaNetworkManager.tagRequest = tag;
-            tokopediaNetworkManager.delegate = self;
-        }
-
-        return tokopediaNetworkManager;
-    }
-    else if(tag == CTagInsertReputation) {
-        if(tokopediaNetworkInsertReputation == nil) {
-            tokopediaNetworkInsertReputation = [TokopediaNetworkManager new];
-            tokopediaNetworkInsertReputation.tagRequest = tag;
-            tokopediaNetworkInsertReputation.delegate = self;
-        }
-        
-        return tokopediaNetworkInsertReputation;
-    }
-    
-    return nil;
-}
-
 - (void)getInboxReputation {
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
@@ -439,7 +409,7 @@
     [cell.theirUserImage setClipsToBounds:YES];
     
     [cell.theirUserName setText:current.reviewee_name];
-    [cell.theirUserName setText:[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+    [cell.theirUserName setText:[UIColor tpGreen]
                        withFont:[UIFont smallThemeMedium]];
     [cell.theirUserName setLabelBackground:[current.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
     

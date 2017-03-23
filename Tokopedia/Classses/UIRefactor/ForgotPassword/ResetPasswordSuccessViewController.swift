@@ -88,7 +88,7 @@ class ResetPasswordSuccessViewController: UIViewController {
         })
     }
     
-    @IBAction private func tapLoginNowButton(sender: AnyObject) {
+    @IBAction private func tapLoginNowButton(_ sender: AnyObject) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "navigateToPageInTabBar"), object: "4")
         self.navigationController?.popToRootViewController(animated: true)
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaProduct: NSObject, NSCoding {
     var id : String?

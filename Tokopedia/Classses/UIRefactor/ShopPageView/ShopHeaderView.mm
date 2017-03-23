@@ -14,6 +14,7 @@
 #import "CMPopTipView.h"
 
 #import <ComponentKit/ComponentKit.h>
+#import <NSAttributedString_DDHTML/NSAttributedString+DDHTML.h>
 
 @interface ShopHeaderContext : NSObject
 
@@ -100,34 +101,16 @@
 }
 
 - (void)didTapMedal:(CKComponent *)sender {
-    UILabel *lblShow = [[UILabel alloc] init];
-    CGFloat fontSize = 13;
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
-    UIColor *foregroundColor = [UIColor whiteColor];
-    
-    NSString *text = [NSString stringWithFormat:@"%@ poin", self.viewModel.shop.stats.shop_reputation_score];
-    
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
-    
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:attrs];
-
-    [lblShow setAttributedText:attributedText];
-    
-    
-    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.bounds.size.width-40, 9999)];
-    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
-    lblShow.backgroundColor = [UIColor clearColor];
-    
     CMPopTipView *_cmPopTipView;
     
     //Init pop up
-    _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    _cmPopTipView = [[CMPopTipView alloc] initWithMessage:self.viewModel.shop.stats.pointsText];
+    _cmPopTipView.textFont = [UIFont boldSystemFontOfSize:13];
+    _cmPopTipView.textColor = [UIColor whiteColor];
     _cmPopTipView.delegate = self;
     _cmPopTipView.backgroundColor = [UIColor blackColor];
     _cmPopTipView.animation = CMPopTipAnimationSlide;
     _cmPopTipView.dismissTapAnywhere = YES;
-    _cmPopTipView.leftPopUp = YES;
-    
     
     [_cmPopTipView presentPointingAtView:sender.viewContext.view
                                   inView:self
@@ -165,7 +148,8 @@
                                         options:{}
                                         attributes:{
                                             {@selector(setBackgroundColor:), [UIColor colorWithRed:0.259 green:0.741 blue:0.255 alpha:1.00]},
-                                            {@selector(setContentMode:), UIViewContentModeScaleAspectFill}
+                                            {@selector(setContentMode:), UIViewContentModeScaleAspectFill},
+                                            {@selector(setClipsToBounds:), YES}
                                         }]
                                    },
                                    {
@@ -211,10 +195,11 @@
                                                       {
                                                           shop.info.official?nil:
                                                           [MedalComponent
-                                                           newMedalWithLevel:[shop.stats.shop_badge_level.level integerValue]
+                                                           newMedalWithLevel:[shop.stats.shop_badge_level.level integerValue]                                                           
                                                            set:[shop.stats.shop_badge_level.set integerValue]
                                                            imageCache:context.imageStorage
-                                                           selector:@selector(didTapMedal:)]
+                                                           selector:@selector(didTapMedal:)],
+                                                          .alignSelf = CKStackLayoutAlignSelfStart
                                                       }
                                                   }],
                                                  .flexGrow = YES,
@@ -265,7 +250,7 @@
     
     NSString *title = activity == ShopActivityOther? shop.info.shop_status_title.stringByStrippingHTML : [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@", shop.closed_info.until];
     
-    NSString *message = [NSString stringWithFormat:@"Alasan : %@", shop.closed_info.note];
+    NSString *reason = shop.info.shop_status_message;
     
     return [CKInsetComponent
             newWithView: {
@@ -294,10 +279,9 @@
                       size:{}]
                  },
                  {
-                     activity == ShopActivityOther? nil:
                      [CKLabelComponent
                       newWithLabelAttributes:{
-                          .string = message,
+                          .string = [NSAttributedString attributedStringFromHTML:reason].string,
                           .font = [UIFont smallTheme]
                       }
                       viewAttributes:{

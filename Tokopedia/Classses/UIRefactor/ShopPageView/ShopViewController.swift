@@ -17,7 +17,7 @@ private struct TabChild {
     let viewController: UIViewController
 }
 
-class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
+class ShopViewController: UIViewController {
     var data: [AnyHashable: Any]?
     var initialEtalase: EtalaseList?
     
@@ -122,6 +122,22 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
         viewModel.ownShop = UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id)
         
         self.header.viewModel = viewModel
+        header.onTapMessageButton = { [unowned self] in
+            self.messageShopOwnerWithShop(shop)
+        }
+        
+        header.onTapSettingsButton = { [unowned self] in
+            self.openSettingsForShop(shop)
+        }
+        
+        header.onTapAddProductButton = { [unowned self] in
+            self.addShopProduct()
+        }
+        
+        header.onTapFavoriteButton = { [unowned self] in
+            self.toggleFavoriteForShop(shop)
+        }
+        
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.header.sizeThatFits(self.view.bounds.size).height
     }
     
@@ -139,26 +155,13 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
         
         header.viewModel = viewModel
         
-        header.onTapMessageButton = { [unowned self] in
-            self.messageShopOwnerWithShop(shop)
-        }
-        
-        header.onTapSettingsButton = { [unowned self] in
-            self.openSettingsForShop(shop)
-        }
-        
-        header.onTapAddProductButton = { [unowned self] in
-            self.addShopProduct()
-        }
-        
-        header.onTapFavoriteButton = { [unowned self] in
-            self.toggleFavoriteForShop(shop)
-        }
+        renderShopHeaderWithShop(shop)
         
         viewController.segmentedPager.parallaxHeader.view = header
         viewController.segmentedPager.parallaxHeader.mode = .bottom
         viewController.segmentedPager.bounces = false
         viewController.segmentedPager.dataSource = self
+        viewController.segmentedPager.delegate = self
         
         viewController.segmentedPager.segmentedControl.selectionStyle = .fullWidthStripe
         viewController.segmentedPager.segmentedControl.borderType = [.top, .bottom]
@@ -268,7 +271,7 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
     }
     
     fileprivate func messageButtonDidTappedWithShop(_ shop: Shop) {
-        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -280,7 +283,7 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
     }
     
     fileprivate func toggleFavoriteForShop(_ shop: Shop) {
-        authenticationService.ensureLoggedInFromViewController(self) { [weak self] in
+        authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -290,6 +293,12 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
             self.renderBarButtonsWithShop(shop, favoriteRequestInProgress: true)
             
             let adKey = self.data!["ad_ref_key"] as? String ?? ""
+            
+            AnalyticsManager.trackEventName(
+                "clickShopHome",
+                category: GA_EVENT_CATEGORY_SHOP_HOME,
+                action: GA_EVENT_ACTION_CLICK,
+                label: "Add to Favorite - \(shop.result.info.shop_name)")
             
             FavoriteShopRequest.requestActionButtonFavoriteShop(
                 shop.result.info.shop_id,
@@ -348,6 +357,11 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
     }
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
+        AnalyticsManager.trackEventName(
+            "clickShopHome",
+            category: GA_EVENT_CATEGORY_SHOP_HOME,
+            action: GA_EVENT_ACTION_CLICK,
+            label: "Send Message")
         let viewController = SendMessageViewController(to: shop)
         viewController?.display(from: self)
     }
@@ -369,6 +383,12 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension ShopViewController: MXSegmentedPagerDataSource {
     func numberOfPages(in segmentedPager: MXSegmentedPager) -> Int {
         return tabChildren.count
     }
@@ -388,9 +408,13 @@ class ShopViewController: UIViewController, MXSegmentedPagerDataSource {
         
         return view!
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 
+extension ShopViewController: MXSegmentedPagerDelegate {
+    func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
+        tabChildren.forEach { (child) in
+            let tabChild = child.viewController as? ShopTabChild
+            tabChild?.tabWillChange?()
+        }
+    }
+}

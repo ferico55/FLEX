@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RestKit
 
 class PulsaCategoryRoot: NSObject, NSCoding {
     var data : [PulsaCategory] = []

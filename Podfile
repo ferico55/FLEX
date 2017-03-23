@@ -55,7 +55,8 @@ def common_pods
     pod "JLPermissions/Contacts"
     pod 'GoogleSignIn', '~> 2.4.0'
     pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
-    pod 'FBSDKLoginKit'
+    pod 'FBSDKCoreKit', '~>4.19.0'
+    pod 'FBSDKLoginKit', '~>4.19.0'
     pod 'DownPicker'
     pod 'APAddressBook/Swift'
     pod 'Masonry'
@@ -71,6 +72,12 @@ def common_pods
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'VMaskTextField'
+    pod 'FBSDKShareKit', '~>4.19.0'
+    pod 'AHKActionSheet', '~>0.5.4'
+    pod 'NSAttributedString-DDHTML', '1.2.0'
+    pod 'UIAlertController+Blocks', '~> 0.9'
+    pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView.git', :commit => '2cc2633d2e711b3af45912b2718b4df1c360b8f5'
+    
 
     #Swift 3.0 pods
     pod 'RSKGrowingTextView'
@@ -80,6 +87,8 @@ def common_pods
     pod 'RxSwift', '~> 3.1.0'
     pod 'DKImagePickerController', '~> 3.5.0'
     pod 'RestKit/Testing', '~> 0.27.0'
+    pod 'KeychainAccess', '~> 3.0'
+    pod 'MoEngage-iOS-SDK', '~> 3.3.0'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -97,6 +106,10 @@ target "TokopediaTests" do
     jasonette_pods
 end
 
+target "ServiceExtension" do
+    pod 'MORichNotification', '~> 1.1.1'
+end
+
 post_install do |installer|
     
     installer.pods_project.targets.each do |target|
@@ -106,6 +119,9 @@ post_install do |installer|
         
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
+            if target.name == "MoEngage-iOS-SDK"
+                config.build_settings["OTHER_LDFLAGS"] = '$(inherited) "-ObjC"'
+            end
         end
     end
 

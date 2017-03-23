@@ -50,7 +50,6 @@ UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
-TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
 CollectionViewSupplementaryDataSource,
@@ -519,5 +518,10 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 - (void)buttonDidTapped:(id)sender{
     NSDictionary *userInfo = @{@"page" : @5};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
+}
+
+- (void)scrollToTop
+{
+    [self.collectionView scrollToTop];
 }
 @end

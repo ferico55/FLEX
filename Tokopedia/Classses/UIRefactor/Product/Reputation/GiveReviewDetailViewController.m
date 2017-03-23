@@ -38,7 +38,7 @@
 @property (weak, nonatomic) IBOutlet TKPDTextView *reviewDetailTextView;
 @property (weak, nonatomic) IBOutlet UIView *attachedImageView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachedImagesArray;
-
+@property (strong, nonatomic) ReviewSummaryViewController *reviewSummaryViewController;
 
 @end
 
@@ -121,6 +121,9 @@
     if (_isEdit) {
         _reviewDetailTextView.text = [NSString convertHTML:_review.review_message];
     }
+    
+    //reviewSummaryViewController di init di sini supaya facebook share switchnya bisa dimemorize
+    _reviewSummaryViewController = [ReviewSummaryViewController new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -325,21 +328,20 @@
         if (_attachedPictures.count > 0) {
             _hasImages = YES;
         }
+    
+        _reviewSummaryViewController.review = _review;
+        _reviewSummaryViewController.isEdit = _isEdit;
+        _reviewSummaryViewController.qualityRate = _qualityRate;
+        _reviewSummaryViewController.accuracyRate = _accuracyRate;
+        _reviewSummaryViewController.reviewMessage = _reviewMessage;
+        _reviewSummaryViewController.token = _token;
+        _reviewSummaryViewController.imagesToUpload = _imagesToUpload;
+        _reviewSummaryViewController.imageDescriptions = _productReviewPhotoObjects;
+        _reviewSummaryViewController.hasAttachedImages = _hasImages;
+        _reviewSummaryViewController.imageIDs = _imageIDs;
+        _reviewSummaryViewController.attachedImages = _attachedPictures;
         
-        ReviewSummaryViewController *vc = [ReviewSummaryViewController new];
-        vc.review = _review;
-        vc.isEdit = _isEdit;
-        vc.qualityRate = _qualityRate;
-        vc.accuracyRate = _accuracyRate;
-        vc.reviewMessage = _reviewMessage;
-        vc.token = _token;
-        vc.imagesToUpload = _imagesToUpload;
-        vc.imageDescriptions = _productReviewPhotoObjects;
-        vc.hasAttachedImages = _hasImages;
-        vc.imageIDs = _imageIDs;
-        vc.attachedImages = _attachedPictures;
-        
-        [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController pushViewController:_reviewSummaryViewController animated:YES];
     }
 }
 

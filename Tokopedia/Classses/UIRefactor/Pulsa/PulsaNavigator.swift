@@ -12,7 +12,6 @@ import AddressBookUI
 
 class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
     var controller: UIViewController!
-    var loginDelegate: LoginViewDelegate?
     var pulsaView: PulsaView!
     
     override init() {
@@ -75,19 +74,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToLoginIfRequired() {
-        let navigation = UINavigationController()
-        navigation.navigationBar.backgroundColor = UIColor(red: (18.0/255.0), green: (199.0/255.0), blue: (0/255.0), alpha: 1)
-        navigation.navigationBar.isTranslucent = false
-        navigation.navigationBar.tintColor = UIColor.white
-        
-        let controller = LoginViewController()
-        controller.isPresentedViewController = true
-        controller.redirectViewController = self.controller
-        controller.delegate = self.loginDelegate
-        
-        navigation.viewControllers = [controller]
-        
-        self.controller.navigationController!.present(navigation, animated: true, completion: nil)
+        AuthenticationService.shared().ensureLoggedInFromViewController(self.controller, onSuccess: nil)
     }
     
     func navigateToSuccess(_ url: URL) {
@@ -97,6 +84,19 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         controller.strURL = url.absoluteString
         controller.shouldAuthorizeRequest = true
         
+        self.controller.navigationController!.pushViewController(controller, animated: true)
+    }
+    
+    func navigateToWKWebView(_ url: URL) {
+        let controller = WKWebViewController(urlString: url.absoluteString, shouldAuthorizeRequest: true)
+        controller.didReceiveNavigationAction = { action in
+            let url = action.request.url
+            
+            if(action.navigationType == .backForward && url?.host == "pay.tokopedia.com") {
+                controller.navigationController?.popViewController(animated: true)
+            }
+        }
+        controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
