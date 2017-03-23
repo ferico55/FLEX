@@ -18,6 +18,8 @@
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
+		7A37872D1E838DBD001BC51D /* JasonBannerComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A37872A1E838DBD001BC51D /* JasonBannerComponent.m */; };
+		7A37872E1E838DBD001BC51D /* JasonToolsAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A37872C1E838DBD001BC51D /* JasonToolsAction.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7A8AB6851E83830E00D62ABF /* csv.js in Resources */ = {isa = PBXBuildFile; fileRef = 7A8AB6201E83830E00D62ABF /* csv.js */; };
@@ -1857,6 +1859,10 @@
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		7A3787291E838DBD001BC51D /* JasonBannerComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonBannerComponent.h; sourceTree = "<group>"; };
+		7A37872A1E838DBD001BC51D /* JasonBannerComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonBannerComponent.m; sourceTree = "<group>"; };
+		7A37872B1E838DBD001BC51D /* JasonToolsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonToolsAction.h; sourceTree = "<group>"; };
+		7A37872C1E838DBD001BC51D /* JasonToolsAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonToolsAction.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7A8AB6201E83830E00D62ABF /* csv.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = csv.js; sourceTree = "<group>"; };
@@ -4895,6 +4901,17 @@
 			path = Fixture;
 			sourceTree = "<group>";
 		};
+		7A3787281E838DBD001BC51D /* Jasonette */ = {
+			isa = PBXGroup;
+			children = (
+				7A3787291E838DBD001BC51D /* JasonBannerComponent.h */,
+				7A37872A1E838DBD001BC51D /* JasonBannerComponent.m */,
+				7A37872B1E838DBD001BC51D /* JasonToolsAction.h */,
+				7A37872C1E838DBD001BC51D /* JasonToolsAction.m */,
+			);
+			path = Jasonette;
+			sourceTree = "<group>";
+		};
 		7A8AB61F1E83830D00D62ABF /* Jasonette */ = {
 			isa = PBXGroup;
 			children = (
@@ -7316,6 +7333,7 @@
 		85E175BB1E81006D00EE6082 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7A3787281E838DBD001BC51D /* Jasonette */,
 				85E175BC1E81006D00EE6082 /* Activation */,
 				85E175E01E81006D00EE6082 /* Address */,
 				85E175EB1E81006D00EE6082 /* Alert */,
@@ -11156,6 +11174,7 @@
 				85E181081E81007700EE6082 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
 				85E17D2A1E81007300EE6082 /* GoogleDistanceMatrixElements.m in Sources */,
 				85E17CC61E81007300EE6082 /* SignInProvider.swift in Sources */,
+				7A37872D1E838DBD001BC51D /* JasonBannerComponent.m in Sources */,
 				85E17E5B1E81007400EE6082 /* TrackOrderHistory.m in Sources */,
 				85E182801E81007900EE6082 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				85E182691E81007800EE6082 /* SystemBank.swift in Sources */,
@@ -11736,6 +11755,7 @@
 				85E17E2C1E81007400EE6082 /* ClosedInfo.m in Sources */,
 				85E17E691E81007400EE6082 /* TransactionAction.m in Sources */,
 				85E17D151E81007300EE6082 /* TheOtherProductResult.m in Sources */,
+				7A37872E1E838DBD001BC51D /* JasonToolsAction.m in Sources */,
 				85E17F081E81007400EE6082 /* AlertInfoView.m in Sources */,
 				85E17E731E81007400EE6082 /* TransactionSystemBank.m in Sources */,
 				85E180651E81007600EE6082 /* IntroViewController.swift in Sources */,
