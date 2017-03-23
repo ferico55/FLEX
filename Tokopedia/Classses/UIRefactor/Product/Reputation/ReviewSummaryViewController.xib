@@ -400,7 +400,7 @@
                         <constraint firstAttribute="trailing" secondItem="CJU-JC-Ebx" secondAttribute="trailing" constant="8" id="wo5-h2-fl8"/>
                     </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4O-Ay-WMG">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4O-Ay-WMG">
                     <rect key="frame" x="8" y="329" width="398" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bagikan ke Facebook" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6D-5e-ahh">

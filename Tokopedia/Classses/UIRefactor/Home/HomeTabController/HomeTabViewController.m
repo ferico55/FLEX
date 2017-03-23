@@ -51,6 +51,8 @@
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
     NSURL *_deeplinkUrl;
+    BOOL _needToActivateSearch;
+    BOOL _isViewLoaded;
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
@@ -89,6 +91,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(activateSearch:) name:@"activateSearch" object:nil];
 }
 
 #pragma mark - Lifecycle
@@ -264,12 +267,23 @@
     [super viewWillDisappear:animated];
     float fractionalPage = _scrollView.contentOffset.x  / _scrollView.frame.size.width;
     _page = lround(fractionalPage);
+    
+    _isViewLoaded = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.definesPresentationContext = YES;
+    _isViewLoaded = YES;
+    
+    if (_needToActivateSearch && !self.searchController.isActive) {
+        [self.searchController setActive:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.searchController.searchBar becomeFirstResponder];
+        });
+    }
+    _needToActivateSearch = NO; 
 }
 
 - (void)setArrow {
@@ -467,7 +481,6 @@
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
-
 - (void)userDidLogin:(NSNotification*)notification {
     // [self view] gunanya adalah memanggil viewDidLoad dari background. Dipakai di sini untuk ketika untuk mencegah bug crash saat user login langsung dari onboarding.
     [self view];
@@ -483,7 +496,21 @@
     [self redirectToHome];
     [self setSearchByImage];
 }
-    
+
+- (void)activateSearch:(NSNotification*)notification {
+    if (_isViewLoaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.searchController setActive:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.searchController.searchBar becomeFirstResponder];
+            });
+        });
+    } else {
+        _needToActivateSearch = YES;
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+}
+
 #pragma mark - Method
 
 - (void) instantiateViewControllers {

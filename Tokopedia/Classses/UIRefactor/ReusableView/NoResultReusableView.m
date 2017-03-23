@@ -38,6 +38,19 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [[NSBundle mainBundle] loadNibNamed:@"NoResultReusableView"
+                                      owner:self
+                                    options:nil];
+        [self addSubview:self.view];
+        [self.view setFrame:self.bounds];
+        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    }
+    return self;
+}
+
 - (void)orientationChanged:(NSNotification *)note
 {
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];

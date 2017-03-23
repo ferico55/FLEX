@@ -15,6 +15,7 @@
 - (void)updateShopInformation;
 - (void)updateImageURL;
 - (void)updateSaldoTokopedia;
+- (void)showTooltipView;
 
 @property(strong, nonatomic) MoreWrapperViewController* wrapperViewController;
 @end

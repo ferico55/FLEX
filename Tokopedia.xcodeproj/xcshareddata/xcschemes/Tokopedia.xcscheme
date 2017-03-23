@@ -56,7 +56,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "458655971E55B022002A1198"
+               BlueprintIdentifier = "452E82A01E64103E001191E0"
                BuildableName = "TokopediaUITests.xctest"
                BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">

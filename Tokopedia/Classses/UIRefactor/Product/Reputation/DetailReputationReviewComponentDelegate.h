@@ -17,6 +17,7 @@
 - (void)didTapToDeleteResponse:(DetailReputationReview*)review atView:(UIView*)view;
 - (void)didTapAttachedImages:(DetailReputationReview*)review withIndex:(NSInteger)index;
 - (void)didTapRevieweeReputation:(id)sender onReview:(DetailReputationReview*)review atView:(UIView*)view;
+- (void)didTapShareReviewToOtherSource:(DetailReputationReview*)review atView:(UIView*)view;
 
 @optional
 - (void)didTapProductWithReview:(DetailReputationReview*)review;

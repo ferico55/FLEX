@@ -48,6 +48,7 @@
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)product;
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName;
+- (void)navigateToAddProductFromViewController:(UIViewController*)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

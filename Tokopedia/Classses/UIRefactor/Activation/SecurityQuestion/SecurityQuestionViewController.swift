@@ -350,7 +350,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             withBaseUrl: NSString.accountsUrl(),
             path: "/otp/request",
             method: .POST,
-            header: ["Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
+            header: ["Tkpd-UserId" : self.userID, "Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
             parameter: ["mode" : "sms", "otp_type" : "13"],
             mapping: V4Response<SecurityRequestOTP>.mapping(withData: SecurityRequestOTP.mapping()),
             onSuccess: { (mappingResult, operation) in
@@ -419,7 +419,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             withBaseUrl: NSString.accountsUrl(),
             path: "/otp/request",
             method: .POST,
-            header: ["Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
+            header: ["Tkpd-UserId" : self.userID, "Authorization" : "\(self.token.tokenType!) \(self.token.accessToken!)"],
             parameter: ["mode" : "call", "otp_type" : "13"],
             mapping: V4Response<SecurityRequestOTP>.mapping(withData: SecurityRequestOTP.mapping()) as RKObjectMapping,
             onSuccess: { (mappingResult, operation) in

@@ -67,8 +67,6 @@
 	} else if (state == STATE_PURCHASE_PROCESS_PARTIAL) {
         //TODO: KONFIRMASI ORDER PROCESSED
         [self redirectToProcessedOrder];
-    } else if (state == STATE_CONFIRM_PACKAGE_RECEIVED) {
-        [self redirectToConfirmPackageArrived];
     }
     
     switch (state) {
