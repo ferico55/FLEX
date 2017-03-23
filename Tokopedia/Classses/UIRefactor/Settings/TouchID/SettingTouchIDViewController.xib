@@ -21,9 +21,9 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CCa-Xu-gIT">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="CCa-Xu-gIT">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="yKy-qh-CaC"/>
                         <outlet property="delegate" destination="-1" id="8lc-3T-dg4"/>
@@ -31,18 +31,22 @@
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Q9-bZ-Kvf" customClass="NoResultReusableView">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
                 <constraint firstItem="2Q9-bZ-Kvf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0BN-fZ-YjC"/>
-                <constraint firstItem="CCa-Xu-gIT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4Nc-R5-GyY"/>
+                <constraint firstItem="CCa-Xu-gIT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4Nc-R5-GyY">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="2Q9-bZ-Kvf" secondAttribute="trailing" id="Ep3-Kx-dnV"/>
                 <constraint firstItem="CCa-Xu-gIT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="VXf-WF-5L0"/>
                 <constraint firstItem="2Q9-bZ-Kvf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zuw-if-cps"/>
                 <constraint firstAttribute="bottom" secondItem="CCa-Xu-gIT" secondAttribute="bottom" id="cPd-fK-bPa"/>
-                <constraint firstAttribute="trailing" secondItem="CCa-Xu-gIT" secondAttribute="trailing" id="hQH-A5-eyD"/>
+                <constraint firstAttribute="trailing" secondItem="CCa-Xu-gIT" secondAttribute="trailing" id="hQH-A5-eyD">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="2Q9-bZ-Kvf" secondAttribute="bottom" id="pY1-c5-mtD"/>
             </constraints>
         </view>

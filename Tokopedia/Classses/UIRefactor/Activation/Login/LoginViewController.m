@@ -311,8 +311,32 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 }
 
 - (IBAction)didTapTouchIDButton:(id)sender {
-    [[TouchIDHelper sharedInstance] loadTouchID];
     [AnalyticsManager trackEventName:@"clickLogin" category:GA_EVENT_CATEGORY_LOGIN action:GA_EVENT_ACTION_CLICK label:@"Touch ID"];
+    
+    NSArray *emails = [[TouchIDHelper sharedInstance] loadTouchIDAccount];
+    if (emails && emails.count > 0) {
+        if (emails.count == 1) {
+            [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:0]];
+            return;
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        [UIAlertController showActionSheetInViewController:self
+                                                 withTitle:@"Silahkan pilih akun anda"
+                                                   message:nil
+                                         cancelButtonTitle:@"Batal"
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:emails
+                        popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+                            popover.sourceView = weakSelf.touchIDButton;
+                            popover.sourceRect = weakSelf.touchIDButton.bounds;
+                        } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            if (buttonIndex >= controller.firstOtherButtonIndex) {
+                                NSInteger index = buttonIndex - controller.firstOtherButtonIndex;
+                                [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:index]];
+                            }
+                        }];
+    }
 }
 
 - (void)setLoginData:(NSDictionary *)loginData {
