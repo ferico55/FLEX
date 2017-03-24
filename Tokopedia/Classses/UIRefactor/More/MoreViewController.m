@@ -319,7 +319,9 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     [_walletActivationButton setHidden:!wallet.shouldShowActivation];
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
-        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:wallet.data.walletActionFullUrl shouldAuthorizeRequest:NO];
+        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+
+        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[userManager webViewUrlFromUrl:wallet.data.walletActionFullUrl] shouldAuthorizeRequest:YES];
         controller.title = _walletNameLabel.text;
         
         __weak typeof(self) wself = self;
