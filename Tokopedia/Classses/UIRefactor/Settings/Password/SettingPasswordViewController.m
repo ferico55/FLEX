@@ -13,6 +13,7 @@
 #import "SettingPasswordViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#import "Tokopedia-Swift.h"
 
 @interface SettingPasswordViewController () <UITextFieldDelegate>
 
@@ -108,6 +109,7 @@
     if ([response.data.is_success boolValue]) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:response.message_status delegate:self];
         [alert show];
+        [self updateTouchIDIfExist];
         [self.navigationController popViewControllerAnimated:YES];
     } else if (response.message_error.count > 0) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
@@ -118,6 +120,16 @@
 - (void)didReceiveError:(NSError *)error {
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error.localizedDescription] delegate:self];
     [alert show];
+}
+
+- (void)updateTouchIDIfExist {
+    UserAuthentificationManager *userAuthManager = [[UserAuthentificationManager alloc] init];
+    NSString *email = [userAuthManager getUserEmail];
+    
+    if (email && ![email isEqualToString:@""] &&
+        [[TouchIDHelper sharedInstance] isTouchIDExistWithEmail:email]) {
+        [[TouchIDHelper sharedInstance] updateTouchIDForEmail:email password:self.passwordNewTextField.text];
+    }
 }
 
 #pragma mark - Text field delegate
