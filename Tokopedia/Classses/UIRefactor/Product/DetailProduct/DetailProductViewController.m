@@ -1231,13 +1231,7 @@ TTTAttributedLabelDelegate
         }
         
         if (_product.data == nil) {
-            WebViewController* controller = [[WebViewController alloc] init];
-            controller.strURL = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
-            controller.strTitle = [NSString stringWithFormat:@"http://www.tokopedia.com/%@/%@", [self.data objectForKey:@"shop_domain"]?:@"", [self.data objectForKey:@"product_key"]?:@""];
-            
-            
-            [self.navigationController pushViewController:controller animated:YES];
-            return;
+            return [self initNoResultView];
         }
         
         [self loadDataOtherProduct];
@@ -2361,12 +2355,21 @@ TTTAttributedLabelDelegate
 }
 
 - (void)initNoResultView {
+    [self.view removeAllSubviews];
     NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     noResultView.delegate = self;
     [noResultView generateAllElements:@"icon_no_data_grey.png"
                                 title:@"Produk tidak ditemukan"
-                                 desc:@"Untuk informasi lebih lanjut silakan\nhubungi penjual"
-                             btnTitle:@"Kembali ke halaman sebelumnya"];
+                                 desc:@""
+                             btnTitle:@"Hubungi Penjual"];
+    __weak typeof(self) weakSelf = self;
+    noResultView.onButtonTap = ^(NoResultReusableView *view){
+        SendMessageViewController *messageController = [SendMessageViewController new];
+        messageController.data = @{@"shop_id" : [_data objectForKey:@"shop_id"]?:@"",
+                                   @"shop_name" : [_data objectForKey:@"shop_name"]?:@""};
+        messageController.subject = @"Konfirmasi produk tidak ditemukan";
+        [messageController displayFromViewController:weakSelf];
+    };
     [self.view addSubview:noResultView];
 }
 

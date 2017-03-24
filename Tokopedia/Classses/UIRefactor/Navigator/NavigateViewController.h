@@ -51,6 +51,8 @@
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName;
 - (void)navigateToAddProductFromViewController:(UIViewController*)viewController;
 
+-(void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName withShopId:(NSString*)shopId;
+
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
