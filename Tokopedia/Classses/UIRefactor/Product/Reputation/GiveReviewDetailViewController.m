@@ -40,8 +40,6 @@
 @property (weak, nonatomic) IBOutlet UIView *attachedImageView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachedImagesArray;
 @property (strong, nonatomic) ReviewSummaryViewController *reviewSummaryViewController;
-// this property prevent crash when user continously press Next (Lanjut) button
-@property (nonatomic) BOOL isSubmitButtonValid;
 
 @end
 
@@ -52,8 +50,9 @@
     
     self.title = _isEdit? @"Ubah Ulasan" : @"Tulis Ulasan";
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Lanjut" style:UIBarButtonItemStyleDone handler:^(id sender) {
-        if ([self isSuccessValidateMessage] && _isSubmitButtonValid) {
+    // using debouncer for prevent crash from user spamming tap
+    Debouncer *debouncer = [[Debouncer alloc] initWithDelay:0.3 callback:^{
+        if ([self isSuccessValidateMessage]) {
             [self generateProductReviewPhotoObject:_attachedPictures
                                   uploadedPictures:_uploadedPictures];
             
@@ -72,10 +71,12 @@
             _reviewSummaryViewController.hasAttachedImages = _hasImages;
             _reviewSummaryViewController.imageIDs = _imageIDs;
             _reviewSummaryViewController.attachedImages = _attachedPictures;
-            
-            _isSubmitButtonValid = NO;
+        
             [self.navigationController pushViewController:_reviewSummaryViewController animated:YES];
         }
+    }];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Lanjut" style:UIBarButtonItemStyleDone handler:^(id sender) {
+        [debouncer call];
     }];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -162,7 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title = _isEdit ? @"Ubah Ulasan" : @"Tulis Ulasan";
-    _isSubmitButtonValid = YES;
     [AnalyticsManager trackScreenName:@"Give Review Detail Page"];
 }
 
