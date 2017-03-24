@@ -65,8 +65,6 @@
     _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
-    [self setData];
-    
     [GenerateHostRequest fetchGenerateHostOnSuccess:^(GeneratedHost *host) {
         _generatedHost = host;
         self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -84,7 +82,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    [self setData];
     [AnalyticsManager trackScreenName:@"Review Summary Page"];
 }
 
