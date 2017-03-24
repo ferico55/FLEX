@@ -329,7 +329,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             NSURL* url = action.request.URL;
             NSString* thanksUrl = [NSString stringWithFormat:@"%@/thanks_wallet?flag_app=1", [NSString accountsUrl]];
             if ([url.absoluteString isEqualToString:thanksUrl]) {
-                [wself.navigationController popViewControllerAnimated:YES];
+                [wself.wrapperViewController.navigationController popViewControllerAnimated:YES];
             }
         };
         
