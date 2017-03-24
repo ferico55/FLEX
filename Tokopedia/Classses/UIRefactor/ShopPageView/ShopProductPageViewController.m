@@ -417,22 +417,13 @@ ShopTabChild
 -(void)refreshView:(UIRefreshControl*)refresh {
     /** clear object **/
     NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    
     if (![searchBarBefore isEqualToString:_searchBar.text]) {
         [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
-        [self reloadDataSearch];
+    } else {
+        _page = 1;
+        _isrefreshview = YES;
     }
-    
-    _page = 1;
-    _isrefreshview = YES;
-    
-    if (!_refreshControl.isRefreshing) {
-        [_collectionView setContentOffset:CGPointMake(0, - _refreshControl.frame.size.height) animated:YES];
-        [_refreshControl beginRefreshing];
-    }
-    if (_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-    }
+    [self reloadDataSearch];
 }
 
 
