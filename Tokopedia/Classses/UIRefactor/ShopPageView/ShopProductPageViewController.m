@@ -422,6 +422,17 @@ ShopTabChild
         [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
         [self reloadDataSearch];
     }
+    
+    _page = 1;
+    _isrefreshview = YES;
+    
+    if (!_refreshControl.isRefreshing) {
+        [_collectionView setContentOffset:CGPointMake(0, - _refreshControl.frame.size.height) animated:YES];
+        [_refreshControl beginRefreshing];
+    }
+    if (_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
 }
 
 
