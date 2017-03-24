@@ -21,7 +21,7 @@ class DonationTests: XCTestCase {
         
         totalPayment = 100
         
-        RKTestFixture.setFixtureBundle(Bundle.main)
+        RKTestFixture.setFixtureBundle(Bundle(for: type(of: self)))
         let parsedJSON = RKTestFixture.parsedObject(withContentsOfFixture: "donation.json")
         mappingTest = RKMappingTest(mapping: Donation.mapping(), sourceObject: parsedJSON, destinationObject: donation)
         mappingTest?.performMapping()
