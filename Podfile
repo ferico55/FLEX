@@ -44,7 +44,6 @@ def common_pods
     pod 'NSAttributedString-DDHTML', '1.2.0'
     pod 'UIAlertController+Blocks', '~> 0.9'
     pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView.git', :commit => '2cc2633d2e711b3af45912b2718b4df1c360b8f5'
-    
 
     #Swift 3.0 pods
     pod 'RSKGrowingTextView'
@@ -56,6 +55,7 @@ def common_pods
     pod 'NSObject+Rx', '~>2.0.0'
     pod 'DKImagePickerController', '~> 3.5.0'
     pod 'RestKit/Testing', '~> 0.27.0'
+    pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
     pod 'MoEngage-iOS-SDK', '~> 3.3.0'
     

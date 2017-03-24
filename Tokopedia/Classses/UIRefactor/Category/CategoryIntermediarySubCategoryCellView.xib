@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="nXR-4R-yc1" customClass="CategoryIntermediarySubCategoryCellView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="110" height="127"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Hve-b0-2O3">
+                    <rect key="frame" x="10" y="12" width="90" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="65" id="8FM-CV-1xn"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="1eg-gc-ljZ">
+                    <rect key="frame" x="5" y="89" width="100" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="9Km-Z1-ewH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Hve-b0-2O3" secondAttribute="trailing" constant="10" id="B6J-Ab-Gua"/>
+                <constraint firstItem="1eg-gc-ljZ" firstAttribute="top" secondItem="Hve-b0-2O3" secondAttribute="bottom" constant="12" id="Zpr-cK-YNP"/>
+                <constraint firstItem="Hve-b0-2O3" firstAttribute="leading" secondItem="nXR-4R-yc1" secondAttribute="leading" constant="10" id="de0-ue-ROI"/>
+                <constraint firstAttribute="trailing" secondItem="1eg-gc-ljZ" secondAttribute="trailing" constant="5" id="gcT-SG-o08"/>
+                <constraint firstItem="Hve-b0-2O3" firstAttribute="top" secondItem="nXR-4R-yc1" secondAttribute="top" constant="12" id="kES-Tf-Fow"/>
+                <constraint firstItem="1eg-gc-ljZ" firstAttribute="leading" secondItem="nXR-4R-yc1" secondAttribute="leading" constant="5" id="vHe-b3-uK4"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="3"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                    <real key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                    <color key="value" red="0.98431372549999996" green="0.98431372549999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="categoryNameLabel" destination="1eg-gc-ljZ" id="8ay-Ni-cM0"/>
+                <outlet property="imageView" destination="Hve-b0-2O3" id="BhE-JR-2pw"/>
+            </connections>
+            <point key="canvasLocation" x="99" y="157.5"/>
+        </view>
+    </objects>
+</document>

@@ -41,7 +41,6 @@ class HomePageViewController: UIViewController {
     
     @IBOutlet private var homePageScrollView: UIScrollView!
     private var outerStackView: OAStackView!
-    private lazy var layoutRows: [HomePageCategoryLayoutRow] = [HomePageCategoryLayoutRow]()
     private lazy var categoryVerticalView: OAStackView = OAStackView()
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .pad) ? 275.0 : 225.0
@@ -187,12 +186,10 @@ class HomePageViewController: UIViewController {
     
     private func setTapGestureRecognizerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
         let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizer(handler: { (recognizer, state, point) in
-            self.didTapCategory(recognizer as! UITapGestureRecognizer)
+            self.didTapCategory(layoutRow: layoutRow)
         }) as! UITapGestureRecognizer
         
         iconStackView.addGestureRecognizer(tapGestureRecognizer)
-        iconStackView.tag = Int(layoutRow.id)!
-        self.layoutRows.append(layoutRow)
     }
     
     private func setHorizontalCategoryLayoutWithLayoutSections(_ layoutRows: [HomePageCategoryLayoutRow]) {
@@ -530,40 +527,32 @@ class HomePageViewController: UIViewController {
     
     // MARK: Method
     
-    private func didTapCategory(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        let selectedIconStackView = tapGestureRecognizer.view as! OAStackView
+    private func didTapCategory(layoutRow: HomePageCategoryLayoutRow) {
         
-        for layoutRow in layoutRows {
-            if Int(layoutRow.id) == selectedIconStackView.tag {
-                let categoryName = layoutRow.name
-                
-                AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
-                AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName])
-                
-                if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
-                    let navigateViewController = NavigateViewController()
-                    let categoryId = layoutRow.category_id
-                    navigateViewController.navigateToCategory(from: self, withCategoryId: categoryId, categoryName: categoryName)
-                    break
-                } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
-                    let webViewController = WebViewController()
-                    webViewController.hidesBottomBarWhenPushed = true;
-
-                    let userManager = UserAuthentificationManager()
-                    
-                    webViewController.shouldAuthorizeRequest = true
-                    webViewController.strURL = userManager.webViewUrl(fromUrl: layoutRow.url)
-                    webViewController.onTapLinkWithUrl = { [weak self] (url) in
-                        if let weakSelf = self {
-                            if url?.absoluteString == "https://www.tokopedia.com/" {
-                                weakSelf.navigationController?.popViewController(animated: true)
-                            }
-                        }
+        let categoryName = layoutRow.name
+        
+        AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
+        AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName ?? ""])
+        
+        if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
+                let navigateViewController = NavigateViewController()
+                navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName)
+        } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
+            let webViewController = WebViewController()
+            webViewController.hidesBottomBarWhenPushed = true;
+            
+            let userManager = UserAuthentificationManager()
+            
+            webViewController.shouldAuthorizeRequest = true
+            webViewController.strURL = userManager.webViewUrl(fromUrl: layoutRow.url)
+            webViewController.onTapLinkWithUrl = { [weak self] (url) in
+                if let weakSelf = self {
+                    if url?.absoluteString == "https://www.tokopedia.com/" {
+                        weakSelf.navigationController?.popViewController(animated: true)
                     }
-                    self.navigationController?.pushViewController(webViewController, animated: true)
-                    break
                 }
             }
+            self.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 }
