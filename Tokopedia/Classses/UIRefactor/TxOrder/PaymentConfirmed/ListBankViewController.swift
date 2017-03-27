@@ -70,84 +70,84 @@ class ListBankViewController: UIViewController {
     fileprivate let listBank = [
         Bank(
             name: "Bank BCA",
-            picture: "https://ecs1.tokopedia.com/img/icon-bca.png",
+            picture: "https://ecs7.tokopedia.net/img/icon-bca.png",
             accountBanks: [
                 DetailBank(
                     number: "178 303 7878",
                     branch: "BCA Permata Hijau",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bca.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bca.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "372 309 8781",
                     branch: "BCA Kedoya Permai",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bca.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bca.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "372 177 3939",
                     branch: "BCA Kedoya Permai",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bca.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bca.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "372 178 5066",
                     branch: "BCA Kedoya Permai",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bca.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bca.png",
                     accountName: "a/n PT. Tokopedia"
                 )
             ]
         ),
         Bank(
             name: "Bank Mandiri",
-            picture: "https://ecs1.tokopedia.com/img/icon-mandiri.png",
+            picture: "https://ecs7.tokopedia.net/img/icon-mandiri.png",
             accountBanks: [
                 DetailBank(
                     number: "102-00-0526387-3",
                     branch: "Mandiri Permata Hijau",
-                    picture: "https://ecs1.tokopedia.com/img/icon-mandiri.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-mandiri.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "1650070070017",
                     branch: "Mandiri Kebon Jeruk",
-                    picture: "https://ecs1.tokopedia.com/img/icon-mandiri.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-mandiri.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "1650030073333",
                     branch: "Mandiri Kebon Jeruk",
-                    picture: "https://ecs1.tokopedia.com/img/icon-mandiri.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-mandiri.png",
                     accountName: "a/n PT. Tokopedia"
                 )
             ]
         ),
         Bank(
             name: "Bank BNI",
-            picture: "https://ecs1.tokopedia.com/img/icon-bni.png",
+            picture: "https://ecs7.tokopedia.net/img/icon-bni.png",
             accountBanks: [
                 DetailBank(
                     number: "800 600 6009",
                     branch: "BNI Kebon Jeruk",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bni.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bni.png",
                     accountName: "a/n PT. Tokopedia"
                 )
             ]
         ),
         Bank(
             name: "Bank BRI",
-            picture: "https://ecs1.tokopedia.com/img/icon-bri.png",
+            picture: "https://ecs7.tokopedia.net/img/icon-bri.png",
             accountBanks: [
                 DetailBank(
                     number: "037 701 000 435 301",
                     branch: "BNI Kebon Jeruk",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bri.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bri.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "037 701 000 692 301",
                     branch: "BNI Kebon Jeruk",
-                    picture: "https://ecs1.tokopedia.com/img/icon-bri.png",
+                    picture: "https://ecs7.tokopedia.net/img/icon-bri.png",
                     accountName: "a/n PT. Tokopedia"
                 )
             ]
