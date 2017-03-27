@@ -154,12 +154,12 @@ class ListBankViewController: UIViewController {
         ),
         Bank(
             name: "Bank CIMB Niaga",
-            picture: "https://ecs1.tokopedia.net/img/Logo-CIMB.png",
+            picture: "https://ecs7.tokopedia.net/img/Logo-CIMB.png",
             accountBanks: [
                 DetailBank(
                     number: "1770100731002",
                     branch: "CIMB Tomang Tol",
-                    picture: "https://ecs1.tokopedia.net/img/Logo-CIMB.png",
+                    picture: "https://ecs7.tokopedia.net/img/Logo-CIMB.png",
                     accountName: "a/n PT. Tokopedia"
                 )
             ]
