@@ -1701,8 +1701,6 @@
 		452E82A41E64103E001191E0 /* TokopediaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E82A31E64103E001191E0 /* TokopediaUITests.swift */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
-		452E95891E64108F001191E0 /* DonationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95861E64108F001191E0 /* DonationUITests.swift */; };
-		452E958A1E64108F001191E0 /* LoginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95871E64108F001191E0 /* LoginUITests.swift */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
@@ -4601,8 +4599,6 @@
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
-		452E95861E64108F001191E0 /* DonationUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationUITests.swift; sourceTree = "<group>"; };
-		452E95871E64108F001191E0 /* LoginUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUITests.swift; sourceTree = "<group>"; };
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
@@ -9781,8 +9777,6 @@
 		452E82A21E64103E001191E0 /* TokopediaUITests */ = {
 			isa = PBXGroup;
 			children = (
-				452E95861E64108F001191E0 /* DonationUITests.swift */,
-				452E95871E64108F001191E0 /* LoginUITests.swift */,
 				452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */,
 				452E82A31E64103E001191E0 /* TokopediaUITests.swift */,
 				452E82A51E64103E001191E0 /* Info.plist */,
@@ -10643,8 +10637,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				452E82A41E64103E001191E0 /* TokopediaUITests.swift in Sources */,
-				452E95891E64108F001191E0 /* DonationUITests.swift in Sources */,
-				452E958A1E64108F001191E0 /* LoginUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
