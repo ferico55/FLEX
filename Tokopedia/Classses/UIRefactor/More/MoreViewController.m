@@ -710,6 +710,9 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             controller.url = @"https://ecs7.tokopedia.net/jasonette/help-index.json";
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            controller.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Tutup" style:UIBarButtonItemStylePlain handler:^(id sender) {
+                [wrapperController dismissViewControllerAnimated:YES completion:nil];
+            }];
             
             [wrapperController presentViewController:navigationController animated:YES completion:nil];
 
