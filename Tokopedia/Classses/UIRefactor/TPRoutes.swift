@@ -18,6 +18,29 @@ class TPRoutes: NSObject {
             self.openWebView(url!)
         }
         
+        JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String : Any]!) -> Bool in
+            let activationCode = params["activationCode"] as! String
+            let attempt = params["a"] as! String
+            
+            let userManager = UserAuthentificationManager()
+            
+            if !userManager.isLogin {
+                let authenticationService = AuthenticationService()
+                
+                authenticationService.login(
+                    withActivationCode: activationCode,
+                    attempt: attempt,
+                    onSuccess: { (login) in
+                        onLoginSuccess(login: login!)
+                },
+                    onFailure: { (error) in
+                        
+                })
+            }
+            
+            return true
+        }
+        
         //create shop
         JLRoutes.global().addRoute("/buka-toko-online-gratis") { (params: [String : Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
@@ -240,7 +263,7 @@ class TPRoutes: NSObject {
                     "sc_identifier" : pathComponent.joined(separator: "_")
                 ]
                 
-                navigator.navigateToSearch(from: UIApplication.topViewController(), withData: departments)
+                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: departments)
             }
  
             return true
@@ -295,6 +318,27 @@ class TPRoutes: NSObject {
             return true
         }
         
+    }
+    
+    static func onLoginSuccess(login: Login) {
+        AnalyticsManager.trackEventName("loginSuccess",
+                                        category: GA_EVENT_CATEGORY_LOGIN,
+                                        action: GA_EVENT_ACTION_LOGIN_SUCCESS,
+                                        label: "Activation Code")
+        AnalyticsManager.trackLogin(login)
+        
+        AuthenticationService.shared().storeCredential(toKeychain: login)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
+        
+        triggerPhoneVerification()
+    }
+    
+    static func triggerPhoneVerification() {
+        let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true)
+        let navigationController = UINavigationController(rootViewController: controller)
+        UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     
     static func getUTMString(_ params: [String : Any]) -> String {

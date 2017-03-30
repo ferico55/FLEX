@@ -58,4 +58,9 @@
 
 - (void)storeCredentialToKeychain:(Login *)login;
 
+- (void)loginWithActivationCode:(NSString *)code
+                        attempt:(NSString *)attempt
+                      onSuccess:(void (^)(Login *))successCallback
+                      onFailure:(void (^)(NSError *))failureCallback;
+
 @end

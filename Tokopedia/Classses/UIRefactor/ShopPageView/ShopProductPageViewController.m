@@ -49,6 +49,7 @@
 
 #import "EtalaseViewController.h"
 
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -88,6 +89,7 @@ ShopTabChild
 @property (nonatomic, strong) NSMutableArray *list;
 
 @property (nonatomic) UITableViewCellType cellType;
+
 
 @end
 
@@ -149,7 +151,7 @@ ShopTabChild
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-
+    
     BOOL _isFailRequest;
     
     PromoRequest *_promoRequest;
@@ -201,7 +203,7 @@ ShopTabChild
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
     
     _product = [NSMutableArray new];
-
+    
     
     _isrefreshview = NO;
     
@@ -222,11 +224,10 @@ ShopTabChild
     
     [self initNoResultView];
     
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
@@ -306,7 +307,7 @@ ShopTabChild
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-
+    
     if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
         size = CGSizeMake(self.view.frame.size.width, 50);
     }
@@ -329,7 +330,7 @@ ShopTabChild
     }
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
-    
+        
         [_searchBar removeFromSuperview];
         [reusableView addSubview:_searchBar];
         
@@ -407,7 +408,7 @@ ShopTabChild
 }
 
 //- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-//    
+//
 //    return UIEdgeInsetsMake(10, 10, 10, 10);
 //}
 
@@ -415,15 +416,16 @@ ShopTabChild
 #pragma mark - Refresh View
 -(void)refreshView:(UIRefreshControl*)refresh {
     /** clear object **/
-    _page = 1;
-    _isrefreshview = YES;
-    
-    if(!_refreshControl.isRefreshing) {
-        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-        [_refreshControl beginRefreshing];
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    if (![searchBarBefore isEqualToString:_searchBar.text]) {
+        [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    } else {
+        _page = 1;
+        _isrefreshview = YES;
     }
-    [self requestProduct];
+    [self reloadDataSearch];
 }
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -492,6 +494,7 @@ ShopTabChild
     [self requestProduct];
 }
 
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [_searchBar resignFirstResponder];
 }
@@ -532,6 +535,12 @@ ShopTabChild
 
 - (IBAction)tapToShare:(id)sender {
     if (_shop) {
+        NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _shop.result.info.shop_name];
+        [AnalyticsManager trackEventName:@"clickShare"
+                                category:@"Share Shop"
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:eventLabel];
+        
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];
@@ -677,7 +686,7 @@ ShopTabChild
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
         shopName = [_data objectForKey:@"shop_name"];
     }
-
+    
     [NavigateViewController navigateToProductFromViewController:self withProduct:list];
 }
 
@@ -760,7 +769,7 @@ ShopTabChild
                                                            } else  {
                                                                [_collectionView reloadData];
                                                            }
-
+                                                           
                                                        } onFailure:^(NSError *error) {
                                                            _isrefreshview = NO;
                                                            [_refreshControl endRefreshing];

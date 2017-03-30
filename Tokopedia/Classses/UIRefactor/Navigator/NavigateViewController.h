@@ -27,7 +27,8 @@
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
-- (void)navigateToCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
 
@@ -48,6 +49,9 @@
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)product;
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName;
+- (void)navigateToAddProductFromViewController:(UIViewController*)viewController;
+
+-(void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName withShopId:(NSString*)shopId;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

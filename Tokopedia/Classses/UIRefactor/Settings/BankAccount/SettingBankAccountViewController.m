@@ -426,8 +426,7 @@
     [_request requestDeleteBankAccountWithAccountID:deletedBankAccount.bank_account_id
                                           onSuccess:^(ProfileSettings *result) {
                                               [weakSelf deleteBankAccount:result];
-                                              [_table reloadData];
-                                              [_refreshControl endRefreshing];
+                                              [weakSelf getBankAccount];
                                           }
                                           onFailure:^(NSError *error) {
                                               [weakSelf cancelDeleteRow];

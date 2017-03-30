@@ -19,10 +19,16 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     fileprivate var progressView: UIProgressView!
     fileprivate var noInternetView: NoResultReusableView!
     
+    //intercept when user click on action here
+    var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
+    
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
+        
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
+        
+        
         view = webView
         initProgressView()
     }
@@ -34,8 +40,20 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
         
+        let emptyLeftButton = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(didTapBackButton))
+        navigationItem.leftBarButtonItem = emptyLeftButton
+        navigationItem.hidesBackButton = true
+        
         initNoInternetView()
         loadWebView()
+    }
+    
+    func didTapBackButton() {
+        if webView.canGoBack {
+           webView.goBack()
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     init(urlString: String, shouldAuthorizeRequest: Bool) {
@@ -53,8 +71,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     fileprivate func loadWebView() {
-        let myURL = URL(string: urlString)
-        webView.load(requestForURL(myURL!))
+        guard let myURL = URL(string: urlString) else { return }
+        
+        webView.load(requestForURL(myURL))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -95,7 +114,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     @objc fileprivate func refreshWebView() {
         initProgressView()
         progressView.isHidden = false
-        webView.load(requestForURL(URL(string: urlString)!))
+        guard let myURL = URL(string: urlString) else { return }
+        
+        webView.load(requestForURL(myURL))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -105,6 +126,19 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     //MARK: WKNavigation Delegate
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if(webView.canGoBack) {
+            self.didReceiveNavigationAction?(navigationAction)
+        }
+        
+        //hit _blank url
+        if(navigationAction.targetFrame == nil) {
+            webView.load(navigationAction.request)
+        }
+        
+        decisionHandler(.allow)
+    }
+    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }

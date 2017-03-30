@@ -663,7 +663,6 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_getInboxListNetworkManager requestCancel];
-    _getInboxListNetworkManager.delegate = nil;
     _getInboxListNetworkManager = nil;
 }
 

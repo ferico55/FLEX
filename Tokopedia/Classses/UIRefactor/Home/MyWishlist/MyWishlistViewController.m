@@ -265,7 +265,7 @@ typedef enum TagRequest {
 -(NSString *) getWishlistPath {
     UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
     NSString *userId = [userManager getUserId];
-    return [NSString stringWithFormat:@"/v1.0.2/users/%@/wishlist/products", userId];
+    return [NSString stringWithFormat:@"/v1.0.3/users/%@/wishlist/products", userId];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -347,7 +347,12 @@ typedef enum TagRequest {
     removeWishlistRequest.isUsingHmac = YES;
     NSString *productId = wishlistData.id;
     __weak typeof(self) weakSelf = self;
-    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl] path:[[@"/v1/products/" stringByAppendingString:productId] stringByAppendingString: @"/wishlist"] method:RKRequestMethodDELETE header:@{@"X-User-ID" : userId} parameter:nil mapping:[self actionRemoveWishlistMapping]
+    [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl]
+                                         path:[NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", [_userManager getUserId], productId]
+                                       method:RKRequestMethodDELETE
+                                       header:@{@"X-User-ID" : userId}
+                                    parameter:nil
+                                      mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         if ([weakSelf.product containsObject: wishlistData]){
                                             [weakSelf.collectionView performBatchUpdates:^ {
@@ -680,6 +685,7 @@ typedef enum TagRequest {
         }
     };
 }
+
 @end
 
 

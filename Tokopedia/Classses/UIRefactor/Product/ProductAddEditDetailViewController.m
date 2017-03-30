@@ -54,6 +54,8 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     [super viewDidLoad];
     
+    [AnalyticsManager trackScreenName:@"Add Product Detail Page"];
+    
     _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -86,15 +88,30 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - View Action
 -(void)onTapSave:(UIBarButtonItem*)sender{
     [[self.tableView superview] endEditing:YES];
+    [self trackClickSave:_type];
     if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
         if ([self isValidInput]) {
             [AnalyticsManager trackAddProductType:_type];            
             [self fetchAddProduct];
         }
     } else {
-        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_EDIT label:@"Product"];
         [self fetchEditProduct];
     }
+}
+
+- (void)trackClickSave:(NSInteger)addProductType {
+    NSString *type = @"";
+    if (addProductType == TYPE_ADD_EDIT_PRODUCT_ADD) {
+        type = @"Add Product";
+    } else if (addProductType == TYPE_ADD_EDIT_PRODUCT_COPY) {
+        type = @"Duplicate Product";
+    } else if (addProductType == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        type = @"Edit Product";
+    }
+    
+    NSString *eventLabel = [NSString stringWithFormat:@"Submit - %@", type];
+    
+    [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_CLICK label:eventLabel];
 }
 
 -(void)fetchAddProduct{
@@ -107,20 +124,22 @@ NSString * const ProductStatusWarehouse = @"3";
     [RequestAddEditProduct fetchAddProduct:_form
                                isDuplicate:duplicate
                                  onSuccess:^{
-                                     
+                                     if ([duplicate isEqualToString:@"1"]) {
+                                         [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_SUCCESS label:@"Duplicate Product"];
+                                     } else {
+                                         [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_SUCCESS label:@"Add Product"];
+                                     }
                                      [self successAddProduct];
                                      
                                  } onFailure:^{
-                                     
                                      _saveBarButtonItem.enabled = YES;
                                      [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-                                     [self trackerFailAddProduct];
-                                     
+                                     if ([duplicate isEqualToString:@"1"]) {
+                                         [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ERROR label:@"Duplicate Product"];
+                                     } else {
+                                         [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ERROR label:@"Add Product"];
+                                     }
                                  }];
-}
-
--(void)trackerFailAddProduct{
-    [AnalyticsManager trackScreenName:@"Add Product - Fail"];
 }
 
 -(void)fetchEditProduct{
@@ -129,7 +148,7 @@ NSString * const ProductStatusWarehouse = @"3";
     _saveBarButtonItem.enabled = NO;
 
     [RequestAddEditProduct fetchEditProduct:_form onSuccess:^{
-        
+        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_SUCCESS label:@"Edit Product"];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
@@ -137,7 +156,7 @@ NSString * const ProductStatusWarehouse = @"3";
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
     } onFailure:^{
-        
+        [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ERROR label:@"Edit Product"];
         _saveBarButtonItem.enabled = YES;
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
@@ -145,10 +164,6 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 -(void)successAddProduct{
-    
-    // UA
-    [AnalyticsManager trackScreenName:@"Add Product - Success"];
-    
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
     [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -225,7 +240,7 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":[product.product_etalase kv_decodeHTMLCharacterEntities];;
+                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":product.product_etalase;
             }
             break;
         case 2:
@@ -247,6 +262,9 @@ NSString * const ProductStatusWarehouse = @"3";
             break;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    product.product_short_desc = _productDescriptionTextView.text;
+    
     return cell;
 }
 

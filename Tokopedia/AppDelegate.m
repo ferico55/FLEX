@@ -17,13 +17,13 @@
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "NavigateViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
-#import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "Tokopedia-Swift.h"
 #import <Appsee/Appsee.h>
 #import "JLRoutes.h"
+#import <MoEngage_iOS_SDK/MoEngage.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -64,6 +64,7 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    [[MoEngage sharedInstance] userNotificationCenter:center didReceiveNotificationResponse:response];
     NSDictionary *pushNotificationData = response.notification.request.content.userInfo;
     if (pushNotificationData) {
         [self handlePushNotificationWithData:pushNotificationData];
@@ -92,9 +93,7 @@
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
 #endif
-    
-    [Rollout setupWithKey:@"580495d0c8d2937468f2c263"];
-    
+        
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
@@ -105,12 +104,17 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
+        [self configureMoEngageInApplication:application withLaunchOptions:launchOptions];
+        [self sendAppStatusToMoEngage];
         
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
         [self preparePersistData];
+        
+        //register quick action items
+        [[QuickActionHelper sharedInstance] registerShortcutItems];
         
         //change app language for google mapp address become indonesia
         NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -148,6 +152,16 @@
         }
     });
     
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.1")) {
+        //opening Quick Action in background state
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UIApplicationShortcutItem *shortcutItem = [launchOptions objectForKey:UIApplicationLaunchOptionsShortcutItemKey];
+            if(shortcutItem){
+                [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
+            }
+        });
+    }
+    
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
@@ -161,11 +175,13 @@
     if ([pushNotificationData objectForKey:@"url_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"url_deeplink"]];
         [TPRoutes routeURL:url];
+    } else if ([pushNotificationData objectForKey:@"moe_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"moe_deeplink"]];
+        [TPRoutes routeURL:url];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
                                                             object:nil
                                                           userInfo:pushNotificationData];
-
     }
 }
 
@@ -173,6 +189,15 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
 //        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
+}
+
+- (void)configureMoEngageInApplication:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions {
+#ifdef DEBUG
+    [[MoEngage sharedInstance] initializeDevWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:YES];
+    [MoEngage debug:LOG_ALL];
+#else
+    [[MoEngage sharedInstance] initializeProdWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:YES];
+#endif
 }
 
 - (NSString *)getGAPropertyID {
@@ -257,13 +282,18 @@
     NSString *deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
     [secureStorage setKeychainWithValue:deviceTokenString withKey:kTKPD_DEVICETOKENKEY];
+    
+    [[MoEngage sharedInstance] registerForPush:deviceToken];
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     [[JLNotificationPermission sharedInstance] notificationResult:nil error:error];
+    [[MoEngage sharedInstance] didFailToRegisterForPush];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [[MoEngage sharedInstance] didReceieveNotificationinApplication:application withInfo:userInfo openDeeplinkUrlAutomatically:YES];
+    
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
@@ -284,6 +314,15 @@
         NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
         [TPRoutes routeURL:url];
     }
+    if ([userInfo objectForKey:@"moe_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"moe_deeplink"]];
+        [TPRoutes routeURL:url];
+    }
+    
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[MoEngage sharedInstance] didRegisterForUserNotificationSettings:notificationSettings];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -326,6 +365,12 @@
     return shouldContinue;
 }
 
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+    
+    [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
+}
+
+
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData
 {
@@ -353,4 +398,31 @@
     //hide title back button globally
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
+
+#pragma mark - Send app status to MoEngage
+
+- (NSString *)getAppVersion {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
+- (void)saveAppVersionToDefaults {
+    [[NSUserDefaults standardUserDefaults] setObject:[self getAppVersion] forKey:@"app version"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)sendAppStatusToMoEngage {
+    // check install. if app version does not exist in defaults, it means it is an install for sure.
+    if(![[NSUserDefaults standardUserDefaults]objectForKey:@"app version"]) {
+        [[MoEngage sharedInstance] appStatus:INSTALL];
+        [self saveAppVersionToDefaults];
+        return;
+    }
+    
+    // It is an update. Check if the latest app version is greater than that saved in the user defaults
+    if(![[self getAppVersion] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"app version"]]) {
+        [[MoEngage sharedInstance] appStatus:UPDATE];
+        [self saveAppVersionToDefaults];
+    }
+}
+
 @end

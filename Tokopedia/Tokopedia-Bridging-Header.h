@@ -106,8 +106,6 @@
 #import "TransactionAction.h"
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
-#import "DeeplinkController.h"
-#import "TPContactUsDependencies.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
@@ -170,5 +168,7 @@
 #import "FavoriteShopRequest.h"
 #import "UIColor+Theme.h"
 #import "OAStackViewCategory.h"
+#import "CategoryResultViewController.h"
 #import "Tkpd.h"
-
+#import "TKPDSecureStorage.h"
+#import "VerifiedStatus.h"

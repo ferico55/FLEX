@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     RequestReportTalk
 };
 
-@interface TalkCell ()<LoginViewDelegate>
+@interface TalkCell ()
 
 @property (strong, nonatomic) ReportViewController *reportController;
 

@@ -45,6 +45,13 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (_moreViewController) {
+        [_moreViewController showTooltipView];
+    }
+}
+
 - (void)tapNotificationBar {
     [_notifManager tapNotificationBar];
 }

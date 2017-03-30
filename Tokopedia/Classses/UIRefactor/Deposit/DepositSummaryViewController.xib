@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,7 +25,6 @@
                 <outlet property="saldoLabel" destination="52R-KB-qU9" id="kWR-xH-FmO"/>
                 <outlet property="startDateButton" destination="cST-0v-TnW" id="XYa-pL-lSF"/>
                 <outlet property="table" destination="rwP-AU-vY2" id="HVX-1O-YkA"/>
-                <outlet property="topUpButton" destination="SDC-oh-vLR" id="Or1-pi-Ty9"/>
                 <outlet property="view" destination="LwV-gO-gHE" id="l2a-31-P38"/>
                 <outlet property="withdrawalButton" destination="jlw-rr-sU4" id="FbH-ZS-ohU"/>
             </connections>
@@ -67,7 +66,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp.500.000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hC6-5y-evx">
-                    <rect key="frame" x="105.5" y="19" width="109" height="21"/>
+                    <rect key="frame" x="106" y="19" width="109" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="KuF-Aw-DEi"/>
                         <constraint firstAttribute="width" constant="109" id="srj-z1-pd6"/>
@@ -119,9 +118,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jlw-rr-sU4">
-                                            <rect key="frame" x="8" y="52" width="288" height="38"/>
+                                            <rect key="frame" x="150" y="52" width="300" height="38"/>
                                             <color key="backgroundColor" red="0.070588235294117646" green="0.7803921568627451" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="300" id="Y5T-H6-LV7"/>
                                                 <constraint firstAttribute="height" constant="38" id="vQC-99-hLT"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -133,37 +133,13 @@
                                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="ipA-Gp-HPD"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SDC-oh-vLR">
-                                            <rect key="frame" x="304" y="52" width="288" height="38"/>
-                                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="38" id="Fsh-Tj-76f"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                            <state key="normal" title="TOP UP">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                    <real key="value" value="5"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <action selector="topUpSaldoButtonTapped:" destination="-1" eventType="touchUpInside" id="1fP-yP-zsQ"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="SDC-oh-vLR" secondAttribute="trailing" constant="8" id="BSq-2N-Yp1"/>
-                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="leading" secondItem="NB9-vm-aF5" secondAttribute="leading" constant="8" id="Jj9-SF-KoK"/>
+                                        <constraint firstItem="jlw-rr-sU4" firstAttribute="centerX" secondItem="NB9-vm-aF5" secondAttribute="centerX" id="Ea9-7P-3Cr"/>
                                         <constraint firstAttribute="centerX" secondItem="9XM-uR-7za" secondAttribute="centerX" id="VO9-zu-McU"/>
                                         <constraint firstItem="jlw-rr-sU4" firstAttribute="top" secondItem="52R-KB-qU9" secondAttribute="bottom" constant="6" id="Yx1-8P-f7a"/>
-                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="width" secondItem="jlw-rr-sU4" secondAttribute="width" id="btB-RX-Z6i"/>
-                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="leading" secondItem="jlw-rr-sU4" secondAttribute="trailing" constant="8" id="eW9-JA-SpB"/>
                                         <constraint firstItem="52R-KB-qU9" firstAttribute="top" secondItem="9XM-uR-7za" secondAttribute="bottom" constant="-4" id="fGl-dg-TqK"/>
-                                        <constraint firstItem="SDC-oh-vLR" firstAttribute="top" secondItem="52R-KB-qU9" secondAttribute="bottom" constant="6" id="h5b-LA-X61"/>
                                         <constraint firstAttribute="centerX" secondItem="52R-KB-qU9" secondAttribute="centerX" id="idt-3Z-fsR"/>
                                         <constraint firstItem="9XM-uR-7za" firstAttribute="top" secondItem="NB9-vm-aF5" secondAttribute="top" constant="8" id="wTZ-8b-taj"/>
                                         <constraint firstAttribute="height" constant="100" id="zGD-sw-Ru0"/>

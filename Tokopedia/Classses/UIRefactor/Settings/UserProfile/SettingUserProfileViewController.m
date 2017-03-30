@@ -26,8 +26,6 @@
 #import "UIImage+ImageEffects.h"
 #import "UIView+HVDLayout.h"
 
-#import "PhoneVerifViewController.h"
-#import "PhoneVerifRequest.h"
 #import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Edit View Controller
@@ -79,8 +77,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
-
-@property (strong, nonatomic) PhoneVerifRequest* phoneVerifRequest;
 @end
 
 @implementation SettingUserProfileViewController
@@ -91,7 +87,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [super viewDidLoad];
     self.title = @"Biodata Diri";
     [self requestGetData];
-    _phoneVerifRequest = [PhoneVerifRequest new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -241,10 +236,10 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     if([auth isUserPhoneVerified]){
         [self populateViewIfVerifiedStatusIs:YES];
-    }else{
-        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *result) {
+    } else {
+        [PhoneVerificationRequest checkPhoneVerifiedStatusOnSuccess:^(NSString * _Nonnull result) {
             [self populateViewIfVerifiedStatusIs:[result boolValue]];
-        } onFailure:^(NSError *error) {
+        } onFailure:^{
             [self populateViewIfVerifiedStatusIs:NO];
         }];
     }
@@ -389,10 +384,14 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
-    PhoneVerifViewController *controller = [PhoneVerifViewController new];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    __weak typeof(self) weakSelf = self;
+    PhoneVerificationViewController *vc = [[PhoneVerificationViewController alloc]
+                                           initWithPhoneNumber:_userData.user_phone
+                                           isFirstTimeVisit:NO];
+    vc.didVerifiedPhoneNumber = ^{
+        [weakSelf requestGetData];
+    };
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 

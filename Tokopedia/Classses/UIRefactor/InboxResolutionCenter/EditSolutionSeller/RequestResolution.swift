@@ -198,12 +198,8 @@ class RequestResolution: NSObject {
                     let postObject :RequestObjectUploadImage = RequestObjectUploadImage()
                     postObject.user_id = auth.getUserId()
                     postObject.server_id = postData.generatedHost.server_id
-                    
                     asset.fetchOriginalImage(false, completeBlock: {(image, info) in
-                        
-                        let resizedImage = TKPImagePickerController.resizedImage(image!)
-                        
-                        RequestUploadImage.requestUploadImage(resizedImage,
+                        RequestUploadImage.requestUploadImage(image,
                           withUploadHost: "https://\(postData.generatedHost.upload_host)",
                             path: "/web-service/v4/action/upload-image/upload_contact_image.pl",
                             name: "fileToUpload",

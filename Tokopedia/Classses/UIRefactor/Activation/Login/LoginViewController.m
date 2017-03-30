@@ -38,15 +38,20 @@
 #import <BlocksKit/UIControl+BlocksKit.h>
 #import "UIImage+Resize.h"
 #import <AppsFlyer/AppsFlyer.h>
+#import "UIAlertController+Blocks.h"
+#import "CMPopTipView.h"
+
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
+static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 
 @interface LoginViewController ()
 <
     FBSDKLoginButtonDelegate,
-    LoginViewDelegate,
     GIDSignInUIDelegate,
-    GIDSignInDelegate
+    GIDSignInDelegate,
+    TouchIDHelperDelegate,
+    CMPopTipViewDelegate
 >
 {
     UIBarButtonItem *_barbuttonsignin;
@@ -72,12 +77,20 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *loginButtonTrailingConstraint;
+
+
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (strong, nonatomic) IBOutlet UIView *formContainer;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
+@property (weak, nonatomic) IBOutlet UIButton *touchIDButton;
+
 @property (nonatomic) NSDictionary *loginData;
+@property (strong, nonatomic) Login *login;
+@property (assign, nonatomic) BOOL isUsingTouchID;
+@property (strong, nonatomic) CMPopTipView *popTipView;
 
 @end
 
@@ -91,48 +104,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 
 #pragma mark - Life Cycle
-
-- (void)setLoginData:(NSDictionary *)loginData {
-    _emailTextField.text = loginData[@"email"];
-    _passwordTextField.text = loginData[@"password"];
-}
-
-- (void)setupDefaultUsers {
-    FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
-                (@{
-                   (@{}): @"-Blank-",
-                   EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
-                   EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
-                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
-                   EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
-                   EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
-                   EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
-                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
-                   })
-                );
-}
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setupDefaultUsers];
     
     __weak typeof(self) weakSelf = self;
     
-    TAGContainer *container;
-    
     _userManager = [[UserAuthentificationManager alloc]init];
     
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
     self.navigationItem.titleView = topedImageView;
-
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    self.navigationItem.backBarButtonItem = backButton;
 
     UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
                                                                      style:UIBarButtonItemStylePlain
@@ -158,54 +141,17 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [weakSelf.view endEditing:YES];
     }];
     
-    
-
     [[AuthenticationService sharedService]
             getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
                 [self setSignInProviders:providers];
             }
     ];
+    
+    // set delegate for Touch ID
+    [[TouchIDHelper sharedInstance] setDelegate:self];
 }
 
-- (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
-    __weak typeof(self) weakSelf = self;
-    
-    [self.signInProviderContainer removeAllSubviews];
-    SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
-    signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
-        [AnalyticsManager trackEventName:@"clickLogin"
-                                category:GA_EVENT_CATEGORY_LOGIN
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:provider.name];
-        [weakSelf webViewLoginWithProvider:provider];
-    };
-    
-    signInProviderView.onFacebookSelected = ^(SignInProvider *provider){
-        [AnalyticsManager trackEventName:@"clickLogin"
-                                category:GA_EVENT_CATEGORY_LOGIN
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:provider.name];
-        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
-                            fromViewController:weakSelf
-                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                           [weakSelf loginButton:nil didCompleteWithResult:result error:error];
-                                       }];
-    };
-    
-    signInProviderView.onGoogleSelected = ^(SignInProvider *provider){
-        [AnalyticsManager trackEventName:@"clickLogin"
-                                category:GA_EVENT_CATEGORY_LOGIN
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:provider.name];
-        [[GIDSignIn sharedInstance] signIn];
-    };
-    
-    [signInProviderView attachToView: _signInProviderContainer];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [AnalyticsManager trackScreenName:@"Login Page"];
@@ -222,6 +168,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     loginManager.loginBehavior = FBSDKLoginBehaviorNative;
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
+    
+    if ([[TouchIDHelper sharedInstance] isTouchIDAvailable] && [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] > 0) {
+        [self.touchIDButton setHidden:NO];
+        [self.loginButtonTrailingConstraint setConstant:60];
+    } else {
+        [self.touchIDButton setHidden:YES];
+        [self.loginButtonTrailingConstraint setConstant:0];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -234,20 +188,56 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     signIn.delegate = self;
     signIn.uiDelegate = self;
     signIn.allowsSignInWithWebView = NO;
+    
+    [self showTooltipView];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self showLoginUi];
     [self unsetLoggingInState];
+    
+    if (self.popTipView && self.popTipView != nil) {
+        [self.popTipView dismissAnimated:NO];
+    }
 }
 
-- (void)navigateToRegister {
-    RegisterViewController *controller = [RegisterViewController new];
-    [self.navigationController pushViewController:controller animated:YES];
+#pragma mark - Memory Management
+- (void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
+    self.popTipView = nil;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setBool:YES forKey:kPreferenceKeyTooltipTouchID];
+    [prefs synchronize];
+}
+
+- (void)showTooltipView {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if (![prefs boolForKey:kPreferenceKeyTooltipTouchID] &&
+        [[TouchIDHelper sharedInstance] isTouchIDAvailable] &&
+        [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] > 0) {
+        self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Gunakan fitur Touch ID untuk login"];
+        self.popTipView.delegate = self;
+        self.popTipView.backgroundColor = [UIColor darkGrayColor];
+        self.popTipView.animation = CMPopTipAnimationPop;
+        self.popTipView.dismissTapAnywhere = YES;
+        
+        [self.popTipView presentPointingAtView:self.touchIDButton inView:self.view animated:YES];
+    }
+}
+
+#pragma mark - Action
 - (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
     
@@ -292,7 +282,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [messages addObject:message];
         valid = NO;
     }
-
+    
     if (valid) {
         [self doLoginWithEmail:email password:pass];
     }
@@ -300,8 +290,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
     }
-
-    NSLog(@"message : %@", messages);
 }
 
 - (IBAction)didTapForgotPasswordButton {
@@ -310,9 +298,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)didTapCancelButton {
-    if(_delegate !=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
-                    [_delegate cancelLoginView];
-                }
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -325,65 +310,161 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)webViewLoginWithProvider:(SignInProvider *)provider {
-    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithProvider:provider];
-    controller.onReceiveToken = ^(NSString *token) {
-        _loadingView.hidden = NO;
-        _formContainer.hidden = YES;
+- (IBAction)didTapTouchIDButton:(id)sender {
+    [AnalyticsManager trackEventName:@"clickLogin" category:GA_EVENT_CATEGORY_LOGIN action:GA_EVENT_ACTION_CLICK label:@"Touch ID"];
+    
+    NSArray *emails = [[TouchIDHelper sharedInstance] loadTouchIDAccount];
+    if (emails && emails.count > 0) {
+        if (emails.count == 1) {
+            [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:0]];
+            return;
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        [UIAlertController showActionSheetInViewController:self
+                                                 withTitle:@"Silahkan pilih akun anda"
+                                                   message:nil
+                                         cancelButtonTitle:@"Batal"
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:emails
+                        popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+                            popover.sourceView = weakSelf.touchIDButton;
+                            popover.sourceRect = weakSelf.touchIDButton.bounds;
+                        } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            if (buttonIndex >= controller.firstOtherButtonIndex) {
+                                NSInteger index = buttonIndex - controller.firstOtherButtonIndex;
+                                [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:index]];
+                            }
+                        }];
+    }
+}
 
-        [[AuthenticationService sharedService]
-                loginWithTokenString:token
-                  fromViewController:self
-                     successCallback:^(Login *login) {
-                         [AnalyticsManager trackEventName:@"loginSuccess"
-                                                 category:GA_EVENT_CATEGORY_LOGIN
-                                                   action:GA_EVENT_ACTION_LOGIN_SUCCESS
-                                                    label:@"Yahoo"];
-                         [self onLoginSuccess:login];
-                     }
-                     failureCallback:^(NSError *error) {
-                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
-                         [self showLoginUi];
-                     }];
-    };
-    [self.navigationController pushViewController:controller animated:YES];
+- (void)setLoginData:(NSDictionary *)loginData {
+    _emailTextField.text = loginData[@"email"];
+    _passwordTextField.text = loginData[@"password"];
+}
+
+- (void)setupDefaultUsers {
+    FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
+                (@{
+                   (@{}): @"-Blank-",
+                   EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"alwan.ubaidillah+003@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
+                   })
+                );
 }
 
 - (void)doLoginWithEmail:(NSString *)email password:(NSString *)pass {
     [self setLoggingInState];
     _barbuttonsignin.enabled = NO;
-
+    
     [[AuthenticationService sharedService]
-            loginWithEmail:email
-                  password:pass
-        fromViewController:self
-           successCallback:^(Login *login) {
-               [AnalyticsManager trackEventName:@"loginSuccess"
-                                       category:GA_EVENT_CATEGORY_LOGIN
-                                         action:GA_EVENT_ACTION_LOGIN_SUCCESS
-                                          label:@"Email"];
-               _barbuttonsignin.enabled = YES;
-               [self unsetLoggingInState];
-
-               login.result.email = email;
-               [self onLoginSuccess:login];
-           }
-           failureCallback:^(NSError *error) {
-               [StickyAlertView showErrorMessage:@[error.localizedDescription]];
-
-               _barbuttonsignin.enabled = YES;
-               [self unsetLoggingInState];
-           }];
+     loginWithEmail:email
+     password:pass
+     fromViewController:self
+     successCallback:^(Login *login) {
+         [AnalyticsManager trackEventName:@"loginSuccess"
+                                 category:GA_EVENT_CATEGORY_LOGIN
+                                   action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                    label:@"Email"];
+         _barbuttonsignin.enabled = YES;
+         [self unsetLoggingInState];
+         
+         login.result.email = email;
+         
+         if (self.isUsingTouchID) {
+             self.isUsingTouchID = NO;
+             [self onLoginSuccess:login];
+             [AnalyticsManager trackEventName:@"loginSuccess" category:GA_EVENT_CATEGORY_LOGIN action:GA_EVENT_ACTION_LOGIN_SUCCESS label:@"Touch ID"];
+         } else if ([[TouchIDHelper sharedInstance] isTouchIDExistWithEmail:email]) {
+             [[TouchIDHelper sharedInstance] updateTouchIDForEmail:email password:pass];
+             [self onLoginSuccess:login];
+         } else if (![[TouchIDHelper sharedInstance] isTouchIDAvailable] ||
+                    [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] >= [[TouchIDHelper sharedInstance] maximumConnectedAccounts]) {
+             [self onLoginSuccess:login];
+         } else {
+             [self requestToActivateTouchIDForLogin:login];
+         }
+     }
+     failureCallback:^(NSError *error) {
+         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+         
+         self.isUsingTouchID = NO;
+         _barbuttonsignin.enabled = YES;
+         [self unsetLoggingInState];
+     }];
 }
 
-#pragma mark - Memory Management
--(void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+- (void)webViewLoginWithProvider:(SignInProvider *)provider {
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithProvider:provider];
+    controller.onReceiveToken = ^(NSString *token) {
+        _loadingView.hidden = NO;
+        _formContainer.hidden = YES;
+        
+        [[AuthenticationService sharedService]
+         loginWithTokenString:token
+         fromViewController:self
+         successCallback:^(Login *login) {
+             [AnalyticsManager trackEventName:@"loginSuccess"
+                                     category:GA_EVENT_CATEGORY_LOGIN
+                                       action:GA_EVENT_ACTION_LOGIN_SUCCESS
+                                        label:@"Yahoo"];
+             [self onLoginSuccess:login];
+         }
+         failureCallback:^(NSError *error) {
+             [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+             [self showLoginUi];
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+- (void)navigateToRegister {
+    RegisterViewController *controller = [RegisterViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
+    __weak typeof(self) weakSelf = self;
+    
+    [self.signInProviderContainer removeAllSubviews];
+    SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
+    signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
+        [weakSelf webViewLoginWithProvider:provider];
+    };
+    
+    signInProviderView.onFacebookSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
+                            fromViewController:weakSelf
+                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                           [weakSelf loginButton:nil didCompleteWithResult:result error:error];
+                                       }];
+    };
+    
+    signInProviderView.onGoogleSelected = ^(SignInProvider *provider){
+        [AnalyticsManager trackEventName:@"clickLogin"
+                                category:GA_EVENT_CATEGORY_LOGIN
+                                  action:GA_EVENT_ACTION_CLICK
+                                   label:provider.name];
+        [[GIDSignIn sharedInstance] signIn];
+    };
+    
+    [signInProviderView attachToView: _signInProviderContainer];
 }
 
 #pragma mark - property
@@ -421,38 +502,19 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self storeCredentialToKeychain:login];
     
     [AnalyticsManager trackLogin:login];
-
+    
     [self notifyUserDidLogin];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(didLoginSuccess:)]) {
-            [self.delegate didLoginSuccess:login];
-        }
+        if (self.onLoginFinished)
+            self.onLoginFinished(login.result);
     });
 
-    [self navigateToProperPage:login];
-
-
+    [[QuickActionHelper sharedInstance] registerShortcutItems];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
-                                                      userInfo:nil];    
-}
-
-- (void)navigateToProperPage:(Login *)login {
-    if(!_triggerPhoneVerification){
-        if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-            [self.delegate redirectViewController:_redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            UINavigationController *homeNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-            [homeNavController popToRootViewControllerAnimated:NO];
-        }
-    }else{
-        //to hotlist, so it will trigger the phoneverifviewcontroller
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
+                                                      userInfo:nil];
 }
 
 - (void)notifyUserDidLogin {
@@ -496,17 +558,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 #pragma mark - Delegate
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
+-(void)textFieldDidEndEditing:(UITextField *)textField {
 }
 
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     return YES;
 }
 
@@ -563,23 +622,23 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         gender = @"2";
     }
     
-    NSString *email = [data objectForKey:@"email"]?:@"";
-    NSString *name = [data objectForKey:@"name"]?:@"";
-    NSString *userId = [data objectForKey:@"id"]?:@"";
-    NSString *birthday = [data objectForKey:@"birthday"]?:@"";
-    
-    FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
-    
-    NSDictionary *parameters = @{
-                                 kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
-                                 kTKPDLOGIN_API_EMAIL_KEY        : email,
-                                 kTKPDLOGIN_API_NAME_KEY         : name,
-                                 kTKPDLOGIN_API_ID_KEY           : userId,
-                                 kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
-                                 kTKPDLOGIN_API_GENDER_KEY       : gender,
-                                 kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
-                                 @"action" : @"do_login"
-                                 };
+//    NSString *email = [data objectForKey:@"email"]?:@"";
+//    NSString *name = [data objectForKey:@"name"]?:@"";
+//    NSString *userId = [data objectForKey:@"id"]?:@"";
+//    NSString *birthday = [data objectForKey:@"birthday"]?:@"";
+//    
+//    FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
+//    
+//    NSDictionary *parameters = @{
+//                                 kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+//                                 kTKPDLOGIN_API_EMAIL_KEY        : email,
+//                                 kTKPDLOGIN_API_NAME_KEY         : name,
+//                                 kTKPDLOGIN_API_ID_KEY           : userId,
+//                                 kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
+//                                 kTKPDLOGIN_API_GENDER_KEY       : gender,
+//                                 kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
+//                                 @"action" : @"do_login"
+//                                 };
 
     [[AuthenticationService sharedService]
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebookWithUserData:data]
@@ -604,14 +663,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
     [self showLoginUi];
-}
-
-#pragma mark - Login delegate
-
-- (void)redirectViewController:(id)viewController
-{
-    [self.delegate redirectViewController:_redirectViewController];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateFormViewAppearance {
@@ -666,6 +717,64 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];
+}
+
+#pragma mark - Keychain Access
+- (void)requestToActivateTouchIDForLogin:(Login *)login {
+    self.login = login;
+    NSString *email = self.emailTextField.text;
+    NSString *password = self.passwordTextField.text;
+    
+    [UIAlertController showAlertInViewController:self
+                                       withTitle:@"Integrasikan dengan Touch ID"
+                                         message:[NSString stringWithFormat:@"Apakah Anda mau mengintegrasikan akun \"%@\" dengan Touch ID?", email]
+                               cancelButtonTitle:@"Lewatkan"
+                          destructiveButtonTitle:nil
+                               otherButtonTitles:@[@"Ya"]
+                                        tapBlock:^(UIAlertController *controller, UIAlertAction *action, NSInteger buttonIndex){
+                                            
+                                            if (buttonIndex == controller.cancelButtonIndex) {
+                                                [self onLoginSuccess:self.login];
+                                                [AnalyticsManager trackEventName:@"setTouchID" category:@"Set Up Touch ID" action:GA_EVENT_ACTION_CLICK label:@"Touch ID - No"];
+                                            } else {
+                                                [[TouchIDHelper sharedInstance] saveTouchIDForEmail:email password:password];
+                                                [AnalyticsManager trackEventName:@"setTouchID" category:@"Set Up Touch ID" action:GA_EVENT_ACTION_CLICK label:@"Touch ID - Yes"];
+                                            }
+                                        }];
+}
+
+- (void)touchIDHelperActivationSucceed:(TouchIDHelper *)helper {
+    [self onLoginSuccess:self.login];
+}
+
+- (void)touchIDHelperActivationFailed:(TouchIDHelper *)helper {
+    [UIAlertController showAlertInViewController:self
+                                       withTitle:@"Integrasikan dengan Touch ID"
+                                         message:@"Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali"
+                               cancelButtonTitle:@"OK"
+                          destructiveButtonTitle:nil
+                               otherButtonTitles:nil
+                                        tapBlock:^(UIAlertController *controller, UIAlertAction *action, NSInteger buttonIndex){
+                                            [self onLoginSuccess:self.login];
+                                        }];
+}
+
+- (void)touchIDHelper:(TouchIDHelper *)helper loadSucceedForEmail:(NSString *)email andPassword:(NSString *)password {
+    self.isUsingTouchID = YES;
+    self.emailTextField.text = email;
+    self.passwordTextField.text = password;
+    
+    [self doLoginWithEmail:email password:password];
+}
+
+- (void)touchIDHelperLoadFailed:(TouchIDHelper *)helper {
+    [UIAlertController showAlertInViewController:self
+                                       withTitle:@"Integrasikan dengan Touch ID"
+                                         message:@"Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali"
+                               cancelButtonTitle:@"OK"
+                          destructiveButtonTitle:nil
+                               otherButtonTitles:nil
+                                        tapBlock:nil];
 }
 
 @end

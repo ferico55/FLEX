@@ -12,7 +12,6 @@ def common_pods
     pod 'GoogleAppIndexing'
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
-    pod 'Rollout.io', '~> 1.10.0'
     pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
@@ -43,17 +42,22 @@ def common_pods
     pod 'FBSDKShareKit', '~>4.19.0'
     pod 'AHKActionSheet', '~>0.5.4'
     pod 'NSAttributedString-DDHTML', '1.2.0'
+    pod 'UIAlertController+Blocks', '~> 0.9'
     pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView.git', :commit => '2cc2633d2e711b3af45912b2718b4df1c360b8f5'
-    
 
     #Swift 3.0 pods
     pod 'RSKGrowingTextView'
     pod 'RSKPlaceholderTextView'
     pod 'SwiftOverlays' 
     pod 'Eureka' , '~>2.0.0-beta.1'
-    pod 'RxSwift', '~> 3.1.0'
+    pod 'RxSwift', '~> 3.3.1'
+    pod 'RxCocoa', '~> 3.3.1'
+    pod 'NSObject+Rx', '~>2.0.0'
     pod 'DKImagePickerController', '~> 3.5.0'
     pod 'RestKit/Testing', '~> 0.27.0'
+    pod 'SnapKit', '~> 3.2.0'
+    pod 'KeychainAccess', '~> 3.0'
+    pod 'MoEngage-iOS-SDK', '~> 3.3.0'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
@@ -69,6 +73,10 @@ target "TokopediaTests" do
     common_pods
 end
 
+target "ServiceExtension" do
+    pod 'MORichNotification', '~> 1.1.1'
+end
+
 post_install do |installer|
     
     installer.pods_project.targets.each do |target|
@@ -78,6 +86,9 @@ post_install do |installer|
         
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
+            if target.name == "MoEngage-iOS-SDK"
+                config.build_settings["OTHER_LDFLAGS"] = '$(inherited) "-ObjC"'
+            end
         end
     end
 

@@ -812,8 +812,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
         LoginViewController *loginController = (LoginViewController *) self.navigationController.viewControllers[0];
-        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
-            [loginController.delegate redirectViewController:loginController.redirectViewController];
+        if (loginController.isPresentedViewController) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else {
             UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];

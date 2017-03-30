@@ -8,6 +8,7 @@
 
 #import "SearchAWS.h"
 #import "SearchAWSResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SearchAWS
 
@@ -17,7 +18,7 @@
     [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[SearchAWSResult mapping]]];
-    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"header" toKeyPath:@"header" withMapping:[EnvelopeHeader mapping]]];
     return mapping;
 }
 

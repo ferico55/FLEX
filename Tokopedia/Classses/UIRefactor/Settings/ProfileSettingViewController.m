@@ -16,6 +16,7 @@
 #import "SettingNotificationViewController.h"
 #import "SettingUserProfileViewController.h"
 #import "UserContainerViewController.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Setting View Controller
 @interface ProfileSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -45,13 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
     
     _listMenu = ARRAY_LIST_MENU_SETTING_PROFILE;
 }
@@ -124,6 +118,9 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (![[TouchIDHelper sharedInstance] isTouchIDAvailable]) {
+        return _listMenu.count - 1;
+    }
     return _listMenu.count;
 }
 
@@ -165,8 +162,13 @@
     if (indexPath.section == 0 && indexPath.row == 0) {
         SettingPasswordViewController *vc = [SettingPasswordViewController new];
         [self.navigationController pushViewController:vc animated:YES];
-    }
-    else{
+    } else if (indexPath.section == 2 && indexPath.row == 0) {
+        [AnalyticsManager trackEventName:@"clickProfile" category:@"Profile Setting" action:GA_EVENT_ACTION_CLICK label:@"Touch ID"];
+        
+        //Touch ID settings
+        SettingTouchIDViewController *vc = [SettingTouchIDViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
         switch (indexPath.row) {
             case 0: {
                 //button edit profile action
@@ -199,11 +201,6 @@
                 SettingNotificationViewController *vc = [SettingNotificationViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
-            }
-            case 4: {
-                //privacy settings
-                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
             }
             default:
                 break;

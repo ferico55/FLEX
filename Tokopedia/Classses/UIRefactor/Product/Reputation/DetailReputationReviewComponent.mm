@@ -239,6 +239,10 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
     [_delegate didTapRevieweeReputation:sender onReview:_review atView:((CKStackLayoutComponent*)sender).viewContext.view];
 }
 
+- (void)didTapShareReviewToOtherSource:(id)sender {
+    [_delegate didTapShareReviewToOtherSource:_review atView:((CKButtonComponent*)sender).viewContext.view];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
     
     DetailReputationReviewComponent* component =
@@ -311,7 +315,7 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
                .alignSelf = CKStackLayoutAlignSelfCenter
            },
            {
-               [ReviewShareComponent newWithReview:review]
+               [ReviewShareComponent newWithReview:review tapButtonAction:@selector(didTapShareReviewToOtherSource:)]
            },
            {
                [CKComponent

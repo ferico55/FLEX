@@ -257,7 +257,7 @@ typedef enum
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
 #define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Kata Sandi"],@[@"Biodata Diri" ,@"Daftar Alamat", @"Akun Bank", @"Notifikasi"]]
+#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Kata Sandi"],@[@"Biodata Diri" ,@"Daftar Alamat", @"Akun Bank", @"Notifikasi"], @[@"Touch ID"]]
 
 #define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]

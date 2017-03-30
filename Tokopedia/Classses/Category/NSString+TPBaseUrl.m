@@ -34,10 +34,10 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
     NSDictionary* urls = @{
-                           @(TPUrlProduction) : @"http://www.tokopedia.com",
-                           @(TPUrlStaging) : @"http://staging.tokopedia.com",
-                           @(TPUrlAlpha) : @"http://alpha.tokopedia.com",
-                           @(TPUrlDevelopment) : @"http://www.ar-arief.ndvl"
+                           @(TPUrlProduction) : @"https://www.tokopedia.com",
+                           @(TPUrlStaging) : @"https://staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://www.ar-arief.ndvl"
                            };
     
     return [urls objectForKey:TPUrlIndex];

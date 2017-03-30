@@ -45,6 +45,10 @@ class FiltersTableViewController: UIViewController {
         }
         filtersDatasource.addItems(self.items)
         self.view.addSubview(self.tableView)
+        
+        self.tableView.mas_makeConstraints { (make) in
+            make?.edges.equalTo()(self.view)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

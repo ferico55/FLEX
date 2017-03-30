@@ -14,23 +14,13 @@
 #import "CategoryList.h"
 #import "Tokopedia-Swift.h"
 
-@interface RequestCategory ()<TokopediaNetworkManagerDelegate>
+@interface RequestCategory ()
 
 @end
 
 @implementation RequestCategory
 {
-    TokopediaNetworkManager *_networkManager;
     CategoryObj *_category;
-}
-
--(TokopediaNetworkManager*)networkManager
-{
-    if (!_networkManager) {
-        _networkManager = [TokopediaNetworkManager new];
-        _networkManager.delegate = self;
-    }
-    return _networkManager;
 }
 
 #pragma mark - Network Manager Delegate

@@ -18,7 +18,9 @@
 #import "MyReviewDetailViewController.h"
 #import "ReviewRequest.h"
 #import "TKPDTabViewController.h"
-@interface ReportViewController () <UITextViewDelegate, LoginViewDelegate> {
+#import "Tokopedia-Swift.h"
+
+@interface ReportViewController () <UITextViewDelegate> {
     UserAuthentificationManager *_userManager;
 }
 
@@ -45,21 +47,7 @@
     self.navigationItem.rightBarButtonItem = doneButton;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    if(![_userManager isLogin]) {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        return;
-    }
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -144,30 +132,13 @@
     self.onFinishWritingReport(_messageTextView.text);
 }
 
-// implement this to dismiss login view controller (-_-")
-- (void)redirectViewController:(id)viewController {
-    [_viewControllerToNavigate.navigationController pushViewController:viewController animated:YES];
-}
-
 //#pragma mark - user without login
 - (void)displayFrom:(UIViewController *)viewController {
     _userManager = [UserAuthentificationManager new];
-    if(![_userManager isLogin]) {
-        _viewControllerToNavigate = viewController;
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        [viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
-    }else{
+    _viewControllerToNavigate = viewController;
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:^{
         [viewController.navigationController pushViewController:self animated:YES];
-    }
+    }];
 }
 
 @end

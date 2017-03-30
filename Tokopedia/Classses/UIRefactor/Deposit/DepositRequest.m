@@ -92,22 +92,30 @@
                                      }];
 }
 
-- (void)requestSendOTPVerifyBankAccountOnSuccess:(void (^)(GeneralAction *))successCallback
+- (void)requestSendOTPVerifyBankAccountOnSuccess:(void (^)(SecurityRequestOTP *))successCallback
                                        onFailure:(void (^)(NSError *))errorCallback {
-    sendOTPRequest.isParameterNotEncrypted = NO;
     sendOTPRequest.isUsingHmac = YES;
     
-    [sendOTPRequest requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/action/deposit/send_otp_verify_bank_account.pl"
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    NSDictionary *userInformation = [userManager getUserLoginData];
+    
+    NSString *tokenType = userInformation[@"oAuthToken.tokenType"] ?: @"";
+    NSString *accessToken = userInformation[@"oAuthToken.accessToken"] ?: @"";
+    
+    NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", tokenType, accessToken];
+    
+    [sendOTPRequest requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/otp/request"
                                 method:RKRequestMethodPOST
-                             parameter:@{}
-                               mapping:[GeneralAction mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                header:@{@"Authorization" : authorizationHeader}
+                             parameter:@{@"mode" : @"sms", @"otp_type" : @"12"}
+                               mapping:[SecurityRequestOTP mapping]
+                             onSuccess:^(RKMappingResult * _Nonnull successResult, RKObjectRequestOperation * _Nonnull operation) {
                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                 GeneralAction *obj = [result objectForKey:@""];
+                                 SecurityRequestOTP *obj = [result objectForKey:@""];
                                  successCallback(obj);
                              }
-                             onFailure:^(NSError *errorResult) {
+                             onFailure:^(NSError * _Nonnull errorResult) {
                                  errorCallback(errorResult);
                              }];
 }
