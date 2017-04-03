@@ -13,7 +13,8 @@
 +(NSNumberFormatter*)IDRFormatter{
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    formatter.currencyCode = @"Rp ";
+    formatter.currencyCode = @"IDR";
+    formatter.currencySymbol = @"Rp ";
     formatter.currencyGroupingSeparator = @".";
     formatter.currencyDecimalSeparator = @",";
     formatter.maximumFractionDigits = 0;

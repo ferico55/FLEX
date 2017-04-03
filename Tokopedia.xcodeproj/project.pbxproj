@@ -51,7 +51,6 @@
 		34DDD8A51E83E1C000A8EFC3 /* NSDateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCC51E83E1B700A8EFC3 /* NSDateHelper.swift */; };
 		34DDD8A61E83E1C000A8EFC3 /* NSMutableAttributedString+TKPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCC71E83E1B700A8EFC3 /* NSMutableAttributedString+TKPCategory.m */; };
 		34DDD8A71E83E1C000A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCC91E83E1B700A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
-		34DDD8A81E83E1C000A8EFC3 /* NSNumberFormatter+IDRFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCCB1E83E1B700A8EFC3 /* NSNumberFormatter+IDRFormater.m */; };
 		34DDD8A91E83E1C000A8EFC3 /* NSStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCCC1E83E1B700A8EFC3 /* NSStringExtension.swift */; };
 		34DDD8AA1E83E1C000A8EFC3 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCCE1E83E1B700A8EFC3 /* NSUserDefaultCategory.m */; };
 		34DDD8AB1E83E1C000A8EFC3 /* OAStackViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DDCCD01E83E1B700A8EFC3 /* OAStackViewCategory.m */; };
@@ -1874,8 +1873,6 @@
 		34DDCCC71E83E1B700A8EFC3 /* NSMutableAttributedString+TKPCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TKPCategory.m"; sourceTree = "<group>"; };
 		34DDCCC81E83E1B700A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.h"; sourceTree = "<group>"; };
 		34DDCCC91E83E1B700A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
-		34DDCCCA1E83E1B700A8EFC3 /* NSNumberFormatter+IDRFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+IDRFormater.h"; sourceTree = "<group>"; };
-		34DDCCCB1E83E1B700A8EFC3 /* NSNumberFormatter+IDRFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+IDRFormater.m"; sourceTree = "<group>"; };
 		34DDCCCC1E83E1B700A8EFC3 /* NSStringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStringExtension.swift; sourceTree = "<group>"; };
 		34DDCCCD1E83E1B700A8EFC3 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
 		34DDCCCE1E83E1B700A8EFC3 /* NSUserDefaultCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultCategory.m; sourceTree = "<group>"; };
@@ -4891,8 +4888,6 @@
 				34DDCCC71E83E1B700A8EFC3 /* NSMutableAttributedString+TKPCategory.m */,
 				34DDCCC81E83E1B700A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
 				34DDCCC91E83E1B700A8EFC3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
-				34DDCCCA1E83E1B700A8EFC3 /* NSNumberFormatter+IDRFormater.h */,
-				34DDCCCB1E83E1B700A8EFC3 /* NSNumberFormatter+IDRFormater.m */,
 				34DDCCCC1E83E1B700A8EFC3 /* NSStringExtension.swift */,
 				34DDCCCD1E83E1B700A8EFC3 /* NSUserDefaultCategory.h */,
 				34DDCCCE1E83E1B700A8EFC3 /* NSUserDefaultCategory.m */,
@@ -11165,7 +11160,6 @@
 				34DDD93D1E83E1C000A8EFC3 /* GoogleDistanceMatrixDetail.m in Sources */,
 				34DDDB141E83E1C100A8EFC3 /* AddressViewController.m in Sources */,
 				34DDDD231E83E1C400A8EFC3 /* PulsaStatusRoot.swift in Sources */,
-				34DDD8A81E83E1C000A8EFC3 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				34DDDE031E83E1C500A8EFC3 /* CloseShopResult.m in Sources */,
 				34DDDA201E83E1C000A8EFC3 /* SearchModel.xcdatamodeld in Sources */,
 				34DDDD511E83E1C400A8EFC3 /* FilterNewOrderViewController.m in Sources */,
