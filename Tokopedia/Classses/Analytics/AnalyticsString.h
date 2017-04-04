@@ -9,6 +9,9 @@
 #ifndef AnalyticsString_h
 #define AnalyticsString_h
 
+#pragma mark - Event
+#define GA_EVENT_CLICK_CATEGORY @"clickKategori"
+
 #pragma mark - Event Category
 #define GA_EVENT_CATEGORY_HOMEPAGE @"Homepage"
 #define GA_EVENT_CATEGORY_SEARCH @"Search"
@@ -65,6 +68,9 @@
 #define GA_EVENT_CATEGORY_RECEIVED @"Received"
 #define GA_EVENT_CATEGORY_TRACKING @"Tracking"
 #define GA_EVENT_CATEGORY_PULSA @"Pulsa"
+#define GA_EVENT_KATEGORI @"Kategori"
+#define GA_EVENT_CATEGORY_PAGE @"Category Page"
+#define GA_EVENT_INTERMEDIARY_PAGE @"IntermediaryPage"
 #define GA_EVENT_CATEGORY_QUICK_ACTION @"Quick Action"
 #define GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER @"Verify Phone Number"
 #define GA_EVENT_CATEGORY_ADD_PRODUCT @"Add Product"
@@ -85,6 +91,13 @@
 #define GA_EVENT_ACTION_OTP_VERIFY @"OTP Verify"
 #define GA_EVENT_ACTION_OTP_ON_CALL @"OTP On Call"
 #define GA_EVENT_ACTION_OTP_SMS @"OTP SMS"
+#define GA_EVENT_ACTION_CLICK_PRODUCT @"Click Product"
+#define GA_EVENT_ACTION_CATEGORY @"Category"
+#define GA_EVENT_ACTION_CATEGORY_BREAKDOWN @"Category Breakdown"
+#define GA_EVENT_ACTION_NAVIGATION_SORT @"Bottom Navigation - Sort"
+#define GA_EVENT_ACTION_NAVIGATION_FILTER @"Bottom Navigation - Filter"
+#define GA_EVENT_ACTION_NAVIGATION_DISPLAY @"Bottom Navigation - Display"
+#define GA_EVENT_ACTION_NAVIGATION_SHARE @"Bottom Navigation - Share"
 #define GA_EVENT_ACTION_REQUEST_SUCCESS @"Request Success"
 #define GA_EVENT_ACTION_REQUEST_FAILED @"Request Failed"
 #define GA_EVENT_ACTION_VERIFY_SUCCESS @"Verify Success"

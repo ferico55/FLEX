@@ -1511,6 +1511,7 @@
                                 } else {
                                     [_list removeObject:list];
                                 }
+                                [_tableView reloadData];
                                 [self requestCartData];
                                 [self isLoading:NO];
                                 [_tableView reloadData];

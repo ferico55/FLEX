@@ -278,12 +278,11 @@ UINavigationControllerDelegate
     _isViewLoaded = YES;
     
     if (_needToActivateSearch && !self.searchController.isActive) {
-        [self.searchController setActive:YES];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.searchController.searchBar becomeFirstResponder];
         });
     }
-    _needToActivateSearch = NO; 
+    _needToActivateSearch = NO;
 }
 
 - (void)setArrow {
@@ -500,8 +499,7 @@ UINavigationControllerDelegate
 - (void)activateSearch:(NSNotification*)notification {
     if (_isViewLoaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.searchController setActive:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.searchController.searchBar becomeFirstResponder];
             });
         });

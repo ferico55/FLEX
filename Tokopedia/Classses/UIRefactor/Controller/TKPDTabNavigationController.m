@@ -12,12 +12,13 @@
 #import "FilterCategoryViewController.h"
 #import "SearchResultShopViewController.h"
 #import "SearchResultViewController.h"
+#import "CategoryResultViewController.h"
 #import "Tokopedia-Swift.h"
 
 #import "DBManager.h"
 #import "SearchViewController.h"
 
-@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate, UISearchResultsUpdating, UISearchControllerDelegate>{
+@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate, CategoryResultDelegate, UISearchResultsUpdating, UISearchControllerDelegate>{
     UIView *_tabbar;
     NSArray *_buttons;
     NSInteger _unloadSelectedIndex;
@@ -146,10 +147,6 @@
     self.hidesBottomBarWhenPushed = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if ([self isMovingFromParentViewController]){
-        [self didTapBackButton];
-    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -749,7 +746,12 @@
 }
 
 - (void)didTapBackButton {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    if ([_viewControllers.firstObject isKindOfClass:[CategoryResultViewController class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 -(void) setSearchControllerHidden:(BOOL) hidden {

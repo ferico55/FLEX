@@ -93,6 +93,7 @@ class TopPicksWidgetViewController: UIViewController {
         
         let seeAllArrowImageView = UIImageView(image: UIImage(named: "icon_forward"))
         
+        seeAllArrowImageView.tintColor = UIColor.tpGreen()
         seeAllViewContainer.addSubview(seeAllArrowImageView)
         seeAllArrowImageView.mas_makeConstraints { (make) in
             make?.centerY.mas_equalTo()(seeAllViewContainer.mas_centerY)
@@ -101,7 +102,7 @@ class TopPicksWidgetViewController: UIViewController {
         
         let seeAllButton = UIButton(type: .custom)
         seeAllButton.setTitle("Lihat Semua", for: UIControlState())
-        seeAllButton.setTitleColor(UIColor(red: 66.0/255, green: 181.0/255, blue: 73.0/255, alpha: 1.0), for: UIControlState())
+        seeAllButton.setTitleColor(UIColor.tpGreen(), for: UIControlState())
         seeAllButton.titleLabel!.font = UIFont.largeThemeMedium()
         seeAllButton.bk_(whenTapped: { [unowned self] in
             self.goToWebView("https://www.tokopedia.com/toppicks?flag_app=1")

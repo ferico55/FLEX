@@ -31,16 +31,8 @@
     return _viewModel;
 }
 
-- (NSString *)product_description {
-    return [_product_description kv_decodeHTMLCharacterEntities];
-}
-
 - (NSString *)product_name {
     return [_product_name kv_decodeHTMLCharacterEntities];
-}
-
-- (NSString*)product_short_desc {
-    return  [_product_short_desc kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString *)product_etalase {

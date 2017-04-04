@@ -263,7 +263,7 @@ class TPRoutes: NSObject {
                     "sc_identifier" : pathComponent.joined(separator: "_")
                 ]
                 
-                navigator.navigateToSearch(from: UIApplication.topViewController(), withData: departments)
+                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: departments)
             }
  
             return true

@@ -97,7 +97,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 vc.view.backgroundColor = UIColor.white
                 self.setTabbarViewController([vc])
             } else {
-                self.filterResponse = self.addFilterCategory(response)
+                self.filterResponse = response
                 self.completionHandlerResponse(self.filterResponse)
                 self.adjustControllers()
                 self.setTabbarViewController(self.listControllers)
@@ -147,10 +147,15 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     fileprivate func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
+        let controller : FilterSortViewController = FilterSortViewController(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { [unowned self](selectedSort: ListOption, paramSort:[String:String]) in
             self.selectedSort = selectedSort
+            
+            let eventName = self.isSourceFromDirectory() ? GA_EVENT_CLICK_CATEGORY : "clickSort"
+            let category = self.isSourceFromDirectory() ? GA_EVENT_CATEGORY_PAGE :GA_EVENT_CATEGORY_SORT
+            let action = self.isSourceFromDirectory() ? GA_EVENT_ACTION_NAVIGATION_SORT :GA_EVENT_ACTION_CLICK
+            
             if selectedSort.name != "" {
-                AnalyticsManager.trackEventName("clickSort", category: GA_EVENT_CATEGORY_SORT, action: GA_EVENT_ACTION_CLICK, label: selectedSort.name)
+                AnalyticsManager.trackEventName(eventName, category: category, action: action, label: selectedSort.name)
             }
             self.completionHandlerSort(self.selectedSort, paramSort)
         }) { (response) in
@@ -300,8 +305,12 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             labels.append("category")
         }
         
+        let eventName = isSourceFromDirectory() ? GA_EVENT_CLICK_CATEGORY : "clickFilter"
+        let category = isSourceFromDirectory() ? GA_EVENT_CATEGORY_PAGE : GA_EVENT_CATEGORY_FILTER
+        let action = isSourceFromDirectory() ? GA_EVENT_ACTION_NAVIGATION_FILTER :GA_EVENT_ACTION_CLICK
+        
         for filter in labels {
-            AnalyticsManager.trackEventName("clickFilter", category: GA_EVENT_CATEGORY_FILTER, action: GA_EVENT_ACTION_CLICK, label: filter)
+            AnalyticsManager.trackEventName(eventName, category: category, action: action, label: filter)
         }
 
         completionHandlerFilter(selectedCategories, selectedFilters, params)
@@ -324,6 +333,10 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: MHVerticalTabBarController!, didSelect viewController: UIViewController!) {
+    }
+    
+    func isSourceFromDirectory() -> Bool {
+        return self.source == Source.directory.description()
     }
     
 }

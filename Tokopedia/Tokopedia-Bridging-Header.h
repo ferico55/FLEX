@@ -168,6 +168,7 @@
 #import "FavoriteShopRequest.h"
 #import "UIColor+Theme.h"
 #import "OAStackViewCategory.h"
+#import "CategoryResultViewController.h"
 #import "Tkpd.h"
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"

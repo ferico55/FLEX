@@ -129,34 +129,6 @@ class TouchIDHelper: NSObject {
         return emails
     }
     
-    func loadTouchID() {
-        
-        let keychainAccount = Keychain(service: KeychainAccessService.account)
-        let items = keychainAccount.allKeys()
-        
-        if items.count == 1 {
-            let email = items[0]
-            self.loadTouchID(withEmail: email)
-        } else {
-            let emails = items.flatMap { $0 }
-            
-            UIAlertController.showActionSheet(in: UIApplication.shared.keyWindow!.rootViewController!,
-                                              withTitle: "Silahkan pilih akun anda",
-                                              message: nil,
-                                              cancelButtonTitle: "Batal",
-                                              destructiveButtonTitle: nil,
-                                              otherButtonTitles: emails,
-                                              popoverPresentationControllerBlock: nil, tap: { (controller, action, buttonIndex) in
-                                                
-                                                if (buttonIndex >= controller.firstOtherButtonIndex) {
-                                                    let index = buttonIndex - controller.firstOtherButtonIndex
-                                                    self.loadTouchID(withEmail: emails[index])
-                                                }
-                                                
-            })
-        }
-    }
-    
     func loadTouchID(withEmail email: String) {
         GlobalPriorityDefaultQueue.async(execute: { () -> Void in
             do {

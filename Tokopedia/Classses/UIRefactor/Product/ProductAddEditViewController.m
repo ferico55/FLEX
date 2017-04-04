@@ -406,6 +406,9 @@ FilterCategoryViewDelegate
             break;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    product.product_name = _productNameTextField.text;
+    
     return cell;
 }
 
@@ -623,7 +626,10 @@ FilterCategoryViewDelegate
     NSString *priceCurencyID = product.product_currency_id?:@"1";
     NSString *price = product.product_price?:@"";
     
-    _productNameTextField.text = product.product_name;
+    NSString *tempProductName = [NSString convertHTML:product.product_name]?:@"";
+    tempProductName = [tempProductName isEqualToString:@"0"]?@"":tempProductName;
+    _productNameTextField.text = tempProductName;
+    product.product_name = _productNameTextField.text;
     _productNameBeforeCopy = product.product_name;
     
     _isProductNameEditable = [product.product_name_editable isEqualToString:@"1"];

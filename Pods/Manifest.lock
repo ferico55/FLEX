@@ -147,6 +147,8 @@ PODS:
   - NSAttributedString-DDHTML (1.2.0)
   - NSGIF (1.2.4)
   - NSHash (1.1.0)
+  - NSObject+Rx (2.0.0):
+    - RxSwift
   - OAStackView (1.0.1)
   - OMGHTTPURLRQ/UserAgent (3.2.2)
   - PBJVision (0.4.2)
@@ -181,16 +183,18 @@ PODS:
   - RMActionController (1.2.1)
   - RMDateSelectionViewController (2.2.1):
     - RMActionController (~> 1.2.1)
-  - Rollout.io (1.10.0)
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
   - RSKPlaceholderTextView (2.0.0)
-  - RxSwift (3.1.0)
+  - RxCocoa (3.3.1):
+    - RxSwift (~> 3.3)
+  - RxSwift (3.3.1)
   - SBJson (4.0.5)
   - SCSiriWaveformView (1.0.3)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
+  - SnapKit (3.2.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.1.0)
   - SVPullToRefresh (0.4.1)
@@ -259,6 +263,7 @@ DEPENDENCIES:
   - NSAttributedString-DDHTML (= 1.2.0)
   - NSGIF (~> 1.0)
   - NSHash
+  - NSObject+Rx (~> 2.0.0)
   - OAStackView (~> 1.0.1)
   - PBJVision
   - PHFComposeBarView
@@ -268,12 +273,13 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - RichEditorView (from `https://github.com/cjwirth/RichEditorView.git`, commit `2cc2633d2e711b3af45912b2718b4df1c360b8f5`)
   - RMDateSelectionViewController
-  - Rollout.io (~> 1.10.0)
   - RSKGrowingTextView
   - RSKPlaceholderTextView
-  - RxSwift (~> 3.1.0)
+  - RxCocoa (~> 3.3.1)
+  - RxSwift (~> 3.3.1)
   - SBJson (~> 4.0.4)
   - SDWebImage (from `https://github.com/rs/SDWebImage.git`)
+  - SnapKit (~> 3.2.0)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
   - SVPullToRefresh (from `https://github.com/samvermette/SVPullToRefresh.git`, branch `master`)
   - SWFrameButton
@@ -399,6 +405,7 @@ SPEC CHECKSUMS:
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
   NSGIF: 442808fd1667ebac3d09046c3f6d4bdd6720cded
   NSHash: 61d598c6d48957c5557f1eef0aeafd6ef5ec5fb7
+  NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   OMGHTTPURLRQ: edb14c7d28add69226b79d826f930805927a0ffa
   PBJVision: fe43c9a58bb1c1277d16fd802fa836d25e034a45
@@ -412,13 +419,14 @@ SPEC CHECKSUMS:
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
   RMActionController: e516bc0651a61d675abb5eaf09ee79a92ae6155c
   RMDateSelectionViewController: 81b9251420345c793921b7516b77a9c80be7d399
-  Rollout.io: 00fff26ab67dd724fa8598fe89ef3261d391fb98
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
-  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
+  RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
+  RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
   SBJson: af3137ccda22be3004487524da0a071c75d4251b
   SCSiriWaveformView: b8b2756af42addcd31900c3945f24edafefb5395
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
@@ -437,6 +445,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 9e5da3a3029a3f2cd007ff0acf511ae79e1e0346
+PODFILE CHECKSUM: d6cf36711779eaa87d654adec6cbfbc5d7cac31f
 
 COCOAPODS: 1.1.1

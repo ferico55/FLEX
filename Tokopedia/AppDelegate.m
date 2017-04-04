@@ -17,7 +17,6 @@
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "NavigateViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
-#import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import <GoogleSignIn/GoogleSignIn.h>
@@ -94,9 +93,7 @@
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
 #endif
-    
-    [Rollout setupWithKey:@"580495d0c8d2937468f2c263"];
-    
+        
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];

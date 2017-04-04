@@ -18,6 +18,7 @@
 #import "ReviewImageAttachment.h"
 #import "Tokopedia-Swift.h"
 #import "AttachedPicture.h"
+#import "UIBarButtonItem+BlocksKit.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -49,10 +50,34 @@
     
     self.title = _isEdit? @"Ubah Ulasan" : @"Tulis Ulasan";
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
-                                                                              style:UIBarButtonItemStyleDone
-                                                                             target:self
-                                                                             action:@selector(tapToContinue:)];
+    // using debouncer for prevent crash from user spamming tap
+    Debouncer *debouncer = [[Debouncer alloc] initWithDelay:0.3 callback:^{
+        if ([self isSuccessValidateMessage]) {
+            [self generateProductReviewPhotoObject:_attachedPictures
+                                  uploadedPictures:_uploadedPictures];
+            
+            if (_attachedPictures.count > 0) {
+                _hasImages = YES;
+            }
+            
+            _reviewSummaryViewController.review = _review;
+            _reviewSummaryViewController.isEdit = _isEdit;
+            _reviewSummaryViewController.qualityRate = _qualityRate;
+            _reviewSummaryViewController.accuracyRate = _accuracyRate;
+            _reviewSummaryViewController.reviewMessage = _reviewMessage;
+            _reviewSummaryViewController.token = _token;
+            _reviewSummaryViewController.imagesToUpload = _imagesToUpload;
+            _reviewSummaryViewController.imageDescriptions = _productReviewPhotoObjects;
+            _reviewSummaryViewController.hasAttachedImages = _hasImages;
+            _reviewSummaryViewController.imageIDs = _imageIDs;
+            _reviewSummaryViewController.attachedImages = _attachedPictures;
+        
+            [self.navigationController pushViewController:_reviewSummaryViewController animated:YES];
+        }
+    }];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Lanjut" style:UIBarButtonItemStyleDone handler:^(id sender) {
+        [debouncer call];
+    }];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                              style:UIBarButtonItemStylePlain
@@ -138,7 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title = _isEdit ? @"Ubah Ulasan" : @"Tulis Ulasan";
-    
     [AnalyticsManager trackScreenName:@"Give Review Detail Page"];
 }
 
@@ -210,6 +234,7 @@
 }
 
 - (BOOL)isSuccessValidateMessage {
+    
     if ([_reviewDetailTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan harus diisi."] delegate:self];
         [stickyAlertView show];
@@ -320,31 +345,6 @@
 }
 
 #pragma mark - Actions
-- (IBAction)tapToContinue:(id)sender {
-    if ([self isSuccessValidateMessage]) {
-        [self generateProductReviewPhotoObject:_attachedPictures
-                              uploadedPictures:_uploadedPictures];
-        
-        if (_attachedPictures.count > 0) {
-            _hasImages = YES;
-        }
-    
-        _reviewSummaryViewController.review = _review;
-        _reviewSummaryViewController.isEdit = _isEdit;
-        _reviewSummaryViewController.qualityRate = _qualityRate;
-        _reviewSummaryViewController.accuracyRate = _accuracyRate;
-        _reviewSummaryViewController.reviewMessage = _reviewMessage;
-        _reviewSummaryViewController.token = _token;
-        _reviewSummaryViewController.imagesToUpload = _imagesToUpload;
-        _reviewSummaryViewController.imageDescriptions = _productReviewPhotoObjects;
-        _reviewSummaryViewController.hasAttachedImages = _hasImages;
-        _reviewSummaryViewController.imageIDs = _imageIDs;
-        _reviewSummaryViewController.attachedImages = _attachedPictures;
-        
-        [self.navigationController pushViewController:_reviewSummaryViewController animated:YES];
-    }
-}
-
 - (IBAction)tapImage:(UITapGestureRecognizer*)sender {
     if (sender.view.tag == [self attachedImageWithoutDeletedImage].count) {
         

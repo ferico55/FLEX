@@ -311,8 +311,32 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 }
 
 - (IBAction)didTapTouchIDButton:(id)sender {
-    [[TouchIDHelper sharedInstance] loadTouchID];
     [AnalyticsManager trackEventName:@"clickLogin" category:GA_EVENT_CATEGORY_LOGIN action:GA_EVENT_ACTION_CLICK label:@"Touch ID"];
+    
+    NSArray *emails = [[TouchIDHelper sharedInstance] loadTouchIDAccount];
+    if (emails && emails.count > 0) {
+        if (emails.count == 1) {
+            [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:0]];
+            return;
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        [UIAlertController showActionSheetInViewController:self
+                                                 withTitle:@"Silahkan pilih akun anda"
+                                                   message:nil
+                                         cancelButtonTitle:@"Batal"
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:emails
+                        popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+                            popover.sourceView = weakSelf.touchIDButton;
+                            popover.sourceRect = weakSelf.touchIDButton.bounds;
+                        } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            if (buttonIndex >= controller.firstOtherButtonIndex) {
+                                NSInteger index = buttonIndex - controller.firstOtherButtonIndex;
+                                [[TouchIDHelper sharedInstance] loadTouchIDWithEmail:[emails objectAtIndex:index]];
+                            }
+                        }];
+    }
 }
 
 - (void)setLoginData:(NSDictionary *)loginData {
@@ -358,8 +382,10 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
              self.isUsingTouchID = NO;
              [self onLoginSuccess:login];
              [AnalyticsManager trackEventName:@"loginSuccess" category:GA_EVENT_CATEGORY_LOGIN action:GA_EVENT_ACTION_LOGIN_SUCCESS label:@"Touch ID"];
+         } else if ([[TouchIDHelper sharedInstance] isTouchIDExistWithEmail:email]) {
+             [[TouchIDHelper sharedInstance] updateTouchIDForEmail:email password:pass];
+             [self onLoginSuccess:login];
          } else if (![[TouchIDHelper sharedInstance] isTouchIDAvailable] ||
-                    [[TouchIDHelper sharedInstance] isTouchIDExistWithEmail:self.emailTextField.text] ||
                     [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] >= [[TouchIDHelper sharedInstance] maximumConnectedAccounts]) {
              [self onLoginSuccess:login];
          } else {
@@ -369,6 +395,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
      failureCallback:^(NSError *error) {
          [StickyAlertView showErrorMessage:@[error.localizedDescription]];
          
+         self.isUsingTouchID = NO;
          _barbuttonsignin.enabled = YES;
          [self unsetLoggingInState];
      }];

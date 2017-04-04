@@ -46,6 +46,7 @@
 
 #import "GalleryViewController.h"
 #import "TkpdHMAC.h"
+#import "CategoryResultViewController.h"
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
@@ -285,6 +286,23 @@
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName withShopId:(NSString*)shopId {
+    NSDictionary *loadedData = @{@"product_id" : productId?:@"",
+                                 @"product_name" : name?:@"",
+                                 @"product_image" : url?:@"",
+                                 @"product_price" :price?:@"",
+                                 @"shop_name" : shopName?:@""};
+    
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.loadedData = loadedData;
+    productController.data = @{@"product_id" : productId?:@"",
+                               @"shop_id" : shopId?:@"",
+                               @"shop_name" : shopName?:@""};
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(SearchAWSProduct *)product {
     NSDictionary *loadedData = @{
         @"product_id": product.product_id?:@"",
@@ -444,21 +462,21 @@
     [viewController.navigationController pushViewController:catalogViewController animated:YES];
 }
 
-- (void)navigateToCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName{
-    SearchResultViewController *searchResultProductViewController = [SearchResultViewController new];
-    searchResultProductViewController.hidesBottomBarWhenPushed = YES;
-    searchResultProductViewController.isFromDirectory = YES;
-    searchResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName{
+    CategoryResultViewController *categoryResultProductViewController = [CategoryResultViewController new];
+    categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
+    categoryResultProductViewController.isFromDirectory = YES;
+    categoryResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
     
     SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
     searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
     searchResultCatalogViewController.isFromDirectory = YES;
     searchResultCatalogViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_catalog"};
     
-    NSArray *subViewControllers = @[searchResultProductViewController, searchResultCatalogViewController];
+    NSArray *subViewControllers = @[categoryResultProductViewController, searchResultCatalogViewController];
     
     TKPDTabNavigationController *tkpdTabNavigationController = [TKPDTabNavigationController new];
-    searchResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController;
+    categoryResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController;
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": @1, @"department_id" : categoryId}];
     tkpdTabNavigationController.data = data;
     tkpdTabNavigationController.navigationTitle = categoryName ?: @"";
@@ -469,23 +487,22 @@
     [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
 }
 
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(NSDictionary*)data {
+        CategoryResultViewController *vc = [CategoryResultViewController new];
+        vc.isFromDirectory = YES;
+        vc.data = [self addDataTypeFromData: data];
+        vc.title = [self getTitleFromData: data];
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.isFromDirectory = YES;
         vc.delegate = viewController;
-        NSMutableDictionary *datas = [NSMutableDictionary new];
-        [datas addEntriesFromDictionary:data];
-        [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
-        vc.data =[datas copy];
-        NSString *title = @"";
-        if ([data objectForKey:@"q"]) {
-            title = [[data objectForKey:@"q"] capitalizedString];
-        } else if ([data objectForKey:@"department_1"]) {
-            title = [[data objectForKey:@"department_1"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
-            title = [title capitalizedString];
-        }
-        vc.title = title;
+        vc.data = [self addDataTypeFromData: data];
+        vc.title = [self getTitleFromData: data];
         vc.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:vc animated:YES];
     } else {
@@ -729,6 +746,29 @@
     controller.title = @"Top Up Saldo";
     
     [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma - Common Method 
+
+-(NSString *) getTitleFromData: (NSDictionary *) data {
+    NSString *title = @"";
+    if ([data objectForKey:@"q"]) {
+        title = [[data objectForKey:@"q"] capitalizedString];
+    } else if ([data objectForKey:@"department_1"]) {
+        title = [[data objectForKey:@"department_1"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+        title = [title capitalizedString];
+    }
+    
+    return title;
+}
+
+// only for non shop view controller
+-(NSDictionary *) addDataTypeFromData: (NSDictionary *)data {
+    NSMutableDictionary *datas = [NSMutableDictionary new];
+    [datas addEntriesFromDictionary:data];
+    [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
+    
+    return [datas copy];
 }
 
 @end

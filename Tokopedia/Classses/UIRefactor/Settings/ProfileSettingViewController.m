@@ -46,13 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
     
     _listMenu = ARRAY_LIST_MENU_SETTING_PROFILE;
 }

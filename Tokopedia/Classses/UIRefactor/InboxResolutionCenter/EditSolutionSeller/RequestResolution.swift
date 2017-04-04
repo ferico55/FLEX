@@ -198,7 +198,6 @@ class RequestResolution: NSObject {
                     let postObject :RequestObjectUploadImage = RequestObjectUploadImage()
                     postObject.user_id = auth.getUserId()
                     postObject.server_id = postData.generatedHost.server_id
-                    
                     asset.fetchOriginalImage(false, completeBlock: {(image, info) in
                         RequestUploadImage.requestUploadImage(image,
                           withUploadHost: "https://\(postData.generatedHost.upload_host)",

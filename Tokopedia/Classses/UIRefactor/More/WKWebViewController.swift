@@ -71,8 +71,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     fileprivate func loadWebView() {
-        let myURL = URL(string: urlString)
-        webView.load(requestForURL(myURL!))
+        guard let myURL = URL(string: urlString) else { return }
+        
+        webView.load(requestForURL(myURL))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -113,7 +114,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     @objc fileprivate func refreshWebView() {
         initProgressView()
         progressView.isHidden = false
-        webView.load(requestForURL(URL(string: urlString)!))
+        guard let myURL = URL(string: urlString) else { return }
+        
+        webView.load(requestForURL(myURL))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -129,7 +132,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         }
         
         //hit _blank url
-        if(!(navigationAction.targetFrame != nil)) {
+        if(navigationAction.targetFrame == nil) {
             webView.load(navigationAction.request)
         }
         

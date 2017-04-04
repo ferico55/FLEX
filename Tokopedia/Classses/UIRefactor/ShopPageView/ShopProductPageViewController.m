@@ -417,11 +417,13 @@ ShopTabChild
 -(void)refreshView:(UIRefreshControl*)refresh {
     /** clear object **/
     NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    
     if (![searchBarBefore isEqualToString:_searchBar.text]) {
         [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
-        [self reloadDataSearch];
+    } else {
+        _page = 1;
+        _isrefreshview = YES;
     }
+    [self reloadDataSearch];
 }
 
 
