@@ -74,6 +74,7 @@ target "TokopediaTests" do
 end
 
 target "ServiceExtension" do
+    platform :ios, "8.0"
     pod 'MORichNotification', '~> 1.1.1'
 end
 

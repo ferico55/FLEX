@@ -14,4 +14,6 @@
  */
 
 + (UIActivityViewController*) shareDialogWithTitle: (NSString*) title url: (NSURL*) url anchor: (UIView*) anchor;
++ (UIActivityViewController *)shareWithImage:(UIImage *)image anchor:(UIView *)anAnchor;
+
 @end

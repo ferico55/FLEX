@@ -74,6 +74,7 @@
 #define GA_EVENT_CATEGORY_QUICK_ACTION @"Quick Action"
 #define GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER @"Verify Phone Number"
 #define GA_EVENT_CATEGORY_ADD_PRODUCT @"Add Product"
+#define GA_EVENT_CATEGORY_SCREENSHOT @"Screenshot"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"

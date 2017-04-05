@@ -27,4 +27,16 @@
     return controller;
 }
 
++ (UIActivityViewController *)shareWithImage:(UIImage *)image anchor:(UIView *)anAnchor {
+    NSArray *imageArray = @[image];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:imageArray applicationActivities:nil];
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS8_0)) {
+        activityViewController.popoverPresentationController.sourceView = anAnchor;
+        activityViewController.popoverPresentationController.sourceRect = anAnchor.bounds;
+    }
+    
+    return activityViewController;
+}
+
 @end

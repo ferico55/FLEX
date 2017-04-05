@@ -172,3 +172,5 @@
 #import "Tkpd.h"
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"
+#import "UIActivityViewController+Extensions.h"
+#import <MessageUI/MessageUI.h>

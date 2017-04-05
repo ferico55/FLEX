@@ -11,7 +11,7 @@
 #import "SearchViewController.h"
 #import "TransactionCartViewController.h"
 #import "MoreViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
@@ -40,6 +40,9 @@
 #import "MoreWrapperViewController.h"
 #import "Tokopedia-Swift.h"
 #import "MyWishlistViewController.h"
+#import <MessageUI/MessageUI.h>
+
+#import "UIActivityViewController+Extensions.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -47,7 +50,8 @@
 <
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
-    TKPAppFlow
+    TKPAppFlow,
+    MFMailComposeViewControllerDelegate
 >
 {
     UITabBarController *_tabBarController;
@@ -64,7 +68,10 @@
     TKPStoreManager *_storeManager;
     
     MainViewControllerPage _page;
+    ScreenshotAlertView *_screenshotAlert;
 }
+
+@property (strong, nonatomic) ScreenshotHelper *screenshotHelper;
 
 @end
 
@@ -131,6 +138,20 @@ typedef enum TagRequest {
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
     
     [self makeSureDeviceTokenExists];
+
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:UIApplicationUserDidTakeScreenshotNotification
+     object:nil
+     queue:mainQueue
+     usingBlock:^(NSNotification * _Nonnull note) {
+         if(FBTweakValue(@"Enable Share Screenshot", @"Enable Share Screenshot", @"Enabled", YES)) {
+             [AnalyticsManager trackEventName:@"clickScreenshot" category:GA_EVENT_CATEGORY_SCREENSHOT action:GA_EVENT_ACTION_CLICK label:@"Take Screenshot"];
+             
+             self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController: _tabBarController];
+             [self.screenshotHelper takeScreenshot];
+         }
+     }];
 }
 
 - (void)makeSureDeviceTokenExists {

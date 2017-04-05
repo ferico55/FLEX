@@ -155,6 +155,8 @@
 	
 	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve) animations:^{
 		
+        [_window makeKeyAndVisible];
+        _window.hidden = NO;
 		[_window addSubview:self];
 		
 	} completion:^(BOOL finished) {
@@ -180,7 +182,7 @@
 		
 		background = [[UIView alloc] initWithFrame:window.bounds];
 		background.backgroundColor = [UIColor blackColor];
-		background.alpha = 0.5f;
+		background.alpha = 0.75f;
 		background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
 		gesture = [UITapGestureRecognizer new];

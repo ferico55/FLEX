@@ -1600,6 +1600,9 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		625DC7001E94C8700051EA09 /* ScreenshotAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625DC6FE1E94C8700051EA09 /* ScreenshotAlertView.swift */; };
+		625DC7011E94C8700051EA09 /* ScreenshotAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 625DC6FF1E94C8700051EA09 /* ScreenshotAlertView.xib */; };
+		625DC71F1E94D6A50051EA09 /* ScreenshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625DC71E1E94D6A50051EA09 /* ScreenshotHelper.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -4389,6 +4392,9 @@
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		625DC6FE1E94C8700051EA09 /* ScreenshotAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotAlertView.swift; sourceTree = "<group>"; };
+		625DC6FF1E94C8700051EA09 /* ScreenshotAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScreenshotAlertView.xib; sourceTree = "<group>"; };
+		625DC71E1E94D6A50051EA09 /* ScreenshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotHelper.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -6943,6 +6949,8 @@
 		34DDD1F31E83E1BA00A8EFC3 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				625DC6FE1E94C8700051EA09 /* ScreenshotAlertView.swift */,
+				625DC6FF1E94C8700051EA09 /* ScreenshotAlertView.xib */,
 				34DDD1F41E83E1BA00A8EFC3 /* AlertBaseUrl.h */,
 				34DDD1F51E83E1BA00A8EFC3 /* AlertBaseUrl.m */,
 				34DDD1F61E83E1BA00A8EFC3 /* AlertBaseUrl.xib */,
@@ -9727,6 +9735,7 @@
 				DA7E60791E8D132F00A862D1 /* TouchIDHelper.swift */,
 				DA1949A71E8E01B5000FED82 /* FoundationHelper.swift */,
 				DA1949A91E8E0456000FED82 /* UIKitHelper.swift */,
+				625DC71E1E94D6A50051EA09 /* ScreenshotHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -10347,6 +10356,7 @@
 				34DDDB871E83E1C200A8EFC3 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
 				34DDDE051E83E1C500A8EFC3 /* CloseShopViewController.xib in Resources */,
 				34DDDCD31E83E1C300A8EFC3 /* GiveReviewResponseViewController.xib in Resources */,
+				625DC7011E94C8700051EA09 /* ScreenshotAlertView.xib in Resources */,
 				34DDDE1F1E83E1C500A8EFC3 /* ShopInfoPaymentCell.xib in Resources */,
 				34DDDB371E83E1C100A8EFC3 /* AlertVerifyOTP.xib in Resources */,
 				34DDDEE01E83E1C600A8EFC3 /* LaunchScreen.xib in Resources */,
@@ -11146,6 +11156,7 @@
 				34DDDCA61E83E1C300A8EFC3 /* OtherProductDataSource.m in Sources */,
 				34DDDA631E83E1C100A8EFC3 /* PosMinWeight.m in Sources */,
 				34DDDBB81E83E1C200A8EFC3 /* RequestFilterCategory.swift in Sources */,
+				625DC7001E94C8700051EA09 /* ScreenshotAlertView.swift in Sources */,
 				34DDD8E81E83E1C000A8EFC3 /* CatalogResult.m in Sources */,
 				34DDDB051E83E1C100A8EFC3 /* PhoneVerificationRequest.swift in Sources */,
 				34DDDE681E83E1C600A8EFC3 /* RequestAddAddress.m in Sources */,
@@ -11621,6 +11632,7 @@
 				34DDDA9C1E83E1C100A8EFC3 /* InstallmentTerm.m in Sources */,
 				34DDD9231E83E1C000A8EFC3 /* Talk.m in Sources */,
 				34DDDA1F1E83E1C000A8EFC3 /* SearchItem.m in Sources */,
+				625DC71F1E94D6A50051EA09 /* ScreenshotHelper.swift in Sources */,
 				34DDD9E51E83E1C000A8EFC3 /* PrivacyFormPrivacy.m in Sources */,
 				34DDD9601E83E1C000A8EFC3 /* InboxMessageList.m in Sources */,
 				34DDDA2C1E83E1C000A8EFC3 /* ShipmentProvinceData.m in Sources */,
