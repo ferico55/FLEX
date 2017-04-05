@@ -45,6 +45,57 @@
 - (NSString*)signatureWithBaseUrl:(NSString*)url
                            method:(NSString*)method
                              path:(NSString*)path
+                             json:(NSDictionary*)parameter {
+    NSDictionary *secretsByUrls = @{
+                                    [NSString v4Url]: @"web_service_v4",
+                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString basicUrl]: @"web_service_v4",
+                                    [NSString aceUrl]: @"web_service_v4",
+                                    [NSString keroUrl]: @"web_service_v4",
+                                    [NSString hadesUrl]: @"web_service_v4",
+                                    [NSString pulsaApiUrl]: @"web_service_v4",
+                                    [NSString kunyitUrl]: @"web_service_v4",
+                                    [NSString accountsUrl]: @"web_service_v4",
+                                    [NSString topAdsUrl]: @"web_service_v4",
+                                    };
+    
+    NSString *output;
+    NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
+    NSString* date = [self getDate];
+    
+    
+    [self setRequestMethod:method];
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"json string = %@", jsonString);
+    _parameterMD5 = [jsonString encryptWithMD5];
+    
+    [self setTkpdPath:path];
+    [self setSecret:secret];
+    
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], @"application/json",
+                              date, [self getTkpdPath]];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    _baseUrl = url;
+    _date = date;
+    _signature = output;
+    
+    return output;
+}
+
+- (NSString*)signatureWithBaseUrl:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
                         parameter:(NSDictionary*)parameter
                               {
     
@@ -65,7 +116,7 @@
     NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
     NSString* date = [self getDate];
     
-    //set request method
+    
     [self setRequestMethod:method];
     [self setParameterMD5:parameter];
     [self setTkpdPath:path];

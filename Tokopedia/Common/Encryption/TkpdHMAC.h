@@ -30,6 +30,12 @@
                            method:(NSString*)method
                              path:(NSString*)path
                         parameter:(NSDictionary*)parameter;
+
+- (NSString*)signatureWithBaseUrl:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                             json:(NSDictionary*)parameter;
+
 - (NSString *)getRequestMethod;
 - (NSString *)getParameterMD5;
 - (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl;
@@ -38,6 +44,6 @@
 - (NSString *)getSecret;
 
 - (NSString *)generateTokenRatesPath:(NSString*)path withUnixTime:(NSString*)unixTime;
-- (NSDictionary*)authorizedHeaders;
+- (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 
 @end

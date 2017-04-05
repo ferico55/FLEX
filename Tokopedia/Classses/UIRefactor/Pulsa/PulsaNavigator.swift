@@ -100,6 +100,14 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
+    func navigateToCart(_ category:String) {
+        let controller = DigitalCartViewController()
+        controller.hidesBottomBarWhenPushed = true;
+        controller.categoryId = category
+        
+        self.controller.navigationController!.pushViewController(controller, animated: true)
+    }
+    
     func navigateToWebTicker(_ url: URL) {
         let controller = WebViewController()
         controller.hidesBottomBarWhenPushed = true;

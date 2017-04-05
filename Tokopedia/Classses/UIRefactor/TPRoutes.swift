@@ -18,6 +18,24 @@ class TPRoutes: NSObject {
             self.openWebView(url!)
         }
         
+        JLRoutes.global().addRoute("/tokocash") { params in
+            let viewController = DigitalCategoryMenuViewController(categoryId: "103")
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: false)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/digital/form") { params in
+            let viewController = DigitalCategoryMenuViewController(categoryId: params["category_id"] as! String)
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String : Any]!) -> Bool in
             let activationCode = params["activationCode"] as! String
             let attempt = params["a"] as! String

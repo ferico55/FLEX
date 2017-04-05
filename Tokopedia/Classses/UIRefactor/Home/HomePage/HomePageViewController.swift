@@ -56,8 +56,11 @@ class HomePageViewController: UIViewController {
     private var isRequestingPulsaWidget: Bool = false
     private var isRequestingOfficialStore: Bool = false
     private var officialStoreRequestSuccess: Bool = false
+//    private var categoryId = ""
     
     private let officialStorePlaceholder = UIView()
+    fileprivate let authenticationService = AuthenticationService()
+    fileprivate let userManager = UserAuthentificationManager()
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -396,6 +399,8 @@ class HomePageViewController: UIViewController {
             self.navigator.pulsaView = self.pulsaView
             self.navigator.controller = self
             
+            self.pulsaView.navigator = self.navigator
+            
             self.pulsaView.didAskedForLogin = { [unowned self] in
                 self.navigator.navigateToLoginIfRequired()
             }
@@ -411,6 +416,10 @@ class HomePageViewController: UIViewController {
             self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
                 self.navigator.navigateToWKWebView(url)
             }
+            
+//            self.pulsaView.didSuccessPressBuy = { [unowned self] (category) in
+//                self.navigator.navigateToCart(category)
+//            }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
                 AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Click Phonebook Icon")
@@ -525,6 +534,16 @@ class HomePageViewController: UIViewController {
         }
     }
     
+    private func navigateToIntermediaryPage() {
+        let viewController = UIViewController()
+        viewController.view.frame = (self.navigationController?.viewControllers.last?.view.frame)!
+        viewController.view.backgroundColor = .white
+        viewController.hidesBottomBarWhenPushed = true
+        viewController.showWaitOverlay()
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     // MARK: Method
     
     private func didTapCategory(layoutRow: HomePageCategoryLayoutRow) {
@@ -538,21 +557,40 @@ class HomePageViewController: UIViewController {
                 let navigateViewController = NavigateViewController()
                 navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName)
         } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
-            let webViewController = WebViewController()
-            webViewController.hidesBottomBarWhenPushed = true;
-            
-            let userManager = UserAuthentificationManager()
-            
-            webViewController.shouldAuthorizeRequest = true
-            webViewController.strURL = userManager.webViewUrl(fromUrl: layoutRow.url)
-            webViewController.onTapLinkWithUrl = { [weak self] (url) in
-                if let weakSelf = self {
-                    if url?.absoluteString == "https://www.tokopedia.com/" {
-                        weakSelf.navigationController?.popViewController(animated: true)
-                    }
-                }
+            guard let categoryId = layoutRow.category_id else {
+                TPRoutes.routeURL(URL(string: layoutRow.url)!)
+                return
             }
-            self.navigationController?.pushViewController(webViewController, animated: true)
+            
+            //tokocash ID = 103
+            if(categoryId  == "10") {
+                authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
+                    self.navigateToIntermediaryPage()
+                    WalletRequest.fetchStatusWithUserId(self.userManager.getUserId(), onSuccess: { [unowned self] (wallet) in
+                        self.navigationController?.popViewController(animated: false)
+                        
+                        if(wallet.shouldShowActivation()) {
+                            let controller = WKWebViewController(urlString: self.userManager.webViewUrl(fromUrl: (wallet.data?.walletActionFullUrl())!))
+                            controller.didReceiveNavigationAction = { [weak self] action in
+                                let url = action.request.url
+                                
+                                if(url?.absoluteString == "\(NSString.accountsUrl())/thanks_wallet?flag_app=1") {
+                                    self?.navigationController?.popViewController(animated: true)
+                                }
+                            }
+                            controller.hidesBottomBarWhenPushed = true
+                            self.navigationController?.pushViewController(controller, animated: false)
+                        } else {
+                            TPRoutes.routeURL(URL(string: "tokopedia://tokocash")!)
+                        }
+                    }, onFailure: { (error) in
+                        self.navigationController?.popViewController(animated: false)
+                    })
+                })
+            } else {
+                TPRoutes.routeURL(URL(string: layoutRow.url)!)
+            }
+            
         }
     }
 }

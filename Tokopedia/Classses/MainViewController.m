@@ -470,9 +470,21 @@ typedef enum TagRequest {
         NSString* domainName = [cookie domain];
         NSRange domainToko = [domainName rangeOfString:@"toko"];
         
-        if(domainToko.length > 0) {
-            [cookieStorage deleteCookie:cookie];
-        }
+
+        [cookieStorage deleteCookie:cookie];
+    }
+    
+    if (SYSTEM_VERSION_GREATER_THAN(@"9.0")) {
+        WKWebsiteDataStore *dateStore = [WKWebsiteDataStore defaultDataStore];
+        [dateStore fetchDataRecordsOfTypes:[WKWebsiteDataStore allWebsiteDataTypes]
+                         completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records) {
+                             [records bk_each:^(WKWebsiteDataRecord *record) {
+                                 [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:[NSSet setWithObject:WKWebsiteDataTypeCookies]
+                                                                            modifiedSince:[NSDate dateWithTimeIntervalSince1970:0]
+                                                                        completionHandler:^{}];
+                             }];
+                             
+                         }];
     }
 }
 

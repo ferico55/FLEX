@@ -52,12 +52,21 @@ def common_pods
     pod 'Eureka' , '~>2.0.0-beta.1'
     pod 'RxSwift', '~> 3.3.1'
     pod 'RxCocoa', '~> 3.3.1'
-    pod 'NSObject+Rx', '~>2.0.0'
+    pod 'NSObject+Rx', '~> 2.0.0'
     pod 'DKImagePickerController', '~> 3.5.0'
     pod 'RestKit/Testing', '~> 0.27.0'
     pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
     pod 'MoEngage-iOS-SDK', '~> 3.3.0'
+    
+    #will be changed to proper version later
+    pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'
+    pod 'ReSwift', '~> 3.0.0'
+    
+    # networking and object mapping
+    pod 'Moya/RxSwift', '~> 8.0.3'
+    pod 'Unbox', '~> 2.4'
+    pod 'MoyaUnbox/RxSwift', '~> 1.0.0'
     
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.

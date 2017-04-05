@@ -28,6 +28,10 @@ class PulsaOperatorViewController: UIViewController, UITableViewDelegate, UITabl
         self.title = "Pilih Jenis"
         self.tableView .register(UINib(nibName: "PulsaOperatorCell", bundle: nil), forCellReuseIdentifier: "PulsaOperatorCellIdentifier")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        AnalyticsManager.trackScreenName("Recharge Operator Page from Widget")
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

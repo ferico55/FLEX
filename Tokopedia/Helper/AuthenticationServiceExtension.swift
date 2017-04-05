@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 extension AuthenticationService {
     
@@ -51,5 +52,14 @@ extension AuthenticationService {
         }
     }
     
-    
+    func ensureLoggedIn(from viewController: UIViewController) -> Observable<Void> {
+        return Observable.create { observer in
+            self.ensureLoggedInFromViewController(viewController) {
+                observer.on(.next())
+                observer.on(.completed)
+            }
+            
+            return Disposables.create()
+        }
+    }
 }

@@ -56,6 +56,14 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         }
     }
     
+    convenience init(urlString: String) {
+        let authenticationManager = UserAuthentificationManager()
+        
+        let shouldAuthorizeRequest = authenticationManager.isLogin
+        
+        self.init(urlString: authenticationManager.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: shouldAuthorizeRequest)
+    }
+    
     init(urlString: String, shouldAuthorizeRequest: Bool) {
         self.urlString = urlString
         self.shouldAuthorizeRequest = shouldAuthorizeRequest

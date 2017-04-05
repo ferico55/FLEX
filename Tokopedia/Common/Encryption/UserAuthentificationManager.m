@@ -254,9 +254,14 @@
 }
 
 - (NSString *)webViewUrlFromUrl:(NSString *)url {
+    if (!self.isLogin) {
+        return url;
+    }
+    
     NSString *userId = self.getUserId;
     NSString *deviceId = self.getMyDeviceToken;
     NSString *jsUrl = [NSString stringWithFormat:@"%@/seamless?uid=%@&token=%@&url=%@", [NSString jsUrl], userId, deviceId, [NSString encodeString:url]];
+    
     return jsUrl;
 }
 

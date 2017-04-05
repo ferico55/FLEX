@@ -9,18 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @interface UIColor (Theme)
-    
-    +(UIColor *)tpGreen;
-    +(UIColor *)tpOrange;
-    +(UIColor *)tpPrimaryBlackText;
-    +(UIColor *)tpSecondaryBlackText;
-    +(UIColor *)tpDisabledBlackText;
-    +(UIColor *)tpPrimaryWhiteText;
-    +(UIColor *)tpSecondaryWhiteText;
-    +(UIColor *)tpDisabledWhiteText;
-    +(UIColor *)tpBackground;
-    +(UIColor *)tpLine;
-    
-    +(UIColor *)fromHexString:(NSString *)hexString;
+
++(nonnull UIColor *)tpGreen;
++(nonnull UIColor *)tpOrange;
++(nonnull UIColor *)tpPrimaryBlackText;
++(nonnull UIColor *)tpSecondaryBlackText;
++(nonnull UIColor *)tpDisabledBlackText;
++(nonnull UIColor *)tpPrimaryWhiteText;
++(nonnull UIColor *)tpSecondaryWhiteText;
++(nonnull UIColor *)tpDisabledWhiteText;
++(nonnull UIColor *)tpBackground;
++(nonnull UIColor *)tpLine;
+
++(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 
 @end

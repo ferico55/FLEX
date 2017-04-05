@@ -1,0 +1,6 @@
+framework module MoyaUnbox {
+  umbrella header "MoyaUnbox-umbrella.h"
+
+  export *
+  module * { export * }
+}
