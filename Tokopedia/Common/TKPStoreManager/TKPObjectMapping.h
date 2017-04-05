@@ -12,7 +12,9 @@
 
 @protocol TKPObjectMapping <NSObject>
 
-+ (NSDictionary *)attributeMappingDictionary;
 + (RKObjectMapping *)mapping;
+
+@optional
++ (NSDictionary *)attributeMappingDictionary;
 
 @end

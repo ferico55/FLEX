@@ -59,37 +59,3 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         viewController.present(pickerController, animated: true) {}
     }
 }
-
-extension UIImage {
-    
-    func resizedImage() -> (UIImage){
-        
-        var actualHeight = self.size.height
-        var actualWidth = self.size.width
-        var imgRatio = actualWidth/actualHeight
-        let maxImageSize = CGSize(width: 600, height: 600)
-        let widthView = maxImageSize.width;
-        let heightView = maxImageSize.height;
-        let maxRatio = widthView/heightView;
-        
-        if (imgRatio != maxRatio){
-            if (imgRatio < maxRatio){
-                imgRatio = heightView / actualHeight
-                actualHeight = heightView
-                actualWidth = imgRatio * actualWidth
-            } else {
-                imgRatio = widthView / actualWidth
-                actualHeight = imgRatio * actualHeight
-                actualWidth = widthView
-            }
-        }
-        
-        let rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight);
-        UIGraphicsBeginImageContext(rect.size)
-        self.draw(in: rect)
-        let resized : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return resized
-    }
-}

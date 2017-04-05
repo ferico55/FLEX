@@ -281,16 +281,3 @@ class InboxTicketRequest: NSObject {
     }
 }
 
-extension NSDictionary {
-    
-    var json: String {
-        let invalidJson = ""
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
-            return String(data: jsonData,
-                encoding: String.Encoding.ascii) ?? invalidJson
-        } catch {
-            return invalidJson
-        }
-    }
-}
