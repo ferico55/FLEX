@@ -722,6 +722,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             
             [wrapperController presentViewController:controller animated:YES completion:nil];
         } else if(indexPath.row == 4) {
+            [AnalyticsManager trackClickNavigateFromMore:@"Help Center - Jasonette"];
+            
             JasonViewController* controller = [JasonViewController new];
             controller.url = @"https://ecs7.tokopedia.net/jasonette/help-index.json";
             
