@@ -189,6 +189,8 @@
     }
 
     _table.tableFooterView = _footer;
+    _table.estimatedRowHeight = 100.0;
+    _table.rowHeight = UITableViewAutomaticDimension;
 
     _data = [self generateData];
     if([self shouldFetchDataAtBeginning]){
@@ -286,14 +288,6 @@
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _list.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [tableView fd_heightForCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER
-                                    cacheByIndexPath:indexPath
-                                       configuration:^(GeneralTalkCommentCell * cell) {
-                                            cell.comment = _list[indexPath.row];
-                                       }];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

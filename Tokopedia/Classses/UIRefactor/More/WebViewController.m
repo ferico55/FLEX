@@ -20,7 +20,7 @@
     NJKWebViewProgress *progressProxy;
     NJKWebViewProgressView *progressView;
 }
-@synthesize strURL, strTitle, strContentHTML;
+@synthesize strURL, strTitle, strContentHTML, strQuery;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,7 +47,12 @@
         [self.navigationController.navigationBar addSubview:progressView];
         
         NSURL* url = [NSURL URLWithString:strURL];
-        [_webView loadRequest:[self requestForUrl:url]];
+        if (strQuery == nil) {
+            [_webView loadRequest:[self requestForUrl:url]];
+        } else {
+            _shouldAuthorizeRequest = NO;
+            [_webView loadRequest:[self requestForUrl:url query:strQuery]];
+        }
     }
 }
 
@@ -108,6 +113,21 @@
         [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
         [request setURL:url];
     }
+    
+    return request;
+}
+
+- (NSMutableURLRequest*)requestForUrl:(NSURL*)url query:(NSString *)query {
+    NSMutableURLRequest* request;
+    if(_shouldAuthorizeRequest) {
+        request = [NSMutableURLRequest requestWithAuthorizedHeader:url];
+    } else {
+        request = [[NSMutableURLRequest alloc] init];
+        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+        [request setURL:url];
+    }
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[query dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES]];
     
     return request;
 }

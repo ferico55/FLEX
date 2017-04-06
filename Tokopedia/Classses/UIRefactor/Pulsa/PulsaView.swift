@@ -15,7 +15,9 @@ import BEMCheckBox
 import JLPermissions
 
 @objc
-class PulsaView: UIView, MMNumberKeyboardDelegate {
+class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
+    
+    weak var navigator: PulsaNavigator!
     
     fileprivate var stackView: OAStackView = OAStackView()
     fileprivate var pulsaCategoryControl: HMSegmentedControl = {
@@ -55,16 +57,27 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         numberFieldUnderlineView.backgroundColor = self.underlineViewColor
         return numberFieldUnderlineView
     }()
-    fileprivate var buyButton: UIButton = {
-        let buyButton = UIButton(frame: CGRect.zero)
-        buyButton.setTitle("Beli", for: UIControlState())
+    
+    lazy fileprivate var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        indicator.frame.origin = CGPoint(x: 20, y: 16)
+        
+        return indicator
+    }()
+    
+    lazy fileprivate var buyButton: UIButton = {
+        let buyButton = UIButton(type: .system)
+        buyButton.setTitle("Beli", for: .normal)
+        buyButton.setTitleColor(.white, for: .disabled)
         buyButton.layer.cornerRadius = 3
-        buyButton.setTitleColor(UIColor.white, for: UIControlState())
+        buyButton.setTitleColor(.white, for: .normal)
         buyButton.backgroundColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 34.0/255, alpha: 1)
         buyButton.isHidden = true
         buyButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        
         return buyButton
     }()
+    
     fileprivate var buttonsPlaceholder: UIView!
     fileprivate var fieldPlaceholder: UIView!
     fileprivate var saldoButtonPlaceholder: UIView!
@@ -91,6 +104,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         saldoCheckBox.onFillColor = self.tokopediaGreenColor
         saldoCheckBox.animationDuration = 0
         saldoCheckBox.isHidden = true
+        saldoCheckBox.delegate = self
         return saldoCheckBox
     }()
     lazy fileprivate var saldoLabel: UILabel = {
@@ -127,7 +141,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
-    var selectedProduct = PulsaProduct()
+    var selectedProduct = PulsaProduct() {
+        didSet {
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Product from Widget")
+        }
+    }
     
     fileprivate var userManager = UserAuthentificationManager()
     fileprivate var prefixView: UIView?
@@ -140,6 +158,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     var didAskedForLogin: ((Void) -> Void)?
     var didShowAlertPermission: ((Void) -> Void)?
     var didSuccessPressBuy: ((URL) -> Void)?
+//    var didSuccessPressBuy: ((String) -> Void)?
     
     fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 15
     fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 15
@@ -169,6 +188,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     init(categories: [PulsaCategory]) {
         super.init(frame: .zero)
+        
+        buyButton.addSubview(activityIndicator)
         
         self.setCornerRadius()
         setupStackViewFormat()
@@ -292,6 +313,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     fileprivate func setSelectedOperatorWithOperatorId(_ id : String) {
         if let selectedOperator = self.findOperatorById(id) {
             self.selectedOperator = selectedOperator
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Operator from Widget")
         }
     }
     
@@ -319,6 +341,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
+        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Widget Bar")
         self.resetCheckBox()
         self.resetPulsaOperator()
         self.buildAllView(category)
@@ -752,23 +775,52 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         
         
         if(isValidOperator() && self.isValidProduct() && isValidNumber) {
+            func revertBuyButton() {
+                buyButton.setTitle("Beli", for: .normal)
+                buyButton.isEnabled = true
+                buyButton.titleLabel?.textColor = .white
+                
+                activityIndicator.stopAnimating()
+            }
+            
             self.hideErrors()
             
-            self.userManager = UserAuthentificationManager()
-            if(!self.userManager.isLogin) {
-                self.didAskedForLogin!()
-            } else {
-                //open scrooge
-                var clientNumber = ""
-                if numberField != nil {
-                    clientNumber = numberField.text!
-                }
-                
-                let pulsaUrl = "\(NSString.pulsaUrl())?action=init_data&client_number=\(clientNumber)&product_id=\(self.selectedProduct.id!)&operator_id=\(self.selectedOperator.id!)&instant_checkout=\(self.saldoCheckBox.on ? "1" : "0")&utm_source=ios&utm_medium=widget&utm_campaign=pulsa+widget&utm_content=\(NSString.encode(self.selectedCategory.attributes.name))"
-                
-                
-                self.didSuccessPressBuy?(URL(string: self.userManager.webViewUrl(fromUrl: pulsaUrl))!)
+            var clientNumber = ""
+            if numberField != nil {
+                clientNumber = numberField.text!
             }
+            
+            buyButton.titleLabel?.textColor = .white
+            buyButton.setTitle("Sedang proses...", for: .normal)
+            buyButton.isEnabled = false
+            
+            activityIndicator.startAnimating()
+            
+            if (self.saldoCheckBox.on) {
+                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli with Instant Saldo from Widget")
+            } else {
+                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli from Widget")
+            }
+            DigitalService()
+                .purchase(from: self.navigator.controller,
+                          withProductId: self.selectedProduct.id!,
+                          categoryId: self.selectedCategory.id!,
+                          inputFields: ["client_number": clientNumber],
+                          instantPaymentEnabled: self.saldoCheckBox.on,
+                          onNavigateToCart: revertBuyButton)
+                .subscribe(
+                    onNext: {
+                        revertBuyButton()
+                    },
+                    onError: { error in
+                        let errorMessage = error as? String ?? "Kendala koneksi internet, silahkan coba kembali"
+                        StickyAlertView(errorMessages: [errorMessage], delegate: self.navigator.controller).show()
+                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Homepage Error Widget- \(errorMessage)")
+                        revertBuyButton()
+                    }
+                )
+                .disposed(by: self.rx_disposeBag)
+
         }
     }
     
@@ -1009,6 +1061,14 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             convertedNumber = convertedNumber.replacingOccurrences(of: "62", with: "0", options: .caseInsensitive, range: phoneNumber.startIndex..<convertedNumber.index(convertedNumber.startIndex, offsetBy: 2))
         }
         return convertedNumber
+    }
+    
+    func didTap(_ checkBox: BEMCheckBox) {
+        if (checkBox.on) {
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Check Instant Saldo from Widget")
+        } else {
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Uncheck Instant Saldo from Widget")
+        }
     }
 }
 

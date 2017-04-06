@@ -355,7 +355,9 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                    EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"alwan.ubaidillah+003@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
-                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016")
+                   EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016"),
+                   EMAIL_PASSWORD(@"justin+buyer@tokopedia.com", @"tokopedia123"),
+                   EMAIL_PASSWORD(@"justin+seller@tokopedia.com", @"tokopedia123")
                    })
                 );
 }

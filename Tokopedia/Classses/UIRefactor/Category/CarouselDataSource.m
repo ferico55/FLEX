@@ -99,7 +99,7 @@ NSInteger const bannerIpadWidth = 450;
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
-    
+    [AnalyticsManager trackEventName:@"sliderBanner" category:@"Slider" action:GA_EVENT_ACTION_CLICK label:banner.title?:@""];
     // will use TPRoute when new banner api is up
     [self navigateToIntermediaryPage];
     

@@ -39,6 +39,10 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.register(UINib(nibName: "PulsaProductCell", bundle: nil), forCellReuseIdentifier: "PulsaProductCellId")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        AnalyticsManager.trackScreenName("Recharge Product Page from Widget")
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }

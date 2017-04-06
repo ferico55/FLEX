@@ -78,7 +78,6 @@
 #import "AnnouncementTickerView.h"
 
 #import "InboxMessageList.h"
-#import "Breadcrumb.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
 #import "ResolutionLast.h"
@@ -172,3 +171,8 @@
 #import "Tkpd.h"
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"
+#import "TkpdHMAC.h"
+#include "ifaddrs.h"
+#import "UIActivityViewController+Extensions.h"
+#import <MessageUI/MessageUI.h>
+#import "TAGDataLayer.h"

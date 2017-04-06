@@ -18,6 +18,24 @@ class TPRoutes: NSObject {
             self.openWebView(url!)
         }
         
+        JLRoutes.global().addRoute("/tokocash") { params in
+            let viewController = DigitalCategoryMenuViewController(categoryId: "103")
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: false)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/digital/form") { params in
+            let viewController = DigitalCategoryMenuViewController(categoryId: params["category_id"] as! String)
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String : Any]!) -> Bool in
             let activationCode = params["activationCode"] as! String
             let attempt = params["a"] as! String
@@ -411,27 +429,5 @@ class TPRoutes: NSObject {
             }) { (error) in
                 shopExists(false)
         }
-    }
-
-    
-}
-
-extension UIApplication {
-    class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let search = base as? UISearchController {
-            return search.presentingViewController
-        }
-        if let nav = base as? UINavigationController {
-            return topViewController(nav.visibleViewController)
-        }
-        if let tab = base as? UITabBarController {
-            if let selected = tab.selectedViewController {
-                return topViewController(selected)
-            }
-        }
-        if let presented = base?.presentedViewController {
-            return topViewController(presented)
-        }
-        return base
     }
 }
