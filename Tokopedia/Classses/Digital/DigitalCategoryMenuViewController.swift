@@ -295,7 +295,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                     return viewController.onOperatorSelected
                                 }
                                 .do(onNext: { selectedOperator in
-                                    AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Select Operator", label: "\(selectedOperator.name)")
+                                    AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: selectedOperator, product: self.state?.selectedProduct, action:"Select Operator")
                                 })
                                 .map { DigitalWidgetAction.selectOperator($0) }
                                 .dispatch(to: self.store)
@@ -356,7 +356,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             return productSelectionViewController.onProductSelected
                         }
                         .do(onNext: { selectedProduct in
-                            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Select Product", label: "\(self.state!.selectedOperator!.name) - \(selectedProduct.priceText)")
+                            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: selectedProduct, action:"Select Product")
                         })
                         .map { DigitalWidgetAction.selectProduct($0) }
                         .dispatch(to: self.store)
@@ -479,7 +479,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             }
                             
                             guard productId != nil else { return }
-                            
+                            if (self.state!.isInstantPaymentEnabled) {
+                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Click Beli with Instant Saldo")
+                            } else {
+                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Click Beli")
+                            }
                             DigitalService()
                                 .purchase(
                                     from: self.viewController!,
@@ -494,16 +498,9 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                         self?.store.dispatch(DigitalWidgetAction.addToCart)
                                     })
                                 .subscribe(
-                                    onNext: {
-                                        if (self.state!.isInstantPaymentEnabled) {
-                                            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Click Beli with Instant Saldo", label: "\(self.state!.selectedOperator!.name) - \(self.state!.selectedProduct!.priceText)")
-                                        } else {
-                                            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Click Beli", label: "\(self.state!.selectedOperator!.name) - \(self.state!.selectedProduct!.priceText)")
-                                        }
-                                    },
                                     onError: { error in
                                         let errorMessage = error as? String ?? "Kendala koneksi internet, silakan coba kembali"
-                                        AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Homepage Error - \(errorMessage)", label: "\(self.state!.selectedOperator!.name) - \(self.state!.selectedProduct!.priceText)")
+                                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Homepage Error - \(errorMessage)")
                                         self.store.dispatch(DigitalWidgetAction.showError(errorMessage))
                                     }
                                 )
@@ -772,11 +769,13 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     func didTap(_ checkBox: BEMCheckBox) {
         self.store.dispatch(DigitalWidgetAction.toggleInstantPayment)
         if (checkBox.on) {
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Check Instant Saldo", label: "\(self.state!.selectedOperator!.name) - \(self.state!.selectedProduct!.priceText)")
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Check Instant Saldo")
         } else {
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.state!.form!.name) ", action: "Uncheck Instant Saldo", label: "\(self.state!.selectedOperator!.name) - \(self.state!.selectedProduct!.priceText)")
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Uncheck Instant Saldo")
         }
     }
+    
+    
 }
 
 // MARK: address book

@@ -104,6 +104,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         saldoCheckBox.onFillColor = self.tokopediaGreenColor
         saldoCheckBox.animationDuration = 0
         saldoCheckBox.isHidden = true
+        saldoCheckBox.delegate = self
         return saldoCheckBox
     }()
     lazy fileprivate var saldoLabel: UILabel = {
@@ -140,7 +141,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
-    var selectedProduct = PulsaProduct()
+    var selectedProduct = PulsaProduct() {
+        didSet {
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Product from Widget")
+        }
+    }
     
     fileprivate var userManager = UserAuthentificationManager()
     fileprivate var prefixView: UIView?
@@ -308,14 +313,13 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate func setSelectedOperatorWithOperatorId(_ id : String) {
         if let selectedOperator = self.findOperatorById(id) {
             self.selectedOperator = selectedOperator
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Select Operator from Widget", label: "\(self.selectedOperator.attributes.name)")
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Operator from Widget")
         }
     }
     
     fileprivate func setDefaultProductWithOperatorId(_ operatorId: String) {
         self.findProducts(operatorId, categoryId: self.selectedCategory.id!) { (product) in
             self.selectedProduct = product.first!
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Select Product from Widget", label: "\(self.selectedOperator.attributes.name) - \(self.selectedProduct.attributes.price)")
         }
     }
     
@@ -337,7 +341,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
-        AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Click Widget Bar", label: ButtonConstant.defaultProductButtonTitle)
+        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Widget Bar")
         self.resetCheckBox()
         self.resetPulsaOperator()
         self.buildAllView(category)
@@ -792,7 +796,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             
             activityIndicator.startAnimating()
             
-            
+            if (self.saldoCheckBox.on) {
+                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli with Instant Saldo from Widget")
+            } else {
+                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli from Widget")
+            }
             DigitalService()
                 .purchase(from: self.navigator.controller,
                           withProductId: self.selectedProduct.id!,
@@ -802,17 +810,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
                           onNavigateToCart: revertBuyButton)
                 .subscribe(
                     onNext: {
-                        if (self.saldoCheckBox.on) {
-                            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Click Beli with Instant Saldo from Widget", label: "\(self.selectedOperator.attributes.name) - \(self.selectedProduct.attributes.price)")
-                        } else {
-                            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Click Beli from Widget", label: "\(self.selectedOperator.attributes.name) - \(self.selectedProduct.attributes.price)")
-                        }
                         revertBuyButton()
                     },
                     onError: { error in
                         let errorMessage = error as? String ?? "Kendala koneksi internet, silahkan coba kembali"
                         StickyAlertView(errorMessages: [errorMessage], delegate: self.navigator.controller).show()
-                        AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Homepage Error - \(errorMessage)", label: "\(self.selectedOperator.attributes.name) - \(self.selectedProduct.attributes.price)")
+                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Homepage Error Widget- \(errorMessage)")
                         revertBuyButton()
                     }
                 )
@@ -1062,9 +1065,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     func didTap(_ checkBox: BEMCheckBox) {
         if (checkBox.on) {
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Check Instant Saldo from Widget", label: "\(selectedOperator.attributes.name) - \(selectedProduct.attributes.price)")
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Check Instant Saldo from Widget")
         } else {
-            AnalyticsManager.trackEventName("userInteractionHomePage", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.selectedCategory.attributes.name) ", action: "Uncheck Instant Saldo from Widget", label: "\(selectedOperator.attributes.name) - \(selectedProduct.attributes.price)")
+            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Uncheck Instant Saldo from Widget")
         }
     }
 }

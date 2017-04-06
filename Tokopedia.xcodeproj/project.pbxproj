@@ -1624,6 +1624,7 @@
 		52CDED411E94FCCC00A83E4F /* JSONAPIResultVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDED281E94FCCC00A83E4F /* JSONAPIResultVoucher.swift */; };
 		52CDED421E94FCCC00A83E4F /* DigitalCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDED2A1E94FCCC00A83E4F /* DigitalCartViewController.swift */; };
 		52CDED431E94FCCC00A83E4F /* DigitalCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52CDED2B1E94FCCC00A83E4F /* DigitalCartViewController.xib */; };
+		52E5D2191E95FC1700E6B26A /* DigitalAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E5D2181E95FC1700E6B26A /* DigitalAnalyticsManager.swift */; };
 		625DC7001E94C8700051EA09 /* ScreenshotAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625DC6FE1E94C8700051EA09 /* ScreenshotAlertView.swift */; };
 		625DC7011E94C8700051EA09 /* ScreenshotAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 625DC6FF1E94C8700051EA09 /* ScreenshotAlertView.xib */; };
 		625DC71F1E94D6A50051EA09 /* ScreenshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625DC71E1E94D6A50051EA09 /* ScreenshotHelper.swift */; };
@@ -4440,6 +4441,7 @@
 		52CDED281E94FCCC00A83E4F /* JSONAPIResultVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIResultVoucher.swift; sourceTree = "<group>"; };
 		52CDED2A1E94FCCC00A83E4F /* DigitalCartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartViewController.swift; sourceTree = "<group>"; };
 		52CDED2B1E94FCCC00A83E4F /* DigitalCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalCartViewController.xib; sourceTree = "<group>"; };
+		52E5D2181E95FC1700E6B26A /* DigitalAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalAnalyticsManager.swift; sourceTree = "<group>"; };
 		625DC6FE1E94C8700051EA09 /* ScreenshotAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotAlertView.swift; sourceTree = "<group>"; };
 		625DC6FF1E94C8700051EA09 /* ScreenshotAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScreenshotAlertView.xib; sourceTree = "<group>"; };
 		625DC71E1E94D6A50051EA09 /* ScreenshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotHelper.swift; sourceTree = "<group>"; };
@@ -9526,6 +9528,7 @@
 				52CDED1C1E94FCCC00A83E4F /* DigitalWigetReducer.swift */,
 				52CDED1D1E94FCCC00A83E4F /* Object */,
 				52CDED291E94FCCC00A83E4F /* UIRefactor */,
+				52E5D2181E95FC1700E6B26A /* DigitalAnalyticsManager.swift */,
 			);
 			path = Digital;
 			sourceTree = "<group>";
@@ -11283,6 +11286,7 @@
 				34DDDDAF1E83E1C500A8EFC3 /* SearchAutoCompleteCategoryCell.swift in Sources */,
 				34DDDA4F1E83E1C100A8EFC3 /* ShopProductPageList.m in Sources */,
 				DA1949A31E8DFA6D000FED82 /* TKPHomeProductsStore.m in Sources */,
+				52E5D2191E95FC1700E6B26A /* DigitalAnalyticsManager.swift in Sources */,
 				34DDDB1F1E83E1C100A8EFC3 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				34DDDE7E1E83E1C600A8EFC3 /* TransactionCartDonationCell.swift in Sources */,
 				34DDDCC31E83E1C300A8EFC3 /* ProductWishlistCell.swift in Sources */,

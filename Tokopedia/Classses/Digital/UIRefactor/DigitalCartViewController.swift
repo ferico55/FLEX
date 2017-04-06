@@ -131,7 +131,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate func setVoucherUsed() {
         if (checkbox.on) {
             voucherInputView.isHidden = false
-            AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Click Voucher Checklist", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+            AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Voucher Checklist")
         } else {
             voucherInputView.isHidden = true
             isVoucherUsed = false
@@ -323,8 +323,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         checkoutButton.isEnabled = false
         
         activityIndicator.startAnimating()
-        
-        AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Click Lanjut - Checkout Page", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Lanjut - Checkout Page")
         
         DigitalProvider()
             .request(.payment(voucherCode: self.voucherCode, transactionAmount: amount, transactionId:self.transactionId))
@@ -348,7 +347,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                         errorMessage = "Kendala koneksi internet, silakan coba kembali"
                         StickyAlertView.showErrorMessage([errorMessage])
                     }
-                    AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Checkout Error - \(errorMessage)", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+                    AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Checkout Error - \(errorMessage)")
                     self.revertCheckoutButton()
                 }
             )
@@ -361,7 +360,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate func getVoucher() {
         voucherCode = self.voucherText.text!
         voucherCode = voucherCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Click Gunakan Voucher - \(voucherCode)", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Gunakan Voucher - \(voucherCode)")
         if (!voucherCode.isEmpty) {
             self.dismissKeyboard()
             gunakanButton.setTitle("", for: .normal)
@@ -372,16 +371,16 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             let user = UserAuthentificationManager()
             
             networkManager.isUsingHmac = true
-            networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.2/voucher/check", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponseVoucher.mapping(), onSuccess: { [weak self] (mappingResult, operation) in
+            networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.2/voucher/check", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponseVoucher.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
                 let response : Dictionary = mappingResult.dictionary() as Dictionary
                 let json = response[""] as! JSONAPIResponseVoucher
                 if (json.data != nil) {
-                    self?.voucher = json.data.attributes
-                    self?.isVoucherUsed = true
-                    self?.setVoucherCanceled()
+                    self.voucher = json.data.attributes
+                    self.isVoucherUsed = true
+                    self.setVoucherCanceled()
                 }
-                AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self?.cart.categoryName) ", action: "Voucher Success - \(self?.voucherCode)", label: "\(self?.cart.operatorName) - \(self?.cart.priceText)")
-                self?.revertGunakanButton()
+                AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Success - \(self.voucherCode)")
+                self.revertGunakanButton()
             }) { [unowned self] (error) in
                 var errorMessage = ""
                 if let err = (error as NSError).localizedRecoverySuggestion {
@@ -390,17 +389,17 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                     do {
                         let obj = try Unboxer(data:data)
                         errorMessage = try! obj.unbox(keyPath: "errors.0.title") as String
-                        StickyAlertView.showErrorMessage([errorMessage])
-                        self.isVoucherUsed = false
-                        self.setVoucherCanceled()
+                        
                     } catch {
                         print(error.localizedDescription)
                     }
                 } else {
                     errorMessage = error.localizedDescription
-                    StickyAlertView.showErrorMessage([errorMessage])
                 }
-                AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Voucher Error - \(self.voucherCode) -  \(errorMessage)", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+                StickyAlertView.showErrorMessage([errorMessage])
+                AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(self.voucherCode)")
+                self.isVoucherUsed = false
+                self.setVoucherCanceled()
                 self.revertGunakanButton()
             }
         } else {
@@ -417,7 +416,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         setVoucherCanceled()
         checkbox.on = false
         setVoucherUsed()
-        AnalyticsManager.trackEventName("rechargeTracking", category: "\(GA_EVENT_CATEGORY_RECHARGE) - \(self.cart.categoryName) ", action: "Click Batalkan Voucher", label: "\(self.cart.operatorName) - \(self.cart.priceText)")
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
     }
     
     @IBAction func payment(_ sender: Any) {

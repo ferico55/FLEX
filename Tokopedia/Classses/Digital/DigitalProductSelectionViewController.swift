@@ -41,7 +41,7 @@ class DigitalProductView: ComponentView<DigitalProduct>  {
                         ]),
                 
                 Node<UILabel>(identifier: "description") { label, layout, size in
-                    label.attributedText = NSAttributedString(fromHTML: product.detail)
+                    label.text = NSAttributedString(fromHTML: product.detail).string
                     label.font = .smallTheme()
                     label.textColor = .fromHexString("AAAAAA")
                     label.numberOfLines = 0

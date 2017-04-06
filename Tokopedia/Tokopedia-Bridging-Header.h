@@ -78,7 +78,6 @@
 #import "AnnouncementTickerView.h"
 
 #import "InboxMessageList.h"
-#import "Breadcrumb.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
 #import "ResolutionLast.h"
@@ -176,3 +175,4 @@
 #include "ifaddrs.h"
 #import "UIActivityViewController+Extensions.h"
 #import <MessageUI/MessageUI.h>
+#import "TAGDataLayer.h"
