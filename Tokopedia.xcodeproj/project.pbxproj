@@ -676,7 +676,6 @@
 		92AE53491E96ABAA007A1386 /* JasonVerticalSectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92AE49761E96ABA3007A1386 /* JasonVerticalSectionItem.xib */; };
 		92AE534A1E96ABAA007A1386 /* JasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AE49781E96ABA3007A1386 /* JasonViewController.m */; };
 		92AE534B1E96ABAA007A1386 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92AE49791E96ABA3007A1386 /* LaunchScreen.storyboard */; };
-		92AE534C1E96ABAA007A1386 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AE497A1E96ABA3007A1386 /* main.m */; };
 		92AE534D1E96ABAA007A1386 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92AE497B1E96ABA3007A1386 /* Media.xcassets */; };
 		92AE534E1E96ABAA007A1386 /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92AE497C1E96ABA3007A1386 /* more@2x.png */; };
 		92AE534F1E96ABAA007A1386 /* Next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92AE497D1E96ABA3007A1386 /* Next@2x.png */; };
@@ -3095,7 +3094,6 @@
 		92AE49771E96ABA3007A1386 /* JasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JasonViewController.h; sourceTree = "<group>"; };
 		92AE49781E96ABA3007A1386 /* JasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JasonViewController.m; sourceTree = "<group>"; };
 		92AE49791E96ABA3007A1386 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		92AE497A1E96ABA3007A1386 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		92AE497B1E96ABA3007A1386 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		92AE497C1E96ABA3007A1386 /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
 		92AE497D1E96ABA3007A1386 /* Next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Next@2x.png"; sourceTree = "<group>"; };
@@ -7157,7 +7155,6 @@
 				92AE49771E96ABA3007A1386 /* JasonViewController.h */,
 				92AE49781E96ABA3007A1386 /* JasonViewController.m */,
 				92AE49791E96ABA3007A1386 /* LaunchScreen.storyboard */,
-				92AE497A1E96ABA3007A1386 /* main.m */,
 				92AE497B1E96ABA3007A1386 /* Media.xcassets */,
 				92AE497C1E96ABA3007A1386 /* more@2x.png */,
 				92AE497D1E96ABA3007A1386 /* Next@2x.png */,
@@ -12276,7 +12273,6 @@
 				92AE53961E96ABAA007A1386 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
 				92AE53811E96ABAA007A1386 /* AlertListBankView.m in Sources */,
 				92AE54861E96ABAB007A1386 /* ResolutionValidation.swift in Sources */,
-				92AE534C1E96ABAA007A1386 /* main.m in Sources */,
 				92AE51811E96ABA9007A1386 /* GoogleDistanceMatrixElements.m in Sources */,
 				92AE57321E96ABAF007A1386 /* URLCacheAlert.m in Sources */,
 				92AE56B21E96ABAE007A1386 /* TKPInfoWindowMapView.swift in Sources */,
@@ -12585,7 +12581,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201704070031;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -12632,7 +12628,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201704070031;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -12666,7 +12662,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201704070031;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
@@ -12718,7 +12714,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201704070031;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
