@@ -21,7 +21,6 @@
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) NSDictionary *loadedData;
-@property (strong,nonatomic) NSDictionary *jason;
 @property BOOL isSnapSearchProduct;
 
 - (void)setButtonFav;
