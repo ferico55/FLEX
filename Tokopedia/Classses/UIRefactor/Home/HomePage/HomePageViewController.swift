@@ -563,7 +563,7 @@ class HomePageViewController: UIViewController {
             }
             
             //tokocash ID = 103
-            if(categoryId  == "10") {
+            if(categoryId  == "103") {
                 authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
                     self.navigateToIntermediaryPage()
                     WalletRequest.fetchStatusWithUserId(self.userManager.getUserId(), onSuccess: { [unowned self] (wallet) in
