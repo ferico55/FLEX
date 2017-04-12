@@ -24,13 +24,16 @@ class DigitalProvider: RxMoyaProvider<DigitalTarget> {
         
         let appVersion = UIApplication.getAppVersionString()
         
+        let userId = UserAuthentificationManager().getUserId()!
+        
         var headers = [
             "Accept": "application/json",
             "X-APP-VERSION": appVersion,
             "X-Device": "ios-\(appVersion)",
             "Accept-Language": "id-ID",
             "Accept-Encoding": "gzip",
-            "X-User-ID": UserAuthentificationManager().getUserId()!,
+            "X-User-ID": userId,
+            "X-Tkpd-UserId": userId,
             "Idempotency-Key": UUID().uuidString
         ]
         

@@ -280,7 +280,6 @@
                               @"X-Device" : @"ios",
                               @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
                               @"X-Tkpd-Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
-                              @"X-Tkpd-UserId" : [userManager getUserId]
                               };
     
     return headers;
