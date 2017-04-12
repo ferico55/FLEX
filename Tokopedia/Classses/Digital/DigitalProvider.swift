@@ -102,7 +102,7 @@ extension DigitalTarget: TargetType {
                         "product_id": Int(productId)!,
                         "device_id": 7,
                         "instant_checkout": instantCheckout,
-                        "ip_address": getIFAddresses(),
+                        "ip_address": "127.0.0.1",
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0",
