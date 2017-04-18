@@ -2362,6 +2362,13 @@ TTTAttributedLabelDelegate
                                 title:@"Produk tidak ditemukan"
                                  desc:@""
                              btnTitle:@"Hubungi Penjual"];
+    
+    BOOL canAskSeller = [_data objectForKey:@"shop_id"] == nil ? NO : YES;
+    
+    if (!canAskSeller) {
+        [noResultView hideButton:YES];
+    }
+    
     __weak typeof(self) weakSelf = self;
     noResultView.onButtonTap = ^(NoResultReusableView *view){
         SendMessageViewController *messageController = [SendMessageViewController new];
