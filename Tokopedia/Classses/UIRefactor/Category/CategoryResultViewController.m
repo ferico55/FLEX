@@ -117,7 +117,10 @@ HeaderIntermediaryCollectionViewDelegate
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *requestLoadingActivityIndicator;
 @property (strong, nonatomic) IBOutlet UIView *totalProductsView;
 @property (strong, nonatomic) NSMutableArray<CategoryIntermediaryChild*> *categoryIntermediaryFilteredChild;
+
 @end
+
+NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFERENCES";
 
 @implementation CategoryResultViewController {
     NSInteger _start;
@@ -185,6 +188,7 @@ HeaderIntermediaryCollectionViewDelegate
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _userManager = [UserAuthentificationManager new];
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
@@ -229,32 +233,6 @@ HeaderIntermediaryCollectionViewDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
-    
-    NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
-    if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
-        self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
-        if (self.cellType == UITableViewCellTypeOneColumn) {
-            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
-                                   forState:UIControlStateNormal];
-            self.promoCellType = PromoCollectionViewCellTypeNormal;
-            
-        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
-                                   forState:UIControlStateNormal];
-            self.promoCellType = PromoCollectionViewCellTypeNormal;
-            
-        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
-                                   forState:UIControlStateNormal];
-            self.promoCellType = PromoCollectionViewCellTypeThumbnail;
-            
-        }
-    } else {
-        self.cellType = UITableViewCellTypeTwoColumn;
-        self.promoCellType = PromoCollectionViewCellTypeNormal;
-        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
-                               forState:UIControlStateNormal];
-    }
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
@@ -706,8 +684,6 @@ HeaderIntermediaryCollectionViewDelegate
         }
         case 13:
         {
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            
             if (self.cellType == UITableViewCellTypeOneColumn) {
                 self.cellType = UITableViewCellTypeTwoColumn;
                 self.promoCellType = PromoCollectionViewCellTypeNormal;
@@ -733,9 +709,8 @@ HeaderIntermediaryCollectionViewDelegate
             [_collectionView reloadData];
             [_collectionView layoutIfNeeded];
             
-            NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
-            [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
-            
+            [[NSUserDefaults standardUserDefaults] setInteger:self.cellType forKey:[NSString stringWithFormat:@"%@-%@",USER_LAYOUT_CATEGORY_PREFERENCES,_categoryIntermediaryResult.id]];
+
             break;
         }
         default:
@@ -1126,6 +1101,8 @@ HeaderIntermediaryCollectionViewDelegate
                                                       
                                                       _isCategorySubviewExpanded = NO;
                                                       
+                                                      [self setProductListBaseLayout];
+                                                      
                                                       [_collectionView reloadData];
                                                       [weakSelf stopPageLoading];
                                                   }
@@ -1442,6 +1419,43 @@ HeaderIntermediaryCollectionViewDelegate
 
 - (BOOL) isUsingAnyFilter{
     return [_activeFilterImageViews.firstObject isHidden];
+}
+
+- (NSInteger) mapCellLayoutAPI {
+    NSInteger selectedCellNumber;
+    
+    id defaultCategoryLayout = [[NSUserDefaults standardUserDefaults] objectForKey: [NSString stringWithFormat: @"%@-%@", USER_LAYOUT_CATEGORY_PREFERENCES, _categoryIntermediaryResult.id]];
+    if (!defaultCategoryLayout) {
+        // we use mapping because value sent from API is different with our default value
+        // value from API: 1=> two grid, 2=> one grid, 3=> list
+        // value from our app: 0=> one grid, 1=> two grid, 2=> listm
+        NSDictionary<NSNumber*, NSNumber*> *mapCellDictionary = @{@1 : @(UITableViewCellTypeTwoColumn), @2 : @(UITableViewCellTypeOneColumn), @3 : @(UITableViewCellTypeThreeColumn)};
+        selectedCellNumber = [mapCellDictionary[@(_categoryIntermediaryResult.views)] integerValue];
+    } else {
+        selectedCellNumber = [defaultCategoryLayout integerValue];
+    }
+
+    return selectedCellNumber;
+}
+
+- (void) setProductListBaseLayout {
+    self.cellType = [self mapCellLayoutAPI];
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
+        
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
+        
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeThumbnail;
+        
+    }
 }
 
 #pragma mark - Promo collection delegate
