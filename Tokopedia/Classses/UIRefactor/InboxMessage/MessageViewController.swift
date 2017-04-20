@@ -12,11 +12,11 @@ import JLRoutes
 import SwiftOverlays
 
 class MessageViewController: JSQMessagesViewController {
-    var messageTitle = ""
+    var messageTitle: String!
     var messageSubtitle = ""
     var messageId: String!
     var messageTabName: String!
-    var onMessagePosted: ((String) -> Void)!
+    var onMessagePosted: ((String) -> Void)?
     var labelColorsCollection = [
         "1" : UIColor(red: 248.0/255.0, green: 148.0/255.0, blue: 6.0/255.0, alpha: 1.0), //admin
         "2" : UIColor(red: 70.0/255.0, green: 136.0/255.0, blue: 71.0/255.0, alpha: 1.0), //pengguna
@@ -236,7 +236,7 @@ class MessageViewController: JSQMessagesViewController {
                                     guard let `self` = self else { return }
                                     let result = result.dictionary()[""] as! InboxMessageAction
                                     if(result.data.is_success == "1") {
-                                        self.onMessagePosted(text)
+                                        self.onMessagePosted?(text)
                                     } else {
                                         self.receiveErrorSendMessage(result.message_error as [AnyObject])
                                     }
@@ -318,7 +318,7 @@ class MessageViewController: JSQMessagesViewController {
             withBaseUrl: NSString.kunyitUrl(),
             path: "/v1/message/detail",
             method: .GET,
-            parameter: ["message_id" : messageId, "page" : page, "per_page" : "10", "nav" : messageTabName],
+            parameter: ["message_id" : messageId ?? "", "page" : page, "per_page" : "10", "nav" : messageTabName ?? ""],
             mapping: InboxMessageDetail.mapping(),
             onSuccess: { [unowned self] (result, operation) in
                 
@@ -333,6 +333,7 @@ class MessageViewController: JSQMessagesViewController {
                     if(messageUsers != "") {
                         self.messageSubtitle = "Antara : \(messageUsers)"
                     }
+                    self.messageTitle = messageDetail.result.message_title
                     self.setupTitle()
                     
                     self.showLoadEarlierMessagesHeader = messageDetail.result.paging.isShowNext

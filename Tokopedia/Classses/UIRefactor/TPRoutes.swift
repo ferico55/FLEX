@@ -14,6 +14,110 @@ class TPRoutes: NSObject {
     static func configureRoutes() {
         let navigator = NavigateViewController()
         
+        //applinks..
+        //shop
+        JLRoutes.global().addRoute("/shop/:shopId") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            navigator.navigateToShop(from: UIApplication.topViewController(), withShopID:shopId)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            let etalaseId = params["etalaseId"] as! String
+            guard let keyword = params["search"] as? String else {
+                return false
+            }
+            guard let by = params["sort"] as? String else {
+                return false
+            }
+            navigator.navigateToShop(from: UIApplication.topViewController(), withShopID:shopId, withEtalaseId:etalaseId, search:keyword, sort:by)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            let etalaseId = params["etalaseId"] as! String
+            navigator.navigateToShop(from: UIApplication.topViewController(), withShopID:shopId, withEtalaseId:etalaseId)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("shop/:shopId/info") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            navigator.navigateToShopInfo(from: UIApplication.topViewController(), withShopID:shopId)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("shop/:shopId/talk") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            navigator.navigateToShopTalk(from: UIApplication.topViewController(), withShopID:shopId)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("shop/:shopId/review") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            navigator.navigateToShopReview(from: UIApplication.topViewController(), withShopID:shopId)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("shop/:shopId/note") { (params: [String : Any]!) -> Bool in
+            let shopId = params["shopId"] as! String
+            navigator.navigateToShopNote(from: UIApplication.topViewController(), withShopID:shopId)
+            return true
+        }
+        
+        //inbox message
+        JLRoutes.global().addRoute("/message") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToInboxMessage(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/message/:messageId") { (params: [String : Any]!) -> Bool in
+            let messageId = params["messageId"] as! String
+            navigator.navigateToInboxMessage(from: UIApplication.topViewController(), withMessageId:messageId)
+            return true
+        }
+        
+        //inbox talk
+        JLRoutes.global().addRoute("/talk") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToInboxTalk(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/talk/:talkId") { (params: [String : Any]!) -> Bool in
+            let talkId = params["talkId"] as! String
+            navigator.navigateToInboxTalk(from: UIApplication.topViewController(), withTalkId:talkId)
+            return true
+        }
+        
+//        JLRoutes.global().addRoute("/talk/:talkId") { (params: [String : Any]!) -> Bool in
+//            let talkId = params["talkId"] as! String
+//            let shopId = params["shop_id"] as! String
+//            navigator.navigateToInboxTalk(from: UIApplication.topViewController(), withTalkId:talkId, withShopId:shopId)
+//            return true
+//        }
+        
+        //inbox review
+        JLRoutes.global().addRoute("/review") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToInboxReview(from: UIApplication.topViewController())
+            return true
+        }
+        
+        //product
+        JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
+            let productId = params["productId"] as! String
+            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            return true
+        }
+        
+        //..applinks
+        
+        
+        
+        
+        
+        
+        
         JLRoutes.global().unmatchedURLHandler = { (route, url, dictionary) in
             self.openWebView(url!)
         }

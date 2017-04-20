@@ -10,11 +10,13 @@
 
 #import "Paging.h"
 #import "TalkCommentList.h"
+#import "TalkList.h"
 
 @interface TalkCommentResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) TalkList *talk;
 
 + (RKObjectMapping *)mapping;
 @end

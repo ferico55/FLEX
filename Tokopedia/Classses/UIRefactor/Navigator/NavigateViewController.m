@@ -48,6 +48,9 @@
 #import "TkpdHMAC.h"
 #import "CategoryResultViewController.h"
 
+#import "InboxMessageDetailViewController.h"
+#import "ProductTalkDetailViewController.h"
+
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
 @end
@@ -94,6 +97,64 @@
     container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
+
+-(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId
+{
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
+    EtalaseList *list = [EtalaseList new];
+    list.etalase_id = etalaseId;
+    container.initialEtalase = list;
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+-(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by
+{
+    ShopProductFilter *filter = [ShopProductFilter new];
+    filter.query = keyword ?: @"";
+    filter.orderBy = by ?: @"";
+    filter.etalaseId = etalaseId ?: @"";
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY : shopID ?: @""};
+    container.productFilter = filter;
+    
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+-(void)navigateToShopInfoFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
+{
+    ShopInfo *info = [ShopInfo new];
+    info.shop_id = shopID;
+    DetailShopResult *result = [DetailShopResult new];
+    result.info = info;
+    Shop *shop = [Shop new];
+    shop.result = result;
+    ShopInfoViewController *shopInfo = [ShopInfoViewController new];
+    shopInfo.data = @{@"infoshop" : shop? : @""};
+    [viewController.navigationController pushViewController:shopInfo animated:YES];
+}
+
+-(void)navigateToShopTalkFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
+{
+    ShopTalkPageViewController *talk = [ShopTalkPageViewController new];
+    talk.data = @{@"shop_id" : shopID?:@""};
+    [viewController.navigationController pushViewController:talk animated:YES];
+}
+
+-(void)navigateToShopReviewFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
+{
+    ShopReviewPageViewController *review = [ShopReviewPageViewController new];
+    review.data = @{@"shop_id" : shopID?:@""};
+    [viewController.navigationController pushViewController:review animated:YES];
+}
+
+-(void)navigateToShopNoteFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
+{
+    ShopNotesPageViewController *notes = [ShopNotesPageViewController new];
+    notes.data = @{@"shop_id" : shopID?:@""};
+    [viewController.navigationController pushViewController:notes animated:YES];
+}
+
 
 -(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID
 {
@@ -179,6 +240,18 @@
         
         [viewController.navigationController pushViewController:inboxController animated:YES];
     }
+}
+
+//push notif message/[messageId]
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId
+{
+    UserAuthentificationManager *userMng = [UserAuthentificationManager new];
+    MessageViewController *vc = [[MessageViewController alloc] init];
+    vc.senderId = userMng.getUserId;
+    vc.senderDisplayName = @"";
+    vc.messageId = messageId;
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
@@ -329,23 +402,6 @@
         [viewController.navigationController pushViewController:controller animated:YES];
         
     } else {
-//        InboxTalkViewController *vc = [InboxTalkViewController new];
-//        vc.data=@{@"nav":@"inbox-talk"};
-//        
-//        InboxTalkViewController *vc1 = [InboxTalkViewController new];
-//        vc1.data=@{@"nav":@"inbox-talk-my-product"};
-//        
-//        InboxTalkViewController *vc2 = [InboxTalkViewController new];
-//        vc2.data=@{@"nav":@"inbox-talk-following"};
-//        
-//        NSArray *vcs = @[vc,vc1, vc2];
-//        
-//        TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
-//        [controller setSelectedIndex:2];
-//        [controller setViewControllers:vcs];
-//        controller.hidesBottomBarWhenPushed = YES;
-//        
-//        [viewController.navigationController pushViewController:controller animated:YES];
         TKPDTabViewController *controller = [TKPDTabViewController new];
         controller.hidesBottomBarWhenPushed = YES;
         controller.inboxType = InboxTypeTalk;
@@ -368,6 +424,32 @@
         
         [viewController.navigationController pushViewController:controller animated:YES];
     }
+}
+
+//-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId
+//{
+//    UserAuthentificationManager *userMng = [UserAuthentificationManager new];
+//    TalkList *talk = [TalkList new];
+//    ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] init];
+//    talk.talk_id = talkId;
+//    talk.talk_shop_id = shopId;
+//    talk.talk_user_id = [userMng.getUserId intValue];
+//    vc.talk = talk;
+//    
+//    [viewController.navigationController pushViewController:vc animated:YES];
+//}
+
+-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId
+{
+    UserAuthentificationManager *userMng = [UserAuthentificationManager new];
+    TalkList *talk = [TalkList new];
+    ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] init];
+    talk.talk_id = talkId;
+    talk.talk_user_id = [userMng.getUserId intValue];
+    vc.talk = talk;
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController

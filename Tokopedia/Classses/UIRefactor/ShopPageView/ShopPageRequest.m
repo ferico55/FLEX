@@ -30,7 +30,7 @@
                                             path:@"/v4/shop/get_shop_info.pl"
                                           method:RKRequestMethodGET
                                        parameter:@{@"shop_id":shopId,
-                                                   @"shop_domain":shopDomain
+                                                   @"shop_domain":shopDomain?:@""
                                                    }
                                          mapping:[Shop mapping]
                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -44,7 +44,7 @@
 }
 
 -(void)requestForShopProductPageListingWithShopId:(NSString *)shopId etalaseId:(NSString *)etalaseId keyWord:(NSString*)keyWord page:(NSInteger)page order_by:(NSString *)orderBy shop_domain:(NSString *)shopDomain onSuccess:(void (^)(ShopProductPageResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    _productNetworkManager = [TokopediaNetworkManager new];
+    _productNetworkManager = [TokopediaNetworkManager new]; //yg ini keknya ga pernah dimasukkin
     _productNetworkManager.isUsingHmac = YES;
     [_productNetworkManager requestWithBaseUrl:[NSString v4Url]
                                           path:@"/v4/shop/get_shop_product.pl"

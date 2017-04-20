@@ -17,8 +17,19 @@
 
 @interface NavigateViewController : NSObject
 
+-(void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId;
+//-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId;
+-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId;
+
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId;
+-(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by;
+-(void)navigateToShopInfoFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToShopTalkFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToShopReviewFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToShopNoteFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;

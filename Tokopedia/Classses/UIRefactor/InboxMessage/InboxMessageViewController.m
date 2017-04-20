@@ -160,6 +160,16 @@
     [self configureGTM];
 
     [self fetchInboxMessages];
+    
+    _messageNavigationFlag = [_data objectForKey:@"nav"];
+    NSString *msgId = [_data objectForKey:@"message_id"];
+    if (msgId  != nil) {
+        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+        vc.data=@{@"nav":@"inbox-message",
+                  @"message_id" : msgId?:@""};
+        
+        [[NavigateViewController init] pushViewController:vc animated:YES];
+    }
 }
 
 - (void)fetchInboxMessages {
@@ -169,7 +179,8 @@
             kTKPDHOME_APIPAGEKEY:@(_page),
             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-            KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
+            KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@"",
+            KTKPDMESSAGE_IDKEY:[_data objectForKey:@"message_id"]?:@""
     };
 
     [_getInboxListNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
@@ -381,11 +392,28 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+}
 
-    
-    
-    
-    
+- (void)showMessageDetailForId:(NSString *)messageId {
+    if (![messageId  isEqualToString: @""]) {
+        MessageViewController *vc = [[MessageViewController alloc] init];
+        vc.messageId = messageId;
+        [AnalyticsManager trackEventName:@"clickMessage"
+                                category:GA_EVENT_CATEGORY_INBOX_MESSAGE
+                                  action:GA_EVENT_ACTION_VIEW
+                                   label:[_data objectForKey:@"message_id"]?:messageId];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+            navigationController.navigationBar.translucent = NO;
+            
+            [self.splitViewController replaceDetailViewController:navigationController];
+        }
+        else {
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        vc.messageId = nil;
+    }
 }
 
 - (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {

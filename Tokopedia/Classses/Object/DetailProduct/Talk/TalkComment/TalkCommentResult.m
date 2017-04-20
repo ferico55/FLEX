@@ -26,6 +26,12 @@
                                                                                withMapping:[Paging mapping]];
 
     [resultMapping addPropertyMapping:pageRel];
+    
+    RKRelationshipMapping *talkRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"talk"
+                                                                                 toKeyPath:@"talk"
+                                                                               withMapping:[TalkList mapping]];
+    [resultMapping addPropertyMapping:talkRel];
+    
     return resultMapping;
 }
 @end

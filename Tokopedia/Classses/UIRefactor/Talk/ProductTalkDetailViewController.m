@@ -23,6 +23,7 @@
 #import "NavigateViewController.h"
 #import "SmileyAndMedal.h"
 #import "TalkList.h"
+#import "Talk.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "WebViewController.h"
@@ -159,45 +160,36 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
-
+    
     if(_marksOpenedTalksAsRead) {
         _urlPath = @"/v2/talk/inbox/detail";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
-        
-    } else {
-        _urlPath = @"/v2/talk/comment";
-        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
+    } else { //push notif msk sini
+        if (_talk.talk_message == nil) {
+            _urlPath = @"/v2/talk/inbox/detail";
+            _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
+        } else {
+            _urlPath = @"/v2/talk/comment";
+            _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
+        }
     }
+    
+    
+    [self fetchTalkComments];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    //islogin
-    if([_userManager isLogin]) {
-        //isbanned product
-        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
-           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
-           ) {
-        }
-        else
-        {
-            _talkInputView.hidden = YES;
-        }
-    }
 
     _table.tableFooterView = _footer;
     _table.estimatedRowHeight = 100.0;
     _table.rowHeight = UITableViewAutomaticDimension;
 
-    _data = [self generateData];
     if([self shouldFetchDataAtBeginning]){
         [self fetchTalkComments];
     }
-    
-    [self setupInputView];
 }
 
 - (void)setupInputView {
@@ -224,7 +216,9 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+}
 
+- (void)initHeader {
     __weak typeof(self) weakSelf = self;
     
     ProductTalkDetailHeaderView *headerView = [[ProductTalkDetailHeaderView alloc] initWithTalk:_talk];
@@ -232,7 +226,7 @@
     CGRect headerFrame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
     headerView.frame = headerFrame;
     [headerView sizeToFit];
-
+    
     if (_enableDeepNavigation) {
         headerView.onTapUser = ^(TalkList *talk){
             [weakSelf tapUser];
@@ -247,23 +241,23 @@
 }
 
 - (NSDictionary *)generateData {
-    if (!_talk || !_indexPath) return nil;
+    if (!_talk) return nil;
     
     return @{
-            TKPD_TALK_MESSAGE:[[_talk.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities]?:@0,
-            TKPD_TALK_USER_IMG:_talk.talk_user_image?:@0,
-            TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@0,
-            TKPD_TALK_USER_NAME:_talk.talk_user_name?:@0,
-            TKPD_TALK_ID:_talk.talk_id?:@0,
+            TKPD_TALK_MESSAGE:[[_talk.talk_message stringByStrippingHTML] kv_decodeHTMLCharacterEntities]?:@"0",
+            TKPD_TALK_USER_IMG:_talk.talk_user_image?:@"0",
+            TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@"0",
+            TKPD_TALK_USER_NAME:_talk.talk_user_name?:@"0",
+            TKPD_TALK_ID:_talk.talk_id?:@"0",
             TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", _talk.talk_user_id]?:@0,
-            TKPD_TALK_TOTAL_COMMENT : _talk.talk_total_comment?:@0,
-            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id?:@0,
-            TKPD_TALK_SHOP_ID:_talk.talk_shop_id?:@0,
+            TKPD_TALK_TOTAL_COMMENT : _talk.talk_total_comment?:@"0",
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id?:@"0",
+            TKPD_TALK_SHOP_ID:_talk.talk_shop_id?:@"0",
             TKPD_TALK_PRODUCT_IMAGE:_talk.talk_product_image?:@"",
-            TKPD_TALK_PRODUCT_NAME:_talk.talk_product_name?:@0,
-            TKPD_TALK_PRODUCT_STATUS:_talk.talk_product_status?:@0,
-            TKPD_TALK_USER_LABEL:_talk.talk_user_label?:@0,
-            TKPD_TALK_REPUTATION_PERCENTAGE:_talk.talk_user_reputation?:@0,
+            TKPD_TALK_PRODUCT_NAME:_talk.talk_product_name?:@"0",
+            TKPD_TALK_PRODUCT_STATUS:_talk.talk_product_status?:@"",
+            TKPD_TALK_USER_LABEL:_talk.talk_user_label?:@"0",
+            TKPD_TALK_REPUTATION_PERCENTAGE:_talk.talk_user_reputation?:@"0",
             kTKPDDETAIL_DATAINDEXKEY : @(_indexPath.row)?:@0
     };
 }
@@ -381,7 +375,30 @@
     _page = [queries[kTKPDDETAIL_APIPAGEKEY] integerValue];
 
     NSArray *list = comment.result.list;
+    
+    _talk = comment.result.talk;
     [_list addObjectsFromArray:list];
+    
+    
+    _data = [self generateData];
+    //islogin
+    if([_userManager isLogin]) {
+//        //isbanned product
+//        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+//           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+//           ) {
+//        }
+//        else
+//        {
+//            _talkInputView.hidden = YES;
+        _talkInputView.hidden = (![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]);
+//        }
+    }
+    _table.tableFooterView = _footer;
+    [self initHeader];
+    [self setupInputView];
+    
+    
     [_table reloadData];
 }
 
@@ -436,10 +453,10 @@
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             [self onCommentSent:successResult commentAction:successResult.dictionary[@""]];
                                              [_table reloadData];
                                              [_refreshControl endRefreshing];
                                              [_act stopAnimating];
+                                             [self onCommentSent:successResult commentAction:successResult.dictionary[@""]];
                                          }
                                          onFailure:^(NSError *errorResult) {
                                              [AnalyticsManager trackEventName:@"clickProductDiscussion" category:GA_EVENT_CATEGORY_INBOX_TALK action:GA_EVENT_ACTION_ERROR label:_inboxTalkType];
@@ -818,7 +835,7 @@
 
         NSDictionary *userinfo = @{
                 TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
-                kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]?:@0,
                 TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
         };
 
@@ -923,11 +940,11 @@
 
 - (void)fetchTalkComments {
     [_act startAnimating];
-
+    
     NSDictionary* param = @{
             kTKPDDETAIL_APIACTIONKEY : _urlAction ?:@"",
-            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+            TKPD_TALK_ID : _talk.talk_id ?:@"",
+            kTKPDDETAIL_APISHOPIDKEY : _talk.talk_shop_id ?: [_data objectForKey:TKPD_TALK_SHOP_ID] ?: @(0),
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
@@ -963,23 +980,6 @@
 
 - (void)setTalk:(TalkList *)list {
     _talk = list;
-
-    NSDictionary *data = @{
-            TKPD_TALK_MESSAGE:list.talk_message?:@0,
-            TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-            TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-            TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-            TKPD_TALK_ID:list.talk_id?:@0,
-            TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
-            TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
-            TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-            TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
-            TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
-            TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
-            TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-            TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
-    };
 }
 
 - (void)setIndexPath:(NSIndexPath *)indexPath {

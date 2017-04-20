@@ -456,14 +456,9 @@
 
 
 - (void)redirectNotification:(NSNotification*)notification {
-    _redirectHandler = [[RedirectHandler alloc]init];
-    _redirectHandler.delegate = self;
-    
-    NSDictionary *userInfo = notification.userInfo;
-    NSDictionary *data = [userInfo objectForKey:@"data"];
-    NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
-    
-    [_redirectHandler proxyRequest:code];
+    NSDictionary* data = [notification.userInfo objectForKey:@"data"];
+    NSString* applinks = [data objectForKey:@"applinks"];
+    [TPRoutes routeURL:[NSURL URLWithString:applinks]];
 }
 
 #pragma mark - Search Controller Delegate

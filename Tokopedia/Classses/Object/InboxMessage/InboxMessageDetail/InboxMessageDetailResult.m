@@ -25,6 +25,8 @@
     
     [resultMapping addAttributeMappingsFromDictionary:@{@"textarea_reply":@"textarea_reply"}];
     
+    [resultMapping addAttributeMappingsFromDictionary:@{@"message_title":@"message_title"}];
+    
     return resultMapping;
 }
 

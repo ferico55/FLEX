@@ -31,6 +31,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "ShopPageRequest.h"
+
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
     Shop *_shop;
@@ -122,7 +124,12 @@
                                                  name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                object:nil];
     
-    //set reputasi and akurasi
+    _isShopDescriptionExpanded = NO;
+    
+    [self adjustStatisticCellHeight];
+}
+
+-(void)setReputationAndAccuracy {
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
     
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblKecepatan.textColor, NSForegroundColorAttributeName, nil];
@@ -137,10 +144,6 @@
     
     //Generate Medal Reputasi
     [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
-    
-    _isShopDescriptionExpanded = NO;
-    
-    [self adjustStatisticCellHeight];
 }
 
 - (void)adjustStatisticCellHeight {
@@ -187,6 +190,24 @@
     [self.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
+
+-(void)requestShopInfo { //to handle push notif
+    NSString *shopId = _shop.result.info.shop_id;
+    ShopPageRequest *request = [ShopPageRequest new];
+    
+    __weak typeof(self) weakSelf = self;
+    [request requestForShopPageContainerWithShopId:shopId
+                                        shopDomain:nil
+                                         onSuccess:^(Shop *shop) {
+                                             [weakSelf setData:@{kTKPDDETAIL_DATAINFOSHOPSKEY : shop}];
+                                             [self.tableView reloadData];
+                                             [self setReputationAndAccuracy];
+                                         }
+                                         onFailure:^(NSError *error) {
+                                         }];
+}
+
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -589,7 +610,6 @@
         //[((ShopInfoPaymentCell*)cell).act stopAnimating];
     }];
     
-
     for (Shipment *shipment in _shop.result.shipment) {
         for (int i =0; i<shipment.shipment_package.count; i++) {
             ShipmentPackage *package = shipment.shipment_package[i];

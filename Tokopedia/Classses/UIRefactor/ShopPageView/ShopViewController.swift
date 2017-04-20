@@ -26,6 +26,8 @@ class ShopViewController: UIViewController {
     fileprivate var segmentedPagerController: MXSegmentedPagerController!
     fileprivate var header: ShopHeaderView!
     
+    var productFilter: ShopProductFilter?
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         
@@ -181,6 +183,9 @@ class ShopViewController: UIViewController {
         productViewController.data = data
         productViewController.shop = shop
         productViewController.initialEtalase = self.initialEtalase
+        if (productFilter != nil) {
+            productViewController.showProducts(with: productFilter)
+        }
         
         let discussionViewController = ShopTalkPageViewController()
         discussionViewController.data = data

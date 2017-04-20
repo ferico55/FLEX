@@ -104,7 +104,6 @@ ShopTabChild
     NSInteger _viewposition;
     
     NSMutableDictionary *_paging;
-    NSMutableDictionary *_detailfilter;
     NSMutableArray *_departmenttree;
     
     NSString *_talkNavigationFlag;
@@ -158,6 +157,8 @@ ShopTabChild
     
     NSIndexPath *_sortIndexPath;
     ShopPageRequest* _shopPageRequest;
+    
+    ShopProductFilter *_productFilter;
 }
 
 #pragma mark - Initialization
@@ -167,6 +168,8 @@ ShopTabChild
     if (self) {
         _isrefreshview = NO;
         _isNoData = YES;
+        _searchBar = [[UISearchBar alloc] init];
+        _productFilter = [ShopProductFilter new];
     }
     
     return self;
@@ -209,7 +212,6 @@ ShopTabChild
     
     // create initialitation
     _paging = [NSMutableDictionary new];
-    _detailfilter = [NSMutableDictionary new];
     _departmenttree = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     
@@ -217,7 +219,6 @@ ShopTabChild
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     
-    _searchBar = [[UISearchBar alloc] init];
     _searchBar.delegate = self;
     
     _navigationBarIsAnimating = NO;
@@ -258,14 +259,15 @@ ShopTabChild
     }
     
     if(_initialEtalase){
-        [_detailfilter setObject:_initialEtalase forKey:DATA_ETALASE_KEY];
+        [_productFilter setEtalaseId:_initialEtalase.etalase_id];
     }
     
     if(_data) {
-        [_detailfilter setValue:[_data objectForKey:@"product_etalase_id"] forKey:@"product_etalase_id"];
-        [_detailfilter setValue:[_data objectForKey:@"product_etalase_name"] forKey:@"product_etalase_name"];
+        if ([_data objectForKey:@"product_etalase_id"]) {
+            [_productFilter setEtalaseId:[_data objectForKey:@"product_etalase_id"]];
+        }
     }
-    
+
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     
@@ -416,9 +418,9 @@ ShopTabChild
 #pragma mark - Refresh View
 -(void)refreshView:(UIRefreshControl*)refresh {
     /** clear object **/
-    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    NSString *searchBarBefore = _productFilter.query ?: @"";
     if (![searchBarBefore isEqualToString:_searchBar.text]) {
-        [_detailfilter setObject:_searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [_productFilter setQuery:_searchBar.text];
     } else {
         _page = 1;
         _isrefreshview = YES;
@@ -455,10 +457,10 @@ ShopTabChild
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     
-    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    NSString *searchBarBefore = _productFilter.query ?: @"";
     
     if (![searchBarBefore isEqualToString:searchBar.text]) {
-        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [_productFilter setQuery:searchBar.text];
         [self reloadDataSearch];
     }
 }
@@ -470,10 +472,10 @@ ShopTabChild
     
     searchBar.text = @"";
     
-    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    NSString *searchBarBefore = _productFilter.query ?: @"";
     
     if (![searchBarBefore isEqualToString:searchBar.text]) {
-        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [_productFilter setQuery:searchBar.text];
         [self reloadDataSearch];
     }
 }
@@ -554,8 +556,7 @@ ShopTabChild
 }
 
 - (IBAction)tapToEtalase:(id)sender {
-    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
-    [self openEtalaseWithId:etalase.etalase_id];
+    [self openEtalaseWithId:_productFilter.etalaseId];
 }
 
 - (EtalaseList *)etalaseWithId:(NSString *)etalaseId {
@@ -582,26 +583,19 @@ ShopTabChild
 
 - (void)clearSearchQuery {
     _searchBar.text = @"";
-    _detailfilter = [NSMutableDictionary new];
+    _productFilter = [ShopProductFilter new];
 }
 
 - (void)showProductsWithFilter:(ShopProductFilter *)filter {
     _collectionView.contentOffset = CGPointMake(0, 0);
     
     _searchBar.text = filter.query;
-    
-    _detailfilter = [[NSMutableDictionary alloc] initWithDictionary:
-                     @{
-                       @"query": filter.query,
-                       @"order_by": filter.orderBy,
-                       @"page": @(filter.page)
-                       }];
-    _page = filter.page;
+    _productFilter = filter;
+    _page = filter.page; //>>ini buat apa?
     
     EtalaseList *etalase = [EtalaseList new];
     etalase.etalase_id = filter.etalaseId;
     
-    _detailfilter[DATA_ETALASE_KEY] = etalase;
     self.initialEtalase = etalase;
     
     [self requestProduct];
@@ -610,7 +604,7 @@ ShopTabChild
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
     _page = 1;
     _collectionView.contentOffset = CGPointMake(0, 0);
-    [_detailfilter setObject:selectedEtalase forKey:DATA_ETALASE_KEY];
+    [_productFilter setEtalaseId:selectedEtalase.etalase_id];
     [self requestProduct];
 }
 
@@ -664,9 +658,9 @@ ShopTabChild
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
-    [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
-    [self refreshView:nil];
+    [_productFilter setOrderBy:sort];
     _sortIndexPath = indexPath;
+    [self refreshView:nil];
 }
 
 #pragma mark - Cell Delegate
@@ -699,10 +693,12 @@ ShopTabChild
 
 #pragma mark - ShopPageRequest
 -(void)requestProduct{
-    NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    NSString *sort =  [_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]?:@"";
+    NSString *querry = _productFilter.query ?: @"";
+    NSString *sort = _productFilter.orderBy ?: @"";
     NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
-    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    EtalaseList *etalase = [EtalaseList new];
+    etalase.etalase_id = _productFilter.etalaseId;
+    
     BOOL isAllEtalase = (etalase.etalase_id == 0);
     
     id etalaseid;
@@ -749,7 +745,7 @@ ShopTabChild
                                                                // no data at all
                                                                _isNoData = YES;
                                                                [_flowLayout setFooterReferenceSize:CGSizeZero];
-                                                               if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
+                                                               if(_productFilter.query == nil || [_productFilter.query isEqualToString:@""]){
                                                                    [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
                                                                }else{
                                                                    [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
@@ -769,7 +765,6 @@ ShopTabChild
                                                            } else  {
                                                                [_collectionView reloadData];
                                                            }
-                                                           
                                                        } onFailure:^(NSError *error) {
                                                            _isrefreshview = NO;
                                                            [_refreshControl endRefreshing];
