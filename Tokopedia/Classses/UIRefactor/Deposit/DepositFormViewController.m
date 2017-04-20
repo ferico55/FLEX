@@ -177,6 +177,9 @@
     
     _totalAmount.inputView = _amountKeyboard;
     _kodeOTP.inputView = _otpKeyboard;
+    
+    _otpViewArea.hidden = YES;
+    _otpViewHeightConstraint.constant = 0;
 }
 
 #pragma mark - Request Deposit Info
@@ -188,7 +191,7 @@
         [_listBankAccount addObjectsFromArray:result.bank_account];
         NSString *verifiedState = result.msisdn_verified;
         
-        [_kodeOTPButton setTitle:[verifiedState isEqualToString:@"1"] ? @"Kirim OTP ke HP" : @"Kirim OTP ke Email"  forState:UIControlStateNormal];
+        [_kodeOTPButton setTitle:[verifiedState isEqualToString:@"1"] ? @"Kirim OTP ke HP" : @"Kirim OTP ke Email" forState:UIControlStateNormal];
         
         [_indicator stopAnimating];
     } onFailure:^(NSError *errorResult) {
@@ -379,16 +382,14 @@
     
     NSString *bankName = [NSString stringWithFormat:@"%@ a/n %@ - %@", [_userinfo objectForKey:@"bank_account_number"], [_userinfo objectForKey:@"bank_account_name"], [_userinfo objectForKey:@"bank_name"]];
     
+    _bankAccountId = @"0";
     _bankAccountName = [_userinfo objectForKey:@"bank_account_name"];
     _bankAccountNumber = [_userinfo objectForKey:@"bank_account_number"];
     _bankBranch = [_userinfo objectForKey:@"bank_branch"];
     _bankName = [_userinfo objectForKey:@"bank_name"];
     _bankId = [_userinfo objectForKey:@"bank_id"];
     _otpViewArea.hidden = NO;
-    
-    CGRect newFrame = _passwordViewArea.frame;
-    newFrame.origin.y = 420;
-    _passwordViewArea.frame = newFrame;
+    _otpViewHeightConstraint.constant = 121;
     
     [_chooseAccountButton setTitle:bankName forState:UIControlStateNormal];
 }

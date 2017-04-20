@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DepositFormViewController">
@@ -26,14 +30,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ZdI-SH-z3S">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7SL-a0-BAy">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <rect key="frame" x="70" y="0.0" width="628" height="1024"/>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="7SL-a0-BAy" firstAttribute="leading" secondItem="ZdI-SH-z3S" secondAttribute="leading" id="9MR-BH-sni">
@@ -57,7 +61,7 @@
             </connections>
         </tapGestureRecognizer>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="PPA-NL-YId">
@@ -77,56 +81,56 @@
                     <inset key="contentEdgeInsets" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="titleEdgeInsets" minX="-26" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Info">
-                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="YpR-fa-Mmh"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u8h-YC-IEG">
-                    <rect key="frame" x="0.0" y="58" width="600" height="151"/>
+                    <rect key="frame" x="0.0" y="58" width="768" height="151"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjV-jX-pl0">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="51"/>
+                            <rect key="frame" x="0.0" y="0.0" width="768" height="51"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGx-yD-w6R" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Trm-FG-EYQ"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dana yang tersedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1g-Wr-DFf">
-                                    <rect key="frame" x="10" y="0.0" width="265" height="51"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dana tersedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1g-Wr-DFf">
+                                    <rect key="frame" x="10" y="0.0" width="349" height="51"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="U2y-8P-Lhi"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYy-CU-6Ti">
-                                    <rect key="frame" x="309" y="15" width="284" height="21"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <rect key="frame" x="393" y="15" width="368" height="21"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="Mwv-P7-bBq"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Jg-Ig-56D" userLabel="VerticalBorder">
-                                    <rect key="frame" x="300" y="0.0" width="1" height="51"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="384" y="0.0" width="1" height="51"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="bCG-Ye-ln1"/>
                                         <constraint firstAttribute="width" constant="1" id="k9H-Fb-HAh"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frO-Iv-7kc" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="50" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Pld-gP-skF"/>
                                     </constraints>
@@ -152,19 +156,19 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Tl-OO-Qho">
-                            <rect key="frame" x="0.0" y="50" width="600" height="51"/>
+                            <rect key="frame" x="0.0" y="50" width="768" height="51"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Penarikan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9e-eK-kR6">
-                                    <rect key="frame" x="10" y="0.0" width="284" height="51"/>
+                                    <rect key="frame" x="10" y="0.0" width="368" height="51"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="iOb-G3-AuE"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Jumlah Penarikan" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="soH-W1-7hw">
-                                    <rect key="frame" x="309" y="11" width="283" height="30"/>
+                                    <rect key="frame" x="393" y="11" width="367" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="Y3O-Ao-qdV"/>
                                     </constraints>
@@ -175,23 +179,23 @@
                                     </connections>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ONR-Iq-Dfh" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="kkN-WE-2ig"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KML-t3-yfg" userLabel="VerticalBorder">
-                                    <rect key="frame" x="300" y="0.0" width="1" height="51"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="384" y="0.0" width="1" height="51"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="019-7W-Sfx"/>
                                         <constraint firstAttribute="width" constant="1" id="eNN-wj-pzc"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-nH-ak6" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="50" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="eGL-4x-UsC"/>
                                     </constraints>
@@ -216,38 +220,38 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M9W-hT-Gkz">
-                            <rect key="frame" x="0.0" y="100" width="600" height="51"/>
+                            <rect key="frame" x="0.0" y="100" width="768" height="51"/>
                             <subviews>
                                 <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A9A-Qc-yWv">
-                                    <rect key="frame" x="10" y="11" width="569" height="30"/>
+                                    <rect key="frame" x="10" y="11" width="737" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="juc-vT-1nh"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <state key="normal" title="Pilih Bank">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <connections>
                                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="BjU-G1-pga"/>
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right.png" translatesAutoresizingMaskIntoConstraints="NO" id="8Ac-Wi-aRm">
-                                    <rect key="frame" x="579" y="19" width="13" height="13"/>
+                                    <rect key="frame" x="747" y="19" width="13" height="13"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="13" id="f3i-Bf-5Ot"/>
                                         <constraint firstAttribute="width" constant="13" id="zG9-0O-3ez"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5lc-G3-FU9" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="ZjO-IN-0Sj"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYn-eU-S8J" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="50" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="2ww-bM-FWf"/>
                                     </constraints>
@@ -268,7 +272,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="3Tl-OO-Qho" firstAttribute="height" secondItem="M9W-hT-Gkz" secondAttribute="height" id="0ye-Ri-UNN"/>
                         <constraint firstItem="pjV-jX-pl0" firstAttribute="top" secondItem="u8h-YC-IEG" secondAttribute="top" id="1Jk-gY-b4Z"/>
@@ -287,49 +291,49 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkV-e6-P2y">
-                    <rect key="frame" x="19" y="217" width="554" height="29"/>
+                    <rect key="frame" x="19" y="217" width="722" height="29"/>
                     <string key="text">Demi kelancaran proses pencairan dana, mohon pastikan kembali nama dan nomor rekening yang di cantumkan sudah sesuai dengan yang tertera pada bukti tabungan Anda.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAZ-yG-jrH" userLabel="otpView">
-                    <rect key="frame" x="0.0" y="249" width="600" height="121"/>
+                    <rect key="frame" x="0.0" y="249" width="768" height="121"/>
                     <subviews>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHE-Nm-tbs">
-                            <rect key="frame" x="8" y="12" width="583" height="44"/>
-                            <color key="backgroundColor" red="1" green="0.59607843140000005" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="8" y="12" width="751" height="44"/>
+                            <color key="backgroundColor" red="1" green="0.59607843140000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="K0a-Vv-Rb8"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                             <state key="normal">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="RDH-Uw-SEL"/>
                             </connections>
                         </button>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="33S-Gd-pVd">
-                            <rect key="frame" x="290" y="24" width="20" height="20"/>
+                            <rect key="frame" x="374" y="24" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="apA-iJ-M85"/>
                                 <constraint firstAttribute="height" constant="20" id="nU5-Xk-dSc"/>
                             </constraints>
                         </activityIndicatorView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Co-nJ-KBc">
-                            <rect key="frame" x="0.0" y="70" width="600" height="51"/>
+                            <rect key="frame" x="0.0" y="70" width="768" height="51"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FTu-Oi-1Pd" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Qtd-49-QzX"/>
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" clipsSubviews="YES" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kode OTP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pxt-sn-UZW">
-                                    <rect key="frame" x="10" y="11" width="580" height="30"/>
+                                    <rect key="frame" x="10" y="11" width="748" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="9YM-OH-ScA"/>
                                     </constraints>
@@ -340,14 +344,14 @@
                                     </connections>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VSl-3w-0WU" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="50" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="zGC-cL-fFh"/>
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="51" id="0WM-Yp-tJK"/>
                                 <constraint firstItem="FTu-Oi-1Pd" firstAttribute="leading" secondItem="9Co-nJ-KBc" secondAttribute="leading" id="5PY-gl-tBj"/>
@@ -375,20 +379,20 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ips-EG-b77">
-                    <rect key="frame" x="0.0" y="378" width="600" height="140"/>
+                    <rect key="frame" x="0.0" y="378" width="768" height="140"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJJ-lL-4ts">
-                            <rect key="frame" x="0.0" y="2" width="600" height="51"/>
+                            <rect key="frame" x="0.0" y="2" width="768" height="51"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Klx-Dz-lZu" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="9Dz-0L-Otw"/>
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" clipsSubviews="YES" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi Tokopedia" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hu-mn-57S">
-                                    <rect key="frame" x="10" y="11" width="580" height="30"/>
+                                    <rect key="frame" x="10" y="11" width="748" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="CrH-VN-bZq"/>
                                     </constraints>
@@ -399,14 +403,14 @@
                                     </connections>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Irp-hq-FYE" userLabel="Border">
-                                    <rect key="frame" x="0.0" y="50" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="50" width="768" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="N59-xK-Joe"/>
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="5Hu-mn-57S" secondAttribute="centerY" id="3yN-AQ-BH8"/>
                                 <constraint firstAttribute="trailing" secondItem="Irp-hq-FYE" secondAttribute="trailing" id="5rb-eV-gjZ"/>
@@ -421,21 +425,21 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan password login Tokopedia Anda" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHC-o6-BHe">
-                            <rect key="frame" x="23" y="57" width="554" height="27"/>
+                            <rect key="frame" x="23" y="57" width="722" height="27"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="27" id="mS9-K8-t5E"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*) Penarikan dana ke rekening BRI akan dikenakan biaya transfer Rp.1.500,- oleh Bank BRI" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ywu-Xs-7C1">
-                            <rect key="frame" x="23" y="64" width="554" height="76"/>
+                            <rect key="frame" x="23" y="64" width="722" height="76"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="76" id="OcO-iB-Tlp"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -456,7 +460,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="bkV-e6-P2y" secondAttribute="trailing" constant="27" id="3cs-iW-0vy"/>
                 <constraint firstAttribute="trailing" secondItem="Ips-EG-b77" secondAttribute="trailing" id="4O5-jz-I7K"/>

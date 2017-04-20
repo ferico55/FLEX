@@ -239,7 +239,6 @@
 		4511186E1E9B7C8E00BA5152 /* TableViewScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 451112881E9B7C8B00BA5152 /* TableViewScrollAndSwipe.m */; };
 		4511186F1E9B7C8E00BA5152 /* TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4511128A1E9B7C8B00BA5152 /* TextField.m */; };
 		451118701E9B7C8E00BA5152 /* TKPDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4511128C1E9B7C8B00BA5152 /* TKPDTextView.m */; };
-		451118711E9B7C8E00BA5152 /* DepositBankRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511128E1E9B7C8B00BA5152 /* DepositBankRequest.swift */; };
 		451118721E9B7C8E00BA5152 /* DepositFormAccountBankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 451112901E9B7C8B00BA5152 /* DepositFormAccountBankViewController.m */; };
 		451118731E9B7C8E00BA5152 /* DepositFormAccountBankViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 451112911E9B7C8B00BA5152 /* DepositFormAccountBankViewController.xib */; };
 		451118741E9B7C8E00BA5152 /* DepositFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 451112931E9B7C8B00BA5152 /* DepositFormViewController.m */; };
@@ -2150,7 +2149,6 @@
 		4511128A1E9B7C8B00BA5152 /* TextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextField.m; sourceTree = "<group>"; };
 		4511128B1E9B7C8B00BA5152 /* TKPDTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTextView.h; sourceTree = "<group>"; };
 		4511128C1E9B7C8B00BA5152 /* TKPDTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTextView.m; sourceTree = "<group>"; };
-		4511128E1E9B7C8B00BA5152 /* DepositBankRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepositBankRequest.swift; sourceTree = "<group>"; };
 		4511128F1E9B7C8B00BA5152 /* DepositFormAccountBankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositFormAccountBankViewController.h; sourceTree = "<group>"; };
 		451112901E9B7C8B00BA5152 /* DepositFormAccountBankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositFormAccountBankViewController.m; sourceTree = "<group>"; };
 		451112911E9B7C8B00BA5152 /* DepositFormAccountBankViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepositFormAccountBankViewController.xib; sourceTree = "<group>"; };
@@ -5448,7 +5446,6 @@
 		4511128D1E9B7C8B00BA5152 /* Deposit */ = {
 			isa = PBXGroup;
 			children = (
-				4511128E1E9B7C8B00BA5152 /* DepositBankRequest.swift */,
 				4511128F1E9B7C8B00BA5152 /* DepositFormAccountBankViewController.h */,
 				451112901E9B7C8B00BA5152 /* DepositFormAccountBankViewController.m */,
 				451112911E9B7C8B00BA5152 /* DepositFormAccountBankViewController.xib */,
@@ -11312,7 +11309,6 @@
 				451118261E9B7C8E00BA5152 /* GenerateHostObservable.swift in Sources */,
 				451121EB1E9B7D5900BA5152 /* TransactionActionResult.m in Sources */,
 				451118941E9B7C8E00BA5152 /* GeneralCheckmarkCell.m in Sources */,
-				451118711E9B7C8E00BA5152 /* DepositBankRequest.swift in Sources */,
 				4511194C1E9B7C8F00BA5152 /* CourierOptionViewCell.m in Sources */,
 				451121D71E9B7D5900BA5152 /* Tiki.m in Sources */,
 				4511209B1E9B7D5700BA5152 /* Errors.m in Sources */,

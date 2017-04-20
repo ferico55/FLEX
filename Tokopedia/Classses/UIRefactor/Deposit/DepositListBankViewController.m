@@ -71,17 +71,16 @@
     [barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
-    _list = [NSMutableArray new];
+    _list = [NSMutableArray arrayWithArray:_listBankAccount];
     _datainput = [NSMutableDictionary new];
     _selectedIndexPath = [_data objectForKey:@"account_indexpath"];
 
     _table.delegate = self;
     _table.dataSource = self;
     
-    [self loadData];
-    
-
+    [_table reloadData];
 }
+
 #pragma mark - Memory Management
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -203,41 +202,11 @@
     }
 }
 
-#pragma mark - Request
--(void)loadData
-{
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    
-    [DepositBankRequest fetchListAccountBank:^(NSArray<BankAccountFormList *> * list) {
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_refreshControl endRefreshing];
-        
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:list];
-
-        [_table reloadData];
-        
-    } onFailure:^{
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_refreshControl endRefreshing];
-    }];
-}
-
-
 -(void)cancelDeleteRow
 {
     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
     [_list insertObject:[_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
     [_table reloadData];
 }
-
--(void)refreshView:(UIRefreshControl*)refresh
-{
-    [self loadData];
-}
-
 
 @end
