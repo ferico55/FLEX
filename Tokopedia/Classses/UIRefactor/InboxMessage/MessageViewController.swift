@@ -35,6 +35,11 @@ class MessageViewController: JSQMessagesViewController {
     fileprivate var indicator = UIActivityIndicatorView()
     fileprivate let route = JLRoutes()
     
+    lazy var titleView : UIView = {
+        let vw = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width - 120, height: 44))
+        return vw
+    }()
+    
     lazy var fetchMessageManager : TokopediaNetworkManager = {
        var manager = TokopediaNetworkManager()
         manager.isUsingHmac = true
@@ -279,8 +284,6 @@ class MessageViewController: JSQMessagesViewController {
     }
     
     fileprivate func setupTitle() {
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width - 120, height: 44))
-        
         let titleLabel = UILabel(frame: CGRect.zero)
         let betweenLabel = UILabel(frame: CGRect.zero)
         
@@ -292,7 +295,7 @@ class MessageViewController: JSQMessagesViewController {
         titleLabel.textColor = UIColor.white
         titleLabel.textAlignment = .center
         titleLabel.mas_makeConstraints { (make) in
-            make?.top.left().right().equalTo()(titleView)
+            make?.top.left().right().equalTo()(self.titleView)
         }
         
         
@@ -302,7 +305,7 @@ class MessageViewController: JSQMessagesViewController {
         betweenLabel.textColor = UIColor.white
         betweenLabel.mas_makeConstraints { (make) in
             make?.top.equalTo()(titleLabel.mas_bottom)
-            make?.left.right().equalTo()(titleView)
+            make?.left.right().equalTo()(self.titleView)
         }
         
         self.navigationItem.titleView = titleView
