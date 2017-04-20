@@ -24,7 +24,8 @@
         [[NSBundle mainBundle] loadNibNamed:@"NoResultReusableView"
                                       owner:self
                                     options:nil];
-        [self.view setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, frame.size.height?:[[UIScreen mainScreen]bounds].size.height)];
+        [self setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, frame.size.height?:[[UIScreen mainScreen]bounds].size.height)];
+        [self.view setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         [self addSubview:self.view];
         
 //        UIDevice *device = [UIDevice currentDevice];					//Get the device object
