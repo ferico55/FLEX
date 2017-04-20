@@ -138,7 +138,8 @@ typedef enum TagRequest {
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
     
     [self makeSureDeviceTokenExists];
-
+    
+    
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     [[NSNotificationCenter defaultCenter]
      addObserverForName:UIApplicationUserDidTakeScreenshotNotification
@@ -148,7 +149,6 @@ typedef enum TagRequest {
          if(FBTweakValue(@"Enable Share Screenshot", @"Enable Share Screenshot", @"Enabled", YES)) {
              [AnalyticsManager trackEventName:@"clickScreenshot" category:GA_EVENT_CATEGORY_SCREENSHOT action:GA_EVENT_ACTION_CLICK label:@"Take Screenshot"];
              
-             self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController: _tabBarController];
              [self.screenshotHelper takeScreenshot];
          }
      }];
@@ -210,6 +210,11 @@ typedef enum TagRequest {
     _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [[UIApplication sharedApplication] keyWindow].rootViewController = _tabBarController;
+    
+    UIViewController *topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+    
+    self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController:_tabBarController topViewController:topViewController];
+
 }
 
 -(void)createtabbarController

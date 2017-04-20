@@ -771,8 +771,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
         emailController.mailComposeDelegate = self;
         
-        
-        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
+        NSString *messageBody = [NSString stringWithFormat:@"<b>Device:</b> %@ <br/> <b>iOS Version:</b> %@ <br/> <b>Email Tokopedia:</b> %@ <br/> <b>App Version:</b> %@ <br/><br/> <b>Tulis laporan kamu di sini:</b>", [[UIDevice currentDevice] modelName], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
         
         [emailController setSubject:@"Feedback"];
         [emailController setMessageBody:messageBody isHTML:YES];

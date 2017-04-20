@@ -12,10 +12,18 @@ class ScreenshotHelper: NSObject {
     
     private var screenshotAlert: ScreenshotAlertView?
     private let tabBarController: UITabBarController!
+    private var topViewController: UIViewController!
     
-    init(tabBarController: UITabBarController) {
+    private var timeTaken: Date = Date()
+    
+    init(tabBarController: UITabBarController, topViewController: UIViewController) {
         self.tabBarController = tabBarController
+        self.topViewController = topViewController
         super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func takeScreenshot() {
@@ -27,20 +35,20 @@ class ScreenshotHelper: NSObject {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        let topViewController = UIApplication.topViewController(UIApplication.shared.keyWindow?.rootViewController)
+        self.timeTaken = Date()
         
         let alert = self.screenshotAlertView()
         
         alert.onTapShare = { [weak self] (sender) in
             guard let `self` = self else { return }
             AnalyticsManager.trackEventName("clickScreenshot", category: GA_EVENT_CATEGORY_SCREENSHOT, action: GA_EVENT_ACTION_CLICK, label: "Share")
-            self.shareImage(image!, fromViewController: topViewController!, withSender: sender)
+            self.shareImage(image!, fromViewController: self.topViewController, withSender: sender)
         }
         
         alert.onTapReport = { [weak self] _ in
             guard let `self` = self else { return }
             AnalyticsManager.trackEventName("clickScreenshot", category: GA_EVENT_CATEGORY_SCREENSHOT, action: GA_EVENT_ACTION_CLICK, label: "Report")
-            self.sendEmailWithAttachment(image: image!, fromViewController: topViewController!)
+            self.sendEmailWithAttachment(image: image!, fromViewController: self.topViewController, timeTaken: self.timeTaken)
         }
         
         alert.onTapClose = { _ in
@@ -69,7 +77,7 @@ class ScreenshotHelper: NSObject {
         }
     }
     
-    private func sendEmailWithAttachment(image: UIImage, fromViewController viewController: UIViewController) {
+    private func sendEmailWithAttachment(image: UIImage, fromViewController viewController: UIViewController, timeTaken: Date) {
         if MFMailComposeViewController.canSendMail() {
             AnalyticsManager.trackEventName("clickScreenshot", category: GA_EVENT_CATEGORY_SCREENSHOT, action: "Report", label: "Can Send Report")
             let userManager = UserAuthentificationManager()
@@ -80,13 +88,20 @@ class ScreenshotHelper: NSObject {
             
             let jpegData = UIImageJPEGRepresentation(image, 1.0)
             
-            var fileName: NSString = "test"
+            var fileName: NSString = "App_Screenshot"
             fileName = fileName.appendingPathExtension("jpeg")! as NSString
             emailController.addAttachmentData(jpegData!, mimeType: "image/jpeg", fileName: fileName as String)
             
-            let messageBody = "Device: \(UIDevice.current.model) <br/> iOS Version: \(UIDevice.current.systemVersion) <br/> Email Tokopedia: \(email ?? "") <br/> App Version: \(UIApplication.getAppVersionString()) <br/><br/> Komplain: "
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMM yyyy, HH:mm:ss a"
+            dateFormatter.amSymbol = "AM"
+            dateFormatter.pmSymbol = "PM"
+            dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+            let currentTime = dateFormatter.string(from: timeTaken)
             
-            emailController.setSubject("Feedback")
+            let messageBody = "<b>Device:</b> \(UIDevice.current.modelName) <br/> <b>iOS Version:</b> \(UIDevice.current.systemVersion) <br/> <b>Email Tokopedia:</b> \(email ?? "") <br/> <b>App Version:</b> \(UIApplication.getAppVersionString()) <br/> <b>Waktu:</b> \(currentTime) <br/><br/> <b>Tulis laporan kamu di sini:</b> "
+            
+            emailController.setSubject("Laporan Screenshot")
             emailController.setMessageBody(messageBody, isHTML: true)
             emailController.setToRecipients(["ios.feedback@tokopedia.com"])
             emailController.navigationBar.tintColor = UIColor.white
