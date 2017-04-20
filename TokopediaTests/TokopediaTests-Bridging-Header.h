@@ -5,5 +5,3 @@
 #import "Restkit/Testing.h"
 #import "UIFont+Theme.h"
 #import "UIColor+Theme.h"
-
-@import RestKit;

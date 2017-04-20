@@ -77,6 +77,7 @@ FilterCategoryViewDelegate
 @implementation ProductAddEditViewController
 
 #pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -111,7 +112,11 @@ FilterCategoryViewDelegate
     switch (_type) {
         case TYPE_ADD_EDIT_PRODUCT_ADD:
             self.title =  @"Tambah Produk";
-            [self setDefaultForm];
+            if (_form != nil){
+                [self setProductForm:_form];
+            } else {
+                [self setDefaultForm];
+            }
             [AnalyticsManager trackScreenName:@"Add Product Page"];
             break;
         case TYPE_ADD_EDIT_PRODUCT_EDIT:
@@ -584,8 +589,6 @@ FilterCategoryViewDelegate
                                             
                                             [self setProductForm:form];
                                             [self addImageFromURLStrings];
-                                            [self enableButtonBeforeSuccessRequest:YES];
-                                            [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
                                             
                                         } onFailure:^{
                                             
@@ -664,7 +667,7 @@ FilterCategoryViewDelegate
     for (int i = 0; i< selectedImagesEditProduct.count ; i++) {
         if (i < _addImageButtons.count) {
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:selectedImagesEditProduct[i].image_src_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:selectedImagesEditProduct[i].image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             [_addImageButtons[i] setBackgroundImageForState:UIControlStateNormal
                                              withURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
@@ -672,6 +675,11 @@ FilterCategoryViewDelegate
                                                         
                                                         selectedImagesEditProduct[i].image = image;
                                                         [self setImageButtons];
+                                                        
+                                                        if (i == selectedImagesEditProduct.count-1){
+                                                            [self enableButtonBeforeSuccessRequest:YES];
+                                                            [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+                                                        }
                                                         
                                                     } failure:nil];
         }

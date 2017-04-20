@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import JDStatusBarNotification
 
 enum RequestError : Error {
     case networkError
@@ -16,12 +17,11 @@ enum RequestError : Error {
 
 @objc class RequestAddEditProduct: NSObject {
     
-    static var errorCompletionHandler:()->Void={}
-    
     class func fetchFormEditProductID(_ productID:String, shopID:String, onSuccess: @escaping ((ProductEditResult) -> Void), onFailure:@escaping (()->Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
+        networkManager.isUsingSharedOperationQueue = true
         
         let param : Dictionary = ["product_id":productID, "shop_id":shopID]
         
@@ -51,6 +51,7 @@ enum RequestError : Error {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
+        networkManager.isUsingSharedOperationQueue = true
         
         let param : Dictionary = ["product_name":productName, "product_department_id":departmentID]
         
@@ -80,6 +81,7 @@ enum RequestError : Error {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
+        networkManager.isUsingSharedOperationQueue = true
         
         let param : Dictionary = [
             "product_id"  : productID,
@@ -119,26 +121,21 @@ enum RequestError : Error {
     // MARK: - EDIT PRODUCT REQUEST
     
     class func fetchEditProduct(_ form:ProductEditResult, onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
-        
-        RequestAddEditProduct.errorCompletionHandler = onFailure
-        
+                
         var generatedHost : GeneratedHost = GeneratedHost()
         
-        GenerateHostObservable.getGeneratedHost()
-            .flatMap { (host) -> Observable<[ProductEditImages]> in
-                generatedHost = host
-                return self.getEditProductImages(form.product_images, generatedHost: generatedHost, productID: form.product.product_id).do(onError : { (error) in
-                    onFailure()
-                })
-            }
-            .flatMap { (selectedImages) -> Observable<String>  in
-                return self.fetchEditProductSubmit(form, generatedHost: generatedHost).do(onError: { (error) in
-                    onFailure()
-                })
-            }
-            .subscribe( onNext : { (isSuccess) in
-                onSuccess()
-            })
+        _ = GenerateHostObservable.getGeneratedHost()
+        .flatMap { (host) -> Observable<[ProductEditImages]> in
+            generatedHost = host
+            return self.getEditProductImages(form.product_images, generatedHost: generatedHost, productID: form.product.product_id)            }
+        .flatMap { (selectedImages) -> Observable<String>  in
+            return self.fetchEditProductSubmit(form, generatedHost: generatedHost)
+        }
+        .subscribe( onNext : { (isSuccess) in
+            onSuccess()
+        }, onError: { (error) in
+            onFailure()
+        })
     }
     
     fileprivate class func getEditProductImages(_ selectedImages:[ProductEditImages], generatedHost:GeneratedHost, productID:String) -> Observable<[ProductEditImages]> {
@@ -164,6 +161,7 @@ enum RequestError : Error {
             
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
             
             networkManager.request(withBaseUrl: NSString.v4Url(),
                 path: "/v4/action/product/edit_product_picture.pl",
@@ -270,6 +268,7 @@ enum RequestError : Error {
             
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
             
             networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/edit_product.pl",
@@ -310,35 +309,63 @@ enum RequestError : Error {
     //MARK: - ADD PRODUCT REQUEST
     
     class func fetchAddProduct(_ form:ProductEditResult,isDuplicate:String,  onSuccess: @escaping (() -> Void), onFailure:@escaping (()->Void)) {
-        
-        RequestAddEditProduct.errorCompletionHandler = onFailure
-        
         var generatedHost : GeneratedHost = GeneratedHost()
         var uploadedImages : [ProductEditImages] = form.product_images
         var postKeyParam : String = ""
-
-        GenerateHostObservable.getGeneratedHost()
+        
+        JDStatusBarNotification.addStyleNamed("TPStyle") { (style) -> JDStatusBarStyle? in
+            style?.barColor = UIColor.white
+            style?.textColor = UIColor.tpPrimaryBlackText()
+            style?.font = UIFont.microTheme()
+            style?.progressBarColor = UIColor.blue
+            style?.progressBarHeight = 2.0;
+            return style;
+        }
+        
+        JDStatusBarNotification.show(withStatus: "Uploading Products...", styleName: "TPStyle")
+    
+        form.uploadProgress = 0.0
+        _ = GenerateHostObservable.getGeneratedHost()
         .flatMap { (host) -> Observable<[ProductEditImages]> in
             generatedHost = host
-            return getImageURLAddProducts(form.product_images, generatedHost: host).do(onError : { (error) in
-                onFailure()
-            })
+            form.uploadProgress = 0.2
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            return getImageURLAddProducts(form.product_images, generatedHost: host)
         }.flatMap { (selectedImages) -> Observable<String> in
             uploadedImages = selectedImages
-            return getPostKeyAddProduct(form, isDuplicate: isDuplicate, generatedHost: generatedHost).do(onError : { (error) in
-                onFailure()
-            })
+            form.uploadProgress = 0.4
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            return getPostKeyAddProduct(form, isDuplicate: isDuplicate, generatedHost: generatedHost)
         }.flatMap { (postKey) -> Observable<String> in
             postKeyParam  = postKey
-            return getFileUploadedAddProduct(isDuplicate, selectedImages:uploadedImages , generatedHost: generatedHost).do(onError : { (error) in
-                onFailure()
-            })
+            form.uploadProgress = 0.6
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            return getFileUploadedAddProduct(isDuplicate, selectedImages:uploadedImages , generatedHost: generatedHost)
         }.flatMap { (fileUploaded) -> Observable<String> in
-            return fetchSubmitAddProduct(isDuplicate, fileUploaded: fileUploaded, postKey: postKeyParam).do(onError : { (error) in
-                onFailure()
-            })
-        }.subscribe(onNext : { (isSuccess) in
+            JDStatusBarNotification.showProgress(0.8)
+            form.uploadProgress = 0.8
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            return fetchSubmitAddProduct(isDuplicate, fileUploaded: fileUploaded, postKey: postKeyParam)
+        }.subscribe(onNext: { (isSuccess) in
+            form.uploadProgress = 1.0
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            if CGFloat(values.average) == 1 {
+                JDStatusBarNotification.dismiss(after: 0.5)
+            }
             onSuccess()
+        }, onError: { (error) in
+            form.uploadProgress = 1.0
+            let values = ProcessingAddProducts.sharedInstance().products.map{ ($0 as! ProductEditResult).uploadProgress }
+            JDStatusBarNotification.showProgress(CGFloat(values.average))
+            if CGFloat(values.average) == 1 {
+                JDStatusBarNotification.dismiss(after: 0.5)
+            }
+            onFailure()
         })
     }
     
@@ -405,6 +432,7 @@ enum RequestError : Error {
             
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
             
             networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_validation.pl",
@@ -509,6 +537,7 @@ enum RequestError : Error {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
             
             networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_validation.pl",
@@ -572,6 +601,8 @@ enum RequestError : Error {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
+            
             networkManager.request(withBaseUrl: "https://\(generatedHost.upload_host)",
                 path: "/web-service/v4/action/upload-image-helper/add_product_picture.pl",
                 method: .POST,
@@ -617,6 +648,8 @@ enum RequestError : Error {
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
+            networkManager.isUsingSharedOperationQueue = true
+            
             networkManager.request(withBaseUrl: NSString .v4Url(),
                 path: "/v4/action/product/add_product_submit.pl",
                 method: .POST,
@@ -631,7 +664,6 @@ enum RequestError : Error {
                         StickyAlertView.showErrorMessage(response.message_error)
                         observer.onError(RequestError.networkError as Error)
                     } else {
-                        RequestAddEditProduct.errorCompletionHandler()
                         if (response.message_status?.count)!>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         }else{
@@ -717,5 +749,12 @@ enum RequestError : Error {
                 })
             })
             .toArray()
+    }
+}
+
+extension Collection where Iterator.Element == Double, Index == Int {
+    /// Returns the average of all elements in the array
+    var average: Double {
+        return isEmpty ? 0 : Double(reduce(0, +)) / Double(endIndex-startIndex)
     }
 }

@@ -18,6 +18,10 @@ class ProductEditResult: NSObject {
     var wholesale_price: [WholesalePrice] = []
     var breadcrumb: [Breadcrumb] = []
     var catalog = CatalogList()
+    var formId = ""
+    var duplicate = ""
+    var isUploadFailed = false
+    var uploadProgress = 0.0
     
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)

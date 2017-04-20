@@ -92,9 +92,7 @@ class SettingUserProfileRequest: NSObject {
     }
     
     class func fetchUploadProfilePicture(_ image:UIImage,  onSuccess:@escaping ((_ imageURLString: String) -> Void), onFailure:@escaping (()->Void)) {
-        
-        RequestAddEditProduct.errorCompletionHandler = onFailure
-        
+                
         var generatedHost : GeneratedHost = GeneratedHost()
         var imageURLString : String = ""
         

@@ -299,6 +299,16 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //add product
+        JLRoutes.global().addRoute("/add-product/:formId") { (params: [String : Any]!) -> Bool in
+            
+            if let formId = params["formId"] as? String {
+                TPRoutes.retryRequestForFormId(formId)
+            }
+            
+            return true
+        }
+        
         //shop page
         JLRoutes.global().addRoute("/:shopName") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
@@ -357,6 +367,37 @@ class TPRoutes: NSObject {
         let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true)
         let navigationController = UINavigationController(rootViewController: controller)
         UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
+    }
+    
+    static func retryRequestForFormId(_ formId:String) {
+        ProcessingAddProducts.sharedInstance().products.bk_each { form in
+            let productForm = form as! ProductEditResult
+            if (productForm.formId == formId) {
+                RequestAddEditProduct.fetchAddProduct(productForm, isDuplicate: productForm.duplicate, onSuccess: {
+                    ProcessingAddProducts.sharedInstance().products.remove(productForm)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "tokopedia.ADDPRODUCTPOSTNOTIFICATIONNAME"), object: nil)
+                    
+                }, onFailure: {
+                    productForm.isUploadFailed = true
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
+                    var message = "Gagal Tambah Produk"
+                    if (productForm.duplicate == "1"){
+                        message = "Gagal Salin Produk"
+                    }
+                    TPNotification.showNotification(text:"\(message) \(productForm.product.product_name)",
+                        buttonTitle: "Coba Kembali",
+                        userInfo: ["url_deeplink" : "tokopedia://add-product/\(productForm.formId)",
+                            "button_title" : "Coba Kembali"
+                        ],
+                                   categoryIdentifier: "PRODUCT_CATEGORY",
+                                   requestIdentifier: "RETRY_ADD_PRODUCT")
+                })
+                productForm.isUploadFailed = false
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
+
+            }
+        }
     }
     
     static func getUTMString(_ params: [String : Any]) -> String {

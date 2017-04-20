@@ -14,6 +14,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import "GAI.h"
 
+@class ProductEditResult;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate>
 

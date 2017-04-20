@@ -24,6 +24,7 @@
 #import <Appsee/Appsee.h>
 #import "JLRoutes.h"
 #import <MoEngage_iOS_SDK/MoEngage.h>
+#import "ProcessingAddProducts.h"
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -60,6 +61,7 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    
     completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound);
 }
 
@@ -323,6 +325,25 @@
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     [[MoEngage sharedInstance] didRegisterForUserNotificationSettings:notificationSettings];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [UIViewController showNotificationWithMessage:notification.alertBody type:NotificationTypeError duration:10.0 buttonTitle:notification.userInfo[@"button_title"] dismissable:YES action:^{
+            [self handlePushNotificationWithData:notification.userInfo];
+        }];
+    });
+    
+    notification.fireDate = nil;
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler{
+    
+    NSLog(@"handleActionWithIdentifier");
+    [self handlePushNotificationWithData:notification.userInfo];
 }
 
 - (BOOL)application:(UIApplication *)application

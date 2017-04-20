@@ -74,6 +74,7 @@ extension UIViewController {
             action?()
         })
         
+        SwiftOverlays.closeAllAnnoyingNotificationOnTopStatusBar()
         UIViewController.showNotificationOnTopOfStatusBar(view!, duration: duration)
     }
 }

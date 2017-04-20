@@ -17,6 +17,7 @@
 #import "RequestObject.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "Tokopedia-Swift.h"
+#import "NSOperationQueue+SharedQueue.h"
 
 @implementation RequestUploadImage
 

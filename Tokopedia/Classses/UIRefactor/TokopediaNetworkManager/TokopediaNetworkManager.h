@@ -16,6 +16,7 @@
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
 @property (nonatomic) BOOL isUsingHmac;
+@property (nonatomic) BOOL isUsingSharedOperationQueue;
 @property (nonatomic) BOOL isUsingDefaultError;
 @property (nonatomic) NSTimeInterval timeInterval;
 @property (nonatomic) NSInteger maxTries;

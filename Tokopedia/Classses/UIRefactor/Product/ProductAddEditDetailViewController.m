@@ -19,6 +19,8 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GAIDictionaryBuilder.h"
 #import "Tokopedia-Swift.h"
+#import "ProcessingAddProducts.h"
+#import <UserNotifications/UserNotifications.h>
 
 NSString * const ProductStatusWarehouse = @"3";
 
@@ -116,10 +118,13 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)fetchAddProduct{
     
-    [_processingAlert show];
     _saveBarButtonItem.enabled = NO;
     
     NSString *duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?@"1":@"0";
+    
+    _form.formId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+    _form.duplicate = duplicate;
+    [[ProcessingAddProducts sharedInstance].products addObject:_form];
     
     [RequestAddEditProduct fetchAddProduct:_form
                                isDuplicate:duplicate
@@ -129,7 +134,11 @@ NSString * const ProductStatusWarehouse = @"3";
                                      } else {
                                          [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_SUCCESS label:@"Add Product"];
                                      }
+                                     
+                                     [[ProcessingAddProducts sharedInstance].products removeObject:_form];
                                      [self successAddProduct];
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshOnProcessAddProduct" object:nil userInfo:nil];
+                                      [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                                      
                                  } onFailure:^{
                                      _saveBarButtonItem.enabled = YES;
@@ -139,9 +148,30 @@ NSString * const ProductStatusWarehouse = @"3";
                                      } else {
                                          [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_ADD_PRODUCT action:GA_EVENT_ACTION_ERROR label:@"Add Product"];
                                      }
+                                     [self presentLocalNotificationForProductForm:_form];
+                                     _form.isUploadFailed = true;
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshOnProcessAddProduct" object:nil userInfo:nil];
                                  }];
+    _form.isUploadFailed = false;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshOnProcessAddProduct" object:nil userInfo:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)presentLocalNotificationForProductForm:(ProductEditResult*)productForm {
+    NSString *message = @"Gagal Tambah Produk";
+    if ([productForm.duplicate isEqualToString:@"1"]){
+        message = @"Gagal Salin Produk";
+    }
+    [TPNotification showNotificationWithText:[NSString stringWithFormat:@"%@ %@",message, productForm.product.product_name]
+                                 buttonTitle:@"Coba Kembali"
+                                    userInfo:@{
+                                               @"url_deeplink" : [NSString stringWithFormat:@"tokopedia://add-product/%@", productForm.formId],
+                                               @"button_title": @"Coba Kembali"
+                                               }
+                                    categoryIdentifier:@"PRODUCT_CATEGORY"
+                                    requestIdentifier:@"RETRY_ADD_PRODUCT"];
+
+}
 -(void)fetchEditProduct{
     
     [_processingAlert show];

@@ -14,6 +14,7 @@
 #import "TkpdHMAC.h"
 #import <BlocksKit/BlocksKit.h>
 #import "Tokopedia-Swift.h"
+#import "NSOperationQueue+SharedQueue.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -32,6 +33,7 @@
     self = [super init];
     
     if(self != nil) {
+        
         _operationQueue = [NSOperationQueue new];
         _isUsingDefaultError = YES;
     }
@@ -298,7 +300,11 @@
         
     }];
     
-    [_operationQueue addOperation:_objectRequest];
+    if (_isUsingSharedOperationQueue){
+        [[NSOperationQueue sharedOperationQueue] addOperation:_objectRequest];
+    } else {
+        [_operationQueue addOperation:_objectRequest];
+    }
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
     
     __weak typeof(self) weakSelf = self;

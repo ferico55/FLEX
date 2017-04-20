@@ -163,10 +163,44 @@
           respondsToSelector:@selector(registerUserNotificationSettings:)]) {
     UIUserNotificationSettings *userNotificationSettings = self.userNotificationSettings;
     if (!userNotificationSettings) {
-      userNotificationSettings = [UIUserNotificationSettings
-          settingsForTypes:(UIUserNotificationTypeAlert | UIUserNotificationTypeBadge |
-                            UIUserNotificationTypeSound)
-                categories:nil];
+        UIMutableUserNotificationAction *retryAddProductAction =
+        [[UIMutableUserNotificationAction alloc] init];
+        
+        // Define an ID string to be passed back to your app when you handle the action
+        retryAddProductAction.identifier = @"RETRY_ADD_PRODUCT";
+        
+        // Localized string displayed in the action button
+        retryAddProductAction.title = @"Coba Kembali";
+        
+        // If you need to show UI, choose foreground
+        retryAddProductAction.activationMode = UIUserNotificationActivationModeForeground;
+        
+        // Destructive actions display in red
+        retryAddProductAction.destructive = NO;
+        
+        // Set whether the action requires the user to authenticate
+        retryAddProductAction.authenticationRequired = NO;
+        
+        // First create the category
+        UIMutableUserNotificationCategory *productCategory =
+        [[UIMutableUserNotificationCategory alloc] init];
+        
+        // Identifier to include in your push payload and local notification
+        productCategory.identifier = @"PRODUCT_CATEGORY";
+        
+        // Add the actions to the category and set the action context
+        [productCategory setActions:@[retryAddProductAction]
+                         forContext:UIUserNotificationActionContextDefault];
+        
+        // Set the actions to present in a minimal context
+        [productCategory setActions:@[retryAddProductAction]
+                         forContext:UIUserNotificationActionContextMinimal];
+        
+        NSSet *categories = [NSSet setWithObjects:productCategory, nil];
+        UIUserNotificationType types = UIUserNotificationTypeBadge |  UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        userNotificationSettings = [UIUserNotificationSettings
+          settingsForTypes:types
+                categories:categories];
     }
     [[UIApplication sharedApplication] registerUserNotificationSettings:userNotificationSettings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];

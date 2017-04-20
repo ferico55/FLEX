@@ -38,6 +38,7 @@
 
 #import "ProductRequest.h"
 #import "Breadcrumb.h"
+#import "ProcessingAddProducts.h"
 
 @interface ProductListMyShopViewController ()
 <
@@ -164,6 +165,13 @@ NoResultDelegate
                    name:ADD_PRODUCT_POST_NOTIFICATION_NAME
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(adjustOnProcessProduct)
+                   name:@"RefreshOnProcessAddProduct"
+                 object:nil];
+    
+    
+    
     [self initNoResultView];
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -174,6 +182,8 @@ NoResultDelegate
     _sortViewController.sortType = SortManageProduct;
     
     _filterViewController = [ProductListMyShopFilterViewController new];
+    
+    [self adjustOnProcessProduct];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -190,70 +200,70 @@ NoResultDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
-    if (_products.count > 0) {
-        
-        NSString *cellid = kTKPDSETTINGPRODUCTCELL_IDENTIFIER;
-        
-        cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [ProductListMyShopCell newcell];
-            ((ProductListMyShopCell*)cell).delegate = self;
+    
+    NSString *cellid = kTKPDSETTINGPRODUCTCELL_IDENTIFIER;
+    
+    cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [ProductListMyShopCell newcell];
+        ((ProductListMyShopCell*)cell).delegate = self;
+    }
+    
+    if (_products.count > indexPath.row ) {
+        ManageProductList *list = _products[indexPath.row];
+        [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
+        [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:NO];
+        NSString *price = list.product_normal_price;
+        if (list.product_currency_id == 2) { // 2 is USD currency id
+            price = list.product_no_idr_price;
         }
+        [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",
+                                                            list.product_currency_symbol,
+                                                            price]
+                                                  animated:YES];
         
-        if (_products.count > indexPath.row) {
-            ManageProductList *list = _products[indexPath.row];
-            [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
-            [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:NO];
-            NSString *price = list.product_normal_price;
-            if (list.product_currency_id == 2) { // 2 is USD currency id
-                price = list.product_no_idr_price;
-            }
-            [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",
-                                                                list.product_currency_symbol,
-                                                                price]
-                                                      animated:YES];
-            
-            ((ProductListMyShopCell*)cell).indexpath = indexPath;
-            
-            UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
-            [act startAnimating];
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_300]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
-            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-            thumb.contentMode = UIViewContentModeCenter;
-            [thumb setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        ((ProductListMyShopCell*)cell).indexpath = indexPath;
+        
+        UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
+        [act startAnimating];
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_300]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
+        thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        thumb.contentMode = UIViewContentModeCenter;
+        [thumb setImageWithURLRequest:request
+                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
+                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                      thumb.image = image;
-                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
+                                  thumb.image = image;
+                                  thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnosti c pop
-                                      [act stopAnimating];
-                                      [act setHidden:YES];
-                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                      thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-                                      thumb.contentMode = UIViewContentModeCenter;
-                                      [act stopAnimating];
-                                      [act setHidden:YES];
-                                  }];
-        }
-        return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
+                                  [act stopAnimating];
+                                  [act setHidden:YES];
+                              } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                  thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                                  thumb.contentMode = UIViewContentModeCenter;
+                                  [act stopAnimating];
+                                  [act setHidden:YES];
+                              }];
         
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (list.onProcessUploading){
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.userInteractionEnabled = NO;
+            ((ProductListMyShopCell*)cell).labelname.textColor = [UIColor tpDisabledBlackText];
+            ((ProductListMyShopCell*)cell).labelprice.textColor = [UIColor tpDisabledBlackText];
+            ((ProductListMyShopCell*)cell).labeletalase.textColor = [UIColor tpDisabledBlackText];
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.userInteractionEnabled = YES;
+            ((ProductListMyShopCell*)cell).labelname.textColor = [UIColor tpPrimaryBlackText];
+            ((ProductListMyShopCell*)cell).labelprice.textColor = [UIColor tpOrange];
+            ((ProductListMyShopCell*)cell).labeletalase.textColor = [UIColor tpSecondaryBlackText];
         }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
     return cell;
 }
@@ -384,10 +394,30 @@ NoResultDelegate
                               }];
 }
 
+- (void)adjustOnProcessProduct{
+    NSArray *onProcess = [_products bk_select:^BOOL(ManageProductList *product) {
+        return product.onProcessUploading;
+    }];
+    [_products removeObjectsInArray:onProcess];
+    for (ProductEditResult *uploadingProduct in [ProcessingAddProducts sharedInstance].products) {
+        if (!uploadingProduct.isUploadFailed) {
+            ManageProductList *product = [ManageProductList new];
+            product.product_name = uploadingProduct.product.product_name;
+            product.product_normal_price = uploadingProduct.product.product_price;
+            product.product_etalase = uploadingProduct.product.product_etalase;
+            product.onProcessUploading = true;
+            product.product_currency_symbol = ([uploadingProduct.product.product_currency_id integerValue]==1)?@"Rp":@"USD";
+            [_products insertObject:product atIndex:0];
+        }
+    }
+    [_tableView reloadData];
+}
+
 - (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
     ManageProduct *response = [mappingResult.dictionary objectForKey:@""];
     if (_page == 1) {
         [_products removeAllObjects];
+        [self adjustOnProcessProduct];
     }
     if (response.data.list.count > 0) {
         [_products addObjectsFromArray:response.data.list];

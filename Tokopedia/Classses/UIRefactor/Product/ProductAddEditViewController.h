@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class ProductEditResult;
+
 typedef NS_ENUM(NSInteger, TYPE_ADD_EDIT_PRODUCT)
 {
     TYPE_ADD_EDIT_PRODUCT_DEFAULT = 0,
@@ -20,5 +22,7 @@ typedef NS_ENUM(NSInteger, TYPE_ADD_EDIT_PRODUCT)
 
 @property (nonatomic, strong) NSString *productID;
 @property (nonatomic) TYPE_ADD_EDIT_PRODUCT type;
+
+- (instancetype)initWithForm:(ProductEditResult*)form;
 
 @end

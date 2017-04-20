@@ -203,6 +203,10 @@ class FormProductValidation: NSObject {
     
     fileprivate func minimalOrderValidation(_ minimalOrder: String) throws {
         
+        guard Int(minimalOrder) > 0 else {
+            throw Errors.errorMessage("Minimal pemesanan harus lebih dari 1")
+        }
+        
         guard Int(minimalOrder) <= ProductDetail.maximumPurchaseQuantity() else {
             throw Errors.errorMessage("Maksimal minimum pembelian untuk 1 produk adalah \(ProductDetail.maximumPurchaseQuantity())")
         }

@@ -171,6 +171,7 @@
 #import "Tkpd.h"
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"
+#import "ProcessingAddProducts.h"
 #import "TkpdHMAC.h"
 #include "ifaddrs.h"
 #import "UIActivityViewController+Extensions.h"
