@@ -326,6 +326,12 @@ class TPRoutes: NSObject {
         }
         
         //product detail page
+        JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
+            let productId = params["productId"] as! String
+            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let productName = params["productName"] as! String

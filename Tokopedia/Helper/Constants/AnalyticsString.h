@@ -11,6 +11,7 @@
 
 #pragma mark - Event
 #define GA_EVENT_CLICK_CATEGORY @"clickKategori"
+#define GA_EVENT_CLICK_INTERMEDIARY @"clickIntermediary"
 
 #pragma mark - Event Category
 #define GA_EVENT_CATEGORY_HOMEPAGE @"Homepage"
@@ -104,5 +105,6 @@
 #define GA_EVENT_ACTION_REQUEST_FAILED @"Request Failed"
 #define GA_EVENT_ACTION_VERIFY_SUCCESS @"Verify Success"
 #define GA_EVENT_ACTION_VERIFY_FAILED @"Verify Failed"
+#define GA_EVENT_ACTION_HOTLIST @"Hotlist"
 
 #endif /* AnalyticsString_h */

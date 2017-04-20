@@ -459,7 +459,7 @@ static NSString const *rows = @"12";
         url = [NSURL URLWithString:[_data objectForKey:@"url"]];
     } else if (_bannerResult) {
         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _bannerResult.info.title];
-        url = [NSURL URLWithString:_bannerResult.info.title];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/hot/%@", [NSString tokopediaUrl], [[_bannerResult.info.title stringByReplacingOccurrencesOfString:@" " withString:@"-"] lowercaseString]]];
     }
     
     if (title && url) {

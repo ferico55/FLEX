@@ -1551,7 +1551,7 @@ TTTAttributedLabelDelegate
     NSString *deptid = breadcrumb.department_id;
     
     NavigateViewController *navigateViewController = [NavigateViewController new];
-    [navigateViewController navigateToIntermediaryCategoryFromViewController:self withCategoryId:deptid categoryName:@""];
+    [navigateViewController navigateToIntermediaryCategoryFromViewController:self withCategoryId:deptid categoryName:@"" isIntermediary:YES];
 }
 
 -(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index {

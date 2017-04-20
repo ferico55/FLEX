@@ -9,7 +9,28 @@
 import RestKit
 
 class CategoryIntermediaryResult: NSObject {
-    var children: [CategoryIntermediaryChild]!
+    var children: [CategoryIntermediaryChild]! {
+        didSet {
+            nonHiddenChildren =  children.filter({ (child) -> Bool in
+                return child.hidden == 0
+            })
+        }
+    }
+    var nonHiddenChildren: [CategoryIntermediaryChild]! {
+        didSet {
+            nonExpandedChildren = nonHiddenChildren.enumerated().filter({ (index, child) -> Bool in
+                if self.isRevamp {
+                    return index < 9
+                } else {
+                    return index < 6
+                }
+            }).map({ (index, child) -> CategoryIntermediaryChild in
+                return child
+            })
+        }
+    }
+    var nonExpandedChildren: [CategoryIntermediaryChild]!
+    var maxRowInCategorySubView: Int = 3
     var id: String = ""
     var name: String = ""
     var categoryDescription: String = ""
@@ -19,12 +40,19 @@ class CategoryIntermediaryResult: NSObject {
     var hidden: Int = 0
     // views digunakan untuk penanda apakah list produk dari intermediary ditampilkan secara grid, list, atau one
     var views: Int = 0
-    var isRevamp: Bool = false
+    var isRevamp: Bool = false {
+        didSet {
+            maxRowInCategorySubView = isRevamp ? 3 : 2
+        }
+    }
     var isIntermediary: Bool = false
+    
+    var curatedProduct: CategoryIntermediaryCuratedProduct!
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryResult.self)
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "child", toKeyPath: "children", with: CategoryIntermediaryChild.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "curated_product", toKeyPath: "curatedProduct", with: CategoryIntermediaryCuratedProduct.mapping()))
         mapping.addAttributeMappings(from: ["id", "name", "hidden"])
         mapping.addAttributeMappings(from:["description" : "categoryDescription",
                                            "title_tag" : "titleTag",

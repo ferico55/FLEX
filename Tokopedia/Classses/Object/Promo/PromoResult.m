@@ -17,7 +17,8 @@
                                                    @"sticker_id",
                                                    @"sticker_image",
                                                    @"product_click_url",
-                                                   @"shop_click_url"
+                                                   @"shop_click_url",
+                                                   @"applinks"
                                                    ]];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product"

@@ -555,7 +555,7 @@ class HomePageViewController: UIViewController {
         
         if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
                 let navigateViewController = NavigateViewController()
-                navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName)
+            navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName, isIntermediary: true)
         } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
             guard let categoryId = layoutRow.category_id else {
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)

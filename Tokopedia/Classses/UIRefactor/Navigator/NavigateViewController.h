@@ -26,8 +26,9 @@
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+- (void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
-- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;

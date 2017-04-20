@@ -112,12 +112,9 @@ HeaderIntermediaryCollectionViewDelegate
 @property (strong, nonatomic) TokopediaNetworkManager *categoryIntermediaryNetworkManager;
 @property (strong, nonatomic) CategoryIntermediaryResult *categoryIntermediaryResult;
 @property (nonatomic) BOOL isCategorySubviewExpanded;
-@property (nonatomic) NSInteger maxRowInCategorySubview;
 @property (strong, nonatomic) IBOutlet UILabel *totalProductsLabel;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *requestLoadingActivityIndicator;
 @property (strong, nonatomic) IBOutlet UIView *totalProductsView;
-@property (strong, nonatomic) NSMutableArray<CategoryIntermediaryChild*> *categoryIntermediaryFilteredChild;
-
 @end
 
 NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFERENCES";
@@ -262,9 +259,10 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     [self doPageLaoading];
-    [self requestSearch];
+    [self requestIntermediaryCategory];
     
-    [_fourButtonsToolbar setHidden:NO];
+    [_toolbarView setHidden: YES];
+    [_fourButtonsToolbar setHidden:YES];
     [_threeButtonsToolbar setHidden:YES];
     [_fourButtonsToolbar setUserInteractionEnabled:YES];
     [_threeButtonsToolbar setUserInteractionEnabled:NO];
@@ -503,9 +501,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             BOOL isNeedSeeAllButton = _categoryIntermediaryResult.children.count > (_categoryIntermediaryResult.isRevamp ? 9 : 6);
             [headerIntermediaryCollectionReusableView setIsRevamp:_categoryIntermediaryResult.isRevamp];
             if (_isCategorySubviewExpanded) {
-                [headerIntermediaryCollectionReusableView.subCategoryView setChildrenDataWithCategoryChildren:_categoryIntermediaryResult.children isNeedSeeMoreButton:isNeedSeeAllButton];
+                [headerIntermediaryCollectionReusableView.subCategoryView setChildrenDataWithCategoryChildren:_categoryIntermediaryResult.nonHiddenChildren isNeedSeeMoreButton:isNeedSeeAllButton];
             } else {
-                [headerIntermediaryCollectionReusableView.subCategoryView setChildrenDataWithCategoryChildren:_categoryIntermediaryFilteredChild isNeedSeeMoreButton:isNeedSeeAllButton];
+                [headerIntermediaryCollectionReusableView.subCategoryView setChildrenDataWithCategoryChildren:_categoryIntermediaryResult.nonExpandedChildren isNeedSeeMoreButton:isNeedSeeAllButton];
             }
             
             [headerIntermediaryCollectionReusableView setHeaderTitle:_categoryIntermediaryResult.name];
@@ -560,7 +558,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
     SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:@"Kategori" action:GA_EVENT_ACTION_CLICK_PRODUCT label: _categoryIntermediaryResult.name];
+    [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:@"Kategori" action:GA_EVENT_ACTION_CLICK_PRODUCT label: _categoryIntermediaryResult.id];
 
     [NavigateViewController navigateToProductFromViewController:self withProduct:product];
 }
@@ -603,9 +601,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         
         if (_isCategorySubviewExpanded) {
-            headerHeight += (ceil((CGFloat)_categoryIntermediaryResult.children.count / (CGFloat)_maxRowInCategorySubview)) * (_categoryIntermediaryResult.isRevamp ? 140 : 38);
+            headerHeight += (ceil((CGFloat)_categoryIntermediaryResult.nonHiddenChildren.count / (CGFloat)_categoryIntermediaryResult.maxRowInCategorySubView)) * (_categoryIntermediaryResult.isRevamp ? 140 : 38);
         } else {
-            headerHeight += (ceil((CGFloat)_categoryIntermediaryFilteredChild.count / (CGFloat)_maxRowInCategorySubview)) * (_categoryIntermediaryResult.isRevamp ? 140 : 38);
+            headerHeight += (ceil((CGFloat)_categoryIntermediaryResult.nonExpandedChildren.count / (CGFloat)_categoryIntermediaryResult.maxRowInCategorySubView)) * (_categoryIntermediaryResult.isRevamp ? 140 : 38);
         }
         
     }
@@ -638,7 +636,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     [self doPageLaoading];
-    [self requestSearch];
+    [self requestIntermediaryCategory];
     
     [_act startAnimating];
 }
@@ -1074,41 +1072,19 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                       CategoryIntermediaryResponse *categoryIntermediaryResponse = [mappingResult.dictionary objectForKey:@""];
                                                       _categoryIntermediaryResult = categoryIntermediaryResponse.result;
                                                       
-                                                      // tampung children yang cuman memiliki hidden 0
-                                                      _categoryIntermediaryResult.children = [_categoryIntermediaryResult.children bk_select:^BOOL(CategoryIntermediaryChild *child) {
-                                                          return child.hidden == 0;
-                                                      }];
-                                                      _maxRowInCategorySubview = _categoryIntermediaryResult.isRevamp ?                                                  3 : 2;
-                                                      
-                                                      // set categoryIntermediaryFilteredChild
-                                                      NSInteger count = 0;
-                                                      _categoryIntermediaryFilteredChild = [NSMutableArray new];
-                                                      for (CategoryIntermediaryChild *child in _categoryIntermediaryResult.children) {
-                                                          [_categoryIntermediaryFilteredChild addObject:child];
-                                                          count++;
-                                                          if (_categoryIntermediaryResult.isRevamp) {
-                                                              _maxRowInCategorySubview = 3;
-                                                              if (count == 9) {
-                                                                  break;
-                                                              }
-                                                          } else {
-                                                              _maxRowInCategorySubview = 2;
-                                                              if (count == 6) {
-                                                                  break;
-                                                              }
-                                                          }
+                                                      if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
+                                                          CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult];
+                                                          [self.navigationController pushViewController:categoryIntermediaryViewController animated:NO];
+                                                      } else {
+                                                          _isCategorySubviewExpanded = NO;
+                                                          
+                                                           [self setProductListBaseLayout];
+                                                          
+                                                          [weakSelf requestSearch];
                                                       }
-                                                      
-                                                      _isCategorySubviewExpanded = NO;
-                                                      
-                                                      [self setProductListBaseLayout];
-                                                      
-                                                      [_collectionView reloadData];
-                                                      [weakSelf stopPageLoading];
                                                   }
                                                   onFailure:^(NSError * _Nonnull errorResult) {
-                                                      [weakSelf stopPageLoading];
-                                                      [_collectionView reloadData];
+                                                      [weakSelf requestSearch];
                                                   }];
 }
 
@@ -1173,6 +1149,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     _searchObject = search;
     [self reloadView];
     
+    [_toolbarView setHidden: NO];
+    [_fourButtonsToolbar setHidden:NO];
     //set initial category
     if (_initialBreadcrumb.count == 0) {
         _initialBreadcrumb = search.data.breadcrumb;
@@ -1494,10 +1472,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                             }
                                         }
                                         
-                                        [weakSelf requestIntermediaryCategory];
+                                        [_collectionView reloadData];
+                                        [weakSelf stopPageLoading];
                                     } onFailure:^(NSError *error) {
-//                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-                                        [weakSelf requestIntermediaryCategory];
+                                        [_collectionView reloadData];
+                                        [weakSelf stopPageLoading];
                                     }];
     }
 }

@@ -71,9 +71,6 @@ class CategoryIntermediarySubCategoryView: UIView {
                 
                 categoryViewCell.setData(data: data)
                 innerHorizontalStackView.addArrangedSubview(categoryViewCell)
-                categoryViewCell.snp.makeConstraints({ (make) in
-                make.width.equalTo(UIScreen.main.bounds.size.width / CGFloat(totalColumnInOneRow()))
-                })
                 
                 if index % totalColumnInOneRow() == totalColumnInOneRow() - 1 {
                     stackView.addArrangedSubview(innerHorizontalStackView)

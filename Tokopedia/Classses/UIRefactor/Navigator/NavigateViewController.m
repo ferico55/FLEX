@@ -462,11 +462,12 @@
     [viewController.navigationController pushViewController:catalogViewController animated:YES];
 }
 
-- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName{
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary{
     CategoryResultViewController *categoryResultProductViewController = [CategoryResultViewController new];
     categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
     categoryResultProductViewController.isFromDirectory = YES;
     categoryResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
+    categoryResultProductViewController.isIntermediary = isIntermediary;
     
     SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
     searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;

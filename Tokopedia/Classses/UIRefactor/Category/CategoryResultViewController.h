@@ -31,5 +31,6 @@
 @property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
 @property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;
 @property (weak, nonatomic) TKPDTabNavigationController *tkpdTabNavigationController;
+@property (nonatomic) BOOL isIntermediary;
 
 @end
