@@ -45,5 +45,38 @@ class GenerateHostObservable: NSObject {
             return Disposables.create()
         })
     }
+    
+    class func getAccountsGeneratedHost(_ userID: String, token: OAuthToken) -> Observable<GeneratedHost> {
+        return Observable.create({ (observer) -> Disposable in
+            let parameter = ["user_id" : userID,
+                             "new_add" : "1"]
+            
+            let header = ["Authorization" : "\(token.tokenType!) \(token.accessToken!)"]
+            
+            let networkManager = TokopediaNetworkManager()
+            networkManager.isUsingHmac = true
+            
+            networkManager.request(
+                withBaseUrl: NSString.accountsUrl(),
+                path: "/api/image/upload-host",
+                method: .POST,
+                header: header,
+                parameter: parameter,
+                mapping: GenerateHost.mapping(),
+                onSuccess: { (mappingResult, operation) in
+                    let result : Dictionary = mappingResult.dictionary() as Dictionary
+                    let response : GenerateHost = result[""] as! GenerateHost
+                    
+                    observer.onNext(response.data.generated_host)
+                    observer.onCompleted()
+            },
+                onFailure: { (error) in
+                    observer.onError(RequestError.networkError as Error)
+                    StickyAlertView.showErrorMessage(["Permintaan gagal. Silakan coba kembali."])
+            })
+            
+            return Disposables.create()
+        })
+    }
 
 }

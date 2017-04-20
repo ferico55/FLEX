@@ -31,10 +31,18 @@
     return @{@"Authorization": @"Basic dzFIWXBpZFNocmU6dllYdmQwcXRxVUFSSnNmajRWSWdTeFNrckF5NHBjeXE="};
 }
 
-- (void)verifyLogin:(Login *)login withPhoneNumber:(NSString *)phoneNumber token:(OAuthToken *)token onPhoneNumberVerified:(void (^)())verifiedCallback {
+- (void)verifyLogin:(Login *)login withPhoneNumber:(NSString *)phoneNumber phoneMasked:(NSString *)phoneMasked token:(OAuthToken *)token onPhoneNumberVerified:(void (^)())verifiedCallback {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     
-    SecurityQuestionViewController* controller = [[SecurityQuestionViewController alloc] initWithName:login.result.full_name phoneNumber:phoneNumber userID:login.result.user_id deviceID:[UserAuthentificationManager new].getMyDeviceToken token:token];
+    SecurityQuestionObjects *sqObject = [SecurityQuestionObjects new];
+    sqObject.userID = login.result.user_id;
+    sqObject.name = login.result.full_name;
+    sqObject.phoneNumber = phoneNumber;
+    sqObject.maskedPhoneNumber = phoneMasked;
+    sqObject.deviceID = [UserAuthentificationManager new].getMyDeviceToken;
+    sqObject.token = token;
+    
+    SecurityQuestionViewController* controller = [[SecurityQuestionViewController alloc] initWithSecurityQuestionObject: sqObject];
     
     if ([SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
         controller.questionType1 = @"0";
@@ -49,7 +57,10 @@
         verifiedCallback();
     };
     
-    [_viewController.navigationController pushViewController:controller animated:YES];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    
+    [_viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
@@ -85,7 +96,7 @@
                                  login.result.full_name = accountInfo.name;
                                  
                                  if ((login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) || [SecurityQuestionTweaks alwaysShowSecurityQuestion]) {
-                                     [self verifyLogin:login withPhoneNumber: accountInfo.phoneMasked token:oAuthToken onPhoneNumberVerified:^{
+                                     [self verifyLogin:login withPhoneNumber:accountInfo.phoneNumber phoneMasked:accountInfo.phoneMasked token:oAuthToken onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                     onAuthenticationSuccess:successCallback

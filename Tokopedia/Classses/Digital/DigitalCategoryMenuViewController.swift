@@ -704,7 +704,12 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             oAuthToken.tokenType = dict["oAuthToken.tokenType"] as! String
             oAuthToken.accessToken = dict["oAuthToken.accessToken"] as! String
             
-            let viewController = SecurityQuestionViewController(name: userName, phoneNumber: "", userID: userId, deviceID: deviceId, token: oAuthToken)
+            let sqObject = SecurityQuestionObjects()
+            sqObject.userID = userId
+            sqObject.deviceID = deviceId
+            sqObject.token = oAuthToken
+            
+            let viewController = SecurityQuestionViewController(securityQuestionObject: sqObject)
             viewController.questionType1 = "0"
             viewController.questionType2 = "2"
             viewController.successAnswerCallback =  { _ in

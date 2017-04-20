@@ -135,12 +135,13 @@
 
 -(void)checkForPhoneVerification{
     if([self shouldShowPhoneVerif]){
-        [PhoneVerificationRequest
+        [OTPRequest
          checkPhoneVerifiedStatusOnSuccess:^(NSString * _Nonnull isVerified) {
              if (![isVerified isEqualToString:@"1"]) {
                  PhoneVerificationViewController *controller = [[PhoneVerificationViewController alloc]
                                                                 initWithPhoneNumber: @""
-                                                                isFirstTimeVisit: NO];
+                                                                isFirstTimeVisit: NO
+                                                                didVerifiedPhoneNumber:nil];
                  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
                  navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                  [self.navigationController presentViewController:navigationController animated:YES completion:nil];

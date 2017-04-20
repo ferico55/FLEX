@@ -598,16 +598,8 @@
 		347850B41EA8CC0100A227F6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3478471C1EA8CBFA00A227F6 /* LoginViewController.m */; };
 		347850B51EA8CC0100A227F6 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3478471D1EA8CBFA00A227F6 /* LoginViewController.xib */; };
 		347850B61EA8CC0100A227F6 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347847201EA8CBFA00A227F6 /* LogoutViewController.m */; };
-		347850B71EA8CC0100A227F6 /* ChangePhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347847221EA8CBFA00A227F6 /* ChangePhoneNumberViewController.swift */; };
-		347850B81EA8CC0100A227F6 /* ChangePhoneNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347847231EA8CBFA00A227F6 /* ChangePhoneNumberViewController.xib */; };
-		347850B91EA8CC0100A227F6 /* PhoneVerificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347847241EA8CBFA00A227F6 /* PhoneVerificationRequest.swift */; };
-		347850BA1EA8CC0100A227F6 /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347847251EA8CBFA00A227F6 /* PhoneVerificationViewController.swift */; };
-		347850BB1EA8CC0100A227F6 /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347847261EA8CBFA00A227F6 /* PhoneVerificationViewController.xib */; };
 		347850BC1EA8CC0100A227F6 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347847291EA8CBFA00A227F6 /* RegisterViewController.m */; };
 		347850BD1EA8CC0100A227F6 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3478472A1EA8CBFA00A227F6 /* RegisterViewController.xib */; };
-		347850BE1EA8CC0100A227F6 /* SecurityQuestionTweaks.m in Sources */ = {isa = PBXBuildFile; fileRef = 3478472E1EA8CBFA00A227F6 /* SecurityQuestionTweaks.m */; };
-		347850BF1EA8CC0100A227F6 /* SecurityQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3478472F1EA8CBFA00A227F6 /* SecurityQuestionViewController.swift */; };
-		347850C01EA8CC0100A227F6 /* SecurityQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347847301EA8CBFA00A227F6 /* SecurityQuestionViewController.xib */; };
 		347850C11EA8CC0100A227F6 /* SignInProviderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347847311EA8CBFA00A227F6 /* SignInProviderListView.swift */; };
 		347850C21EA8CC0100A227F6 /* WebViewSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347847321EA8CBFA00A227F6 /* WebViewSignInViewController.swift */; };
 		347850C31EA8CC0100A227F6 /* WebViewSignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347847331EA8CBFA00A227F6 /* WebViewSignInViewController.xib */; };
@@ -1729,6 +1721,18 @@
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
+		62B077F41EA8D11A00F1B60F /* OTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077E71EA8D11A00F1B60F /* OTPRequest.swift */; };
+		62B077F51EA8D11A00F1B60F /* ChangePhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077E91EA8D11A00F1B60F /* ChangePhoneNumberViewController.swift */; };
+		62B077F61EA8D11A00F1B60F /* ChangePhoneNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62B077EA1EA8D11A00F1B60F /* ChangePhoneNumberViewController.xib */; };
+		62B077F71EA8D11A00F1B60F /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077EB1EA8D11A00F1B60F /* PhoneVerificationViewController.swift */; };
+		62B077F81EA8D11A00F1B60F /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62B077EC1EA8D11A00F1B60F /* PhoneVerificationViewController.xib */; };
+		62B077F91EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077EE1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.swift */; };
+		62B077FA1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62B077EF1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.xib */; };
+		62B077FB1EA8D11A00F1B60F /* SecurityQuestionTweaks.m in Sources */ = {isa = PBXBuildFile; fileRef = 62B077F11EA8D11A00F1B60F /* SecurityQuestionTweaks.m */; };
+		62B077FC1EA8D11A00F1B60F /* SecurityQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077F21EA8D11A00F1B60F /* SecurityQuestionViewController.swift */; };
+		62B077FD1EA8D11A00F1B60F /* SecurityQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62B077F31EA8D11A00F1B60F /* SecurityQuestionViewController.xib */; };
+		62B078001EA8D12400F1B60F /* ChangePhoneNumberStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077FE1EA8D12400F1B60F /* ChangePhoneNumberStatus.swift */; };
+		62B078011EA8D12400F1B60F /* ImageSizeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B077FF1EA8D12400F1B60F /* ImageSizeValidation.swift */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -2929,19 +2933,10 @@
 		3478471D1EA8CBFA00A227F6 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		3478471F1EA8CBFA00A227F6 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutViewController.h; sourceTree = "<group>"; };
 		347847201EA8CBFA00A227F6 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
-		347847221EA8CBFA00A227F6 /* ChangePhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberViewController.swift; sourceTree = "<group>"; };
-		347847231EA8CBFA00A227F6 /* ChangePhoneNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePhoneNumberViewController.xib; sourceTree = "<group>"; };
-		347847241EA8CBFA00A227F6 /* PhoneVerificationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerificationRequest.swift; sourceTree = "<group>"; };
-		347847251EA8CBFA00A227F6 /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
-		347847261EA8CBFA00A227F6 /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
 		347847281EA8CBFA00A227F6 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		347847291EA8CBFA00A227F6 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		3478472A1EA8CBFA00A227F6 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		3478472B1EA8CBFA00A227F6 /* stringregister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringregister.h; sourceTree = "<group>"; };
-		3478472D1EA8CBFA00A227F6 /* SecurityQuestionTweaks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionTweaks.h; sourceTree = "<group>"; };
-		3478472E1EA8CBFA00A227F6 /* SecurityQuestionTweaks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionTweaks.m; sourceTree = "<group>"; };
-		3478472F1EA8CBFA00A227F6 /* SecurityQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityQuestionViewController.swift; sourceTree = "<group>"; };
-		347847301EA8CBFA00A227F6 /* SecurityQuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityQuestionViewController.xib; sourceTree = "<group>"; };
 		347847311EA8CBFA00A227F6 /* SignInProviderListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInProviderListView.swift; sourceTree = "<group>"; };
 		347847321EA8CBFA00A227F6 /* WebViewSignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSignInViewController.swift; sourceTree = "<group>"; };
 		347847331EA8CBFA00A227F6 /* WebViewSignInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewSignInViewController.xib; sourceTree = "<group>"; };
@@ -4641,6 +4636,19 @@
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		62B077E71EA8D11A00F1B60F /* OTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPRequest.swift; sourceTree = "<group>"; };
+		62B077E91EA8D11A00F1B60F /* ChangePhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberViewController.swift; sourceTree = "<group>"; };
+		62B077EA1EA8D11A00F1B60F /* ChangePhoneNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePhoneNumberViewController.xib; sourceTree = "<group>"; };
+		62B077EB1EA8D11A00F1B60F /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
+		62B077EC1EA8D11A00F1B60F /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
+		62B077EE1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberSQViewController.swift; sourceTree = "<group>"; };
+		62B077EF1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePhoneNumberSQViewController.xib; sourceTree = "<group>"; };
+		62B077F01EA8D11A00F1B60F /* SecurityQuestionTweaks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionTweaks.h; sourceTree = "<group>"; };
+		62B077F11EA8D11A00F1B60F /* SecurityQuestionTweaks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionTweaks.m; sourceTree = "<group>"; };
+		62B077F21EA8D11A00F1B60F /* SecurityQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityQuestionViewController.swift; sourceTree = "<group>"; };
+		62B077F31EA8D11A00F1B60F /* SecurityQuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityQuestionViewController.xib; sourceTree = "<group>"; };
+		62B077FE1EA8D12400F1B60F /* ChangePhoneNumberStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberStatus.swift; sourceTree = "<group>"; };
+		62B077FF1EA8D12400F1B60F /* ImageSizeValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSizeValidation.swift; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -5064,6 +5072,8 @@
 		347842B51EA8CBF800A227F6 /* SecurityQuestion */ = {
 			isa = PBXGroup;
 			children = (
+				62B077FE1EA8D12400F1B60F /* ChangePhoneNumberStatus.swift */,
+				62B077FF1EA8D12400F1B60F /* ImageSizeValidation.swift */,
 				347842B61EA8CBF800A227F6 /* OTPOnCall.swift */,
 				347842B71EA8CBF800A227F6 /* SecurityAnswer.h */,
 				347842B81EA8CBF800A227F6 /* SecurityAnswer.m */,
@@ -6985,6 +6995,7 @@
 		347847101EA8CBFA00A227F6 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				62B077E61EA8D11A00F1B60F /* OTP */,
 				347847111EA8CBFA00A227F6 /* activation.h */,
 				347847121EA8CBFA00A227F6 /* ActivationRequest.h */,
 				347847131EA8CBFA00A227F6 /* ActivationRequest.m */,
@@ -6993,9 +7004,7 @@
 				347847161EA8CBFA00A227F6 /* CreatePassword */,
 				3478471A1EA8CBFA00A227F6 /* Login */,
 				3478471E1EA8CBFA00A227F6 /* Logout */,
-				347847211EA8CBFA00A227F6 /* PhoneVerification */,
 				347847271EA8CBFA00A227F6 /* Register */,
-				3478472C1EA8CBFA00A227F6 /* SecurityQuestion */,
 				347847311EA8CBFA00A227F6 /* SignInProviderListView.swift */,
 				347847321EA8CBFA00A227F6 /* WebViewSignInViewController.swift */,
 				347847331EA8CBFA00A227F6 /* WebViewSignInViewController.xib */,
@@ -7032,18 +7041,6 @@
 			path = Logout;
 			sourceTree = "<group>";
 		};
-		347847211EA8CBFA00A227F6 /* PhoneVerification */ = {
-			isa = PBXGroup;
-			children = (
-				347847221EA8CBFA00A227F6 /* ChangePhoneNumberViewController.swift */,
-				347847231EA8CBFA00A227F6 /* ChangePhoneNumberViewController.xib */,
-				347847241EA8CBFA00A227F6 /* PhoneVerificationRequest.swift */,
-				347847251EA8CBFA00A227F6 /* PhoneVerificationViewController.swift */,
-				347847261EA8CBFA00A227F6 /* PhoneVerificationViewController.xib */,
-			);
-			path = PhoneVerification;
-			sourceTree = "<group>";
-		};
 		347847271EA8CBFA00A227F6 /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -7053,17 +7050,6 @@
 				3478472B1EA8CBFA00A227F6 /* stringregister.h */,
 			);
 			path = Register;
-			sourceTree = "<group>";
-		};
-		3478472C1EA8CBFA00A227F6 /* SecurityQuestion */ = {
-			isa = PBXGroup;
-			children = (
-				3478472D1EA8CBFA00A227F6 /* SecurityQuestionTweaks.h */,
-				3478472E1EA8CBFA00A227F6 /* SecurityQuestionTweaks.m */,
-				3478472F1EA8CBFA00A227F6 /* SecurityQuestionViewController.swift */,
-				347847301EA8CBFA00A227F6 /* SecurityQuestionViewController.xib */,
-			);
-			path = SecurityQuestion;
 			sourceTree = "<group>";
 		};
 		347847341EA8CBFA00A227F6 /* Address */ = {
@@ -9961,6 +9947,40 @@
 			path = Fixture;
 			sourceTree = "<group>";
 		};
+		62B077E61EA8D11A00F1B60F /* OTP */ = {
+			isa = PBXGroup;
+			children = (
+				62B077E71EA8D11A00F1B60F /* OTPRequest.swift */,
+				62B077E81EA8D11A00F1B60F /* PhoneVerification */,
+				62B077ED1EA8D11A00F1B60F /* SecurityQuestion */,
+			);
+			path = OTP;
+			sourceTree = "<group>";
+		};
+		62B077E81EA8D11A00F1B60F /* PhoneVerification */ = {
+			isa = PBXGroup;
+			children = (
+				62B077E91EA8D11A00F1B60F /* ChangePhoneNumberViewController.swift */,
+				62B077EA1EA8D11A00F1B60F /* ChangePhoneNumberViewController.xib */,
+				62B077EB1EA8D11A00F1B60F /* PhoneVerificationViewController.swift */,
+				62B077EC1EA8D11A00F1B60F /* PhoneVerificationViewController.xib */,
+			);
+			path = PhoneVerification;
+			sourceTree = "<group>";
+		};
+		62B077ED1EA8D11A00F1B60F /* SecurityQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				62B077EE1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.swift */,
+				62B077EF1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.xib */,
+				62B077F01EA8D11A00F1B60F /* SecurityQuestionTweaks.h */,
+				62B077F11EA8D11A00F1B60F /* SecurityQuestionTweaks.m */,
+				62B077F21EA8D11A00F1B60F /* SecurityQuestionViewController.swift */,
+				62B077F31EA8D11A00F1B60F /* SecurityQuestionViewController.xib */,
+			);
+			path = SecurityQuestion;
+			sourceTree = "<group>";
+		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -10277,7 +10297,6 @@
 				3478514F1EA8CC0200A227F6 /* NoResult.xib in Resources */,
 				347854DF1EA8CC0600A227F6 /* icon_home_active@3x.png in Resources */,
 				347854D71EA8CC0600A227F6 /* notifikasi.png in Resources */,
-				347850C01EA8CC0100A227F6 /* SecurityQuestionViewController.xib in Resources */,
 				3478518D1EA8CC0200A227F6 /* GeneralTableViewController.xib in Resources */,
 				3478547C1EA8CC0600A227F6 /* PenilaianUserCell.xib in Resources */,
 				347851671EA8CC0200A227F6 /* DepositSummaryViewController.xib in Resources */,
@@ -10317,6 +10336,7 @@
 				347852611EA8CC0300A227F6 /* DetailProductWholesaleTableCell.xib in Resources */,
 				347854461EA8CC0500A227F6 /* TransactionCartViewController.xib in Resources */,
 				347853D81EA8CC0500A227F6 /* ShopInfoAddressCell.xib in Resources */,
+				62B077F61EA8D11A00F1B60F /* ChangePhoneNumberViewController.xib in Resources */,
 				3478539E1EA8CC0400A227F6 /* SettingNotificationViewController.xib in Resources */,
 				347850EE1EA8CC0100A227F6 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				347854FB1EA8CC0600A227F6 /* vt-iOSlib-1.0.1.zip in Resources */,
@@ -10362,6 +10382,7 @@
 				3478547A1EA8CC0600A227F6 /* ProfileFavoriteShopViewController.xib in Resources */,
 				347853DA1EA8CC0500A227F6 /* ShopInfoAddressView.xib in Resources */,
 				3478548E1EA8CC0600A227F6 /* TalkCell.xib in Resources */,
+				62B077FA1EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.xib in Resources */,
 				347852FE1EA8CC0400A227F6 /* ResolutionCenterCreateViewController.xib in Resources */,
 				347853891EA8CC0400A227F6 /* SettingAddressDetailViewController.xib in Resources */,
 				347851CD1EA8CC0200A227F6 /* InboxMessageCell.xib in Resources */,
@@ -10527,7 +10548,6 @@
 				347851D51EA8CC0200A227F6 /* InboxRootViewController.xib in Resources */,
 				347850F01EA8CC0100A227F6 /* ScreenshotAlertView.xib in Resources */,
 				347850FF1EA8CC0200A227F6 /* CameraAlbumListViewController.xib in Resources */,
-				347850BB1EA8CC0100A227F6 /* PhoneVerificationViewController.xib in Resources */,
 				347854271EA8CC0500A227F6 /* TrackOrderViewController.xib in Resources */,
 				347852681EA8CC0300A227F6 /* ProductTalkDetailViewController.xib in Resources */,
 				347853FD1EA8CC0500A227F6 /* FilterConditionViewController.xib in Resources */,
@@ -10582,7 +10602,6 @@
 				347852B01EA8CC0300A227F6 /* ReviewSummaryViewController.xib in Resources */,
 				347851321EA8CC0200A227F6 /* CategoryIntermediarySeeAllView.xib in Resources */,
 				3478531B1EA8CC0400A227F6 /* RejectReasonEditPriceViewController.xib in Resources */,
-				347850B81EA8CC0100A227F6 /* ChangePhoneNumberViewController.xib in Resources */,
 				3478524C1EA8CC0300A227F6 /* PriceAlertCell.xib in Resources */,
 				347852BB1EA8CC0300A227F6 /* ProfileContactViewController.xib in Resources */,
 				3478521A1EA8CC0300A227F6 /* WebViewController.xib in Resources */,
@@ -10641,12 +10660,14 @@
 				347850E31EA8CC0100A227F6 /* AlertPhoneVerification.xib in Resources */,
 				347852711EA8CC0300A227F6 /* ProductAddEditViewController.xib in Resources */,
 				347853A01EA8CC0400A227F6 /* SettingPasswordViewController.xib in Resources */,
+				62B077FD1EA8D11A00F1B60F /* SecurityQuestionViewController.xib in Resources */,
 				347853EE1EA8CC0500A227F6 /* ShopNotesPageViewController.xib in Resources */,
 				3478515C1EA8CC0200A227F6 /* DepositFormAccountBankViewController.xib in Resources */,
 				3478511C1EA8CC0200A227F6 /* CatalogSpecificationCell.xib in Resources */,
 				347854031EA8CC0500A227F6 /* FilterLocationViewController.xib in Resources */,
 				3478521D1EA8CC0300A227F6 /* MyShopAddressDetailViewController.xib in Resources */,
 				347850D51EA8CC0100A227F6 /* AlertInfoView.xib in Resources */,
+				62B077F81EA8D11A00F1B60F /* PhoneVerificationViewController.xib in Resources */,
 				347851CA1EA8CC0200A227F6 /* HotlistResultViewController.xib in Resources */,
 				347850D71EA8CC0100A227F6 /* AlertListBankCell.xib in Resources */,
 				3478528C1EA8CC0300A227F6 /* GiveReviewDetailViewController.xib in Resources */,
@@ -10836,6 +10857,7 @@
 				347852D91EA8CC0400A227F6 /* PulsaRelationCategory.swift in Sources */,
 				3478505E1EA8CC0100A227F6 /* TransactionSystemBank.m in Sources */,
 				3478540F1EA8CC0500A227F6 /* TKPInfoWindowMapView.swift in Sources */,
+				62B077F91EA8D11A00F1B60F /* ChangePhoneNumberSQViewController.swift in Sources */,
 				347854B21EA8CC0600A227F6 /* RSA.m in Sources */,
 				34784E831EA8CC0000A227F6 /* DigitalState.swift in Sources */,
 				3478519C1EA8CC0200A227F6 /* HomePageCategoryData.swift in Sources */,
@@ -10849,7 +10871,6 @@
 				347850F81EA8CC0200A227F6 /* AddCaptionTextFieldCell.swift in Sources */,
 				3478549F1EA8CC0600A227F6 /* NSString+URLEncoding.m in Sources */,
 				347854C11EA8CC0600A227F6 /* DelayedActionManager.swift in Sources */,
-				347850B91EA8CC0100A227F6 /* PhoneVerificationRequest.swift in Sources */,
 				3478548F1EA8CC0600A227F6 /* TalkModelView.m in Sources */,
 				347851EB1EA8CC0200A227F6 /* RequestResolution.swift in Sources */,
 				347852801EA8CC0300A227F6 /* ProductWishlistCell.swift in Sources */,
@@ -11108,6 +11129,7 @@
 				34784F5E1EA8CC0000A227F6 /* InboxTicketDetail.m in Sources */,
 				347853CC1EA8CC0500A227F6 /* EditShopViewController.m in Sources */,
 				34784FFD1EA8CC0100A227F6 /* ShipmentCourierPackage.m in Sources */,
+				62B077FC1EA8D11A00F1B60F /* SecurityQuestionViewController.swift in Sources */,
 				347851971EA8CC0200A227F6 /* HistoryProductViewController.m in Sources */,
 				347853871EA8CC0400A227F6 /* SpellCheckResult.m in Sources */,
 				347854111EA8CC0500A227F6 /* TKPMapView.swift in Sources */,
@@ -11116,7 +11138,6 @@
 				347850CE1EA8CC0100A227F6 /* AlertDatePickerView.m in Sources */,
 				347851521EA8CC0200A227F6 /* ProgressBarView.m in Sources */,
 				347850DC1EA8CC0100A227F6 /* AlertListView.m in Sources */,
-				347850BE1EA8CC0100A227F6 /* SecurityQuestionTweaks.m in Sources */,
 				347852001EA8CC0300A227F6 /* InboxTalkViewController.m in Sources */,
 				347852371EA8CC0300A227F6 /* CourierProductViewCell.m in Sources */,
 				347854B71EA8CC0600A227F6 /* TKPGooglePlaceDetailProductStore.m in Sources */,
@@ -11441,6 +11462,7 @@
 				3478522B1EA8CC0300A227F6 /* MyShopPaymentCell.m in Sources */,
 				34784F041EA8CC0000A227F6 /* EnvelopeResponse.swift in Sources */,
 				34784E891EA8CC0000A227F6 /* DigitalCartPayment.swift in Sources */,
+				62B077FB1EA8D11A00F1B60F /* SecurityQuestionTweaks.m in Sources */,
 				34784FB01EA8CC0000A227F6 /* AddressFormList.m in Sources */,
 				347853C31EA8CC0500A227F6 /* EditShopDataSource.m in Sources */,
 				3478549E1EA8CC0600A227F6 /* NSString+TPBaseUrl.m in Sources */,
@@ -11480,6 +11502,7 @@
 				347851AC1EA8CC0200A227F6 /* MyWishlistData.swift in Sources */,
 				34784EF41EA8CC0000A227F6 /* ReviewResult.m in Sources */,
 				34784E7A1EA8CC0000A227F6 /* DigitalAnalyticsManager.swift in Sources */,
+				62B078001EA8D12400F1B60F /* ChangePhoneNumberStatus.swift in Sources */,
 				347851AF1EA8CC0200A227F6 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
 				34784F3C1EA8CC0000A227F6 /* InboxResolutionPendingAmount.m in Sources */,
 				34784FC91EA8CC0000A227F6 /* ShopBadgeLevel.m in Sources */,
@@ -11800,7 +11823,6 @@
 				3478530D1EA8CC0400A227F6 /* DueDateViewController.m in Sources */,
 				34784F941EA8CC0000A227F6 /* ProductEdit.swift in Sources */,
 				347855101EA8CC0600A227F6 /* MHVerticalTabBarController.m in Sources */,
-				347850B71EA8CC0100A227F6 /* ChangePhoneNumberViewController.swift in Sources */,
 				34784EB11EA8CC0000A227F6 /* SignInProvider.swift in Sources */,
 				347851BF1EA8CC0200A227F6 /* HomeFlowLayout.m in Sources */,
 				34784FCB1EA8CC0000A227F6 /* RequestObject.m in Sources */,
@@ -11828,7 +11850,6 @@
 				3478534C1EA8CC0400A227F6 /* SalesTransactionListViewController.m in Sources */,
 				34784F971EA8CC0000A227F6 /* ProductEditInfo.swift in Sources */,
 				34784F3A1EA8CC0000A227F6 /* InboxResolutionCenterList.m in Sources */,
-				347850BA1EA8CC0100A227F6 /* PhoneVerificationViewController.swift in Sources */,
 				347850161EA8CC0100A227F6 /* Address.m in Sources */,
 				347854061EA8CC0500A227F6 /* SortViewController.m in Sources */,
 				347853BE1EA8CC0500A227F6 /* CloseShopRequest.m in Sources */,
@@ -11839,6 +11860,7 @@
 				347854921EA8CC0600A227F6 /* URLCacheAlert.m in Sources */,
 				347854A21EA8CC0600A227F6 /* NSURL+TKPURL.m in Sources */,
 				34784ECD1EA8CC0000A227F6 /* ContactUsResult.m in Sources */,
+				62B078011EA8D12400F1B60F /* ImageSizeValidation.swift in Sources */,
 				34784FD81EA8CC0100A227F6 /* OrderHistory.m in Sources */,
 				3478521C1EA8CC0300A227F6 /* MyShopAddressDetailViewController.m in Sources */,
 				347852BC1EA8CC0300A227F6 /* PromoCollectionReusableView.m in Sources */,
@@ -11848,6 +11870,7 @@
 				3478530F1EA8CC0400A227F6 /* OrderRejectExplanationViewController.m in Sources */,
 				347850221EA8CC0100A227F6 /* ShopInfoResult.m in Sources */,
 				34784F341EA8CC0000A227F6 /* InboxMessageReplyTime.m in Sources */,
+				62B077F51EA8D11A00F1B60F /* ChangePhoneNumberViewController.swift in Sources */,
 				3478534A1EA8CC0400A227F6 /* FilterSalesTransactionListViewController.m in Sources */,
 				34784ECE1EA8CC0000A227F6 /* TicketCategory.m in Sources */,
 				347850891EA8CC0100A227F6 /* OrderDetailForm.m in Sources */,
@@ -11899,6 +11922,7 @@
 				34784F841EA8CC0000A227F6 /* SkipReview.m in Sources */,
 				34784F931EA8CC0000A227F6 /* PriceAlertResult.m in Sources */,
 				347854791EA8CC0600A227F6 /* ProfileFavoriteShopViewController.m in Sources */,
+				62B077F41EA8D11A00F1B60F /* OTPRequest.swift in Sources */,
 				347854FE1EA8CC0600A227F6 /* CMPopTipView.m in Sources */,
 				34784F381EA8CC0000A227F6 /* ResolutionActionResult.m in Sources */,
 				34784EFB1EA8CC0000A227F6 /* TalkCommentResult.m in Sources */,
@@ -11998,6 +12022,7 @@
 				347851271EA8CC0200A227F6 /* CategoryIntermediaryChild.swift in Sources */,
 				34784FDF1EA8CC0100A227F6 /* OrderSellerShop.m in Sources */,
 				347850741EA8CC0100A227F6 /* TransactionSummaryDetail.m in Sources */,
+				62B077F71EA8D11A00F1B60F /* PhoneVerificationViewController.swift in Sources */,
 				347851C51EA8CC0200A227F6 /* HotlistViewController.m in Sources */,
 				347851961EA8CC0200A227F6 /* FavoriteShopRequest.m in Sources */,
 				34784EC01EA8CC0000A227F6 /* CatalogShopAWSResult.m in Sources */,
@@ -12033,7 +12058,6 @@
 				34784EEC1EA8CC0000A227F6 /* ProductReturnInfo.swift in Sources */,
 				347852701EA8CC0300A227F6 /* ProductAddEditViewController.m in Sources */,
 				347854021EA8CC0500A227F6 /* FilterLocationViewController.m in Sources */,
-				347850BF1EA8CC0100A227F6 /* SecurityQuestionViewController.swift in Sources */,
 				347854181EA8CC0500A227F6 /* TokopediaNetworkManager.m in Sources */,
 				347850391EA8CC0100A227F6 /* Province.m in Sources */,
 				34784F8D1EA8CC0000A227F6 /* NotificationSales.m in Sources */,

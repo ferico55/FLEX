@@ -75,6 +75,7 @@
 #define GA_EVENT_CATEGORY_QUICK_ACTION @"Quick Action"
 #define GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER @"Verify Phone Number"
 #define GA_EVENT_CATEGORY_ADD_PRODUCT @"Add Product"
+#define GA_EVENT_CATEGORY_CHANGE_PHONE_NUMBER @"Change Phone Number"
 #define GA_EVENT_CATEGORY_RECHARGE @"Recharge"
 #define GA_EVENT_CATEGORY_SCREENSHOT @"Screenshot"
 

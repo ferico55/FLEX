@@ -195,7 +195,12 @@ class DigitalService {
             oAuthToken.tokenType = dict["oAuthToken.tokenType"] as! String
             oAuthToken.accessToken = dict["oAuthToken.accessToken"] as! String
             
-            let securityViewController = SecurityQuestionViewController(name: userName, phoneNumber: "", userID: userId, deviceID: deviceId, token: oAuthToken)
+            let sqObject = SecurityQuestionObjects()
+            sqObject.userID = userId
+            sqObject.deviceID = deviceId
+            sqObject.token = oAuthToken
+            
+            let securityViewController = SecurityQuestionViewController(securityQuestionObject: sqObject)
             securityViewController.hidesBottomBarWhenPushed = true
             securityViewController.questionType1 = "0"
             securityViewController.questionType2 = "2"

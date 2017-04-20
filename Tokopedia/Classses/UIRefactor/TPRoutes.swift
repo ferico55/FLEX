@@ -474,7 +474,7 @@ class TPRoutes: NSObject {
     }
     
     static func triggerPhoneVerification() {
-        let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true)
+        let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true, didVerifiedPhoneNumber: nil)
         let navigationController = UINavigationController(rootViewController: controller)
         UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
     }

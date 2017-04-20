@@ -46,7 +46,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate let phoneNumber : String
     fileprivate let isFirstTimeVisit : Bool
-    var didVerifiedPhoneNumber : ((Void) -> Void)?
+    fileprivate let didVerifiedPhoneNumber : ((Void) -> Void)?
     
     lazy var networkManager : TokopediaNetworkManager = {
         let networkManager = TokopediaNetworkManager()
@@ -80,18 +80,15 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate var isFirstTimeRequest: Bool = true
     
-    init(phoneNumber: String, isFirstTimeVisit: Bool) {
+    init(phoneNumber: String, isFirstTimeVisit: Bool, didVerifiedPhoneNumber: (() -> Void)?) {
         self.phoneNumber = phoneNumber
         self.isFirstTimeVisit = isFirstTimeVisit
+        self.didVerifiedPhoneNumber = didVerifiedPhoneNumber
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        self.timer?.invalidate()
     }
     
     override func viewDidLoad() {
@@ -135,10 +132,10 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func setupView() {
-        self.displayInitialView(whenFirstTimeVisit: isFirstTimeVisit, isFirstTimeRequest: isFirstTimeRequest)
+        self.displayInitialView(whenFirstTimeVisit: isFirstTimeVisit)
         
         if self.phoneNumber == "" {
-            PhoneVerificationRequest.getPhoneNumber(
+            OTPRequest.getPhoneNumber(
                 onSuccess: { (phoneNumber) in
                     self.phoneNumberLabel.text = phoneNumber
             },
@@ -148,7 +145,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         } else {
             self.phoneNumberLabel.text = self.phoneNumber
         }
-                
+        
         self.inputOTPField.delegate = self
         self.inputOTPField.mask = "#  #  #  #  #  #"
         
@@ -159,14 +156,15 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         self.disableVerifyButton()
     }
     
-    fileprivate func displayInitialView(whenFirstTimeVisit firstTimeVisit: Bool, isFirstTimeRequest: Bool) {
-        self.welcomeView.isHidden = !firstTimeVisit
-        self.infoView.isHidden = !firstTimeVisit
+    fileprivate func displayInitialView(whenFirstTimeVisit firstTimeVisit: Bool) {
+        if !firstTimeVisit {
+            self.welcomeView.isHidden = true
+            self.infoView.isHidden = true
+        }
         
-        self.sendOTPBySMSView.isHidden = !isFirstTimeRequest
-        self.resendOTPBySMSView.isHidden = isFirstTimeRequest
-        self.verifyInfoView.isHidden = isFirstTimeRequest
-        self.verificationCodeFieldView.isHidden = isFirstTimeRequest
+        self.resendOTPBySMSView.isHidden = true
+        self.verifyInfoView.isHidden = true
+        self.verificationCodeFieldView.isHidden = true
     }
     
     fileprivate func setupActivityIndicator(onButton button: UIButton, activityIndicator: UIActivityIndicatorView) {
@@ -291,12 +289,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         let controller = ChangePhoneNumberViewController(
             phoneNumber: self.phoneNumberLabel.text!,
             onPhoneNumberChanged: { [weak self] (newPhoneNumber) in
-                self?.timer?.invalidate()
-                self?.isFirstTimeRequest = true
-                self?.displayInitialView(whenFirstTimeVisit: (self?.isFirstTimeVisit)!, isFirstTimeRequest: (self?.isFirstTimeRequest)!)
                 self?.phoneNumberLabel.text = newPhoneNumber
-                self?.inputOTPField.text = ""
-                self?.disableVerifyButton()
         })
         
         AnalyticsManager.trackEventName("clickVerify",
@@ -314,10 +307,13 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                                         category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                         action: GA_EVENT_ACTION_CLICK,
                                         label: "OTP SMS")
-        PhoneVerificationRequest.requestOTP(
+        OTPRequest.requestOTP(
             withMode: "sms",
-            phoneNumber: self.phoneNumberLabel.text!,
-            onSuccess: {
+            type: .phoneVerification,
+            userID: nil,
+            number: self.phoneNumberLabel.text!,
+            token: nil,
+            onSuccess: { (otp) in
                 AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_SUCCESS,
@@ -325,7 +321,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 self.onRequestOTPSuccess()
         },
             onFailure: {
-                AnalyticsManager.trackEventName("verifyFailed",
+                AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_FAILED,
                                                 label: "Request OTP SMS")
@@ -339,10 +335,13 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                                         category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                         action: GA_EVENT_ACTION_CLICK,
                                         label: "Resend OTP SMS")
-        PhoneVerificationRequest.requestOTP(
+        OTPRequest.requestOTP(
             withMode: "sms",
-            phoneNumber: self.phoneNumberLabel.text!,
-            onSuccess: {
+            type: .phoneVerification,
+            userID: nil,
+            number: self.phoneNumberLabel.text!,
+            token: nil,
+            onSuccess: { (otp) in
                 AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_SUCCESS,
@@ -350,7 +349,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 self.onRequestOTPSuccess()
         },
             onFailure: {
-                AnalyticsManager.trackEventName("verifyFailed",
+                AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_FAILED,
                                                 label: "Request OTP SMS")
@@ -364,19 +363,22 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                                         category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                         action: GA_EVENT_ACTION_CLICK,
                                         label: "OTP On Call")
-        PhoneVerificationRequest.requestOTP(
+        OTPRequest.requestOTP(
             withMode: "call",
-            phoneNumber: self.phoneNumberLabel.text!,
-            onSuccess: {
+            type: .phoneVerification,
+            userID: nil,
+            number: self.phoneNumberLabel.text!,
+            token: nil,
+            onSuccess: { (otp) in
                 AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_SUCCESS,
                                                 label: "Request OTP On Call")
-
+                
                 self.onRequestOTPSuccess()
         },
             onFailure: {
-                AnalyticsManager.trackEventName("verifyFailed",
+                AnalyticsManager.trackEventName("verifySuccess",
                                                 category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER,
                                                 action: GA_EVENT_ACTION_REQUEST_FAILED,
                                                 label: "Request OTP On Call")
@@ -400,7 +402,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.showVerifyButtonIsLoading(true)
-        PhoneVerificationRequest.requestVerify(
+        OTPRequest.requestVerify(
             withOTPCode: otpCode,
             phoneNumber: self.phoneNumberLabel.text!,
             onSuccess: {
@@ -433,7 +435,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate func didSuccessVerifyPhoneNumber() {
         self.navigationController?.dismiss(animated: true, completion: nil)
-        self.didVerifiedPhoneNumber?()
+        self.didVerifiedPhoneNumber!()
     }
     
     //MARK: UITextField Delegate

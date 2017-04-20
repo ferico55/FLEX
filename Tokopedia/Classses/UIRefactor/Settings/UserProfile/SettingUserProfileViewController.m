@@ -237,7 +237,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     if([auth isUserPhoneVerified]){
         [self populateViewIfVerifiedStatusIs:YES];
     } else {
-        [PhoneVerificationRequest checkPhoneVerifiedStatusOnSuccess:^(NSString * _Nonnull result) {
+        [OTPRequest checkPhoneVerifiedStatusOnSuccess:^(NSString * _Nonnull result) {
             [self populateViewIfVerifiedStatusIs:[result boolValue]];
         } onFailure:^{
             [self populateViewIfVerifiedStatusIs:NO];
@@ -387,10 +387,10 @@ typedef NS_ENUM(NSInteger, PickerView) {
     __weak typeof(self) weakSelf = self;
     PhoneVerificationViewController *vc = [[PhoneVerificationViewController alloc]
                                            initWithPhoneNumber:_userData.user_phone
-                                           isFirstTimeVisit:NO];
-    vc.didVerifiedPhoneNumber = ^{
-        [weakSelf requestGetData];
-    };
+                                           isFirstTimeVisit:NO didVerifiedPhoneNumber:^{
+                                               [weakSelf requestGetData];
+                                           }];
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
