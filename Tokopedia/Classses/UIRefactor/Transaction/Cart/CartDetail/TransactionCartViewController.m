@@ -1443,7 +1443,7 @@
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
         
         [self adjustGrandTotal];
-        
+        [self isLoading:NO];
         [AnalyticsManager localyticsTrackCartView:_cart];
         [self reloadNotification];
         
@@ -1451,6 +1451,7 @@
         [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
+        [self isLoading:NO];
     }];
 }
 
