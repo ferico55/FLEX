@@ -146,7 +146,7 @@ typedef enum TagRequest {
         
         RegisterViewController* controller = [RegisterViewController new];
         controller.onLoginSuccess = ^() {
-            [weakSelf.tabBarController setSelectedIndex:2];
+            [weakSelf.tabBarController setSelectedIndex:3];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
         };
         [weakSelf.navigationController pushViewController:controller animated:YES];

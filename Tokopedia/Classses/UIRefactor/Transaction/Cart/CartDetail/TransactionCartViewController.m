@@ -172,11 +172,7 @@
     [self initNoLoginView];
     [self initNotificationManager];
     
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    if (auth.isLogin) {
-        [self refreshRequestCart];
-        _noLoginView.hidden = YES;
-    }
+    [self refreshRequestCart];
     
     [AnalyticsManager trackScreenName:@"Shopping Cart"];
 }
@@ -1061,7 +1057,15 @@
     [self doClearAllData];
     [_refreshControl beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:NO];
-    [self requestCartData];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    [_noInternetConnectionView removeFromSuperview];
+    [self isLoading:NO];
+    if (auth.isLogin) {
+        [self userLogin];
+        [self requestCartData];
+    } else {
+        [self userLogout];
+    }
 }
 
 -(void)doClearAllData
@@ -1420,11 +1424,9 @@
 
 -(void)requestCartData{
     
-    _isLoadingRequest = YES;
     _checkoutButton.enabled = NO;
 
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
-        [_noInternetConnectionView removeFromSuperview];
         NSArray<TransactionCartList*> *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
@@ -1442,7 +1444,6 @@
         
         [self adjustGrandTotal];
         
-        [self isLoading:NO];
         [AnalyticsManager localyticsTrackCartView:_cart];
         [self reloadNotification];
         
@@ -1450,10 +1451,6 @@
         [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
-        if (_list.count <=0) {
-            _tableView.tableFooterView =_loadingView.view;
-        }
-        [self isLoading:NO];
     }];
 }
 
