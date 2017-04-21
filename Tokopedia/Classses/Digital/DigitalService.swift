@@ -20,8 +20,9 @@ class DigitalService {
         categoryId: String,
         inputFields: [String: String],
         instantPaymentEnabled: Bool,
-        onNavigateToCart: @escaping () -> (),
-        onNeedLoading: @escaping () -> () = {}) -> Observable<Void> {
+        onNavigateToCart: @escaping () -> Void,
+        onNeedLoading: @escaping () -> Void = {}
+    ) -> Observable<Void> {
         
         // prevent crash on home
         let viewController = viewController.navigationController!.topViewController!
@@ -39,9 +40,10 @@ class DigitalService {
                     .request(.addToCart(
                         withProductId: productId,
                         inputFields: inputFields,
-                        instantCheckout: instantPaymentEnabled))
+                        instantCheckout: instantPaymentEnabled
+                    ))
             }
-            .mapJSON() //TODO: use proper mapping
+            .mapJSON() // TODO: use proper mapping
             .flatMap { response -> Observable<Void> in
                 onNavigateToCart()
                 
@@ -60,14 +62,14 @@ class DigitalService {
                     throw errorMessage
                 }
             }
-            .do(onError: { error in
+            .do(onError: { _ in
                 _ = viewController.navigationController?.popToViewController(viewController, animated: true)
             })
             .flatMap { () -> Observable<UrlQueryPair> in
                 if instantPaymentEnabled {
                     onNeedLoading()
                     
-                    return self.cart(categoryId: categoryId) //FIXME: reference cycle
+                    return self.cart(categoryId: categoryId) // FIXME: reference cycle
                         .flatMap { cartId -> Observable<Response> in
                             onNeedLoading()
                             
@@ -106,7 +108,7 @@ class DigitalService {
                     
                     return cartViewController.cartPayment
                         .map { cartPayment in
-                            return (cartPayment.redirectUrl, cartPayment.queryString)
+                            (cartPayment.redirectUrl, cartPayment.queryString)
                         }
                 }
             }.map { url, queryString in
@@ -121,9 +123,9 @@ class DigitalService {
                 
                 var viewControllers = viewController.navigationController!.childViewControllers
                 
-//                while viewControllers.last !== viewController {
-//                    _ = viewControllers.popLast()
-//                }
+                //                while viewControllers.last !== viewController {
+                //                    _ = viewControllers.popLast()
+                //                }
                 
                 viewControllers.append(webView)
                 
@@ -158,7 +160,7 @@ class DigitalService {
                 header: header,
                 parameter: parameters,
                 mapping: JSONAPIResponse.mapping(),
-                onSuccess: { mappingResult, operation in
+                onSuccess: { mappingResult, _ in
                     let response = mappingResult.dictionary() as Dictionary
                     let json = response[""] as! JSONAPIResponse
                     
@@ -166,7 +168,7 @@ class DigitalService {
                     
                     observer.onNext(cartId)
                 },
-                onFailure: { error in
+                onFailure: { _ in
                     observer.onError(NSError(domain: "domain", code: -999))
                 }
             )
@@ -204,7 +206,7 @@ class DigitalService {
             securityViewController.hidesBottomBarWhenPushed = true
             securityViewController.questionType1 = "0"
             securityViewController.questionType2 = "2"
-            securityViewController.successAnswerCallback =  { _ in
+            securityViewController.successAnswerCallback = { _ in
                 observer.onNext()
                 observer.onCompleted()
             }
@@ -212,10 +214,21 @@ class DigitalService {
             viewController.present(UINavigationController(rootViewController: securityViewController), animated: true, completion: nil)
             
             return Disposables.create()
-            }.flatMap { () -> Observable<Void> in
-                return DigitalProvider()
-                    .request(.otpSuccess(cartId))
-                    .map { _ in return }
         }
+        .flatMap { () -> Observable<Void> in
+            DigitalProvider()
+                .request(.otpSuccess(cartId))
+                .map { _ in return }
+        }
+        .do(
+            // TODO: try to use onCompleted
+            onNext: {
+                viewController.dismiss(animated: true, completion: nil)
+            },
+            onError: { _ in
+                viewController.dismiss(animated: true, completion: nil)
+            }
+        )
+        
     }
 }
