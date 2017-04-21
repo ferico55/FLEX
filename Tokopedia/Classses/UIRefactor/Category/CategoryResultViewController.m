@@ -259,7 +259,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     [self doPageLaoading];
-    [self requestIntermediaryCategory];
+    [self requestSearch];
     
     [_toolbarView setHidden: YES];
     [_fourButtonsToolbar setHidden:YES];
@@ -636,7 +636,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     [self doPageLaoading];
-    [self requestIntermediaryCategory];
+    [self requestSearch];
     
     [_act startAnimating];
 }
