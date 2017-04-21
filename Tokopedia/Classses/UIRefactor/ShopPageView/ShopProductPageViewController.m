@@ -190,7 +190,7 @@ ShopTabChild
     [self refreshView:nil];
 }
 
-- (void)tabWillChange {
+- (void)tabWillChangeTo:(UIViewController *)target {
     [self.view endEditing:YES];
 }
 

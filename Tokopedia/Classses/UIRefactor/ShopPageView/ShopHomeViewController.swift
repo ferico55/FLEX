@@ -99,6 +99,12 @@ extension ShopHomeViewController: ShopTabChild {
     func refreshContent() {
         self.webView.load(URLRequest(url: URL(string: self.url)!))
     }
+    
+    func tabWillChange(to target: UIViewController) {
+        if target !== self {
+            webView.load(URLRequest(url: URL(string: self.url)!))
+        }
+    }
 }
 
 extension ShopHomeViewController: WKNavigationDelegate {

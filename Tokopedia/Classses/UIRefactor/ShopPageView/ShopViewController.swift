@@ -417,9 +417,10 @@ extension ShopViewController: MXSegmentedPagerDataSource {
 
 extension ShopViewController: MXSegmentedPagerDelegate {
     func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
+        
         tabChildren.forEach { (child) in
             let tabChild = child.viewController as? ShopTabChild
-            tabChild?.tabWillChange?()
+            tabChild?.tabWillChange?(to: tabChildren[index].viewController)
         }
     }
 }
