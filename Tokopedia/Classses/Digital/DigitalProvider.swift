@@ -24,13 +24,15 @@ class DigitalProvider: RxMoyaProvider<DigitalTarget> {
         
         let appVersion = UIApplication.getAppVersionString()
         
+        let userId = UserAuthentificationManager().getUserId()!
+        
         var headers = [
             "Accept": "application/json",
             "X-APP-VERSION": appVersion,
             "X-Device": "ios-\(appVersion)",
             "Accept-Language": "id-ID",
             "Accept-Encoding": "gzip",
-            "X-User-ID": UserAuthentificationManager().getUserId()!,
+            "X-Tkpd-UserId": userId,
             "Idempotency-Key": UUID().uuidString
         ]
         
@@ -67,10 +69,10 @@ extension DigitalTarget: TargetType {
     /// The path to be appended to `baseURL` to form the full `URL`.
     var path: String {
         switch self {
-        case .addToCart: return "/v1.2/cart"
-        case .payment: return "/v1.2/checkout"
-        case let .category(categoryId): return "/v1.2/category/\(categoryId)"
-        case .otpSuccess: return "/v1.2/cart/otp-success"
+        case .addToCart: return "/v1.3/cart"
+        case .payment: return "/v1.3/checkout"
+        case let .category(categoryId): return "/v1.3/category/\(categoryId)"
+        case .otpSuccess: return "/v1.3/cart/otp-success"
         }
     }
     

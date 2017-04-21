@@ -276,7 +276,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         let parameters: [String:String] = ["category_id":categoryId]
         let user = UserAuthentificationManager()
         networkManager.isUsingHmac = true
-        networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.2/cart", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponse.mapping(), onSuccess: { [weak self] (mappingResult, operation) in
+        networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.3/cart", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponse.mapping(), onSuccess: { [weak self] (mappingResult, operation) in
             let response : Dictionary = mappingResult.dictionary() as Dictionary
             let json = response[""] as! JSONAPIResponse
             if (json.data != nil) {
@@ -371,7 +371,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             let user = UserAuthentificationManager()
             
             networkManager.isUsingHmac = true
-            networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.2/voucher/check", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponseVoucher.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
+            networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.3/voucher/check", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponseVoucher.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
                 let response : Dictionary = mappingResult.dictionary() as Dictionary
                 let json = response[""] as! JSONAPIResponseVoucher
                 if (json.data != nil) {

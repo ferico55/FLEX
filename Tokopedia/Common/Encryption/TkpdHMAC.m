@@ -75,8 +75,8 @@
     [self setSecret:secret];
     
     
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], @"application/json",
-                              date, [self getTkpdPath]];
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\nx-tkpd-userid:%@\n%@", method, [self getParameterMD5], @"application/json",
+                              date, [UserAuthentificationManager new].getUserId, [self getTkpdPath]];
     
     const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
     const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
