@@ -201,6 +201,7 @@ class DigitalService {
             sqObject.userID = userId
             sqObject.deviceID = deviceId
             sqObject.token = oAuthToken
+            sqObject.name = userName
             
             let securityViewController = SecurityQuestionViewController(securityQuestionObject: sqObject)
             securityViewController.hidesBottomBarWhenPushed = true

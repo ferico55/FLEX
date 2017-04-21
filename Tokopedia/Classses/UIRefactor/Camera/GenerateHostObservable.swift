@@ -49,7 +49,7 @@ class GenerateHostObservable: NSObject {
     class func getAccountsGeneratedHost(_ userID: String, token: OAuthToken) -> Observable<GeneratedHost> {
         return Observable.create({ (observer) -> Disposable in
             let parameter = ["user_id" : userID,
-                             "new_add" : "1"]
+                             "new_add" : "2"]
             
             let header = ["Authorization" : "\(token.tokenType!) \(token.accessToken!)"]
             

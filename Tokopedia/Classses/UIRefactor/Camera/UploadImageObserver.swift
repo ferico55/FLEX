@@ -69,7 +69,7 @@ class UploadImageObserver: NSObject {
             postObject.token = token
             postObject.web_service = "1"
             
-            let baseURLString = host.upload_host
+            let baseURLString = "https://\(host.upload_host)"
             
             imageObject.asset.fetchOriginalImage(false, completeBlock: { (image, info) in
                 RequestUploadImage.requestUploadImage(image!,
