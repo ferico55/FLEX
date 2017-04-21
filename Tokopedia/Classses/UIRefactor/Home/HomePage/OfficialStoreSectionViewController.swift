@@ -32,8 +32,12 @@ class OfficialStoreHomeItem: NSObject {
 
 @objc(OfficialStoreSectionViewController)
 class OfficialStoreSectionViewController: UIViewController {
+    
+    fileprivate var separatorGrayColor = UIColor(red: 241.0/255, green: 241.0/255, blue: 241.0/255, alpha: 1.0)
 
     private let shops: [OfficialStoreHomeItem]
+    
+    @IBOutlet weak var buttonSeeAll: UIButton!
     
     @IBOutlet private var imageContainer: OAStackView!
 
@@ -52,6 +56,9 @@ class OfficialStoreSectionViewController: UIViewController {
         shops.forEach { shop in
             let view = UIView()
             view.backgroundColor = .white
+            view.layer.borderColor = separatorGrayColor.cgColor
+            view.layer.cornerRadius = 2
+            view.layer.borderWidth = 1
             view.mas_makeConstraints { make in
                 make?.width.equalTo()(view.mas_height)
                 make?.width.greaterThanOrEqualTo()(1)
@@ -72,6 +79,10 @@ class OfficialStoreSectionViewController: UIViewController {
             
             view.bk_(whenTapped: { [unowned self] in
                 self.openShopWithItem(shop)
+            })
+            
+            buttonSeeAll.bk_(whenTapped: { [unowned self] in
+                self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
             })
         }
         
@@ -96,5 +107,14 @@ class OfficialStoreSectionViewController: UIViewController {
         ]
         
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    fileprivate func goToWebView(_ urlString: String) {
+        let authenticationManager = UserAuthentificationManager()
+        
+        let webViewVC = WebViewController()
+        webViewVC.strURL = authenticationManager.webViewUrl(fromUrl: urlString)
+        webViewVC.shouldAuthorizeRequest = authenticationManager.isLogin
+        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
 }
