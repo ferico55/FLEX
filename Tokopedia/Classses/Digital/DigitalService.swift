@@ -153,7 +153,7 @@ class DigitalService {
             
             networkManager.request(
                 withBaseUrl: NSString.pulsaApiUrl(),
-                path: "/v1.2/cart",
+                path: "/v1.3/cart",
                 method: .GET,
                 header: header,
                 parameter: parameters,
