@@ -209,7 +209,7 @@ class DigitalService {
                 observer.onCompleted()
             }
             
-            viewController.navigationController?.pushViewController(securityViewController, animated: true)
+            viewController.present(UINavigationController(rootViewController: securityViewController), animated: true, completion: nil)
             
             return Disposables.create()
             }.flatMap { () -> Observable<Void> in

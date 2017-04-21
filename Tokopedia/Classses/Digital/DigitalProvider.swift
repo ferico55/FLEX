@@ -101,7 +101,7 @@ extension DigitalTarget: TargetType {
                         "product_id": Int(productId)!,
                         "device_id": 7,
                         "instant_checkout": instantCheckout,
-                        "ip_address": getIFAddresses(),
+                        "ip_address": "127.0.0.1",
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0",
@@ -128,7 +128,7 @@ extension DigitalTarget: TargetType {
                     "type":"checkout",
                     "attributes": [
                         "device_id": 7,
-                        "ip_address": getIFAddresses(),
+                        "ip_address": "127.0.0.1",
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5",
