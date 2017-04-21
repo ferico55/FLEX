@@ -1079,12 +1079,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                           _isCategorySubviewExpanded = NO;
                                                           
                                                            [self setProductListBaseLayout];
-                                                          
-                                                          [weakSelf requestSearch];
+                                                          [weakSelf showEntireView];
                                                       }
                                                   }
                                                   onFailure:^(NSError * _Nonnull errorResult) {
-                                                      [weakSelf requestSearch];
+                                                      [weakSelf showEntireView];
                                                   }];
 }
 
@@ -1384,6 +1383,12 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 #pragma mark - Other Method
+- (void) showEntireView {
+    [_toolbarView setHidden: NO];
+    [_fourButtonsToolbar setHidden:NO];
+    [_collectionView reloadData];
+    [self stopPageLoading];
+}
 - (void)configureGTM {
     [AnalyticsManager trackUserInformation];
     
@@ -1471,12 +1476,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                 [_promo addObject:[NSArray new]];
                                             }
                                         }
-                                        
-                                        [_collectionView reloadData];
-                                        [weakSelf stopPageLoading];
+                                        [self requestIntermediaryCategory];
                                     } onFailure:^(NSError *error) {
-                                        [_collectionView reloadData];
-                                        [weakSelf stopPageLoading];
+                                        [self requestIntermediaryCategory];
                                     }];
     }
 }

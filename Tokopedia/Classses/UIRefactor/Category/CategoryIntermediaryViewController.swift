@@ -233,7 +233,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                                 view.borderColor = .tpLine()
                                 view.bk_(whenTapped: {
                                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: GA_EVENT_INTERMEDIARY_PAGE, action: GA_EVENT_ACTION_HOTLIST, label: child.title)
-                                    TPRoutes.routeURL(URL(string:"\(NSString.tokopediaUrl())/hot/\(child.alk)")!)
+                                    TPRoutes.routeURL(URL(string:"\(child.url)")!)
                                 })
 
                                 }.add(children: [Node<UIImageView>() { view, layout, size in
