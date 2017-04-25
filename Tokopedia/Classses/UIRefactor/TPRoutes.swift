@@ -110,6 +110,65 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("product/:productId/review") { (params: [String : Any]!) -> Bool in
+            let productId = params["productId"] as! String
+            navigator.navigateToProductReview(from: UIApplication.topViewController(), withProductID:productId)
+            return true
+        }
+        
+        //cart
+        JLRoutes.global().addRoute("cart") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToCart(from: UIApplication.topViewController())
+            return true
+        }
+        
+        //seller transactions
+        JLRoutes.global().addRoute("seller/new-order") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToSellerNewOrder(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("seller/shipment") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToSellerShipment(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("seller/status") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToSellerShipmentStatus(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("seller/history") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToSellerHistory(from: UIApplication.topViewController())
+            return true
+        }
+        
+        //buyer transactions
+        JLRoutes.global().addRoute("buyer/payment") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToBuyerPayment(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("buyer/order") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToBuyerOrder(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("buyer/shipping-confirm") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToBuyerShippingConf(from: UIApplication.topViewController())
+            return true
+        }
+        
+        JLRoutes.global().addRoute("buyer/history") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToBuyerHistory(from: UIApplication.topViewController())
+            return true
+        }
+        
+        //discovery
+        JLRoutes.global().addRoute("hot") { (params: [String : Any]!) -> Bool in
+            navigator.navigateToHotList(from: UIApplication.topViewController())
+            return true
+        }
         //..applinks
         
         

@@ -50,6 +50,16 @@
 
 #import "InboxMessageDetailViewController.h"
 #import "ProductTalkDetailViewController.h"
+#import "ProductReputationViewController.h"
+#import "TransactionCartViewController.h"
+#import "SalesNewOrderViewController.h"
+#import "ShipmentConfirmationViewController.h"
+#import "ShipmentStatusViewController.h"
+#import "SalesTransactionListViewController.h"
+#import "TxOrderConfirmedViewController.h"
+#import "TxOrderStatusViewController.h"
+
+
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
@@ -155,10 +165,79 @@
     [viewController.navigationController pushViewController:notes animated:YES];
 }
 
+-(void)navigateToCartFromViewController:(UIViewController*)viewController {
+    TransactionCartViewController *cart = [TransactionCartViewController new];
+    [viewController.navigationController pushViewController:cart animated:YES];
+}
+
+-(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID {
+    ProductReputationViewController *review = [ProductReputationViewController new];
+    review.strProductID = productID;
+    review.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:review animated:YES];
+}
+
+//seller
+-(void)navigateToSellerNewOrderFromViewController:(UIViewController*)viewController {
+    SalesNewOrderViewController *order = [SalesNewOrderViewController new];
+    order.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:order animated:YES];
+}
+
+-(void)navigateToSellerShipmentFromViewController:(UIViewController*)viewController {
+    ShipmentConfirmationViewController *shipment = [ShipmentConfirmationViewController new];
+    shipment.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:shipment animated:YES];
+}
+
+-(void)navigateToSellerShipmentStatusFromViewController:(UIViewController*)viewController {
+    ShipmentStatusViewController *shipment = [ShipmentStatusViewController new];
+    shipment.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:shipment animated:YES];
+}
+
+-(void)navigateToSellerHistoryFromViewController:(UIViewController*)viewController {
+    SalesTransactionListViewController *history = [SalesTransactionListViewController new];
+    history.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:history animated:YES];
+}
+
+//buyer
+-(void)navigateToBuyerPaymentFromViewController:(UIViewController*)viewController {
+    TxOrderConfirmedViewController *payment = [TxOrderConfirmedViewController new];
+    payment.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:payment animated:YES];
+}
+
+-(void)navigateToBuyerOrderFromViewController:(UIViewController*)viewController {
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_status";
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)navigateToBuyerShippingConfFromViewController:(UIViewController*)viewController {
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_deliver";
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)navigateToBuyerHistoryFromViewController:(UIViewController*)viewController {
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_list";
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+-(void)navigateToHotListFromViewController:(UIViewController*)viewController {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+}
+
+
 
 -(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID
 {
-    
     UserContainerViewController *container = [UserContainerViewController new];
     container.profileUserID = userID;
     [viewController.navigationController pushViewController:container animated:YES];
@@ -166,7 +245,6 @@
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray *)images imageDescriptions:(NSArray *)imageDesc indexImage:(NSInteger)index
 {
-    
     _images = images;
     _imageDescriptions = imageDesc;
     _indexImage = index;

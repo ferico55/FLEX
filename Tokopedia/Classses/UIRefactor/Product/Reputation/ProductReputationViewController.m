@@ -289,7 +289,7 @@ static NSInteger userViewHeight = 70;
                                                    page:@(page)
                                            shopAccuracy:shopAccuracy
                                             shopQuality:shopQuality
-                                             shopDomain:_strShopDomain
+                                             shopDomain:_strShopDomain?:@""
                                               onSuccess:^(ReviewResult *result) {
                                                   reviewResult = result;
                                                   NSMutableArray *contentsToAdd = [[NSMutableArray alloc] initWithArray:result.list];
@@ -481,7 +481,7 @@ static NSInteger userViewHeight = 70;
                                                    page:@(page)
                                            shopAccuracy:shopAccuracy
                                             shopQuality:shopQuality
-                                             shopDomain:_strShopDomain
+                                             shopDomain:_strShopDomain?:@""
                                               onSuccess:^(ReviewResult *result) {
                                                   
                                               }

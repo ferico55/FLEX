@@ -457,8 +457,18 @@
 
 - (void)redirectNotification:(NSNotification*)notification {
     NSDictionary* data = [notification.userInfo objectForKey:@"data"];
-    NSString* applinks = [data objectForKey:@"applinks"];
-    [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+    if ([data objectForKey:@"applinks"] != nil) {
+        NSString* applinks = [data objectForKey:@"applinks"];
+        [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+    } else {
+        _redirectHandler = [[RedirectHandler alloc]init];
+        _redirectHandler.delegate = self;
+        
+        NSDictionary *userInfo = notification.userInfo;
+        NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
+        
+        [_redirectHandler proxyRequest:code];
+    }
 }
 
 #pragma mark - Search Controller Delegate

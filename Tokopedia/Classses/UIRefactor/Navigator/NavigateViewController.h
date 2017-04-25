@@ -30,7 +30,20 @@
 -(void)navigateToShopTalkFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopReviewFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopNoteFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
+-(void)navigateToCartFromViewController:(UIViewController*)viewController;
 
+-(void)navigateToSellerNewOrderFromViewController:(UIViewController*)viewController;
+-(void)navigateToSellerShipmentFromViewController:(UIViewController*)viewController;
+-(void)navigateToSellerShipmentStatusFromViewController:(UIViewController*)viewController;
+-(void)navigateToSellerHistoryFromViewController:(UIViewController*)viewController;
+
+-(void)navigateToBuyerPaymentFromViewController:(UIViewController*)viewController;
+-(void)navigateToBuyerOrderFromViewController:(UIViewController*)viewController;
+-(void)navigateToBuyerShippingConfFromViewController:(UIViewController*)viewController;
+-(void)navigateToBuyerHistoryFromViewController:(UIViewController*)viewController;
+
+-(void)navigateToHotListFromViewController:(UIViewController*)viewController;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key;

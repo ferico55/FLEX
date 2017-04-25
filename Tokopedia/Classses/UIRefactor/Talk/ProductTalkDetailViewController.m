@@ -383,16 +383,7 @@
     _data = [self generateData];
     //islogin
     if([_userManager isLogin]) {
-//        //isbanned product
-//        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
-//           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
-//           ) {
-//        }
-//        else
-//        {
-//            _talkInputView.hidden = YES;
         _talkInputView.hidden = (![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]);
-//        }
     }
     _table.tableFooterView = _footer;
     [self initHeader];
