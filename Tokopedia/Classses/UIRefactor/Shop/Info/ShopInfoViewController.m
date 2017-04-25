@@ -127,6 +127,8 @@
     _isShopDescriptionExpanded = NO;
     
     [self adjustStatisticCellHeight];
+    
+    [self requestShopInfo];
 }
 
 -(void)setReputationAndAccuracy {
