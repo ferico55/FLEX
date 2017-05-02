@@ -1,0 +1,17 @@
+{
+  "name": "Tokopedia",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "bundling": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/Tokopedia/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "apphub": "^0.5.1",
+    "axios": "^0.16.1",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4",
+    "react-native-device-info": "^0.10.2",
+    "react-navigation": "git+https://github.com/react-community/react-navigation.git"
+  }
+}
