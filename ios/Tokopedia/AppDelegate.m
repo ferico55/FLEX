@@ -36,8 +36,6 @@
 #endif
 
 
-
-
 @implementation AppDelegate
 
 #ifdef DEBUG
@@ -100,16 +98,29 @@
 #pragma mark RCTBridgeDelegate
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-    NSURL* jsCodeLocation;
-    NSString* localhost = FBTweakValue(@"React Value", @"URL", @"localhost", @"127.0.0.1");
+    typedef NS_ENUM(NSInteger, ReactBundleSource) {
+        ReactBundleSourceLocalServer,
+        ReactBundleSourceDevice,
+        ReactBundleSourceCodePush
+    };
     
-#if DEBUG
-    jsCodeLocation = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios", localhost]];
-#else
-    AHBuild *build = [[AppHub buildManager] currentBuild];
-    jsCodeLocation = [build.bundle URLForResource:@"main"
-                                    withExtension:@"jsbundle"];
-#endif
+    NSURL* jsCodeLocation;
+    NSString* localhost = FBTweakValue(@"React", @"Bundle", @"Local server URL", @"127.0.0.1");
+    
+    ReactBundleSource source = FBTweakValue(@"React", @"Bundle", @"Source", ReactBundleSourceCodePush, (@{
+                                                                           @(ReactBundleSourceDevice): @"Device",
+                                                                           @(ReactBundleSourceCodePush): @"CodePush",
+                                                                           @(ReactBundleSourceLocalServer): @"Local Server"
+                                                                           }));
+    if (source == ReactBundleSourceCodePush) {
+        AHBuild *build = [[AppHub buildManager] currentBuild];
+        jsCodeLocation = [build.bundle URLForResource:@"main"
+                                        withExtension:@"jsbundle"];
+    } else if (source == ReactBundleSourceLocalServer) {
+        jsCodeLocation = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios", localhost]];
+    } else {
+        jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    }
     
     return jsCodeLocation;
 }
