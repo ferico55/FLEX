@@ -30,6 +30,7 @@
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
 #import "AppHub.h"
+#import "UIApplication+React.h"
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -91,47 +92,14 @@
         return;
     }
     
-    ReactViewController *reactView = [[ReactViewController alloc] initWithDelegate:self bridge:_bridge viewName:name viewParams:params];
+    ReactViewController *reactView = [[ReactViewController alloc]
+                                      initWithDelegate:self
+                                      bridge:[UIApplication sharedApplication].reactBridge
+                                      viewName:name
+                                      viewParams:params];
+    
     [_nav pushViewController:reactView animated:true];
 }
-
-#pragma mark RCTBridgeDelegate
-
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-    typedef NS_ENUM(NSInteger, ReactBundleSource) {
-        ReactBundleSourceLocalServer,
-        ReactBundleSourceDevice,
-        ReactBundleSourceCodePush
-    };
-    
-    NSURL* jsCodeLocation;
-    NSString* localhost = FBTweakValue(@"React", @"Bundle", @"Local server URL", @"127.0.0.1");
-    
-    ReactBundleSource source = FBTweakValue(@"React", @"Bundle", @"Source", ReactBundleSourceCodePush, (@{
-                                                                           @(ReactBundleSourceDevice): @"Device",
-                                                                           @(ReactBundleSourceCodePush): @"CodePush",
-                                                                           @(ReactBundleSourceLocalServer): @"Local Server"
-                                                                           }));
-    if (source == ReactBundleSourceCodePush) {
-        AHBuild *build = [[AppHub buildManager] currentBuild];
-        jsCodeLocation = [build.bundle URLForResource:@"main"
-                                        withExtension:@"jsbundle"];
-    } else if (source == ReactBundleSourceLocalServer) {
-        jsCodeLocation = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios", localhost]];
-    } else {
-        jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-    }
-    
-    return jsCodeLocation;
-}
-
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge;
-{
-    return @[
-             [[HybridNavigationManager alloc] initWithBridge:_bridge navigationDelegate:self],
-             ];
-}
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UNUserNotificationCenter* notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
@@ -154,9 +122,6 @@
     _window.rootViewController = viewController;
     _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     
-    _bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions: launchOptions];
-    [[_bridge valueForKey:@"devSettings"] setValue:@(NO) forKey:@"isShakeToShowDevMenuEnabled"];
-
     [_window makeKeyAndVisible];
     
 #ifdef DEBUG

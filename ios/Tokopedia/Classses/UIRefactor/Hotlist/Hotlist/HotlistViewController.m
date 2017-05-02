@@ -9,6 +9,9 @@
 #import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
 #import "AppHub.h"
+#import "UIApplication+React.h"
+
+#import <React/RCTRootView.h>
 
 @interface HotlistViewController ()<NotificationManagerDelegate> {
     NotificationManager *_notifManager;
@@ -25,34 +28,9 @@
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    typedef NS_ENUM(NSInteger, ReactBundleSource) {
-        ReactBundleSourceLocalServer,
-        ReactBundleSourceDevice,
-        ReactBundleSourceCodePush
-    };
-    
-    NSURL* jsCodeLocation;
-    NSString* localhost = FBTweakValue(@"React", @"Bundle", @"Local server URL", @"127.0.0.1");
-    
-    ReactBundleSource source = FBTweakValue(@"React", @"Bundle", @"Source", ReactBundleSourceCodePush, (@{
-                                                                                                          @(ReactBundleSourceDevice): @"Device",
-                                                                                                          @(ReactBundleSourceCodePush): @"CodePush",
-                                                                                                          @(ReactBundleSourceLocalServer): @"Local Server"
-                                                                                                          }));
-    if (source == ReactBundleSourceCodePush) {
-        AHBuild *build = [[AppHub buildManager] currentBuild];
-        jsCodeLocation = [build.bundle URLForResource:@"main"
-                                        withExtension:@"jsbundle"];
-    } else if (source == ReactBundleSourceLocalServer) {
-        jsCodeLocation = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios", localhost]];
-    } else {
-        jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-    }
-    
-    RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL : jsCodeLocation
-                                                 moduleName        : @"Tokopedia"
-                                                 initialProperties : @{@"name" : @"Hotlist", @"params" : @{} }
-                                                  launchOptions    : nil];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
+                                                     moduleName:@"Tokopedia"
+                                              initialProperties:@{@"name" : @"Hotlist", @"params" : @{} }];
     
     self.view = rootView;
 }

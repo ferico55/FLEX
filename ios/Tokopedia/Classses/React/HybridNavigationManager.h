@@ -12,6 +12,6 @@
 
 @interface HybridNavigationManager : NSObject <RCTBridgeModule>
 
-- (id)initWithBridge:(RCTBridge *)bridge navigationDelegate:(id<AppNavigationDelegate>)delegate;
+@property (nonatomic, weak, readonly) RCTBridge *bridge;
 
 @end

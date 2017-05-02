@@ -1783,6 +1783,7 @@
 		928FAE471EAF42FC00E33DE6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE461EAF42FC00E33DE6 /* libRCTActionSheet.a */; };
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
 		928FAE4B1EAF432600E33DE6 /* libAppHubTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE4A1EAF432600E33DE6 /* libAppHubTestUtils.a */; };
+		9290CA571EB87BAD002C3E94 /* UIApplication+React.m in Sources */ = {isa = PBXBuildFile; fileRef = 9290CA561EB87BAD002C3E94 /* UIApplication+React.m */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4955,6 +4956,8 @@
 		928FAE461EAF42FC00E33DE6 /* libRCTActionSheet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTActionSheet.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTActionSheet.a"; sourceTree = "<group>"; };
 		928FAE481EAF431500E33DE6 /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libReact.a"; sourceTree = "<group>"; };
 		928FAE4A1EAF432600E33DE6 /* libAppHubTestUtils.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHubTestUtils.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libAppHubTestUtils.a"; sourceTree = "<group>"; };
+		9290CA551EB87BAD002C3E94 /* UIApplication+React.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+React.h"; sourceTree = "<group>"; };
+		9290CA561EB87BAD002C3E94 /* UIApplication+React.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+React.m"; sourceTree = "<group>"; };
 		9295B2691EAF4221000F705C /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		9295B26D1EAF4238000F705C /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5406,6 +5409,8 @@
 				7A465FE11EB2FEA900A72105 /* Spotlight */,
 				7A465FE41EB2FEA900A72105 /* TouchIDHelper.swift */,
 				7A465FE51EB2FEA900A72105 /* UIKitHelper.swift */,
+				9290CA551EB87BAD002C3E94 /* UIApplication+React.h */,
+				9290CA561EB87BAD002C3E94 /* UIApplication+React.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -12675,6 +12680,7 @@
 				7A466D5A1EB2FEAF00A72105 /* SearchData.m in Sources */,
 				7A46707C1EB2FEB200A72105 /* DueDateViewController.m in Sources */,
 				7A466D791EB2FEAF00A72105 /* NoteDetails.swift in Sources */,
+				9290CA571EB87BAD002C3E94 /* UIApplication+React.m in Sources */,
 				7A46718D1EB2FEB300A72105 /* TopPicksResponse.swift in Sources */,
 				7A466F9C1EB2FEB100A72105 /* ShopPaymentViewController.m in Sources */,
 				7A4671E01EB2FEB400A72105 /* ProfileBiodataCell.m in Sources */,

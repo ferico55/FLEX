@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <React/RCTRootView.h>
 #import "Tkpd.h"
 #import "TAGContainer.h"
 #import "TAGContainerOpener.h"
@@ -20,7 +19,7 @@
 
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate,  AppNavigationDelegate, RCTBridgeDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate,  AppNavigationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -32,7 +31,6 @@
 
 @property (strong, nonatomic) id<GAITracker> tracker;
 
-@property (strong, nonatomic) RCTBridge *bridge;
 @property (strong, nonatomic) UINavigationController *nav;
 
 

@@ -12,20 +12,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTUIManager.h>
 
-@implementation HybridNavigationManager {
-   id<AppNavigationDelegate> _delegate;
-}
-
-@synthesize bridge = _bridge;
-
-- (id)initWithBridge:(RCTBridge *)bridge navigationDelegate:(id<AppNavigationDelegate>)delegate;
-{
-    if (self = [super init]) {
-        _bridge = bridge;
-        _delegate = delegate;
-    }
-    return self;
-}
+@implementation HybridNavigationManager
 
 RCT_EXPORT_MODULE();
 
