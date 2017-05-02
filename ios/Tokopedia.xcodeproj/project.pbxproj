@@ -1744,7 +1744,6 @@
 		7A4672301EB2FEB400A72105 /* UIViewController+TKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A466B741EB2FEAE00A72105 /* UIViewController+TKPAdditions.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
-		7AA497EE1E9B34D50099D9CE /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 7AA491521E9B34CA0099D9CE /* Tokopedia.xcworkspace */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -4900,7 +4899,6 @@
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7A942E3C1E97A33300C76BD1 /* React.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = React.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Tokopedia-ckrgtecvlsrpdfasvfnpyqlhcyvc/Build/Products/Debug-iphonesimulator/React/React.framework"; sourceTree = "<group>"; };
-		7AA491521E9B34CA0099D9CE /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		7AA497EF1E9B35100099D9CE /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		7AA4980B1E9B35600099D9CE /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		7AA498121E9B35B30099D9CE /* RCTAdSupport.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAdSupport.xcodeproj; path = "../node_modules/react-native/Libraries/AdSupport/RCTAdSupport.xcodeproj"; sourceTree = "<group>"; };
@@ -10283,7 +10281,6 @@
 				7A466B1B1EB2FEAD00A72105 /* Common */,
 				7A466B751EB2FEAE00A72105 /* AppDelegate.h */,
 				7AA4913F1E9B34CA0099D9CE /* ReactLibrary */,
-				7AA491521E9B34CA0099D9CE /* Tokopedia.xcworkspace */,
 			);
 			path = Tokopedia;
 			sourceTree = "<group>";
@@ -11278,7 +11275,6 @@
 				7A466FD81EB2FEB100A72105 /* ProductTalkViewController.xib in Resources */,
 				7A466BA21EB2FEAE00A72105 /* icon_home_active@3x.png in Resources */,
 				7A4671D31EB2FEB400A72105 /* TxOrderTransactionDetailViewController.xib in Resources */,
-				7AA497EE1E9B34D50099D9CE /* Tokopedia.xcworkspace in Resources */,
 				7A46714B1EB2FEB300A72105 /* ShopInfoPaymentCell.xib in Resources */,
 				7A466EC01EB2FEB000A72105 /* NoResultView.xib in Resources */,
 				7A466E271EB2FEAF00A72105 /* PhoneVerificationViewController.xib in Resources */,
