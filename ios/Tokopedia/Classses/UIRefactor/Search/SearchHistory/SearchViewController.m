@@ -174,6 +174,8 @@ NSString *const RECENT_SEARCH = @"recent_search";
 #pragma mark - Methods
 -(void) autoFillSearchBarWithText: (NSString *) string {
     [_searchBar setText:[string stringByAppendingString:@" "]];
+    [_collectionView scrollToTop];
+    [self getUserSearchSuggestionDataWithQuery:_searchBar.text];
 }
 
 -(void) clearHistory:(UIButton *) button {
