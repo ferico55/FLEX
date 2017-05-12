@@ -13,6 +13,15 @@
 #import "ProductLabel.h"
 #import "QueueImageDownloader.h"
 #import "Tokopedia-Swift.h"
+#import "StarsRateView.h"
+#import "UIGestureRecognizer+BlocksKit.h"
+
+@interface ProductCell()
+@property (strong, nonatomic) IBOutlet StarsRateView *starsRateView;
+@property (strong, nonatomic) IBOutlet UIView *ratingContainerView;
+@property (strong, nonatomic) IBOutlet UILabel *totalReviewLabel;
+@property (strong, nonatomic) NSString *productId;
+@end
 
 @implementation ProductCell{
     QueueImageDownloader* imageDownloader;
@@ -47,6 +56,16 @@
 
     [self setBadges:viewModel.badges];
     [self setLabels:viewModel.labels];
+    
+    if ([self isHasReview:viewModel.productRate]) {
+        _ratingContainerView.hidden = NO;
+        [_starsRateView setStarscount: round([viewModel.productRate doubleValue] / 20.0)];
+        _totalReviewLabel.text = [NSString stringWithFormat: @"(%@)", viewModel.totalReview];
+    } else {
+        _ratingContainerView.hidden = YES;
+    }
+    
+    _productId = viewModel.productId;
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {
@@ -67,9 +86,9 @@
         label.layer.cornerRadius = 3;
         label.layer.masksToBounds = YES;
         label.layer.borderWidth = 1.0;
-        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor fromHexString:productLabel.color].CGColor;
+        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor tpGray].CGColor : [UIColor fromHexString:productLabel.color].CGColor;
         label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
-        label.font = [UIFont microTheme];
+        label.font = [UIFont superMicroTheme];
         
         [label sizeToFit];
         
@@ -120,7 +139,7 @@
     self.catalogPriceLabel.hidden = NO;
     self.catalogPriceLabel.text = viewModel.catalogPrice;
     
-    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
+    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada produk" : [NSString stringWithFormat:@"%@ produk", viewModel.catalogSeller]];
      self.goldShopBadge.hidden = YES;
     
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
@@ -128,11 +147,20 @@
     
     self.locationImage.hidden = YES;
     self.shopLocation.text = nil;
+    _ratingContainerView.hidden = YES;
     
 }
 - (void)prepareForReuse {
     [super prepareForReuse];
     [imageDownloader cancelAllOperations];
+}
+
+- (BOOL) isHasReview: (NSString*) productRate {
+    if ([productRate isEqualToString:@"0"] || productRate == nil) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

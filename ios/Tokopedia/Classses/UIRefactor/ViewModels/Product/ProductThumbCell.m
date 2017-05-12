@@ -13,9 +13,30 @@
 #import "ProductLabel.h"
 #import "QueueImageDownloader.h"
 #import "Tokopedia-Swift.h"
+#import "StarsRateView.h"
+
+@interface ProductThumbCell()
+@property (strong, nonatomic) IBOutlet UILabel *totalReviewLabel;
+@property (strong, nonatomic) IBOutlet StarsRateView *qualityRateValue;
+@property (strong, nonatomic) IBOutlet UIView *ratingContainerView;
+@end
 
 @implementation ProductThumbCell {
     QueueImageDownloader* imageDownloader;
+}
+
+- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    
+    // using dynamic layout attributes for iOS 8 & 9 is making layout bug such as cell overlaping, not proportional cell size, and product being not shown. So, I decide to do this restriction
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
+        CGSize size = [self.contentView systemLayoutSizeFittingSize:layoutAttributes.size];
+        CGRect frame = layoutAttributes.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width;
+        frame.size.height = ceil(size.height);
+        layoutAttributes.frame = frame;
+        return layoutAttributes;
+    }
+    return layoutAttributes;
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
@@ -38,6 +59,18 @@
     
     [self setBadges:viewModel.badges];
     [self setLabels:viewModel.labels];
+    
+    if (![viewModel.productRate isEqualToString: @"0"] && viewModel.productRate != nil) {
+        [_ratingContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(16);
+        }];
+        [_qualityRateValue setStarscount:round([viewModel.productRate doubleValue] / 20.0)];
+        [_totalReviewLabel setText:[NSString stringWithFormat:@"(%@)", viewModel.totalReview]];
+    } else {
+        [_ratingContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {
@@ -45,25 +78,35 @@
         [_labelsView removeArrangedSubview:subview];
     }
     
-    _labelsView.alignment = OAStackViewAlignmentFill;
-    _labelsView.spacing = 2;
-    _labelsView.axis = UILayoutConstraintAxisHorizontal;
-    _labelsView.distribution = OAStackViewDistributionEqualSpacing;
-    
-    for(ProductLabel* productLabel in labels) {
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.text = [NSString stringWithFormat:@" %@  ", productLabel.title];
-        label.backgroundColor  = [UIColor fromHexString:productLabel.color];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.layer.cornerRadius = 3;
-        label.layer.masksToBounds = YES;
-        label.layer.borderWidth = 1.0;
-        label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor].CGColor : [UIColor fromHexString:productLabel.color].CGColor;
-        label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor lightGrayColor] : [UIColor whiteColor];
-        label.font = [UIFont microTheme];
-        [label sizeToFit];
+    if (labels.count > 0) {
+
+        [_labelsView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(16);
+        }];
+        _labelsView.alignment = OAStackViewAlignmentFill;
+        _labelsView.spacing = 2;
+        _labelsView.axis = UILayoutConstraintAxisHorizontal;
+        _labelsView.distribution = OAStackViewDistributionEqualSpacing;
         
-        [_labelsView addArrangedSubview:label];
+        for(ProductLabel* productLabel in labels) {
+            UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.text = [NSString stringWithFormat:@" %@  ", productLabel.title];
+            label.backgroundColor  = [UIColor fromHexString:productLabel.color];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.layer.cornerRadius = 3;
+            label.layer.masksToBounds = YES;
+            label.layer.borderWidth = 1.0;
+            label.layer.borderColor =  [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor tpGray].CGColor : [UIColor fromHexString:productLabel.color].CGColor;
+            label.textColor = [productLabel.color isEqualToString:@"#ffffff"] ? [UIColor tpDisabledBlackText] : [UIColor whiteColor];
+            label.font = [UIFont superMicroTheme];
+            [label sizeToFit];
+            
+            [_labelsView addArrangedSubview:label];
+        }
+    } else {
+        [_labelsView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
     }
 }
 

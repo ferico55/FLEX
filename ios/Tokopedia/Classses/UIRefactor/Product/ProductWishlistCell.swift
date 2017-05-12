@@ -69,12 +69,10 @@ class ProductWishlistCell : UICollectionViewCell {
         productTrashButton.isUserInteractionEnabled = true
         
         if(viewModel.isProductBuyAble) {
-            productBuyButton.backgroundColor = UIColor.white
+            productBuyButton.backgroundColor = .tpOrange()
             productBuyButton.setTitle("Beli", for: .normal)
             productBuyButton.isUserInteractionEnabled = true
-            productBuyButton.layer.borderWidth = 1.0
-            productBuyButton.layer.borderColor = UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0).cgColor
-            productBuyButton.setTitleColor(UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0), for: .normal)
+            productBuyButton.setTitleColor(.white, for: .normal)
         } else {
             productBuyButton.backgroundColor = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 0.65)
             productBuyButton.setTitle("Stok Kosong", for: .normal)
@@ -108,9 +106,9 @@ class ProductWishlistCell : UICollectionViewCell {
                 label.layer.cornerRadius = 3
                 label.layer.masksToBounds = true
                 label.layer.borderWidth = 1.0
-                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.lightGray.cgColor : UIColor.fromHexString(productObject.color).cgColor
-                label.textColor = (productObject.color == "#ffffff") ? UIColor.lightGray : UIColor.white
-                label.font = UIFont.microTheme()
+                label.layer.borderColor = (productObject.color == "#ffffff") ? UIColor.tpGray().cgColor : UIColor.fromHexString(productObject.color).cgColor
+                label.textColor = (productObject.color == "#ffffff") ? .tpDisabledBlackText() : UIColor.white
+                label.font = UIFont.superMicroTheme()
                 
                 self.labelsView .addArrangedSubview(label)
                 

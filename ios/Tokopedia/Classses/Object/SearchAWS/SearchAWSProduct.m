@@ -31,6 +31,7 @@
 - (ProductModelView *)viewModel {
     if(!_viewModel) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
+        [viewModel setProductId: self.product_id];
         [viewModel setProductName:self.product_name];
         [viewModel setProductPrice:self.product_price];
         [viewModel setProductShop:self.shop_name];
@@ -45,6 +46,8 @@
         [viewModel setBadges:self.badges];
         [viewModel setLabels:self.labels];
         [viewModel setProductLargeUrl:self.product_image_700];
+        [viewModel setTotalReview: self.product_review_count];
+        [viewModel setProductRate: self.rate];
         _viewModel = viewModel;
     }
     
@@ -81,7 +84,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:self];
     //product
-    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky", @"product_preorder", @"product_wholesale", @"product_image_700", @"condition"]];
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky", @"product_preorder", @"product_wholesale", @"product_image_700", @"condition", @"rate"]];
     //catalog
     [listMapping addAttributeMappingsFromArray:@[@"catalog_id", @"catalog_name", @"catalog_price", @"catalog_uri", @"catalog_image", @"catalog_image_300", @"catalog_description", @"catalog_count_product"]];
     

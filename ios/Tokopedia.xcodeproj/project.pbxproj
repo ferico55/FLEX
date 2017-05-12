@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		348DA7951EBB9E6200653314 /* CollectionViewCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DA7941EBB9E6200653314 /* CollectionViewCellType.swift */; };
+		348DA7981EBB9E6F00653314 /* UICollectionViewFlowLayoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DA7971EBB9E6F00653314 /* UICollectionViewFlowLayoutExtension.swift */; };
 		452E82A41E64103E001191E0 /* TokopediaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E82A31E64103E001191E0 /* TokopediaUITests.swift */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
@@ -2053,6 +2055,8 @@
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		348DA7941EBB9E6200653314 /* CollectionViewCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellType.swift; sourceTree = "<group>"; };
+		348DA7971EBB9E6F00653314 /* UICollectionViewFlowLayoutExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewFlowLayoutExtension.swift; sourceTree = "<group>"; };
 		43813BF315E24DEFAE03F2C5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		452E82A11E64103E001191E0 /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		452E82A31E64103E001191E0 /* TokopediaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokopediaUITests.swift; sourceTree = "<group>"; };
@@ -5394,6 +5398,8 @@
 		7A465FCD1EB2FEA900A72105 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				348DA7941EBB9E6200653314 /* CollectionViewCellType.swift */,
+				348DA7971EBB9E6F00653314 /* UICollectionViewFlowLayoutExtension.swift */,
 				7A465FCE1EB2FEA900A72105 /* Analytics */,
 				7A465FD11EB2FEA900A72105 /* AuthenticationServiceExtension.swift */,
 				7A465FD21EB2FEA900A72105 /* Constants */,
@@ -11734,6 +11740,7 @@
 				7A466D541EB2FEAF00A72105 /* SearchAutoCompleteCatalog.m in Sources */,
 				7A46718C1EB2FEB300A72105 /* TopPicksGroup.swift in Sources */,
 				7A466D001EB2FEAE00A72105 /* ProductFeed.m in Sources */,
+				348DA7951EBB9E6200653314 /* CollectionViewCellType.swift in Sources */,
 				7A4671711EB2FEB300A72105 /* FilterLocationViewController.m in Sources */,
 				7A466D441EB2FEAF00A72105 /* OrderRequestCancel.m in Sources */,
 				7A466F361EB2FEB000A72105 /* HotlistViewModel.m in Sources */,
@@ -11843,6 +11850,7 @@
 				7A466B801EB2FEAE00A72105 /* FBTweakCollection.m in Sources */,
 				7A4670481EB2FEB200A72105 /* PulsaRelationCategory.swift in Sources */,
 				7A466E071EB2FEAF00A72105 /* UploadImageHelper.m in Sources */,
+				348DA7981EBB9E6F00653314 /* UICollectionViewFlowLayoutExtension.swift in Sources */,
 				7A466F601EB2FEB100A72105 /* InboxResolutionCenterOpenViewController.m in Sources */,
 				7A466CE31EB2FEAE00A72105 /* InboxReputationResult.m in Sources */,
 				7A466EA11EB2FEB000A72105 /* CategoryIntermediarySubCategoryCellView.swift in Sources */,

@@ -204,8 +204,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
     [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    
     [_collectionView setCollectionViewLayout:_flowLayout];
+    
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
@@ -704,6 +704,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:GA_EVENT_CATEGORY_PAGE action:GA_EVENT_ACTION_NAVIGATION_DISPLAY label:[NSString stringWithFormat:@"%ld", (long)self.cellType]];
             
             _collectionView.contentOffset = CGPointMake(0, 0);
+            [_flowLayout setEstimatedSizeWithCellType:self.cellType];
             [_collectionView reloadData];
             [_collectionView layoutIfNeeded];
             
@@ -1260,6 +1261,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
         } else  {
             [_collectionView reloadData];
+            [_collectionView.collectionViewLayout invalidateLayout];
         }
     } else {
         NSURL *url = [NSURL URLWithString:search.data.redirect_url];
@@ -1423,6 +1425,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
 - (void) setProductListBaseLayout {
     self.cellType = [self mapCellLayoutAPI];
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                forState:UIControlStateNormal];

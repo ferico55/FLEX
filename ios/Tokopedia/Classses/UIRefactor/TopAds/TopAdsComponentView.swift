@@ -142,8 +142,9 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             let productNameLabel = Node<UILabel> {
                 view, layout, _ in
                 view.text = product.productName
-                view.textColor = UIColor.fromHexString("FF0A7E07")
+                view.textColor = UIColor.tpPrimaryBlackText()
                 view.font = UIFont.smallThemeMedium()
+                layout.height = 32
                 layout.marginHorizontal = 5
             }
             

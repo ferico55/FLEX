@@ -19,11 +19,11 @@ import Foundation
         if(cellType == 1) {
             numberOfCell = isPad ? 4 : 2
             cellWidth = screenWidth/numberOfCell
-            cellHeight = cellWidth + 85
+            cellHeight = cellWidth + 135
         } else if(cellType == 2) {
             numberOfCell = isPad ? 2 : 1
             cellWidth = screenWidth/numberOfCell
-            cellHeight = 120
+            cellHeight = 140
         } else {
             numberOfCell = isPad ? 2 : 1
             cellWidth = screenWidth/numberOfCell
@@ -43,7 +43,7 @@ import Foundation
         
         numberOfCell = isPad ? 4 : 2
         cellWidth = screenWidth/numberOfCell
-        cellHeight = cellWidth + 120
+        cellHeight = cellWidth + 182
     
         
         

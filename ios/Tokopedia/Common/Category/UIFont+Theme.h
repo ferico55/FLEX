@@ -21,5 +21,6 @@
 + (UIFont *)microTheme;
 + (UIFont *)microThemeMedium;
 + (UIFont *)mediumSystemFontOfSize:(CGFloat)size;
++ (UIFont *)superMicroTheme;
 
 @end

@@ -235,6 +235,8 @@ static NSString const *rows = @"12";
                                forState:UIControlStateNormal];
     }
     
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
+    
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -447,6 +449,7 @@ static NSString const *rows = @"12";
     
     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
 }

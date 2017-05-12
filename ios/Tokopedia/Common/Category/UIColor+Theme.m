@@ -49,7 +49,11 @@
     +(UIColor *)tpLine{
         return [[UIColor fromHexString:@"#000000"] colorWithAlphaComponent:0.12];
     }
-    
+
+    +(UIColor *)tpGray{
+        return [UIColor fromHexString:@"#bdbdbd"];
+    }
+
     +(UIColor *)fromHexString:(NSString *)hexString{
         
         unsigned int rgbValue = 0;

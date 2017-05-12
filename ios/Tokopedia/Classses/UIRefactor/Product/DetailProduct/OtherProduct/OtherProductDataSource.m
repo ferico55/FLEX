@@ -61,11 +61,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (CGSize)collectionViewItemSize {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        CGFloat numberOfCell = 4;
-        CGFloat cellHeight = 250;
-        CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        CGFloat cellWidth = screenWidth/numberOfCell - 12;
-        return CGSizeMake(cellWidth, cellHeight);
+        return [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
     } else {
         CGSize normalSize = [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
         return CGSizeMake(normalSize.width, normalSize.height - 20);

@@ -58,4 +58,8 @@
     return [UIFont mediumSystemFontOfSize:12];
 }
 
++ (UIFont *)superMicroTheme {
+    return [UIFont systemFontOfSize:9];
+}
+
 @end

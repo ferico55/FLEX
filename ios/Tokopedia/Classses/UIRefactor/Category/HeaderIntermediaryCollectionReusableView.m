@@ -255,13 +255,13 @@ TKPDAlertViewDelegate
         BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
         CGFloat numberOfCell = isPad ? 4 : 2;
         cellWidth = screenWidth/numberOfCell;
-        cellHeight = cellWidth + 85;
+        cellHeight = cellWidth + 135;
         
     } else if (type == PromoCollectionViewCellTypeThumbnail) {
         BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
         CGFloat numberOfCell = isPad ? 2 : 1;
         cellWidth = screenWidth/numberOfCell;
-        cellHeight = 120;
+        cellHeight = 140;
     }
     
     

@@ -20,6 +20,7 @@
 +(nonnull UIColor *)tpDisabledWhiteText;
 +(nonnull UIColor *)tpBackground;
 +(nonnull UIColor *)tpLine;
++(nonnull UIColor *)tpGray;
 
 +(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 

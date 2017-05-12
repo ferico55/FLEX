@@ -43,4 +43,8 @@
 @property BOOL isWholesale;
 @property BOOL isProductPreorder;
 
+@property (strong, nonatomic) NSString *productRate;
+@property (strong, nonatomic) NSString *totalReview;
+@property (strong, nonatomic) NSString *productId;
+
 @end

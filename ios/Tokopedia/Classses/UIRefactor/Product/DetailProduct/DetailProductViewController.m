@@ -2019,7 +2019,7 @@ TTTAttributedLabelDelegate
         } completion:nil];
         
         CGRect frame = _shopinformationview.frame;
-        frame.size.height = 467;
+        frame.size.height = 525;
         _shopinformationview.frame = frame;
         
         _table.tableFooterView = _shopinformationview;

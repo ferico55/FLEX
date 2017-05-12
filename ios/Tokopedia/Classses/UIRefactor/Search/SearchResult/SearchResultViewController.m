@@ -251,6 +251,7 @@ SpellCheckRequestDelegate
                                forState:UIControlStateNormal];
     }
     
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -703,6 +704,7 @@ SpellCheckRequestDelegate
             }
             
             _collectionView.contentOffset = CGPointMake(0, 0);
+            [_flowLayout setEstimatedSizeWithCellType:self.cellType];
             [_collectionView reloadData];
             [_collectionView layoutIfNeeded];
             
@@ -1275,6 +1277,7 @@ SpellCheckRequestDelegate
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
         } else  {
             [_collectionView reloadData];
+            [_collectionView.collectionViewLayout invalidateLayout];
         }
     } else {
         NSURL *url = [NSURL URLWithString:search.data.redirect_url];

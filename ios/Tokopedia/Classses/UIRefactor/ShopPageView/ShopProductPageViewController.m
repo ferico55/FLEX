@@ -258,6 +258,7 @@ ShopTabChild
                                forState:UIControlStateNormal];
     }
     
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     if(_initialEtalase){
         [_productFilter setEtalaseId:_initialEtalase.etalase_id];
     }
@@ -486,6 +487,7 @@ ShopTabChild
     [_product removeAllObjects];
     
     [_collectionView reloadData];
+    [self.collectionView.collectionViewLayout invalidateLayout];
     
     _tmpNextPageUri = _nextPageUri;
     _tmpPage = _page;
@@ -629,6 +631,7 @@ ShopTabChild
     }
     
     //self.table.contentOffset = CGPointMake(0, 0);
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     [_collectionView reloadData];
     
     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
@@ -764,6 +767,7 @@ ShopTabChild
                                                                [_collectionView reloadData];
                                                            } else  {
                                                                [_collectionView reloadData];
+                                                               [_collectionView.collectionViewLayout invalidateLayout]; 
                                                            }
                                                        } onFailure:^(NSError *error) {
                                                            _isrefreshview = NO;
