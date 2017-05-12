@@ -30,12 +30,12 @@
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
 #import "AppHub.h"
+#import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 
 #ifdef DEBUG
 #import "FlexManager.h"
 #endif
-
 
 @implementation AppDelegate
 
@@ -68,6 +68,7 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    
     completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound);
 }
 
@@ -112,11 +113,8 @@
     [self hideTitleBackButton];
     [JLRoutes setShouldDecodePlusSymbols:NO];
     
-    
-    
     UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = viewController;
@@ -292,6 +290,22 @@
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
     
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    
+    if ([userManager isLogin]) {
+        if (![[userManager getUserEmail] isEqualToString:@"0"]) {
+            [AnalyticsManager moEngageTrackUserAttributes];
+        } else {
+            [UserRequest getUserInformationWithUserID:[userManager getUserId]
+                                            onSuccess:^(ProfileInfo * _Nonnull profile) {
+                                                [AnalyticsManager moEngageTrackUserAttributes];
+                                            }
+                                            onFailure:^{
+                                                
+                                            }];
+        }
+    }
+    
     // we always refresh device token, to recover from a bug in 1.80
     // that causes every device to use 'SIMULATORDUMMY'.
     // this is also a solution to retrieve device token after a user
@@ -333,30 +347,27 @@
        application.applicationState == UIApplicationStateBackground) {
         [self handlePushNotificationWithData:userInfo];
     } else {
+        [self handlePushNotificationWithData:userInfo];
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
     }
-    if ([userInfo objectForKey:@"Localytics Campaign"]) {
-        NSString *campaign = [userInfo objectForKey:@"Localytics Campaign"];
-        NSDictionary *attributes = @{@"Campaign" : campaign};
-        [AnalyticsManager localyticsEvent:@"Event : App Launch" attributes:attributes];
-    }
-    if ([userInfo objectForKey:@"Localytics Deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
-        [TPRoutes routeURL:url];
-    }
-    if ([userInfo objectForKey:@"url_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"url_deeplink"]];
-        [TPRoutes routeURL:url];
-    }
-    if ([userInfo objectForKey:@"moe_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"moe_deeplink"]];
-        [TPRoutes routeURL:url];
-    }
-    
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     [[MoEngage sharedInstance] didRegisterForUserNotificationSettings:notificationSettings];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [UIViewController showNotificationWithMessage:notification.alertBody type:NotificationTypeError duration:10.0 buttonTitle:notification.userInfo[@"button_title"] dismissable:YES action:^{
+            [self handlePushNotificationWithData:notification.userInfo];
+        }];
+    });
+    
+    notification.fireDate = nil;
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler {
+    [self handlePushNotificationWithData:notification.userInfo];
 }
 
 - (BOOL)application:(UIApplication *)application

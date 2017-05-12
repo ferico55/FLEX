@@ -500,10 +500,21 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 - (void)onLoginSuccess:(Login *)login {
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
-
-    [self storeCredentialToKeychain:login];
+    
+    SecureStorageManager *storageManager = [SecureStorageManager new];
+    [storageManager storeLoginInformation:login.result];
     
     [AnalyticsManager trackLogin:login];
+    
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    
+    [UserRequest getUserInformationWithUserID:[userManager getUserId]
+                                    onSuccess:^(ProfileInfo * _Nonnull profile) {
+                                        [AnalyticsManager moEngageTrackUserAttributes];
+                                    }
+                                    onFailure:^{
+                                        
+                                    }];
     
     [self notifyUserDidLogin];
     
@@ -521,42 +532,6 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 
 - (void)notifyUserDidLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-}
-
-- (void)storeCredentialToKeychain:(Login *)login {
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
-    [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-
-
-    if(login.result.user_image != nil) {
-        [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-    }
-
-    [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-    [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-
-    if(login.result.shop_avatar != nil) {
-        [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-    }
-
-    [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-    [secureStorage setKeychainWithValue:@(login.result.shop_is_official) withKey:@"shop_is_official"];
-    [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-    [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-    [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-    [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
-
-    if(login.result.user_reputation != nil) {
-        ReputationDetail *reputation = login.result.user_reputation;
-        [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
-        [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
-        [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
-        [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
-        [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
-        [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
-    }
 }
 
 #pragma mark - Delegate

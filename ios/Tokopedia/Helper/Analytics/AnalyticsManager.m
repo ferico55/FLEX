@@ -603,16 +603,30 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [[MoEngage sharedInstance] trackEvent:eventName andPayload:[NSMutableDictionary dictionaryWithDictionary:attributes]];
 }
 
-+ (void)moEngageTrackLogin:(Login *)login {    
-    id moEngage = [MoEngage sharedInstance];
-    [moEngage setUserUniqueID:login.result.user_id];
-    [moEngage setUserName:login.result.full_name];
-    [moEngage setUserEmailID:login.result.email];
-    [moEngage syncNow];
-}
-
 + (void)moEngageTrackLogout {
     [[MoEngage sharedInstance] resetUser];
+}
+
++ (void)moEngageTrackUserAttributes {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    
+    if ([userManager isLogin]) {        
+        MoEngage *moEngage = [MoEngage sharedInstance];
+        [moEngage setUserUniqueID:[userManager getUserId]];
+        [moEngage setUserName:[userManager getUserFullName]];
+        [moEngage setUserFirstName:[userManager getUserShortName]];
+        [moEngage setUserEmailID:[userManager getUserEmail]];
+        
+        [moEngage setUserMobileNo:[userManager getUserPhoneNumber]];
+        [moEngage setUserAttribute:[userManager isUserPhoneVerified]?@"true":@"false" forKey:@"is_verified"];
+        
+        [moEngage setUserAttribute:[userManager userHasShop]?@"true":@"false" forKey:@"is_seller"];
+        [moEngage setUserAttribute:[userManager getShopId] forKey:@"shop_id"];
+        [moEngage setUserAttribute:[userManager getShopName] forKey:@"shop_name"];
+        [moEngage setUserAttribute:[userManager userIsGoldMerchant] forKey:@"is_gold_merchant"];
+        
+        [moEngage syncNow];
+    }
 }
 
 #pragma mark - Specific trackers

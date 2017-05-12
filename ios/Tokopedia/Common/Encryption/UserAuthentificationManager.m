@@ -90,6 +90,30 @@
     return [[self secureStorageDictionary] objectForKey:@"shop_name"]?:@"0";
 }
 
+- (NSString *)getUserFullName {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"full_name"]];
+}
+
+- (NSString *)getUserShortName {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"short_name"]];
+}
+
+- (NSString *)getUserPhoneNumber {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_phone"]];
+}
+
+- (NSString *)stringValueOf:(nullable id)value {
+    if (value) {
+        if ([value isKindOfClass:[NSString class]]) {
+            return value;
+        } else {
+            return [value stringValue];
+        }
+    }
+    
+    return @"";
+}
+
 -(NSString *)getShopHasTerm
 {
     NSNumber *shopHasTerms = [[self secureStorageDictionary] objectForKey:@"shop_has_terms"];
@@ -277,6 +301,10 @@
     } else {
         return ShopTypeRegular;
     }
+}
+
+- (NSNumber *)userIsGoldMerchant {
+    return [[self secureStorageDictionary] objectForKey:@"shop_is_gold"] ?: @(0);
 }
 
 @end

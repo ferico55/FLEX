@@ -379,27 +379,20 @@
 
 #pragma mark - Reload Profile
 - (void)reloadProfile {
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.isUsingHmac = YES;
-    _networkManager.isParameterNotEncrypted = NO;
-    
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/people/get_people_info.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{@"profile_user_id" : _profileUserID}
-                                mapping:[ProfileInfo mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  _profile = [successResult.dictionary objectForKey:@""];
-                                  _profile.result.user_info.user_name = [_profile.result.user_info.user_name kv_decodeHTMLCharacterEntities];
-                                  if (_profile.status) {
-                                      [_biodataController setHeaderData: _profile];
-                                      [_favoriteShopController setHeaderData: _profile];
-                                  }
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  
-                                  
-                              }];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    NSString *userID = [userManager getUserId];
+    [UserRequest getUserInformationWithUserID:userID
+                                    onSuccess:^(ProfileInfo * _Nonnull profile) {
+                                        _profile = profile;
+                                        _profile.result.user_info.user_name = [_profile.result.user_info.user_name kv_decodeHTMLCharacterEntities];
+                                        if (_profile.status) {
+                                            [_biodataController setHeaderData: _profile];
+                                            [_favoriteShopController setHeaderData: _profile];
+                                        }
+                                    }
+                                    onFailure:^{
+                                        
+                                    }];
 }
 
 

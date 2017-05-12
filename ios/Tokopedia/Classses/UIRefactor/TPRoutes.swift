@@ -315,6 +315,44 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //promo name
+        JLRoutes.global().addRoute("/promo/:promoName") { (params: [String : Any]!) -> Bool in
+            let promoName = params["promoName"] as! String
+            let utmString = getUTMString(params as [String : AnyObject])
+            let urlString = "https://www.tokopedia.com/promo/" + promoName + utmString
+            openWebView(NSURL(string: urlString)! as URL)
+            
+            return true
+        }
+        
+        //toppicks
+        JLRoutes.global().addRoute("/toppicks") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
+            let urlString = "https://www.tokopedia.com/toppicks" + utmString
+            openWebView(NSURL(string: urlString)! as URL)
+            
+            return true
+        }
+        
+        //toppicks name
+        JLRoutes.global().addRoute("/toppicks/:toppicksName") { (params: [String : Any]!) -> Bool in
+            let topPicksName = params["toppicksName"] as! String
+            let utmString = getUTMString(params as [String : AnyObject])
+            let urlString = "https://www.tokopedia.com/toppicks/" + topPicksName + utmString
+            openWebView(NSURL(string: urlString)! as URL)
+            
+            return true
+        }
+        
+        //official store mobile
+        JLRoutes.global().addRoute("/official-store/mobile") { (params: [String : Any]!) -> Bool in
+            let utmString = getUTMString(params as [String : AnyObject])
+            let urlString = "https://m.tokopedia.com/official-store/mobile" + utmString
+            openWebView(NSURL(string: urlString)! as URL)
+            
+            return true
+        }
+        
         //hotlist
         JLRoutes.global().addRoute("/hot") { (params: [String : Any]!) -> Bool in
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "redirectToHotlist"), object: nil)
@@ -523,8 +561,6 @@ class TPRoutes: NSObject {
                                         action: GA_EVENT_ACTION_LOGIN_SUCCESS,
                                         label: "Activation Code")
         AnalyticsManager.trackLogin(login)
-        
-        AuthenticationService.shared().storeCredential(toKeychain: login)
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)

@@ -25,6 +25,9 @@
 - (null_unspecified NSDictionary *)getUserLoginData;
 - (null_unspecified NSString*)getUserId;
 - (null_unspecified NSString*)getUserEmail;
+- (nullable NSString*)getUserFullName;
+- (nullable NSString*)getUserShortName;
+- (nullable NSString*)getUserPhoneNumber;
 - (null_unspecified NSString*)getShopId;
 - (null_unspecified NSString*)getShopName;
 - (null_unspecified NSString*)getShopHasTerm;
@@ -42,6 +45,7 @@
 
 + (void)ensureDeviceIdExistence;
 - (BOOL)userHasShop;
+- (NSNumber *)userIsGoldMerchant;
 - (nonnull NSString *)webViewUrlFromUrl:(nonnull NSString *)url;
 
 @end

@@ -13,6 +13,8 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		624F78011EB88CC5006AED78 /* SecureStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624F77FF1EB88CC5006AED78 /* SecureStorageManager.swift */; };
+		624F78021EB88CC5006AED78 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624F78001EB88CC5006AED78 /* UserRequest.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -2061,6 +2063,8 @@
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		624F77FF1EB88CC5006AED78 /* SecureStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStorageManager.swift; sourceTree = "<group>"; };
+		624F78001EB88CC5006AED78 /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -7601,6 +7605,8 @@
 		7A4664BD1EB2FEAB00A72105 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				624F77FF1EB88CC5006AED78 /* SecureStorageManager.swift */,
+				624F78001EB88CC5006AED78 /* UserRequest.swift */,
 				7A4664BE1EB2FEAB00A72105 /* activation.h */,
 				7A4664BF1EB2FEAB00A72105 /* ActivationRequest.h */,
 				7A4664C01EB2FEAB00A72105 /* ActivationRequest.m */,
@@ -12474,6 +12480,7 @@
 				7A4670C01EB2FEB200A72105 /* CancelShipmentViewController.m in Sources */,
 				7A466E5B1EB2FEB000A72105 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
 				7A46709E1EB2FEB200A72105 /* OrderButtonView.swift in Sources */,
+				624F78011EB88CC5006AED78 /* SecureStorageManager.swift in Sources */,
 				7A466E781EB2FEB000A72105 /* ImageThumbnailCell.swift in Sources */,
 				7A466D391EB2FEAF00A72105 /* OrderBookingData.m in Sources */,
 				7A466C841EB2FEAE00A72105 /* HistoryProduct.m in Sources */,
@@ -12932,6 +12939,7 @@
 				7A4671181EB2FEB300A72105 /* SettingUserPhoneViewController.m in Sources */,
 				7A466CB61EB2FEAE00A72105 /* ResolutionShop.m in Sources */,
 				7A466E1E1EB2FEAF00A72105 /* CreatePasswordViewController.m in Sources */,
+				624F78021EB88CC5006AED78 /* UserRequest.swift in Sources */,
 				7A466C081EB2FEAE00A72105 /* VerifiedStatus.m in Sources */,
 				7A466CAD1EB2FEAE00A72105 /* ResolutionCenterDetail.m in Sources */,
 				7A466CB21EB2FEAE00A72105 /* ResolutionDetail.m in Sources */,
@@ -13405,10 +13413,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

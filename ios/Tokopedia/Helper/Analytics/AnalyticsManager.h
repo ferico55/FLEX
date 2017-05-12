@@ -73,8 +73,8 @@
 
 // MoEngage
 + (void)moEngageTrackEventWithName:(NSString *)eventName attributes:(NSDictionary *)attributes;
-+ (void)moEngageTrackLogin:(Login *)login;
 + (void)moEngageTrackLogout;
++ (void)moEngageTrackUserAttributes;
 
 // Specific trackers
 + (void)trackLogin:(Login *)login;
