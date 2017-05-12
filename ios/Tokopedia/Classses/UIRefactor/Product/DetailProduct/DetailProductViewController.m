@@ -1973,7 +1973,7 @@ TTTAttributedLabelDelegate
     [myString appendAttributedString:newAttString];
     _shoplocation.attributedText = myString;
     
-    if(_product.data.shop_info.shop_is_gold == 1 || _product.data.shop_info.official) {
+    if(_product.data.shop_info.hasGoldBadge || _product.data.shop_info.official) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
@@ -1983,8 +1983,8 @@ TTTAttributedLabelDelegate
         _goldShop.image = [UIImage imageNamed:@"badge_official_small"];
     }
     
-    _constraintBadgeGoldWidth.constant = (_product.data.shop_info.shop_is_gold == 1)?20:0;
-    _constraintBadgeLuckySpace.constant = (_product.data.shop_info.shop_is_gold == 1)?4:0;
+    _constraintBadgeGoldWidth.constant = _product.data.shop_info.hasGoldBadge? 20:0;
+    _constraintBadgeLuckySpace.constant = _product.data.shop_info.hasGoldBadge? 4:0;
     
     _shopthumb.layer.cornerRadius = _shopthumb.layer.frame.size.width/2;
     [_shopthumb setImageWithURL:[NSURL URLWithString:_product.data.shop_info.shop_avatar] placeholderImage:[UIImage imageNamed:@"icon_default_shop"]];

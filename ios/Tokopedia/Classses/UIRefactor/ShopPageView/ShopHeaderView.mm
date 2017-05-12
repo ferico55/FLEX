@@ -123,7 +123,7 @@
         return [UIImage imageNamed:@"badge_official"];
     }
     
-    if (shop.info.shop_is_gold) {
+    if (shop.info.hasGoldBadge) {
         return [UIImage imageNamed:@"Badges_gold_merchant"];
     }
     

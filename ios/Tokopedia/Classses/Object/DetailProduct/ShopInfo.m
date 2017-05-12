@@ -67,6 +67,9 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"shop_is_gold_badge": @"hasGoldBadge"
+                                                  }];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_stats" toKeyPath:@"shop_stats" withMapping:[ShopStats mapping]]];
     

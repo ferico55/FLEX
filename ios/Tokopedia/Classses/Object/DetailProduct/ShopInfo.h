@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSString *shop_is_owner;
 @property (nonatomic, strong) NSString *shop_lucky;
 @property (nonatomic) NSInteger shop_is_gold;
+@property (nonatomic) BOOL hasGoldBadge;
 @property (nonatomic, strong) NSString *shop_is_closed_note;
 @property (nonatomic, strong) NSString *shop_is_closed_reason;
 @property (nonatomic, strong) NSString *shop_is_closed_until;
