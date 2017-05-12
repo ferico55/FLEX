@@ -38,7 +38,6 @@
 
 #import "ProductImages.h"
 
-#import "PromoRequest.h"
 #import "AlertLuckyView.h"
 #import "LuckyDealWord.h"
 #import "RequestUtils.h"

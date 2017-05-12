@@ -336,6 +336,15 @@
 }
 
 - (void)goToPage:(NSInteger)page {
+    _productFeedController.isOpened = false;
+    _shopViewController.isOpened = false;
+    if(page == 1){
+        _productFeedController.isOpened = true;
+    }
+    else if(page == 4){
+        _shopViewController.isOpened = true;
+    }
+    
     CGRect frame = _viewControllers[page].view.frame;
     frame.origin.x = _scrollView.frame.size.width*page;
     frame.size.height = _scrollView.frame.size.height;

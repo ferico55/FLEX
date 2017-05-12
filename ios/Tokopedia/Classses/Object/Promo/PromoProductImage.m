@@ -13,7 +13,10 @@
     RKObjectMapping *promoProductImageMapping = [RKObjectMapping mappingForClass:[PromoProductImage class]];
     [promoProductImageMapping addAttributeMappingsFromArray:@[@"m_url",
                                                               @"s_url",
-                                                              @"xs_url"
+                                                              @"xs_url",
+                                                              @"m_ecs",
+                                                              @"s_ecs",
+                                                              @"xs_ecs"
                                                               ]];
     
     return promoProductImageMapping;

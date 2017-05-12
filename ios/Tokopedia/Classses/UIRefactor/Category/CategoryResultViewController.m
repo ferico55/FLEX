@@ -41,7 +41,6 @@
 #import "NavigateViewController.h"
 
 #import "PromoCollectionReusableView.h"
-#import "PromoRequest.h"
 
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
@@ -95,7 +94,7 @@ HeaderIntermediaryCollectionViewDelegate
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
-@property (strong, nonatomic) PromoRequest *promoRequest;
+@property (strong, nonatomic) TopAdsService *topAdsService;
 @property PromoCollectionViewCellType promoCellType;
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
 
@@ -251,7 +250,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_collectionView registerNib:[UINib nibWithNibName:@"HeaderIntermediaryCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIntermediaryCollectionReusableView"];
     [self configureGTM];
     
-    _promoRequest = [PromoRequest new];
+    _topAdsService = [TopAdsService new];
     self.scrollDirection = ScrollDirectionDown;
     
     _networkManager = [TokopediaNetworkManager new];
@@ -1450,41 +1449,25 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 - (void)requestPromo {
     NSInteger page = _start/[startPerPage integerValue];
     
-    if(page % 2 == 0){
-        NSString *searchQuery =[_params objectForKey:@"search"]?:@"";
-        NSString *departmentId = [self selectedCategoryIDsString]?:@"";
-        NSString *source = [searchQuery isEqualToString:@""]?@"directory":@"search";
-        __weak typeof(self) weakSelf = self;
-        [_promoRequest requestForProductQuery:searchQuery
-                                   department:departmentId
-                                         page:page/2
-                                       source:source
-                              filterParameter:_selectedFilterParam
-                                    onSuccess:^(NSArray<PromoResult *> *promoResult) {
-                                        if (promoResult.count > 0) {
-                                            if(promoResult.count > 2){
-                                                if(IS_IPAD) {
-                                                    [_promo addObject:promoResult];
-                                                } else {
-                                                    NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                                    NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                    arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                                    arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                                    NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                    
-                                                    [_promo addObject:promoArrayLastHalf];
-                                                    [_promo addObject:promoArrayFirstHalf];
-                                                }
-                                            }else{
-                                                [_promo addObject:promoResult];
-                                                [_promo addObject:[NSArray new]];
-                                            }
-                                        }
-                                        [self requestIntermediaryCategory];
-                                    } onFailure:^(NSError *error) {
-                                        [self requestIntermediaryCategory];
-                                    }];
-    }
+    __weak typeof(self) weakSelf = self;
+    
+    TopAdsFilter *filter = [[TopAdsFilter alloc] init];
+    filter.searchKeyword = [_params objectForKey:@"search"]?:@"";
+    filter.source = [filter.searchKeyword isEqualToString:@""]?TopAdsSourceDirectory:TopAdsSourceSearch;
+    filter.departementId = [self selectedCategoryIDsString]?:@"";
+    filter.currentPage = page;
+    filter.userFilter = _selectedFilterParam;
+    
+    [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
+        if (promoResult.count > 0) {
+            [_promo addObject:promoResult];
+        }
+        
+        [weakSelf requestIntermediaryCategory];
+    } onFailure:^(NSError * error) {
+        [weakSelf requestIntermediaryCategory];
+    }];
+    
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
@@ -1497,33 +1480,13 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
     if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:[self directoryType]]){
-        NavigateViewController *navigateController = [NavigateViewController new];
-        NSDictionary *productData = @{
-            @"product_id"       : promoResult.product.product_id?:@"",
-            @"product_name"     : promoResult.product.name?:@"",
-            @"product_image"    : promoResult.product.image.s_url?:@"",
-            @"product_price"    : promoResult.product.price_format?:@"",
-            @"shop_name"        : promoResult.shop.name?:@"",
-            @"pre_order"        : [NSNumber numberWithBool:promoResult.product.product_preorder]
-        };
-
-        PromoRequestSourceType source;
-        if ([_params objectForKey:@"sc"]) {
-            source = PromoRequestSourceCategory;
-        } else if ([_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
-            source = PromoRequestSourceSearch;
+        
+        if(promoResult.applinks){
+            if(promoResult.shop.shop_id != nil){
+                [TopAdsService sendClickImpressionWithClickURLString:promoResult.product_click_url];
+            }
+            [TPRoutes routeURL:[NSURL URLWithString:promoResult.applinks]];
         }
-
-        NSDictionary *promoData = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
-            PromoImpressionKey          : promoResult.ad_ref_key,
-            PromoClickURL               : promoResult.product_click_url,
-            PromoRequestSource          : @(source)
-        };
-
-        [navigateController navigateToProductFromViewController:self
-                                                      promoData:promoData
-                                                    productData:productData];
     }
 }
 

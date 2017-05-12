@@ -19,7 +19,6 @@
 #import "ProductCell.h"
 
 #import "PromoCollectionReusableView.h"
-#import "PromoRequest.h"
 #import "Tokopedia-Swift.h"
 
 #import "SearchAWS.h"
@@ -66,7 +65,7 @@ FavoriteShopRequestDelegate
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
 
-@property (strong, nonatomic) PromoRequest *promoRequest;
+@property (strong, nonatomic) TopAdsService *topAdsService;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) FavoriteShopRequest *favoriteShopRequest;
 @property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
@@ -80,12 +79,17 @@ FavoriteShopRequestDelegate
     
     BOOL _isFailRequest;
     BOOL _isRequestingProductFeed;
-//    BOOL _isShowRefreshControl;
+    //    BOOL _isShowRefreshControl;
+    BOOL _isShouldRefreshData;
+    BOOL _isViewWillAppearCalled;
     
     UIRefreshControl *_refreshControl;
+    UIRefreshControl *_refreshControlNoResult;
     
     __weak RKObjectManager *_objectmanager;
     NoResultReusableView *_noResultView;
+    UIScrollView *_noResultScrollView;
+    TopAdsView *_topAdsView;
     ProductDataSource* _productDataSource;
     UIActivityIndicatorView *_loadingIndicator;
     NSString* _favoritedShopString;
@@ -102,19 +106,35 @@ FavoriteShopRequestDelegate
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    
+    _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultScrollView.userInteractionEnabled = true;
+    [_noResultScrollView addSubview:_refreshControlNoResult];
+    
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 350)];
     _noResultView.delegate = self;
+    
     [_noResultView generateAllElements:@"product-feed.png"
                                  title:@"Lihat produk dari toko favorit Anda disini"
                                   desc:@"Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru."
                               btnTitle:@"Toko Favorit"];
+    
+    _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
+    
+    [_noResultScrollView addSubview:_noResultView];
+    [_noResultScrollView addSubview:_topAdsView];
+    
+    if(IS_IPAD){
+        _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
+    }
+    
 }
 
 - (void) viewDidLoad {
     [super viewDidLoad];
     
     _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView supplementaryDataSource:self];
-
+    
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
@@ -124,16 +144,19 @@ FavoriteShopRequestDelegate
     _promoScrollPosition = [NSMutableArray new];
     _collectionView.delegate = self;
 
-    
-    [self initNoResultView];
     _page = 0;
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControlNoResult = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    _refreshControlNoResult.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshProductFeed)forControlEvents:UIControlEventValueChanged];
+    [_refreshControlNoResult addTarget:self action:@selector(refreshProductFeed)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
 //    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
+    
+    [self initNoResultView];
     
 //    [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
@@ -157,29 +180,6 @@ FavoriteShopRequestDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
     
-    //set change orientation
-//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    
-    _favoriteShopRequest = [FavoriteShopRequest new];
-    _favoriteShopRequest.delegate = self;
-    [_favoriteShopRequest requestFavoriteShopListings];
-    
-    _promoRequest = [PromoRequest new];
-    [self requestPromo];
-    
-    [self registerNib];
-    self.contentView = self.view;
-    _isRequestingProductFeed = YES;
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    // UA
-    [AnalyticsManager trackScreenName:@"Home - Product Feed"];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomeTab:)
                                                  name:@"didSwipeHomeTab"
@@ -190,7 +190,39 @@ FavoriteShopRequestDelegate
                                                  name:TKPDUserDidLoginNotification
                                                object:nil];
     
+    //set change orientation
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
+    [_favoriteShopRequest requestFavoriteShopListings];
+    
+    _topAdsService = [TopAdsService new];
+    
+    [self registerNib];
+    self.contentView = self.view;
+    _isRequestingProductFeed = YES;
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if(_isOpened && !_isViewWillAppearCalled){
+        // UA
+        [AnalyticsManager trackScreenName:@"Home - Product Feed"];
+        _isViewWillAppearCalled = true;
+        if(_isShouldRefreshData){
+            _isShouldRefreshData = false;
+            [self refreshProductFeed];
+        }
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    _isViewWillAppearCalled = false;
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
@@ -227,7 +259,7 @@ FavoriteShopRequestDelegate
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
-    [self refreshProductFeed];
+    _isShouldRefreshData = true;
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -235,8 +267,16 @@ FavoriteShopRequestDelegate
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
     if(tag == 1) {
+//        MainViewController *vc = self.view.window.rootViewController;
+        BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
+        if(self.tabBarController.selectedIndex == 0 && self.navigationController.viewControllers.count == 1 && isLoggedIn){
+            [self viewWillAppear:true];
+        }
+        
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
+        _isViewWillAppearCalled = false;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
     
@@ -244,7 +284,7 @@ FavoriteShopRequestDelegate
 
 - (void)updateFavoriteShop {
     _isRequestingProductFeed = NO;
-    [self refreshProductFeed];
+    _isShouldRefreshData = true;
 }
 
 - (void)refreshProductFeed {
@@ -253,12 +293,11 @@ FavoriteShopRequestDelegate
     
     [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
     [_firstFooter removeFromSuperview];
-    [_noResultView removeFromSuperview];
+
     if(!_isRequestingProductFeed){
         _page = 0;
         _isRequestingProductFeed = YES;
         [_collectionView addSubview:_loadingIndicator];
-        [self requestPromo];
         //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         [_favoriteShopRequest requestFavoriteShopListings];
     }
@@ -326,39 +365,31 @@ FavoriteShopRequestDelegate
 #pragma mark - Promo request delegate
 
 - (void)requestPromo {
-    _promoRequest.page = _page;
-    
     //this is happen, because we need to separate promo response into two object
     //and must do promo request again every request product * 2
-    if((_page - 1) % 2 == 0 || _page == 0){
-        [_promoRequest requestForProductFeedWithPage:_page / 2
-                                           onSuccess:^(NSArray<PromoResult *> *promoResult) {
-                                               if (promoResult) {
-                                                   if(promoResult.count > 2){
-                                                       if(IS_IPAD) {
-                                                           [_promo addObject:promoResult];
-                                                       } else {
-                                                           NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                                           NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                           arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                                           arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                                           NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                           
-                                                           [_promo addObject:promoArrayLastHalf];
-                                                           [_promo addObject:promoArrayFirstHalf];
-                                                       }
-                                                   }else{
-                                                       [_promo addObject:promoResult];
-                                                       [_promo addObject:[NSArray new]];
-                                                   }
-                                               }
-                                               
-                                               [_collectionView reloadData];
-                                    } onFailure:^(NSError *error) {
-//                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-                                        [_collectionView reloadData];
-                                    }];
-    }
+
+    TopAdsFilter *filter = [[TopAdsFilter alloc] init];
+    filter.source = TopAdsSourceFavoriteProduct;
+    filter.currentPage = _page;
+    filter.isRecommendationCategory = true;
+    
+    [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
+        if (promoResult) {
+            
+            [_promo addObject:promoResult];
+            if(_productDataSource._products.count == 0){
+                [_topAdsView setPromoWithAds:_promo[0]];
+                [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 350 + 160 + _topAdsView.frame.size.height)];
+            }
+            
+        }
+        
+        [_collectionView reloadData];
+        
+    } onFailure:^(NSError * error) {
+        [_collectionView reloadData];
+        
+    }];
 }
 
 #pragma mark - Promo collection delegate
@@ -371,25 +402,12 @@ FavoriteShopRequestDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
-    NavigateViewController *navigateController = [NavigateViewController new];
-    NSDictionary *productData = @{
-                                  @"product_id"       : promoResult.product.product_id?:@"",
-                                  @"product_name"     : promoResult.product.name?:@"",
-                                  @"product_image"    : promoResult.product.image.s_url?:@"",
-                                  @"product_price"    : promoResult.product.price_format?:@"",
-                                  @"shop_name"        : promoResult.shop.name?:@""
-                                  };
-    
-    NSDictionary *promoData = @{
-                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
-                                PromoImpressionKey          : promoResult.ad_ref_key,
-                                PromoClickURL               : promoResult.product_click_url,
-                                PromoRequestSource          : @(PromoRequestSourceHotlist)
-                                };
-    
-    [navigateController navigateToProductFromViewController:self
-                                                  promoData:promoData
-                                                productData:productData];
+    if(promoResult.applinks){
+        if(promoResult.shop.shop_id != nil){
+            [TopAdsService sendClickImpressionWithClickURLString:promoResult.product_click_url];
+        }
+        [TPRoutes routeURL:[NSURL URLWithString:promoResult.applinks]];
+    }
     
 }
 
@@ -435,24 +453,33 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     }else{
         [_loadingIndicator stopAnimating];
         [_refreshControl endRefreshing];
-        [_noResultView removeFromSuperview];
+        [_refreshControlNoResult endRefreshing];
+
         [_firstFooter removeFromSuperview];
         [_productDataSource removeAllProducts];
-        [_collectionView addSubview:_noResultView];
+
+        if(!_noResultScrollView.superview){
+            [_noResultScrollView removeFromSuperview];
+            [_collectionView addSubview:_noResultScrollView];
+        }
+        
         [_collectionView layoutIfNeeded];
         [_collectionView reloadData];
         _isRequestingProductFeed = NO;
-
+        [self requestPromo];
+        
     }
 }
 
 -(void)didReceiveProductFeed:(SearchAWS *)feed{
-    [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     [_refreshControl setHidden:YES];
+    [_refreshControlNoResult setHidden:YES];
     _isFailRequest = NO;
     
     if (_favoritedShopString && [_favoritedShopString length] > 0 && feed.data.products.count > 0) {
+        [_noResultScrollView removeFromSuperview];
+        
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.data.products];
         }else{
@@ -464,18 +491,22 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         _nextPageUri =  feed.data.paging.uri_next;
         _page++;
         
-        if (_page > 1) [self requestPromo];
+        [self requestPromo];
         
     } else {
         // no data at all
         if(_page == 0){
             [_productDataSource removeAllProducts];
-            [_collectionView addSubview:_noResultView];
+            if(!_noResultScrollView.superview){
+                [_noResultScrollView removeFromSuperview];
+                [_collectionView addSubview:_noResultScrollView];
+            }
         }
     }
     
-    if(_refreshControl.isRefreshing) {
+    if(_refreshControl.isRefreshing || _refreshControlNoResult.isRefreshing) {
         [_refreshControl endRefreshing];
+        [_refreshControlNoResult endRefreshing];
     }
     [_loadingIndicator stopAnimating];
     [_collectionView reloadData];
@@ -485,6 +516,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void)failToRequestFavoriteShopListing{
     [_refreshControl endRefreshing];
+    [_refreshControlNoResult endRefreshing];
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
@@ -494,6 +526,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void)failToRequestProductFeed{
     [_refreshControl endRefreshing];
+    [_refreshControlNoResult endRefreshing];
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
@@ -503,6 +536,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void)failToRequestAllFavoriteShopString{
     [_refreshControl endRefreshing];
+    [_refreshControlNoResult endRefreshing];
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];

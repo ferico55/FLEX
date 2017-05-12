@@ -365,9 +365,9 @@ class CategoryIntermediaryViewController: UIViewController {
             let categoryIntermediaryHotListResponse: CategoryIntermediaryHotListResponse = result[""] as! CategoryIntermediaryHotListResponse
             self.intermediaryView.state?.categoryIntermediaryHotListItems = categoryIntermediaryHotListResponse.list
             self.intermediaryView.render(in: self.view.bounds.size)
-            let filter = TopAdsFilter(numberOfItems: UI_USER_INTERFACE_IDIOM() == .phone ? 2 : 4, source: .intermediary, page: nil, departementId: self.categoryIntermediaryResult.id, hotlistId: nil, searchKeyword: nil, userFilter: nil)
+            let filter = TopAdsFilter(source: .intermediary, departementId: self.categoryIntermediaryResult.id)
             
-            TopAdsService().getTopAds(topAdsFilter: filter, onSucces: { [weak self] ads in
+            TopAdsService().getTopAds(topAdsFilter: filter, onSuccess: { [weak self] ads in
                 guard let `self` = self else { return }
                 
                 self.intermediaryView.state?.ads = ads

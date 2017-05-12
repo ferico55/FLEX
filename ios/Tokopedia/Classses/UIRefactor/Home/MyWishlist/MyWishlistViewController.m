@@ -84,11 +84,15 @@ typedef enum TagRequest {
     BOOL _isShowRefreshControl;
     
     UIRefreshControl *_refreshControl;
+    UIRefreshControl *_refreshControlNoResult;
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
+    TopAdsService *_topAdsService;
     NoResultReusableView *_noResultView;
     NoResultReusableView *_notLoggedInView;
+    UIScrollView *_noResultScrollView;
+    TopAdsView *_topAdsView;
     
     NotificationManager *_notifManager;
 }
@@ -108,8 +112,26 @@ typedef enum TagRequest {
     return self;
 }
 
+- (void)initAllNoResult{
+    _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultScrollView.userInteractionEnabled = true;
+    [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 775)];
+    [_noResultScrollView addSubview:_refreshControlNoResult];
+    
+    _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
+    [_noResultScrollView addSubview:_topAdsView];
+    
+    if(IS_IPAD){
+        _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
+    }
+    
+    [self initNoResultView];
+    [self initNotLoggedInView];
+    [self initSearchNoResultView];
+}
+
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"toped_wishlist"
                                  title:@""
@@ -121,7 +143,7 @@ typedef enum TagRequest {
 
 - (void) initSearchNoResultView {
     __weak typeof(self) weakSelf = self;
-    _searchNoResultView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, 50, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _searchNoResultView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, -50, [[UIScreen mainScreen]bounds].size.width, 300)];
     [_searchNoResultView generateAllElements:@"toped_cry"
                                        title:@""
                                         desc:@"Produk tidak ditemukan di Wishlist"
@@ -135,7 +157,7 @@ typedef enum TagRequest {
 - (void)initNotLoggedInView {
     __weak typeof(self) weakSelf = self;
     
-    _notLoggedInView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _notLoggedInView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _notLoggedInView.delegate = self;
     [_notLoggedInView generateAllElements:@"icon_no_data_grey.png"
                                  title:@"Anda belum login"
@@ -158,6 +180,7 @@ typedef enum TagRequest {
     [super viewDidLoad];
     [self initWishlistNetworkManager];
     [self initNotificationManager];
+    _topAdsService = [TopAdsService new];
     
     _userManager = [[UserAuthentificationManager alloc] init];
     
@@ -175,19 +198,22 @@ typedef enum TagRequest {
 
     
     //todo with view
-    [self initNoResultView];
-    [self initNotLoggedInView];
-    [self initSearchNoResultView];
+    
     
     _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControlNoResult = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    _refreshControlNoResult.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControlNoResult addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
+    
+    [self initAllNoResult];
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
@@ -207,11 +233,14 @@ typedef enum TagRequest {
     
     [Localytics triggerInAppMessage:@"Wishlist Screen"];
     if(![_userManager isLogin]) {
-        [_collectionView addSubview:_notLoggedInView];
+        [_noResultScrollView addSubview:_notLoggedInView];
+        [_collectionView addSubview:_noResultScrollView];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
     } else {
         [self loadAllWishlist];
     }
+    
+    [self requestPromo];
 }
 
 -(void) loadAllWishlist {
@@ -230,6 +259,20 @@ typedef enum TagRequest {
                                      } onFailure:^(NSError *errorResult) {
                                          [weakSelf getWishlistDidError];
                                      }];
+}
+
+-(void) requestPromo{
+    
+    TopAdsFilter *filter = [TopAdsFilter new];
+    filter.isRecommendationCategory = true;
+    filter.source = TopAdsSourceWishlist;
+    
+    [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
+        [_topAdsView setPromoWithAds:result];
+        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height)];
+    } onFailure:^(NSError * error) {
+        
+    }];
 }
 
 -(void) loadWishlistWithSearchText: (NSString *) searchText {
@@ -429,7 +472,10 @@ typedef enum TagRequest {
         [self loadAllWishlist];
     } else {
         [_refreshControl endRefreshing];
+        [_refreshControlNoResult endRefreshing];
     }
+    
+    [self requestPromo];
 }
 
 #pragma mark - NoResult Delegate
@@ -483,6 +529,9 @@ typedef enum TagRequest {
 }
 
 - (void)didReceiveProduct:(MyWishlistResponse*)productStore {
+    _noResultScrollView.frame = [[UIScreen mainScreen]bounds];
+    _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
+    
     _isRequestingData = NO;
     if(_page == 1) {
         _product = [productStore.data mutableCopy];
@@ -492,6 +541,7 @@ typedef enum TagRequest {
     
     [_noResultView removeFromSuperview];
     [_searchNoResultView removeFromSuperview];
+    [_noResultScrollView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  productStore.pagination.uri_next;
@@ -502,14 +552,16 @@ typedef enum TagRequest {
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         }
         [_noResultView removeFromSuperview];
+        [_noResultScrollView removeFromSuperview];
     } else {
         [self showNoResultView];
     }
     
     self.searchResultCountLabel.text  = [NSString stringWithFormat:@"%@ hasil", productStore.header.total_data];
     
-    if(_refreshControl.isRefreshing) {
+    if(_refreshControl.isRefreshing || _refreshControlNoResult.isRefreshing) {
         [_refreshControl endRefreshing];
+        [_refreshControlNoResult endRefreshing];
         [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     } else  {
         [_collectionView reloadData];
@@ -551,6 +603,7 @@ typedef enum TagRequest {
     if(_product.count > 0){
         [_collectionView reloadData];
         [_noResultView removeFromSuperview];
+        [_noResultScrollView removeFromSuperview];
     }else{
         [self showNoResultView];
     }
@@ -574,14 +627,33 @@ typedef enum TagRequest {
 
 - (void) showNoResultView {
     if ([self isSearchModeActive]) {
-        [_collectionView insertSubview:_searchNoResultView atIndex:0];
+//        [_collectionView insertSubview:_searchNoResultView atIndex:0];
+        
+        [_noResultScrollView addSubview:_searchNoResultView];
+        [_collectionView addSubview:_noResultScrollView];
+        [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 716)];
+        _noResultScrollView.frame = CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height);
+        _topAdsView.frame = CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 400);
+
+        if(IS_IPHONE_5 || IS_IPHONE_4_OR_LESS){
+            [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 688)];
+        }
+        else if(IS_IPHONE_6P){
+            [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 735)];
+        }
+        else if(IS_IPAD){
+            _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
+        }
+        
     } else {
         // no data at all
         _isNoData = YES;
         [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 0)];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         //[self setView:_noResultView];
-        [_collectionView addSubview:_noResultView];
+//        [_collectionView addSubview:_noResultView];
+        [_noResultScrollView addSubview:_noResultView];
+        [_collectionView addSubview:_noResultScrollView];
     }
 }
 
@@ -617,14 +689,20 @@ typedef enum TagRequest {
 - (void)setAsGuestView {
     [_flowLayout setHeaderReferenceSize:CGSizeZero];
     [_flowLayout setFooterReferenceSize:CGSizeZero];
-    [_collectionView addSubview:_notLoggedInView];
+    _noResultScrollView.frame = [[UIScreen mainScreen]bounds];
+    _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
     [_noResultView removeFromSuperview];
+    [_searchNoResultView removeFromSuperview];
+    [_noResultScrollView addSubview:_notLoggedInView];
+    [_collectionView addSubview:_noResultScrollView];
+    
     [self initNotificationManager];
 }
 
 - (void)setAsBuyerView {
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
     [_notLoggedInView removeFromSuperview];
+    [_noResultScrollView removeFromSuperview];
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
 }

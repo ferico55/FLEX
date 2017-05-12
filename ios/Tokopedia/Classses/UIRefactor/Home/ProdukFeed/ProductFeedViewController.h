@@ -10,6 +10,7 @@
 
 @interface ProductFeedViewController : GAITrackedViewController
 
+@property (assign, nonatomic) BOOL isOpened;
 @property NSInteger index;
 - (void) scrollToTop;
 @end

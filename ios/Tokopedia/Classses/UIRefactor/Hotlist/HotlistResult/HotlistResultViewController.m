@@ -39,7 +39,6 @@
 #import "NavigateViewController.h"
 
 #import "PromoCollectionReusableView.h"
-#import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
 #import "HotlistBannerRequest.h"
@@ -99,7 +98,7 @@ static NSString const *rows = @"12";
     UIRefreshControl *_refreshControl;
     NoResultView *_noResultView;
     
-    PromoRequest *_promoRequest;
+    TopAdsService *_topAdsService;
     
     BOOL _shouldUseHashtag;
     
@@ -243,7 +242,7 @@ static NSString const *rows = @"12";
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
-    _promoRequest = [PromoRequest new];
+    _topAdsService = [TopAdsService new];
     
     [self fetchDataHotlistBanner];
     
@@ -811,36 +810,26 @@ static NSString const *rows = @"12";
 
 #pragma mark - Promo request delegate
 - (void)requestPromo {
-    _promoRequest.page = _page;
-    
-    if(_bannerResult.query.hot_id && (_page % 2 == 1 || _page == 1)){
+    if(_bannerResult.query.hot_id){
         NSString *departmentId = [self selectedCategoryIDsString];
 
-        [_promoRequest requestForProductHotlist:_bannerResult.query.hot_id
-                                     department:departmentId
-                                           page:_page / 2
-                                filterParameter:_selectedFilterParam
-                                      onSuccess:^(NSArray<PromoResult *> *promoResult) {
-                                          if (promoResult) {
-                                              if(IS_IPAD) {
-                                                  [_promo addObject:promoResult];
-                                              } else {
-                                                  NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                                  NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                  arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                                  arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                                  NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                  
-                                                  [_promo addObject:promoArrayLastHalf];
-                                                  [_promo addObject:promoArrayFirstHalf];
-                                              }
-                                          } 
-                                      } onFailure:^(NSError *errorResult) {
-                                          
-                                      }];
-    }else{
+        TopAdsFilter *filter = [[TopAdsFilter alloc] init];
+        filter.source = TopAdsSourceHotlist;
+        filter.currentPage = _page;
+        filter.departementId = departmentId;
+        filter.hotlistId = _bannerResult.query.hot_id;
+        filter.userFilter = _selectedFilterParam;
+        
+        [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
+            if (promoResult) {
+                [_promo addObject:promoResult];
+            }
+        } onFailure:^(NSError * error) {
+            
+        }];
         
     }
+    
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
 }
@@ -855,26 +844,12 @@ static NSString const *rows = @"12";
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
-    NavigateViewController *navigateController = [NavigateViewController new];
-    NSDictionary *productData = @{
-                                  @"product_id"       : promoResult.product.product_id?:@"",
-                                  @"product_name"     : promoResult.product.name?:@"",
-                                  @"product_image"    : promoResult.product.image.s_url?:@"",
-                                  @"product_price"    : promoResult.product.price_format?:@"",
-                                  @"shop_name"        : promoResult.shop.name?:@""
-                                  };
-    
-    NSDictionary *promoData = @{
-                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
-                                PromoImpressionKey          : promoResult.ad_ref_key,
-                                PromoClickURL               : promoResult.product_click_url,
-                                PromoRequestSource          : @(PromoRequestSourceHotlist)
-                                };
-    
-    [navigateController navigateToProductFromViewController:self
-                                                  promoData:promoData
-                                                productData:productData];
-
+    if(promoResult.applinks){
+        if(promoResult.shop.shop_id != nil){
+            [TopAdsService sendClickImpressionWithClickURLString:promoResult.product_click_url];
+        }
+        [TPRoutes routeURL:[NSURL URLWithString:promoResult.applinks]];
+    }
 }
 
 #pragma mark - Scroll delegate

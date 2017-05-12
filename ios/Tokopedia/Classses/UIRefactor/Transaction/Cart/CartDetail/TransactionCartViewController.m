@@ -80,6 +80,7 @@
     UITextField *_activeTextField;
     
     UIRefreshControl *_refreshControl;
+    UIRefreshControl *_refreshControlNoResult;
     
     BOOL _isLoadingRequest;
     
@@ -96,7 +97,10 @@
     BOOL _hasDisplayedPaymentError;
     
     TransactionVoucherData *_voucherData;
-
+    
+    TopAdsService *_topAdsService;
+    UIScrollView *_noResultScrollView;
+    TopAdsView *_topAdsView;
     NoResultReusableView *_noResultView;
     NoResultReusableView *_noInternetConnectionView;
     NoResultReusableView *_noLoginView;
@@ -156,6 +160,7 @@
     
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
+    _topAdsService = [TopAdsService new];
     
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
@@ -163,18 +168,20 @@
     [self initNotification];
 
     _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControlNoResult = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    _refreshControlNoResult.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
+    [_refreshControlNoResult addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    [self initNoResultView];
-    [self initNoInternetConnectionView];
-    [self initNoLoginView];
+    [self initAllNoResult];
     [self initNotificationManager];
     
     [self refreshRequestCart];
     
     [AnalyticsManager trackScreenName:@"Shopping Cart"];
+    
 }
 
 - (void)initNotification {
@@ -209,6 +216,20 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRequestCart)
                                                  name:SHOULD_REFRESH_CART
                                                object:nil];
+}
+
+-(void) requestPromo{
+    
+    TopAdsFilter *filter = [TopAdsFilter new];
+    filter.isRecommendationCategory = true;
+    filter.source = TopAdsSourceEmptyCart;
+    
+    [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
+        [_topAdsView setPromoWithAds:result];
+        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height)];
+    } onFailure:^(NSError * error) {
+        
+    }];
 }
 
 #pragma mark - Notification Manager
@@ -246,8 +267,26 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+-(void)initAllNoResult{
+    _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultScrollView.userInteractionEnabled = true;
+    [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 775)];
+    [_noResultScrollView addSubview:_refreshControlNoResult];
+    
+    _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
+    [_noResultScrollView addSubview:_topAdsView];
+
+    if(IS_IPAD){
+        _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
+    }
+    
+    [self initNoResultView];
+    [self initNoInternetConnectionView];
+    [self initNoLoginView];
+}
+
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noResultView.delegate = self;
     _noResultView.button.tag = 1;
     [_noResultView generateAllElements:@"Keranjang.png"
@@ -265,7 +304,7 @@
 - (void)initNoLoginView {
     __weak typeof(self) weakSelf = self;
     
-    _noLoginView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noLoginView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noLoginView.delegate = self;
     [_noLoginView generateAllElements:@"icon_no_data_grey.png"
                                     title:@"Anda belum login"
@@ -281,7 +320,6 @@
         };
         [weakSelf.navigationController pushViewController:controller animated:YES];
     };
-    [self.view addSubview:_noLoginView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -299,11 +337,16 @@
 }
 
 -(void)userLogin{
-    _noLoginView.hidden = YES;
+//    _noLoginView.hidden = YES;
+    [_noResultScrollView removeFromSuperview];
+    [_noLoginView removeFromSuperview];
 }
 
 -(void)userLogout{
-    _noLoginView.hidden = NO;
+//    _noLoginView.hidden = NO;
+    [self.view addSubview:_noResultScrollView];
+    [_noResultScrollView addSubview:_noLoginView];
+    [self requestPromo];
 }
 
 -(UIAlertView*)alertLoading{
@@ -1026,14 +1069,16 @@
     if (isLoading) {
         [[self alertLoading] show];
     } else{
-        if (_refreshControl.isRefreshing) {
+        if (_refreshControl.isRefreshing || _refreshControlNoResult.isRefreshing) {
             [_refreshControl endRefreshing];
+            [_refreshControlNoResult endRefreshing];
         }
         if (_list.count>0) {
             _tableView.tableFooterView = _checkoutView;
         } else _tableView.tableFooterView = nil;
         [[self alertLoading] dismissWithClickedButtonIndex:0 animated:NO];
         [_tableView setContentOffset:CGPointZero];
+        [_noResultScrollView setContentOffset:CGPointZero];
     }
 }
 
@@ -1433,8 +1478,11 @@
         
         if(list.count >0){
             [_noResultView removeFromSuperview];
+            [_noResultScrollView removeFromSuperview];
         }else{
-            [_tableView addSubview:_noResultView];
+            [self requestPromo];
+            [_tableView addSubview:_noResultScrollView];
+            [_noResultScrollView addSubview:_noResultView];
         }
         
         _cart = data;

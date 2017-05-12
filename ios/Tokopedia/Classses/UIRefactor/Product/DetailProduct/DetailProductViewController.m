@@ -32,7 +32,6 @@
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
-#import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -156,8 +155,6 @@ TTTAttributedLabelDelegate
     NSString *_detailProductBaseUrl;
     NSString *_detailProductPostUrl;
     NSString *_detailProductFullUrl;
-    
-    PromoRequest *_promoRequest;
     
     OtherProductDataSource *_otherProductDataSource;
 }
@@ -1493,10 +1490,6 @@ TTTAttributedLabelDelegate
             [self setFooterViewData];
             [self setOtherProducts];
             
-            if(!_product.isDummyProduct && [_data objectForKey:@"ad_click_url"]){
-                [self addImpressionClick];
-            }
-            
             //Track in GA
             
             _isnodata = NO;
@@ -2342,16 +2335,6 @@ TTTAttributedLabelDelegate
 - (void)duplicate:(int)tag
 {
     [UIPasteboard generalPasteboard].string = _descriptionLabel.text;
-}
-
-- (void)addImpressionClick {
-    _promoRequest = [[PromoRequest alloc] init];
-    [_promoRequest requestForClickURL:[_data objectForKey:PromoClickURL]
-                            onSuccess:^{
-                                
-                            } onFailure:^(NSError *error) {
-                                
-                            }];
 }
 
 - (void)initNoResultView {

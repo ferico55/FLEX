@@ -192,7 +192,7 @@ TKPDAlertViewDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?campaign=topads&source=%@&medium=ios", [self topadsUrlFromSource:[_delegate topadsSource]]];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?source=tooltip&medium=ios"];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
 }

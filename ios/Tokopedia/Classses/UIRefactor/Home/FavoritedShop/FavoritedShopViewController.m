@@ -14,7 +14,6 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 #import "LoadingView.h"
-#import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
 #import "FavoriteShopRequest.h"
@@ -36,6 +35,8 @@ FavoriteShopRequestDelegate
 {
     BOOL _isnodata;
     BOOL _isrefreshview;
+    BOOL _isViewWillAppearCalled;
+
     NSString *strTempShopID, *strUserID;
     
     NSOperationQueue *_operationQueue;
@@ -53,7 +54,7 @@ FavoriteShopRequestDelegate
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
-    PromoRequest *_promoRequest;
+    TopAdsService *_topAdsService;
     FavoriteShopRequest *_favoriteShopRequest;
     
     PromoResult *_selectedPromoShop;
@@ -107,7 +108,7 @@ FavoriteShopRequestDelegate
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     //Check login with different id
@@ -123,7 +124,7 @@ FavoriteShopRequestDelegate
         _page = 1;
     }
     
-    _promoRequest = [PromoRequest new];
+    _topAdsService = [TopAdsService new];
     [self requestPromoShop];
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -132,9 +133,17 @@ FavoriteShopRequestDelegate
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
+    if(_isOpened && !_isViewWillAppearCalled){
+        [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
+        [self refreshView:nil];
+        _isViewWillAppearCalled = true;
+    }
+    
+}
 
-    [self refreshView:nil];
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    _isViewWillAppearCalled = false;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -411,10 +420,10 @@ FavoriteShopRequestDelegate
                            kTKPDDETAIL_APISHOPIDKEY     :promoResult.shop.shop_id?:@0,
                            kTKPDDETAIL_APISHOPNAMEKEY   :promoResult.shop.name?:@"",
                            kTKPD_AUTHKEY                :[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                           PromoRefKey                  :promoResult.ad_ref_key,
-                           PromoClickURL                :promoResult.shop_click_url
+                           @"ad_ref_key"                :promoResult.ad_ref_key
                            };
         NSString *eventLabel = [NSString stringWithFormat:@"Add to Favorite - %@", promoResult.shop.name];
+        [TopAdsService sendClickImpressionWithClickURLString:promoResult.shop_click_url];
         [AnalyticsManager trackEventName:@"clickFavorite"
                                 category:GA_EVENT_CATEGORY_FAVORITE
                                   action:GA_EVENT_ACTION_CLICK
@@ -474,8 +483,10 @@ FavoriteShopRequestDelegate
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
     if(tag == 4) {
+        [self viewWillAppear:true];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
+        _isViewWillAppearCalled = false;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
     
@@ -501,14 +512,20 @@ FavoriteShopRequestDelegate
 
 - (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan?campaign=topads&source=fav_shop&medium=ios"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan?source=tooltip&medium=ios"]];
     }
 }
 
 #pragma mark - Request
 
 - (void)requestPromoShop {
-    [_promoRequest requestForFavoriteShop:^(NSArray<PromoResult *>* result) {
+    TopAdsFilter *filter = [[TopAdsFilter alloc] init];
+    filter.ep = TopAdsEpShop;
+    filter.numberOfItems = 3;
+    filter.source = TopAdsSourceFavoriteShop;
+    filter.isRecommendationCategory = true;
+    
+    [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
         _isnodata = NO;
         if(result == nil) [self showInternetProblemStickyAlert];
         _promoShops = [NSMutableArray arrayWithArray:result];
@@ -516,6 +533,12 @@ FavoriteShopRequestDelegate
     } onFailure:^(NSError * error) {
         [self showInternetProblemStickyAlert];
     }];
+    
+//    [_promoRequest requestForFavoriteShop:^(NSArray<PromoResult *>* result) {
+//        
+//    } onFailure:^(NSError * error) {
+//        
+//    }];
 }
 
 - (void)showInternetProblemStickyAlert{

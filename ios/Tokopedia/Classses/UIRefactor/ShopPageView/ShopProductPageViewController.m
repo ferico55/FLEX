@@ -37,7 +37,6 @@
 #import "NavigateViewController.h"
 #import "RetryCollectionReusableView.h"
 #import "NoResultReusableView.h"
-#import "PromoRequest.h"
 
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
@@ -152,8 +151,6 @@ ShopTabChild
     CGSize _keyboardSize;
     
     BOOL _isFailRequest;
-    
-    PromoRequest *_promoRequest;
     
     NSIndexPath *_sortIndexPath;
     ShopPageRequest* _shopPageRequest;
@@ -727,7 +724,6 @@ ShopTabChild
                                                            
                                                            if(_page == 1) {
                                                                _product = [result.list mutableCopy];
-                                                               [self addImpressionClick];
                                                            } else {
                                                                [_product addObjectsFromArray:result.list];
                                                            }
@@ -778,22 +774,6 @@ ShopTabChild
                                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                            [alert show];
                                                        }];
-}
-
-#pragma mark - Promo Request
-
-- (void)addImpressionClick {
-    _promoRequest = [[PromoRequest alloc] init];
-    NSString* clickURL;
-    if([_data objectForKey:PromoClickURL]){
-        clickURL = [_data objectForKey:PromoClickURL];
-        [_promoRequest requestForClickURL:clickURL
-                                onSuccess:^{
-                                    
-                                } onFailure:^(NSError *error) {
-                                    
-                                }];
-    }
 }
 
 @end

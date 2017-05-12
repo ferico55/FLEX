@@ -12,6 +12,7 @@
 @interface FavoritedShopViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger index;
+@property (assign, nonatomic) BOOL isOpened;
 @property (strong, nonatomic)NSDictionary *data;
 
 @end
