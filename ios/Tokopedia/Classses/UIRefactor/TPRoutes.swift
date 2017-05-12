@@ -474,15 +474,9 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/p/*") { (params: [String : Any]) -> Bool in
             let pathComponent = params[kJLRouteWildcardComponentsKey] as! [String]
             if(pathComponent.count > 0) {
-                let departments = [
-                    "department_1" : pathComponent[0],
-                    "department_2" : pathComponent.count > 1 ? pathComponent[1] : "",
-                    "department_3" : pathComponent.count > 2 ? pathComponent[2] : "",
-                    "st" : "product",
-                    "sc_identifier" : pathComponent.joined(separator: "_")
-                ]
+                let categoryDataForCategoryResultVC = CategoryDataForCategoryResultVC(pathComponent: pathComponent)
                 
-                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: departments)
+                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: categoryDataForCategoryResultVC)
             }
  
             return true

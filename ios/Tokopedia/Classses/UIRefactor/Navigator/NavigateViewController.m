@@ -626,7 +626,6 @@
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary{
     CategoryResultViewController *categoryResultProductViewController = [CategoryResultViewController new];
     categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
-    categoryResultProductViewController.isFromDirectory = YES;
     categoryResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
     categoryResultProductViewController.isIntermediary = isIntermediary;
     
@@ -649,11 +648,11 @@
     [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
 }
 
-- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(NSDictionary*)data {
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data {
         CategoryResultViewController *vc = [CategoryResultViewController new];
-        vc.isFromDirectory = YES;
-        vc.data = [self addDataTypeFromData: data];
-        vc.title = [self getTitleFromData: data];
+        vc.isIntermediary = YES;
+        vc.data = [self addDataTypeFromData: [data mapToDictionary]];
+        vc.title = [self getTitleFromData: [data mapToDictionary]];
         vc.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:vc animated:YES];
 }

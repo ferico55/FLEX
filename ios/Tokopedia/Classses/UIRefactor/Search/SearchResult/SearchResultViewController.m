@@ -49,6 +49,7 @@
 #import "Tokopedia-Swift.h"
 
 #import "ImageSearchResponse.h"
+#import "TKPDTabNavigationController.h"
 
 #pragma mark - Search Result View Controller
 
@@ -1290,15 +1291,21 @@ SpellCheckRequestDelegate
         
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.data.department_id?:@"";
-            [_params setObject:departementID forKey:@"sc"];
-            [_params removeObjectForKey:@"search"];
-            [_params removeObjectForKey:@"ob"];
-            [_params setObject:@"directory" forKey:@"type"];
-            [self setData:_params];
-            [_networkManager requestCancel];
+            // url example: https://www.tokopedia.com/p/fashion-wanita/rok/rok-midi, https://www.tokopedia.com/p/fashion-wanita/rok, https://www.tokopedia.com/p/fashion-wanita
             
-            [self refreshView:nil];
+            NSMutableArray *pathComponent = [NSMutableArray new];
+            for (NSInteger i = 2; i < query.count; i++) {
+                [pathComponent addObject:query[i]];
+            }
+            
+            CategoryDataForCategoryResultVC *categoryDataForCategoryResultVC = [[CategoryDataForCategoryResultVC alloc] initWithPathComponent:pathComponent];
+            CategoryResultViewController *categoryResultVC = [CategoryResultViewController new];
+            categoryResultVC.isIntermediary = YES;
+            categoryResultVC.data = [categoryDataForCategoryResultVC mapToDictionary];
+            categoryResultVC.title = [[query lastObject] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+            categoryResultVC.hidesBottomBarWhenPushed = YES;
+            
+            [self.navigationController replaceTopViewControllerWithViewController:categoryResultVC];
             
             [Localytics triggerInAppMessage:@"Category Result Screen"];
         }

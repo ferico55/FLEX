@@ -248,3 +248,11 @@ extension UIDevice {
         }
     }
 }
+
+extension UINavigationController {
+    func replaceTopViewController(viewController: UIViewController) {
+        if self.viewControllers.count > 0  {
+            self.viewControllers[self.viewControllers.count - 1] = viewController
+        }
+    }
+}

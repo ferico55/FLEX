@@ -14,6 +14,7 @@
 @class TKPPlacePickerViewController;
 @class LuckyDealWord;
 @class SearchAWSProduct;
+@class CategoryDataForCategoryResultVC;
 
 @interface NavigateViewController : NSObject
 
@@ -55,7 +56,7 @@
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
-- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(NSDictionary*)data;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
 

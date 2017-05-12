@@ -26,7 +26,6 @@
 @property (strong,nonatomic) NSString* image_url;
 @property (nonatomic) BOOL isFromImageSearch;
 @property (nonatomic) BOOL isFromAutoComplete;
-@property (nonatomic) BOOL isFromDirectory;
 @property (weak, nonatomic) id<CategoryResultDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
 @property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;

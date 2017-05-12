@@ -115,6 +115,7 @@ HeaderIntermediaryCollectionViewDelegate
 @property (strong, nonatomic) IBOutlet UILabel *totalProductsLabel;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *requestLoadingActivityIndicator;
 @property (strong, nonatomic) IBOutlet UIView *totalProductsView;
+@property (nonatomic) CGFloat headerHeight;
 @end
 
 NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFERENCES";
@@ -185,7 +186,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _userManager = [UserAuthentificationManager new];
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
@@ -259,13 +259,14 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     [self doPageLaoading];
-    [self requestSearch];
     
     [_toolbarView setHidden: YES];
     [_fourButtonsToolbar setHidden:YES];
     [_threeButtonsToolbar setHidden:YES];
     [_fourButtonsToolbar setUserInteractionEnabled:YES];
     [_threeButtonsToolbar setUserInteractionEnabled:NO];
+    
+    [self requestSearch];
     
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
@@ -606,6 +607,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             headerHeight += (ceil((CGFloat)_categoryIntermediaryResult.nonExpandedChildren.count / (CGFloat)_categoryIntermediaryResult.maxRowInCategorySubView)) * (_categoryIntermediaryResult.isRevamp ? 140 : 38);
         }
         
+        _headerHeight = headerHeight;
+        
     }
     size = CGSizeMake(self.view.frame.size.width, headerHeight);
     
@@ -722,6 +725,28 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_act setHidden:NO];
 }
 
+- (void) hideTotalProducts {
+    [UIView animateWithDuration:0.3 animations:^{
+        _totalProductsView.transform = CGAffineTransformIdentity;
+        [_totalProductsView layoutIfNeeded];
+    }];
+}
+
+- (BOOL) isContentOffsetInPromotedArea: (UIScrollView *) scrollView {
+    
+    return scrollView.contentOffset.y >= [self collectionView:_collectionView layout:_flowLayout referenceSizeForHeaderInSection:0].height - [PromoCollectionReusableView collectionViewHeightForType:_promoCellType] && scrollView.contentOffset.y <= [self collectionView:_collectionView layout:_flowLayout referenceSizeForHeaderInSection:0].height;
+}
+
+- (void) toggleTotalProductLabel: (UIScrollView *) scrollView {
+    if ([self isContentOffsetInPromotedArea: scrollView]){
+        [UIView animateWithDuration:0.3 animations:^{
+            _totalProductsView.transform = CGAffineTransformMakeTranslation(0, 40);
+            [_totalProductsView layoutIfNeeded];
+        }];
+    } else {
+        [self hideTotalProducts];
+    }
+}
 
 #pragma mark - Filter Delegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
@@ -861,24 +886,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 -(Source)getSourceSearchData{
-    if (_isFromDirectory) {
-        return SourceDirectory;
-    }
-    
-    NSString * type = [_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"";
-    if ([type isEqualToString:@"hot_product"]) {
-        return SourceHotlist;
-    } else if ([type isEqualToString:@"search_product"]) {
-        return SourceProduct;
-    } else if ([type isEqualToString:@"search_catalog"]) {
-        return SourceCatalog;
-    } else if ([type isEqualToString:@"search_shop"]) {
-        return SourceShop;
-    } else if ([type isEqualToString:@"directory"]) {
-        return SourceDirectory;
-    } else {
-        return SourceDefault;
-    }
+    return SourceDirectory;
 }
 
 -(void)searchWithDynamicFilter{
@@ -1006,13 +1014,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         [parameter setObject:startPerPage forKey:@"rows"];
         [parameter setObject:@(_start) forKey:@"start"];
         [parameter setObject:@"true" forKey:@"breadcrumb"];
-        if(_isFromAutoComplete){
-            [parameter setObject:@"jahe" forKey:@"source"];
-        }else if(_isFromDirectory){
-            [parameter setObject:@"directory" forKey:@"source"];
-        }else{
-            [parameter setObject:@"search" forKey:@"source"];
-        }
+        [parameter setObject:@"directory" forKey:@"source"];
+    
         [parameter setObject:[self getUniqueId] forKey:@"unique_id"];
     }
     
@@ -1149,8 +1152,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     _searchObject = search;
     [self reloadView];
     
-    [_toolbarView setHidden: NO];
-    [_fourButtonsToolbar setHidden:NO];
     //set initial category
     if (_initialBreadcrumb.count == 0) {
         _initialBreadcrumb = search.data.breadcrumb;
@@ -1491,10 +1492,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (TopadsSource)topadsSource {
-    if(_isFromDirectory) {
         return TopadsSourceDirectory;
-    }
-    return TopadsSourceSearch;
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
@@ -1534,17 +1532,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (self.lastContentOffset > scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionUp;
-        [UIView animateWithDuration:0.3 animations:^{
-            _totalProductsView.transform = CGAffineTransformIdentity;
-            [_totalProductsView layoutIfNeeded];
-        }];
     } else if (self.lastContentOffset < scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionDown;
-        [UIView animateWithDuration:0.3 animations:^{
-            _totalProductsView.transform = CGAffineTransformMakeTranslation(0, -40);
-            [_totalProductsView layoutIfNeeded];
-        }];
     }
+    
+    [self toggleTotalProductLabel: scrollView];
 
     self.lastContentOffset = scrollView.contentOffset.y;
 }

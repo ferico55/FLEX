@@ -25,6 +25,11 @@ class CategoryIntermediarySubCategoryCellView: UIView {
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: data.id, categoryName: data.name, isIntermediary: false)
         })
+        
+        // if phone size is below than 4" (iphone 5s, 5, 4s, SE)
+        if (UIScreen.main.applicationFrame.size.height <= 568) {
+            categoryNameLabel.font = UIFont.systemFont(ofSize: 10.0)
+        }
     }
 
 }
