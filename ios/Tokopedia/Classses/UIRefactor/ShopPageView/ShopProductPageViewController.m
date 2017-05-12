@@ -699,7 +699,7 @@ ShopTabChild
     EtalaseList *etalase = [EtalaseList new];
     etalase.etalase_id = _productFilter.etalaseId;
     
-    BOOL isAllEtalase = ([etalase.etalase_id integerValue] == 0);
+    BOOL isAllEtalase = (!etalase.etalase_id || [etalase.etalase_id isEqualToString:@""] || [etalase.etalase_id isEqualToString:@"0"]);
     
     id etalaseid;
     if (isAllEtalase)
