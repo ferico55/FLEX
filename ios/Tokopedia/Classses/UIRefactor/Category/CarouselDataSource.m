@@ -79,6 +79,14 @@ NSInteger const bannerIpadWidth = 450;
 }
 
 - (NSString *)shopDomainForUrl:(NSString *)urlString {
+    return [[[self sanitizedUrlForUrl:urlString].pathComponents
+             bk_reject:^BOOL(NSString *path) {
+                 return [path isEqualToString:@"/"];
+             }]
+            componentsJoinedByString:@"/"];
+}
+
+- (NSURL *)sanitizedUrlForUrl:(NSString *)urlString {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     
     NSURL *url = [NSURL URLWithString:urlString];
@@ -88,22 +96,35 @@ NSInteger const bannerIpadWidth = 450;
         url = [NSURL URLWithString:realUrlString.stringByRemovingPercentEncoding];
     }
     
-    NSString *path = [[url.pathComponents
-                       bk_reject:^BOOL(NSString *path) {
-                           return [path isEqualToString:@"/"];
-                       }]
-                      componentsJoinedByString:@"/"];
-    return path;
+    return url;
+}
+
+- (void)openWebViewWithUrl:(NSString *)urlString {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Promo";
+    webViewController.strURL = urlString;
+    
+    [_navigationDelegate pushViewController:webViewController animated:NO];
 }
 
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
     [AnalyticsManager trackEventName:@"sliderBanner" category:@"Slider" action:GA_EVENT_ACTION_CLICK label:banner.title?:@""];
+    
+    NSURL *url = [self sanitizedUrlForUrl:banner.redirect_url];
+    
+    if (![@[@"tokopedia.com", @"m.tokopedia.com", @"www.tokopedia.com"] containsObject:url.host]) {
+        [self openWebViewWithUrl:banner.redirect_url];
+        return;
+    }
+    
     // will use TPRoute when new banner api is up
     [self navigateToIntermediaryPage];
     
     NSString *path = [self shopDomainForUrl:banner.redirect_url];
+    
+    __weak typeof(self) weakSelf = self;
     
     [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
         [_navigationDelegate popViewControllerAnimated:NO];
@@ -117,13 +138,7 @@ NSInteger const bannerIpadWidth = 450;
             [_navigationDelegate pushViewController:shopViewController animated:NO];
             
         } else {
-            WebViewController *webViewController = [WebViewController new];
-            webViewController.strTitle = @"Promo";
-            webViewController.strURL = banner.redirect_url;
-            
-            if(_navigationDelegate != nil) {
-                [_navigationDelegate pushViewController:webViewController animated:NO];
-            }
+            [weakSelf openWebViewWithUrl:banner.redirect_url];
         }
     }];
 }
