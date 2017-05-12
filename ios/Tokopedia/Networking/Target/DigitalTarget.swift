@@ -9,57 +9,34 @@
 import Moya
 import MoyaUnbox
 
-class DigitalProvider: RxMoyaProvider<DigitalTarget> {
+class DigitalProvider: NetworkProvider<DigitalTarget> {
     init() {
         super.init(endpointClosure: DigitalProvider.endpointClosure)
     }
     
-    private static func endpointClosure(service: DigitalTarget) -> Endpoint<DigitalTarget> {
-        let hmac = TkpdHMAC()
-        hmac.signature(
-            withBaseUrl: service.baseURL.absoluteString,
-            method: service.method.rawValue,
-            path: service.path,
-            json: service.parameters)
-        
-        let appVersion = UIApplication.getAppVersionString()
-        
+    fileprivate class func endpointClosure(for target: DigitalTarget) -> Endpoint<DigitalTarget> {
         let userId = UserAuthentificationManager().getUserId()!
         
-        var headers = [
-            "Accept": "application/json",
-            "X-APP-VERSION": appVersion,
-            "X-Device": "ios-\(appVersion)",
-            "Accept-Language": "id-ID",
-            "Accept-Encoding": "gzip",
+        let headers = target.method == .get ? [:] : [
             "X-Tkpd-UserId": userId,
+            "Content-Type": "application/json",
             "Idempotency-Key": UUID().uuidString
         ]
         
-        hmac.authorizedHeaders().forEach { key, value in
-            headers[key] = value
-        }
-        
-        headers["Content-Type"] = "application/json"
-        
-        return Endpoint<DigitalTarget>(
-            url: service.baseURL.appendingPathComponent(service.path).absoluteString,
-            sampleResponseClosure: { .networkResponse(200, service.sampleData) },
-            method: service.method,
-            parameters: service.parameters,
-            parameterEncoding: service.parameterEncoding,
-            httpHeaderFields: headers
-        )
+        return NetworkProvider.defaultEndpointCreator(for: target)
+            .adding(
+                httpHeaderFields: headers
+            )
     }
-    
-    
 }
 
 enum DigitalTarget {
     case addToCart(withProductId: String, inputFields: [String: String], instantCheckout: Bool)
-    case payment(voucherCode:String, transactionAmount:Double, transactionId:String)
+    case payment(voucherCode: String, transactionAmount: Double, transactionId: String)
     case category(String)
+    case voucher(categoryId: String, voucherCode: String)
     case otpSuccess(String)
+    case getCart(String)
 }
 
 extension DigitalTarget: TargetType {
@@ -72,7 +49,9 @@ extension DigitalTarget: TargetType {
         case .addToCart: return "/v1.3/cart"
         case .payment: return "/v1.3/checkout"
         case let .category(categoryId): return "/v1.3/category/\(categoryId)"
+        case .voucher: return "/v1.3/voucher/check"
         case .otpSuccess: return "/v1.3/cart/otp-success"
+        case .getCart: return "/v1.3/cart"
         }
     }
     
@@ -82,7 +61,9 @@ extension DigitalTarget: TargetType {
         case .addToCart: return .post
         case .payment: return .post
         case .category: return .get
+        case .voucher: return .get
         case .otpSuccess: return .patch
+        case .getCart: return .get
         }
     }
     
@@ -96,12 +77,12 @@ extension DigitalTarget: TargetType {
             
             return [
                 "data": [
-                    "type":"add_cart",
+                    "type": "add_cart",
                     "attributes": [
                         "product_id": Int(productId)!,
                         "device_id": 7,
                         "instant_checkout": instantCheckout,
-                        "ip_address": "127.0.0.1",
+                        "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0",
@@ -125,15 +106,15 @@ extension DigitalTarget: TargetType {
         case let .payment(voucherCode, transactionAmount, transactionId):
             return [
                 "data": [
-                    "type":"checkout",
+                    "type": "checkout",
                     "attributes": [
                         "device_id": 7,
-                        "ip_address": "127.0.0.1",
+                        "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5",
-                        "voucher_code":voucherCode,
-                        "transaction_amount":transactionAmount
+                        "voucher_code": voucherCode,
+                        "transaction_amount": transactionAmount
                     ],
                     "relationships": [
                         "cart": [
@@ -145,6 +126,13 @@ extension DigitalTarget: TargetType {
                     ]
                 ]
             ]
+        case let .voucher(categoryId, voucherCode):
+            return [
+                "category_id": categoryId,
+                "voucher_code": voucherCode
+            ]
+        case let .getCart(categoryId) :
+            return ["category_id": categoryId]
         default: return [:]
         }
         
@@ -164,15 +152,13 @@ extension DigitalTarget: TargetType {
     /// The type of HTTP task to be performed.
     var task: Task { return .request }
     
-    
-    
 }
 
 func getIFAddresses() -> String {
     var addresses = [String]()
     
     // Get list of all interfaces on the local machine:
-    var ifaddr : UnsafeMutablePointer<ifaddrs>?
+    var ifaddr: UnsafeMutablePointer<ifaddrs>?
     guard getifaddrs(&ifaddr) == 0 else { return "127.0.0.1" }
     guard let firstAddr = ifaddr else { return "127.0.0.1" }
     
@@ -182,13 +168,20 @@ func getIFAddresses() -> String {
         var addr = ptr.pointee.ifa_addr.pointee
         
         // Check for running IPv4, IPv6 interfaces. Skip the loopback interface.
-        if (flags & (IFF_UP|IFF_RUNNING|IFF_LOOPBACK)) == (IFF_UP|IFF_RUNNING) {
+        if (flags & (IFF_UP | IFF_RUNNING | IFF_LOOPBACK)) == (IFF_UP | IFF_RUNNING) {
             if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
                 
                 // Convert interface address to a human readable string:
                 var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                if (getnameinfo(&addr, socklen_t(addr.sa_len), &hostname, socklen_t(hostname.count),
-                                nil, socklen_t(0), NI_NUMERICHOST) == 0) {
+                if getnameinfo(
+                    &addr,
+                    socklen_t(addr.sa_len),
+                    &hostname,
+                    socklen_t(hostname.count),
+                    nil,
+                    socklen_t(0),
+                    NI_NUMERICHOST
+                ) == 0 {
                     let address = String(cString: hostname)
                     addresses.append(address)
                 }

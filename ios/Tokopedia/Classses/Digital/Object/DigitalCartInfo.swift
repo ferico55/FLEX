@@ -8,15 +8,21 @@
 
 import Foundation
 import RestKit
+import Unbox
 
-class DigitalCartInfo:NSObject {
+final class DigitalCartInfo:Unboxable {
     var title = ""
     var detail = [DigitalCartInfoDetail]()
     
-    static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(for: self)!
-        mapping.addAttributeMappings(from:["title"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "detail", toKeyPath: "detail", with:DigitalCartInfoDetail.mapping()))
-        return mapping
+    init(title:String, detail:[DigitalCartInfoDetail]) {
+        self.title = title
+        self.detail = detail
+    }
+    
+    convenience init(unboxer: Unboxer) throws {
+        let title = try unboxer.unbox(keyPath: "title" ) as String
+        let detail = try unboxer.unbox(keyPath: "detail") as [DigitalCartInfoDetail]
+        
+        self.init(title:title, detail:detail)
     }
 }

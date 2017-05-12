@@ -24,26 +24,17 @@
     UserAuthentificationManager *_userManager;
 }
 
-- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date DEPRECATED_MSG_ATTRIBUTE("Use signatureWithMethod: instead.");
-
-- (NSString*)signatureWithBaseUrl:(NSString*)url
+- (void)signatureWithBaseUrl:(NSString*)url
                            method:(NSString*)method
                              path:(NSString*)path
                         parameter:(NSDictionary*)parameter;
 
-- (NSString*)signatureWithBaseUrl:(NSString*)url
+- (void)signatureWithBaseUrl:(NSString*)url
                            method:(NSString*)method
                              path:(NSString*)path
                              json:(NSDictionary*)parameter;
 
-- (NSString *)getRequestMethod;
-- (NSString *)getParameterMD5;
-- (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl;
-- (NSString *)getDate;
-- (NSString *)getTkpdPath;
-- (NSString *)getSecret;
 
-- (NSString *)generateTokenRatesPath:(NSString*)path withUnixTime:(NSString*)unixTime;
 - (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 
 @end

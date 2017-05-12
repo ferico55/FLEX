@@ -17,6 +17,8 @@
 
 @interface NavigateViewController : NSObject
 
++(void)navigateToMaintenanceViewController;
+
 -(void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId;
 //-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId;

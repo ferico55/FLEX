@@ -125,31 +125,6 @@
 		7A466BDC1EB2FEAE00A72105 /* TKPDStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660041EB2FEA900A72105 /* TKPDStackView.m */; };
 		7A466BDD1EB2FEAE00A72105 /* TopAlignedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660061EB2FEA900A72105 /* TopAlignedLabel.m */; };
 		7A466BDE1EB2FEAE00A72105 /* ViewLabelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660081EB2FEA900A72105 /* ViewLabelUser.m */; };
-		7A466BDF1EB2FEAE00A72105 /* DigitalAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600A1EB2FEA900A72105 /* DigitalAnalyticsManager.swift */; };
-		7A466BE01EB2FEAE00A72105 /* DigitalCategoryMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600B1EB2FEA900A72105 /* DigitalCategoryMenuViewController.swift */; };
-		7A466BE11EB2FEAE00A72105 /* DigitalForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600C1EB2FEA900A72105 /* DigitalForm.swift */; };
-		7A466BE21EB2FEAE00A72105 /* DigitalOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600D1EB2FEA900A72105 /* DigitalOperator.swift */; };
-		7A466BE31EB2FEAE00A72105 /* DigitalOperatorSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600E1EB2FEA900A72105 /* DigitalOperatorSelectionViewController.swift */; };
-		7A466BE41EB2FEAE00A72105 /* DigitalProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46600F1EB2FEA900A72105 /* DigitalProduct.swift */; };
-		7A466BE51EB2FEAE00A72105 /* DigitalProductSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660101EB2FEA900A72105 /* DigitalProductSelectionViewController.swift */; };
-		7A466BE61EB2FEAE00A72105 /* DigitalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660111EB2FEA900A72105 /* DigitalProvider.swift */; };
-		7A466BE71EB2FEAE00A72105 /* DigitalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660121EB2FEA900A72105 /* DigitalService.swift */; };
-		7A466BE81EB2FEAE00A72105 /* DigitalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660131EB2FEA900A72105 /* DigitalState.swift */; };
-		7A466BE91EB2FEAE00A72105 /* DigitalTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660141EB2FEA900A72105 /* DigitalTextInput.swift */; };
-		7A466BEA1EB2FEAE00A72105 /* DigitalWigetReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660151EB2FEA900A72105 /* DigitalWigetReducer.swift */; };
-		7A466BEB1EB2FEAE00A72105 /* DigitalCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660171EB2FEA900A72105 /* DigitalCart.swift */; };
-		7A466BEC1EB2FEAE00A72105 /* DigitalCartInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660181EB2FEA900A72105 /* DigitalCartInfo.swift */; };
-		7A466BED1EB2FEAE00A72105 /* DigitalCartInfoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660191EB2FEA900A72105 /* DigitalCartInfoDetail.swift */; };
-		7A466BEE1EB2FEAE00A72105 /* DigitalCartPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601A1EB2FEA900A72105 /* DigitalCartPayment.swift */; };
-		7A466BEF1EB2FEAE00A72105 /* DigitalCartUserInputPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601B1EB2FEA900A72105 /* DigitalCartUserInputPrice.swift */; };
-		7A466BF01EB2FEAE00A72105 /* DigitalCartVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601C1EB2FEA900A72105 /* DigitalCartVoucher.swift */; };
-		7A466BF11EB2FEAE00A72105 /* JSONAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601D1EB2FEA900A72105 /* JSONAPIError.swift */; };
-		7A466BF21EB2FEAE00A72105 /* JSONAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601E1EB2FEA900A72105 /* JSONAPIResponse.swift */; };
-		7A466BF31EB2FEAE00A72105 /* JSONAPIResponseVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A46601F1EB2FEA900A72105 /* JSONAPIResponseVoucher.swift */; };
-		7A466BF41EB2FEAE00A72105 /* JSONAPIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660201EB2FEA900A72105 /* JSONAPIResult.swift */; };
-		7A466BF51EB2FEAE00A72105 /* JSONAPIResultVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660211EB2FEA900A72105 /* JSONAPIResultVoucher.swift */; };
-		7A466BF61EB2FEAE00A72105 /* DigitalCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660231EB2FEA900A72105 /* DigitalCartViewController.swift */; };
-		7A466BF71EB2FEAE00A72105 /* DigitalCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A4660241EB2FEA900A72105 /* DigitalCartViewController.xib */; };
 		7A466BF81EB2FEAE00A72105 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660261EB2FEA900A72105 /* MainViewController.m */; };
 		7A466BF91EB2FEAE00A72105 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A4660271EB2FEA900A72105 /* MainViewController.xib */; };
 		7A466BFA1EB2FEAE00A72105 /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4660291EB2FEA900A72105 /* MoreWrapperViewController.m */; };
@@ -1769,6 +1744,27 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		926C9F781EB9882100F42557 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F751EB9882100F42557 /* NetworkProvider.swift */; };
+		926C9F791EB9882100F42557 /* DigitalTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F771EB9882100F42557 /* DigitalTarget.swift */; };
+		926C9F911EB9883100F42557 /* DigitalAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F7C1EB9883100F42557 /* DigitalAnalyticsManager.swift */; };
+		926C9F921EB9883100F42557 /* DigitalCategoryMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F7D1EB9883100F42557 /* DigitalCategoryMenuViewController.swift */; };
+		926C9F931EB9883100F42557 /* DigitalForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F7E1EB9883100F42557 /* DigitalForm.swift */; };
+		926C9F941EB9883100F42557 /* DigitalOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F7F1EB9883100F42557 /* DigitalOperator.swift */; };
+		926C9F951EB9883100F42557 /* DigitalOperatorSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F801EB9883100F42557 /* DigitalOperatorSelectionViewController.swift */; };
+		926C9F961EB9883100F42557 /* DigitalProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F811EB9883100F42557 /* DigitalProduct.swift */; };
+		926C9F971EB9883100F42557 /* DigitalProductSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F821EB9883100F42557 /* DigitalProductSelectionViewController.swift */; };
+		926C9F981EB9883100F42557 /* DigitalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F831EB9883100F42557 /* DigitalService.swift */; };
+		926C9F991EB9883100F42557 /* DigitalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F841EB9883100F42557 /* DigitalState.swift */; };
+		926C9F9A1EB9883100F42557 /* DigitalTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F851EB9883100F42557 /* DigitalTextInput.swift */; };
+		926C9F9B1EB9883100F42557 /* DigitalWigetReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F861EB9883100F42557 /* DigitalWigetReducer.swift */; };
+		926C9F9C1EB9883100F42557 /* DigitalCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F881EB9883100F42557 /* DigitalCart.swift */; };
+		926C9F9D1EB9883100F42557 /* DigitalCartInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F891EB9883100F42557 /* DigitalCartInfo.swift */; };
+		926C9F9E1EB9883100F42557 /* DigitalCartInfoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8A1EB9883100F42557 /* DigitalCartInfoDetail.swift */; };
+		926C9F9F1EB9883100F42557 /* DigitalCartPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8B1EB9883100F42557 /* DigitalCartPayment.swift */; };
+		926C9FA01EB9883100F42557 /* DigitalCartUserInputPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8C1EB9883100F42557 /* DigitalCartUserInputPrice.swift */; };
+		926C9FA11EB9883100F42557 /* DigitalVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8D1EB9883100F42557 /* DigitalVoucher.swift */; };
+		926C9FA21EB9883100F42557 /* DigitalCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8F1EB9883100F42557 /* DigitalCartViewController.swift */; };
+		926C9FA31EB9883100F42557 /* DigitalCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 926C9F901EB9883100F42557 /* DigitalCartViewController.xib */; };
 		928FAE311EAF425D00E33DE6 /* libAppHub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE301EAF425D00E33DE6 /* libAppHub.a */; };
 		928FAE331EAF426C00E33DE6 /* libRCTAdSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */; };
 		928FAE351EAF427800E33DE6 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE341EAF427800E33DE6 /* libRCTAnimation.a */; };
@@ -2241,31 +2237,6 @@
 		7A4660061EB2FEA900A72105 /* TopAlignedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopAlignedLabel.m; sourceTree = "<group>"; };
 		7A4660071EB2FEA900A72105 /* ViewLabelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewLabelUser.h; sourceTree = "<group>"; };
 		7A4660081EB2FEA900A72105 /* ViewLabelUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewLabelUser.m; sourceTree = "<group>"; };
-		7A46600A1EB2FEA900A72105 /* DigitalAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalAnalyticsManager.swift; sourceTree = "<group>"; };
-		7A46600B1EB2FEA900A72105 /* DigitalCategoryMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCategoryMenuViewController.swift; sourceTree = "<group>"; };
-		7A46600C1EB2FEA900A72105 /* DigitalForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalForm.swift; sourceTree = "<group>"; };
-		7A46600D1EB2FEA900A72105 /* DigitalOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperator.swift; sourceTree = "<group>"; };
-		7A46600E1EB2FEA900A72105 /* DigitalOperatorSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperatorSelectionViewController.swift; sourceTree = "<group>"; };
-		7A46600F1EB2FEA900A72105 /* DigitalProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProduct.swift; sourceTree = "<group>"; };
-		7A4660101EB2FEA900A72105 /* DigitalProductSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProductSelectionViewController.swift; sourceTree = "<group>"; };
-		7A4660111EB2FEA900A72105 /* DigitalProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProvider.swift; sourceTree = "<group>"; };
-		7A4660121EB2FEA900A72105 /* DigitalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalService.swift; sourceTree = "<group>"; };
-		7A4660131EB2FEA900A72105 /* DigitalState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalState.swift; sourceTree = "<group>"; };
-		7A4660141EB2FEA900A72105 /* DigitalTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTextInput.swift; sourceTree = "<group>"; };
-		7A4660151EB2FEA900A72105 /* DigitalWigetReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalWigetReducer.swift; sourceTree = "<group>"; };
-		7A4660171EB2FEA900A72105 /* DigitalCart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCart.swift; sourceTree = "<group>"; };
-		7A4660181EB2FEA900A72105 /* DigitalCartInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartInfo.swift; sourceTree = "<group>"; };
-		7A4660191EB2FEA900A72105 /* DigitalCartInfoDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartInfoDetail.swift; sourceTree = "<group>"; };
-		7A46601A1EB2FEA900A72105 /* DigitalCartPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartPayment.swift; sourceTree = "<group>"; };
-		7A46601B1EB2FEA900A72105 /* DigitalCartUserInputPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartUserInputPrice.swift; sourceTree = "<group>"; };
-		7A46601C1EB2FEA900A72105 /* DigitalCartVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartVoucher.swift; sourceTree = "<group>"; };
-		7A46601D1EB2FEA900A72105 /* JSONAPIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIError.swift; sourceTree = "<group>"; };
-		7A46601E1EB2FEA900A72105 /* JSONAPIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIResponse.swift; sourceTree = "<group>"; };
-		7A46601F1EB2FEA900A72105 /* JSONAPIResponseVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIResponseVoucher.swift; sourceTree = "<group>"; };
-		7A4660201EB2FEA900A72105 /* JSONAPIResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIResult.swift; sourceTree = "<group>"; };
-		7A4660211EB2FEA900A72105 /* JSONAPIResultVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAPIResultVoucher.swift; sourceTree = "<group>"; };
-		7A4660231EB2FEA900A72105 /* DigitalCartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartViewController.swift; sourceTree = "<group>"; };
-		7A4660241EB2FEA900A72105 /* DigitalCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalCartViewController.xib; sourceTree = "<group>"; };
 		7A4660251EB2FEA900A72105 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		7A4660261EB2FEA900A72105 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		7A4660271EB2FEA900A72105 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
@@ -4942,6 +4913,27 @@
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
+		926C9F751EB9882100F42557 /* NetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		926C9F771EB9882100F42557 /* DigitalTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTarget.swift; sourceTree = "<group>"; };
+		926C9F7C1EB9883100F42557 /* DigitalAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalAnalyticsManager.swift; sourceTree = "<group>"; };
+		926C9F7D1EB9883100F42557 /* DigitalCategoryMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCategoryMenuViewController.swift; sourceTree = "<group>"; };
+		926C9F7E1EB9883100F42557 /* DigitalForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalForm.swift; sourceTree = "<group>"; };
+		926C9F7F1EB9883100F42557 /* DigitalOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperator.swift; sourceTree = "<group>"; };
+		926C9F801EB9883100F42557 /* DigitalOperatorSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperatorSelectionViewController.swift; sourceTree = "<group>"; };
+		926C9F811EB9883100F42557 /* DigitalProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProduct.swift; sourceTree = "<group>"; };
+		926C9F821EB9883100F42557 /* DigitalProductSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProductSelectionViewController.swift; sourceTree = "<group>"; };
+		926C9F831EB9883100F42557 /* DigitalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalService.swift; sourceTree = "<group>"; };
+		926C9F841EB9883100F42557 /* DigitalState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalState.swift; sourceTree = "<group>"; };
+		926C9F851EB9883100F42557 /* DigitalTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTextInput.swift; sourceTree = "<group>"; };
+		926C9F861EB9883100F42557 /* DigitalWigetReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalWigetReducer.swift; sourceTree = "<group>"; };
+		926C9F881EB9883100F42557 /* DigitalCart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCart.swift; sourceTree = "<group>"; };
+		926C9F891EB9883100F42557 /* DigitalCartInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartInfo.swift; sourceTree = "<group>"; };
+		926C9F8A1EB9883100F42557 /* DigitalCartInfoDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartInfoDetail.swift; sourceTree = "<group>"; };
+		926C9F8B1EB9883100F42557 /* DigitalCartPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartPayment.swift; sourceTree = "<group>"; };
+		926C9F8C1EB9883100F42557 /* DigitalCartUserInputPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartUserInputPrice.swift; sourceTree = "<group>"; };
+		926C9F8D1EB9883100F42557 /* DigitalVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalVoucher.swift; sourceTree = "<group>"; };
+		926C9F8F1EB9883100F42557 /* DigitalCartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartViewController.swift; sourceTree = "<group>"; };
+		926C9F901EB9883100F42557 /* DigitalCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalCartViewController.xib; sourceTree = "<group>"; };
 		928FAE301EAF425D00E33DE6 /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAdSupport.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAdSupport.a"; sourceTree = "<group>"; };
 		928FAE341EAF427800E33DE6 /* libRCTAnimation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAnimation.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAnimation.a"; sourceTree = "<group>"; };
@@ -5449,8 +5441,8 @@
 		7A465FE71EB2FEA900A72105 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				926C9F7B1EB9883100F42557 /* Digital */,
 				7A465FE81EB2FEA900A72105 /* Cocoa */,
-				7A4660091EB2FEA900A72105 /* Digital */,
 				7A4660251EB2FEA900A72105 /* MainViewController.h */,
 				7A4660261EB2FEA900A72105 /* MainViewController.m */,
 				7A4660271EB2FEA900A72105 /* MainViewController.xib */,
@@ -5500,54 +5492,6 @@
 				7A4660081EB2FEA900A72105 /* ViewLabelUser.m */,
 			);
 			path = Cocoa;
-			sourceTree = "<group>";
-		};
-		7A4660091EB2FEA900A72105 /* Digital */ = {
-			isa = PBXGroup;
-			children = (
-				7A46600A1EB2FEA900A72105 /* DigitalAnalyticsManager.swift */,
-				7A46600B1EB2FEA900A72105 /* DigitalCategoryMenuViewController.swift */,
-				7A46600C1EB2FEA900A72105 /* DigitalForm.swift */,
-				7A46600D1EB2FEA900A72105 /* DigitalOperator.swift */,
-				7A46600E1EB2FEA900A72105 /* DigitalOperatorSelectionViewController.swift */,
-				7A46600F1EB2FEA900A72105 /* DigitalProduct.swift */,
-				7A4660101EB2FEA900A72105 /* DigitalProductSelectionViewController.swift */,
-				7A4660111EB2FEA900A72105 /* DigitalProvider.swift */,
-				7A4660121EB2FEA900A72105 /* DigitalService.swift */,
-				7A4660131EB2FEA900A72105 /* DigitalState.swift */,
-				7A4660141EB2FEA900A72105 /* DigitalTextInput.swift */,
-				7A4660151EB2FEA900A72105 /* DigitalWigetReducer.swift */,
-				7A4660161EB2FEA900A72105 /* Object */,
-				7A4660221EB2FEA900A72105 /* UIRefactor */,
-			);
-			path = Digital;
-			sourceTree = "<group>";
-		};
-		7A4660161EB2FEA900A72105 /* Object */ = {
-			isa = PBXGroup;
-			children = (
-				7A4660171EB2FEA900A72105 /* DigitalCart.swift */,
-				7A4660181EB2FEA900A72105 /* DigitalCartInfo.swift */,
-				7A4660191EB2FEA900A72105 /* DigitalCartInfoDetail.swift */,
-				7A46601A1EB2FEA900A72105 /* DigitalCartPayment.swift */,
-				7A46601B1EB2FEA900A72105 /* DigitalCartUserInputPrice.swift */,
-				7A46601C1EB2FEA900A72105 /* DigitalCartVoucher.swift */,
-				7A46601D1EB2FEA900A72105 /* JSONAPIError.swift */,
-				7A46601E1EB2FEA900A72105 /* JSONAPIResponse.swift */,
-				7A46601F1EB2FEA900A72105 /* JSONAPIResponseVoucher.swift */,
-				7A4660201EB2FEA900A72105 /* JSONAPIResult.swift */,
-				7A4660211EB2FEA900A72105 /* JSONAPIResultVoucher.swift */,
-			);
-			path = Object;
-			sourceTree = "<group>";
-		};
-		7A4660221EB2FEA900A72105 /* UIRefactor */ = {
-			isa = PBXGroup;
-			children = (
-				7A4660231EB2FEA900A72105 /* DigitalCartViewController.swift */,
-				7A4660241EB2FEA900A72105 /* DigitalCartViewController.xib */,
-			);
-			path = UIRefactor;
 			sourceTree = "<group>";
 		};
 		7A46602A1EB2FEA900A72105 /* Object */ = {
@@ -10265,6 +10209,7 @@
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				926C9F741EB9882100F42557 /* Networking */,
 				7A25802A1EB32F700090C4F6 /* main.jsbundle */,
 				7A465F421EB2FEA900A72105 /* main.m */,
 				7A465F431EB2FEA900A72105 /* ThirdPartyLibs */,
@@ -10527,6 +10472,65 @@
 				925BA6321E518A54001CED3A /* Info.plist */,
 			);
 			path = ServiceExtension;
+			sourceTree = "<group>";
+		};
+		926C9F741EB9882100F42557 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				926C9F751EB9882100F42557 /* NetworkProvider.swift */,
+				926C9F761EB9882100F42557 /* Target */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		926C9F761EB9882100F42557 /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				926C9F771EB9882100F42557 /* DigitalTarget.swift */,
+			);
+			path = Target;
+			sourceTree = "<group>";
+		};
+		926C9F7B1EB9883100F42557 /* Digital */ = {
+			isa = PBXGroup;
+			children = (
+				926C9F7C1EB9883100F42557 /* DigitalAnalyticsManager.swift */,
+				926C9F7D1EB9883100F42557 /* DigitalCategoryMenuViewController.swift */,
+				926C9F7E1EB9883100F42557 /* DigitalForm.swift */,
+				926C9F7F1EB9883100F42557 /* DigitalOperator.swift */,
+				926C9F801EB9883100F42557 /* DigitalOperatorSelectionViewController.swift */,
+				926C9F811EB9883100F42557 /* DigitalProduct.swift */,
+				926C9F821EB9883100F42557 /* DigitalProductSelectionViewController.swift */,
+				926C9F831EB9883100F42557 /* DigitalService.swift */,
+				926C9F841EB9883100F42557 /* DigitalState.swift */,
+				926C9F851EB9883100F42557 /* DigitalTextInput.swift */,
+				926C9F861EB9883100F42557 /* DigitalWigetReducer.swift */,
+				926C9F871EB9883100F42557 /* Object */,
+				926C9F8E1EB9883100F42557 /* UIRefactor */,
+			);
+			path = Digital;
+			sourceTree = "<group>";
+		};
+		926C9F871EB9883100F42557 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				926C9F881EB9883100F42557 /* DigitalCart.swift */,
+				926C9F891EB9883100F42557 /* DigitalCartInfo.swift */,
+				926C9F8A1EB9883100F42557 /* DigitalCartInfoDetail.swift */,
+				926C9F8B1EB9883100F42557 /* DigitalCartPayment.swift */,
+				926C9F8C1EB9883100F42557 /* DigitalCartUserInputPrice.swift */,
+				926C9F8D1EB9883100F42557 /* DigitalVoucher.swift */,
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
+		926C9F8E1EB9883100F42557 /* UIRefactor */ = {
+			isa = PBXGroup;
+			children = (
+				926C9F8F1EB9883100F42557 /* DigitalCartViewController.swift */,
+				926C9F901EB9883100F42557 /* DigitalCartViewController.xib */,
+			);
+			path = UIRefactor;
 			sourceTree = "<group>";
 		};
 		9295B21F1EAF4132000F705C /* Products */ = {
@@ -11453,7 +11457,6 @@
 				7A466B971EB2FEAE00A72105 /* icon_snap@2x.png in Resources */,
 				7A466F811EB2FEB100A72105 /* ActivatePushInstructionViewController.xib in Resources */,
 				7A4671A81EB2FEB300A72105 /* NoLoginView.xib in Resources */,
-				7A466BF71EB2FEAE00A72105 /* DigitalCartViewController.xib in Resources */,
 				7A466FA31EB2FEB100A72105 /* CourierNoteViewCell.xib in Resources */,
 				7A466F901EB2FEB100A72105 /* MyShopAddressViewController.xib in Resources */,
 				7A466E491EB2FEAF00A72105 /* AlertListFilterView.xib in Resources */,
@@ -11462,6 +11465,7 @@
 				7A4670771EB2FEB200A72105 /* HeaderCollectionReusableView.xib in Resources */,
 				7A466FD71EB2FEB100A72105 /* ProductTalkDetailViewController.xib in Resources */,
 				7A466E5C1EB2FEB000A72105 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
+				926C9FA31EB9883100F42557 /* DigitalCartViewController.xib in Resources */,
 				7A466BA81EB2FEAE00A72105 /* icon_login_active@3x.png in Resources */,
 				7A466F791EB2FEB100A72105 /* InboxTicketSplitViewController.xib in Resources */,
 				7A466B9E1EB2FEAE00A72105 /* icon_cart_active@3x.png in Resources */,
@@ -11716,6 +11720,7 @@
 				7A46706E1EB2FEB200A72105 /* ResolutionCenterSellerEditProductCell.m in Sources */,
 				7A466D7D1EB2FEAF00A72105 /* Address.m in Sources */,
 				7A466E2B1EB2FEAF00A72105 /* SecurityQuestionViewController.swift in Sources */,
+				926C9FA11EB9883100F42557 /* DigitalVoucher.swift in Sources */,
 				7A466D541EB2FEAF00A72105 /* SearchAutoCompleteCatalog.m in Sources */,
 				7A46718C1EB2FEB300A72105 /* TopPicksGroup.swift in Sources */,
 				7A466D001EB2FEAE00A72105 /* ProductFeed.m in Sources */,
@@ -11748,7 +11753,6 @@
 				7A4671651EB2FEB300A72105 /* ShopTalkPageViewController.m in Sources */,
 				7A466C411EB2FEAE00A72105 /* CatalogInfo.m in Sources */,
 				7A4671A61EB2FEB300A72105 /* Donation.swift in Sources */,
-				7A466BEF1EB2FEAE00A72105 /* DigitalCartUserInputPrice.swift in Sources */,
 				7A466F7A1EB2FEB100A72105 /* InboxTicketViewController.m in Sources */,
 				7A46715B1EB2FEB300A72105 /* ShopHomeViewController.swift in Sources */,
 				7A466BFE1EB2FEAE00A72105 /* DiscoverResponse.swift in Sources */,
@@ -11865,6 +11869,7 @@
 				7A466EC41EB2FEB000A72105 /* ScrollViewSimultaneousGesture.m in Sources */,
 				7A466E481EB2FEAF00A72105 /* AlertListFilterView.m in Sources */,
 				7A4670C81EB2FEB200A72105 /* ShipmentRequest.swift in Sources */,
+				926C9F981EB9883100F42557 /* DigitalService.swift in Sources */,
 				7A466F181EB2FEB000A72105 /* HomeTabViewController.m in Sources */,
 				7A466D4C1EB2FEAF00A72105 /* SearchAWSProduct.m in Sources */,
 				7A466F051EB2FEB000A72105 /* FavoriteShopRequest.m in Sources */,
@@ -11874,6 +11879,7 @@
 				7A46705C1EB2FEB200A72105 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
 				7A4670031EB2FEB100A72105 /* ImageStorage.m in Sources */,
 				7A466C291EB2FEAE00A72105 /* CategoryDetail.swift in Sources */,
+				926C9FA01EB9883100F42557 /* DigitalCartUserInputPrice.swift in Sources */,
 				7A466C4B1EB2FEAE00A72105 /* Breadcrumb.m in Sources */,
 				7A466CC41EB2FEAE00A72105 /* InboxTicket.m in Sources */,
 				7A466D6D1EB2FEAF00A72105 /* AddShop.m in Sources */,
@@ -11890,6 +11896,7 @@
 				7A466E0F1EB2FEAF00A72105 /* UploadImageValidationResult.m in Sources */,
 				7A466DCC1EB2FEAF00A72105 /* TransactionEditAddressForm.m in Sources */,
 				7A466C541EB2FEAE00A72105 /* Rating.m in Sources */,
+				926C9F9B1EB9883100F42557 /* DigitalWigetReducer.swift in Sources */,
 				7A466C181EB2FEAE00A72105 /* SignInProvider.swift in Sources */,
 				7A466C6F1EB2FEAE00A72105 /* FavoritedShop.m in Sources */,
 				7A4671481EB2FEB300A72105 /* ShopInfoAddressView.m in Sources */,
@@ -11903,14 +11910,12 @@
 				7A46701E1EB2FEB100A72105 /* ReviewSummaryViewController.m in Sources */,
 				7A466E7E1EB2FEB000A72105 /* UploadImageObserver.swift in Sources */,
 				7A466FEF1EB2FEB100A72105 /* ProductWishlistCell.swift in Sources */,
-				7A466BF41EB2FEAE00A72105 /* JSONAPIResult.swift in Sources */,
 				7A466D6A1EB2FEAF00A72105 /* ShipmentResult.m in Sources */,
 				7A46700F1EB2FEB100A72105 /* ProductDetailReputationCell.m in Sources */,
 				7A466D7A1EB2FEAF00A72105 /* Notes.swift in Sources */,
 				7A4670551EB2FEB200A72105 /* ResolutionCenterChooseSolutionViewController.m in Sources */,
 				7A466CDE1EB2FEAE00A72105 /* ManageProductResult.m in Sources */,
 				7A466E031EB2FEAF00A72105 /* ImageResult.m in Sources */,
-				7A466BED1EB2FEAE00A72105 /* DigitalCartInfoDetail.swift in Sources */,
 				7A466D611EB2FEAF00A72105 /* ShipmentCityData.m in Sources */,
 				7A466D621EB2FEAF00A72105 /* ShipmentCourier.m in Sources */,
 				7A4670821EB2FEB200A72105 /* ProductQuantityViewController.m in Sources */,
@@ -11927,15 +11932,16 @@
 				7A466F271EB2FEB000A72105 /* ProductInfoTableViewController.m in Sources */,
 				7A466E2A1EB2FEAF00A72105 /* SecurityQuestionTweaks.m in Sources */,
 				7A46705B1EB2FEB200A72105 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
+				926C9F941EB9883100F42557 /* DigitalOperator.swift in Sources */,
 				7A4670001EB2FEB100A72105 /* HelpfulReviewRequest.m in Sources */,
 				7A466DA51EB2FEAF00A72105 /* ShippingInfoShipmentPackage.m in Sources */,
 				7A466C7E1EB2FEAE00A72105 /* GoogleDistanceMatrixRows.m in Sources */,
 				7A466E181EB2FEAF00A72105 /* ReactViewController.m in Sources */,
 				7A4671D81EB2FEB400A72105 /* TxOrderConfirmedCell.m in Sources */,
 				7A466E701EB2FEB000A72105 /* CameraCollectionViewController.m in Sources */,
-				7A466BEB1EB2FEAE00A72105 /* DigitalCart.swift in Sources */,
 				7A466C3C1EB2FEAE00A72105 /* DepositSummaryDetail.m in Sources */,
 				7A466FF71EB2FEB100A72105 /* AttachedPicture.m in Sources */,
+				926C9FA21EB9883100F42557 /* DigitalCartViewController.swift in Sources */,
 				7A466F4F1EB2FEB000A72105 /* EditResolutionBuyerDetailViewController.swift in Sources */,
 				7A466C8A1EB2FEAE00A72105 /* HotlistBannerResult.m in Sources */,
 				7A466D7F1EB2FEAF00A72105 /* DetailShopResult.m in Sources */,
@@ -11948,9 +11954,11 @@
 				7A466C731EB2FEAE00A72105 /* SimpleFavoritedShopResult.m in Sources */,
 				7A466D1D1EB2FEAE00A72105 /* NotificationForm.m in Sources */,
 				7A466DFE1EB2FEAF00A72105 /* TxOrderStatusList.m in Sources */,
+				926C9F911EB9883100F42557 /* DigitalAnalyticsManager.swift in Sources */,
 				7A466EAC1EB2FEB000A72105 /* RequestCategory.m in Sources */,
 				7A466F491EB2FEB000A72105 /* InboxResolutionCenterComplainCell.m in Sources */,
 				7A4671251EB2FEB300A72105 /* OpenShopRequest.m in Sources */,
+				926C9F781EB9882100F42557 /* NetworkProvider.swift in Sources */,
 				7A466E341EB2FEAF00A72105 /* AddressRequest.swift in Sources */,
 				7A466D771EB2FEAF00A72105 /* NoteDetail.swift in Sources */,
 				7A466D031EB2FEAE00A72105 /* ProductTalkCommentAction.m in Sources */,
@@ -12011,7 +12019,6 @@
 				7A466C4D1EB2FEAE00A72105 /* DetailProductResult.m in Sources */,
 				7A46722C1EB2FEB400A72105 /* TKPHomeBannerStore.m in Sources */,
 				7A4670E51EB2FEB200A72105 /* SearchAutoCompleteViewModel.m in Sources */,
-				7A466BF61EB2FEAE00A72105 /* DigitalCartViewController.swift in Sources */,
 				7A4670F61EB2FEB200A72105 /* SpellCheckResult.m in Sources */,
 				7A4670CF1EB2FEB200A72105 /* DetailShipmentStatusViewController.m in Sources */,
 				7A466CF61EB2FEAE00A72105 /* PreorderDetail.m in Sources */,
@@ -12050,6 +12057,7 @@
 				7A466FF51EB2FEB100A72105 /* ReportProductViewController.swift in Sources */,
 				7A466FE11EB2FEB100A72105 /* ProductCellSize.swift in Sources */,
 				7A466D021EB2FEAE00A72105 /* ProductFeedResult.m in Sources */,
+				926C9F991EB9883100F42557 /* DigitalState.swift in Sources */,
 				7A4672151EB2FEB400A72105 /* NSURL+Dictionary.m in Sources */,
 				7A4671501EB2FEB300A72105 /* SendMessageViewController.m in Sources */,
 				7A46720D1EB2FEB400A72105 /* NSData+Encryption.m in Sources */,
@@ -12094,8 +12102,6 @@
 				7A466DF21EB2FEAF00A72105 /* TxOrderConfirmPaymentForm.m in Sources */,
 				7A466C571EB2FEAE00A72105 /* Review.m in Sources */,
 				7A466DFB1EB2FEAF00A72105 /* TxOrderPaymentEditSystemBank.m in Sources */,
-				7A466BE01EB2FEAE00A72105 /* DigitalCategoryMenuViewController.swift in Sources */,
-				7A466BDF1EB2FEAE00A72105 /* DigitalAnalyticsManager.swift in Sources */,
 				7A466ED21EB2FEB000A72105 /* DepositRequest.m in Sources */,
 				7A4670461EB2FEB200A72105 /* PulsaProductViewController.swift in Sources */,
 				7A466CF41EB2FEAE00A72105 /* NotificationSales.m in Sources */,
@@ -12118,7 +12124,6 @@
 				7A466C461EB2FEAE00A72105 /* CatalogShops.m in Sources */,
 				7A466F2B1EB2FEB000A72105 /* Slide.m in Sources */,
 				7A4671BD1EB2FEB400A72105 /* ConfirmationRequest.swift in Sources */,
-				7A466BF01EB2FEAE00A72105 /* DigitalCartVoucher.swift in Sources */,
 				7A466F641EB2FEB100A72105 /* ResolutionCenterDetailCell.m in Sources */,
 				7A466CE51EB2FEAE00A72105 /* MyReviewReputationResult.m in Sources */,
 				7A466BC51EB2FEAE00A72105 /* DelayedActionManager.swift in Sources */,
@@ -12133,14 +12138,12 @@
 				7A46713E1EB2FEB300A72105 /* ShopFavoritedViewController.m in Sources */,
 				7A466C261EB2FEAE00A72105 /* CatalogShopAWSProductResult.m in Sources */,
 				7A466C031EB2FEAE00A72105 /* OAuthToken.swift in Sources */,
-				7A466BE31EB2FEAE00A72105 /* DigitalOperatorSelectionViewController.swift in Sources */,
 				7A466D1F1EB2FEAF00A72105 /* NotificationFormResult.m in Sources */,
 				7A466C8B1EB2FEAE00A72105 /* DepartmentChild.m in Sources */,
 				7A466C8E1EB2FEAE00A72105 /* Hashtags.m in Sources */,
 				7A466FB21EB2FEB100A72105 /* NavigateViewController.m in Sources */,
 				7A4670491EB2FEB200A72105 /* PulsaRelationData.swift in Sources */,
 				7A466ED31EB2FEB000A72105 /* DepositSummaryCell.m in Sources */,
-				7A466BE61EB2FEAE00A72105 /* DigitalProvider.swift in Sources */,
 				7A46704A1EB2FEB200A72105 /* PulsaRelationOperator.swift in Sources */,
 				7A466FA41EB2FEB100A72105 /* CourierOptionViewCell.m in Sources */,
 				7A466E121EB2FEAF00A72105 /* WalletData.swift in Sources */,
@@ -12185,6 +12188,7 @@
 				7A466E241EB2FEAF00A72105 /* ChangePhoneNumberViewController.swift in Sources */,
 				7A466E371EB2FEAF00A72105 /* RequestAddress.m in Sources */,
 				7A466B8E1EB2FEAE00A72105 /* SwipeView.m in Sources */,
+				926C9F9D1EB9883100F42557 /* DigitalCartInfo.swift in Sources */,
 				7A466CB41EB2FEAE00A72105 /* ResolutionLast.m in Sources */,
 				7A4670B51EB2FEB200A72105 /* SalesOrderRequest.swift in Sources */,
 				7A466D041EB2FEAE00A72105 /* ProductTalkCommentActionResult.m in Sources */,
@@ -12210,13 +12214,13 @@
 				7A466D451EB2FEAF00A72105 /* OrderResult.m in Sources */,
 				7A466C1D1EB2FEAE00A72105 /* AddressResult.m in Sources */,
 				7A4670041EB2FEB100A72105 /* InboxReviewCell.m in Sources */,
+				926C9F9C1EB9883100F42557 /* DigitalCart.swift in Sources */,
 				7A466DA71EB2FEAF00A72105 /* ShopShipping.m in Sources */,
 				7A466CF31EB2FEAE00A72105 /* NotificationResult.m in Sources */,
 				7A466FDF1EB2FEB100A72105 /* ProductAddEditViewController.m in Sources */,
 				7A466FC91EB2FEB100A72105 /* DetailProductVideoTableViewCell.swift in Sources */,
 				7A4670221EB2FEB100A72105 /* SplitReputationViewController.m in Sources */,
 				7A466D231EB2FEAF00A72105 /* PromoCategory.m in Sources */,
-				7A466BF21EB2FEAE00A72105 /* JSONAPIResponse.swift in Sources */,
 				7A466D4D1EB2FEAF00A72105 /* SearchAWSResult.m in Sources */,
 				7A466F7D1EB2FEB100A72105 /* MiniSlide.m in Sources */,
 				7A466CCD1EB2FEAE00A72105 /* InboxTicketUserInvolve.m in Sources */,
@@ -12330,6 +12334,7 @@
 				7A466D3D1EB2FEAF00A72105 /* OrderDestination.m in Sources */,
 				7A46721F1EB2FEB400A72105 /* UITableView+RefreshControl.m in Sources */,
 				7A466B791EB2FEAE00A72105 /* _FBTweakBindObserver.m in Sources */,
+				926C9F971EB9883100F42557 /* DigitalProductSelectionViewController.swift in Sources */,
 				7A4671A51EB2FEB300A72105 /* CartValidation.m in Sources */,
 				7A466F4B1EB2FEB000A72105 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				7A466D731EB2FEAF00A72105 /* EtalaseListOther.m in Sources */,
@@ -12358,6 +12363,7 @@
 				7A4670401EB2FEB200A72105 /* PulsaProduct.swift in Sources */,
 				7A466D381EB2FEAF00A72105 /* OrderBooking.m in Sources */,
 				7A466BBC1EB2FEAE00A72105 /* EDStarRating.m in Sources */,
+				926C9F951EB9883100F42557 /* DigitalOperatorSelectionViewController.swift in Sources */,
 				7A466C1E1EB2FEAE00A72105 /* AnnouncementTicker.swift in Sources */,
 				7A466FFC1EB2FEB100A72105 /* GiveReviewRatingViewController.m in Sources */,
 				7A466E5D1EB2FEB000A72105 /* ScreenshotAlertView.swift in Sources */,
@@ -12375,13 +12381,9 @@
 				7A466DD81EB2FEAF00A72105 /* InstallmentTerm.m in Sources */,
 				7A466BF81EB2FEAE00A72105 /* MainViewController.m in Sources */,
 				7A466FEA1EB2FEB100A72105 /* ProductListMyShopFilterViewController.m in Sources */,
-				7A466BE81EB2FEAE00A72105 /* DigitalState.swift in Sources */,
 				7A466FDB1EB2FEB100A72105 /* ProductAddCaptionViewController.m in Sources */,
-				7A466BE21EB2FEAE00A72105 /* DigitalOperator.swift in Sources */,
-				7A466BF51EB2FEAE00A72105 /* JSONAPIResultVoucher.swift in Sources */,
 				7A466FD21EB2FEB100A72105 /* GalleryPhoto.m in Sources */,
 				7A4671931EB2FEB300A72105 /* TrackOrderHistoryCell.m in Sources */,
-				7A466BF31EB2FEAE00A72105 /* JSONAPIResponseVoucher.swift in Sources */,
 				7A466C191EB2FEAE00A72105 /* AddressCity.m in Sources */,
 				7A46707A1EB2FEB200A72105 /* RetryCollectionReusableView.m in Sources */,
 				7A466BFC1EB2FEAE00A72105 /* CreatePasswordResult.m in Sources */,
@@ -12396,7 +12398,6 @@
 				7A466D661EB2FEAF00A72105 /* ShipmentDistrictData.m in Sources */,
 				7A466D121EB2FEAE00A72105 /* ProfileInfoResult.m in Sources */,
 				7A4670451EB2FEB200A72105 /* PulsaProductRoot.swift in Sources */,
-				7A466BF11EB2FEAE00A72105 /* JSONAPIError.swift in Sources */,
 				7A466D111EB2FEAE00A72105 /* ProfileInfo.m in Sources */,
 				7A466E041EB2FEAF00A72105 /* Upload.m in Sources */,
 				7A466CBC1EB2FEAE00A72105 /* InboxReviewProductOwner.m in Sources */,
@@ -12411,6 +12412,7 @@
 				7A466BD31EB2FEAE00A72105 /* LabelMenu.m in Sources */,
 				7A4670E01EB2FEB200A72105 /* SearchAutoCompleteHelper.swift in Sources */,
 				7A4670911EB2FEB200A72105 /* RejectReasonEmptyVariantViewController.m in Sources */,
+				926C9F9A1EB9883100F42557 /* DigitalTextInput.swift in Sources */,
 				7A4672121EB2FEB400A72105 /* NSString+TPBaseUrl.m in Sources */,
 				7A46719E1EB2FEB300A72105 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				7A466C441EB2FEAE00A72105 /* CatalogPrice.m in Sources */,
@@ -12434,6 +12436,7 @@
 				7A466DFD1EB2FEAF00A72105 /* TxOrderStatus.m in Sources */,
 				7A466CC51EB2FEAE00A72105 /* InboxTicketDetail.m in Sources */,
 				7A466C871EB2FEAE00A72105 /* HotlistBanner.m in Sources */,
+				926C9F9F1EB9883100F42557 /* DigitalCartPayment.swift in Sources */,
 				7A466E171EB2FEAF00A72105 /* HybridNavigationManager.m in Sources */,
 				7A466FE81EB2FEB100A72105 /* ProductListMyShopCell.m in Sources */,
 				7A466CDD1EB2FEAE00A72105 /* ManageProductList.m in Sources */,
@@ -12492,7 +12495,6 @@
 				7A466E421EB2FEAF00A72105 /* AlertInfoView.m in Sources */,
 				7A466F2D1EB2FEB000A72105 /* SliderObject.m in Sources */,
 				7A466F561EB2FEB000A72105 /* EditSolutionSellerViewController.swift in Sources */,
-				7A466BE11EB2FEAE00A72105 /* DigitalForm.swift in Sources */,
 				7A466B881EB2FEAE00A72105 /* MHVerticalTabBarButton.m in Sources */,
 				7A466D741EB2FEAF00A72105 /* EtalaseResult.m in Sources */,
 				7A4670381EB2FEB100A72105 /* PulsaOperator.swift in Sources */,
@@ -12553,6 +12555,7 @@
 				7A466BD61EB2FEAE00A72105 /* NSUserDefaultCategory.m in Sources */,
 				7A466C3E1EB2FEAE00A72105 /* DepositSummaryResult.m in Sources */,
 				7A466BC31EB2FEAE00A72105 /* AnalyticsManager.m in Sources */,
+				926C9F9E1EB9883100F42557 /* DigitalCartInfoDetail.swift in Sources */,
 				7A466FD41EB2FEB100A72105 /* GalleryViewController.m in Sources */,
 				7A466C5C1EB2FEAE00A72105 /* ShopInfo.m in Sources */,
 				7A466F1E1EB2FEB000A72105 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
@@ -12621,6 +12624,7 @@
 				7A466C4E1EB2FEAE00A72105 /* Info.m in Sources */,
 				7A466DB91EB2FEAF00A72105 /* LuckyDealData.m in Sources */,
 				7A4670651EB2FEB200A72105 /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
+				926C9F921EB9883100F42557 /* DigitalCategoryMenuViewController.swift in Sources */,
 				7A466CD91EB2FEAE00A72105 /* LoyaltyPointDetail.m in Sources */,
 				7A4670391EB2FEB200A72105 /* PulsaOperatorAttribute.swift in Sources */,
 				7A466C891EB2FEAE00A72105 /* HotlistBannerQuery.m in Sources */,
@@ -12647,7 +12651,6 @@
 				7A466D721EB2FEAF00A72105 /* EtalaseList.m in Sources */,
 				7A466BD91EB2FEAE00A72105 /* RKObjectManagerCategory.m in Sources */,
 				7A46704D1EB2FEB200A72105 /* PulsaStatus.swift in Sources */,
-				7A466BEC1EB2FEAE00A72105 /* DigitalCartInfo.swift in Sources */,
 				7A4671331EB2FEB300A72105 /* EditShopDescriptionViewCell.m in Sources */,
 				7A4670A31EB2FEB200A72105 /* OrderDetailDropshipView.swift in Sources */,
 				7A4670531EB2FEB200A72105 /* ResolutionCenterChooseProblemViewController.m in Sources */,
@@ -12692,7 +12695,6 @@
 				7A466CDA1EB2FEAE00A72105 /* LoyaltyPointMerchant.m in Sources */,
 				7A4670FD1EB2FEB200A72105 /* SettingAddressViewController.m in Sources */,
 				7A46718E1EB2FEB300A72105 /* TopPicksResponseData.swift in Sources */,
-				7A466BE51EB2FEAE00A72105 /* DigitalProductSelectionViewController.swift in Sources */,
 				7A4671C81EB2FEB400A72105 /* ListOrderComponent.mm in Sources */,
 				7A466E1B1EB2FEAF00A72105 /* TKPReactURLManager.m in Sources */,
 				7A4670B91EB2FEB200A72105 /* FilterSalesTransactionListViewController.m in Sources */,
@@ -12836,6 +12838,7 @@
 				7A466D101EB2FEAE00A72105 /* ListFavoriteShop.m in Sources */,
 				7A466CB81EB2FEAE00A72105 /* InboxReview.m in Sources */,
 				7A466DDE1EB2FEAF00A72105 /* TransactionVoucher.m in Sources */,
+				926C9F791EB9882100F42557 /* DigitalTarget.swift in Sources */,
 				7A4671691EB2FEB300A72105 /* FilterConditionCell.m in Sources */,
 				7A4671D51EB2FEB400A72105 /* ListBankViewController.swift in Sources */,
 				7A466F931EB2FEB100A72105 /* MyShopEtalaseEditViewController.m in Sources */,
@@ -12847,6 +12850,7 @@
 				7A466DA21EB2FEAF00A72105 /* ShippingContact.m in Sources */,
 				7A466F091EB2FEB000A72105 /* AnnouncementTickerView.m in Sources */,
 				7A466F8F1EB2FEB100A72105 /* MyShopAddressViewController.m in Sources */,
+				926C9F931EB9883100F42557 /* DigitalForm.swift in Sources */,
 				7A466EFB1EB2FEB000A72105 /* GeneralTableViewController.m in Sources */,
 				7A466DE11EB2FEAF00A72105 /* TxEmoney.m in Sources */,
 				7A466EF31EB2FEB000A72105 /* GeneralSwitchCell.m in Sources */,
@@ -12880,8 +12884,8 @@
 				7A4670091EB2FEB100A72105 /* MyReviewDetailHeaderComponent.mm in Sources */,
 				7A466E0D1EB2FEAF00A72105 /* UploadImageSubmitResult.m in Sources */,
 				7A466EAD1EB2FEB000A72105 /* TKPDSearchBarViewController.swift in Sources */,
+				926C9F961EB9883100F42557 /* DigitalProduct.swift in Sources */,
 				7A4671FA1EB2FEB400A72105 /* ProductThumbCell.m in Sources */,
-				7A466BE71EB2FEAE00A72105 /* DigitalService.swift in Sources */,
 				7A466DAA1EB2FEAF00A72105 /* Track.m in Sources */,
 				7A466F201EB2FEB000A72105 /* MyWishlistShop.swift in Sources */,
 				7A466F0C1EB2FEB000A72105 /* HomePageCategoryLayoutRow.swift in Sources */,
@@ -12916,7 +12920,6 @@
 				7A466E131EB2FEAF00A72105 /* WalletStore.swift in Sources */,
 				7A466DB81EB2FEAF00A72105 /* LuckyDealAttributes.m in Sources */,
 				7A4671F31EB2FEB400A72105 /* CartModelView.m in Sources */,
-				7A466BE41EB2FEAE00A72105 /* DigitalProduct.swift in Sources */,
 				7A4670761EB2FEB200A72105 /* HeaderCollectionReusableView.m in Sources */,
 				7A4671C01EB2FEB400A72105 /* PaymentConfirmationForm.swift in Sources */,
 				7A466F3F1EB2FEB000A72105 /* InboxMessageDetailViewController.m in Sources */,
@@ -12971,7 +12974,6 @@
 				7A466DF31EB2FEAF00A72105 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				7A466C431EB2FEAE00A72105 /* CatalogMarketPlace.m in Sources */,
 				7A4671371EB2FEB300A72105 /* EditShopNoteViewCell.m in Sources */,
-				7A466BEA1EB2FEAE00A72105 /* DigitalWigetReducer.swift in Sources */,
 				7A4672161EB2FEB400A72105 /* NSURL+TKPURL.m in Sources */,
 				7A466B851EB2FEAE00A72105 /* iCarousel.m in Sources */,
 				7A466C6E1EB2FEAE00A72105 /* ListFavorited.m in Sources */,
@@ -12982,7 +12984,6 @@
 				7A4670701EB2FEB200A72105 /* ResolutionCenterSellerEditViewController.m in Sources */,
 				7A466CBE1EB2FEAE00A72105 /* InboxReviewResult.m in Sources */,
 				7A466C201EB2FEAE00A72105 /* AnnouncementTickerResult.swift in Sources */,
-				7A466BEE1EB2FEAE00A72105 /* DigitalCartPayment.swift in Sources */,
 				7A4671D71EB2FEB400A72105 /* TableViewCell.m in Sources */,
 				7A46704E1EB2FEB200A72105 /* PulsaStatusAttribute.swift in Sources */,
 				7A466D7E1EB2FEAF00A72105 /* ClosedInfo.m in Sources */,
@@ -13025,7 +13026,6 @@
 				7A466B841EB2FEAE00A72105 /* FBTweakViewController.m in Sources */,
 				7A466E831EB2FEB000A72105 /* CatalogSectionHeaderView.m in Sources */,
 				7A466ECA1EB2FEB000A72105 /* DepositFormAccountBankViewController.m in Sources */,
-				7A466BE91EB2FEAE00A72105 /* DigitalTextInput.swift in Sources */,
 				7A466B8F1EB2FEAE00A72105 /* UIImage+Resize.m in Sources */,
 				7A4671A01EB2FEB300A72105 /* TransactionShipmentATCTableViewController.m in Sources */,
 			);

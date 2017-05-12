@@ -8,16 +8,27 @@
 
 import Foundation
 import RestKit
+import Unbox
 
-class DigitalCartUserInputPrice:NSObject {
+final class DigitalCartUserInputPrice:Unboxable {
     var max:Double = 0
     var min:Double = 0
     var maxText = ""
     var minText = ""
     
-    static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping(for: self)!
-        mapping.addAttributeMappings(from:["max_payment_plain":"max","min_payment_plain":"min","max_payment":"maxText","min_payment":"minText"])
-        return mapping
+    init(max:Double, min:Double, maxText:String, minText:String) {
+        self.max = max
+        self.min = min
+        self.maxText = maxText
+        self.minText = minText
+    }
+    
+    convenience init(unboxer:Unboxer) throws {
+        let max = try unboxer.unbox(keyPath: "max_payment_plain") as Double
+        let min = try unboxer.unbox(keyPath: "min_payment_plain") as Double
+        let maxText = try unboxer.unbox(keyPath: "max_payment") as String
+        let minText = try unboxer.unbox(keyPath: "min_payment") as String
+        
+        self.init(max:max, min:min, maxText:maxText, minText:minText)
     }
 }

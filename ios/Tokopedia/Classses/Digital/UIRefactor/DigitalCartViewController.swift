@@ -51,8 +51,8 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate var isVoucherUsed = false
     fileprivate var isDiscount = false
     fileprivate var networkManager:TokopediaNetworkManager = TokopediaNetworkManager()
-    fileprivate var cart:DigitalCart = DigitalCart()
-    fileprivate var voucher:DigitalCartVoucher = DigitalCartVoucher()
+    fileprivate var cart:DigitalCart = DigitalCart(cartId:"", userId:"", clientNumber:"", title:"", categoryName:"", operatorName:"", icon:"", priceText:"", price:0, instantCheckout:false, needOTP:false, smsState:"", mainInfo:[], additionalInfo:nil, userInputPrice:nil)
+    fileprivate var voucher:DigitalVoucher = DigitalVoucher(voucherCode:"", userId:"", discount:"", discountAmount:0, cashback:"", cashbackAmount:0, total:"", totalAmount:0, message:"")
     fileprivate var noResultView: NoResultReusableView!
     
     let cartPayment = PublishSubject<DigitalCartPayment>()
@@ -273,26 +273,26 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     }
     
     fileprivate func getCart() {
-        let parameters: [String:String] = ["category_id":categoryId]
-        let user = UserAuthentificationManager()
-        networkManager.isUsingHmac = true
-        networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.3/cart", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponse.mapping(), onSuccess: { [weak self] (mappingResult, operation) in
-            let response : Dictionary = mappingResult.dictionary() as Dictionary
-            let json = response[""] as! JSONAPIResponse
-            if (json.data != nil) {
-                self?.content.isHidden = false
-                self?.transactionId = json.data.id
-                self?.cart = json.data.attributes
-                self?.setData()
-            } else {
-                self?.view.addSubview((self?.noResultView)!)
-                self?.content.isHidden = true
-            }
-            
-        }) { [unowned self] (error) in
-            self.view.addSubview(self.noResultView)
-            self.content.isHidden = true
-        }
+        DigitalProvider()
+            .request(.getCart(categoryId))
+            .map(to: DigitalCart.self)
+            .do(onError: { [unowned self] error in
+                    self.view.addSubview(self.noResultView)
+                    self.content.isHidden = true
+                }
+            )
+            .subscribe(onNext: { [weak self] cart in
+                        self?.content.isHidden = false
+                        self?.cart = cart
+                        self?.transactionId = cart.cartId
+                        self?.setData()
+                    },
+                       onError: { [unowned self] error in
+                        self.view.addSubview(self.noResultView)
+                        self.content.isHidden = true
+                    })
+            .disposed(by: self.rx_disposeBag)
+
     }
     
     fileprivate func payment() {
@@ -342,6 +342,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                             StickyAlertView.showErrorMessage([errorMessage])
                         } catch {
                             print(error.localizedDescription)
+                            errorMessage = error.localizedDescription
                         }
                     } else {
                         errorMessage = "Kendala koneksi internet, silakan coba kembali"
@@ -366,42 +367,41 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             gunakanButton.setTitle("", for: .normal)
             gunakanButton.isEnabled = false
             actIndicator.startAnimating()
-            
-            let parameters: [String:String] = ["category_id":categoryId, "voucher_code":voucherCode]
-            let user = UserAuthentificationManager()
-            
-            networkManager.isUsingHmac = true
-            networkManager.request(withBaseUrl: NSString.pulsaApiUrl(), path: "/v1.3/voucher/check", method: .GET, header: ["X-User-ID":user.getUserId()], parameter: parameters, mapping: JSONAPIResponseVoucher.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
-                let response : Dictionary = mappingResult.dictionary() as Dictionary
-                let json = response[""] as! JSONAPIResponseVoucher
-                if (json.data != nil) {
-                    self.voucher = json.data.attributes
-                    self.isVoucherUsed = true
-                    self.setVoucherCanceled()
-                }
-                AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Success - \(self.voucherCode)")
-                self.revertGunakanButton()
-            }) { [unowned self] (error) in
-                var errorMessage = ""
-                if let err = (error as NSError).localizedRecoverySuggestion {
-                    self.networkManager.isUsingDefaultError = false
-                    let data = err.data(using: String.Encoding.utf8, allowLossyConversion: false)!
-                    do {
-                        let obj = try Unboxer(data:data)
-                        errorMessage = try! obj.unbox(keyPath: "errors.0.title") as String
-                        
-                    } catch {
-                        print(error.localizedDescription)
+            DigitalProvider()
+                .request(.voucher(categoryId: categoryId, voucherCode: voucherCode))
+                .map(to: DigitalVoucher.self)
+                .do(
+                    onNext: { [weak self] voucher in
+                        self?.revertGunakanButton()
+                    },
+                    onError: { [unowned self] error in
+                        var errorMessage = ""
+                        if let response = (error as! MoyaError).response {
+                            let data = response.data
+                            do {
+                                let obj = try Unboxer(data:data)
+                                errorMessage = try! obj.unbox(keyPath: "errors.0.title") as String
+                                StickyAlertView.showErrorMessage([errorMessage])
+                            } catch {
+                                print(error.localizedDescription)
+                                errorMessage = error.localizedDescription
+                            }
+                        } else {
+                            errorMessage = "Kendala koneksi internet, silakan coba kembali"
+                            StickyAlertView.showErrorMessage([errorMessage])
+                        }
+                        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(self.voucherCode)")
+                        self.isVoucherUsed = false
+                        self.setVoucherCanceled()
+                        self.revertGunakanButton()
                     }
-                } else {
-                    errorMessage = error.localizedDescription
-                }
-                StickyAlertView.showErrorMessage([errorMessage])
-                AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(self.voucherCode)")
-                self.isVoucherUsed = false
-                self.setVoucherCanceled()
-                self.revertGunakanButton()
-            }
+                )
+                .subscribe(onNext: { [weak self] voucher in
+                    self?.voucher = voucher
+                    self?.isVoucherUsed = true
+                    self?.setVoucherCanceled()
+                })
+                .disposed(by: self.rx_disposeBag)
         } else {
             StickyAlertView.showErrorMessage(["Kode voucher tidak boleh kosong"])
         }

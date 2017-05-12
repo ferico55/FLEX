@@ -108,7 +108,7 @@ class DigitalService {
                     
                     return cartViewController.cartPayment
                         .map { cartPayment in
-                            (cartPayment.redirectUrl, cartPayment.queryString)
+                            return (cartPayment.redirectUrl, cartPayment.queryString)
                         }
                 }
             }.map { url, queryString in
@@ -145,36 +145,11 @@ class DigitalService {
     }
     
     private func cart(categoryId: String) -> Observable<String> {
-        let networkManager = TokopediaNetworkManager()
-        networkManager.isUsingHmac = true
-        
-        let header = ["X-User-ID": UserAuthentificationManager().getUserId()!]
-        let parameters = ["category_id": categoryId]
-        
-        return Observable.create { observer in
-            
-            networkManager.request(
-                withBaseUrl: NSString.pulsaApiUrl(),
-                path: "/v1.3/cart",
-                method: .GET,
-                header: header,
-                parameter: parameters,
-                mapping: JSONAPIResponse.mapping(),
-                onSuccess: { mappingResult, _ in
-                    let response = mappingResult.dictionary() as Dictionary
-                    let json = response[""] as! JSONAPIResponse
-                    
-                    let cartId = json.data.id
-                    
-                    observer.onNext(cartId)
-                },
-                onFailure: { _ in
-                    observer.onError(NSError(domain: "domain", code: -999))
-                }
-            )
-            
-            return Disposables.create()
-        }
+        return DigitalProvider()
+            .request(.getCart(categoryId))
+            .map(to: DigitalCart.self)
+            .map { $0.cartId }
+
     }
     
     private func verifyOtp(from viewController: UIViewController, needOtp: Bool, cartId: String) -> Observable<Void> {

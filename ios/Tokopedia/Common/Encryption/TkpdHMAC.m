@@ -23,26 +23,7 @@
     return self;
 }
 
-- (NSString *)generateTokenRatesPath:(NSString*)path withUnixTime:(NSString*)unixTime{
-    NSString *secret = @"Keroppi";
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n/%@", @"GET", @"", @"", unixTime, path];
-    return [self getOutputFromString:stringToSign srcret:secret];
-}
-
--(NSString *)getOutputFromString:(NSString *)stringToSign srcret:(NSString*)secret
-{
-    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
-    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
-    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    NSString *output = [self base64forData:HMAC];
-    
-    return output;
-}
-
-- (NSString*)signatureWithBaseUrl:(NSString*)url
+- (void)signatureWithBaseUrl:(NSString*)url
                            method:(NSString*)method
                              path:(NSString*)path
                              json:(NSDictionary*)parameter {
@@ -90,10 +71,10 @@
     _date = date;
     _signature = output;
     
-    return output;
+    
 }
 
-- (NSString*)signatureWithBaseUrl:(NSString*)url
+- (void)signatureWithBaseUrl:(NSString*)url
                            method:(NSString*)method
                              path:(NSString*)path
                         parameter:(NSDictionary*)parameter
@@ -138,33 +119,7 @@
     _date = date;
     _signature = output;
     
-    return output;
-}
-
-- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date {
-    NSString *output;
-    NSString *secret = @"web_service_v4";
     
-    //set request method
-    [self setRequestMethod:method];
-    [self setParameterMD5:parameter];
-    [self setTkpdPath:path];
-    [self setSecret:secret];
-    
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:@""],
-                              date, [self getTkpdPath]];
-    //    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
-    
-    
-    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
-    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
-    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    output = [self base64forData:HMAC];
-    
-    return output;
 }
 
 // convert NSData to NSString

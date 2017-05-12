@@ -180,3 +180,6 @@
 #import "UIActivityViewController+Extensions.h"
 #import <MessageUI/MessageUI.h>
 #import "TAGDataLayer.h"
+
+#import "NSString+MD5.h"
+#import "NSDictionaryCategory.h"

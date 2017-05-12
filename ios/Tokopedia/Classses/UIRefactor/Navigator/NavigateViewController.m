@@ -58,6 +58,7 @@
 #import "SalesTransactionListViewController.h"
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
+#import "MaintenanceViewController.h"
 
 
 
@@ -930,6 +931,12 @@
     [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
     
     return [datas copy];
+}
+
++ (void)navigateToMaintenanceViewController {
+    MaintenanceViewController *viewController = [MaintenanceViewController new];
+    UIViewController * topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+    [topViewController.navigationController pushViewController:viewController animated:YES];
 }
 
 @end
