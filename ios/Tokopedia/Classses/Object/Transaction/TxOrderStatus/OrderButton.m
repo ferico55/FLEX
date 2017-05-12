@@ -19,7 +19,8 @@
                       @"button_res_center_go_to",
                       @"button_upload_proof",
                       @"button_ask_seller",
-                      @"button_cancel_request"
+                      @"button_cancel_request",
+                      @"show_reorder"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -35,7 +35,7 @@
 }
 
 -(BOOL)canReorder{
-    return (self.order_detail.detail_order_status == ORDER_CANCELED || self.order_detail.detail_order_status == ORDER_REJECTED);
+    return (self.order_button.show_reorder == 1);
 }
 
 -(void)setCanComplaintNotReceived:(BOOL)canComplaintNotReceived {

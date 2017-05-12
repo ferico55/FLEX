@@ -39,8 +39,9 @@
 #import "SendMessageViewController.h"
 #import "RetryCollectionReusableView.h"
 
+@import SwiftOverlays;
+
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
-#define TAG_ALERT_REORDER 12
 #define DATA_ORDER_DELIVERY_CONFIRMATION @"data_delivery_confirmation"
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
@@ -278,6 +279,7 @@
         };
         
         [_dataManager context].onTapReorder = ^(TxOrderStatusList *order){
+            [AnalyticsManager trackEventName:@"clickReorder" category:GA_EVENT_CATEGORY_REORDER action:GA_EVENT_ACTION_CLICK label:@"Click Reorder"];
             [weakSelf tapReorderOrder:order];
         };
         
@@ -512,13 +514,17 @@
 
 #pragma mark - Request ReOrder
 -(void)doRequestReorder:(TxOrderStatusList*)order{
+    self.view.userInteractionEnabled = NO;
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
     [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
-        [_act stopAnimating];
         TransactionCartViewController *vc = [TransactionCartViewController new];
-        [self.navigationController pushViewController:vc animated:YES];
-        
+        [self.navigationController pushViewController:vc animated:YES completion:^{
+            self.view.userInteractionEnabled = YES;
+            [SwiftOverlays removeAllOverlaysFromView:self.view];
+        }];
     } failure:^(NSError *error, TxOrderStatusList *order) {
-        [_act stopAnimating];
+        self.view.userInteractionEnabled = YES;
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
     }];
 }
 
@@ -562,13 +568,6 @@
     if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
         [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
-    }
-    else if (alertView.tag == TAG_ALERT_REORDER)
-    {
-        if (buttonIndex == 1) {
-            TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
-            [self doRequestReorder:order];
-        }
     }
 }
 
@@ -657,15 +656,23 @@
     [confirmationAlert show];
 }
 
--(void)showAlertReorder
-{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:ALERT_REORDER_TITLE
-                                                   message:ALERT_REORDER_DESCRIPTION
-                                                  delegate:self
-                                         cancelButtonTitle:@"Tidak"
-                                         otherButtonTitles:@"Ya", nil];
-    alert.tag = TAG_ALERT_REORDER;
-    [alert show];
+-(void)showAlertReorder {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:ALERT_REORDER_TITLE message:ALERT_REORDER_DESCRIPTION preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *actionOk = [UIAlertAction actionWithTitle:@"Ya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [AnalyticsManager trackEventName:@"clickReorder" category:GA_EVENT_CATEGORY_REORDER action:GA_EVENT_ACTION_CLICK label:@"Confirm Reorder"];
+        
+        TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
+        [self doRequestReorder:order];
+
+    }];
+    
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alertController addAction:actionOk];
+    [alertController addAction:actionCancel];
+    [self presentViewController:alertController animated:true completion:nil];
 }
 
 - (BOOL) isUsingAnyFilter {

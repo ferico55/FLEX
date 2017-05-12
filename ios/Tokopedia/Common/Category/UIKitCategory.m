@@ -191,3 +191,17 @@
     }
 }
 @end
+
+@implementation UINavigationController (CompletionHandler)
+
+- (void)pushViewController:(UIViewController *)viewController
+                                    animated:(BOOL)animated
+                                  completion:(void (^)(void))completion
+{
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
+    [self pushViewController:viewController animated:animated];
+    [CATransaction commit];
+}
+
+@end

@@ -41,3 +41,11 @@
 - (void)setCustomAttributedText:(NSString *)text;
 
 @end
+
+@interface UINavigationController (CompletionHandler)
+
+- (void)pushViewController:(UIViewController *)viewController
+                                    animated:(BOOL)animated
+                                  completion:(void (^)(void))completion;
+
+@end

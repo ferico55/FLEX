@@ -18,6 +18,7 @@
 @property (nonatomic) NSInteger button_track;
 @property (nonatomic) NSInteger button_ask_seller;
 @property (nonatomic) NSInteger button_cancel_request;
+@property (nonatomic) NSInteger show_reorder;
 
 
 @end

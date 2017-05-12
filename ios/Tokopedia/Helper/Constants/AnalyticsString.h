@@ -78,6 +78,7 @@
 #define GA_EVENT_CATEGORY_CHANGE_PHONE_NUMBER @"Change Phone Number"
 #define GA_EVENT_CATEGORY_RECHARGE @"Recharge"
 #define GA_EVENT_CATEGORY_SCREENSHOT @"Screenshot"
+#define GA_EVENT_CATEGORY_REORDER @"Reorder"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"

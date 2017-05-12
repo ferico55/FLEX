@@ -28,6 +28,7 @@
 #import "TrackOrderViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"
+@import SwiftOverlays;
 
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
 {
@@ -272,12 +273,8 @@
 
     UIAlertAction* cancel = [UIAlertAction
                              actionWithTitle:@"Tidak"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-
-                             }];
+                             style:UIAlertActionStyleCancel
+                             handler:nil];
 
     [alert addAction:yes];
     [alert addAction:cancel];
@@ -286,6 +283,8 @@
 }
 
 -(void)doRequestReorder:(TxOrderStatusList*)order{
+    _tableView.tableHeaderView.userInteractionEnabled = NO;
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         
@@ -293,10 +292,15 @@
         if (weakSelf.didReorder){
             weakSelf.didReorder(order);
         }
-        [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController pushViewController:vc animated:YES completion:^{
+            _tableView.tableHeaderView.userInteractionEnabled = YES;
+            [SwiftOverlays removeAllOverlaysFromView:self.view];
+        }];
         
     } failure:^(NSError *error, TxOrderStatusList *order) {
         
+        _tableView.tableHeaderView.userInteractionEnabled = YES;
+        [SwiftOverlays removeAllOverlaysFromView:self.view];
     }];
 }
 
