@@ -2111,7 +2111,7 @@ TTTAttributedLabelDelegate
     NSString *productId = _product.data.info.product_id?:@"";
     __weak __typeof(self) weakSelf = self;
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
-    
+    tokopediaNetworkManagerWishList.isUsingDefaultError = NO;
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodPOST header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
     } onFailure:^(NSError *errorResult) {
@@ -2434,7 +2434,10 @@ TTTAttributedLabelDelegate
 }
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+    NSString *errorMessage = [error localizedRecoverySuggestion];
+    NSData *data = [errorMessage dataUsingEncoding: NSUTF8StringEncoding];
+    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages: json[@"message_error"] delegate:self];
     [alert show];
     [self setBackgroundWishlist:NO];
     btnWishList.tag = 1;

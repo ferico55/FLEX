@@ -226,7 +226,6 @@ typedef enum
 #define ERRORMESSAGE_MAXIMAL_WHOLESALE_LIST @"Hanya boleh menambahkan 5 harga grosir"
 #define kTKPDSUCCESS_ADD_WISHLIST @"Anda berhasil menambah wishlist"
 #define kTKPDSUCCESS_REMOVE_WISHLIST @"Anda berhasil menghapus wishlist"
-#define kTKPDFAILED_ADD_WISHLIST @"Anda gagal menambah wishlist"
 #define kTKPDFAILED_REMOVE_WISHLIST @"Anda gagal menghapus wishlist"
 #define kTKPDTIDAK_ADA_WISHLIST @"Tidak ada wishlist"
 
