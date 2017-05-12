@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashSectionViewController">
+            <connections>
+                <outlet property="btnTopUp" destination="sKS-Gu-X41" id="jCh-Ql-BZq"/>
+                <outlet property="icon" destination="qaR-gw-FeV" id="8UI-O5-2sh"/>
+                <outlet property="lblBalance" destination="kkr-dh-Rlc" id="3ve-rf-rzo"/>
+                <outlet property="lblTitle" destination="mzd-qc-iwJ" id="D7w-bz-SfQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="qaR-gw-FeV">
+                    <rect key="frame" x="10" y="16" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="3Wj-WE-jd3"/>
+                        <constraint firstAttribute="height" constant="32" id="fFj-5n-YW6"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TokoCash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzd-qc-iwJ">
+                    <rect key="frame" x="52" y="16" width="161" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.54000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kkr-dh-Rlc">
+                    <rect key="frame" x="52" y="34" width="161" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKS-Gu-X41">
+                    <rect key="frame" x="243" y="16" width="125" height="32"/>
+                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="deviceRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="9P1-oi-kNV"/>
+                        <constraint firstAttribute="width" constant="125" id="gzF-Xe-IJB"/>
+                    </constraints>
+                    <state key="normal" title="Aktivasi">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTap:" destination="-1" eventType="touchUpInside" id="Buo-vd-Xud"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kkr-dh-Rlc" firstAttribute="top" secondItem="mzd-qc-iwJ" secondAttribute="bottom" constant="3" id="3wJ-yD-kb3"/>
+                <constraint firstItem="qaR-gw-FeV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="AUO-zg-jeg"/>
+                <constraint firstItem="sKS-Gu-X41" firstAttribute="leading" secondItem="mzd-qc-iwJ" secondAttribute="trailing" constant="30" id="JdH-dP-p2R"/>
+                <constraint firstItem="sKS-Gu-X41" firstAttribute="leading" secondItem="kkr-dh-Rlc" secondAttribute="trailing" constant="30" id="KHL-Ep-ezD"/>
+                <constraint firstItem="kkr-dh-Rlc" firstAttribute="leading" secondItem="mzd-qc-iwJ" secondAttribute="leading" id="P33-Ns-tv9"/>
+                <constraint firstItem="mzd-qc-iwJ" firstAttribute="top" secondItem="qaR-gw-FeV" secondAttribute="top" id="TbW-1B-5Rz"/>
+                <constraint firstItem="sKS-Gu-X41" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="ZG1-sw-5ti"/>
+                <constraint firstItem="qaR-gw-FeV" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="dWK-Mx-bcp"/>
+                <constraint firstAttribute="trailing" secondItem="sKS-Gu-X41" secondAttribute="trailing" constant="7" id="rKa-0w-Ua7"/>
+                <constraint firstItem="mzd-qc-iwJ" firstAttribute="leading" secondItem="qaR-gw-FeV" secondAttribute="trailing" constant="10" id="sR7-Kw-lNs"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_wallet" width="32" height="32"/>
+    </resources>
+</document>

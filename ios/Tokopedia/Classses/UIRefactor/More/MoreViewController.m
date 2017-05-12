@@ -89,7 +89,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     BOOL _shouldDisplayPushNotificationCell;
     BOOL _shouldDisplayWalletCell;
     NSString* _walletUrl;
-    
+    BOOL _isWalletActive;
+    BOOL _isTokocashExpired;
     CGRect _defaultTableFrame;
 }
 
@@ -296,17 +297,17 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
     
-    [WalletRequest fetchStatusWithUserId:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
+    [WalletService getBalance:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
         if(wallet.isExpired) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-            return;
+            _isTokocashExpired = wallet.isExpired;
+            [self.tableView reloadData];
+        } else {
+            _walletNameLabel.text = wallet.data.text;
+            _walletBalanceLabel.text = wallet.data.balance;
+            _walletUrl = wallet.walletFullUrl;
+            
+            [weakSelf showActivationButton:wallet];
         }
-        
-        _walletNameLabel.text = wallet.data.text;
-        _walletBalanceLabel.text = wallet.data.balance;
-        _walletUrl = wallet.walletFullUrl;
-        
-        [weakSelf showActivationButton:wallet];
         
     } onFailure:^(NSError * error) {
         if(error.code == 9991) {
@@ -317,23 +318,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 - (void)showActivationButton:(WalletStore*)wallet {
     [_walletActivationButton setHidden:!wallet.shouldShowActivation];
+    _isWalletActive = wallet.shouldShowActivation;
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
-        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-
-        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[userManager webViewUrlFromUrl:wallet.data.walletActionFullUrl] shouldAuthorizeRequest:YES];
-        controller.title = _walletNameLabel.text;
-        
-        __weak typeof(self) wself = self;
-        controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
-            NSURL* url = action.request.URL;
-            NSString* thanksUrl = [NSString stringWithFormat:@"%@/thanks_wallet?flag_app=1", [NSString accountsUrl]];
-            if ([url.absoluteString isEqualToString:thanksUrl]) {
-                [wself.wrapperViewController.navigationController popViewControllerAnimated:YES];
-            }
-        };
-        
-        [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+        [TPRoutes routeURL:[NSURL URLWithString:  wallet.data.action.applinks]];
     }];
 }
 
@@ -445,7 +433,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            return 2;
+            if (_isTokocashExpired)
+                return 1;
+            else
+                return 2;
             break;
         }
         
@@ -531,11 +522,19 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [AnalyticsManager trackClickNavigateFromMore:@"Saldo"];
             }
         } else if (indexPath.row == 1) {
-            WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:_walletUrl shouldAuthorizeRequest:NO];
-            controller.title = _walletNameLabel.text;
-            
-            _wrapperViewController.hidesBottomBarWhenPushed = YES;
-            [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+            if (!_isWalletActive) {
+                UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+                WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString: [userManager webViewUrlFromUrl:_walletUrl] shouldAuthorizeRequest:YES];
+                controller.title = _walletNameLabel.text;
+                __weak typeof(WKWebViewController) *wcontroller = controller;
+                controller.didTapBack = ^{
+                    [wcontroller.navigationController popViewControllerAnimated:YES];
+                };
+                
+                [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+            } else {
+                [tableView deselectRowAtIndexPath:indexPath animated:NO];
+            }
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {

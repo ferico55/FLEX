@@ -21,6 +21,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //intercept when user click on action here
     var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
+    var didTapBack:(() -> ())?
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
@@ -51,6 +52,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     func didTapBackButton() {
         if webView.canGoBack {
            webView.goBack()
+           self.didTapBack?()
         } else {
             self.navigationController?.popViewController(animated: true)
         }

@@ -30,6 +30,7 @@ class HomePageViewController: UIViewController {
     private var sliderPlaceholder: UIView!
     private var pulsaPlaceholder: UIView!
     private var tickerPlaceholder: UIView!
+    private var tokocashPlaceholder: UIView!
     private var categoryPlaceholder: OAStackView!
     private var homePageCategoryData: HomePageCategoryData?
     private var pulsaActiveCategories: [PulsaCategory]?
@@ -56,6 +57,7 @@ class HomePageViewController: UIViewController {
     private var isRequestingPulsaWidget: Bool = false
     private var isRequestingOfficialStore: Bool = false
     private var officialStoreRequestSuccess: Bool = false
+    private var isShowTokoCash: Bool = false
 //    private var categoryId = ""
     
     private let officialStorePlaceholder = UIView()
@@ -79,6 +81,12 @@ class HomePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if userManager.isLogin {
+            self.requestTokocash()
+        } else {
+            self.tokocashPlaceholder.isHidden = true
+        }
+        
         if isRequestingBanner == false {
             self.requestBanner()
         }
@@ -285,6 +293,7 @@ class HomePageViewController: UIViewController {
     }
     
     private func initViewLayout() {
+        self.tokocashPlaceholder = UIView()
         self.sliderPlaceholder = UIView()
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
         self.tickerPlaceholder = UIView(frame: .zero)
@@ -296,6 +305,9 @@ class HomePageViewController: UIViewController {
         self.sliderPlaceholder.mas_makeConstraints { make in
             make?.height.mas_equalTo()(self.sliderHeight)
         }
+        
+        self.outerStackView.addArrangedSubview(self.tokocashPlaceholder)
+        
         self.outerStackView.addArrangedSubview(self.sliderPlaceholder)
         
         // init pulsa widget
@@ -508,7 +520,7 @@ class HomePageViewController: UIViewController {
                         self.tickerPlaceholder.isHidden = true
                     }
                     
-                    self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, at: 0)
+                    self.outerStackView.insertArrangedSubview(self.tickerPlaceholder, at: 1)
                     
                     self.tickerPlaceholder.mas_makeConstraints { make in
                         make?.left.right().equalTo()(self.view)
@@ -532,6 +544,32 @@ class HomePageViewController: UIViewController {
         }) { (error) in
             self.canRequestTicker = true
         }
+    }
+    
+    private func requestTokocash() {
+        
+        WalletService.getBalance(userId: self.userManager.getUserId())
+            .subscribe(onNext: { [weak self] wallet in
+                if(wallet.isExpired()) {
+                    self?.tokocashPlaceholder.isHidden = true
+                } else {
+                    let tokocash = TokoCashSectionViewController(wallet:wallet)
+                    self?.addChildViewController(tokocash)
+                    self?.tokocashPlaceholder.addSubview(tokocash.view)
+                    tokocash.view.mas_makeConstraints { (make) in
+                        make?.edges.equalTo()(self?.tokocashPlaceholder)
+                    }
+                    self?.tokocashPlaceholder.mas_makeConstraints { make in
+                        make?.left.right().equalTo()(self?.view)
+                        make?.height.mas_equalTo()(tokocash.view.frame.height)
+                    }
+                    self?.tokocashPlaceholder.isHidden = false
+                }
+            }, onError: { error in
+                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                stickyAlertView?.show()
+            })
+            .disposed(by: self.rx_disposeBag)
     }
     
     private func navigateToIntermediaryPage() {
@@ -566,26 +604,20 @@ class HomePageViewController: UIViewController {
             if(categoryId  == "103") {
                 authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
                     self.navigateToIntermediaryPage()
-                    WalletRequest.fetchStatusWithUserId(self.userManager.getUserId(), onSuccess: { [unowned self] (wallet) in
-                        self.navigationController?.popViewController(animated: false)
-                        
-                        if(wallet.shouldShowActivation()) {
-                            let controller = WKWebViewController(urlString: self.userManager.webViewUrl(fromUrl: (wallet.data?.walletActionFullUrl())!))
-                            controller.didReceiveNavigationAction = { [weak self] action in
-                                let url = action.request.url
-                                
-                                if(url?.absoluteString == "\(NSString.accountsUrl())/thanks_wallet?flag_app=1") {
-                                    self?.navigationController?.popViewController(animated: true)
-                                }
+                    WalletService.getBalance(userId: self.userManager.getUserId())
+                        .subscribe(onNext: { wallet in
+                            self.navigationController?.popViewController(animated: false)
+                            if (wallet.isExpired()) {
+                                TPRoutes.routeURL(URL(string: "tokopedia://tokocash")!)
+                            } else {
+                                TPRoutes.routeURL(URL(string: (wallet.data?.action?.applinks)!)!)
                             }
-                            controller.hidesBottomBarWhenPushed = true
-                            self.navigationController?.pushViewController(controller, animated: false)
-                        } else {
-                            TPRoutes.routeURL(URL(string: "tokopedia://tokocash")!)
-                        }
-                    }, onFailure: { (error) in
-                        self.navigationController?.popViewController(animated: false)
-                    })
+                        }, onError: { error in
+                            self.navigationController?.popViewController(animated: false)
+                            let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                            stickyAlertView?.show()
+                        })
+                        .disposed(by: self.rx_disposeBag)
                 })
             } else {
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)

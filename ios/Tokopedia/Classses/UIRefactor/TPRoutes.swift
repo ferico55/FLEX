@@ -623,6 +623,7 @@ class TPRoutes: NSObject {
         
         controller.strURL = userManager.webViewUrl(fromUrl: urlString)
         controller.shouldAuthorizeRequest = true
+        controller.hidesBottomBarWhenPushed = true
         
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)

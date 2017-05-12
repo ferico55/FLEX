@@ -582,9 +582,6 @@
 		344239B01EC5D38D00F6D2A2 /* UploadImageValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34422FF21EC5D37F00F6D2A2 /* UploadImageValidation.m */; };
 		344239B11EC5D38D00F6D2A2 /* UploadImageValidationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 34422FF41EC5D37F00F6D2A2 /* UploadImageValidationResult.m */; };
 		344239B21EC5D38D00F6D2A2 /* V4Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 34422FF61EC5D37F00F6D2A2 /* V4Response.m */; };
-		344239B31EC5D38D00F6D2A2 /* WalletAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34422FF81EC5D37F00F6D2A2 /* WalletAction.swift */; };
-		344239B41EC5D38D00F6D2A2 /* WalletData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34422FF91EC5D37F00F6D2A2 /* WalletData.swift */; };
-		344239B51EC5D38D00F6D2A2 /* WalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34422FFA1EC5D37F00F6D2A2 /* WalletStore.swift */; };
 		344239B61EC5D38D00F6D2A2 /* WishListObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 34422FFD1EC5D37F00F6D2A2 /* WishListObject.m */; };
 		344239B71EC5D38D00F6D2A2 /* WishListObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = 34422FFF1EC5D37F00F6D2A2 /* WishListObjectList.m */; };
 		344239B81EC5D38D00F6D2A2 /* WishListObjectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 344230011EC5D37F00F6D2A2 /* WishListObjectResult.m */; };
@@ -1592,7 +1589,6 @@
 		34423DA21EC5D39500F6D2A2 /* TalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 344236631EC5D38700F6D2A2 /* TalkCell.xib */; };
 		34423DA31EC5D39500F6D2A2 /* TalkModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 344236651EC5D38700F6D2A2 /* TalkModelView.m */; };
 		34423DA41EC5D39500F6D2A2 /* TalkProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 344236661EC5D38700F6D2A2 /* TalkProductCell.xib */; };
-		34423DA51EC5D39500F6D2A2 /* WalletRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344236671EC5D38700F6D2A2 /* WalletRequest.swift */; };
 		34423DA61EC5D39500F6D2A2 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442366B1EC5D38700F6D2A2 /* URLCacheAlert.m */; };
 		34423DA71EC5D39500F6D2A2 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442366D1EC5D38700F6D2A2 /* URLCacheConnection.m */; };
 		34423DA81EC5D39500F6D2A2 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442366F1EC5D38700F6D2A2 /* URLCacheController.m */; };
@@ -1740,6 +1736,13 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		528D10CE1EC5EA8900AA9236 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10CD1EC5EA8900AA9236 /* WalletService.swift */; };
+		528D10D31EC5EA9300AA9236 /* UWalletAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10D01EC5EA9300AA9236 /* UWalletAction.swift */; };
+		528D10D41EC5EA9300AA9236 /* UWalletData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10D11EC5EA9300AA9236 /* UWalletData.swift */; };
+		528D10D51EC5EA9300AA9236 /* UWalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10D21EC5EA9300AA9236 /* UWalletStore.swift */; };
+		528D10D71EC5EAB500AA9236 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10D61EC5EAB500AA9236 /* WalletTarget.swift */; };
+		528D10DA1EC5EAC200AA9236 /* TokoCashSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D10D81EC5EAC200AA9236 /* TokoCashSectionViewController.swift */; };
+		528D10DB1EC5EAC300AA9236 /* TokoCashSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528D10D91EC5EAC200AA9236 /* TokoCashSectionViewController.xib */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -2941,9 +2944,6 @@
 		34422FF41EC5D37F00F6D2A2 /* UploadImageValidationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageValidationResult.m; sourceTree = "<group>"; };
 		34422FF51EC5D37F00F6D2A2 /* V4Response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V4Response.h; sourceTree = "<group>"; };
 		34422FF61EC5D37F00F6D2A2 /* V4Response.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V4Response.m; sourceTree = "<group>"; };
-		34422FF81EC5D37F00F6D2A2 /* WalletAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletAction.swift; sourceTree = "<group>"; };
-		34422FF91EC5D37F00F6D2A2 /* WalletData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletData.swift; sourceTree = "<group>"; };
-		34422FFA1EC5D37F00F6D2A2 /* WalletStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletStore.swift; sourceTree = "<group>"; };
 		34422FFC1EC5D37F00F6D2A2 /* WishListObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObject.h; sourceTree = "<group>"; };
 		34422FFD1EC5D37F00F6D2A2 /* WishListObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObject.m; sourceTree = "<group>"; };
 		34422FFE1EC5D37F00F6D2A2 /* WishListObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectList.h; sourceTree = "<group>"; };
@@ -4452,7 +4452,6 @@
 		344236641EC5D38700F6D2A2 /* TalkModelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkModelView.h; sourceTree = "<group>"; };
 		344236651EC5D38700F6D2A2 /* TalkModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkModelView.m; sourceTree = "<group>"; };
 		344236661EC5D38700F6D2A2 /* TalkProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkProductCell.xib; sourceTree = "<group>"; };
-		344236671EC5D38700F6D2A2 /* WalletRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletRequest.swift; sourceTree = "<group>"; };
 		3442366A1EC5D38700F6D2A2 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		3442366B1EC5D38700F6D2A2 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		3442366C1EC5D38700F6D2A2 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4697,6 +4696,13 @@
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		528D10CD1EC5EA8900AA9236 /* WalletService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
+		528D10D01EC5EA9300AA9236 /* UWalletAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWalletAction.swift; sourceTree = "<group>"; };
+		528D10D11EC5EA9300AA9236 /* UWalletData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWalletData.swift; sourceTree = "<group>"; };
+		528D10D21EC5EA9300AA9236 /* UWalletStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWalletStore.swift; sourceTree = "<group>"; };
+		528D10D61EC5EAB500AA9236 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
+		528D10D81EC5EAC200AA9236 /* TokoCashSectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashSectionViewController.swift; sourceTree = "<group>"; };
+		528D10D91EC5EAC200AA9236 /* TokoCashSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokoCashSectionViewController.xib; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -6966,9 +6972,9 @@
 		34422FF71EC5D37F00F6D2A2 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				34422FF81EC5D37F00F6D2A2 /* WalletAction.swift */,
-				34422FF91EC5D37F00F6D2A2 /* WalletData.swift */,
-				34422FFA1EC5D37F00F6D2A2 /* WalletStore.swift */,
+				528D10D01EC5EA9300AA9236 /* UWalletAction.swift */,
+				528D10D11EC5EA9300AA9236 /* UWalletData.swift */,
+				528D10D21EC5EA9300AA9236 /* UWalletStore.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -7009,6 +7015,7 @@
 		344230101EC5D37F00F6D2A2 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				528D10CD1EC5EA8900AA9236 /* WalletService.swift */,
 				344230111EC5D37F00F6D2A2 /* Activation */,
 				3442303A1EC5D37F00F6D2A2 /* Address */,
 				344230451EC5D37F00F6D2A2 /* Alert */,
@@ -7086,7 +7093,6 @@
 				344235EE1EC5D38600F6D2A2 /* TxOrder */,
 				3442362A1EC5D38700F6D2A2 /* UserPageView */,
 				3442364A1EC5D38700F6D2A2 /* ViewModels */,
-				344236671EC5D38700F6D2A2 /* WalletRequest.swift */,
 			);
 			path = UIRefactor;
 			sourceTree = "<group>";
@@ -7662,6 +7668,8 @@
 		344231881EC5D38000F6D2A2 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				528D10D81EC5EAC200AA9236 /* TokoCashSectionViewController.swift */,
+				528D10D91EC5EAC200AA9236 /* TokoCashSectionViewController.xib */,
 				344231891EC5D38000F6D2A2 /* AnnouncementTickerRequest.swift */,
 				3442318A1EC5D38000F6D2A2 /* AnnouncementTickerView.h */,
 				3442318B1EC5D38000F6D2A2 /* AnnouncementTickerView.m */,
@@ -9759,6 +9767,7 @@
 		344236EA1EC5D38800F6D2A2 /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				528D10D61EC5EAB500AA9236 /* WalletTarget.swift */,
 				344236EB1EC5D38800F6D2A2 /* DigitalTarget.swift */,
 				344236EC1EC5D38800F6D2A2 /* ReactTarget.swift */,
 			);
@@ -10694,6 +10703,7 @@
 				34423A071EC5D38D00F6D2A2 /* StickyAlertView.xib in Resources */,
 				34423AE51EC5D38F00F6D2A2 /* InboxMessageDetailViewController.xib in Resources */,
 				34423C1E1EC5D39100F6D2A2 /* NoResultReusableView.xib in Resources */,
+				528D10DB1EC5EAC300AA9236 /* TokoCashSectionViewController.xib in Resources */,
 				34423AF51EC5D38F00F6D2A2 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				34423DF71EC5D39600F6D2A2 /* icon_cart_active@3x.png in Resources */,
 				34423DA01EC5D39500F6D2A2 /* ProductThumbCell.xib in Resources */,
@@ -11077,7 +11087,6 @@
 				34423D6C1EC5D39500F6D2A2 /* ListOrderButtonsComponent.mm in Sources */,
 				3442382F1EC5D38A00F6D2A2 /* DepartmentTree.m in Sources */,
 				34423A3B1EC5D38D00F6D2A2 /* CategoryIntermediaryChild.swift in Sources */,
-				344239B51EC5D38D00F6D2A2 /* WalletStore.swift in Sources */,
 				34423C001EC5D39100F6D2A2 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
 				344237901EC5D38A00F6D2A2 /* DigitalTextInput.swift in Sources */,
 				34423C051EC5D39100F6D2A2 /* ResolutionCenterCreateSolutionList.m in Sources */,
@@ -11137,6 +11146,7 @@
 				34423BC31EC5D39000F6D2A2 /* ReviewSummaryViewController.m in Sources */,
 				34423C411EC5D39100F6D2A2 /* SalesNewOrderViewController.m in Sources */,
 				3442391D1EC5D38C00F6D2A2 /* NotesList.swift in Sources */,
+				528D10D71EC5EAB500AA9236 /* WalletTarget.swift in Sources */,
 				34423CC81EC5D39300F6D2A2 /* OpenShopNameViewCell.m in Sources */,
 				34423C5C1EC5D39200F6D2A2 /* SalesOrderCell.m in Sources */,
 				34423C791EC5D39200F6D2A2 /* ShipmentStatusCell.m in Sources */,
@@ -11514,7 +11524,6 @@
 				344239D31EC5D38D00F6D2A2 /* SignInProviderListView.swift in Sources */,
 				344238A51EC5D38B00F6D2A2 /* ProductTalkCommentAction.m in Sources */,
 				344238701EC5D38B00F6D2A2 /* ReplyInboxTicket.m in Sources */,
-				344239B31EC5D38D00F6D2A2 /* WalletAction.swift in Sources */,
 				34423BA11EC5D39000F6D2A2 /* GiveReviewRatingViewController.m in Sources */,
 				344237DC1EC5D38A00F6D2A2 /* DepositFormResult.m in Sources */,
 				344237751EC5D38A00F6D2A2 /* AppDelegate.m in Sources */,
@@ -11652,7 +11661,6 @@
 				34423D851EC5D39500F6D2A2 /* ProfileBiodataCell.m in Sources */,
 				344238EB1EC5D38B00F6D2A2 /* WarehouseResponse.m in Sources */,
 				344239051EC5D38B00F6D2A2 /* ShipmentCourierData.m in Sources */,
-				34423DA51EC5D39500F6D2A2 /* WalletRequest.swift in Sources */,
 				34423C841EC5D39200F6D2A2 /* SearchAutoCompleteHeaderView.m in Sources */,
 				344237961EC5D38A00F6D2A2 /* DigitalCartUserInputPrice.swift in Sources */,
 				344239201EC5D38C00F6D2A2 /* ClosedInfo.m in Sources */,
@@ -11666,6 +11674,7 @@
 				344239681EC5D38C00F6D2A2 /* TransactionCalculatePrice.m in Sources */,
 				3442386C1EC5D38B00F6D2A2 /* InboxTicketResult.m in Sources */,
 				34423BD91EC5D39000F6D2A2 /* PulsaCategoryClientNumber.swift in Sources */,
+				528D10DA1EC5EAC200AA9236 /* TokoCashSectionViewController.swift in Sources */,
 				34423D5F1EC5D39500F6D2A2 /* RequestRates.m in Sources */,
 				344237E21EC5D38A00F6D2A2 /* CatalogImages.m in Sources */,
 				34423A221EC5D38D00F6D2A2 /* TKPImagePickerUIDelegate.swift in Sources */,
@@ -11869,7 +11878,6 @@
 				344239001EC5D38B00F6D2A2 /* SearchResult.m in Sources */,
 				344239421EC5D38C00F6D2A2 /* Province.m in Sources */,
 				344237911EC5D38A00F6D2A2 /* DigitalWigetReducer.swift in Sources */,
-				344239B41EC5D38D00F6D2A2 /* WalletData.swift in Sources */,
 				34423B121EC5D38F00F6D2A2 /* InboxTalkSplitViewController.m in Sources */,
 				3442389B1EC5D38B00F6D2A2 /* PriceAlert.m in Sources */,
 				344238951EC5D38B00F6D2A2 /* NotificationResult.m in Sources */,
@@ -12129,6 +12137,7 @@
 				34423CF71EC5D39300F6D2A2 /* ShopSettingViewController.m in Sources */,
 				34423AD71EC5D38E00F6D2A2 /* HotlistCollectionCell.m in Sources */,
 				344237A61EC5D38A00F6D2A2 /* Logout.m in Sources */,
+				528D10CE1EC5EA8900AA9236 /* WalletService.swift in Sources */,
 				344239BD1EC5D38D00F6D2A2 /* TKPReactAnalytics.m in Sources */,
 				3442387D1EC5D38B00F6D2A2 /* LoyaltyPointResult.m in Sources */,
 				34423E2D1EC5D39700F6D2A2 /* RequestUtils.m in Sources */,
@@ -12149,6 +12158,7 @@
 				344237CE1EC5D38A00F6D2A2 /* CategoryResponse.swift in Sources */,
 				34423CE91EC5D39300F6D2A2 /* DetailStatisticViewController.m in Sources */,
 				34423DDC1EC5D39600F6D2A2 /* ScreenshotHelper.swift in Sources */,
+				528D10D51EC5EA9300AA9236 /* UWalletStore.swift in Sources */,
 				34423E231EC5D39700F6D2A2 /* FBTweakInline.m in Sources */,
 				344237811EC5D38A00F6D2A2 /* RKObjectManagerCategory.m in Sources */,
 				3442389A1EC5D38B00F6D2A2 /* DetailPriceAlert.m in Sources */,
@@ -12220,6 +12230,7 @@
 				34423C7D1EC5D39200F6D2A2 /* ImagePickerCategoryController.m in Sources */,
 				3442399D1EC5D38C00F6D2A2 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				3442398C1EC5D38C00F6D2A2 /* TxOrderConfirmedDetail.m in Sources */,
+				528D10D31EC5EA9300AA9236 /* UWalletAction.swift in Sources */,
 				34423D6E1EC5D39500F6D2A2 /* ListOrderInvoiceComponent.mm in Sources */,
 				3442393C1EC5D38C00F6D2A2 /* City.m in Sources */,
 				34423C381EC5D39100F6D2A2 /* RejectReasonProductDescriptionViewController.m in Sources */,
@@ -12301,6 +12312,7 @@
 				34423C741EC5D39200F6D2A2 /* DetailShipmentStatusViewController.m in Sources */,
 				344237F31EC5D38A00F6D2A2 /* ProductDetail.m in Sources */,
 				3442397B1EC5D38C00F6D2A2 /* TransactionSummary.m in Sources */,
+				528D10D41EC5EA9300AA9236 /* UWalletData.swift in Sources */,
 				3442377C1EC5D38A00F6D2A2 /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				34423AF21EC5D38F00F6D2A2 /* EditProductTroubleCell.swift in Sources */,
 				344239F91EC5D38D00F6D2A2 /* AlertRateView.m in Sources */,
