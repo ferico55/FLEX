@@ -12,7 +12,6 @@ import Moya
 import Unbox
 
 class DigitalService {
-    typealias UrlQueryPair = (String, String)
     
     func purchase(
         from viewController: UIViewController,
@@ -65,7 +64,7 @@ class DigitalService {
             .do(onError: { _ in
                 _ = viewController.navigationController?.popToViewController(viewController, animated: true)
             })
-            .flatMap { () -> Observable<UrlQueryPair> in
+            .flatMap { () -> Observable<DigitalCartPayment> in
                 if instantPaymentEnabled {
                     onNeedLoading()
                     
@@ -76,19 +75,11 @@ class DigitalService {
                             return DigitalProvider()
                                 .request(.payment(voucherCode: "", transactionAmount: 0, transactionId: cartId))
                         }
-                        .mapJSON()
-                        .map { json -> UrlQueryPair in
-                            let unboxer = Unboxer(dictionary: json as! [String: Any])
-                            
-                            if let _ = try? unboxer.unbox(keyPath: "errors") as [Any] {
-                                let errorMessage = try! unboxer.unbox(keyPath: "errors.0.title") as String
-                                
-                                throw errorMessage
+                        .map(to: DigitalCartPayment.self)
+                        .map { cartPayment in
+                            if let errorMessage = cartPayment.errorMessage  {                                                                throw errorMessage
                             }
-                            
-                            let url = try! unboxer.unbox(keyPath: "data.attributes.thanks_url") as String
-                            
-                            return (url, "")
+                            return cartPayment
                         }
                 } else {
                     onNavigateToCart()
@@ -108,16 +99,16 @@ class DigitalService {
                     
                     return cartViewController.cartPayment
                         .map { cartPayment in
-                            return (cartPayment.redirectUrl, cartPayment.queryString)
+                            return cartPayment
                         }
                 }
-            }.map { url, queryString in
+            }.map { cartPayment in
                 onNavigateToCart()
-                
+
                 let webView = WebViewController()
                 webView.hidesBottomBarWhenPushed = true
-                webView.strURL = url
-                webView.strQuery = queryString
+                webView.strURL = cartPayment.redirectUrl
+                webView.strQuery = cartPayment.queryString
                 webView.shouldAuthorizeRequest = false
                 webView.strTitle = "Pembayaran"
                 

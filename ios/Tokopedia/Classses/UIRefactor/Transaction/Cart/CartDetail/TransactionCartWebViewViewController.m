@@ -16,6 +16,7 @@
 #import "TransactionActionResult.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>
+#import "PurchaseViewController.h"
 
 @interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
 {
@@ -104,32 +105,25 @@
     
     NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
     if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
-
-        NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
-        if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-            TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([html rangeOfString:@"Status Pemesanan"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-            vc.action = @"get_tx_order_status";
-            vc.viewControllerTitle = @"Status Pemesanan";
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+        NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+        if ([paramURL objectForKey:@"id"]) {
             NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
             [_delegate shouldDoRequestTopPayThxCode:paymentID toppayParam:_toppayParam];
-            if ([self isModal]) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-
-            return NO;
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            PurchaseViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
+            [vc setHidesBottomBarWhenPushed:YES];
+            UINavigationController *controller = self.navigationController;
+            NSMutableArray *controllers=[[NSMutableArray alloc] initWithArray:controller.viewControllers] ;
+            [controllers removeLastObject];
+            [controllers addObject:vc];
+            [controller setViewControllers:controllers animated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
         }
+        return NO;
     }
-    
     return YES;
 }
 
