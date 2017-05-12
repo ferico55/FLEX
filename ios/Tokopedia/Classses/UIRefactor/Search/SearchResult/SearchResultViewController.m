@@ -403,6 +403,7 @@ SpellCheckRequestDelegate
     
     if (_data) {
         [_params addEntriesFromDictionary:_data];
+        [_params removeObjectForKey:@"default_sc"];
         [_params setObject:data[@"search"]?:@"" forKey:@"q"];
         _rootCategoryID = data[@"sc"]?:@"";
         [self adjustSelectedFilterFromData:_params];
@@ -888,6 +889,9 @@ SpellCheckRequestDelegate
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
                                                                                
            _selectedCategories = selectedCategories;
+           if(_selectedCategories.count == 0) {
+               _rootCategoryID = @"";
+           }
                                                                                
           // if search result is category result, then if filter is being added, change the navigation title
           for (ListFilter *filter in _filterResponse.filter){
@@ -916,7 +920,7 @@ SpellCheckRequestDelegate
        }];
 }
 
--(BOOL)hasSelectedFilterOrCategory{
+-(BOOL)hasSelectedFilterOrCategory {
     return (_selectedCategories.count + _selectedFilters.count > 0);
 }
 
@@ -1151,6 +1155,19 @@ SpellCheckRequestDelegate
     return @"directory";
 }
 
+-(void)setSelectedCategoryFromCategoryId:(NSString* )categoryId fromBreadcrumbs:(NSArray<CategoryDetail*>*)breadcrumbs{
+    for (CategoryDetail *breadcrumb in breadcrumbs) {
+        if (breadcrumb.child.count > 0){
+            [self setSelectedCategoryFromCategoryId:categoryId fromBreadcrumbs:breadcrumb.child];
+        } else {
+            if ([breadcrumb.categoryId isEqualToString:categoryId]) {
+                _selectedCategories = @[breadcrumb];
+            }
+
+        }
+    }
+}
+
 - (void)searchMappingResult:(RKMappingResult *)mappingResult {
     SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
@@ -1160,9 +1177,7 @@ SpellCheckRequestDelegate
     //set initial category
     if (_initialBreadcrumb.count == 0) {
         _initialBreadcrumb = search.data.breadcrumb;
-        if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
-            [_delegate updateCategories:search.data.breadcrumb];
-        }
+
     }
 
     if (_start == 0) {
@@ -1174,17 +1189,10 @@ SpellCheckRequestDelegate
     }
     
     NSString *redirect_url = search.data.redirect_url;
-    if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
-        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
-        NSString *departementID = search.data.department_id?:@"";
-        [_params setObject:departementID forKey:@"sc"];
-        NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
-        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            CategoryDetail *category = [CategoryDetail new];
-            category.categoryId = departementID;
-            category.name = departementName;
-            [_delegate updateTabCategory:category];
-        }
+    _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
+    NSString *departementID = ([search.data.department_id integerValue] != 0)?search.data.department_id:_rootCategoryID?:@"";
+    if (_selectedCategories.count == 0){
+        [self setSelectedCategoryFromCategoryId:departementID fromBreadcrumbs:_initialBreadcrumb];
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         NSString *hascatalog = search.data.has_catalog;
@@ -1280,20 +1288,12 @@ SpellCheckRequestDelegate
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.data.department_id?:@"";
-            NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
             [_params removeObjectForKey:@"ob"];
             [_params setObject:@"directory" forKey:@"type"];
             [self setData:_params];
             [_networkManager requestCancel];
-            
-            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                CategoryDetail *category = [CategoryDetail new];
-                category.categoryId = departementID;
-                category.name = departementName;
-                [self.delegate updateTabCategory:category];
-            }
             
             [self refreshView:nil];
             

@@ -111,7 +111,6 @@ import UIKit
             
             var newCategory :[CategoryDetail] = []
             newCategory = self.categoryWithAddingAllTypeChildFromCategory(categories)
-            newCategory = self.categoryWithRemovedUnusedCategoryFromCategory(newCategory)
             self.addCategories(newCategory)
             
             if self.selectedCategories.count > 0{
@@ -122,46 +121,6 @@ import UIKit
                 self.tableView.setContentOffset(.zero, animated:true)
                 self.refreshControl.endRefreshing()
         }
-    }
-    
-    func categoryWithRemovedUnusedCategoryFromCategory( _ categories:[CategoryDetail]) -> [CategoryDetail] {
-        var newCategories : [CategoryDetail] = []
-        if Int(rootCategoryID) != 0 && rootCategoryID != ""{
-            for category in categories {
-                if category.categoryId == rootCategoryID {
-                    if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                        self.setSelectedCategory([category])
-                    }
-                    category.isExpanded = true
-                }
-                for categoryChild in category.child {
-                    if categoryChild.categoryId == rootCategoryID {
-                        if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                            self.setSelectedCategory([categoryChild])
-                        }
-                        category.isExpanded = true
-                    }
-                    for categoryLast in categoryChild.child {
-                        if categoryLast.categoryId == rootCategoryID {
-                            if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                                self.setSelectedCategory([categoryLast])
-                            }
-                            category.isExpanded = true
-                        }
-                    }
-                }
-            }
-            
-            for category in categories {
-                if category.isExpanded == true {
-                    category.isExpanded = false
-                    newCategories.append(category)
-                }
-            }
-        } else {
-            newCategories = categories
-        }
-        return newCategories
     }
     
     func setSelectedCategory(_ categories:[CategoryDetail]) {

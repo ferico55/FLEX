@@ -884,7 +884,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:[self getSourceSearchData]
                                                                         filterResponse:_filterResponse?:[FilterData new]
                                                                         rootCategoryID:_rootCategoryID
-                                                                            categories:[_initialBreadcrumb copy]
+                                                                            categories:nil
                                                                     selectedCategories:_selectedCategories
                                                                        selectedFilters:_selectedFilters
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {

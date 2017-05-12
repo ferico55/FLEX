@@ -125,7 +125,8 @@ import RestKit
     }
 
     override func isEqual(_ object: Any?) -> Bool {
-        if ((object as? CategoryDetail)?.name == name && (object as? CategoryDetail)?.categoryId == categoryId) {
+        if let object = object as? CategoryDetail,
+            object.categoryId == categoryId && object.tree == tree {
             return true
         } else {
             return false
