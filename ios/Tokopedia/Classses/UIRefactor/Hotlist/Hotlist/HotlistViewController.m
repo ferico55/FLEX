@@ -10,6 +10,7 @@
 #import "Tokopedia-Swift.h"
 #import "AppHub.h"
 #import "UIApplication+React.h"
+#import "ReactTabManager.h"
 
 #import <React/RCTRootView.h>
 
@@ -150,6 +151,11 @@
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)scrollToTop {
+    ReactTabManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactTabManager class]];
+    [tabManager sendScrollToTopEvent];
 }
 
 

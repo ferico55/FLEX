@@ -96,7 +96,6 @@
 		7A466BBF1EB2FEAE00A72105 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A465FC71EB2FEA900A72105 /* XYPieChart.m */; };
 		7A466BC01EB2FEAE00A72105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FC81EB2FEA900A72105 /* Main.storyboard */; };
 		7A466BC11EB2FEAE00A72105 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */; };
-		7A466BC21EB2FEAE00A72105 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FCC1EB2FEA900A72105 /* Info.plist */; };
 		7A466BC31EB2FEAE00A72105 /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A465FD01EB2FEA900A72105 /* AnalyticsManager.m */; };
 		7A466BC41EB2FEAE00A72105 /* AuthenticationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A465FD11EB2FEA900A72105 /* AuthenticationServiceExtension.swift */; };
 		7A466BC51EB2FEAE00A72105 /* DelayedActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A465FD91EB2FEA900A72105 /* DelayedActionManager.swift */; };
@@ -670,7 +669,6 @@
 		7A466E161EB2FEAF00A72105 /* WishListObjectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664AF1EB2FEAB00A72105 /* WishListObjectResult.m */; };
 		7A466E171EB2FEAF00A72105 /* HybridNavigationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664B31EB2FEAB00A72105 /* HybridNavigationManager.m */; };
 		7A466E181EB2FEAF00A72105 /* ReactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664B51EB2FEAB00A72105 /* ReactViewController.m */; };
-		7A466E191EB2FEAF00A72105 /* TKPHmacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664B71EB2FEAB00A72105 /* TKPHmacManager.m */; };
 		7A466E1A1EB2FEAF00A72105 /* TKPReactAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664B91EB2FEAB00A72105 /* TKPReactAnalytics.m */; };
 		7A466E1B1EB2FEAF00A72105 /* TKPReactURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664BB1EB2FEAB00A72105 /* TKPReactURLManager.m */; };
 		7A466E1C1EB2FEAF00A72105 /* ActivationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4664C01EB2FEAB00A72105 /* ActivationRequest.m */; };
@@ -1765,6 +1763,9 @@
 		926C9FA11EB9883100F42557 /* DigitalVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8D1EB9883100F42557 /* DigitalVoucher.swift */; };
 		926C9FA21EB9883100F42557 /* DigitalCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F8F1EB9883100F42557 /* DigitalCartViewController.swift */; };
 		926C9FA31EB9883100F42557 /* DigitalCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 926C9F901EB9883100F42557 /* DigitalCartViewController.xib */; };
+		927A351F1EC5B70000267B3A /* ReactNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A351C1EC5B70000267B3A /* ReactNetworkManager.m */; };
+		927A35201EC5B70000267B3A /* ReactTabManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A351E1EC5B70000267B3A /* ReactTabManager.m */; };
+		927A35221EC5B84B00267B3A /* ReactTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927A35211EC5B84B00267B3A /* ReactTarget.swift */; };
 		928FAE311EAF425D00E33DE6 /* libAppHub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE301EAF425D00E33DE6 /* libAppHub.a */; };
 		928FAE331EAF426C00E33DE6 /* libRCTAdSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */; };
 		928FAE351EAF427800E33DE6 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE341EAF427800E33DE6 /* libRCTAnimation.a */; };
@@ -2182,7 +2183,6 @@
 		7A465FC91EB2FEA900A72105 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		7A465FCA1EB2FEA900A72105 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		7A465FCC1EB2FEA900A72105 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A465FCF1EB2FEA900A72105 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		7A465FD01EB2FEA900A72105 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		7A465FD11EB2FEA900A72105 /* AuthenticationServiceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceExtension.swift; sourceTree = "<group>"; };
@@ -3284,8 +3284,6 @@
 		7A4664B31EB2FEAB00A72105 /* HybridNavigationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HybridNavigationManager.m; sourceTree = "<group>"; };
 		7A4664B41EB2FEAB00A72105 /* ReactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactViewController.h; sourceTree = "<group>"; };
 		7A4664B51EB2FEAB00A72105 /* ReactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactViewController.m; sourceTree = "<group>"; };
-		7A4664B61EB2FEAB00A72105 /* TKPHmacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPHmacManager.h; sourceTree = "<group>"; };
-		7A4664B71EB2FEAB00A72105 /* TKPHmacManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPHmacManager.m; sourceTree = "<group>"; };
 		7A4664B81EB2FEAB00A72105 /* TKPReactAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactAnalytics.h; sourceTree = "<group>"; };
 		7A4664B91EB2FEAB00A72105 /* TKPReactAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactAnalytics.m; sourceTree = "<group>"; };
 		7A4664BA1EB2FEAB00A72105 /* TKPReactURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactURLManager.h; sourceTree = "<group>"; };
@@ -4934,6 +4932,11 @@
 		926C9F8D1EB9883100F42557 /* DigitalVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalVoucher.swift; sourceTree = "<group>"; };
 		926C9F8F1EB9883100F42557 /* DigitalCartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartViewController.swift; sourceTree = "<group>"; };
 		926C9F901EB9883100F42557 /* DigitalCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalCartViewController.xib; sourceTree = "<group>"; };
+		927A351B1EC5B70000267B3A /* ReactNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNetworkManager.h; sourceTree = "<group>"; };
+		927A351C1EC5B70000267B3A /* ReactNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNetworkManager.m; sourceTree = "<group>"; };
+		927A351D1EC5B70000267B3A /* ReactTabManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTabManager.h; sourceTree = "<group>"; };
+		927A351E1EC5B70000267B3A /* ReactTabManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTabManager.m; sourceTree = "<group>"; };
+		927A35211EC5B84B00267B3A /* ReactTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTarget.swift; sourceTree = "<group>"; };
 		928FAE301EAF425D00E33DE6 /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAdSupport.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAdSupport.a"; sourceTree = "<group>"; };
 		928FAE341EAF427800E33DE6 /* libRCTAnimation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAnimation.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAnimation.a"; sourceTree = "<group>"; };
@@ -7493,13 +7496,15 @@
 		7A4664B01EB2FEAB00A72105 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				927A351B1EC5B70000267B3A /* ReactNetworkManager.h */,
+				927A351C1EC5B70000267B3A /* ReactNetworkManager.m */,
+				927A351D1EC5B70000267B3A /* ReactTabManager.h */,
+				927A351E1EC5B70000267B3A /* ReactTabManager.m */,
 				7A4664B11EB2FEAB00A72105 /* AppNavigationDelegate.h */,
 				7A4664B21EB2FEAB00A72105 /* HybridNavigationManager.h */,
 				7A4664B31EB2FEAB00A72105 /* HybridNavigationManager.m */,
 				7A4664B41EB2FEAB00A72105 /* ReactViewController.h */,
 				7A4664B51EB2FEAB00A72105 /* ReactViewController.m */,
-				7A4664B61EB2FEAB00A72105 /* TKPHmacManager.h */,
-				7A4664B71EB2FEAB00A72105 /* TKPHmacManager.m */,
 				7A4664B81EB2FEAB00A72105 /* TKPReactAnalytics.h */,
 				7A4664B91EB2FEAB00A72105 /* TKPReactAnalytics.m */,
 				7A4664BA1EB2FEAB00A72105 /* TKPReactURLManager.h */,
@@ -10219,7 +10224,6 @@
 				7A465FC91EB2FEA900A72105 /* Tokopedia.entitlements */,
 				7A465FCA1EB2FEA900A72105 /* Tokopedia-Prefix.pch */,
 				7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */,
-				7A465FCC1EB2FEA900A72105 /* Info.plist */,
 				7A465FCD1EB2FEA900A72105 /* Helper */,
 				7A465FE61EB2FEA900A72105 /* Tokopedia-Bridging-Header.h */,
 				7A465FE71EB2FEA900A72105 /* Classses */,
@@ -10486,6 +10490,7 @@
 		926C9F761EB9882100F42557 /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				927A35211EC5B84B00267B3A /* ReactTarget.swift */,
 				926C9F771EB9882100F42557 /* DigitalTarget.swift */,
 			);
 			path = Target;
@@ -11230,7 +11235,6 @@
 				7A466E291EB2FEAF00A72105 /* ChangePhoneNumberSQViewController.xib in Resources */,
 				7A4670C51EB2FEB200A72105 /* FilterShipmentConfirmationViewController.xib in Resources */,
 				7A466BBA1EB2FEAE00A72105 /* MGSwipeTableCell.podspec in Resources */,
-				7A466BC21EB2FEAE00A72105 /* Info.plist in Resources */,
 				7A4671411EB2FEB300A72105 /* ShopDescriptionView.xib in Resources */,
 				7A466ED41EB2FEB000A72105 /* DepositSummaryCell.xib in Resources */,
 				7A466E311EB2FEAF00A72105 /* WebViewSignInViewController.xib in Resources */,
@@ -12314,6 +12318,7 @@
 				7A46705F1EB2FEB200A72105 /* ResolutionCenterCreateResult.m in Sources */,
 				7A466ED01EB2FEB000A72105 /* DepositListBankViewController.m in Sources */,
 				7A466EDF1EB2FEB000A72105 /* FiltersTableViewController.swift in Sources */,
+				927A35201EC5B70000267B3A /* ReactTabManager.m in Sources */,
 				7A466DFF1EB2FEAF00A72105 /* TxOrderStatusResult.m in Sources */,
 				7A466C061EB2FEAE00A72105 /* SendOTP.m in Sources */,
 				7A466C151EB2FEAE00A72105 /* SecurityQuestionResult.m in Sources */,
@@ -12615,6 +12620,7 @@
 				7A4671E61EB2FEB400A72105 /* ProfileFavoriteShopCell.m in Sources */,
 				7A466E941EB2FEB000A72105 /* FilterCategoryViewController.m in Sources */,
 				7A4670861EB2FEB200A72105 /* RejectReasonCloseShopViewController.m in Sources */,
+				927A35221EC5B84B00267B3A /* ReactTarget.swift in Sources */,
 				7A466F751EB2FEB100A72105 /* InboxTicketReplyViewController.m in Sources */,
 				7A466BDA1EB2FEAE00A72105 /* TextMenu.m in Sources */,
 				7A4670441EB2FEB200A72105 /* PulsaProductPromo.swift in Sources */,
@@ -12636,7 +12642,6 @@
 				7A466C831EB2FEAE00A72105 /* GooglePlacesDetail.m in Sources */,
 				7A466F451EB2FEB000A72105 /* MessageViewController.swift in Sources */,
 				7A4670ED1EB2FEB200A72105 /* SearchResultCell.m in Sources */,
-				7A466E191EB2FEAF00A72105 /* TKPHmacManager.m in Sources */,
 				7A466F531EB2FEB000A72105 /* ResolutionValidation.swift in Sources */,
 				7A466CAF1EB2FEAE00A72105 /* ResolutionDetailConversation.m in Sources */,
 				7A466F381EB2FEB000A72105 /* HotlistResultViewController.m in Sources */,
@@ -12901,6 +12906,7 @@
 				7A466C751EB2FEAE00A72105 /* FavoriteShopActionResult.m in Sources */,
 				7A466D821EB2FEAF00A72105 /* Shipment.m in Sources */,
 				7A466E1C1EB2FEAF00A72105 /* ActivationRequest.m in Sources */,
+				927A351F1EC5B70000267B3A /* ReactNetworkManager.m in Sources */,
 				7A466BB41EB2FEAE00A72105 /* HPTextViewInternal.m in Sources */,
 				7A4672281EB2FEB400A72105 /* UserAuthentificationManager.m in Sources */,
 				7A466DC91EB2FEAF00A72105 /* TransactionCartGateway.m in Sources */,
@@ -13399,7 +13405,10 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

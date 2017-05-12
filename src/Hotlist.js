@@ -8,21 +8,22 @@ import {
   View,
   FlatList,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  NativeEventEmitter
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-
-
 import axios from 'axios';
-import { TKPHmacManager } from 'NativeModules';
-import { TKPReactAnalytics } from 'NativeModules';
-import { TKPReactURLManager } from 'NativeModules';
+import { 
+  TKPReactURLManager, 
+  ReactNetworkManager,
+  TKPReactAnalytics,
+  NativeTab 
+} from 'NativeModules';
 
-// var DeviceInfo = require('react-native-device-info');
+const nativeTabEmitter = new NativeEventEmitter(NativeTab);
 
 class Hotlist extends React.PureComponent {
-  
 
   constructor(props) {
     super(props);
@@ -33,12 +34,20 @@ class Hotlist extends React.PureComponent {
     };
   }
 
+  componentWillUnmount() {
+    this.subscription.remove();
+  }
+
   componentDidMount() {
-    this.loadData()
+    this.loadData();
+
+    this.subscription = nativeTabEmitter.addListener("HotlistScrollToTop", () => {
+      this.flatList.scrollToIndex({index: 0});
+    });
   }
 
   _loadingIndicator = () => {
-    return <ActivityIndicator animating={this.state.isLoading} style={[styles.centering, {height: 44}]} size="small" />
+    return <ActivityIndicator animating={this.state.isLoading} style={[styles.centering, { height: 44 }]} size="small" />
   }
 
   _onRefresh = () => {
@@ -48,11 +57,11 @@ class Hotlist extends React.PureComponent {
       isLoading: false
     };
 
-    this.loadData()
+    this.loadData();
   }
 
   _renderItem = (item, index) => {
-    return <TouchableOpacity      
+    return <TouchableOpacity
       onPress={() => {
         TKPReactAnalytics.trackEvent({
           name: 'clickHotlist',
@@ -61,25 +70,25 @@ class Hotlist extends React.PureComponent {
           label: item.item.key
         })
 
-        this.props.navigation.navigate('tproutes', {url: item.item.url});
+        this.props.navigation.navigate('tproutes', { url: item.item.url });
       }}
-      style={styles.container}>
-        <Image source={{ uri: item.item.image_url_600}} style={styles.photo} />
-        <View style={styles.textWrapper}>
-          <Text style={{ fontSize: 12, flexShrink: 1}}>
-            {item.item.title}
+      style={styles.photoContainer}>
+      <Image source={{ uri: item.item.image_url_600 }} style={styles.photo} />
+      <View style={styles.textWrapper}>
+        <Text style={{ fontSize: 12, flexShrink: 1 }}>
+          {item.item.title}
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.textStartFrom}>
+            Mulai dari
+            </Text>
+          <Text style={styles.textPrice}>
+            {item.item.price_start}
           </Text>
-          <View style={{ flexDirection: 'row'}}>
-            <Text style={styles.textStartFrom}>
-              Mulai dari 
-            </Text>
-            <Text style={styles.textPrice}>
-              {item.item.price_start}
-            </Text>
-          </View>
-          
         </View>
-        
+
+      </View>
+
     </TouchableOpacity>
   }
 
@@ -88,10 +97,11 @@ class Hotlist extends React.PureComponent {
   render() {
     return (
       <FlatList
+        ref={(ref) => { this.flatList = ref }}
         style={styles.wrapper}
-        onEndReached={ (distanceFromEnd) => {
-          if(!this.state.isLoading) {
-            this.loadData()
+        onEndReached={(distanceFromEnd) => {
+          if (!this.state.isLoading) {
+            this.loadData(this.state.page);
           }
         }}
         ListFooterComponent={this._loadingIndicator}
@@ -100,35 +110,33 @@ class Hotlist extends React.PureComponent {
         onRefresh={this._onRefresh}
         numColumns={DeviceInfo.isTablet() ? 2 : 1}
         refreshing={false}
-        renderItem={this._renderItem}/>
+        renderItem={this._renderItem} />
     );
   }
 
-  loadData() {
+  loadData(page = 1) {
     this.setState({
       isLoading: true
     });
 
-    const params  = { page : this.state.page, limit : 10 , os_type : 2 }
-    const dictionary = {params: params, base_url: TKPReactURLManager.v4Url, path: '/v4/hotlist/get_hotlist.pl', method: 'GET'}
-    
-    TKPHmacManager.getHmac(dictionary).then((result) => {
-      axios({
-        method:dictionary.method,
-        url:dictionary.base_url + dictionary.path,
-        params: params,
-        headers : result
-      })
-      .then((response) => {
+    ReactNetworkManager.request({
+      method: 'GET',
+      baseUrl: TKPReactURLManager.v4Url,
+      path: '/v4/hotlist/get_hotlist.pl',
+      params: { page: this.state.page, limit: 10, os_type: 2 }
+    }).then((response) => {
 
-        this.setState({
-          dataSource: this.state.dataSource.concat(response.data.data.list),
-          page: this.state.page + 1,
-          isLoading: false
-        });
-        
+      if (page > this.state.page) {
+        return;
+      }
+
+      this.setState({
+        dataSource: this.state.dataSource.concat(response.data.list),
+        page: this.state.page + 1,
+        isLoading: false
       });
-    })
+
+    });
   }
 }
 
@@ -142,10 +150,15 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12
   },
+  photoContainer: {
+    flexDirection: 'column',
+    backgroundColor: '#e1e1e1',
+    padding: 5,
+    flex: DeviceInfo.isTablet() ? 1: 0
+  },
   photo: {
-    flex: 1,
     resizeMode: 'cover',
-    height: 160
+    aspectRatio: 1.91
   },
   wrapper: {
     backgroundColor: '#e1e1e1',
