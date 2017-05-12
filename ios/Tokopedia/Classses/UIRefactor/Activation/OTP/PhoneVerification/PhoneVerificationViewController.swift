@@ -435,7 +435,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate func didSuccessVerifyPhoneNumber() {
         self.navigationController?.dismiss(animated: true, completion: nil)
-        self.didVerifiedPhoneNumber!()
+        self.didVerifiedPhoneNumber?()
     }
     
     //MARK: UITextField Delegate

@@ -341,6 +341,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Success")
             self.stopTimer()
             self.successAnswerCallback(answer)
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
