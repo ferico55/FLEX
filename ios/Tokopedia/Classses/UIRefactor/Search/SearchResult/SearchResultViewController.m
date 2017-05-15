@@ -1233,6 +1233,7 @@ SpellCheckRequestDelegate
             [_collectionView setContentOffset:CGPointZero animated:YES];
             
             [_collectionView reloadData];
+            [_collectionView.collectionViewLayout invalidateLayout];
             //            [_collectionView layoutIfNeeded];
         }
         [self requestPromo];

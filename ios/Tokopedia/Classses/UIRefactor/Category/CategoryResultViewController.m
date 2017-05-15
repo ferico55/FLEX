@@ -1217,6 +1217,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_collectionView setContentOffset:CGPointZero animated:YES];
             
             [_collectionView reloadData];
+            [_collectionView.collectionViewLayout invalidateLayout];
             //            [_collectionView layoutIfNeeded];
         }
         [self requestPromo];
