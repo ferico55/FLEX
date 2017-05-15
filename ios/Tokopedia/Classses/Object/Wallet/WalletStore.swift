@@ -1,31 +1,34 @@
 //
-//  WalletStore.swift
+//  UWalletStore.swift
 //  Tokopedia
 //
-//  Created by Tonito Acen on 11/1/16.
-//  Copyright © 2016 TOKOPEDIA. All rights reserved.
+//  Created by Ronald Budianto on 4/28/17.
+//  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RestKit
+import Foundation
+import Unbox
 
-class WalletStore: NSObject {
-    var code: String = ""
-    var message: String = ""
-    var error: String = ""
-    var data: WalletData?
+final class WalletStore:NSObject, Unboxable {
+    let code: String?
+    let message: String?
+    let error: String?
+    let data: WalletData?
     
-    static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(for: self)
-        mapping.addAttributeMappings(from: [
-            "code" : "code",
-            "message" : "message",
-            "error" : "error"
-            ])
+    init(code:String?, message:String?, error:String?, data:WalletData?) {
+        self.code = code
+        self.message = message
+        self.error = error
+        self.data = data
+    }
+    
+    convenience init(unboxer: Unboxer) throws {
+        let code = unboxer.unbox(keyPath: "code") as String?
+        let message = unboxer.unbox(keyPath: "message") as String?
+        let error = unboxer.unbox(keyPath: "error") as String?
+        let data = unboxer.unbox(keyPath: "data") as WalletData?
         
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: WalletData.mapping()))
-        
-        return mapping
+        self.init(code:code, message:message, error:error, data:data)
     }
     
     func isExpired() -> Bool {
@@ -33,11 +36,7 @@ class WalletStore: NSObject {
         let userInformation = userAuth.getUserLoginData()
         
         if let tokenType = userInformation?["oAuthToken.tokenType"] {
-            if tokenType != nil {
                 return self.error == "invalid_request"
-            }
-            
-            return true
         }
         
         return true
@@ -53,11 +52,10 @@ class WalletStore: NSObject {
             if(self.shouldShowActivation()) {
                 return "\(data.walletActionFullUrl())"
             } else {
-                return "\(data.redirect_url)?flag_app=1"
+                return "\(data.redirectUrl)?flag_app=1"
             }
         }
         
         return ""
     }
-
 }

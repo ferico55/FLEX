@@ -1,27 +1,30 @@
 //
-//  WalletAction.swift
+//  UWalletAction.swift
 //  Tokopedia
 //
-//  Created by Tonito Acen on 11/1/16.
-//  Copyright © 2016 TOKOPEDIA. All rights reserved.
+//  Created by Ronald Budianto on 4/28/17.
+//  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RestKit
+import Foundation
+import Unbox
 
-class WalletAction: NSObject {
-    var text: String = ""
-    var redirect_url: String = ""
-    var type: String = ""
+final class WalletAction:NSObject, Unboxable {
+    let text: String
+    let redirectUrl: String
+    let applinks: String
     
-    static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(for: self)
-        mapping.addAttributeMappings(from:[
-            "text" : "text",
-            "redirect_url" : "redirect_url",
-            "type" : "type"
-            ])
+    init(text:String, redirectUrl:String, applinks:String) {
+        self.text = text
+        self.redirectUrl = redirectUrl
+        self.applinks = applinks
+    }
+    
+    convenience init(unboxer: Unboxer) throws {
+        let text = try unboxer.unbox(keyPath: "text") as String
+        let redirectUrl = try unboxer.unbox(keyPath: "redirect_url") as String
+        let applinks = try unboxer.unbox(keyPath: "applinks") as String
         
-        return mapping
+        self.init(text:text, redirectUrl:redirectUrl, applinks:applinks)
     }
 }

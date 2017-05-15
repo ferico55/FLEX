@@ -29,7 +29,7 @@
 #import "ReactViewController.h"
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
-#import "AppHub.h"
+#import <AppHub/AppHub.h>
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 

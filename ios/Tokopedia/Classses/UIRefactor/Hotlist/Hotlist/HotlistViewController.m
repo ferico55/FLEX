@@ -8,7 +8,7 @@
 #import "HotlistViewController.h"
 #import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
-#import "AppHub.h"
+#import <AppHub/AppHub.h>
 #import "UIApplication+React.h"
 #import "ReactTabManager.h"
 
