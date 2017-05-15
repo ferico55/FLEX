@@ -104,8 +104,8 @@
     [self setSecret:secret];
     
   
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\nx-tkpd-userid:%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
-                              date, [UserAuthentificationManager new].getUserId, [self getTkpdPath]];
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
+                              date, [self getTkpdPath]];
     
     const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
     const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
@@ -231,7 +231,6 @@
                               @"X-Tkpd-Path" : [self getTkpdPath],
                               @"X-Method" : [self getRequestMethod],
                               @"Tkpd-UserId" : [userManager getUserId],
-                              @"X-Tkpd-UserId": [userManager getUserId],
                               @"Tkpd-SessionId" : [userManager getMyDeviceToken],
                               @"X-Device" : @"ios",
                               @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
