@@ -89,8 +89,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     BOOL _shouldDisplayPushNotificationCell;
     BOOL _shouldDisplayWalletCell;
     NSString* _walletUrl;
-    BOOL _isWalletActive;
-    BOOL _isTokocashExpired;
+    
     CGRect _defaultTableFrame;
 }
 
@@ -192,12 +191,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
     
     // Set round corner profile picture
-    self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width/20;
+    self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width/2;
     self.profilePictureImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
     self.profilePictureImageView.layer.borderWidth = 1.0;
     
     // Set round corner profile picture
-    self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width/20;
+    self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width/2;
     self.shopImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
     self.shopImageView.layer.borderWidth = 1.0;
     
@@ -297,17 +296,17 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
     
-    [WalletService getBalance:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
+    [WalletRequest fetchStatusWithUserId:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
         if(wallet.isExpired) {
-            _isTokocashExpired = wallet.isExpired;
-            [self.tableView reloadData];
-        } else {
-            _walletNameLabel.text = wallet.data.text;
-            _walletBalanceLabel.text = wallet.data.balance;
-            _walletUrl = wallet.walletFullUrl;
-            
-            [weakSelf showActivationButton:wallet];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+            return;
         }
+        
+        _walletNameLabel.text = wallet.data.text;
+        _walletBalanceLabel.text = wallet.data.balance;
+        _walletUrl = wallet.walletFullUrl;
+        
+        [weakSelf showActivationButton:wallet];
         
     } onFailure:^(NSError * error) {
         if(error.code == 9991) {
@@ -318,10 +317,23 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 - (void)showActivationButton:(WalletStore*)wallet {
     [_walletActivationButton setHidden:!wallet.shouldShowActivation];
-    _isWalletActive = wallet.shouldShowActivation;
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
-        [TPRoutes routeURL:[NSURL URLWithString:  wallet.data.action.applinks]];
+        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+
+        WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:[userManager webViewUrlFromUrl:wallet.data.walletActionFullUrl] shouldAuthorizeRequest:YES];
+        controller.title = _walletNameLabel.text;
+        
+        __weak typeof(self) wself = self;
+        controller.didReceiveNavigationAction = ^(WKNavigationAction* action){
+            NSURL* url = action.request.URL;
+            NSString* thanksUrl = [NSString stringWithFormat:@"%@/thanks_wallet?flag_app=1", [NSString accountsUrl]];
+            if ([url.absoluteString isEqualToString:thanksUrl]) {
+                [wself.wrapperViewController.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
+        [_wrapperViewController.navigationController pushViewController:controller animated:YES];
     }];
 }
 
@@ -433,22 +445,19 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            if (_isTokocashExpired)
-                return 1;
-            else
-                return 2;
+            return 2;
             break;
         }
         
         case 1: return 1;
         case 2:
-            return 3;
+            return 4;
             break;
             
         case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                return 4;
+                return 5;
             else return 0;
             break;
             
@@ -456,7 +465,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
                 return 0;
-            else return 1;
+            else return 2;
             break;
             
         case 5:
@@ -502,56 +511,43 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [AnalyticsManager trackClickNavigateFromMore:@"Saldo"];
             }
         } else if (indexPath.row == 1) {
-            if (!_isWalletActive) {
-                UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-                WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString: [userManager webViewUrlFromUrl:_walletUrl] shouldAuthorizeRequest:YES];
-                controller.title = _walletNameLabel.text;
-                __weak typeof(WKWebViewController) *wcontroller = controller;
-                controller.didTapBack = ^{
-                    [wcontroller.navigationController popViewControllerAnimated:YES];
-                };
-                
-                [_wrapperViewController.navigationController pushViewController:controller animated:YES];
-            } else {
-                [tableView deselectRowAtIndexPath:indexPath animated:NO];
-            }
+            WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString:_walletUrl shouldAuthorizeRequest:NO];
+            controller.title = _walletNameLabel.text;
+            
+            _wrapperViewController.hidesBottomBarWhenPushed = YES;
+            [_wrapperViewController.navigationController pushViewController:controller animated:YES];
         }
-    }
-    if (indexPath.section == 1 && indexPath.row == 0) {
-        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-        WebViewController *webViewController = [WebViewController new];
-
-        webViewController.isLPWebView = YES;
-        webViewController.shouldAuthorizeRequest = YES;
-        webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
-        webViewController.strTitle = @"TopPoints";
-        [AnalyticsManager trackScreenName:@"Top Points Page"];
-        [AnalyticsManager trackClickNavigateFromMore:@"TopPoints"];
-        [wrapperController.navigationController pushViewController:webViewController animated:YES];
-    }
-    
-    if (indexPath.section == 2 && indexPath.row == 0) {
-        NavigateViewController *navigateController = [NavigateViewController new];
-        [AnalyticsManager trackClickNavigateFromMore:@"Profile"];
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
-    }
-    
-    else if (indexPath.section == 2 && indexPath.row == 1) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
-        purchaseController.notification = _notifManager.notification;
-        [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
-        [wrapperController.navigationController pushViewController:purchaseController animated:YES];
-        
-    }
-    else if(indexPath.section == 2 && indexPath.row == 2) {
-        [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
-        [wrapperController.tabBarController setSelectedIndex:2];
-    }
-    
-    else if (indexPath.section == 3) {
-        if(indexPath.row == 0) {
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+            WebViewController *webViewController = [WebViewController new];
+            
+            webViewController.isLPWebView = YES;
+            webViewController.shouldAuthorizeRequest = YES;
+            webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
+            webViewController.strTitle = @"TopPoints";
+            [AnalyticsManager trackScreenName:@"Top Points Page"];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopPoints"];
+            [wrapperController.navigationController pushViewController:webViewController animated:YES];
+        }
+    } else if (indexPath.section == 2) {
+        if (indexPath.row == 1) {
+            NavigateViewController *navigateController = [NavigateViewController new];
+            [AnalyticsManager trackClickNavigateFromMore:@"Profile"];
+            UserAuthentificationManager *auth = [UserAuthentificationManager new];
+            [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
+        } else if (indexPath.row == 2) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
+            purchaseController.notification = _notifManager.notification;
+            [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
+            [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+        } else if (indexPath.row == 3) {
+            [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
+            [wrapperController.tabBarController setSelectedIndex:2];
+        }
+    } else if (indexPath.section == 3) {
+        if(indexPath.row == 1) {
             UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
             
             [AnalyticsManager trackClickNavigateFromMore:@"Shop"];
@@ -561,20 +557,20 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                MORE_SHOP_NAME : authenticationManager.getShopName
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
-        } else if(indexPath.row == 1) {
+        } else if(indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Sales"];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Product List"];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
-        } else if (indexPath.row == 3) {
+        } else if (indexPath.row == 4) {
             [AnalyticsManager trackClickNavigateFromMore:@"Etalase"];
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
@@ -586,19 +582,15 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
-
         }
-        
-    }
-    
-    else if (indexPath.section == 5) {
-        if(indexPath.row == 0) {
+    } else if (indexPath.section == 5) {
+        if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Message"];
             [_navigate navigateToInboxMessageFromViewController:wrapperController];
-        } else if(indexPath.row == 1) {
+        } else if(indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Product Discussion"];
             [_navigate navigateToInboxTalkFromViewController:wrapperController];
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Review"];
             if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 splitViewController = [UISplitViewController new];
@@ -614,7 +606,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
-        } else if (indexPath.row == 3) {
+        } else if (indexPath.row == 4) {
             [AnalyticsManager trackClickNavigateFromMore:@"Help"];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
@@ -652,7 +644,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
-        } else if (indexPath.row == 4) {
+        } else if (indexPath.row == 5) {
             [AnalyticsManager trackClickNavigateFromMore:@"Resolution Center"];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
@@ -665,9 +657,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
         }
-    }
-    
-    else if (indexPath.section == 6) {
+    } else if (indexPath.section == 6) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Contact Us"];
             [NavigateViewController navigateToContactUsFromViewController:wrapperController];
@@ -695,14 +685,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             
             [wrapperController presentViewController:controller animated:YES completion:nil];
         }
-    }
-    
-    else if (indexPath.section == 7) {
+    } else if (indexPath.section == 7) {
         [AnalyticsManager trackClickNavigateFromMore:@"Push Notification"];
         [self activatePushNotification];
-    }
-    
-    else if (indexPath.section == 8) {
+    } else if (indexPath.section == 8) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Sign Out"];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -710,7 +696,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                                                 object:nil
                                                               userInfo:@{}];
         }
-        
     }
     
     _wrapperViewController.hidesBottomBarWhenPushed = NO;
@@ -750,7 +735,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
         emailController.mailComposeDelegate = self;
         
-        NSString *messageBody = [NSString stringWithFormat:@"<b>Device:</b> %@ <br/> <b>iOS Version:</b> %@ <br/> <b>Email Tokopedia:</b> %@ <br/> <b>App Version:</b> %@ <br/><br/> <b>Tulis laporan kamu di sini:</b>", [[UIDevice currentDevice] modelName], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
+        
+        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
         
         [emailController setSubject:@"Feedback"];
         [emailController setMessageBody:messageBody isHTML:YES];

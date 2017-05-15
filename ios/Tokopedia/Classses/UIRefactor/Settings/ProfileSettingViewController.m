@@ -150,8 +150,13 @@
     
     cell.textLabel.font = [UIFont title2Theme];
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
+    cell.textLabel.textColor = [UIColor tpSecondaryBlackText];
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 52;
 }
 
 #pragma mark - TableView Delegeta

@@ -360,9 +360,9 @@ typedef enum TagRequest {
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
         [UIAlertView bk_showAlertViewWithTitle:@"Hapus Wishlist"
-                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.name]
-                             cancelButtonTitle:@"Tidak"
-                             otherButtonTitles:@[@"Yakin"]
+                                       message:[NSString stringWithFormat:@"Menghapus %@ dari wishlist?", list.name]
+                             cancelButtonTitle:@"Batal"
+                             otherButtonTitles:@[@"Hapus"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                            if(buttonIndex == 1) {
                                                [self requestRemoveWishlist:list];

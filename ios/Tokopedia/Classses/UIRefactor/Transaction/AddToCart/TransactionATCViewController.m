@@ -846,8 +846,8 @@ typedef enum
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:[data.message_status firstObject]
                                                        delegate:self
-                                              cancelButtonTitle:@"Kembali Belanja"
-                                              otherButtonTitles:@"Ke Keranjang Belanja",nil];
+                                              cancelButtonTitle:@"Lanjut Belanja"
+                                              otherButtonTitles:@"Bayar",nil];
     alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
     [alertView show];
     

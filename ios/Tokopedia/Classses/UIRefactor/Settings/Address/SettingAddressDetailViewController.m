@@ -182,14 +182,14 @@ typedef void (^SuccessDeleteAddress)(AddressFormList* address);
     
     
     UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"Hapus Alamat"
-                                  message:@"Apakah Anda yakin ingin menghapus alamat ini?"
+                                  alertControllerWithTitle:@"Hapus Alamat ini?"
+                                  message:@""
                                   preferredStyle:UIAlertControllerStyleAlert];
     
     __weak typeof(self) wself = self;
     
     UIAlertAction* ok = [UIAlertAction
-                         actionWithTitle:@"Ya"
+                         actionWithTitle:@"Hapus"
                          style:UIAlertActionStyleDefault
                          handler:^(UIAlertAction * action)
                          {
@@ -197,7 +197,7 @@ typedef void (^SuccessDeleteAddress)(AddressFormList* address);
                              
                          }];
     UIAlertAction* cancel = [UIAlertAction
-                             actionWithTitle:@"Tidak"
+                             actionWithTitle:@"Batal"
                              style:UIAlertActionStyleDefault
                              handler:^(UIAlertAction * action)
                              {

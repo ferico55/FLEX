@@ -147,6 +147,10 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 52;
+}
+
 #pragma mark - Request + Mapping
 
 - (void)request {

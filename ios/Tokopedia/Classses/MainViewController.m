@@ -301,6 +301,8 @@ typedef enum TagRequest {
     UINavigationBar *proxy = [UINavigationBar appearance];
     [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     [proxy setTintColor:[UIColor whiteColor]];
+    [[UIView appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]]; //to set 'Cancel' button color on search bar white
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor darkGrayColor]]; //to set cursor color on search bar
     [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                       forBarPosition:UIBarPositionAny
