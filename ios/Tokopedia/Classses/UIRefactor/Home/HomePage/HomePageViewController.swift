@@ -313,13 +313,15 @@ class HomePageViewController: UIViewController {
         // init pulsa widget
         self.outerStackView.addArrangedSubview(self.pulsaPlaceholder)
         
+        self.outerStackView.addArrangedSubview(self.officialStorePlaceholder)
+        
         // init category
         self.outerStackView.addArrangedSubview(self.categoryPlaceholder)
         
         // init top picks
         self.outerStackView.addArrangedSubview(self.topPicksPlaceholder)
         
-        self.outerStackView.addArrangedSubview(self.officialStorePlaceholder)
+        
     }
     
     private func refreshHorizontalStackView() -> OAStackView {
