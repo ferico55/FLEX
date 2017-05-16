@@ -2418,9 +2418,18 @@ TTTAttributedLabelDelegate
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {
     NSString *errorMessage = [error localizedRecoverySuggestion];
-    NSData *data = [errorMessage dataUsingEncoding: NSUTF8StringEncoding];
-    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages: json[@"message_error"] delegate:self];
+    
+    NSArray *messageToShow = @[@"Kendala koneksi internet."];
+    
+    if (errorMessage) {
+        NSData *data = [errorMessage dataUsingEncoding: NSUTF8StringEncoding];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        messageToShow = json[@"message_error"];
+    }
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageToShow
+                                                                       delegate:self];
+    
     [alert show];
     [self setBackgroundWishlist:NO];
     btnWishList.tag = 1;
