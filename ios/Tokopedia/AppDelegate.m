@@ -212,10 +212,6 @@
     } else if ([pushNotificationData objectForKey:@"moe_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"moe_deeplink"]];
         [TPRoutes routeURL:url];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect
-                                                            object:nil
-                                                          userInfo:pushNotificationData];
     }
 }
 
