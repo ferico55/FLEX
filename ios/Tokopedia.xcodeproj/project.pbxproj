@@ -1788,7 +1788,6 @@
 		928FAE451EAF42ED00E33DE6 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE441EAF42ED00E33DE6 /* libRCTWebSocket.a */; };
 		928FAE471EAF42FC00E33DE6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE461EAF42FC00E33DE6 /* libRCTActionSheet.a */; };
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
-		928FAE4B1EAF432600E33DE6 /* libAppHubTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE4A1EAF432600E33DE6 /* libAppHubTestUtils.a */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -5061,7 +5060,6 @@
 				7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
-				928FAE4B1EAF432600E33DE6 /* libAppHubTestUtils.a in Frameworks */,
 				DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */,
 				9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */,
 			);
@@ -13119,6 +13117,7 @@
 				CODE_SIGN_ENTITLEMENTS = ServiceExtension/ServiceExtension.entitlements;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YQP4A2M94J;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -13157,6 +13156,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YQP4A2M94J;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = ServiceExtension/Info.plist;
@@ -13196,7 +13196,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201705151716;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -13243,7 +13243,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201705151716;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -13277,7 +13277,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201705151716;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13332,7 +13332,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201610201733;
+				CURRENT_PROJECT_VERSION = 201705151716;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
