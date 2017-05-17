@@ -22,7 +22,12 @@ class UserRequest: NSObject {
             mapping: ProfileInfo.mapping(),
             onSuccess: { (mappingResult, operation) in
                 let profileInfo = mappingResult.dictionary()[""] as! ProfileInfo
-                self.storeUserInformation(profileInfo)
+                
+                let myUserID = UserAuthentificationManager().getUserId()
+                if myUserID == profileInfo.result.user_info.user_id {
+                    self.storeUserInformation(profileInfo)
+                }
+                
                 onSuccess(profileInfo)
         },
             onFailure: { (error) in

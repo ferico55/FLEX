@@ -379,9 +379,7 @@
 
 #pragma mark - Reload Profile
 - (void)reloadProfile {
-    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
-    NSString *userID = [userManager getUserId];
-    [UserRequest getUserInformationWithUserID:userID
+    [UserRequest getUserInformationWithUserID:_profileUserID
                                     onSuccess:^(ProfileInfo * _Nonnull profile) {
                                         _profile = profile;
                                         _profile.result.user_info.user_name = [_profile.result.user_info.user_name kv_decodeHTMLCharacterEntities];
