@@ -48,10 +48,10 @@ final class DigitalCartPayment:Unboxable {
     
     convenience init(unboxer: Unboxer) throws {
         let redirectUrl = try unboxer.unbox(keyPath: "data.attributes.redirect_url") as String
-        let thanksUrl = try? unboxer.unbox(keyPath: "data.attributes.thanks_url") as String
+        let thanksUrl = try unboxer.unbox(keyPath: "data.attributes.thanks_url") as String
         var url = ""
-        if let urlString = thanksUrl {
-            url = urlString
+        if !thanksUrl.isEmpty {
+            url = thanksUrl
         } else {
             url = redirectUrl
         }
