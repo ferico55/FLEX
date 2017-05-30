@@ -48,8 +48,6 @@
     self.listSwitchStatus = [NSMutableArray new];
 
     self.parameters = [NSMutableDictionary new];
-
-    self.tableView.contentInset = UIEdgeInsetsMake(40, 0, 0, 0);
     
     self.networkManager = [TokopediaNetworkManager new];
     self.networkManager.isUsingHmac = YES;
