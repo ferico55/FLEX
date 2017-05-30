@@ -987,7 +987,6 @@ static NSString const *rows = @"12";
     if (![self isInitialRequest] && [_bannerResult.query.shop_id isEqualToString:@""]) [self requestPromo];
     
     [_collectionView reloadData];
-    [_collectionView.collectionViewLayout invalidateLayout];
     
     [AnalyticsManager trackProductImpressions:searchResult.data.products];
 }

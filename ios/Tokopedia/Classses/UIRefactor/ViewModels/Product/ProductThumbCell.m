@@ -159,6 +159,7 @@
     self.productName.numberOfLines = 2;
     self.productName.font = [UIFont smallThemeMedium];
     self.productName.text = viewModel.catalogName;
+    _ratingContainerView.hidden = YES;
     
     self.productPriceWidthConstraint.constant = -50;
     [self.shopName setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
