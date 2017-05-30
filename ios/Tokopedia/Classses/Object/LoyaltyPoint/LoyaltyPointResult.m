@@ -16,7 +16,7 @@ NSString *const TKPBuyerKey = @"buyer";
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"uri"];
+    NSArray *keys = @[@"uri", @"active"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

@@ -88,6 +88,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     BOOL _shouldDisplayPushNotificationCell;
     BOOL _shouldDisplayWalletCell;
+    BOOL _shouldDisplayTopPointsCell;
     NSString* _walletUrl;
     BOOL _isWalletActive;
     BOOL _isTokocashExpired;
@@ -157,7 +158,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(navigateToContactUs:)
                                                      name:@"navigateToContactUs" object:nil];
-}
+    }
     return self;
 }
 
@@ -440,7 +441,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
         }
         
-        case 1: return 1;
+        case 1: return _shouldDisplayTopPointsCell?1:0;
         case 2:
             return 3;
             break;
@@ -848,6 +849,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         
         _LPResult = data;
         _LPointLabel.text = data.loyalty_point.amount;
+        _shouldDisplayTopPointsCell = data.active;
         [[self tableView]reloadData];
         
     }];

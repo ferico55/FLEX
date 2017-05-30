@@ -22,4 +22,6 @@
 
 @property (nonatomic, strong) NSString *uri;
 
+@property (nonatomic) BOOL active;
+
 @end
