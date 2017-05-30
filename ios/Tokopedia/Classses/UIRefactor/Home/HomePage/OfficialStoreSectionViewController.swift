@@ -114,6 +114,7 @@ class OfficialStoreSectionViewController: UIViewController {
         
         let webViewVC = WebViewController()
         webViewVC.strURL = authenticationManager.webViewUrl(fromUrl: urlString)
+        webViewVC.strTitle = "Official Store";
         webViewVC.shouldAuthorizeRequest = authenticationManager.isLogin
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
