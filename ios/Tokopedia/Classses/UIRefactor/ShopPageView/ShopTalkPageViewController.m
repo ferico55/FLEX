@@ -52,21 +52,21 @@ ShopTabChild>
     BOOL _isNoData;
     BOOL _isrefreshview;
     BOOL _iseditmode;
-    
+
     NSInteger _page;
     NSInteger _limit;
     NSInteger _viewposition;
 
     NSMutableDictionary *_paging;
-    
+
     NSString *_uriNext;
     NSString *_talkNavigationFlag;
-    
+
     UIRefreshControl *_refreshControl;
     NSInteger _requestCount;
     NSInteger _requestUnfollowCount;
     NSInteger _requestDeleteCount;
-    
+
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
@@ -78,15 +78,15 @@ ShopTabChild>
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
     ShopPageRequest *_shopPageRequest;
-    
-    
+
+
     __weak RKObjectManager *_objectManager;
-    
+
     __weak RKManagedObjectRequestOperation *_request;
-    
+
     NSOperationQueue *_operationQueue;
-    
-    
+
+
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -103,7 +103,7 @@ ShopTabChild>
         _isrefreshview = NO;
         _isNoData = YES;
     }
-    
+
     return self;
 }
 - (void)initNoResultView{
@@ -119,7 +119,7 @@ ShopTabChild>
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTotalComment:)
                                                  name:@"UpdateTotalComment" object:nil];
-  
+
 }
 
 
@@ -139,45 +139,45 @@ ShopTabChild>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self addBottomInsetWhen14inch];
-    
+
     _talkNavigationFlag = [_data objectForKey:@"nav"];
-    
+
     _page = 1;
-    
+
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     [self initNoResultView];
-    
+
     _table.delegate = self;
     _table.dataSource = self;
-    
+
     _shopPageRequest = [[ShopPageRequest alloc]init];
-    
+
     _table.tableFooterView = _footer;
-    
+
     // hack to fix y offset
     UIView *dummy = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     _table.tableHeaderView = dummy;
-    
+
     [_refreshControl addTarget:self
                         action:@selector(refreshView:)
               forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-    
+
     _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-    
+
     if (_list.count > 0) {
         _isNoData = NO;
     }
-    
+
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
-    
+
     [self initNotification];
     [self requestTalk];
 }
@@ -185,7 +185,7 @@ ShopTabChild>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     _userManager = [UserAuthentificationManager new];
 
     [AnalyticsManager trackScreenName:@"Shop - Talk List"];
@@ -194,7 +194,7 @@ ShopTabChild>
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,11 +219,11 @@ ShopTabChild>
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
-    
+
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
     cell.talk = list;
-    
+
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
@@ -231,32 +231,34 @@ ShopTabChild>
             [self requestTalk];
         }
     }
-    
+
     return cell;
 }
 
-#pragma mark - Request 
+#pragma mark - Request
 
 -(void)requestTalk{
     [_noResultView removeFromSuperview];
-    
+
     [_shopPageRequest requestForShopTalkPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                          page:_page
                                                   shop_domain:[_data objectForKey:@"shop_domain"]?:@""
                                                     onSuccess:^(Talk *talk) {
                                                         _talk = talk;
                                                         NSArray *list = _talk.result.list;
-                                                        
+                                                        if(_page == 1)
+                                                            [_list removeAllObjects];
+
                                                         [_list addObjectsFromArray:list];
-                                                        
+
                                                         _uriNext =  _talk.result.paging.uri_next;
-                                                        
+
                                                         if(_uriNext == nil || [_uriNext isEqualToString:@""]){
                                                             [_footer setHidden:YES];
                                                         }else{
                                                             NSURL *url = [NSURL URLWithString:_uriNext];
                                                             NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                                                            
+
                                                             NSMutableDictionary *queries = [NSMutableDictionary new];
                                                             [queries removeAllObjects];
                                                             for (NSString *keyValuePair in querry)
@@ -264,15 +266,15 @@ ShopTabChild>
                                                                 NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
                                                                 NSString *key = [pairComponents objectAtIndex:0];
                                                                 NSString *value = [pairComponents objectAtIndex:1];
-                                                                
+
                                                                 [queries setObject:value forKey:key];
                                                             }
-                                                            
+
                                                             _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
                                                         }
-                                                        
+
                                                         _isNoData = NO;
-                                                        
+
                                                         [_table reloadData];
                                                         if (_list.count == 0) {
                                                             _act.hidden = YES;
@@ -284,7 +286,7 @@ ShopTabChild>
                                                         self.table.tableFooterView = nil;
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                         [alert show];
-                                                        
+
                                                         [_refreshControl endRefreshing];
                                                     }];
 }
@@ -299,7 +301,7 @@ ShopTabChild>
     [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
-    
+
     [_table reloadData];
     /** request data **/
     [self requestTalk];
@@ -316,7 +318,7 @@ ShopTabChild>
     NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
 
     if(index > _list.count) return;
-    
+
     TalkList *list = _list[index];
     if ([talkId isEqualToString:list.talk_id]) {
         NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
@@ -359,6 +361,11 @@ ShopTabChild>
 
 - (UITableView *)getTable {
     return _table;
+}
+
+- (void)refreshTalks {
+    _page = 1;
+    [self requestTalk];
 }
 
 @end

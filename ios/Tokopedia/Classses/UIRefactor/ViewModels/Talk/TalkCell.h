@@ -28,6 +28,7 @@
 - (UITableView*)getTable;
 
 @optional
+- (void)refreshTalks;
 - (void)tapToReportTalk:(UITableViewCell *)cell;
 - (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
 - (void)tapToDeleteTalk:(UITableViewCell *)cell;

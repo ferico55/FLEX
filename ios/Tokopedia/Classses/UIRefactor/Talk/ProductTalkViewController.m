@@ -43,7 +43,7 @@
     NSIndexPath *selectedIndexPath;
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
-    
+
     Talk *_talk;
 
     NSString *_product_id;
@@ -72,7 +72,7 @@
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
     }
-    
+
     return self;
 }
 
@@ -98,19 +98,19 @@
 
     UINib *talkCellNib = [UINib nibWithNibName:@"TalkProductCell" bundle:nil];
     [_table registerNib:talkCellNib forCellReuseIdentifier:@"TalkProductCellIdentifier"];
-    
+
     _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-    
+
     [self setRightBarButton];
-    
+
     [self setHeaderData:_data];
-    
+
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-    
+
     /** init notification*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
@@ -120,7 +120,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     // UA
     [AnalyticsManager trackScreenName:@"Product - Talk List"];
 }
@@ -135,9 +135,9 @@
 
         UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         addButton = [[UIBarButtonItem alloc] initWithImage:image
-                                                 style:UIBarButtonItemStylePlain
-                                                target:self
-                                                action:@selector(createNewDiscussion)];
+                                                     style:UIBarButtonItemStylePlain
+                                                    target:self
+                                                    action:@selector(createNewDiscussion)];
         self.navigationItem.rightBarButtonItem = addButton;
     }
 }
@@ -145,12 +145,12 @@
 - (void)createNewDiscussion {
     ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
     vc.data = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
-            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
-            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+                kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+                kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
+                TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
 
-    };
+                };
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -179,11 +179,11 @@
     list.talk_product_name = [_data objectForKey:@"product_name"];
     list.talk_product_image = [_data objectForKey:@"talk_product_image"];
     list.talk_product_status = [_data objectForKey:@"talk_product_status"];
-    
+
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkProductCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
     cell.talk = list;
-    
+
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
@@ -191,7 +191,7 @@
             [self loadData];
         }
     }
-    
+
     return cell;
 }
 
@@ -208,11 +208,11 @@
 
 - (void)loadData {
     NSDictionary* param = @{
-            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
-            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
-            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
-    };
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
+                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
+                            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
+                            };
 
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
@@ -243,6 +243,9 @@
 }
 
 - (void)onReceiveTalkList:(NSArray<TalkList *> *)talkList {
+    if(_page == 1) {
+        [_list removeAllObjects];
+    }
     [_list addObjectsFromArray:talkList];
 
     if([_list count] > 0) {
@@ -268,7 +271,7 @@
 {
     _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     _productnamelabel.numberOfLines = 1;
-    
+
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
 }
 
@@ -276,7 +279,7 @@
     [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
-    
+
     [_table reloadData];
     /** request data **/
     [self loadData];
@@ -289,7 +292,7 @@
     NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
 
     if(index > _list.count) return;
-    
+
     TalkList *list = _list[index];
     if ([talkId isEqualToString:list.talk_id]) {
         NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
@@ -345,7 +348,7 @@
 - (void)insertList:(NSDictionary *)userinfo {
     UserAuthentificationManager *user = [UserAuthentificationManager new];
     NSDictionary *auth = [user getUserLoginData];
-    
+
     ReputationDetail *reputation;
     if (user.reputation) {
         reputation = user.reputation;
@@ -353,7 +356,7 @@
         reputation = [ReputationDetail new];
         reputation.positive_percentage = @"0";
     }
-    
+
     TalkList *list = [TalkList new];
     list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
     list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
@@ -365,14 +368,14 @@
     list.talk_product_status = [_data objectForKey:@"talk_product_status"];
     list.talk_user_label = CPengguna;
     list.talk_user_reputation = reputation;
-    
+
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
-    
+
     list.talk_create_time = [dateFormat stringFromDate:today];
     list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
-    
+
     list.disable_comment = YES;
     [_list insertObject:list atIndex:0];
     _isnodata = NO;
@@ -386,6 +389,11 @@
 
 - (UITableView *)getTable {
     return _table;
+}
+
+- (void) refreshTalks {
+    _page = 1;
+    [self loadData];
 }
 
 @end

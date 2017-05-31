@@ -46,12 +46,12 @@
 
 @implementation InboxTalkViewController {
     TokopediaNetworkManager *_networkManager;
-    
+
     NSInteger _page;
     NSString *_nextPageURL;
     NSString *_keyword;
     NSString *_readStatus;
-    
+
     UIRefreshControl *_refreshControl;
 
     NSIndexPath *_selectedIndexPath;
@@ -66,7 +66,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+
     }
     return self;
 }
@@ -88,31 +88,31 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self initNotification];
-    
+
     _page = 1;
     isFirstShow = YES;
     _readStatus = @"all";
-    
+
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    
+
     _table.delegate = self;
     _table.dataSource = self;
-    
+
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
-    
+
     [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-    
+
     _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-    
-    
+
+
     [self initNoResultView];
-    
+
     //load data
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -141,13 +141,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_talkList objectAtIndex:indexPath.row];
-    
+
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
     cell.enableDeepNavigation = NO;
-    
+
     cell.talk = list;
-    
+
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
@@ -155,7 +155,7 @@
             [self fetchInboxTalkList];
         }
     }
-    
+
     return cell;
 }
 
@@ -166,7 +166,7 @@
 - (void)showTalkCommentsAtIndexPath:(NSIndexPath *)indexPath {
     TalkList* list = _talkList[indexPath.row];
     NSString *type = @"";
-    
+
     if (self.inboxTalkType == InboxTalkTypeAll) {
         type = NAV_TALK;
     } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
@@ -174,7 +174,7 @@
     } else {
         type = NAV_TALK_MYPRODUCT;
     }
-    
+
     [AnalyticsManager trackEventName:@"clickProductDiscussion"
                             category:GA_EVENT_CATEGORY_INBOX_TALK
                               action:GA_EVENT_ACTION_VIEW
@@ -218,11 +218,11 @@
     [_table reloadData];
 }
 
-#pragma mark - Refresh View 
+#pragma mark - Refresh View
 - (void)refreshView:(UIRefreshControl*)refresh {
     [_networkManager requestCancel];
     _page = 1;
-    
+
     [_talkList removeAllObjects];
     [_table reloadData];
     [self fetchInboxTalkList];
@@ -249,7 +249,7 @@
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
     NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
-    
+
     if(index >= _talkList.count) return;
 
     TalkList *list = _talkList[index];
@@ -268,7 +268,7 @@
     TalkList *list = _talkList[index];
     list.talk_read_status = @"2";
     list.viewModel = nil;
-    
+
     NSIndexPath* updatedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [_table reloadRowsAtIndexPaths:@[updatedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [_table selectRowAtIndexPath:updatedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -309,7 +309,7 @@
     } else {
         nav = NAV_TALK_MYPRODUCT;
     }
-    
+
     NSDictionary* param = @{
                             kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
                             kTKPDHOME_APILIMITPAGEKEY : @10,
@@ -331,15 +331,15 @@
 
 - (void)onReceiveTalkList:(RKMappingResult *)mappingResult {
     [_refreshControl endRefreshing];
-    
+
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
-    
+
     if (_page == 1) {
         [_talkList removeAllObjects];
     }
-    
+
     [_talkList addObjectsFromArray: inboxTalk.result.list];
-    
+
     if (_talkList.count > 0) {
         _nextPageURL =  inboxTalk.result.paging.uri_next;
         if (![_nextPageURL isEqualToString:@"0"]) {
@@ -347,13 +347,13 @@
         }
         self.table.tableFooterView = nil;
         [_noResultView removeFromSuperview];
-        
+
         [self.table reloadData];
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             if (isFirstShow) {
                 isFirstShow = NO;
-                
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [_table selectRowAtIndexPath:indexPath
@@ -366,7 +366,7 @@
     } else {
         NSString *text;
         NSString *desc;
-        
+
         if([_readStatus isEqualToString:@"all"]){
             if (self.inboxTalkType == InboxTalkTypeAll) {
                 text = @"Segera ikuti diskusi produk terbaru yang Anda inginkan!";
@@ -398,7 +398,7 @@
         }
         [_noResultView setNoResultTitle:text];
         [_noResultView setNoResultDesc:desc];
-        
+
         _table.tableFooterView = nil;
         [_table addSubview:_noResultView];
         [self.table reloadData];
