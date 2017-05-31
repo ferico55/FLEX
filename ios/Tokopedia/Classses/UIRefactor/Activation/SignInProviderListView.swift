@@ -32,6 +32,9 @@ class SignInProviderListView: UIView {
             
             button.setTitleColor(textColorForBackground(button.backgroundColor!), for: .normal)
             
+            button.borderWidth = 1
+            button.borderColor = UIColor(red: 231.0/255.0, green: 231.0/255.0, blue: 231.0/255.0, alpha: 1)
+            
             let request = NSMutableURLRequest(url: NSURL(string: provider.imageUrl) as! URL)
             
             let imageView = UIImageView()

@@ -53,8 +53,8 @@ TTTAttributedLabelDelegate,
 MMNumberKeyboardDelegate
 >
 {
-    UITextField *_activetextfield;
-    NSMutableDictionary *_datainput;
+    UITextField *_activeTextfield;
+    NSMutableDictionary *_dataInput;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -66,15 +66,13 @@ MMNumberKeyboardDelegate
     TokopediaNetworkManager *_networkManager;
 }
 
-@property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
-@property (weak, nonatomic) IBOutlet TextField *textfieldphonenumber;
-@property (weak, nonatomic) IBOutlet TextField *textfieldemail;
-@property (weak, nonatomic) IBOutlet TextField *textfielddob;
-@property (weak, nonatomic) IBOutlet TextField *textfieldpassword;
-@property (weak, nonatomic) IBOutlet TextField *textfieldconfirmpass;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldEmail;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldFullName;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldPhoneNumber;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldPassword;
+@property (weak, nonatomic) IBOutlet UIButton *seeHidePass;
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIButton *buttonagreement;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *agreementLabel;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
@@ -104,7 +102,7 @@ MMNumberKeyboardDelegate
 {
     [super viewDidLoad];
     
-    _datainput = [NSMutableDictionary new];
+    _dataInput = [NSMutableDictionary new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -119,14 +117,12 @@ MMNumberKeyboardDelegate
              object:nil];
     
     //set default data
-    [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
-    
-//    _agreementLabel.userInteractionEnabled = YES;
+    [_dataInput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
     
     MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
     keyboard.allowsDecimalPoint = false;
     keyboard.delegate = self;
-    _textfieldphonenumber.inputView = keyboard;
+    _textfieldPhoneNumber.inputView = keyboard;
     
     [_container addSubview:_contentView];
     
@@ -140,6 +136,10 @@ MMNumberKeyboardDelegate
      }];
     
     [self setupTermsAndConditionLabel];
+    
+    [_seeHidePass setImage:[UIImage imageNamed:@"password_eyeClose"] forState:UIControlStateNormal];
+    [_seeHidePass setImage:[UIImage imageNamed:@"password_eyeOpen"] forState:UIControlStateSelected];
+    _seeHidePass.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)setupTermsAndConditionLabel {
@@ -156,7 +156,7 @@ MMNumberKeyboardDelegate
                                        };
     
     TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
-                                                                withRange:NSMakeRange(32, 20)];
+                                                                withRange:NSMakeRange(34, 20)];
     
     agreementLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
         WebViewController *webViewController = [WebViewController new];
@@ -166,7 +166,7 @@ MMNumberKeyboardDelegate
     };
     
     TTTAttributedLabelLink *privacyLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
-                                                              withRange:NSMakeRange(59, 17)];
+                                                              withRange:NSMakeRange(61, 17)];
     
     privacyLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
         WebViewController *webViewController = [WebViewController new];
@@ -249,18 +249,13 @@ MMNumberKeyboardDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.title = kTKPDREGISTER_NEW_TITLE;
+    self.title = @"Daftar";
     
     [AnalyticsManager trackScreenName:@"Register Page"];
     
-    self.texfieldfullname.isTopRoundCorner = YES;
-    self.textfielddob.isBottomRoundCorner = YES;
-    self.textfieldpassword.isTopRoundCorner = YES;
-    self.textfieldconfirmpass.isBottomRoundCorner = YES;
-    
     if (_emailFromForgotPassword != nil && _emailFromForgotPassword.length != 0) {
-        self.textfieldemail.text = _emailFromForgotPassword;
-        [_datainput setObject:self.textfieldemail.text forKey:kTKPDREGISTER_APIEMAILKEY];
+        self.textfieldEmail.text = _emailFromForgotPassword;
+        [_dataInput setObject:self.textfieldEmail.text forKey:kTKPDREGISTER_APIEMAILKEY];
     }
     
     self.signUpButton.layer.cornerRadius = 2;
@@ -293,6 +288,15 @@ MMNumberKeyboardDelegate
 }
 
 #pragma mark - View Action
+- (IBAction)toggleShowPassword {
+    _seeHidePass.selected = !_seeHidePass.selected;
+    NSString *tmpString;
+    [self.textfieldPassword setSecureTextEntry:!self.textfieldPassword.isSecureTextEntry];
+    tmpString = self.textfieldPassword.text;
+    self.textfieldPassword.text = @"";
+    self.textfieldPassword.text = tmpString;
+}
+
 - (IBAction)tap:(id)sender
 {
     [self.view endEditing:YES];
@@ -309,33 +313,18 @@ MMNumberKeyboardDelegate
                 break;
         }
         
-    }else if ([sender isKindOfClass:[UIButton class]]) {
+    } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
-            case 12:{
-                // button agreement
-                if (!btn.selected)
-                    btn.selected = YES;
-                else btn.selected = NO;
-                if (_buttonagreement.selected) {
-                    [_datainput setObject:@(YES) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-                }
-                else{
-                    [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-                }
-                break;
-            }
             case 13 : {
                 [AnalyticsManager trackEventName:@"clickRegister" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_CLICK label:@"Step 1"];
                 
                 NSMutableArray *messages = [NSMutableArray new];
                 
-                NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
-                NSString *phone = [_datainput objectForKey:kTKPDREGISTER_APIPHONEKEY];
-                NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY];
-                NSString *pass = [_datainput objectForKey:kTKPDREGISTER_APIPASSKEY];
-                NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
-                BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
+                NSString *fullname = [_dataInput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
+                NSString *phone = [_dataInput objectForKey:kTKPDREGISTER_APIPHONEKEY];
+                NSString *email = [_dataInput objectForKey:kTKPDREGISTER_APIEMAILKEY];
+                NSString *pass = [_dataInput objectForKey:kTKPDREGISTER_APIPASSKEY];
                 
                 NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
                 
@@ -344,11 +333,9 @@ MMNumberKeyboardDelegate
                     phone && ![phone isEqualToString:@""] &&
                     email && [email isEmail] &&
                     pass && ![pass isEqualToString:@""] &&
-                    confirmpass && ![confirmpass isEqualToString:@""]&&
-                    [pass isEqualToString:confirmpass] &&
-                    pass.length >= 6 &&
-                    isagree) {
-                    [self doRegisterRequest:_datainput];
+                    pass.length >= 6
+                    ) {
+                    [self doRegisterRequest:_dataInput];
                 }
                 else
                 {
@@ -389,21 +376,6 @@ MMNumberKeyboardDelegate
                             [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi"];
                         }
                     }
-                    if (!confirmpass || [confirmpass isEqualToString:@""]) {
-                        [messages addObject:ERRORMESSAGE_NULL_CONFIRM_PASSWORD];
-                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi"];
-                    }
-                    else
-                    {
-                        if (![pass isEqualToString:confirmpass]) {
-                            [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD];
-                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Ulangi Kata Sandi"];
-                        }
-                    }
-                    if (!isagree) {
-                        [messages addObject:ERRORMESSAGE_NULL_AGREMENT];
-                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Syarat dan Ketentuan"];
-                    }
                 }
                 
                 if (messages.count > 0) {
@@ -418,28 +390,12 @@ MMNumberKeyboardDelegate
         }
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         UILabel *label = (UILabel *)[sender view];
-        if (label.tag == 1) {
-            if (!_buttonagreement.selected)
-                _buttonagreement.selected = YES;
-            else _buttonagreement.selected = NO;
-            if (_buttonagreement.selected) {
-                [_datainput setObject:@(YES) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-            }
-            else{
-                [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-            }
-        }
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
         if (gesture.view.tag == 12) {
             [[GIDSignIn sharedInstance] signIn];
         }
     }
-}
-
-- (IBAction)tapsegment:(UISegmentedControl *)sender {
-    [_activetextfield resignFirstResponder];
-    [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
 
 #pragma mark - Memory Management
@@ -463,18 +419,14 @@ MMNumberKeyboardDelegate
     _act.hidden = NO;
     [_act startAnimating];
     
-    _texfieldfullname.enabled = NO;
+    _textfieldFullName.enabled = NO;
     
     NSDictionary* param = @{kTKPDREGISTER_APIACTIONKEY :kTKPDREGISTER_APIDOREGISTERKEY,
                             kTKPDREGISTER_APIFULLNAMEKEY:[data objectForKey:kTKPDREGISTER_APIFULLNAMEKEY],
                             kTKPDREGISTER_APIEMAILKEY:[data objectForKey:kTKPDREGISTER_APIEMAILKEY],
                             kTKPDREGISTER_APIPHONEKEY:[data objectForKey:kTKPDREGISTER_APIPHONEKEY],
-                            kTKPDREGISTER_APIGENDERKEY:[data objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"3",
-                            kTKPDREGISTER_APIBIRTHDAYKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY]?:@"1",
-                            kTKPDREGISTER_APIBIRTHMONTHKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY]?:@"1",
-                            kTKPDREGISTER_APIBITHYEARKEY:[data objectForKey:kTKPDREGISTER_APIBITHYEARKEY]?:@"1",
                             kTKPDREGISTER_APIPASSKEY:[data objectForKey:kTKPDREGISTER_APIPASSKEY],
-                            kTKPDREGISTER_APICONFIRMPASSKEY:[data objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY]
+                            kTKPDREGISTER_APICONFIRMPASSKEY:[data objectForKey:kTKPDREGISTER_APIPASSKEY]
                             };
     
     [_networkManager requestWithBaseUrl:[NSString accountsUrl]
@@ -520,7 +472,7 @@ MMNumberKeyboardDelegate
             [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
             
             TKPDAlert *alert = [TKPDAlert newview];
-            NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
+            NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldEmail.text];
             alert.text = text;
             alert.tag = 13;
             alert.delegate = self;
@@ -530,7 +482,7 @@ MMNumberKeyboardDelegate
         }
     }
     
-    _texfieldfullname.enabled = YES;
+    _textfieldFullName.enabled = YES;
 }
 
 - (void)requestfailure {
@@ -538,7 +490,7 @@ MMNumberKeyboardDelegate
     [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
     _act.hidden = YES;
     [_act stopAnimating];
-    _texfieldfullname.enabled = YES;
+    _textfieldFullName.enabled = YES;
 }
 
 - (void)requesttimeout
@@ -548,7 +500,7 @@ MMNumberKeyboardDelegate
 
 - (void)displayActivationAlert {
     __weak typeof(self) weakSelf = self;
-    NSString *defaultText = [NSString stringWithFormat:@"Petunjuk aktivasi akun Tokopedia telah kami kirimkan ke email %@. Silakan periksa email Anda.", _textfieldemail.text];
+    NSString *defaultText = [NSString stringWithFormat:@"Petunjuk aktivasi akun Tokopedia telah kami kirimkan ke email %@. Silakan periksa email Anda.", _textfieldEmail.text];
     TKPDAlert *alert = [TKPDAlert newview];
     alert.text = _register.message_error?[_register.message_error firstObject]:defaultText;
     alert.delegate = self;
@@ -561,8 +513,8 @@ MMNumberKeyboardDelegate
 
 - (void)loginExistingUser {
     AuthenticationService *authService = [AuthenticationService new];
-    [authService loginWithEmail:[_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]
-                       password:[_datainput objectForKey:kTKPDREGISTER_APIPASSKEY]
+    [authService loginWithEmail:[_dataInput objectForKey:kTKPDREGISTER_APIEMAILKEY]
+                       password:[_dataInput objectForKey:kTKPDREGISTER_APIPASSKEY]
              fromViewController:self
                 successCallback:^(Login *login) {
                     [self onLoginSuccess:login];
@@ -573,7 +525,7 @@ MMNumberKeyboardDelegate
 }
 
 - (void)redirectToForgetPasswordPage {
-    NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY]?:@"";
+    NSString *email = [_dataInput objectForKey:kTKPDREGISTER_APIEMAILKEY]?:@"";
     ResetPasswordSuccessViewController *controller = [[ResetPasswordSuccessViewController alloc] initWithEmail:email];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -581,83 +533,53 @@ MMNumberKeyboardDelegate
 #pragma mark - Text Field Delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
-    if (textField == _textfielddob) {
-        // display datepicker
-        AlertDatePickerView *datePicker = [AlertDatePickerView newview];
-        datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
-        datePicker.tag = 10;
-        datePicker.isSetMinimumDate = YES;
-        datePicker.delegate = self;
-        
-        if (_textfielddob.text) {
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-            datePicker.currentdate = [dateFormatter dateFromString:_textfielddob.text];
-        }
-        
-        [datePicker show];
-        [self.view endEditing:YES];
-        return NO;
-    }
-    else{
-        _activetextfield = textField;
-        [textField resignFirstResponder];
-    }
+    _activeTextfield = textField;
+    [textField resignFirstResponder];
     return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
-    if (textField == _texfieldfullname) {
-        [_textfieldphonenumber becomeFirstResponder];
-        _activetextfield = _textfieldphonenumber;
+    if (textField == _textfieldFullName) {
+        [_textfieldPhoneNumber becomeFirstResponder];
+        _activeTextfield = _textfieldPhoneNumber;
     }
-    else if (textField ==_textfieldemail) {
-        [_textfieldemail resignFirstResponder];
-    }
-    else if (textField ==_textfieldpassword) {
-        [_textfieldconfirmpass becomeFirstResponder];
-        _activetextfield = _textfieldconfirmpass;
-    }
-    else if (textField ==_textfieldconfirmpass) {
-        [_textfieldconfirmpass resignFirstResponder];
+    else if (textField ==_textfieldEmail) {
+        [_textfieldEmail resignFirstResponder];
     }
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    if (textField == _texfieldfullname) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIFULLNAMEKEY];
+    if (textField == _textfieldFullName) {
+        [_dataInput setObject:textField.text forKey:kTKPDREGISTER_APIFULLNAMEKEY];
     }
-    if (textField == _textfieldemail) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIEMAILKEY];
+    if (textField == _textfieldEmail) {
+        [_dataInput setObject:textField.text forKey:kTKPDREGISTER_APIEMAILKEY];
     }
-    if (textField == _textfieldpassword) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APIPASSKEY];
+    if (textField == _textfieldPassword) {
+        [_dataInput setObject:textField.text forKey:kTKPDREGISTER_APIPASSKEY];
     }
-    if (textField == _textfieldconfirmpass) {
-        [_datainput setObject:textField.text forKey:kTKPDREGISTER_APICONFIRMPASSKEY];
-    }
-    if (textField == _textfieldphonenumber) {
-        [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
+    if (textField == _textfieldPhoneNumber) {
+        [_dataInput setObject:_textfieldPhoneNumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
     }
     return YES;
 }
 
 #pragma mark - MMNumberKeyboard Delegate
 - (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard {
-    [_datainput setObject:_textfieldphonenumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
-    [_textfieldemail becomeFirstResponder];
-    _activetextfield = _textfieldemail;
+    [_dataInput setObject:_textfieldPhoneNumber.text forKey:kTKPDREGISTER_APIPHONEKEY];
+    [_textfieldEmail becomeFirstResponder];
+    _activeTextfield = _textfieldEmail;
     return YES;
 }
 
 - (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text {
-    NSString *string = _textfieldphonenumber.text;
+    NSString *string = _textfieldPhoneNumber.text;
     string = [string stringByAppendingString:text];
-    [_datainput setObject:string forKey:kTKPDREGISTER_APIPHONEKEY];
+    [_dataInput setObject:string forKey:kTKPDREGISTER_APIPHONEKEY];
     return YES;
 }
 
@@ -679,22 +601,6 @@ MMNumberKeyboardDelegate
 - (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
-        case 10:
-        {
-            // alert date picker date of birth
-            NSDictionary *data = alertView.data;
-            NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-            NSInteger year = [components year];
-            NSInteger month = [components month];
-            NSInteger day = [components day];
-            [_datainput setObject:@(year) forKey:kTKPDREGISTER_APIBITHYEARKEY];
-            [_datainput setObject:@(month) forKey:kTKPDREGISTER_APIBIRTHMONTHKEY];
-            [_datainput setObject:@(day) forKey:kTKPDREGISTER_APIBIRTHDAYKEY];
-            
-            _textfielddob.text = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
-            break;
-        }
         case 11:
         {
             // alert success login
@@ -848,7 +754,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     } else if (IS_IPAD) {
         contentViewWidth = 500;
         contentViewMarginLeft = 134;
-        contentViewMarginTop = 134;
+        contentViewMarginTop = 25;
     }
     
     [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
