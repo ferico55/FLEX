@@ -50,7 +50,7 @@
 #define CStringFailedBuyProduct @"Gagal beli produk. Silahkan coba lagi"
 #define CStringNoInternet @"Pastikan jaringan anda tersedia"
 #define CStringSave @"Simpan"
-#define CStringFillPrice @"Masukan Harga"
+#define CStringFillPrice @"Masukkan Harga"
 #define CStringFailedAddCatalogPriceAlert @"Gagal menambah notifikasi harga katalog"
 #define CStringFailedAddPriceAlert @"Gagal menambah notifikasi harga produk"
 #define CStringFailedEditPriceAlert @"Gagal mengubah notifikasi harga produk"

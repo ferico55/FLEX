@@ -228,7 +228,7 @@ typedef enum
 #define ERRORMESSAGE_NULL_BANK_BRANCH @"Cabang harus diisi."
 #define ERRORMESSAGE_NULL_REKENING_NUMBER @"Nomor rekening harus diisi."
 
-#define ERRORMESSAGE_PASSWORD_TOO_SHORT @"Password yang anda masukan terlalu pendek. Minimum 6 karakter."
+#define ERRORMESSAGE_PASSWORD_TOO_SHORT @"Password yang anda masukkan terlalu pendek. Minimum 6 karakter."
 
 #define ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_SHORT @"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."
 #define ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_LONG @"Nomor telepon penerima terlalu panjang. Maksimum 20 karakter."

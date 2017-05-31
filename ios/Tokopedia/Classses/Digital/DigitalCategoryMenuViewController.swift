@@ -648,7 +648,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             layout.marginTop = 5
                             } as NodeType).add(children: [
                                 Node<UILabel>(identifier: "label") { label, layout, size in
-                                    label.text = "Kode Voucher: "
+                                    label.text = "Kode Promo: "
                                     label.font = .microTheme()
                                     label.textColor = UIColor.black.withAlphaComponent(0.54)
                                 },
@@ -658,7 +658,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                         .subscribe(onNext: {
                                             UIPasteboard.general.string = banner.voucherCode
                                             
-                                            self.store.dispatch(DigitalWidgetAction.alert("Kode voucher tersalin"))
+                                            self.store.dispatch(DigitalWidgetAction.alert("Kode promo tersalin"))
                                         })
                                         .disposed(by: self.disposeBag)
                                     }.add(children: [

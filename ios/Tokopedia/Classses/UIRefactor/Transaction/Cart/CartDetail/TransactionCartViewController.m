@@ -555,8 +555,8 @@
     UIButton *button = (UIButton*)sender;
     switch (button.tag) {
         case 10:{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Voucher"
-                                                            message:@"Masukan kode voucher"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Promo"
+                                                            message:@"Masukkan kode promo"
                                                            delegate:self
                                                   cancelButtonTitle:@"Batal"
                                                   otherButtonTitles:@"OK", nil];
@@ -568,8 +568,8 @@
         case 11:
         {
             AlertInfoView *alertInfo = [AlertInfoView newview];
-            alertInfo.text = @"Info Kode Voucher Tokopedia";
-            alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai voucher tidak dapat dikembalikan";
+            alertInfo.text = @"Info Kode Promo Tokopedia";
+            alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai promo tidak dapat dikembalikan.";
             [alertInfo show];
         }
         case 12:
@@ -1581,7 +1581,7 @@
         
         NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
         NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
-        voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        voucherString = [NSString stringWithFormat:@"Anda mendapatkan promo senilai %@.", voucherString];
         if (![_voucherData.voucher_promo_desc isEqualToString:@""]){
             voucherString = _voucherData.voucher_promo_desc;
         }

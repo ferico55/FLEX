@@ -21,10 +21,10 @@
         isValid = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
                                                             object:nil
-                                                          userInfo:@{@"errorMessage" : @"Masukkan kode voucher terlebih dahulu.",
+                                                          userInfo:@{@"errorMessage" : @"Masukkan kode promo terlebih dahulu.",
                                                                      @"buttonTitle" : @""}];
         
-        [UIViewController showNotificationWithMessage:@"Masukkan kode voucher terlebih dahulu"
+        [UIViewController showNotificationWithMessage:@"Masukkan kode promo terlebih dahulu"
                                                  type:NotificationTypeError
                                              duration:4.0
                                           buttonTitle:nil

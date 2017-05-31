@@ -381,8 +381,8 @@ typedef enum
 #define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."
 #define ERRORMESSAGE_NULL_CART_USERID @"User ID harus diisi."
 
-#define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode voucher terlebih dahulu."
-#define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode voucher minimal 11 karakter."
+#define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode promo terlebih dahulu."
+#define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode promo minimal 11 karakter."
 
 #define ERRORMESSAGE_SENDER_NAME_NILL @"Nama pengirim harus diisi"
 #define ERRORMESSAGE_SENDER_PHONE_NILL @"Telepon pengirim harus diisi"

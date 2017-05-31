@@ -111,7 +111,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate func setInputView() {
         if (self.cart.userInputPrice != nil) {
             textBoxView.isHidden = false
-            inputLabel.text = "Masukan jumlah nominal yang akan dibayar; \((self.cart.userInputPrice?.minText)!) sampai \((self.cart.userInputPrice?.maxText)!)"
+            inputLabel.text = "Masukkan jumlah nominal yang akan dibayar; \((self.cart.userInputPrice?.minText)!) sampai \((self.cart.userInputPrice?.maxText)!)"
         } else {
             textBoxView.isHidden = true
         }
@@ -403,7 +403,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                 })
                 .disposed(by: self.rx_disposeBag)
         } else {
-            StickyAlertView.showErrorMessage(["Kode voucher tidak boleh kosong"])
+            StickyAlertView.showErrorMessage(["Kode promo tidak boleh kosong"])
         }
     }
 
