@@ -734,7 +734,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     override func didRender() {
         guard let state = self.state else { return }
         
-        viewController?.navigationItem.title = state.form?.name
+        viewController?.navigationItem.title = state.form?.title
         
         if case let DigitalErrorState.notShowing(errorMessage) = state.errorMessageState {
             StickyAlertView(errorMessages: [errorMessage], delegate: viewController).show()
