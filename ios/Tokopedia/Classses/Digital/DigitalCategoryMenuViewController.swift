@@ -88,6 +88,10 @@ class DigitalCategoryMenuViewController: UIViewController {
                 openWebView("\(NSString.pulsaUrl())/order-list/")
             })
             
+            alertController.addAction(UIAlertAction(title: "Langganan", style: .default) { _ in
+                openWebView("\(NSString.pulsaUrl())/subscribe/")
+            })
+            
             alertController.addAction(UIAlertAction(title: "Batal", style: .cancel) { _ in
                 
             })
