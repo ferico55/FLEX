@@ -62,6 +62,7 @@
 
 #import "Tokopedia-Swift.h"
 #import "CMPopTipView.h"
+@import BlocksKit;
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
@@ -243,8 +244,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     if (selectedIndexPath != nil) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
-    
-    [self showTooltipView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -252,6 +251,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     if (self.popTipView && self.popTipView != nil) {
         [self.popTipView dismissAnimated:NO];
+        self.popTipView = nil;
     }
 }
 
@@ -276,6 +276,16 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 }
 
 - (void)showTooltipView {
+    if(self.popTipView !=nil && ![self.popTipView isHidden])
+        return;
+    BOOL isTargetVisible = [self.tableView.indexPathsForVisibleRows bk_any:^(NSIndexPath *indexPath) {
+        BOOL result = indexPath.row == 0 && indexPath.section == 2;
+        return result;
+    }];
+    
+    if(!isTargetVisible)
+        return;
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if (![prefs boolForKey:kPreferenceKeyTooltipSetting] &&
         [[TouchIDHelper sharedInstance] isTouchIDAvailable] &&
@@ -429,6 +439,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 }
 
 #pragma mark - Table view data source
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 2 && indexPath.row == 0) {
+        [self showTooltipView];
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
