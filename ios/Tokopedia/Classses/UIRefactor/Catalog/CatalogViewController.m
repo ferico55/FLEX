@@ -144,7 +144,6 @@ static CGFloat rowHeight = 40;
     self.productNameLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
     self.productNameLabel.numberOfLines = 0;
     [self.productNameLabel sizeToFit];
-    
 }
 
 - (void)setCatalogPrice {
@@ -178,6 +177,8 @@ static CGFloat rowHeight = 40;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    _headerView.frame = CGRectMake(_headerView.frame.origin.x, _headerView.frame.origin.y, _headerView.frame.size.width, _headerView.frame.size.height - 21.5 + self.productNameLabel.frame.size.height);
     _tableView.tableHeaderView = _headerView;
 }
 
@@ -282,7 +283,6 @@ static CGFloat rowHeight = 40;
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
-
 
 #pragma mark - RestKit Methods
 
