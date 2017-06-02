@@ -214,6 +214,7 @@ typedef enum {
 #define productCollectionViewCellHeightNormal 205
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+#define TKPDUserDidLogoutNotification        @"TKPDUserDidLogoutNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 

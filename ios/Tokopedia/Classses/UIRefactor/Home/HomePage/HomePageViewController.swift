@@ -77,6 +77,9 @@ class HomePageViewController: UIViewController {
         homePageScrollView.keyboardDismissMode = .onDrag
         self.initOuterStackView()
         self.initViewLayout()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogout(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLogoutNotification), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -126,6 +129,13 @@ class HomePageViewController: UIViewController {
         bannersStore?.stopBannerRequest()
     }
     
+    func userDidLogin(notification: NSNotification) {
+        requestPulsaWidget()
+    }
+    
+    func userDidLogout(notification: NSNotification) {
+        requestPulsaWidget()
+    }
     
     // MARK: Setup StackView
     

@@ -62,14 +62,15 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
             "X-APP-VERSION": appVersion,
             "X-Device": "ios-\(appVersion)",
             "Accept-Language": "id-ID",
-            "Accept-Encoding": "gzip"
+            "Accept-Encoding": "gzip",
+            "X-Tkpd-UserId": UserAuthentificationManager().getUserId()!
         ]
         
         let parameters = !(target.parameterEncoding is Moya.JSONEncoding) ? (target.parameters as! NSDictionary).autoParameters() : target.parameters
         
         if !(target.parameterEncoding is Moya.JSONEncoding) {
             hmac.signature(
-                withBaseUrl: target.baseURL.absoluteString,
+                withBaseUrlPulsa: target.baseURL.absoluteString,
                 method: target.method.rawValue,
                 path: target.path,
                 parameter: parameters

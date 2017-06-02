@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import Moya
 import Unbox
+import SwiftyJSON
 
 class DigitalService {
     
@@ -141,6 +142,64 @@ class DigitalService {
             .map(to: DigitalCart.self)
             .map { $0.cartId }
 
+    }
+    
+    func lastOrder(categoryId:String) -> Observable<DigitalLastOrder> {
+        return Observable.concat (
+            getWSLastOrder(category: categoryId),
+            getCacheLastOrder(category: categoryId),
+            getDefaultLastOrder(category: categoryId)
+            )
+            .filter { $0 != nil }
+            .take(1)
+            .map{ $0! }
+    }
+    
+    func getWSLastOrder (category: String) -> Observable<DigitalLastOrder?> {
+        if (!UserAuthentificationManager().isLogin) {
+            return Observable.empty()
+        }
+        
+        return DigitalProvider()
+            .request(.lastOrder(category))
+            .mapJSON()
+            .map { response in
+                let result = JSON(response)
+                if (category == result.dictionaryValue["data"]?.dictionaryValue["attributes"]?.dictionaryValue["category_id"]?.stringValue) {
+                    return DigitalLastOrder.fromJSON((result.dictionaryValue["data"]?.dictionaryValue["attributes"]?.dictionaryObject)!)
+                }
+                return nil
+        }
+    }
+    
+    func getCacheLastOrder(category:String) -> Observable<DigitalLastOrder?> {
+        return Observable.create{ (observer) -> Disposable in
+            let cache = PulsaCache()
+            
+            cache.loadLastOrder(categoryId: category, loadLastOrderCallBack: { (lastOrder) in
+                observer.on(.next(lastOrder))
+                observer.on(.completed)
+            })
+            
+            return Disposables.create()
+        }
+    }
+    
+    func getDefaultLastOrder(category:String) -> Observable<DigitalLastOrder?> {
+        return Observable.create { observer -> Disposable in
+            let order:DigitalLastOrder = { () -> DigitalLastOrder in
+                switch (category) {
+                case "1", "2" : return DigitalLastOrder(categoryId: category, operatorId: nil, productId: nil, clientNumber: UserAuthentificationManager().getUserPhoneNumber())
+                default:
+                    return DigitalLastOrder(categoryId: category)
+                }
+            }()
+            
+            observer.on(.next(order))
+            observer.on(.completed)
+            
+            return Disposables.create()
+        }
     }
     
     private func verifyOtp(from viewController: UIViewController, needOtp: Bool, cartId: String) -> Observable<Void> {

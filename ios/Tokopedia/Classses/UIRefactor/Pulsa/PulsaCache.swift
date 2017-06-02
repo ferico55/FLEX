@@ -119,4 +119,36 @@ class PulsaCache: NSObject {
         },
                             on: DispatchQueue.main)
     }
+    
+    func storeLastOrder(lastOrder:DigitalLastOrder) {
+        if (UserAuthentificationManager().isLogin) {
+            let data = NSKeyedArchiver.archivedData(withRootObject: lastOrder)
+            self.cache.store(data,
+                             forKey: lastOrder.categoryId,
+                             locked: true,
+                             withCallback: nil,
+                             on: DispatchQueue.main)
+        }
+    }
+    
+    func loadLastOrder(categoryId:String, loadLastOrderCallBack: @escaping (_ lastOrder: DigitalLastOrder?) -> ()) {
+        if (!PulsaTweaks.shouldCacheRequest()) {
+            pruneCache()
+        }
+        
+        self.cache.loadData(forKey: categoryId,
+                            withCallback: { (response: SPTPersistentCacheResponse) in
+                                guard let record = response.record else {
+                                    return loadLastOrderCallBack(nil)
+                                }
+                                
+                                let products = NSKeyedUnarchiver.unarchiveObject(with: record.data) as! DigitalLastOrder
+                                return loadLastOrderCallBack(products)
+                                
+        }, on: DispatchQueue.main)
+    }
+    
+    func clearLastOrder() {
+        self.cache.wipeLockedFiles(callback: nil, on: DispatchQueue.main)
+    }
 }

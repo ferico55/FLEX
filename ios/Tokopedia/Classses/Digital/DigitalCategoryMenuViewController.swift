@@ -488,6 +488,10 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             } else {
                                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Click Beli")
                             }
+                            let cache = PulsaCache()
+                           let lastOrder = DigitalLastOrder(categoryId: self.categoryId, operatorId: self.state?.selectedOperator?.id, productId: productId, clientNumber: textInputs["client_number"])
+                            cache.storeLastOrder(lastOrder: lastOrder)
+                            
                             DigitalService()
                                 .purchase(
                                     from: self.viewController!,
@@ -756,18 +760,21 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     }
     
     private func loadForm() {
-        DigitalProvider()
+        let form = DigitalProvider()
             .request(.category(categoryId))
             .do(onError: { [weak self] error in
                 self?.store.dispatch(DigitalWidgetAction.loadFailed)
             })
             .map(to: DigitalForm.self)
-            .subscribe(
-                onNext: { [weak self] form in
-                    self?.store.dispatch(DigitalWidgetAction.receiveForm(form))
-                }
-            )
-            .disposed(by: self.rx_disposeBag)
+        
+        let lastOrder = DigitalService()
+            .lastOrder(categoryId: categoryId)
+        
+        Observable.zip(form, lastOrder) {form,lastOrder in
+                return (form, lastOrder)
+            }.subscribe(onNext: { [weak self] form, lastOrder in
+                self?.store.dispatch(DigitalWidgetAction.receiveForm(form, lastOrder))
+            })
     }
     
     func newState(state: DigitalState) {
@@ -783,8 +790,6 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Uncheck Instant Saldo")
         }
     }
-    
-    
 }
 
 // MARK: address book

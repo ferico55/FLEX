@@ -567,6 +567,7 @@ typedef enum TagRequest {
     [AnalyticsManager localyticsValue:@"No" profileAttribute:@"Is Login"];
     
     [self reinitCartTabBar];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLogoutNotification object:nil];
     
     [[QuickActionHelper sharedInstance] registerShortcutItems];
 }
@@ -575,6 +576,7 @@ typedef enum TagRequest {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
+    [[PulsaCache new] clearLastOrder];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

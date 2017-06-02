@@ -37,6 +37,7 @@ enum DigitalTarget {
     case voucher(categoryId: String, voucherCode: String)
     case otpSuccess(String)
     case getCart(String)
+    case lastOrder(String)
 }
 
 extension DigitalTarget: TargetType {
@@ -52,18 +53,16 @@ extension DigitalTarget: TargetType {
         case .voucher: return "/v1.3/voucher/check"
         case .otpSuccess: return "/v1.3/cart/otp-success"
         case .getCart: return "/v1.3/cart"
+        case .lastOrder: return "/v1.3/last-order"
         }
     }
     
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .addToCart: return .post
-        case .payment: return .post
-        case .category: return .get
-        case .voucher: return .get
+        case .addToCart, .payment: return .post
+        case .category, .voucher, .getCart, .lastOrder: return .get
         case .otpSuccess: return .patch
-        case .getCart: return .get
         }
     }
     
@@ -132,6 +131,8 @@ extension DigitalTarget: TargetType {
                 "voucher_code": voucherCode
             ]
         case let .getCart(categoryId) :
+            return ["category_id": categoryId]
+        case let .lastOrder(categoryId) :
             return ["category_id": categoryId]
         default: return [:]
         }

@@ -124,21 +124,47 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func receive(form: DigitalForm) -> DigitalState {
+    func receive(form: DigitalForm, lastOrder:DigitalLastOrder) -> DigitalState {
         var newState = self
         newState.form = form
         newState.isLoadingForm = false
         
         var textInputStates = [String: DigitalTextInputState]()
         if case let DigitalOperatorSelectionStyle.prefixChecking(input) = form.operatorSelectonStyle {
-            textInputStates[input.id] = DigitalTextInputState(
-                text: "",
-                failedValidation: input.failedValidation(for: "")
-            )
+            var normalizedText = ""
+            if (lastOrder.clientNumber != nil) {
+                normalizedText = input.normalizedText(from: lastOrder.clientNumber!)
+            }
+ 
+            let selectedOperator = form.operators.appropriateOperator(for: normalizedText)
+            textInputStates[input.id] = DigitalTextInputState(text: normalizedText, failedValidation: input.failedValidation(for: normalizedText))
+            newState.selectedOperator = selectedOperator
+            
+            if let op = selectedOperator {
+                newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
+            }
+        }  else {
+            if (lastOrder.clientNumber != nil) {
+                textInputStates["client_number"] = DigitalTextInputState(text: lastOrder.clientNumber!, failedValidation: nil)
+            }
+            
+            let operators = selectedOperator(fromForm: form, orOperatorId: lastOrder.operatorId)
+            newState.selectedOperator = operators
+            if let op = operators {
+                newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
+            }
         }
         
         newState.textInputStates = textInputStates
         
-        return newState.changeOperator(operator: form.defaultOperator)
+        return newState
+    }
+    
+    func selectProduct(fromOperator:DigitalOperator, orProductId:String?) -> DigitalProduct? {
+        return fromOperator.products.filter { $0.id == orProductId }.first ?? fromOperator.products.filter { $0.id == fromOperator.defaultProductId }.first
+    }
+    
+    func selectedOperator(fromForm:DigitalForm, orOperatorId:String?) -> DigitalOperator? {
+        return fromForm.operators.filter{ $0.id == orOperatorId }.first ?? fromForm.defaultOperator
     }
 }

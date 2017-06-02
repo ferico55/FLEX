@@ -34,6 +34,10 @@
                              path:(NSString*)path
                              json:(NSDictionary*)parameter;
 
+- (void)signatureWithBaseUrlPulsa:(NSString*)url
+                      method:(NSString*)method
+                        path:(NSString*)path
+                   parameter:(NSDictionary*)parameter;
 
 - (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 

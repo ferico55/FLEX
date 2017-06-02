@@ -13,6 +13,12 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		5256F93B1EC9C1C4009B7451 /* DigitalLastOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5256F93A1EC9C1C4009B7451 /* DigitalLastOrder.swift */; };
+		52B0C1EA1EE0FBBD00A99CAB /* Observable+JSONAble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0C1E91EE0FBBD00A99CAB /* Observable+JSONAble.swift */; };
+		52B0C2101EE1670B00A99CAB /* DigitalTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0C20D1EE1670B00A99CAB /* DigitalTarget.swift */; };
+		52B0C2111EE1670B00A99CAB /* ReactTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0C20E1EE1670B00A99CAB /* ReactTarget.swift */; };
+		52B0C2121EE1670B00A99CAB /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0C20F1EE1670B00A99CAB /* WalletTarget.swift */; };
+		52B0C2241EE16AC600A99CAB /* JSONAbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0C2231EE16AC600A99CAB /* JSONAbleType.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -169,8 +175,6 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
-		923390321EC631C700E98398 /* ReactTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923390301EC631C700E98398 /* ReactTarget.swift */; };
-		923390331EC631C700E98398 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923390311EC631C700E98398 /* WalletTarget.swift */; };
 		92339B631EC631F000E98398 /* AFNetworkingImageDownloader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 923390371EC631E800E98398 /* AFNetworkingImageDownloader.mm */; };
 		92339B641EC631F000E98398 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 923390391EC631E800E98398 /* DBManager.m */; };
 		92339B651EC631F000E98398 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9233903B1EC631E800E98398 /* ExpiringCache.m */; };
@@ -1774,7 +1778,6 @@
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		926C9F781EB9882100F42557 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F751EB9882100F42557 /* NetworkProvider.swift */; };
-		926C9F791EB9882100F42557 /* DigitalTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926C9F771EB9882100F42557 /* DigitalTarget.swift */; };
 		928FAE311EAF425D00E33DE6 /* libAppHub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE301EAF425D00E33DE6 /* libAppHub.a */; };
 		928FAE331EAF426C00E33DE6 /* libRCTAdSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */; };
 		928FAE351EAF427800E33DE6 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE341EAF427800E33DE6 /* libRCTAnimation.a */; };
@@ -2068,6 +2071,12 @@
 		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		5256F93A1EC9C1C4009B7451 /* DigitalLastOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalLastOrder.swift; sourceTree = "<group>"; };
+		52B0C1E91EE0FBBD00A99CAB /* Observable+JSONAble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+JSONAble.swift"; sourceTree = "<group>"; };
+		52B0C20D1EE1670B00A99CAB /* DigitalTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTarget.swift; sourceTree = "<group>"; };
+		52B0C20E1EE1670B00A99CAB /* ReactTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTarget.swift; sourceTree = "<group>"; };
+		52B0C20F1EE1670B00A99CAB /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
+		52B0C2231EE16AC600A99CAB /* JSONAbleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAbleType.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -2323,8 +2332,6 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
-		923390301EC631C700E98398 /* ReactTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTarget.swift; sourceTree = "<group>"; };
-		923390311EC631C700E98398 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		923390361EC631E800E98398 /* AFNetworkingImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingImageDownloader.h; sourceTree = "<group>"; };
 		923390371EC631E800E98398 /* AFNetworkingImageDownloader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFNetworkingImageDownloader.mm; sourceTree = "<group>"; };
 		923390381EC631E800E98398 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
@@ -4953,7 +4960,6 @@
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		926C9F751EB9882100F42557 /* NetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
-		926C9F771EB9882100F42557 /* DigitalTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTarget.swift; sourceTree = "<group>"; };
 		928FAE301EAF425D00E33DE6 /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAdSupport.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAdSupport.a"; sourceTree = "<group>"; };
 		928FAE341EAF427800E33DE6 /* libRCTAnimation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTAnimation.a; path = "../../../Library/Developer/Xcode/DerivedData/Tokopedia-cpflibrjgxzwhhehlknsfmrdjmoz/Build/Products/Debug-iphonesimulator/libRCTAnimation.a"; sourceTree = "<group>"; };
@@ -5099,6 +5105,16 @@
 				452E95821E64107E001191E0 /* donation.json */,
 			);
 			path = Fixture;
+			sourceTree = "<group>";
+		};
+		52B0C20C1EE1670B00A99CAB /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				52B0C20D1EE1670B00A99CAB /* DigitalTarget.swift */,
+				52B0C20E1EE1670B00A99CAB /* ReactTarget.swift */,
+				52B0C20F1EE1670B00A99CAB /* WalletTarget.swift */,
+			);
+			path = Target;
 			sourceTree = "<group>";
 		};
 		7A0C42FC1EA5FAD700E1E977 /* Products */ = {
@@ -5794,6 +5810,7 @@
 				923390661EC631E800E98398 /* DigitalCartPayment.swift */,
 				923390671EC631E800E98398 /* DigitalCartUserInputPrice.swift */,
 				923390681EC631E800E98398 /* DigitalVoucher.swift */,
+				5256F93A1EC9C1C4009B7451 /* DigitalLastOrder.swift */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -10456,20 +10473,12 @@
 		926C9F741EB9882100F42557 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				52B0C2231EE16AC600A99CAB /* JSONAbleType.swift */,
+				52B0C20C1EE1670B00A99CAB /* Target */,
 				926C9F751EB9882100F42557 /* NetworkProvider.swift */,
-				926C9F761EB9882100F42557 /* Target */,
+				52B0C1E91EE0FBBD00A99CAB /* Observable+JSONAble.swift */,
 			);
 			path = Networking;
-			sourceTree = "<group>";
-		};
-		926C9F761EB9882100F42557 /* Target */ = {
-			isa = PBXGroup;
-			children = (
-				923390301EC631C700E98398 /* ReactTarget.swift */,
-				923390311EC631C700E98398 /* WalletTarget.swift */,
-				926C9F771EB9882100F42557 /* DigitalTarget.swift */,
-			);
-			path = Target;
 			sourceTree = "<group>";
 		};
 		9295B21F1EAF4132000F705C /* Products */ = {
@@ -11878,7 +11887,6 @@
 				92339BCB1EC631F100E98398 /* DepositSummaryList.m in Sources */,
 				92339C571EC631F100E98398 /* InboxTicketReply.m in Sources */,
 				92339BC01EC631F000E98398 /* ContactUsQuery.m in Sources */,
-				923390331EC631C700E98398 /* WalletTarget.swift in Sources */,
 				92339DA51EC631F300E98398 /* WishListObject.m in Sources */,
 				92339F651EC631F700E98398 /* DetailProductWholesaleTableCell.m in Sources */,
 				92339FC81EC631F800E98398 /* PulsaCategory.swift in Sources */,
@@ -12116,6 +12124,7 @@
 				92339DB51EC631F300E98398 /* OTPRequest.swift in Sources */,
 				9233A10E1EC631FB00E98398 /* ProductTalkDetailViewController.m in Sources */,
 				92339C2C1EC631F100E98398 /* ResolutionAction.m in Sources */,
+				52B0C2101EE1670B00A99CAB /* DigitalTarget.swift in Sources */,
 				92339C081EC631F100E98398 /* GoogleDistanceMatrixDuration.m in Sources */,
 				92339FA71EC631F700E98398 /* ProductDetailReputationViewController.m in Sources */,
 				92339CF21EC631F200E98398 /* ShipmentCourierPackage.m in Sources */,
@@ -12129,6 +12138,7 @@
 				92339DB61EC631F300E98398 /* ChangePhoneNumberViewController.swift in Sources */,
 				92339D8F1EC631F300E98398 /* GenerateHost.m in Sources */,
 				92339E881EC631F500E98398 /* GeneralSwitchCell.m in Sources */,
+				52B0C2121EE1670B00A99CAB /* WalletTarget.swift in Sources */,
 				92339D2B1EC631F200E98398 /* JNE.m in Sources */,
 				92339CF31EC631F200E98398 /* ShipmentData.m in Sources */,
 				9233A0561EC631F900E98398 /* CancelShipmentViewController.m in Sources */,
@@ -12432,6 +12442,7 @@
 				92339C0E1EC631F100E98398 /* GooglePlaceDetailLocation.m in Sources */,
 				92339FBD1EC631F800E98398 /* ProductReputationViewModel.m in Sources */,
 				92339D7E1EC631F300E98398 /* OrderDetailForm.m in Sources */,
+				5256F93B1EC9C1C4009B7451 /* DigitalLastOrder.swift in Sources */,
 				9233A08D1EC631FA00E98398 /* SettingAddressDetailViewController.m in Sources */,
 				92339B911EC631F000E98398 /* OAuthToken.swift in Sources */,
 				9233A0651EC631F900E98398 /* DetailShipmentStatusViewController.m in Sources */,
@@ -12483,6 +12494,7 @@
 				92339E771EC631F500E98398 /* RequestFilter.swift in Sources */,
 				92339C861EC631F100E98398 /* DetailPriceAlert.m in Sources */,
 				92339DD21EC631F400E98398 /* AlertDonation.swift in Sources */,
+				52B0C1EA1EE0FBBD00A99CAB /* Observable+JSONAble.swift in Sources */,
 				92339C551EC631F100E98398 /* InboxTicketList.m in Sources */,
 				92339CB71EC631F200E98398 /* PromoShopImage.m in Sources */,
 				9233A17E1EC631FC00E98398 /* ProfileFavoriteShopViewController.m in Sources */,
@@ -12711,6 +12723,7 @@
 				92339EBF1EC631F500E98398 /* PromoView.swift in Sources */,
 				92339EC51EC631F500E98398 /* HomeFlowLayout.m in Sources */,
 				92339C201EC631F100E98398 /* HotlistList.m in Sources */,
+				52B0C2241EE16AC600A99CAB /* JSONAbleType.swift in Sources */,
 				92339C7D1EC631F100E98398 /* Note.m in Sources */,
 				92339FFF1EC631F800E98398 /* ResolutionCenterCreateStepTwoViewController.m in Sources */,
 				92339B831EC631F000E98398 /* DigitalVoucher.swift in Sources */,
@@ -12784,7 +12797,6 @@
 				9233A0A81EC631FA00E98398 /* SettingPrivacyViewController.m in Sources */,
 				7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */,
 				92339D3D1EC631F200E98398 /* CartEditShipmentResponse.swift in Sources */,
-				926C9F791EB9882100F42557 /* DigitalTarget.swift in Sources */,
 				9233A1C31EC6320D00E98398 /* UIKitHelper.swift in Sources */,
 				92339ED71EC631F600E98398 /* InboxMessageViewController.m in Sources */,
 				92339D7B1EC631F300E98398 /* TxOrderConfirmedDetailPayment.m in Sources */,
@@ -12830,7 +12842,6 @@
 				92339ECC1EC631F500E98398 /* HotlistViewModel.m in Sources */,
 				92339BDD1EC631F100E98398 /* OtherProduct.m in Sources */,
 				92339B7B1EC631F000E98398 /* DigitalState.swift in Sources */,
-				923390321EC631C700E98398 /* ReactTarget.swift in Sources */,
 				92339CBB1EC631F200E98398 /* ReputationDetail.m in Sources */,
 				7A466B771EB2FEAE00A72105 /* CMPopTipView.m in Sources */,
 				9233A12F1EC631FB00E98398 /* RequestEditAddress.m in Sources */,
@@ -12838,6 +12849,7 @@
 				92339FB41EC631F800E98398 /* ReviewSummaryViewController.m in Sources */,
 				92339F161EC631F600E98398 /* ActivatePushInstructionViewController.swift in Sources */,
 				7A466B8B1EB2FEAE00A72105 /* RequestUtils.m in Sources */,
+				52B0C2111EE1670B00A99CAB /* ReactTarget.swift in Sources */,
 				92339FA01EC631F700E98398 /* MyReviewDetailHeaderSmileyComponent.mm in Sources */,
 				92339CCC1EC631F200E98398 /* OrderDetail.m in Sources */,
 				9233A0B41EC631FA00E98398 /* OpenShopDomainViewCell.m in Sources */,

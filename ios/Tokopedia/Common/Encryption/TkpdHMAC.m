@@ -122,6 +122,54 @@
     
 }
 
+- (void)signatureWithBaseUrlPulsa:(NSString*)url
+                      method:(NSString*)method
+                        path:(NSString*)path
+                   parameter:(NSDictionary*)parameter
+{
+    
+    NSDictionary *secretsByUrls = @{
+                                    [NSString v4Url]: @"web_service_v4",
+                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString basicUrl]: @"web_service_v4",
+                                    [NSString aceUrl]: @"web_service_v4",
+                                    [NSString keroUrl]: @"web_service_v4",
+                                    [NSString hadesUrl]: @"web_service_v4",
+                                    [NSString pulsaApiUrl]: @"web_service_v4",
+                                    [NSString kunyitUrl]: @"web_service_v4",
+                                    [NSString accountsUrl]: @"web_service_v4",
+                                    [NSString topAdsUrl]: @"web_service_v4",
+                                    };
+    
+    NSString *output;
+    NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
+    NSString* date = [self getDate];
+    
+    
+    [self setRequestMethod:method];
+    [self setParameterMD5:parameter];
+    [self setTkpdPath:path];
+    [self setSecret:secret];
+    
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\nx-tkpd-userid:%@\n%@", method, [self getParameterMD5], [self getContentTypeWithBaseUrl:url],
+                              date, [[UserAuthentificationManager new] getUserId], [self getTkpdPath]];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    _baseUrl = url;
+    _date = date;
+    _signature = output;
+    
+    
+}
+
 // convert NSData to NSString
 - (NSString*)base64forData:(NSData*)theData {
     const uint8_t* input = (const uint8_t*)[theData bytes];

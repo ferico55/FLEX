@@ -158,7 +158,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     var didAskedForLogin: ((Void) -> Void)?
     var didShowAlertPermission: ((Void) -> Void)?
     var didSuccessPressBuy: ((URL) -> Void)?
-//    var didSuccessPressBuy: ((String) -> Void)?
     
     fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 15
     fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 15
@@ -310,16 +309,33 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }).first
     }
     
-    fileprivate func setSelectedOperatorWithOperatorId(_ id : String) {
-        if let selectedOperator = self.findOperatorById(id) {
+    fileprivate func setSelectedOperatorWithOperatorId(_ id : String?) {
+        let operatorId = id ?? self.selectedCategory.attributes.default_operator_id
+        if let selectedOperator = self.findOperatorById(operatorId) {
             self.selectedOperator = selectedOperator
-            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Operator from Widget")
+            if (self.operatorButton != nil) {
+                self.operatorButton.setTitle(self.selectedOperator.attributes.name, for: .normal)
+                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Operator from Widget")
+            }
         }
     }
     
     fileprivate func setDefaultProductWithOperatorId(_ operatorId: String) {
         self.findProducts(operatorId, categoryId: self.selectedCategory.id!) { (product) in
             self.selectedProduct = product.first!
+        }
+    }
+    
+    fileprivate func setSelectedProduct(with productId: String?) {
+        let id = productId ?? self.selectedOperator.attributes.default_product_id
+        self.findProducts(self.selectedOperator.id!, categoryId: self.selectedCategory.id!) { (product) in
+            let selected = product.filter { $0.id! == id }.first
+            if let select = selected {
+                self.selectedProduct = select
+                self.productButton.setTitle(self.selectedProduct.attributes.desc, for: .normal)
+            } else {
+                self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: .normal)
+            }
         }
     }
     
@@ -345,6 +361,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.resetCheckBox()
         self.resetPulsaOperator()
         self.buildAllView(category)
+        self.getLastOrder(category: category.id!)
         
         //Ignoring add action on number field, when client_number attribute is not show
         //instead find product directly, because some product which doesn't has number field (saldo), will show product only
@@ -353,17 +370,15 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
         
         let shouldShowProduct = (self.selectedOperator.id != nil && !self.selectedOperator.attributes.rule.show_product)
-        
+            
         if(shouldShowProduct) {
             self.setDefaultProductWithOperatorId(self.selectedOperator.id!)
         } else {
             if !self.selectedCategory.attributes.validate_prefix {
                 self.setSelectedOperatorWithOperatorId(self.selectedCategory.attributes.default_operator_id)
-                self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!, didReceiveProduct: nil)
+                self.findProducts(self.selectedCategory.attributes.default_operator_id, categoryId: self.selectedCategory.id!,didReceiveProduct: nil)
             }
-            
         }
-        
     }
     
     
@@ -502,14 +517,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.buildUseSaldoView()
         self.buildBuyButtonPlaceholder()
         
-        
-        // jika user sudah input angka kemudian berganti category widget, maka angka tersebut tidak akan tereset
-        if let inputtedNumber = self.inputtedNumber {
-            if !inputtedNumber.isEmpty {
-                numberField.text = inputtedNumber
-                self.checkInputtedNumber()
-            }
-        }
     }
     
     
@@ -664,7 +671,24 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
     }
     
+    fileprivate func getLastOrder(category:String) {
+        DigitalService()
+            .lastOrder(categoryId: category)
+            .subscribe(onNext: { [weak self] lastOrder in
+                self?.setLastOrderData(order: lastOrder)
+            }).disposed(by: self.rx_disposeBag)
+    }
     
+    func setLastOrderData(order:DigitalLastOrder) {
+        self.inputtedNumber = order.clientNumber
+        if let input = self.inputtedNumber, let numberField = self.numberField {
+            numberField.text = input
+            self.checkInputtedNumber()
+        }
+        self.setSelectedOperatorWithOperatorId(order.operatorId)
+        
+        self.setSelectedProduct(with: order.productId)
+    }
     
     //MARK: Show or Hide View
     
@@ -801,6 +825,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             } else {
                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli from Widget")
             }
+            let cache = PulsaCache()
+            let lastOrder = DigitalLastOrder(categoryId: self.selectedCategory.id!, operatorId: self.selectedOperator.id, productId: self.selectedProduct.id, clientNumber: clientNumber)
+            cache.storeLastOrder(lastOrder: lastOrder)
+            
             DigitalService()
                 .purchase(from: self.navigator.controller,
                           withProductId: self.selectedProduct.id!,
