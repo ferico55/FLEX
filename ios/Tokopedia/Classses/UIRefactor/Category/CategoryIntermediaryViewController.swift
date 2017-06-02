@@ -327,7 +327,7 @@ class CategoryIntermediaryViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = backButtonItem
 
         requestHotlist()
-        
+        AnalyticsManager.trackScreenName("Browse Category - \(categoryIntermediaryResult.id)")
     }
     
     func back() {

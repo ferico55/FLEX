@@ -1080,7 +1080,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                           [self.navigationController pushViewController:categoryIntermediaryViewController animated:NO];
                                                       } else {
                                                           _isCategorySubviewExpanded = NO;
-                                                          
+                                                          [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"%@%@", @"Browse Category - ", _categoryIntermediaryResult.id]];
                                                            [self setProductListBaseLayout];
                                                           [weakSelf showEntireView];
                                                       }
