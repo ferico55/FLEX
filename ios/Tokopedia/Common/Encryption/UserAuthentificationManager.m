@@ -307,4 +307,35 @@
     return [[self secureStorageDictionary] objectForKey:@"shop_is_gold"] ?: @(0);
 }
 
+- (NSString *)getDOB {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"dob"]];
+}
+- (NSString *)getCity {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"city"]];
+}
+- (NSString *)getProvince {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"province"]];
+}
+- (NSString *)getRegistrationDate {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"registration_date"]];
+}
+- (NSString *)getTotalItemSold {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"total_sold_item"]];
+}
+- (NSString *)getShopLocation {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"shop_location"]];
+}
+- (NSString *)getDateShopCreated {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"date_shop_created"]];
+}
+
+-(NSDate *)convertStringToDateWithLocaleID:(NSString *)str
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd MMMM yyyy"];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id_ID"]];
+    NSDate *date = [dateFormatter dateFromString:str];
+    return date;
+}
+
 @end

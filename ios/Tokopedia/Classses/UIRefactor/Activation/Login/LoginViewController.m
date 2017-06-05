@@ -375,6 +375,9 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                                  category:GA_EVENT_CATEGORY_LOGIN
                                    action:GA_EVENT_ACTION_LOGIN_SUCCESS
                                     label:@"Email"];
+         
+         NSDictionary* attributes = @{@"mobile_number":login.result.phoneNumber,@"customer_id":login.result.user_id,@"medium":@"Email",@"email":login.result.email};
+         [AnalyticsManager moEngageTrackEventWithName:@"Login" attributes:attributes];
          _barbuttonsignin.enabled = YES;
          [self unsetLoggingInState];
          
@@ -417,6 +420,9 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                                      category:GA_EVENT_CATEGORY_LOGIN
                                        action:GA_EVENT_ACTION_LOGIN_SUCCESS
                                         label:@"Yahoo"];
+             
+             NSDictionary* attributes = @{@"mobile_number":login.result.phoneNumber,@"customer_id":login.result.user_id,@"medium":@"Yahoo",@"email":login.result.email};
+             [AnalyticsManager moEngageTrackEventWithName:@"Login" attributes:attributes];
              [self onLoginSuccess:login];
          }
          failureCallback:^(NSError *error) {
@@ -625,6 +631,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                          category:GA_EVENT_CATEGORY_LOGIN
                                                            action:GA_EVENT_ACTION_LOGIN_SUCCESS
                                                             label:@"Facebook"];
+                                 
+                                 NSDictionary* attributes = @{@"mobile_number":login.result.phoneNumber,@"customer_id":login.result.user_id,@"medium":@"Facebook",@"email":login.result.email};
+                                 [AnalyticsManager moEngageTrackEventWithName:@"Login" attributes:attributes];
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
@@ -688,6 +697,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                          category:GA_EVENT_CATEGORY_LOGIN
                                                            action:GA_EVENT_ACTION_LOGIN_SUCCESS
                                                             label:@"Google"];
+                                 
+                                 NSDictionary* attributes = @{@"mobile_number":login.result.phoneNumber,@"customer_id":login.result.user_id,@"medium":@"Google",@"email":login.result.email};
+                                 [AnalyticsManager moEngageTrackEventWithName:@"Login" attributes:attributes];
+
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {

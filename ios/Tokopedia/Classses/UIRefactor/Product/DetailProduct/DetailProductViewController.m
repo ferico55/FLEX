@@ -422,7 +422,10 @@ TTTAttributedLabelDelegate
         [self requestprocess:product];
         
         [self loadData:nil];
-
+        Breadcrumb *subcategory = _product.data.breadcrumb[1];
+        if (subcategory) {
+            [AnalyticsManager moEngageTrackEventWithName:@"Product_Page_Opened" attributes:@{@"subcategory":[subcategory department_name]}];
+        }
         [self.table reloadData];
     }
 }
@@ -2080,6 +2083,11 @@ TTTAttributedLabelDelegate
                               action:GA_EVENT_ACTION_CLICK
                                label:@"Add to Wishlist"];
 
+    Breadcrumb *category = _product.data.breadcrumb[0];
+    Breadcrumb *subcategory = _product.data.breadcrumb[1];
+    NSDictionary *attributes = @{@"subcategory_id":subcategory.department_id,@"category":category.department_name,@"category_id":category.department_id, @"product_name":_product.data.product.product_name, @"product_id":_product.data.product.product_id,@"product_url":_product.data.product.product_url,@"product_price":_product.data.product.product_price};
+    [AnalyticsManager moEngageTrackEventWithName:@"Product_Added_To_Wishlist_Marketplace" attributes:attributes];
+    
     BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
     
     [self callAuthService:^{

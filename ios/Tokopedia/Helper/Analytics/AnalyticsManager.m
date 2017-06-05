@@ -625,8 +625,20 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         [moEngage setUserAttribute:[userManager getShopName] forKey:@"shop_name"];
         [moEngage setUserAttribute:[userManager userIsGoldMerchant] forKey:@"is_gold_merchant"];
         
+        [moEngage setUserDateOfBirth:[userManager convertStringToDateWithLocaleID:[userManager getDOB]]];
+//        [moEngage setUserAttribute:[userManager getCity] forKey:@"city"];
+//        [moEngage setUserAttribute:[userManager getProvince] forKey:@"province"];
+        [moEngage setUserAttribute:[userManager getTotalItemSold] forKey:@"total_sold_item"];
+//        [moEngage setUserAttribute:[userManager getRegistrationDate] forKey:@"registration_date"];
+//        [moEngage setUserAttribute:[userManager getDateShopCreated] forKey:@"date_shop_created"];
+        [moEngage setUserAttribute:[userManager getShopLocation] forKey:@"shop_location"];
+        
         [moEngage syncNow];
     }
+}
+
++ (void) moEngageTrackEvent: (NSString*) name {
+    [[MoEngage sharedInstance] trackEvent:name andPayload:nil];
 }
 
 #pragma mark - Specific trackers

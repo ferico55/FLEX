@@ -118,7 +118,7 @@ class HomePageViewController: UIViewController {
                 make?.edges.mas_equalTo()(self.topPicksPlaceholder)
             }
         }
-    
+        AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status":UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
     }
     

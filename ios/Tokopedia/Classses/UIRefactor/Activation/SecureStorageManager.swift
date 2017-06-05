@@ -66,6 +66,12 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWithValue(convertedNumber, withKey: "user_phone")
         self.storage.setKeychainWithValue(userInfo.user_hobbies, withKey: "user_hobbies")
         self.storage.setKeychainWithValue(userInfo.user_email, withKey: "user_email")
+        
+        self.storage.setKeychainWithValue(userInfo.user_birth, withKey: "dob")
+        self.storage.setKeychainWithValue("", withKey: "city")
+        self.storage.setKeychainWithValue("", withKey: "province")
+        self.storage.setKeychainWithValue("", withKey: "registration_date")
+        
         if let userImage = userInfo.user_image {
             self.storage.setKeychainWithValue(userImage, withKey: "user_image")
         }
@@ -78,6 +84,15 @@ class SecureStorageManager: NSObject {
             self.storage.setKeychainWithValue(userReputation.negative, withKey: "reputation_negative")
             self.storage.setKeychainWithValue(userReputation.neutral, withKey: "reputation_neutral")
         }
+    }
+    
+    func storeShopInformation(_ user:ProfileInfoResult) {
+        guard let shopInfo = user.shop_info else { return }
+        guard let shopStats = user.shop_stats else { return }
+        
+        self.storage.setKeychainWithValue(shopStats.shop_item_sold, withKey: "total_sold_item")
+        self.storage.setKeychainWithValue(shopInfo.shop_location, withKey: "shop_location")
+        self.storage.setKeychainWithValue(shopInfo.shop_open_since, withKey: "date_shop_created")
     }
     
     private func getShortNameFromFullName(_ fullName: String) -> String {

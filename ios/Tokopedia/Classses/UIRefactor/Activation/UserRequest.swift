@@ -38,6 +38,7 @@ class UserRequest: NSObject {
     private class func storeUserInformation(_ profileInfo: ProfileInfo) {
         let storageManager = SecureStorageManager()
         storageManager.storeUserInformation(profileInfo.result)
+        storageManager.storeShopInformation(profileInfo.result)
     }
 
 }

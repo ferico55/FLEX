@@ -48,4 +48,12 @@
 - (NSNumber *)userIsGoldMerchant;
 - (nonnull NSString *)webViewUrlFromUrl:(nonnull NSString *)url;
 
+- (nullable NSString*)getDOB;
+- (nullable NSString*)getCity;
+- (nullable NSString*)getProvince;
+- (nullable NSString*)getRegistrationDate;
+- (nullable NSString*)getTotalItemSold;
+- (nullable NSString*)getShopLocation;
+- (nullable NSString*)getDateShopCreated;
+- (nullable NSDate*) convertStringToDateWithLocaleID:(nonnull NSString*) str;
 @end
