@@ -505,13 +505,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                     onNeedLoading: { [weak self] in
                                         self?.store.dispatch(DigitalWidgetAction.addToCart)
                                     })
-                                .subscribe(
-                                    onError: { error in
+                                .subscribe(onError: { error in
                                         let errorMessage = error as? String ?? "Kendala koneksi internet, silakan coba kembali"
                                         AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Homepage Error - \(errorMessage)")
                                         self.store.dispatch(DigitalWidgetAction.showError(errorMessage))
-                                    }
-                                )
+                                })
                                 .disposed(by: self.rx_disposeBag)
                         })
                         .disposed(by: self.disposeBag)

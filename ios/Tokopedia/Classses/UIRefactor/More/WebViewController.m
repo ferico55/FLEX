@@ -46,6 +46,8 @@
         progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
         [self.navigationController.navigationBar addSubview:progressView];
         
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonDidTapped)];
+        
         NSURL* url = [NSURL URLWithString:strURL];
         if (strQuery == nil) {
             [_webView loadRequest:[self requestForUrl:url]];
@@ -68,6 +70,15 @@
     [progressView removeFromSuperview];
 }
 
+- (void) backButtonDidTapped {
+    if (self.webView.canGoBack) {
+        if(self.onTapBackButton) {
+            self.onTapBackButton(self.webView.request.URL);
+        }
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
 #pragma mark - UIWebView Delegate
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

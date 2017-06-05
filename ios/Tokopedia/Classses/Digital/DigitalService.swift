@@ -112,12 +112,20 @@ class DigitalService {
                 webView.strQuery = cartPayment.queryString
                 webView.shouldAuthorizeRequest = false
                 webView.strTitle = "Pembayaran"
-                
+
                 var viewControllers = viewController.navigationController!.childViewControllers
                 
                 //                while viewControllers.last !== viewController {
                 //                    _ = viewControllers.popLast()
                 //                }
+                
+                webView.onTapBackButton = { url in
+                    if let paymentUrl = url?.absoluteString.contains("payment"), paymentUrl {
+                            viewController.navigationController?.popViewController(animated: true)
+                        } else {
+                            viewController.navigationController?.popToRootViewController(animated: true)
+                        }
+                }
                 
                 viewControllers.append(webView)
                 
@@ -127,6 +135,10 @@ class DigitalService {
                         
                         let vcs = Array(viewControllers[0...viewControllers.index(of: viewController)!]) + [webView]
                         viewController.navigationController?.setViewControllers(vcs, animated: false)
+                    }
+                    
+                    if (url?.absoluteString == cartPayment.callbackUrlSuccess) {
+                        viewController.navigationController?.popToRootViewController(animated: true)
                     }
                 }
                 

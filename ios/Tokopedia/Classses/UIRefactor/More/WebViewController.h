@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString *strQuery;
 
 @property(copy) void(^onTapLinkWithUrl)(NSURL* url);
+@property(copy) void(^onTapBackButton)(NSURL* url);
 
 @property BOOL isLPWebView;
 @property BOOL shouldAuthorizeRequest;

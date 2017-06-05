@@ -286,6 +286,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                         self?.cart = cart
                         self?.transactionId = cart.cartId
                         self?.setData()
+                        AnalyticsManager.trackRechargeEvent(event: .homepage, cart: cart, action: "View Checkout Page")
                     },
                        onError: { [unowned self] error in
                         self.view.addSubview(self.noResultView)
