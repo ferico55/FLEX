@@ -295,6 +295,7 @@ MMNumberKeyboardDelegate
     [self.textfieldPassword setSecureTextEntry:!self.textfieldPassword.isSecureTextEntry];
     tmpString = self.textfieldPassword.text;
     self.textfieldPassword.text = @"";
+    self.textfieldPassword.font = [UIFont title2Theme];
     self.textfieldPassword.text = tmpString;
     self.textfieldPassword.clearsOnBeginEditing = NO;
 }
@@ -344,13 +345,13 @@ MMNumberKeyboardDelegate
                     NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
                     
                     if (!email || [email isEqualToString:@""]) {
-                        [messages addObject:ERRORMESSAGE_NULL_EMAIL];
+                        [messages addObject:@"Alamat email harus diisi."];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
                     }
                     else
                     {
                         if (![email isEmail]) {
-                            [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
+                            [messages addObject:@"Format email salah."];
                             [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
                         }
                     }
@@ -537,6 +538,7 @@ MMNumberKeyboardDelegate
     [textField resignFirstResponder];
     _activeTextfield = textField;
     [textField resignFirstResponder];
+    self.textfieldPassword.clearsOnBeginEditing = NO;
     return YES;
 }
 
@@ -738,22 +740,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)updateFormViewAppearance {
     CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-    CGFloat contentViewWidth = 0;
+    CGFloat contentViewWidth = width;
     CGFloat contentViewMarginLeft = 0;
     CGFloat contentViewMarginTop = 0;
     
-    if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
-        contentViewWidth = width;
-        contentViewMarginLeft = 0;
-    } else if (IS_IPHONE_6) {
-        contentViewWidth = 345;
-        contentViewMarginLeft = 15;
-        contentViewMarginTop = 20;
-    } else if (IS_IPHONE_6P) {
-        contentViewWidth = 354;
-        contentViewMarginLeft = 30;
-        contentViewMarginTop = 40;
-    } else if (IS_IPAD) {
+    if (IS_IPAD) {
         contentViewWidth = 500;
         contentViewMarginLeft = 134;
         contentViewMarginTop = 25;
