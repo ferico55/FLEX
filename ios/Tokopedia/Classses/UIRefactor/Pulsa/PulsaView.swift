@@ -328,6 +328,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     fileprivate func setSelectedProduct(with productId: String?) {
         let id = productId ?? self.selectedOperator.attributes.default_product_id
+        guard self.selectedOperator.id != nil else {
+            return
+        }
+        
         self.findProducts(self.selectedOperator.id!, categoryId: self.selectedCategory.id!) { (product) in
             let selected = product.filter { $0.id! == id }.first
             if let select = selected {
