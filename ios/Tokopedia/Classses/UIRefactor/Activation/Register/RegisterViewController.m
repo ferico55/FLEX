@@ -140,6 +140,7 @@ MMNumberKeyboardDelegate
     [_seeHidePass setImage:[UIImage imageNamed:@"password_eyeClose"] forState:UIControlStateNormal];
     [_seeHidePass setImage:[UIImage imageNamed:@"password_eyeOpen"] forState:UIControlStateSelected];
     _seeHidePass.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    _textfieldPassword.clearsOnBeginEditing = NO;
 }
 
 - (void)setupTermsAndConditionLabel {
@@ -295,6 +296,7 @@ MMNumberKeyboardDelegate
     tmpString = self.textfieldPassword.text;
     self.textfieldPassword.text = @"";
     self.textfieldPassword.text = tmpString;
+    self.textfieldPassword.clearsOnBeginEditing = NO;
 }
 
 - (IBAction)tap:(id)sender
@@ -341,6 +343,17 @@ MMNumberKeyboardDelegate
                 {
                     NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
                     
+                    if (!email || [email isEqualToString:@""]) {
+                        [messages addObject:ERRORMESSAGE_NULL_EMAIL];
+                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
+                    }
+                    else
+                    {
+                        if (![email isEmail]) {
+                            [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
+                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
+                        }
+                    }
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nama Lengkap"];
@@ -354,17 +367,6 @@ MMNumberKeyboardDelegate
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Nomor HP"];
                     }
                     
-                    if (!email || [email isEqualToString:@""]) {
-                        [messages addObject:ERRORMESSAGE_NULL_EMAIL];
-                        [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
-                    }
-                    else
-                    {
-                        if (![email isEmail]) {
-                            [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
-                            [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Alamat Email"];
-                        }
-                    }
                     if (!pass || [pass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
                         [AnalyticsManager trackEventName:@"registerError" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_ERROR label:@"Kata Sandi"];
