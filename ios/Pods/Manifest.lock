@@ -19,6 +19,7 @@ PODS:
   - APAddressBook/Core (0.2.3)
   - APAddressBook/Swift (0.2.3):
     - APAddressBook/Core
+  - Apollo (0.5.6)
   - Appsee (2.2)
   - AppsFlyerFramework (4.5.1)
   - BEMCheckBox (1.2.1)
@@ -100,6 +101,7 @@ PODS:
   - JSQSystemSoundPlayer (2.0.1)
   - KeychainAccess (3.0.1)
   - Localytics (4.1.0)
+  - lottie-ios (1.5.1)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.5)
   - MoEngage-iOS-SDK (3.3.0)
@@ -184,6 +186,7 @@ DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - AHKActionSheet (~> 0.5.4)
   - APAddressBook/Swift
+  - Apollo
   - Appsee
   - AppsFlyerFramework
   - BEMCheckBox (~> 1.2.0)
@@ -209,6 +212,7 @@ DEPENDENCIES:
   - JSQMessagesViewController
   - KeychainAccess (~> 3.0)
   - Localytics
+  - lottie-ios
   - Masonry
   - MMNumberKeyboard
   - MoEngage-iOS-SDK (~> 3.3.0)
@@ -274,6 +278,7 @@ SPEC CHECKSUMS:
   AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
+  Apollo: 124ddbbca48acca75fd5f9ec5045454cb410bb31
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BEMCheckBox: 264b8b72aa92adbfefa265cc58a0cdb86b207b9f
@@ -309,6 +314,7 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
+  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
   MoEngage-iOS-SDK: 7862a1933fb5fd181309955b3a7dbe18dcaa717f
@@ -347,6 +353,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 25620a4783619f35498f2a6ca23b440b78b78276
+PODFILE CHECKSUM: 8cf463aa4ffb7f0ed7d4e1f4d898e0a8e7584f52
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

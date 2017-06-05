@@ -14,7 +14,10 @@
     RKObjectMapping *shopImageMapping = [RKObjectMapping mappingForClass:[PromoShopImage class]];
     [shopImageMapping addAttributeMappingsFromArray:@[@"cover",
                                                       @"s_url",
-                                                      @"xs_url"
+                                                      @"xs_url",
+                                                      @"cover_ecs",
+                                                      @"s_ecs",
+                                                      @"xs_ecs"
                                                       ]];
     return shopImageMapping;
 }

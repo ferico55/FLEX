@@ -12,6 +12,9 @@
 @property(strong, nonatomic) NSString* cover;
 @property(strong, nonatomic) NSString* s_url;
 @property(strong, nonatomic) NSString* xs_url;
+@property(strong, nonatomic) NSString* cover_ecs;
+@property(strong, nonatomic) NSString* s_ecs;
+@property(strong, nonatomic) NSString* xs_ecs;
 
 + (RKObjectMapping*)mapping;
 

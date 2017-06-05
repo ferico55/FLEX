@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;
+@property (strong,nonatomic) NSString* redirectedSearchKeyword;
 @property (nonatomic) BOOL isFromAutoComplete;
 
 @end

@@ -908,6 +908,12 @@
     [viewController.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)navigateToFeedDetailFromViewController:(UIViewController *)viewController withFeedCardID:(NSString *)cardID {
+    FeedDetailViewController *vc = [[FeedDetailViewController alloc] initWithActivityID:cardID];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma - Common Method 
 
 -(NSString *) getTitleFromData: (NSDictionary *) data {

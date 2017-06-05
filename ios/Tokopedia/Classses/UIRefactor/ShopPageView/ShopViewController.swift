@@ -296,9 +296,7 @@ class ShopViewController: UIViewController {
             guard !UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id) else { return }
             
             self.renderBarButtonsWithShop(shop, favoriteRequestInProgress: true)
-            
-            let adKey = self.data!["ad_ref_key"] as? String ?? ""
-            
+                        
             AnalyticsManager.trackEventName(
                 "clickShopHome",
                 category: GA_EVENT_CATEGORY_SHOP_HOME,
@@ -307,7 +305,7 @@ class ShopViewController: UIViewController {
             
             FavoriteShopRequest.requestActionButtonFavoriteShop(
                 shop.result.info.shop_id,
-                withAdKey: adKey,
+                withAdKey: "",
                 onSuccess: { (result) in
                     let favorite = !(shop.result.info.isFavorite)
                     shop.result.info.isFavorite = favorite

@@ -171,11 +171,12 @@ class TPRoutes: NSObject {
         }
         //..applinks
         
-        
-        
-        
-        
-        
+        //Feed Detail
+        JLRoutes.global().addRoute("/feedcommunicationdetail/:feedID") { (params: [String : Any]!) -> Bool in
+            let feedCardID = params["feedID"] as! String
+            navigator.navigateToFeedDetail(from: UIApplication.topViewController(), withFeedCardID: feedCardID)
+            return true
+        }
         
         JLRoutes.global().unmatchedURLHandler = { (route, url, dictionary) in
             self.openWebView(url!)

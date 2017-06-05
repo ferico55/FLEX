@@ -1,0 +1,49 @@
+query FeedDetail ($detailID: String!, $pageDetail: Int!, $limitDetail: Int!){
+	feed(detailID: $detailID, pageDetail: $pageDetail, limitDetail: $limitDetail) {
+		data {
+			id
+			create_time
+			type
+			cursor
+			source {
+				type
+				shop {
+					id
+					name
+					avatar
+					isOfficial
+					isGold
+					url
+					shopLink
+					shareLinkDescription
+					shareLinkURL
+				}
+			}
+			content {
+				type
+				total_product
+				products {
+					id
+					name
+					price
+					image
+					wholesale {
+						qty_min_fmt
+					}
+					freereturns
+					preorder
+					cashback
+					url
+					productLink
+					wishlist
+					rating
+				}
+				status_activity
+			}
+			meta {
+				has_next_page
+			}
+		}
+		token
+	}
+}

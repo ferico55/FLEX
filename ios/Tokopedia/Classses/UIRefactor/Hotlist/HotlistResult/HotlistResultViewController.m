@@ -820,6 +820,12 @@ static NSString const *rows = @"12";
         filter.hotlistId = _bannerResult.query.hot_id;
         filter.userFilter = _selectedFilterParam;
         
+        if(_redirectedSearchKeyword){
+            filter.searchKeyword = _redirectedSearchKeyword;
+        }else{
+            filter.searchKeyword = @"";
+        }
+        
         [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
             if (promoResult) {
                 [_promo addObject:promoResult];

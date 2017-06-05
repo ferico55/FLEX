@@ -57,7 +57,7 @@
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
-@property (strong, nonatomic) ProductFeedViewController *productFeedController;
+@property (strong, nonatomic) FeedViewController *feedController;
 @property (strong, nonatomic) PromoViewController *promoViewController;
 @property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
@@ -101,7 +101,7 @@
     
     _homePageController = [HomePageViewController new];
     
-    _productFeedController = [ProductFeedViewController new];
+    _feedController = [FeedViewController new];
     
     _promoViewController = [PromoViewController new];
     
@@ -336,10 +336,10 @@
 }
 
 - (void)goToPage:(NSInteger)page {
-    _productFeedController.isOpened = false;
+//    _productFeedController.isOpened = false;
     _shopViewController.isOpened = false;
     if(page == 1){
-        _productFeedController.isOpened = true;
+//        _productFeedController.isOpened = true;
     }
     else if(page == 4){
         _shopViewController.isOpened = true;
@@ -527,7 +527,7 @@
 
 - (void) instantiateViewControllers {
     if (_userManager.isLogin) {
-        _viewControllers = @[_homePageController, _productFeedController, _promoViewController, _historyController, _shopViewController];
+        _viewControllers = @[_homePageController, _feedController, _promoViewController, _historyController, _shopViewController];
     } else {
         _viewControllers = @[_homePageController, _promoViewController];
     }

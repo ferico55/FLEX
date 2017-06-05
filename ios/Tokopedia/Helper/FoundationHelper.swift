@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 extension NSDate {
     static func convertDateString(_ string: String, fromFormat format1: String, toFormat format2: String ) -> String{
@@ -124,3 +125,21 @@ extension Collection where Indices.Iterator.Element == Index {
     }
 }
 
+extension UIScrollView {
+    var rx_reachedBottom: Observable<Void> {
+        return rx.contentOffset
+            .debounce(0.025, scheduler: MainScheduler.instance)
+            .flatMap { [weak self] contentOffset -> Observable<Void> in
+                guard let scrollView = self else {
+                    return Observable.empty()
+                }
+                
+                let visibleHeight = scrollView.frame.height - scrollView.contentInset.top - scrollView.contentInset.bottom
+                let y = contentOffset.y + scrollView.contentInset.top
+                let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
+                
+                return y > threshold ? Observable.just() : Observable.empty()
+        }
+        
+    }
+}

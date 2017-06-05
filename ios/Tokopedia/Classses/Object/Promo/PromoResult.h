@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString* product_click_url;
 @property (nonatomic, strong) NSString* shop_click_url;
 @property (nonatomic, strong) NSString* applinks;
+@property (nonatomic) BOOL isImpressionSent;
 
 @property (nonatomic, strong) PromoProduct* product;
 @property (nonatomic, strong) PromoShop* shop;

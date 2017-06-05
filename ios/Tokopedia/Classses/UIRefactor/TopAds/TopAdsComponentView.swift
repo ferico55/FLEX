@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Render
+import RxSwift
 
 struct TopAdsState: StateType {
     var topAds: [PromoResult]?
@@ -17,21 +18,27 @@ struct TopAdsState: StateType {
 class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
     
     private var rootNode: NodeType
+    private let disposeBag = DisposeBag()
+    fileprivate var isSimple = false
     
     override init() {
-        rootNode = Node(identifier: "topads")
+        rootNode = NilNode()
     }
     
     convenience init(ads: [PromoResult]) {
         self.init()
         guard ads.count > 0 else {
-            rootNode = Node(identifier: "topads")
+            rootNode = NilNode()
             return
         }
         
+        self.construct(ads: ads)
+    }
+    
+    fileprivate func construct(ads: [PromoResult]){
         let theTopAds = ads
         let divider:CGFloat = (UIDevice.current.userInterfaceIdiom == .pad ?4:2)
-
+        
         
         let mainWrapper = Node<UIView>(identifier: "topads") {
             view, layout, size in
@@ -52,7 +59,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             let promotedLabel = Node<UILabel> {
                 view, layout, _ in
                 view.text = "Promoted"
-                view.font = view.font.withSize(14)
+                view.font = .largeTheme()
                 layout.marginLeft = 8
             }
             
@@ -63,7 +70,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                         let alert = PromoInfoAlertView.newview() as! PromoInfoAlertView
                         alert.delegate = self
                         alert.show()
-                    })
+                    }).addDisposableTo(self.disposeBag)
                 
                 let imageView = UIImageView()
                 imageView.isUserInteractionEnabled = true
@@ -84,7 +91,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             return promotedInfoView.add(children: [
                 promotedLabel,
                 infoButtonImageView
-            ])
+                ])
         }
         
         let adsWrapper = Node<UIView> {
@@ -99,8 +106,6 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             
             let product = topAdsResult.viewModel!
             
-            //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.topAdsTapped(_:)))
-            
             let adView = Node<UIView>(
                 create: {
                     let tapGesture = UITapGestureRecognizer()
@@ -110,14 +115,14 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                                 TopAdsService.sendClickImpression(clickURLString: topAdsResult.product_click_url)
                                 TPRoutes.routeURL(url)
                             }
-                        })
+                        }).addDisposableTo(self.disposeBag)
                     
                     let view = UIView()
                     view.backgroundColor = UIColor.white
                     view.addGestureRecognizer(tapGesture)
                     
                     return view
-                }
+            }
             ) {
                 _, layout, size in
                 
@@ -133,12 +138,11 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 view, layout, size in
                 view.ad = topAdsResult
                 view.setImageWith(URL(string: product.productThumbEcs), placeholderImage: UIImage(named: "grey-bg.png"))
-                layout.width = size.width / divider - 11
-                layout.height = layout.width
+                layout.aspectRatio = 1
                 layout.marginHorizontal = 7
                 layout.marginTop = 7
                 layout.marginBottom = 8
-
+                
             }
             
             let productNameWrapper = Node<UIView> {
@@ -147,31 +151,28 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 layout.marginHorizontal = 8
                 layout.paddingTop = 0
             }
-
+            
             
             let productNameLabel = Node<UILabel> {
                 view, _, _ in
                 view.text = product.productName
                 view.textColor = UIColor.tpPrimaryBlackText().withAlphaComponent(0.70)
-                view.font = UIFont.smallThemeMedium()
+                view.font = .smallThemeMedium()
                 view.numberOfLines = 2
-
+                
             }
             
             productNameWrapper.add(child: productNameLabel)
-
+            
             
             let productPriceLabel = Node<UILabel> {
                 view, layout, _ in
                 view.textColor = UIColor.tpOrange()
-                if #available(iOS 8.2, *) {
-                    view.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightSemibold)
-                } else {
-                    view.font = UIFont.systemFont(ofSize: 14)
-                }
-
+                view.font = .largeThemeMedium()
+                
                 view.text = product.productPrice
                 layout.marginHorizontal = 8
+                layout.marginBottom = self.isSimple ? 9:0
                 layout.height = 17
             }
             
@@ -202,11 +203,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                         view.textColor = label.color == "#ffffff" ? UIColor.lightGray : UIColor.white
                         view.text = label.title
                         view.textAlignment = .center
-                        if #available(iOS 8.2, *) {
-                            view.font = UIFont.systemFont(ofSize: 9, weight: UIFontWeightMedium)
-                        } else {
-                            view.font = UIFont.systemFont(ofSize: 9)
-                        }
+                        view.font = .microThemeMedium()
                         layout.paddingHorizontal = 1
                         layout.marginRight = 2
                     }
@@ -226,7 +223,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             let productShopLabel = Node<UILabel> {
                 view, layout, _ in
                 view.textColor = UIColor.black.withAlphaComponent(0.54)
-                view.font = UIFont.systemFont(ofSize: 11)
+                view.font = .microTheme()
                 view.text = product.productShop
                 layout.marginHorizontal = 8
                 layout.marginBottom = 3
@@ -256,7 +253,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     view.textColor = UIColor.fromHexString("9E9E9E")
                     view.text = product.shopLocation
                     view.textAlignment = .left
-                    view.font = UIFont.systemFont(ofSize: 11)
+                    view.font = .microTheme()
                     layout.flexGrow = 1
                     layout.flexShrink = 1
                 }
@@ -289,18 +286,27 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     pinIcon,
                     locationLabel,
                     badgesWrapper
-                ])
+                    ])
             }
             
-            return adView.add(children: [
-                productImageView,
-                productNameWrapper,
-                productPriceLabel,
-                ratingWrapper,
-                statusWrapper(),
-                productShopLabel,
-                bottomWrapper()
-            ])
+            if isSimple {
+                return adView.add(children: [
+                    productImageView,
+                    productNameWrapper,
+                    productPriceLabel
+                    ])
+            }
+            else {
+                return adView.add(children: [
+                    productImageView,
+                    productNameWrapper,
+                    productPriceLabel,
+                    ratingWrapper,
+                    statusWrapper(),
+                    productShopLabel,
+                    bottomWrapper()
+                    ])
+            }
         }
         
         adsWrapper.add(children: (0..<theTopAds.count).map { index in
@@ -309,7 +315,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
         mainWrapper.add(children:[
             promotedInfoView(),
             adsWrapper
-        ])
+            ])
         
         rootNode = mainWrapper
     }
@@ -371,6 +377,7 @@ class TopAdsView: UIView {
         }
         
         let topAdsComponent = TopAdsComponentView(ads: ads)
+        topAdsComponent.isSimple = true
         self.addSubview(topAdsComponent)
         topAdsComponent.render(in: self.frame.size)
         
@@ -421,10 +428,18 @@ class TopAdsCustomImageView: UIImageView, UIGestureRecognizerDelegate {
     }
     
     @objc private func userPanned(){
-        if isVisible(view: self) && !isImpressionAlreadySent && ad.viewModel.productThumbEcs != ad.viewModel.productThumbUrl {
-            TopAdsService.sendClickImpression(clickURLString: ad.viewModel.productThumbUrl)
-            isImpressionAlreadySent = true
-            
+        if let _ = ad.shop?.image_shop {
+            if isVisible(view: self) && !isImpressionAlreadySent && ad.shop.image_shop.s_url != ad.shop.image_shop.s_ecs && !ad.isImpressionSent {
+                TopAdsService.sendClickImpression(clickURLString: ad.shop.image_shop.s_url)
+                isImpressionAlreadySent = true
+                ad.isImpressionSent = true
+            }
+        }else{
+            if isVisible(view: self) && !isImpressionAlreadySent && ad.viewModel.productThumbEcs != ad.viewModel.productThumbUrl && !ad.isImpressionSent {
+                TopAdsService.sendClickImpression(clickURLString: ad.viewModel.productThumbUrl)
+                isImpressionAlreadySent = true
+                ad.isImpressionSent = true
+            }
         }
     }
     
@@ -464,25 +479,28 @@ class TopAdsCustomImageView: UIImageView, UIGestureRecognizerDelegate {
             return offset
         }
         
-        
-        func isVisible(view: UIView, inView: UIView?) -> Bool {
-            guard let inView = inView else {
-                return true
+        func owningViewController(_ responder: UIResponder) -> UIViewController? {
+            if let viewController = responder as? UIViewController {
+                return viewController
             }
             
-            let viewFrame = inView.convert(view.bounds, from: view)
-            if viewFrame.intersects(inView.bounds) {
-                if rectVisibleInView(rect: viewFrame, inRect:inView.bounds) == CGPoint(x: 0, y: 0) {
-                    return isVisible(view: view, inView: inView.superview)
-                }
-            }
-            return false
+            guard let next = responder.next else { return nil }
+            return owningViewController(next)
         }
-        return isVisible(view: view, inView: view.superview)
+        
+        let convertedViewRect = view.convert(view.bounds, to: view.window!)
+        if let owningViewControllerView = owningViewController(view)?.view {
+            let visibleScreenRect = owningViewControllerView.convert(owningViewControllerView.bounds, to: view.window!)
+            return rectVisibleInView(rect: convertedViewRect, inRect: visibleScreenRect) == CGPoint(x: 0, y: 0)
+        }
+        
+        return false
     }
 }
 
 class TopAdsComponentView: ComponentView<TopAdsState>, TKPDAlertViewDelegate {
+    
+    fileprivate var isSimple = false
     
     override init() {
         super.init()
@@ -505,7 +523,9 @@ class TopAdsComponentView: ComponentView<TopAdsState>, TKPDAlertViewDelegate {
             }
         }
         
-        let topAdsNode = TopAdsNode(ads: theTopAds)
+        let topAdsNode = TopAdsNode()
+        topAdsNode.isSimple = self.isSimple
+        topAdsNode.construct(ads: theTopAds)
         return topAdsNode
     }
     

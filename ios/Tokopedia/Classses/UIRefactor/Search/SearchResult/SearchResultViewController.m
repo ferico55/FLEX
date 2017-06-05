@@ -1300,6 +1300,7 @@ SpellCheckRequestDelegate
             
             CategoryDataForCategoryResultVC *categoryDataForCategoryResultVC = [[CategoryDataForCategoryResultVC alloc] initWithPathComponent:pathComponent];
             CategoryResultViewController *categoryResultVC = [CategoryResultViewController new];
+            categoryResultVC.redirectedSearchKeyword = [_params objectForKey:@"search"]?:@"";
             categoryResultVC.isIntermediary = YES;
             categoryResultVC.data = [categoryDataForCategoryResultVC mapToDictionary];
             categoryResultVC.title = [[query lastObject] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
@@ -1349,6 +1350,7 @@ SpellCheckRequestDelegate
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     HotlistResultViewController *vc = [HotlistResultViewController new];
+    vc.redirectedSearchKeyword = [_params objectForKey:@"search"]?:@"";
     vc.data = @{
                 kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
                 kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]

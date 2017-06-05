@@ -37,6 +37,7 @@
     html = [html stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
+    html = [html stringByReplacingOccurrencesOfString:@"&#038;" withString:@"&"];
     html = [html stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     html = [html stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
     html = [html stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
@@ -44,6 +45,9 @@
     html = [html stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
     html = [html stringByReplacingOccurrencesOfString:@"&#40;" withString:@"("];
     html = [html stringByReplacingOccurrencesOfString:@"&#41;" withString:@")"];
+    html = [html stringByReplacingOccurrencesOfString:@"&#34;" withString:@"\""];
+    html = [html stringByReplacingOccurrencesOfString:@"<p>" withString:@""];
+    html = [html stringByReplacingOccurrencesOfString:@"</p>" withString:@""];
     
     myScanner = [NSScanner scannerWithString:html];
     

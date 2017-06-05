@@ -26,8 +26,8 @@ class HomeSliderView: UIView {
     fileprivate func setupCustomPageControl() {
         customPageControl = StyledPageControl()
         customPageControl.pageControlStyle = PageControlStyleDefault
-        customPageControl.coreNormalColor = UIColor(red: 214.0/255.0, green: 214.0/255.0, blue: 214.0/255.0, alpha: 1)
-        customPageControl.coreSelectedColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 34.0/255, alpha: 1)
+        customPageControl.coreNormalColor = .tpLine()
+        customPageControl.coreSelectedColor = .tpGreen()
         customPageControl.diameter = 11
         customPageControl.gapWidth = 5
         self.addSubview(customPageControl)

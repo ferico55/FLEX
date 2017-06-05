@@ -13,11 +13,13 @@
 
 +(RKObjectMapping *)mapping{
     RKObjectMapping* promoShopMapping = [RKObjectMapping mappingForClass:[PromoShop class]];
-    [promoShopMapping addAttributeMappingsFromDictionary:@{@"id":@"shop_id"}];
+    [promoShopMapping addAttributeMappingsFromDictionary:@{@"id":@"shop_id",
+                                                           @"image_product.image_url":@"productPhotoUrls"}];
     [promoShopMapping addAttributeMappingsFromArray:@[@"name",
                                                       @"domain",
                                                       @"location",
                                                       @"gold_shop",
+                                                      @"enable_fav",
                                                       @"lucky_shop",
                                                       @"uri"
                                                       ]];

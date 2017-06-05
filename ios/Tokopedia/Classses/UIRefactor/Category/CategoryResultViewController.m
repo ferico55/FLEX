@@ -1453,11 +1453,16 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     __weak typeof(self) weakSelf = self;
     
     TopAdsFilter *filter = [[TopAdsFilter alloc] init];
-    filter.searchKeyword = [_params objectForKey:@"search"]?:@"";
     filter.source = [filter.searchKeyword isEqualToString:@""]?TopAdsSourceDirectory:TopAdsSourceSearch;
     filter.departementId = [self selectedCategoryIDsString]?:@"";
     filter.currentPage = page;
     filter.userFilter = _selectedFilterParam;
+    
+    if(_redirectedSearchKeyword){
+        filter.searchKeyword = _redirectedSearchKeyword;
+    }else {
+        filter.searchKeyword = [_params objectForKey:@"search"]?:@"";
+    }
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
         if (promoResult.count > 0) {

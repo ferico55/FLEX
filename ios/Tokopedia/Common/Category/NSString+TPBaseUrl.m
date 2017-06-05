@@ -272,5 +272,18 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)feedsMobileSiteUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://m.tokopedia.com",
+                           @(TPUrlStaging) : @"https://3-feature-m-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://192.168.100.151:9096",
+                           @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 
 @end

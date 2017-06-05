@@ -28,5 +28,6 @@
 + (nonnull NSString*)tokopediaUrl;
 + (nonnull NSString*)walletUrl;
 + (nonnull NSString*)mobileSiteUrl;
++ (nonnull NSString*)feedsMobileSiteUrl;
 
 @end

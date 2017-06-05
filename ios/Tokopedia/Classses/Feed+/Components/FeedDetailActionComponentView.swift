@@ -1,0 +1,72 @@
+//
+//  FeedDetailActionComponentView.swift
+//  Tokopedia
+//
+//  Created by Kenneth Vincent on 4/18/17.
+//  Copyright © 2017 TOKOPEDIA. All rights reserved.
+//
+
+import UIKit
+import Render
+import RxSwift
+import RxCocoa
+
+class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
+    private var disposeBag = DisposeBag()
+    
+    override func construct(state: FeedDetailState?, size _: CGSize) -> NodeType {
+        return Node<UIView>() { _, layout, _ in
+            layout.flexDirection = .row
+            layout.height = 51.0
+            layout.width = UIScreen.main.bounds.width
+            layout.flexGrow = 1
+            layout.flexShrink = 1
+            layout.position = .absolute
+            layout.bottom = 0
+        }.add(children: [
+            Node<UIButton>(identifier: "share") { button, layout, _ in
+                button.setTitle("Bagikan", for: .normal)
+                button.backgroundColor = .white
+                button.titleLabel?.font = .largeThemeSemibold()
+                button.setTitleColor(UIColor.black.withAlphaComponent(0.54), for: .normal)
+                
+                button.rx.tap
+                    .subscribe(onNext: {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
+                        let title = state?.source.shopState.shareDescription
+                        let url = state?.source.shopState.shareURL
+                        
+                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url!), anchor: button)
+                        
+                        UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                    })
+                    .disposed(by: self.rx_disposeBag)
+                
+                layout.height = 51.0
+                layout.flexGrow = 1
+                layout.flexBasis = 10
+            },
+            Node<UIView>() { view, layout, _ in
+                layout.width = 1
+                
+                view.backgroundColor = .tpLine()
+            },
+            Node<UIButton>(identifier: "visit-shop") { button, layout, _ in
+                button.setTitle("Kunjungi Toko", for: .normal)
+                button.backgroundColor = .tpGreen()
+                button.titleLabel?.font = .largeThemeSemibold()
+                button.setTitleColor(.white, for: .normal)
+                button.rx.tap
+                    .subscribe(onNext: {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Kunjungi Toko - Shop")
+                        TPRoutes.routeURL(URL(string: (state?.source.shopState.shopURL)!)!)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                layout.height = 51.0
+                layout.flexGrow = 1
+                layout.flexBasis = 10
+            }
+        ])
+    }
+}

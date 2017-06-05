@@ -419,8 +419,7 @@ FavoriteShopRequestDelegate
         container.data = @{
                            kTKPDDETAIL_APISHOPIDKEY     :promoResult.shop.shop_id?:@0,
                            kTKPDDETAIL_APISHOPNAMEKEY   :promoResult.shop.name?:@"",
-                           kTKPD_AUTHKEY                :[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                           @"ad_ref_key"                :promoResult.ad_ref_key
+                           kTKPD_AUTHKEY                :[_data objectForKey:kTKPD_AUTHKEY]?:@{}
                            };
         NSString *eventLabel = [NSString stringWithFormat:@"Add to Favorite - %@", promoResult.shop.name];
         [TopAdsService sendClickImpressionWithClickURLString:promoResult.shop_click_url];
@@ -521,7 +520,7 @@ FavoriteShopRequestDelegate
 - (void)requestPromoShop {
     TopAdsFilter *filter = [[TopAdsFilter alloc] init];
     filter.ep = TopAdsEpShop;
-    filter.numberOfItems = 3;
+    filter.numberOfShopItems = 3;
     filter.source = TopAdsSourceFavoriteShop;
     filter.isRecommendationCategory = true;
     

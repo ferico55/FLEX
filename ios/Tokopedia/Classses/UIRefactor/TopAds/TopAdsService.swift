@@ -13,7 +13,8 @@ import SPTPersistentCache
 
 class TopAdsFilter: NSObject {
     var ep: TopAdsEp = .product
-    var numberOfItems: Int = UIDevice.current.userInterfaceIdiom == .pad ?4:2
+    var numberOfProductItems: Int = UIDevice.current.userInterfaceIdiom == .pad ?4:2
+    var numberOfShopItems: Int = 1
     var source: TopAdsSource = .directory
     var currentPage: Int = 0
     var departementId: String?
@@ -26,13 +27,25 @@ class TopAdsFilter: NSObject {
         super.init()
     }
     
-    convenience init(source: TopAdsSource, ep:TopAdsEp? = nil, numberOfItems: Int? = nil, page: Int? = nil, departementId: String? = nil, hotlistId: String? = nil, searchKeyword: String? = nil, userFilter: NSDictionary? = nil, isRecommendationCategory: Bool? = nil) {
+    convenience init(source: TopAdsSource,
+                     ep:TopAdsEp? = nil,
+                     numberOfProductItems: Int? = nil,
+                     numberOfShopItems: Int? = nil,
+                     page: Int? = nil,
+                     departementId: String? = nil,
+                     hotlistId: String? = nil,
+                     searchKeyword: String? = nil,
+                     userFilter: NSDictionary? = nil,
+                     isRecommendationCategory: Bool? = nil) {
         self.init()
         if let theEp = ep {
             self.ep = theEp
         }
-        if let num = numberOfItems {
-            self.numberOfItems = num
+        if let num = numberOfProductItems {
+            self.numberOfProductItems = num
+        }
+        if let num = numberOfShopItems {
+            self.numberOfShopItems = num
         }
         if let thePage = page {
             self.currentPage = thePage
@@ -52,11 +65,13 @@ class TopAdsFilter: NSObject {
 @objc enum TopAdsEp: Int {
     case product
     case shop
+    case random
     
     func name () -> String {
         switch self {
         case .product: return "product"
         case .shop: return "shop"
+        case .random: return ""
         }
     }
 }
@@ -171,7 +186,7 @@ class TopAdsService: NSObject {
     
     private func getTopAdsFromCategoryRecommendation(topAdsFilter:TopAdsFilter, onSuccess:@escaping (_ result:[PromoResult])->Void, onFailure:@escaping (_ error:Error)->Void){
         
-        loadRecommendationCategoryIds { [weak self](ids) in
+        loadRecommendationCategoryIds { [weak self] (ids) in
             if ids.count > 0 {
                 let randomIndex = Int(arc4random_uniform(UInt32(ids.count)))
                 topAdsFilter.departementId = "\(ids[randomIndex])"
@@ -188,7 +203,12 @@ class TopAdsService: NSObject {
                 let path = "/promo/v1/info/user"
                 let parameters = ["pub_id":"15"]
                 
-                networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: CategoryRecommendationResponse.mapping(), onSuccess: { [weak self](successResult, operation) in
+                networkManager.request(withBaseUrl: NSString.topAdsUrl(),
+                                       path: path,
+                                       method: .GET,
+                                       parameter: parameters,
+                                       mapping: CategoryRecommendationResponse.mapping(),
+                                       onSuccess: { (successResult, operation) in
                     
                     if let response = successResult.dictionary()[""] as? CategoryRecommendationResponse {
                         if response.categoryIds.count > 0 {
@@ -208,7 +228,7 @@ class TopAdsService: NSObject {
                         onFailure(error)
                     })
                     
-                }) { [weak self] _ in
+                }) {  _ in
                     self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { (result) in
                         onSuccess(result)
                     }, onFailure: { (error) in
@@ -226,8 +246,19 @@ class TopAdsService: NSObject {
         let parameters = generateParameters(adFilter: topAdsFilter)
         
         networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: PromoResponse.mapping(), onSuccess: { (successResult, operation) in
-            let response = successResult.dictionary()[""] as! PromoResponse
-            onSuccess(response.data as! [PromoResult])
+            if let response = successResult.dictionary()[""] as? PromoResponse {
+                if let data = response.data as? [PromoResult] {
+                    onSuccess(data)
+                    return
+                }
+            }
+            
+            if let response = successResult.dictionary()[""] as? PromoResponse,
+                let data = response.data as? [PromoResult] {
+                onSuccess(data)
+                return
+                
+            }
         }) { (error) in
             onFailure(error)
         }
@@ -245,8 +276,9 @@ class TopAdsService: NSObject {
     }
     
     private func generateParameters(adFilter:TopAdsFilter) -> [String:String] {
+        
         let parameters: NSMutableDictionary = ["ep":adFilter.ep.name(),
-                                               "item":adFilter.numberOfItems,
+                                               "item":"\(adFilter.numberOfProductItems),\(adFilter.numberOfShopItems)",
                                                "src":adFilter.source.name(),
                                                "page":adFilter.currentPage,
                                                "device":"ios"]
@@ -259,14 +291,13 @@ class TopAdsService: NSObject {
             parameters["h"] = hotId
         }
         
-        if let searchKey = adFilter.searchKeyword {
-            parameters["q"] = searchKey
-        }
-        
         if let filter = adFilter.userFilter {
             parameters.addEntries(from: filter as! [AnyHashable : Any])
         }
-    
+        
+        if let searchKey = adFilter.searchKeyword {
+            parameters["q"] = searchKey
+        }
         
         var dict = [String:String]()
         for (key,value) in (parameters as NSDictionary) {
