@@ -1483,7 +1483,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     __weak typeof(self) weakSelf = self;
     
     TopAdsFilter *filter = [[TopAdsFilter alloc] init];
-    filter.source = [filter.searchKeyword isEqualToString:@""]?TopAdsSourceDirectory:TopAdsSourceSearch;
+    filter.source = TopAdsSourceDirectory;
     filter.departementId = [self selectedCategoryIDsString]?:@"";
     filter.currentPage = page;
     filter.userFilter = _selectedFilterParam;
