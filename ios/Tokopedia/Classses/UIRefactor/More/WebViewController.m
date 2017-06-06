@@ -72,6 +72,7 @@
 
 - (void) backButtonDidTapped {
     if (self.webView.canGoBack) {
+        [self.webView goBack];
         if(self.onTapBackButton) {
             self.onTapBackButton(self.webView.request.URL);
         }
