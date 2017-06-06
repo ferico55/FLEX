@@ -151,7 +151,8 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             self.selectedSort = selectedSort
             
             let eventName = self.isSourceFromDirectory() ? GA_EVENT_CLICK_CATEGORY : "clickSort"
-            let category = self.isSourceFromDirectory() ? GA_EVENT_CATEGORY_PAGE :GA_EVENT_CATEGORY_SORT
+            let category = self.isSourceFromDirectory() ? "\(GA_EVENT_CATEGORY_PAGE) -  \(self.rootCategoryID)"
+ :GA_EVENT_CATEGORY_SORT
             let action = self.isSourceFromDirectory() ? GA_EVENT_ACTION_NAVIGATION_SORT :GA_EVENT_ACTION_CLICK
             
             if selectedSort.name != "" {
@@ -306,7 +307,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         }
         
         let eventName = isSourceFromDirectory() ? GA_EVENT_CLICK_CATEGORY : "clickFilter"
-        let category = isSourceFromDirectory() ? GA_EVENT_CATEGORY_PAGE : GA_EVENT_CATEGORY_FILTER
+        let category = isSourceFromDirectory() ? "\(GA_EVENT_CATEGORY_PAGE) -  \(self.rootCategoryID)" : GA_EVENT_CATEGORY_FILTER
         let action = isSourceFromDirectory() ? GA_EVENT_ACTION_NAVIGATION_FILTER :GA_EVENT_ACTION_CLICK
         
         for filter in labels {

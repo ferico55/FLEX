@@ -397,6 +397,10 @@ ProductCellDelegate
     [_collectionView reloadData];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [_networkManager requestCancel];
@@ -1294,15 +1298,6 @@ ProductCellDelegate
         
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = searchResult.data.departmentId;
-            NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
-            [_params setObject:departementID forKey:@"sc"];
-            [_params removeObjectForKey:@"search"];
-            [_params removeObjectForKey:@"ob"];
-            [_params setObject:@"directory" forKey:@"type"];
-            [self setData:_params];
-            [_networkManager requestCancel];
-            
             NSMutableArray *pathComponent = [NSMutableArray new];
             for (NSInteger i = 2; i < query.count; i++) {
                 [pathComponent addObject:query[i]];

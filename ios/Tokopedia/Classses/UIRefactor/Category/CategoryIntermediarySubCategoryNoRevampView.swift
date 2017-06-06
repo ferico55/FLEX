@@ -51,7 +51,7 @@ class CategoryIntermediarySubCategoryNoRevampView: UIView {
     func setData(data: CategoryIntermediaryChild) {
         self.categoryNameLabel.text = data.name
         self.bk_(whenTapped: {
-            AnalyticsManager.trackEventName(GA_EVENT_CLICK_CATEGORY, category: GA_EVENT_CATEGORY_PAGE, action: GA_EVENT_ACTION_CATEGORY, label: data.id)
+            AnalyticsManager.trackEventName(GA_EVENT_CLICK_CATEGORY, category: "\(GA_EVENT_CATEGORY_PAGE) -  \(data.rootCategoryId)", action: GA_EVENT_ACTION_CATEGORY, label: data.id)
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: data.id, categoryName: data.name, isIntermediary: false)
         })

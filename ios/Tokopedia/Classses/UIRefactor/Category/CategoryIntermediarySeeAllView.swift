@@ -19,8 +19,6 @@ class CategoryIntermediarySeeAllView: UIView {
         }
     }
     @IBAction private func didTapSeeAllButton(_ sender: Any) {
-        AnalyticsManager .trackEventName(GA_EVENT_CLICK_CATEGORY, category: GA_EVENT_CATEGORY_PAGE
-, action: GA_EVENT_ACTION_CATEGORY_BREAKDOWN, label: "Lihat Lainnya")
         didTapSeeAllButton?()
     }
     

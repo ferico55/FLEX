@@ -51,7 +51,8 @@ class CategoryIntermediarySubCategoryView: UIView {
 
             seeMoreView.setExpanded(isExpanded: isExpanded)
             seeMoreView.didTapSeeAllButton = { [unowned self] in
-                
+                AnalyticsManager .trackEventName(GA_EVENT_CLICK_CATEGORY, category: "\(GA_EVENT_CATEGORY_PAGE) -  \(categoryChildren.first?.rootCategoryId)"
+                    , action: "Navigation", label: "Expand Subcategory")
                 self.didTapSeeAllButton?()
             }
             self.addSubview(seeMoreView)
@@ -69,6 +70,7 @@ class CategoryIntermediarySubCategoryView: UIView {
             for (index, data) in categoryChildren.enumerated() {
                 let categoryViewCell = (UINib(nibName: "CategoryIntermediarySubCategoryCellView", bundle: nil).instantiate(withOwner: nil, options: [:])[0]) as! CategoryIntermediarySubCategoryCellView
                 
+                categoryViewCell.layer.shadowOffset = .zero
                 categoryViewCell.setData(data: data)
                 innerHorizontalStackView.addArrangedSubview(categoryViewCell)
                 

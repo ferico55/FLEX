@@ -6,8 +6,6 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Foundation
-import RestKit
 import Unbox
 
 final class CategoryIntermediaryProductShop: NSObject, Unboxable {
@@ -19,13 +17,6 @@ final class CategoryIntermediaryProductShop: NSObject, Unboxable {
     var name: String = ""
     var reputation: String = ""
     var url: String = ""
-    
-    class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryProductShop.self)
-        mapping.addAttributeMappings(from:["city", "clover", "id", "location", "name", "reputation", "url"])
-        mapping.addAttributeMappings(from: ["is_gold" : "isGold"])
-        return mapping;
-    }
     
     convenience init(unboxer:Unboxer) throws {
         self.init()

@@ -2,7 +2,7 @@
 //  CategoryIntermediaryHotListImage.swift
 //  Tokopedia
 //
-//  Created by Billion Goenawan on 4/5/17.
+//  Created by Billion Goenawan on 5/18/17.
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
@@ -14,8 +14,8 @@ class CategoryIntermediaryHotListImage: NSObject {
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryHotListImage.self)
-        mapping.addAttributeMappings(from:["280x418" : "url"])
+        mapping.addAttributeMappings(from:["375x200" : "url"])
         return mapping;
     }
-
+    
 }

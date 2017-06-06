@@ -31,6 +31,10 @@
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
 
+UserAuthentificationManager *_userManager;
+NSDictionary *_auth;
+TokopediaNetworkManager *tokopediaNetworkManagerWishList;
+
 - (void)awakeFromNib {
     
     [super awakeFromNib];

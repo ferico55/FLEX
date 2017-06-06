@@ -375,6 +375,10 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_networkManager requestCancel];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - Properties
 - (void)setData:(NSDictionary *)data {
     _data = data;
@@ -525,6 +529,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             }
             
             headerIntermediaryCollectionReusableView.subCategoryView.didTapSeeAllButton = ^() {
+                 [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:GA_EVENT_ACTION_CATEGORY_BREAKDOWN label: @"Lihat Lainnya"];
                 _isCategorySubviewExpanded = !_isCategorySubviewExpanded;
                 [_collectionView reloadData];
             };
@@ -561,7 +566,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     SearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
     [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:@"Kategori" action:GA_EVENT_ACTION_CLICK_PRODUCT label: _categoryIntermediaryResult.id];
@@ -683,7 +688,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             
             [controller setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed,  NSArray *returnedItems, NSError *activityError) {
                 NSString *departmentIDString = [NSString stringWithFormat:@"%d", _searchObject.data.departmentId];
-                [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:GA_EVENT_CATEGORY_PAGE action:GA_EVENT_ACTION_NAVIGATION_SHARE label:[NSString stringWithFormat:@"%@ - %@", [_data objectForKey:@"sc"] ?: departmentIDString, activityType]];
+                [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:GA_EVENT_ACTION_NAVIGATION_SHARE label:[NSString stringWithFormat:@"%@ - %@", [_data objectForKey:@"sc"] ?: departmentIDString, activityType]];
             }];
             
             [self presentViewController:controller animated:YES completion:nil];
@@ -710,7 +715,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                        forState:UIControlStateNormal];
             }
             
-            [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:GA_EVENT_CATEGORY_PAGE action:GA_EVENT_ACTION_NAVIGATION_DISPLAY label:[NSString stringWithFormat:@"%ld", (long)self.cellType]];
+            [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:GA_EVENT_ACTION_NAVIGATION_DISPLAY label:[NSString stringWithFormat:@"%ld", (long)self.cellType]];
             
             _collectionView.contentOffset = CGPointMake(0, 0);
             [_flowLayout setEstimatedSizeWithCellType:self.cellType];
@@ -1090,6 +1095,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                [weakSelf showEntireView];
                                            }];
 }
+
+
 
 - (void)requestSearch {
     __weak typeof(self) weakSelf = self;

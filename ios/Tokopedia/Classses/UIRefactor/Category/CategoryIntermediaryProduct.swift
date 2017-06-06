@@ -6,8 +6,6 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Foundation
-import RestKit
 import Unbox
 
 final class CategoryIntermediaryProduct: NSObject, Unboxable {
@@ -25,20 +23,6 @@ final class CategoryIntermediaryProduct: NSObject, Unboxable {
     var shop: CategoryIntermediaryProductShop!
     var applinks: String = ""
     var isOnWishlist = false
-    
-    class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryProduct.self)
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", with: ProductBadge.mapping()))
-         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", with: ProductLabel.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "shop", toKeyPath: "shop", with: CategoryIntermediaryProductShop.mapping()))
-        mapping.addAttributeMappings(from:["id", "condition", "name", "price", "rating", "url", "applinks"])
-        
-        mapping.addAttributeMappings(from:["department_id" : "departmentId",
-                                           "image_url" : "imageUrl",
-                                           "wholesale_price" : "wholesalePrice",
-                                           ])
-        return mapping;
-    }
 
     convenience init(unboxer:Unboxer) throws {
         self.init()

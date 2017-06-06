@@ -11,26 +11,9 @@ import RestKit
 import Unbox
 
 final class CategoryIntermediaryResult: NSObject, Unboxable {
-    var children: [CategoryIntermediaryChild]! {
-        didSet {
-            nonHiddenChildren =  children.filter({ (child) -> Bool in
-                return child.hidden == 0
-            })
-        }
-    }
-    var nonHiddenChildren: [CategoryIntermediaryChild]! {
-        didSet {
-            nonExpandedChildren = nonHiddenChildren.enumerated().filter({ (index, child) -> Bool in
-                if self.isRevamp {
-                    return index < 9
-                } else {
-                    return index < 6
-                }
-            }).map({ (index, child) -> CategoryIntermediaryChild in
-                return child
-            })
-        }
-    }
+    var children: [CategoryIntermediaryChild]!
+    var nonHiddenChildren: [CategoryIntermediaryChild]!
+
     var nonExpandedChildren: [CategoryIntermediaryChild]!
     var maxRowInCategorySubView: Int = 3
     var id: String = ""
@@ -42,14 +25,14 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
     var hidden: Int = 0
     // views digunakan untuk penanda apakah list produk dari intermediary ditampilkan secara grid, list, atau one
     var views: Int = 0
-    var isRevamp: Bool = false {
-        didSet {
-            maxRowInCategorySubView = isRevamp ? 3 : 2
-        }
-    }
+    var isRevamp: Bool = false
     var isIntermediary: Bool = false
-    
     var curatedProduct: CategoryIntermediaryCuratedProduct?
+    var banner: CategoryIntermediaryBanner?
+    var video: CategoryIntermediaryVideo?
+
+    // rootCategoryId used for tracking needs
+    var rootCategoryId: String = ""
     
     init(children: [CategoryIntermediaryChild],
       curatedProduct: CategoryIntermediaryCuratedProduct?,
@@ -62,7 +45,9 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
       headerImg:String?,
       views:Int,
       isRevamp: Bool,
-      isIntermediary :Bool) {
+      isIntermediary :Bool,
+    banner: CategoryIntermediaryBanner,
+    video: CategoryIntermediaryVideo) {
         self.children = children
         self.curatedProduct = curatedProduct
         self.id = id
@@ -75,7 +60,8 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
         self.views = views
         self.isRevamp = isRevamp
         self.isIntermediary = isIntermediary
-        
+        self.banner = banner
+        self.video = video
     }
     
     convenience init(unboxer: Unboxer) throws {
@@ -91,7 +77,10 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
             headerImg : try? unboxer.unbox(keyPath: "result.header_image") as String,
             views : try unboxer.unbox(keyPath: "result.view"),
             isRevamp : try unboxer.unbox(keyPath: "result.is_revamp"),
-            isIntermediary : try unboxer.unbox(keyPath: "result.is_intermediary")
+            isIntermediary : try unboxer.unbox(keyPath: "result.is_intermediary"),
+            banner : try unboxer.unbox(keyPath: "result.banner") as CategoryIntermediaryBanner,
+            video : try unboxer.unbox(keyPath: "result.video") as CategoryIntermediaryVideo
+
         )
         nonHiddenChildren =  children.filter { (child) in
             return child.hidden == 0
@@ -108,5 +97,7 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
                     return child
             }
         maxRowInCategorySubView = isRevamp ? 3 : 2
+        rootCategoryId = try unboxer.unbox(keyPath: "result.root_category_id")
+        
     }
 }

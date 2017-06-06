@@ -110,37 +110,42 @@ NSInteger const bannerIpadWidth = 450;
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
-    [AnalyticsManager trackEventName:@"sliderBanner" category:@"Slider" action:GA_EVENT_ACTION_CLICK label:banner.title?:@""];
-    
-    NSURL *url = [self sanitizedUrlForUrl:banner.redirect_url];
-    
-    if (![@[@"tokopedia.com", @"m.tokopedia.com", @"www.tokopedia.com"] containsObject:url.host]) {
-        [self openWebViewWithUrl:banner.redirect_url];
-        return;
-    }
-    
-    // will use TPRoute when new banner api is up
-    [self navigateToIntermediaryPage];
-    
-    NSString *path = [self shopDomainForUrl:banner.redirect_url];
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
-        [_navigationDelegate popViewControllerAnimated:NO];
-        
-        if (exists) {
-            ShopViewController *shopViewController = [ShopViewController new];
-            shopViewController.data = @{
-                                        @"shop_domain": path
-                                        };
-            
-            [_navigationDelegate pushViewController:shopViewController animated:NO];
-            
-        } else {
-            [weakSelf openWebViewWithUrl:banner.redirect_url];
+    self.didSelectBanner(banner);
+
+    if (_isIntermediaryBanner) {
+        if (![banner.redirect_url isEqualToString:@""]) {
+            [TPRoutes routeURL:[NSURL URLWithString:banner.applinks]];
         }
-    }];
+    } else {
+        // if home page banner
+        
+        // will use TPRoute when new banner api is up
+        [self navigateToIntermediaryPage];
+        
+        NSString *path = [self shopDomainForUrl:banner.redirect_url];
+        
+        [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
+            [_navigationDelegate popViewControllerAnimated:NO];
+            
+            if (exists) {
+                ShopViewController *shopViewController = [ShopViewController new];
+                shopViewController.data = @{
+                                            @"shop_domain": path
+                                            };
+                
+                [_navigationDelegate pushViewController:shopViewController animated:NO];
+                
+            } else {
+                WebViewController *webViewController = [WebViewController new];
+                webViewController.strTitle = @"Promo";
+                webViewController.strURL = banner.redirect_url;
+                
+                if(_navigationDelegate != nil) {
+                    [_navigationDelegate pushViewController:webViewController animated:NO];
+                }
+            }
+        }];
+    }
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {

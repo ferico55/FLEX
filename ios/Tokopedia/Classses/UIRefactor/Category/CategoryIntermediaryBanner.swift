@@ -1,0 +1,20 @@
+//
+//  CategoryIntermediaryBanner.swift
+//  Tokopedia
+//
+//  Created by Billion Goenawan on 5/18/17.
+//  Copyright © 2017 TOKOPEDIA. All rights reserved.
+//
+
+import Unbox
+
+final class CategoryIntermediaryBanner: Unboxable {
+    
+    var images: [IntermediarySlide]!
+    
+    convenience init(unboxer:Unboxer) throws {
+        self.init()
+        self.images = try unboxer.unbox(keyPath: "images")
+    }
+
+}

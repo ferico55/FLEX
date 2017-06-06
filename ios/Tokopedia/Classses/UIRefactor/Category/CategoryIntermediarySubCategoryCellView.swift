@@ -23,7 +23,7 @@ class CategoryIntermediarySubCategoryCellView: UIView {
         self.categoryNameLabel.text = data.name.uppercased()
         self.bk_(whenTapped: {
             
-            AnalyticsManager.trackEventName("clickIntermediary", category: GA_EVENT_INTERMEDIARY_PAGE, action: GA_EVENT_ACTION_CATEGORY, label: data.id)
+            AnalyticsManager.trackEventName("clickIntermediary", category: GA_EVENT_INTERMEDIARY_PAGE, action: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(data.rootCategoryId)", label: data.id)
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: data.id, categoryName: data.name, isIntermediary: false)
         })

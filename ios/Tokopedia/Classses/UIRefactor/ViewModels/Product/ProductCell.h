@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *preorderPosition;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgesConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
+@property (weak, nonatomic) IBOutlet UIButton *buttonWishlist;
 @property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
 @property (weak, nonatomic) IBOutlet UIButton *buttonWishlistExpander;
 @property (weak, nonatomic) IBOutlet UIImageView *iconOvalWhite;

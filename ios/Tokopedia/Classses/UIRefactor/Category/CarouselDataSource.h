@@ -21,4 +21,7 @@
 @property(nonatomic, weak) UINavigationController *navigationDelegate;
 @property(nullable, nonatomic, weak) NSTimer *timer;
 
+@property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide);
+@property (nonatomic) BOOL isIntermediaryBanner;
+
 @end
