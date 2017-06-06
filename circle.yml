@@ -1,16 +1,18 @@
 machine:
+  environment:
+    XCODE_SCHEME: "Tokopedia"
+
   xcode:
     version: 8.3.2
-  node:
-    version: 7.10.0
 
-#deployment:
-#  beta_distribution:
-#    branch: circleci
-#    commands:
-#      - gym --scheme "Tokopedia"
-#      - ipa distribute:crashlytics
-#          --crashlytics_path Crashlytics.framework
-#          --api_token    "$CRASHLYTICS_API_KEY"
-#          --build_secret "$CRASHLYTICS_SECRET"
+dependencies:
+  override:
+    - brew install node
+    - npm install
+
+# deployment:
+#   production:
+#     branch: master
+#     commands:
+#       - fastlane beta
 
