@@ -8,6 +8,7 @@
 
 #import "InboxMessageDetailResult.h"
 #import "InboxMessageDetailBetween.h"
+#import "Tokopedia-Swift.h"
 
 @implementation InboxMessageDetailResult
 

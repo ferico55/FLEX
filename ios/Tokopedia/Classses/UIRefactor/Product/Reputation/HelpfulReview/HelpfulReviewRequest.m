@@ -21,7 +21,7 @@
 #import "ProductOwner.h"
 #import "ProductDetailReputationViewController.h"
 #import "ProductReputationViewController.h"
-#import "Paging.h"
+@class Paging;
 #import "ReportViewController.h"
 #import "RatingList.h"
 #import "ReviewResponse.h"

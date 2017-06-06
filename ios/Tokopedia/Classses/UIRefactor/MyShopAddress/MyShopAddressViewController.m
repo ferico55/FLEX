@@ -10,7 +10,6 @@
 #import "generalcell.h"
 #import "SettingLocation.h"
 #import "ShopSettings.h"
-#import "Paging.h"
 #import "MyShopAddressViewController.h"
 #import "MyShopAddressDetailViewController.h"
 #import "MyShopAddressEditViewController.h"
@@ -23,6 +22,7 @@
 
 #import "NoResultReusableView.h"
 #import "LoadingView.h"
+#import "Tokopedia-Swift.h"
 
 @interface MyShopAddressViewController ()
 <

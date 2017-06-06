@@ -7,6 +7,7 @@
 //
 
 #import "EtalaseResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation EtalaseResult
 +(RKObjectMapping *)mapping{

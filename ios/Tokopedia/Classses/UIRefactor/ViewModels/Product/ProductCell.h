@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDStackView.h"
+#import "ProductModelView.h"
 #import <OAStackView/OAStackView.h>
 @class ProductModelView;
 @class CatalogModelView;
+
+@protocol ProductCellDelegate <NSObject>
+- (void) changeWishlistForProductId:(NSString*)productId withStatus:(bool) isOnWishlist;
+@end
 
 @interface ProductCell : UICollectionViewCell
 
@@ -29,9 +34,21 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *badgesConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
 @property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonWishlistExpander;
+@property (weak, nonatomic) IBOutlet UIImageView *iconOvalWhite;
 
 @property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
+@property (strong, nonatomic) UIViewController *parentViewController;
+@property (weak, nonatomic) id<ProductCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceLabelTopConstraint;
+@property (strong, nonatomic) IBOutlet UILabel *originalPriceLabel;
+@property (strong, nonatomic) IBOutlet UIView *discountView;
+@property (strong, nonatomic) IBOutlet UILabel *discountLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceLabelWidthConstraint;
+@property (strong, nonatomic) NSString* applinks;
+@property (strong, nonatomic) ProductModelView *_viewModel;
 
-
+- (void) removeWishlistButton;
+- (void) updateLayout;
 @end

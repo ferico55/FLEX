@@ -7,6 +7,7 @@
 //
 
 #import "SettingLocationResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SettingLocationResult
 

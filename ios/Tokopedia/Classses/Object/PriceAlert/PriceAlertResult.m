@@ -8,6 +8,7 @@
 
 #import "PriceAlertResult.h"
 #import "CatalogShops.h"
+#import "Tokopedia-Swift.h"
 
 @implementation PriceAlertResult
 

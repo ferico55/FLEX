@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Paging.h"
+@class Paging;
 #import "InboxMessageDetailList.h"
 #import "InboxMessageDetailBetween.h"
 

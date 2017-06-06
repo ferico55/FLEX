@@ -18,6 +18,7 @@
 #import "DepositRequest.h"
 #import "WebViewController.h"
 #import "NavigateViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;

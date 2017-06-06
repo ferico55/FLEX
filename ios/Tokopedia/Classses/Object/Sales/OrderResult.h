@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
+@class Paging;
 #import "OrderOrder.h"
 #import "OrderBooking.h"
 #import "OrderTransaction.h"

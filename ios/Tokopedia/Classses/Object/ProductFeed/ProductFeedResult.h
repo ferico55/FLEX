@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Paging.h"
+@class Paging;
 #import "ProductFeedList.h"
 
 @interface ProductFeedResult : NSObject

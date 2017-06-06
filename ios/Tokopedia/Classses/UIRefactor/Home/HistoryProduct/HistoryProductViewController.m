@@ -131,6 +131,7 @@ RetryViewDelegate
     
     HistoryProductList *product = _product[indexPath.row];
     [cell setViewModel:product.viewModel];
+    [cell removeWishlistButton];
     
     return cell;
 }

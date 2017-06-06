@@ -46,11 +46,15 @@
     
     
     [self setRequestMethod:method];
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog(@"json string = %@", jsonString);
-    _parameterMD5 = [jsonString encryptWithMD5];
+    if(parameter != nil) {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"json string = %@", jsonString);
+        _parameterMD5 = [jsonString encryptWithMD5];
+    }
+    else {
+        _parameterMD5 = [@"" encryptWithMD5];
+    }
     
     [self setTkpdPath:path];
     [self setSecret:secret];

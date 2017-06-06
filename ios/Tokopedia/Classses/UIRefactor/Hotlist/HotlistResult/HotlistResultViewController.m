@@ -559,7 +559,7 @@ static NSString const *rows = @"12";
     CGFloat totalWidth = 10;
     
     for (int i = 0; i< hashtags.count; i++) {
-        Hashtags *hashtag = hashtags[i];
+        Hashtag *hashtag = hashtags[i];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
@@ -600,7 +600,7 @@ static NSString const *rows = @"12";
     UIButton *button = (UIButton*)sender;
     NSInteger index = [_buttons indexOfObject:button];
     
-    Hashtags *hashtags = _hashtags[index];
+    Hashtag *hashtags = _hashtags[index];
 
     NSURL *url = [NSURL URLWithString:hashtags.url];
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
@@ -680,6 +680,7 @@ static NSString const *rows = @"12";
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cell = (ProductCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
         [(ProductCell *)cell setViewModel:list.viewModel];
+        [(ProductCell *)cell removeWishlistButton];
     } else {
         cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
         [(ProductThumbCell *)cell setViewModel:list.viewModel];

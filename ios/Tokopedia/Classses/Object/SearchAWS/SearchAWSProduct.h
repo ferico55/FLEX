@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "TKPObjectMapping.h"
-#import "ProductBadge.h"
-#import "ProductLabel.h"
+@class ProductBadge;
+@class ProductLabel;
 @class ProductModelView;
 @class CatalogModelView;
 

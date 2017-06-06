@@ -11,7 +11,7 @@
 #import "NSString+MD5.h"
 #import "activation.h"
 #import "MainViewController.h"
-#import "Tokopedia-swift.h"
+#import "Tokopedia-Swift.h"
 
 @implementation UserAuthentificationManager {
 

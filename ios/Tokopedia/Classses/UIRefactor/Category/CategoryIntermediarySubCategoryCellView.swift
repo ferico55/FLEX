@@ -14,9 +14,11 @@ class CategoryIntermediarySubCategoryCellView: UIView {
     @IBOutlet private var categoryNameLabel: UILabel!
     
     func setData(data: CategoryIntermediaryChild) {
-        let urlThumbnail: URL? = URL(string: data.thumbnailImage)
-        if let urlThumbnail = urlThumbnail {
-            self.imageView.setImageWith(urlThumbnail)
+        if let thumbnailImage = data.thumbnailImage {
+            let urlThumbnail: URL? = URL(string: thumbnailImage)
+            if let urlThumbnail = urlThumbnail {
+                self.imageView.setImageWith(urlThumbnail)
+            }
         }
         self.categoryNameLabel.text = data.name.uppercased()
         self.bk_(whenTapped: {

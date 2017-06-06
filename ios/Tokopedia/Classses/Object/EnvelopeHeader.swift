@@ -8,8 +8,9 @@
 
 import Foundation
 import RestKit
+import Unbox
 
-class EnvelopeHeader:NSObject {
+final class EnvelopeHeader:NSObject, Unboxable {
     var total_data = ""
     var server_process_time = ""
     
@@ -21,5 +22,11 @@ class EnvelopeHeader:NSObject {
             ])
         
         return mapping
+    }
+    
+    convenience init(unboxer: Unboxer) throws {
+        self.init()
+        self.total_data = try unboxer.unbox(keyPath: "total_data")
+        self.server_process_time = try unboxer.unbox(keyPath: "process_time")
     }
 }

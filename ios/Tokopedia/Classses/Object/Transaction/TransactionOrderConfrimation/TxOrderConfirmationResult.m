@@ -7,6 +7,7 @@
 //
 
 #import "TxOrderConfirmationResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TxOrderConfirmationResult
 +(NSDictionary *)attributeMappingDictionary

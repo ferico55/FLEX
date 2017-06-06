@@ -7,6 +7,7 @@
 //
 
 #import "OrderResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation OrderResult
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "List.h"
-#import "Paging.h"
+@class Paging;
 #import "DepartmentTree.h"
 #import "SearchRedirect.h"
 #import "SearchAWSShop.h"

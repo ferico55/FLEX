@@ -26,7 +26,7 @@
 #import "TransactionCalculatePrice.h"
 #import "TransactionCartViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
-#import "Tokopedia-swift.h"
+#import "Tokopedia-Swift.h"
 #import "NavigateViewController.h"
 
 #import "RequestEditAddress.h"

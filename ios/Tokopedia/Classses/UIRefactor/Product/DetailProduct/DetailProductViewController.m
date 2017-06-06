@@ -2092,7 +2092,6 @@ TTTAttributedLabelDelegate
     
     [self callAuthService:^{
         [self setWishlistRequestingAction:YES];
-        
         if (!isLoggedIn){
             [self loadData:^(BOOL isSuccess){
                 if(isSuccess && btnWishList.tag != 0){
@@ -2409,6 +2408,8 @@ TTTAttributedLabelDelegate
 
     [self setWishlistRequestingAction:NO];
     [alert show];
+    if(self.delegate != nil)
+        [self.delegate changeWishlistForProductId:_product.data.info.product_id withStatus:NO];
 }
 
 -(void) didSuccessAddWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation {
@@ -2422,6 +2423,8 @@ TTTAttributedLabelDelegate
     [self bk_performBlock:^(id obj) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
     } afterDelay:2.0];
+    if(self.delegate != nil)
+        [self.delegate changeWishlistForProductId:_product.data.info.product_id withStatus:YES];
 }
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {

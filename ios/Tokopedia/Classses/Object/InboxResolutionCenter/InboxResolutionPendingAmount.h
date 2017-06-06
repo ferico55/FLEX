@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
 
 @interface InboxResolutionPendingAmount : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSString *total_amt_idr;

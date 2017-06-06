@@ -8,8 +8,9 @@
 
 import UIKit
 import RestKit
+import Unbox
 
-@objc class CategoryDetail: NSObject, NSCopying {
+@objc class CategoryDetail: NSObject, NSCopying, Unboxable {
     //MARK : Use categoryId rather than d_id or department_id
     var categoryId : String = String()
     var d_id :String = String() {
@@ -122,6 +123,22 @@ import RestKit
         childmapping.addPropertyMapping(relLastChildMapping)
         
         return mapping
+    }
+    
+    convenience required init(unboxer:Unboxer) throws {
+        self.init()
+        self.name = try unboxer.unbox(keyPath: "name")
+        self.weight = try unboxer.unbox(keyPath: "weight")
+        self.parent = try unboxer.unbox(keyPath: "parent")
+        self.tree = try unboxer.unbox(keyPath: "tree")
+        self.has_catalog = try unboxer.unbox(keyPath: "has_catalog")
+        self.identifier = try unboxer.unbox(keyPath: "identifier")
+        self.url = try unboxer.unbox(keyPath: "url")
+        self.categoryId = try unboxer.unbox(keyPath: "id")
+        self.d_id = try unboxer.unbox(keyPath: "d_id")
+        self.title = try unboxer.unbox(keyPath: "title")
+        self.department_name = try unboxer.unbox(keyPath: "department_name")
+        self.department_id = try unboxer.unbox(keyPath: "department_id")
     }
 
     override func isEqual(_ object: Any?) -> Bool {

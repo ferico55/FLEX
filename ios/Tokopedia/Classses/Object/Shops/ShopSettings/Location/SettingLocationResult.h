@@ -5,10 +5,9 @@
 //  Created by IT Tkpd on 11/21/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+@class Paging;
 #import <Foundation/Foundation.h>
 #import "Address.h"
-#import "Paging.h"
 
 @interface SettingLocationResult : NSObject
 

@@ -102,6 +102,7 @@ TKPDAlertViewDelegate
         ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCellIdentifier" forIndexPath:indexPath];
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
         [cell setViewModel:promoResult.viewModel];
+        [cell removeWishlistButton];
         return cell;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
@@ -112,6 +113,8 @@ TKPDAlertViewDelegate
         
     } else {
         UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        if([cell isKindOfClass:[ProductCell class]])
+            [((ProductCell*) cell) removeWishlistButton];
         return cell;
     }
 }

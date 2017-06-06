@@ -8,9 +8,8 @@
 
 #import "SearchAWSResult.h"
 #import "SearchAWSProduct.h"
-#import "Hashtags.h"
 #import "Breadcrumb.h"
-#import "Paging.h"
+@class Paging;
 #import "Tokopedia-Swift.h"
 
 @implementation SearchAWSResult
@@ -30,7 +29,7 @@
     RKRelationshipMapping *listProductsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:[SearchAWSProduct mapping]];
     [resultMapping addPropertyMapping:listProductsRel];
 
-	RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:[Hashtags mapping]];
+	RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:[Hashtag mapping]];
     [resultMapping addPropertyMapping:hashtagRel];
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]];

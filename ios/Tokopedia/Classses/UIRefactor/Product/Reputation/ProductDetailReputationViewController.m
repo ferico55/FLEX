@@ -47,12 +47,12 @@
 #define CTagHapus 3
 
 @interface ProductDetailReputationViewController () <
-    productReputationDelegate,
-    CMPopTipViewDelegate,
-    HPGrowingTextViewDelegate,
-    ProductDetailReputationDelegate,
-    SmileyDelegate,
-    MGSwipeTableCellDelegate
+productReputationDelegate,
+CMPopTipViewDelegate,
+HPGrowingTextViewDelegate,
+ProductDetailReputationDelegate,
+SmileyDelegate,
+MGSwipeTableCellDelegate
 >
 @end
 
@@ -140,7 +140,7 @@
                                                  [self setLikeDislikeActive:totalLikeDislike.like_status];
                                              }
                                          } onFailure:^(NSError *errorResult) {
-                                             
+                                             NSLog(@"error");
                                          }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -155,6 +155,8 @@
     constHeightViewContent.constant = heightScreenView;
     
     [AnalyticsManager trackScreenName:@"Product Review Detail Page"];
+    
+    [tableReputation setHidden:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -166,6 +168,22 @@
         _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = nil;
         _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = nil;
     }
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [tableReputation setHidden:NO];
+    [tableReputation mas_makeConstraints: ^(MASConstraintMaker *make) {
+        make.top.equalTo(@0);
+        make.left.equalTo(@0);
+    }];
+    [tableReputation.tableHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(@0);
+        make.left.equalTo(@0);
+        make.height.equalTo(productReputationCell.contentView.mas_height);
+    }];
+    [tableReputation reloadData];
 }
 
 - (void)dealloc {
@@ -347,11 +365,6 @@
     if(isResizeSeparatorProduct)
         [productReputationCell.getViewSeparatorProduct setFrame:CGRectMake(0, productReputationCell.getViewSeparatorProduct.frame.origin.y+productReputationCell.getViewContent.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, productReputationCell.getViewSeparatorProduct.bounds.size.height)];
     
-    //Add separator
-    UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, productReputationCell.contentView.bounds.size.height-1, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, 1.0f)];
-    viewSeparator.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
-    [productReputationCell.contentView addSubview:viewSeparator];
-    
     productReputationCell.getViewSeparatorKualitas.frame = CGRectMake(0, productReputationCell.getViewContent.frame.origin.y+productReputationCell.getViewContentAction.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, 1);
     [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorKualitas];
     [productReputationCell.getLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToShopView:)]];
@@ -370,12 +383,8 @@
 #pragma mark - Action
 - (void)goToShopView:(id)sender {
     if([_detailReputationReview.review_user_label caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
         ShopViewController *shopViewController = [ShopViewController new];
-        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
-                                             kTKPD_AUTHKEY:auth?:@{}};
+        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id};
         [self.navigationController pushViewController:shopViewController animated:YES];
     }
     else {
@@ -712,7 +721,6 @@
     }
 }
 
-
 #pragma mark - Notification Keyboard
 - (void)keyboardDidShow:(NSNotification *)note {
     [tableReputation scrollRectToVisible:CGRectMake(0, tableReputation.contentSize.height - tableReputation.bounds.size.height, tableReputation.bounds.size.width, tableReputation.bounds.size.height) animated:YES];
@@ -749,12 +757,8 @@
 #pragma mark - Method
 - (void)actionTapCellLabelUser:(UITapGestureRecognizer *)sender {
     if([(_detailReputationReview!=nil)?_detailReputationReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        
         ShopViewController *shopViewController = [ShopViewController new];
-        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
-                                             kTKPD_AUTHKEY:auth?:@{}};
+        shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id};
         [self.navigationController pushViewController:shopViewController animated:YES];
     }
     else {

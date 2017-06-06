@@ -21,7 +21,7 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "Paging.h"
+@class Paging;
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
 

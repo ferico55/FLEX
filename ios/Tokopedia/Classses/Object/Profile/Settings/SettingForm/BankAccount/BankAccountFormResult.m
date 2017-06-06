@@ -7,6 +7,7 @@
 //
 
 #import "BankAccountFormResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation BankAccountFormResult
 

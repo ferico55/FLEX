@@ -11,7 +11,7 @@
 #import <AppHub/AppHub.h>
 #import "UIApplication+React.h"
 #import "ReactTabManager.h"
-
+#import "CategoryResultViewController.h"
 #import <React/RCTRootView.h>
 
 @interface HotlistViewController ()<NotificationManagerDelegate> {

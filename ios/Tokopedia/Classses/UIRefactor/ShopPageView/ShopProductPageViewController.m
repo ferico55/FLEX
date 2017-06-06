@@ -365,6 +365,7 @@ ShopTabChild
         [(ProductCell*)cell setViewModel:list.viewModel];
         ((ProductCell*)cell).locationImage.hidden = YES;
         ((ProductCell*)cell).badgesConstraint.constant = 15;
+        [((ProductCell*)cell) removeWishlistButton];
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];

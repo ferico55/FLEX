@@ -366,6 +366,26 @@
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate{
+    NSDictionary *loadedData;
+    DetailProductViewController *productController = [DetailProductViewController new];
+    if([objProduct isKindOfClass:[SearchProduct class]]) {
+        SearchProduct *product = (SearchProduct *) objProduct;
+        NSString *productIDString = product.product_id;
+        loadedData = @{@"product_id"      : productIDString,
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_url?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : productIDString};
+        productController.delegate = delegate;
+    }
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct{
     NSDictionary *loadedData;
     DetailProductViewController *productController = [DetailProductViewController new];
@@ -415,6 +435,16 @@
                        @"shop_name"       : product.shop_name?:@"",
                        @"pre_order"       : @(product.product_preorder)};
         productController.data = @{@"product_id" : product.product_id?:@""};
+    } else if([objProduct isKindOfClass:[SearchProduct class]]) {
+        SearchProduct *product = (SearchProduct *) objProduct;
+        NSString *productIDString = product.product_id;
+        loadedData = @{@"product_id"      : productIDString,
+                       @"product_name"    : product.product_name?:@"",
+                       @"product_image"   : product.product_url?:@"",
+                       @"product_price"   : product.product_price?:@"",
+                       @"shop_name"       : product.shop_name?:@"",
+                       @"pre_order"       : @(product.product_preorder)};
+        productController.data = @{@"product_id" : productIDString};
     }
     
     productController.loadedData = loadedData;

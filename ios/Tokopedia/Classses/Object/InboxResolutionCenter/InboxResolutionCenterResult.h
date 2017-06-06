@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
 #import "InboxResolutionCenterList.h"
 #import "InboxResolutionPendingAmount.h"
+@class Paging;
 
 @interface InboxResolutionCenterResult : NSObject <TKPObjectMapping>
 

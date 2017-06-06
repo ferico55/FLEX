@@ -7,6 +7,7 @@
 //
 
 #import "ReviewResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ReviewResult
 

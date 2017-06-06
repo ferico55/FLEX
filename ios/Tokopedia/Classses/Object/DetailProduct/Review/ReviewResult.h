@@ -10,7 +10,7 @@
 
 #import "AdvanceReview.h"
 #import "ReviewList.h"
-#import "Paging.h"
+@class Paging;
 #import "DetailReputationReview.h"
 
 #define CPaging @"paging"

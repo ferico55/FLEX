@@ -10,6 +10,7 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "TxOrderConfirmation.h"
 #import "TxOrderConfirmed.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestOrderData
 

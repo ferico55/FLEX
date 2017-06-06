@@ -8,6 +8,7 @@
 
 #import "CatalogShopAWSResult.h"
 #import "CatalogShopAWSProductResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation CatalogShopAWSResult
 

@@ -15,7 +15,7 @@
 #import "SettingBankEditViewController.h"
 #import "SettingBankAccountViewController.h"
 #import "BankAccountRequest.h"
-
+#import "Tokopedia-Swift.h"
 #import "MGSwipeButton.h"
 #define CTagRequest 2
 

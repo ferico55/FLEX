@@ -8,6 +8,7 @@
 
 #import "DepositSummaryResult.h"
 #import "DepositSummaryList.h"
+#import "Tokopedia-Swift.h"
 
 @implementation DepositSummaryResult
 

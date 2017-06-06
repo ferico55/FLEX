@@ -10,6 +10,7 @@
 #import "EtalaseCell.h"
 #import "LoadingView.h"
 #import "EtalaseRequest.h"
+#import "Tokopedia-Swift.h"
 
 @interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
 
@@ -277,7 +278,7 @@
                                                  [self selectInitialSelectedEtalase];
                                              }
                                              uriNext = etalase.result.paging.uri_next;
-                                             if (uriNext) {
+                                             if (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0) {
                                                  page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
                                              }else{
                                                  _tableView.tableFooterView = nil;
@@ -354,7 +355,7 @@
                                              }
                                              
                                              uriNext = etalase.result.paging.uri_next;
-                                             if (uriNext) {
+                                             if (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0) {
                                                  page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
                                              }else{
                                                  _tableView.tableFooterView = nil;

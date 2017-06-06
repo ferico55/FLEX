@@ -8,6 +8,7 @@
 
 #import "InboxReputationResult.h"
 #import "DetailMyInboxReputation.h"
+#import "Tokopedia-Swift.h"
 
 @implementation InboxReputationResult
 

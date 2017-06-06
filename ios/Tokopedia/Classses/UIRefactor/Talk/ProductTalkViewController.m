@@ -29,6 +29,7 @@
 #import "stringrestkit.h"
 #import "inbox.h"
 #import "string.h"
+#import "Tokopedia-Swift.h"
 
 #import "TalkCell.h"
 

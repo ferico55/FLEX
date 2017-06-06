@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
+@class Paging;
 #import "Breadcrumb.h"
 #import "DetailPriceAlert.h"
 

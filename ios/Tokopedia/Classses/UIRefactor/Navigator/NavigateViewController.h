@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "HistoryProduct.h"
+#import "ProductCell.h"
 
 @class AddressViewModel;
 @class TKPPlacePickerViewController;
@@ -55,6 +56,7 @@
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;

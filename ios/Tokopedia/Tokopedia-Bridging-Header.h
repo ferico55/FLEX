@@ -91,7 +91,6 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UIFont+Theme.h"
 #import "QueueImageDownloader.h"
-#import "ProductBadge.h"
 #import "NSStringCategory.h"
 #import "UIViewController+TKPAdditions.h"
 #import "TKPAppFlow.h"
@@ -185,3 +184,5 @@
 
 #import "NSString+MD5.h"
 #import "NSDictionaryCategory.h"
+#import "ProductModelView.h"
+#import "CatalogModelView.h"

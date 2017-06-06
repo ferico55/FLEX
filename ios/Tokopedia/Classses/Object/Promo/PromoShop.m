@@ -7,7 +7,7 @@
 //
 
 #import "PromoShop.h"
-#import "ProductBadge.h"
+#import "Tokopedia-Swift.h"
 
 @implementation PromoShop
 

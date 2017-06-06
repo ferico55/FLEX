@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Paging.h"
-#import "Hashtags.h"
+@class Paging;
 #import "DepartmentTree.h"
 #import "List.h"
 #import "HotlistResultInfo.h"

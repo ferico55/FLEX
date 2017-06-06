@@ -9,8 +9,7 @@
 #import "ProductThumbCell.h"
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
-#import "ProductBadge.h"
-#import "ProductLabel.h"
+#import "Tokopedia-Swift.h"
 #import "QueueImageDownloader.h"
 #import "Tokopedia-Swift.h"
 #import "StarsRateView.h"
@@ -59,6 +58,15 @@
     
     [self setBadges:viewModel.badges];
     [self setLabels:viewModel.labels];
+    
+    if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
+        [self.shopName setHidden:YES];
+        [self.shopLocation setHidden:YES];
+    }
+    else {
+        [self.shopName setHidden: NO];
+        [self.shopLocation setHidden:NO];
+    }
     
     if (![viewModel.productRate isEqualToString: @"0"] && viewModel.productRate != nil) {
         [_ratingContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {

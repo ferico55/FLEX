@@ -6,9 +6,11 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
+import Foundation
 import RestKit
+import Unbox
 
-class CategoryIntermediaryResult: NSObject {
+final class CategoryIntermediaryResult: NSObject, Unboxable {
     var children: [CategoryIntermediaryChild]! {
         didSet {
             nonHiddenChildren =  children.filter({ (child) -> Bool in
@@ -36,7 +38,7 @@ class CategoryIntermediaryResult: NSObject {
     var categoryDescription: String = ""
     var titleTag: String = ""
     var metaDescription: String = ""
-    var headerImage: String = ""
+    var headerImage:String? = ""
     var hidden: Int = 0
     // views digunakan untuk penanda apakah list produk dari intermediary ditampilkan secara grid, list, atau one
     var views: Int = 0
@@ -47,20 +49,64 @@ class CategoryIntermediaryResult: NSObject {
     }
     var isIntermediary: Bool = false
     
-    var curatedProduct: CategoryIntermediaryCuratedProduct!
+    var curatedProduct: CategoryIntermediaryCuratedProduct?
     
-    class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryResult.self)
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "child", toKeyPath: "children", with: CategoryIntermediaryChild.mapping()))
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "curated_product", toKeyPath: "curatedProduct", with: CategoryIntermediaryCuratedProduct.mapping()))
-        mapping.addAttributeMappings(from: ["id", "name", "hidden"])
-        mapping.addAttributeMappings(from:["description" : "categoryDescription",
-                                           "title_tag" : "titleTag",
-                                           "meta_description" : "metaDescription",
-                                           "header_image" : "headerImage",
-                                           "view" : "views",
-                                           "is_revamp" : "isRevamp",
-                                           "is_intermediary" : "isIntermediary"])
-        return mapping;
+    init(children: [CategoryIntermediaryChild],
+      curatedProduct: CategoryIntermediaryCuratedProduct?,
+      id: String,
+      name:String,
+      hidden:Int,
+      categoryDescription: String,
+      titleTag: String,
+      metaDescription:String,
+      headerImg:String?,
+      views:Int,
+      isRevamp: Bool,
+      isIntermediary :Bool) {
+        self.children = children
+        self.curatedProduct = curatedProduct
+        self.id = id
+        self.name = name
+        self.hidden = hidden
+        self.categoryDescription = categoryDescription
+        self.titleTag = titleTag
+        self.metaDescription = metaDescription
+        self.headerImage = headerImg ?? ""
+        self.views = views
+        self.isRevamp = isRevamp
+        self.isIntermediary = isIntermediary
+        
+    }
+    
+    convenience init(unboxer: Unboxer) throws {
+        self.init(
+            children : try unboxer.unbox(keyPath: "result.child"),
+            curatedProduct : try? unboxer.unbox(keyPath: "result.curated_product") as CategoryIntermediaryCuratedProduct,
+            id : try unboxer.unbox(keyPath: "result.id"),
+            name : try unboxer.unbox(keyPath: "result.name"),
+            hidden : try unboxer.unbox(keyPath: "result.hidden") as Int,
+            categoryDescription : try unboxer.unbox(keyPath: "result.description"),
+            titleTag : try unboxer.unbox(keyPath: "result.title_tag"),
+            metaDescription : try unboxer.unbox(keyPath: "result.meta_description"),
+            headerImg : try? unboxer.unbox(keyPath: "result.header_image") as String,
+            views : try unboxer.unbox(keyPath: "result.view"),
+            isRevamp : try unboxer.unbox(keyPath: "result.is_revamp"),
+            isIntermediary : try unboxer.unbox(keyPath: "result.is_intermediary")
+        )
+        nonHiddenChildren =  children.filter { (child) in
+            return child.hidden == 0
+        }
+        
+        nonExpandedChildren = nonHiddenChildren.enumerated().filter { (index, child) in
+                if self.isRevamp {
+                    return index < 9
+                } else {
+                    return index < 6
+                }
+            }
+            .map { (index, child) in
+                    return child
+            }
+        maxRowInCategorySubView = isRevamp ? 3 : 2
     }
 }

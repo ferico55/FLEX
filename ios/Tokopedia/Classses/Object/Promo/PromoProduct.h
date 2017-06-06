@@ -11,7 +11,7 @@
 #import "PromoCategory.h"
 #import "WholesalePrice.h"
 #import "PromoProductImage.h"
-#import "ProductLabel.h"
+@class ProductLabel;
 
 @interface PromoProduct : NSObject
 

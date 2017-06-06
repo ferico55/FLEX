@@ -10,6 +10,7 @@
 #import "Talk.h"
 #import "InboxTalkViewController.h"
 #import "TalkResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TalkResult
 

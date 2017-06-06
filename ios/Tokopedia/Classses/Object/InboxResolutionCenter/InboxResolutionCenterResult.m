@@ -7,6 +7,7 @@
 //
 
 #import "InboxResolutionCenterResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation InboxResolutionCenterResult
 

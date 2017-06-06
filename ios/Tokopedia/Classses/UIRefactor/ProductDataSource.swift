@@ -55,6 +55,7 @@ import UIKit
         
         let product = _products[indexPath.section][indexPath.row]
         cell.setViewModel(product.viewModel)
+        cell.removeWishlistButton()
         return cell
     }
     

@@ -11,8 +11,6 @@
 #import "ProductCell.h"
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
-#import "ProductBadge.h"
-#import "ProductLabel.h"
 #import "Tokopedia-Swift.h"
 #import "QueueImageDownloader.h"
 
@@ -24,6 +22,15 @@
 - (void)setViewModel:(ProductModelView *)viewModel {
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];
+    }
+    
+    if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
+        [self.productShop setHidden:YES];
+        [self.shopLocation setHidden:YES];
+    }
+    else {
+        [self.productShop setHidden: NO];
+        [self.shopLocation setHidden:NO];
     }
     
     [self.productName setText:viewModel.productName];

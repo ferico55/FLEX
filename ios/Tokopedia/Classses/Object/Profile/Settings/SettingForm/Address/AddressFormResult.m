@@ -7,6 +7,7 @@
 //
 
 #import "AddressFormResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation AddressFormResult
 

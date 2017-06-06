@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
+@class Paging;
 #import "WishListObjectList.h"
 
 @interface WishListObjectResult : NSObject

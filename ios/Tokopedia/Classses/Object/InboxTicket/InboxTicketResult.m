@@ -7,6 +7,7 @@
 //
 
 #import "InboxTicketResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation InboxTicketResult
 +(RKObjectMapping*)mapping

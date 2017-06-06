@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "TxOrderConfirmedList.h"
-#import "Paging.h"
+@class Paging;
 
 @interface TxOrderConfirmedResult : NSObject <TKPObjectMapping>
 

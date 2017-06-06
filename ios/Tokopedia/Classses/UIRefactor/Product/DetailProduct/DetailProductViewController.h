@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProductCell.h"
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : GAITrackedViewController
 {
@@ -22,6 +23,7 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) NSDictionary *loadedData;
 @property BOOL isSnapSearchProduct;
+@property (strong, nonatomic) id<ProductCellDelegate> delegate;
 
 - (void)setButtonFav;
 - (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;

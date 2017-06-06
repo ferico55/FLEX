@@ -10,13 +10,14 @@
 
 #import "EtalaseList.h"
 #import "EtalaseListOther.h"
-#import "Paging.h"
+@class Paging;
+//#import "Tokopedia-Swift.h"
 
 @interface EtalaseResult : NSObject
 
 @property (strong, nonatomic) NSMutableArray *list;
 @property (strong, nonatomic) NSMutableArray *list_other;
-@property (nonatomic, strong) Paging *paging;
+@property (strong, nonatomic) Paging *paging;
 
 +(RKObjectMapping*)mapping;
 

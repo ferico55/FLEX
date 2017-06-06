@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CatalogShopAWSProductResult.h"
-#import "Paging.h"
+@class Paging;
 
 @interface CatalogShopAWSResult : NSObject
 

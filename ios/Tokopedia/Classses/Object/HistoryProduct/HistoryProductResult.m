@@ -7,6 +7,7 @@
 //
 
 #import "HistoryProductResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation HistoryProductResult
 

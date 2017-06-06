@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     SearchAWSProduct *product = [self.products objectAtIndex:indexPath.row];
     
     [cell setViewModel:product.viewModel];
+    [cell removeWishlistButton];
     cell.productShop.hidden = YES;
     cell.locationImage.hidden = YES;
     cell.shopLocation.hidden = YES;

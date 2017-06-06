@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
+@class Paging;
 #import "BankAccountFormList.h"
 
 @interface BankAccountFormResult : NSObject

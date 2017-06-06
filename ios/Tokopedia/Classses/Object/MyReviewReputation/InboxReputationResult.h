@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Paging.h"
+@class Paging;
 
 @interface InboxReputationResult : NSObject
 @property (nonatomic, strong) NSArray *list;

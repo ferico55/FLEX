@@ -7,6 +7,7 @@
 //
 
 #import "ManageProductResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ManageProductResult
 

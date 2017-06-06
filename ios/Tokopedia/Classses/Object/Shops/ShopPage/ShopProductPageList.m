@@ -8,6 +8,7 @@
 
 #import "ShopProductPageList.h"
 #import "ProductModelView.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ShopProductPageList
 +(RKObjectMapping *)mapping{

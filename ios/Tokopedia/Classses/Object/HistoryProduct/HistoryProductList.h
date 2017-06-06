@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ProductBadge.h"
-#import "ProductLabel.h"
+@class ProductBadge;
+@class ProductLabel;
 @class ProductModelView;
 
 @interface HistoryProductList : NSObject <TKPObjectMapping>

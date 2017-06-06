@@ -8,12 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "Errors.h"
-#import "ProductBadge.h"
-#import "ProductLabel.h"
 
 @class ProductPreorder;
 @interface ProductModelView : NSObject
 
+@property (strong, nonatomic) NSString *productId;
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *productPrice;
 @property (strong, nonatomic) NSString *productPriceIDR;
@@ -38,14 +37,15 @@
 
 @property (strong, nonatomic) NSArray<Errors *> *productErrors;
 @property (strong, nonatomic) NSArray<Errors *> *cartErrors;
+@property (strong, nonatomic) NSArray *breadcrumb;
 @property (strong, nonatomic) ProductPreorder *preorder;
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;
 @property BOOL isWholesale;
 @property BOOL isProductPreorder;
+@property BOOL isOnWishlist;
 
 @property (strong, nonatomic) NSString *productRate;
 @property (strong, nonatomic) NSString *totalReview;
-@property (strong, nonatomic) NSString *productId;
 
 @end

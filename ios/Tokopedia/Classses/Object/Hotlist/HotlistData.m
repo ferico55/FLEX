@@ -9,7 +9,7 @@
 #import "string_home.h"
 #import "HotlistData.h"
 #import "HotlistList.h"
-#import "Paging.h"
+#import "Tokopedia-Swift.h"
 
 @implementation HotlistData
 

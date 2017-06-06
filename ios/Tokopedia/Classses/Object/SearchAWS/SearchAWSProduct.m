@@ -9,6 +9,7 @@
 #import "SearchAWSProduct.h"
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SearchAWSProduct
 

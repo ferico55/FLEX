@@ -10,6 +10,7 @@
 #import "TalkComment.h"
 #import "ProductTalkDetailViewController.h"
 #import "TalkCommentResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TalkCommentResult
 

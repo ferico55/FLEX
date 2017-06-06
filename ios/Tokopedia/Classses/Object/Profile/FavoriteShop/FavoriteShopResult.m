@@ -7,6 +7,7 @@
 //
 
 #import "FavoriteShopResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation FavoriteShopResult
 

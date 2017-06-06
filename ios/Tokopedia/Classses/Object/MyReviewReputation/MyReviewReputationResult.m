@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+@class Paging;
 #import "MyReviewReputationResult.h"
-#import "Paging.h"
 #import "DetailReputationReview.h"
+#import "Tokopedia-Swift.h"
 
 @implementation MyReviewReputationResult
 

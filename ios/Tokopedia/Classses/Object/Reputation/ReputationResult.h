@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Paging.h"
+@class Paging;
 #import "ReputationList.h"
 
 @interface ReputationResult : NSObject

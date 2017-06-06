@@ -55,7 +55,7 @@ class ProductWishlistCell : UICollectionViewCell {
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(_ viewModel : ProductModelView) {
-        let url = URL(string: viewModel.productThumbUrl)!
+        let url = URL(string: viewModel.productThumbUrl!)!
         productName.text = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop

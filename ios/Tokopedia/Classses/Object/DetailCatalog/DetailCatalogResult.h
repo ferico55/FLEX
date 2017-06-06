@@ -14,7 +14,7 @@
 #import "CatalogMarketPlace.h"
 #import "CatalogShops.h"
 #import "CatalogLocation.h"
-#import "Paging.h"
+@class Paging;
 
 @interface DetailCatalogResult : NSObject <TKPObjectMapping>
 

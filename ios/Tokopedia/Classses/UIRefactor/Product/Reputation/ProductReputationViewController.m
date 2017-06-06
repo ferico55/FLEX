@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 6/29/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+@class Paging;
 #import "AdvanceReview.h"
 #import "CMPopTipView.h"
 #import "detail.h"
@@ -19,7 +20,6 @@
 #import "ProductOwner.h"
 #import "ProductDetailReputationViewController.h"
 #import "ProductReputationViewController.h"
-#import "Paging.h"
 #import "ReportViewController.h"
 #import "RatingList.h"
 #import "ReviewResponse.h"

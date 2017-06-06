@@ -7,6 +7,7 @@
 //
 
 #import "ShopProductPageResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ShopProductPageResult
 +(RKObjectMapping *)mapping{

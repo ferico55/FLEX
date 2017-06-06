@@ -18,7 +18,6 @@
 #import "SearchItem.h"
 #import "SearchRedirect.h"
 #import "List.h"
-#import "Paging.h"
 #import "DepartmentTree.h"
 
 #import "DetailProductViewController.h"
@@ -77,7 +76,8 @@ FilterViewControllerDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
 SpellCheckRequestDelegate,
-HeaderIntermediaryCollectionViewDelegate
+HeaderIntermediaryCollectionViewDelegate,
+ProductCellDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -128,7 +128,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     
     UIRefreshControl *_refreshControl;
-    SearchAWS *_searchObject;
+    SearchProductWrapper *_searchObject;
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
@@ -161,6 +161,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     NSString *_rootCategoryID;
     
     NSString *_defaultSearchCategory;
+    ProductAndWishlistNetworkManager *moyaNetworkManager;
 }
 
 #pragma mark - Initialization
@@ -177,7 +178,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_noResultView generateAllElements:@"no-result.png"
                                  title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
                                   desc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"
-                               btnTitle:@""];
+                              btnTitle:@""];
     [_noResultView hideButton:YES];
     _noResultView.delegate = self;
 }
@@ -255,7 +256,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    
+    moyaNetworkManager = [[ProductAndWishlistNetworkManager alloc]init];
     
     [self doPageLaoading];
     
@@ -270,6 +271,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWishlist) name:TKPDUserDidLoginNotification object:nil];
 }
 
 -(NSString*)getSearchSource{
@@ -286,7 +288,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
 -(void)setDefaultSort{
     if ([_params objectForKey:@"search"] != nil) {
-
+        
         if ([[self getSearchSource] isEqualToString:[self searchProductSource]]) {
             [self setDefaultSortProduct];
         }
@@ -442,7 +444,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
+    SearchProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -463,6 +465,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         } else {
             [(ProductCell*)cell setViewModel:list.viewModel];
         }
+        ((ProductCell*) cell).parentViewController = self;
+        ((ProductCell*) cell).delegate = self;
+        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
+            [((ProductCell*) cell) removeWishlistButton];
+        }
         
     } else {
         cellid = @"ProductThumbCellIdentifier";
@@ -475,13 +482,12 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     }
     
     //next page if already last cell
-    
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (indexPath.section == section && indexPath.row == row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             _isFailRequest = NO;
-
+            
             [self requestSearch];
         }
     }
@@ -527,15 +533,15 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                  _promo.count > indexPath.section) {
             
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
-                if (currentPromo && currentPromo.count > 0) {
-                    reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                             forIndexPath:indexPath];
-                    ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                    ((PromoCollectionReusableView *)reusableView).delegate = self;
-                    ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                    
-                }
+            if (currentPromo && currentPromo.count > 0) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                
+            }
         } else {
             reusableView = nil;
         }
@@ -555,12 +561,12 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-
-    SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    SearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
     [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:@"Kategori" action:GA_EVENT_ACTION_CLICK_PRODUCT label: _categoryIntermediaryResult.id];
-
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    
+    [NavigateViewController navigateToProductFromViewController:self withProduct:product andDelegate:self];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -643,7 +649,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_act startAnimating];
 }
 
--(IBAction)tap:(id)sender { 
+-(IBAction)tap:(id)sender {
     UIButton *button = (UIButton *)sender;
     switch (button.tag) {
         case 10:
@@ -670,13 +676,14 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             }
             
             title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
-            NSURL *url = [NSURL URLWithString: _searchObject.data.share_url?:@"www.tokopedia.com"];
+            NSURL *url = [NSURL URLWithString: _searchObject.data.shareUrl?:@"www.tokopedia.com"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
                                                                                            anchor:button];
             
             [controller setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed,  NSArray *returnedItems, NSError *activityError) {
-                [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:GA_EVENT_CATEGORY_PAGE action:GA_EVENT_ACTION_NAVIGATION_SHARE label:[NSString stringWithFormat:@"%@ - %@", [_data objectForKey:@"sc"] ?: _searchObject.data.department_id, activityType]];
+                NSString *departmentIDString = [NSString stringWithFormat:@"%d", _searchObject.data.departmentId];
+                [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:GA_EVENT_CATEGORY_PAGE action:GA_EVENT_ACTION_NAVIGATION_SHARE label:[NSString stringWithFormat:@"%@ - %@", [_data objectForKey:@"sc"] ?: departmentIDString, activityType]];
             }];
             
             [self presentViewController:controller animated:YES completion:nil];
@@ -711,7 +718,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_collectionView layoutIfNeeded];
             
             [[NSUserDefaults standardUserDefaults] setInteger:self.cellType forKey:[NSString stringWithFormat:@"%@-%@",USER_LAYOUT_CATEGORY_PREFERENCES,_categoryIntermediaryResult.id]];
-
+            
             break;
         }
         default:
@@ -797,7 +804,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         return NO;
     }
 }
-
 
 -(void)pushSort{
     SortViewController *controller = [SortViewController new];
@@ -897,33 +903,33 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                                        selectedFilters:_selectedFilters
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
                                                                                
-           _selectedCategories = selectedCategories;
+                                                                               _selectedCategories = selectedCategories;
                                                                                
-          // if search result is category result, then if filter is being added, change the navigation title
-          for (ListFilter *filter in _filterResponse.filter){
-              if ([filter.title  isEqual: @"Kategori"]){
-                  if (filter.isMultipleSelect == NO) {
-                      if (selectedCategories.count > 0) {
-                          [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
-                      } else {
-                          [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
-                      }
-                  }
-              }
-          }
+                                                                               // if search result is category result, then if filter is being added, change the navigation title
+                                                                               for (ListFilter *filter in _filterResponse.filter){
+                                                                                   if ([filter.title  isEqual: @"Kategori"]){
+                                                                                       if (filter.isMultipleSelect == NO) {
+                                                                                           if (selectedCategories.count > 0) {
+                                                                                               [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                                                                                           } else {
+                                                                                               [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
+                                                                                           }
+                                                                                       }
+                                                                                   }
+                                                                               }
                                                                                
-           _selectedFilters = selectedFilters;
-           _selectedFilterParam = paramFilters;
-           [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
-           [_params removeObjectForKey:@"sc"];
-
-           [self refreshView:nil];
-           
-       } onReceivedFilterDataOption:^(FilterData * filterDataOption){
-           
-           _filterResponse = filterDataOption;
-           
-       }];
+                                                                               _selectedFilters = selectedFilters;
+                                                                               _selectedFilterParam = paramFilters;
+                                                                               [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
+                                                                               [_params removeObjectForKey:@"sc"];
+                                                                               
+                                                                               [self refreshView:nil];
+                                                                               
+                                                                           } onReceivedFilterDataOption:^(FilterData * filterDataOption){
+                                                                               
+                                                                               _filterResponse = filterDataOption;
+                                                                               
+                                                                           }];
 }
 
 -(BOOL)hasSelectedFilterOrCategory{
@@ -1014,7 +1020,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         [parameter setObject:@(_start) forKey:@"start"];
         [parameter setObject:@"true" forKey:@"breadcrumb"];
         [parameter setObject:@"directory" forKey:@"source"];
-    
+        
         [parameter setObject:[self getUniqueId] forKey:@"unique_id"];
     }
     
@@ -1065,44 +1071,37 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     _categoryIntermediaryNetworkManager.isUsingHmac = YES;
     
     __weak typeof(self) weakSelf = self;
-    NSString *categoryId = [_data objectForKey:@"sc"] ?: _searchObject.data.department_id;
+    NSString *departmentIDString = _searchObject.data.departmentId;
+    NSString *categoryId = [_data objectForKey:@"sc"] ?: departmentIDString;
     
-    [_categoryIntermediaryNetworkManager requestWithBaseUrl:[NSString hadesUrl]
-                                                       path: [NSString stringWithFormat: @"/v1/categories/%@/detail", categoryId]
-                                                     method:RKRequestMethodGET parameter:nil
-                                                    mapping:[CategoryIntermediaryResponse mapping]
-                                                  onSuccess:^(RKMappingResult * _Nonnull mappingResult, RKObjectRequestOperation * _Nonnull operation) {
-                                                      CategoryIntermediaryResponse *categoryIntermediaryResponse = [mappingResult.dictionary objectForKey:@""];
-                                                      _categoryIntermediaryResult = categoryIntermediaryResponse.result;
-                                                      
-                                                      if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
-                                                          CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult];
-                                                          [self.navigationController pushViewController:categoryIntermediaryViewController animated:NO];
-                                                      } else {
-                                                          _isCategorySubviewExpanded = NO;
-                                                          [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"%@%@", @"Browse Category - ", _categoryIntermediaryResult.id]];
-                                                           [self setProductListBaseLayout];
-                                                          [weakSelf showEntireView];
-                                                      }
-                                                  }
-                                                  onFailure:^(NSError * _Nonnull errorResult) {
-                                                      [weakSelf showEntireView];
-                                                  }];
+    [moyaNetworkManager requestIntermediaryCategoryForCategoryID:categoryId
+                                           withCompletionHandler:^(CategoryIntermediaryResult * _Nonnull result) {
+                                               _categoryIntermediaryResult = result;
+                                               if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
+                                                   CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult];
+                                                   [self.navigationController pushViewController:categoryIntermediaryViewController animated:NO];
+                                               } else {
+                                                   _isCategorySubviewExpanded = NO;
+                                                   [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"%@%@", @"Browse Category - ", _categoryIntermediaryResult.id]];
+                                                   [self setProductListBaseLayout];
+                                                   [weakSelf showEntireView];
+                                               }
+                                           }andErrorHandler:^(NSError * _Nonnull error) {
+                                               [weakSelf showEntireView];
+                                           }];
 }
 
 - (void)requestSearch {
     __weak typeof(self) weakSelf = self;
-    [_networkManager requestWithBaseUrl:[NSString aceUrl]
-                                   path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
-                                 method:RKRequestMethodGET
-                              parameter:[self getParameter]
-                                mapping:[SearchAWS mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self reloadView];
-                                  [self searchMappingResult:successResult];
-                              } onFailure:^(NSError *error) {
-                                  [weakSelf requestPromo];
-                              }];
+    
+    [moyaNetworkManager requestSearchWithParams:[self getParameter]
+                                        andPath:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
+                          withCompletionHandler:^(SearchProductWrapper *result) {
+                              [self reloadView];
+                              [self searchMappingResult:result];
+                          } andErrorHandler:^(NSError *error) {
+                              [weakSelf requestPromo];
+                          }];
 }
 
 - (NSDictionary*)pathUrls {
@@ -1146,31 +1145,30 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     return @"directory";
 }
 
-- (void)searchMappingResult:(RKMappingResult *)mappingResult {
-    SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
-    _searchObject = search;
+- (void)searchMappingResult:(SearchProductWrapper *)searchResult {
+    _searchObject = searchResult;
     [self reloadView];
     
     //set initial category
     if (_initialBreadcrumb.count == 0) {
-        _initialBreadcrumb = search.data.breadcrumb;
+        _initialBreadcrumb = searchResult.data.breadcrumb;
         if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
-            [_delegate updateCategories:search.data.breadcrumb];
+            [_delegate updateCategories:searchResult.data.breadcrumb];
         }
     }
-
+    
     if (_start == 0) {
-        if (search.data.products.count > 0) {
+        if (searchResult.data.products.count > 0) {
             [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
         } else {
             [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
         }
     }
     
-    NSString *redirect_url = search.data.redirect_url;
-    if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
-        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
-        NSString *departementID = search.data.department_id?:@"";
+    NSString *redirect_url = searchResult.data.redirectUrl;
+    if(searchResult.data.departmentId && searchResult.data.departmentId != 0) {
+        _rootCategoryID = ([_rootCategoryID integerValue] == 0)? searchResult.data.departmentId:_rootCategoryID;
+        NSString *departementID = searchResult.data.departmentId;
         [_params setObject:departementID forKey:@"sc"];
         NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
@@ -1181,36 +1179,35 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-        NSString *hascatalog = search.data.has_catalog;
+        int hascatalog = searchResult.data.hasCatalog;
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            hascatalog = @"1";
+            hascatalog = 1;
         }
         
         //setting is this product has catalog or not
-        if ([hascatalog isEqualToString:@"1"] && hascatalog) {
+        if (hascatalog == 1) {
             NSDictionary *userInfo = @{@"count":@(3)};
             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
         }
-        else if ([hascatalog isEqualToString:@"0"] && hascatalog){
+        else if (hascatalog == 0){
             NSDictionary *userInfo = @{@"count":@(2)};
             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
         }
         
         
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
-            if(search.data.products.count > 0) {
-                [_product addObject: search.data.products];
-                [AnalyticsManager trackProductImpressions:search.data.products];
+            if(searchResult.data.products.count > 0) {
+                [_product addObject: searchResult.data.products];
+                [AnalyticsManager trackProductImpressions:searchResult.data.products];
             }
             
         } else {
-            if(search.data.catalogs.count > 0) {
+            if(searchResult.data.catalogs.count > 0) {
                 //_product[0] is for products
                 //so everything is in first index
                 //you're welcome!
-                [_product addObject: search.data.catalogs];
+                [_product addObject: searchResult.data.catalogs];
             }
-            
         }
         
         if(_start == 0) {
@@ -1221,8 +1218,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             //            [_collectionView layoutIfNeeded];
         }
         [self requestPromo];
-        if (search.data.products.count > 0 || search.data.catalogs.count > 0) {
-            _urinext =  search.data.paging.uri_next;
+        if (searchResult.data.products.count > 0 || searchResult.data.catalogs.count > 0) {
+            _urinext =  searchResult.data.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -1245,7 +1242,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
             [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:@"No Result" label:[_data objectForKey:@"search"]?:@""];
-
+            
             if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
             }else{
@@ -1265,7 +1262,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_collectionView.collectionViewLayout invalidateLayout];
         }
     } else {
-        NSURL *url = [NSURL URLWithString:search.data.redirect_url];
+        NSURL *url = [NSURL URLWithString:searchResult.data.redirectUrl];
         NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
         // Redirect URI to hotlist
@@ -1275,7 +1272,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.data.department_id?:@"";
+            NSString *departmentIDString = [NSString stringWithFormat:@"%d", searchResult.data.departmentId];
+            NSString *departementID = departmentIDString?:@"";
             NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
@@ -1307,7 +1305,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (void)redirectToCatalogResult{
-    NSURL *url = [NSURL URLWithString:_searchObject.data.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.data.redirectUrl];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     NSString *catalogID = query[2];
@@ -1331,7 +1329,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 - (void)redirectToHotlistResult{
     [Localytics triggerInAppMessage:@"Hot List Result Screen"];
     
-    NSURL *url = [NSURL URLWithString:_searchObject.data.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.data.redirectUrl];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     HotlistResultViewController *vc = [HotlistResultViewController new];
@@ -1375,13 +1373,13 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_noResultView removeFromSuperview];
     
     NSDictionary *newData = @{
-                            @"type" : [_data objectForKey:@"type"],
-                            @"search": _suggestion
-                            };
+                              @"type" : [_data objectForKey:@"type"],
+                              @"search": _suggestion
+                              };
     [self setData:newData];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:_suggestion];
-
-//    [_networkManager doRequest];
+    
+    //    [_networkManager doRequest];
     [self requestSearch];
 }
 
@@ -1420,7 +1418,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     } else {
         selectedCellNumber = [defaultCategoryLayout integerValue];
     }
-
+    
     return selectedCellNumber;
 }
 
@@ -1442,6 +1440,31 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                forState:UIControlStateNormal];
         self.promoCellType = PromoCollectionViewCellTypeThumbnail;
         
+    }
+}
+
+- (void) refreshWishlist {
+    [moyaNetworkManager checkWishlistStatusForProducts:_product
+                                 withCompletionHandler:^(NSArray* productArray) {
+                                     [_product removeAllObjects];
+                                     for(NSArray* products in productArray) {
+                                         [_product addObject:products];
+                                     }
+                                     [_collectionView reloadData];
+                                 }andErrorHandler:^(NSError * _Nonnull error) {
+                                     //do nothing
+                                 }];
+}
+
+#pragma mark - Product Cell Delegate
+- (void) changeWishlistForProductId:(NSString*)productId withStatus:(BOOL) isOnWishlist {
+    for(NSArray* products in _product) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = isOnWishlist;
+                break;
+            }
+        }
     }
 }
 
@@ -1481,7 +1504,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (TopadsSource)topadsSource {
-        return TopadsSourceDirectory;
+    return TopadsSourceDirectory;
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
@@ -1506,7 +1529,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     }
     
     [self toggleTotalProductLabel: scrollView];
-
+    
     self.lastContentOffset = scrollView.contentOffset.y;
 }
 
