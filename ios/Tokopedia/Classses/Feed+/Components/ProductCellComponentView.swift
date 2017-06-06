@@ -89,6 +89,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             
             if (state?.isMore)! {
                 view.bk_(whenTapped: {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Feed - Product List More Items")
                     NavigateViewController().navigateToFeedDetail(from: UIApplication.topViewController(), withFeedCardID: state?.cardID)
                 })
             } else {
