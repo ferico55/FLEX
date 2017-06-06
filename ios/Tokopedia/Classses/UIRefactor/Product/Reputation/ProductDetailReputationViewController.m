@@ -140,7 +140,6 @@ MGSwipeTableCellDelegate
                                                  [self setLikeDislikeActive:totalLikeDislike.like_status];
                                              }
                                          } onFailure:^(NSError *errorResult) {
-                                             NSLog(@"error");
                                          }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -594,7 +593,7 @@ MGSwipeTableCellDelegate
                                                      }];
         }
     }else {
-        [self showLoginView];
+        [self showLoginView:YES];
     }
 }
 
@@ -650,7 +649,7 @@ MGSwipeTableCellDelegate
         
     }
     else {
-        [self showLoginView];
+        [self showLoginView:NO];
     }
 }
 - (void)actionChat:(id)sender {
@@ -768,8 +767,14 @@ MGSwipeTableCellDelegate
     }
 }
 
-- (void)showLoginView {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
+- (void) showLoginView:(bool) isLike {
+    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess: ^{
+        if(isLike)
+            [self actionLike:self];
+        else
+            [self actionDisLike:self];
+    }];
+    [productReputationCell enableTouchLikeDislikeButton];
 }
 
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj {

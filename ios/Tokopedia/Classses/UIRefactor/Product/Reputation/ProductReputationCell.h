@@ -37,7 +37,7 @@
     IBOutlet ViewLabelUser *viewLabelUser;
     IBOutlet UIButton *btnRateEmoji, *btnLike, *btnDislike, *btnChat, *btnMore;
     IBOutlet UILabel *lblPercentageRage, *lblDateDesc, *lblKualitas, *lblAkurasi;
-    TTTAttributedLabel *lblDesc;
+    UILabel *lblDesc;
     IBOutlet UIActivityIndicatorView *actLoading;
     
     BOOL isProductCell;//flag is used to product data

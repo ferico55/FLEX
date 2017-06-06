@@ -9,6 +9,7 @@
 #import "ProductReputationCell.h"
 #import "ViewLabelUser.h"
 #import "ReviewImageAttachment.h"
+#import <Masonry/Masonry.h>
 
 @implementation ProductReputationCell {
     UIImageView *imageProduct;
@@ -17,6 +18,7 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     arrAttachedImages = [NSArray sortViewsWithTagInArray:arrAttachedImages];
     
     self.contentView.backgroundColor = [UIColor clearColor];
@@ -39,77 +41,148 @@
 
 - (void)layoutSubviews
 {
+    [imageProfile mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(@8);
+        make.top.equalTo(@8);
+    }];
+    
+    [lblDesc mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.contentView).with.offset(- CPaddingTopBottom);
+        make.height.greaterThanOrEqualTo(@17);
+        make.left.equalTo(imageProfile);
+        if(isProductCell) {
+            make.top.equalTo(labelProductName.mas_bottom).with.offset(CPaddingTopBottom);
+        }
+        else {
+            make.top.equalTo(imageProfile.mas_bottom).with.offset(CPaddingTopBottom * 2);
+        }
+    }];
+    
+    [viewSeparatorProduct mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(lblDateDesc);
+        make.top.equalTo(viewStarKualitas).with.offset(-CPaddingTopBottom);
+        make.height.equalTo(@(1));
+        make.right.equalTo(viewContent).with.offset(CPaddingTopBottom);
+    }];
+    [viewAttachedImages mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lblDesc.mas_bottom).with.offset(16);
+    }];
     if(isProductCell) {
-        viewSeparatorProduct.frame = CGRectMake(CPaddingTopBottom, imageProfile.frame.origin.y+imageProfile.bounds.size.height+CPaddingTopBottom, self.bounds.size.width, 1);
-        imageProduct.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + viewSeparatorProduct.frame.origin.y+viewSeparatorProduct.bounds.size.height, CheightImage, CheightImage);
-        labelProductName.frame = CGRectMake(viewLabelUser.frame.origin.x, imageProduct.frame.origin.y, viewLabelUser.bounds.size.width, imageProduct.bounds.size.height);
-        lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height + CPaddingTopBottom, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
-        viewAttachedImages.frame = CGRectMake(viewAttachedImages.frame.origin.x, 8 + lblDesc.frame.origin.y + lblDesc.bounds.size.height + 8, viewAttachedImages.bounds.size.width, viewAttachedImages.bounds.size.height);
+        [imageProduct mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(imageProfile.mas_left);
+            make.top.equalTo(imageProfile.mas_bottom).with.offset(CPaddingTopBottom * 2);
+            make.width.equalTo(@(CheightImage));
+            make.height.equalTo(@(CheightImage));
+        }];
+        [labelProductName mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(viewLabelUser);
+            make.top.equalTo(imageProduct);
+            make.right.equalTo(lblDesc);
+            make.height.equalTo(imageProduct);
+        }];
     }
     
-    btnMore.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-10-btnMore.bounds.size.width, 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
+    btnMore.frame = CGRectMake(((self.bounds.size.width-(viewContent.frame.origin.x*2))-10-btnMore.bounds.size.width), 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
     
     if (_hasAttachedImages) {
-        lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom + viewAttachedImages.bounds.size.height + 8, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
-        viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
-        lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
-        
-        lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f), lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
-        viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width+2, lblKualitas.frame.origin.y-3, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
-        
-        viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width, viewStarKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
-        lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width-2, lblKualitas.frame.origin.y, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
-        
-        
-        //View content action
-        viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewContentAction.isHidden?0:CHeightContentAction);
-        viewSeparatorKualitas.frame = CGRectMake(0, 0, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewSeparatorKualitas.bounds.size.height);
-        btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, viewContentAction.bounds.size.height);
-        btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnLike.bounds.size.height);
-        btnChat.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-btnChat.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y+5, btnChat.bounds.size.width, btnChat.bounds.size.height);
-        viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, [[UIScreen mainScreen] bounds].size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
-        
-        self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
-        
-        
-        if(! viewContentLoad.isHidden) {
-            viewContentLoad.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentLoad.bounds.size.height);
-            actLoading.frame = CGRectMake((viewContentLoad.bounds.size.width-actLoading.bounds.size.width)/2.0f, (viewContentLoad.bounds.size.height-actLoading.bounds.size.height)/2.0f, actLoading.bounds.size.width, actLoading.bounds.size.height);
-        }
-        [btnChat setHidden:YES];
+        [viewAttachedImages mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(lblDesc.mas_bottom).with.offset(CPaddingTopBottom);
+            make.height.equalTo(@(CheightImage));
+            make.width.equalTo(lblDesc.mas_width);
+            make.left.equalTo(imageProfile);
+        }];
+        [lblDateDesc mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(imageProfile);
+            make.width.equalTo(lblDesc);
+            make.height.greaterThanOrEqualTo(@(17));
+            make.top.equalTo(viewAttachedImages.mas_bottom).with.offset(CPaddingTopBottom * 2);
+        }];
     } else {
-        lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
-        viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
-        lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
-        
-        lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f), lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
-        viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width+2, lblKualitas.frame.origin.y-3, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
-        
-        viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width, viewStarKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
-        lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width-2, lblKualitas.frame.origin.y, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
-        
-        viewAttachedImages.frame = CGRectMake(0,0,0,0);
-        
-        
-        //View content action
-        viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewContentAction.isHidden?0:CHeightContentAction);
-        viewSeparatorKualitas.frame = CGRectMake(0, 0, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewSeparatorKualitas.bounds.size.height);
-        btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, viewContentAction.bounds.size.height);
-        btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnLike.bounds.size.height);
-        btnChat.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-btnChat.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y+5, btnChat.bounds.size.width, btnChat.bounds.size.height);
-        viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, [[UIScreen mainScreen] bounds].size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
-        
-        self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
-        
-        
-        if(! viewContentLoad.isHidden) {
-            viewContentLoad.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentLoad.bounds.size.height);
-            actLoading.frame = CGRectMake((viewContentLoad.bounds.size.width-actLoading.bounds.size.width)/2.0f, (viewContentLoad.bounds.size.height-actLoading.bounds.size.height)/2.0f, actLoading.bounds.size.width, actLoading.bounds.size.height);
-        }
-        [btnChat setHidden:YES];
+        [lblDateDesc mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(imageProfile);
+            make.top.equalTo(lblDesc.mas_bottom).with.offset(CPaddingTopBottom * 2);
+            make.width.equalTo(lblDesc);
+            make.height.greaterThanOrEqualTo(@(17));
+        }];
     }
     
+    [viewContentRating mas_makeConstraints:^(MASConstraintMaker *make){
+        make.left.equalTo(imageProfile);
+        make.top.equalTo(lblDateDesc.mas_bottom).with.offset(CPaddingTopBottom);
+        make.height.equalTo(@(viewContentRating.isHidden ? 0 : CHeightContentRate));
+        make.width.equalTo(@((self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2)));
+    }];
     
+    [lineSeparatorDesc mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(viewContentAction.mas_top).with.offset(-CPaddingTopBottom/2);
+        make.left.equalTo(@(0)).with.offset(-CPaddingTopBottom * 2);
+        make.right.equalTo(viewContent).with.offset(CPaddingTopBottom * 2);
+        make.height.equalTo(@(1));
+    }];
+    
+    [lblKualitas mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imageProfile);
+        make.top.equalTo(viewContentRating).with.offset(((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f));
+    }];
+    [viewStarKualitas mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(lblKualitas.mas_right).with.offset(2);
+        make.top.equalTo(lblKualitas).with.offset(-3);
+    }];
+    [lblAkurasi mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lblKualitas);
+        make.left.equalTo(viewStarKualitas.mas_right).with.offset(viewStarKualitas.frame.size.width + 8);
+    }];
+    [viewStarAkurasi mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(lblAkurasi.mas_right).with.offset(2);
+        make.top.equalTo(viewStarKualitas);
+    }];
+    
+    viewAttachedImages.frame = CGRectMake(0,0,0,0);
+    
+    [viewContentAction mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(@(0));
+        make.top.equalTo(viewContentRating.mas_bottom);
+        make.right.equalTo(lblDesc);
+        make.height.equalTo(@(viewContentAction.isHidden?0:CHeightContentAction));
+    }];
+    
+    [viewSeparatorKualitas mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(0));
+        make.height.equalTo(@(0));
+        make.top.equalTo(@(-1000));
+    }];
+    [viewSeparatorKualitas setHidden:YES];
+    [btnLike mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewContentRating);
+        make.top.equalTo(viewContentAction);
+        make.height.equalTo(viewContentAction);
+    }];
+    [btnDislike mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(btnLike.mas_right).with.offset(-40);
+        make.top.equalTo(btnLike);
+        make.size.equalTo(btnLike);
+    }];
+    [btnChat mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(btnLike).with.offset(5);
+        make.size.equalTo(btnLike);
+        make.left.equalTo(@((self.bounds.size.width-(viewContent.frame.origin.x*2))-btnChat.bounds.size.width-viewContentRating.frame.origin.x));
+    }];
+    [viewContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(@(CPaddingTopBottom));
+        make.top.equalTo(@(CPaddingTopBottom / 2));
+        make.width.equalTo(@([[UIScreen mainScreen] bounds].size.width-(viewContent.frame.origin.x*2)));
+        make.bottom.equalTo(viewContentAction).with.offset(-CPaddingTopBottom + 2);
+    }];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(@(0));
+        make.width.equalTo(@([[UIScreen mainScreen] bounds].size.width));
+        make.bottom.equalTo(viewContent);
+    }];
+    
+    if(! viewContentLoad.isHidden) {
+        actLoading.frame = CGRectMake((viewContentLoad.bounds.size.width-actLoading.bounds.size.width)/2.0f, (viewContentLoad.bounds.size.height-actLoading.bounds.size.height)/2.0f, actLoading.bounds.size.width, actLoading.bounds.size.height);
+    }
+    [btnChat setHidden:YES];
 }
 
 
@@ -276,18 +349,6 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x,
-                               CPaddingTopBottom + (isProductCell
-                                                    ?
-                                                    imageProduct.frame.origin.y+imageProduct.bounds.size.height
-                                                    :
-                                                    imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom,
-                               viewContent.frame.size.width,
-                               0);
-    CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
-    CGRect tempLblRect = lblDesc.frame;
-    tempLblRect.size.height = tempSizeDesc.height;
-    lblDesc.frame = tempLblRect;
 }
 
 - (void)setAttachedImages:(NSArray *)attachedImages {
@@ -300,22 +361,10 @@
                           placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
                 [imageView setUserInteractionEnabled:YES];
                 [imageView setHidden:NO];
+                [imageView addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnAttachedImage:)]];
             }
         }
     }
-    
-    if (isProductCell) {
-        viewAttachedImages.frame = CGRectMake(imageProfile.frame.origin.x,
-                                              24 + imageProfile.frame.origin.y + imageProfile.bounds.size.height + lblDesc.frame.origin.y + lblDesc.bounds.size.height,
-                                              viewContent.frame.size.width,
-                                              66);
-    } else {
-        viewAttachedImages.frame = CGRectMake(imageProfile.frame.origin.x,
-                                              16 + lblDesc.frame.origin.y + lblDesc.bounds.size.height,
-                                              viewContent.frame.size.width,
-                                              66);
-    }
-    
 }
 
 - (void)nothing:(id)sender {
