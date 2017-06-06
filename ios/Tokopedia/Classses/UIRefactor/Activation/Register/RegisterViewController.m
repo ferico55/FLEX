@@ -291,13 +291,14 @@ MMNumberKeyboardDelegate
 #pragma mark - View Action
 - (IBAction)toggleShowPassword {
     _seeHidePass.selected = !_seeHidePass.selected;
-    NSString *tmpString;
     [self.textfieldPassword setSecureTextEntry:!self.textfieldPassword.isSecureTextEntry];
-    tmpString = self.textfieldPassword.text;
+    NSString *tmpString = self.textfieldPassword.text;
     self.textfieldPassword.text = @"";
-    self.textfieldPassword.font = [UIFont title2Theme];
     self.textfieldPassword.text = tmpString;
     self.textfieldPassword.clearsOnBeginEditing = NO;
+    self.textfieldPassword.font = nil;
+    self.textfieldPassword.font = [UIFont systemFontOfSize:16];
+    [_textfieldPassword resignFirstResponder];
 }
 
 - (IBAction)tap:(id)sender
