@@ -11,10 +11,10 @@ import RestKit
 import Unbox
 
 final class CategoryIntermediaryResult: NSObject, Unboxable {
-    var children: [CategoryIntermediaryChild]!
-    var nonHiddenChildren: [CategoryIntermediaryChild]!
+    var children: [CategoryIntermediaryChild]?
+    var nonHiddenChildren: [CategoryIntermediaryChild]?
 
-    var nonExpandedChildren: [CategoryIntermediaryChild]!
+    var nonExpandedChildren: [CategoryIntermediaryChild]?
     var maxRowInCategorySubView: Int = 3
     var id: String = ""
     var name: String = ""
@@ -34,7 +34,7 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
     // rootCategoryId used for tracking needs
     var rootCategoryId: String = ""
     
-    init(children: [CategoryIntermediaryChild],
+    init(children: [CategoryIntermediaryChild]?,
       curatedProduct: CategoryIntermediaryCuratedProduct?,
       id: String,
       name:String,
@@ -66,7 +66,7 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
     
     convenience init(unboxer: Unboxer) throws {
         self.init(
-            children : try unboxer.unbox(keyPath: "result.child"),
+            children : try? unboxer.unbox(keyPath: "result.child") as [CategoryIntermediaryChild],
             curatedProduct : try? unboxer.unbox(keyPath: "result.curated_product") as CategoryIntermediaryCuratedProduct,
             id : try unboxer.unbox(keyPath: "result.id"),
             name : try unboxer.unbox(keyPath: "result.name"),
@@ -82,11 +82,17 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
             video : try unboxer.unbox(keyPath: "result.video") as CategoryIntermediaryVideo
 
         )
+        
+        rootCategoryId = try unboxer.unbox(keyPath: "result.root_category_id")
+        maxRowInCategorySubView = isRevamp ? 3 : 2
+
+        guard let children = children else{ return }
+        
         nonHiddenChildren =  children.filter { (child) in
             return child.hidden == 0
         }
         
-        nonExpandedChildren = nonHiddenChildren.enumerated().filter { (index, child) in
+        nonExpandedChildren = nonHiddenChildren?.enumerated().filter { (index, child) in
                 if self.isRevamp {
                     return index < 9
                 } else {
@@ -96,8 +102,5 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
             .map { (index, child) in
                     return child
             }
-        maxRowInCategorySubView = isRevamp ? 3 : 2
-        rootCategoryId = try unboxer.unbox(keyPath: "result.root_category_id")
-        
     }
 }
