@@ -11,11 +11,24 @@ import RestKit
 
 @objc(Paging)
 final class Paging:NSObject, Unboxable {
-    public var uri_next = ""
+    private var _uri_next : String?
+    public var uri_next : String? {
+        get {
+            return self._uri_next
+        }
+        set {
+            if newValue == "0" {
+                self._uri_next = nil
+                return
+            }
+            self._uri_next = newValue
+        }
+    }
     public var uri_previous = ""
     public var uriNext:URL? {
         get {
-            return URL(string: uri_next)
+            guard let uri = uri_next else { return nil }
+            return URL(string: uri)
         }
     }
     public var uriPrevious:URL? {
@@ -25,10 +38,7 @@ final class Paging:NSObject, Unboxable {
     }
     public var isShowNext : Bool {
         get {
-            if uri_next == "0" || uri_next == "" {
-                return false
-            }
-            return true
+            return !(uri_next == "0" || uri_next == "")
         }
     }
     
@@ -65,6 +75,7 @@ final class Paging:NSObject, Unboxable {
     }
     
     init(uri_previous:String, uri_next:String) {
+        super.init()
         self.uri_previous = uri_previous
         self.uri_next = uri_next
     }
