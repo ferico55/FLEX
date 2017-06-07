@@ -291,6 +291,9 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         [[TouchIDHelper sharedInstance] isTouchIDAvailable] &&
         [[TouchIDHelper sharedInstance] numberOfConnectedAccounts] > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if(self.popTipView != nil) {
+                [self.popTipView dismissAnimated:NO];
+            }
             self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Pilih halaman setting dan pengaturan Touch ID untuk mengatur Touch ID anda"];
             self.popTipView.delegate = self;
             self.popTipView.backgroundColor = [UIColor darkGrayColor];
