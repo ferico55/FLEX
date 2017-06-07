@@ -63,8 +63,8 @@
 
 - (UIViewController*)frontViewController {
     return [self shouldShowOnboarding]?
-        [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
-        [MainViewController new];
+    [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
+    [MainViewController new];
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
@@ -76,7 +76,7 @@
     [[MoEngage sharedInstance] userNotificationCenter:center didReceiveNotificationResponse:response];
     NSDictionary *pushNotificationData = response.notification.request.content.userInfo;
     if (pushNotificationData) {
-        [self handlePushNotificationWithData:pushNotificationData];
+        [self didReceiveNotificationBackgroundState:pushNotificationData];
     }
     
     completionHandler();
@@ -180,7 +180,7 @@
         NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         if (pushNotificationData) {
             
-            [self handlePushNotificationWithData:pushNotificationData];
+            [self didReceiveNotificationBackgroundState:pushNotificationData];
         }
     });
     
@@ -205,13 +205,27 @@
     [Appsee start:@"f2c02b28ccd54635a7c73eb9dac5038f"];
 }
 
-- (void)handlePushNotificationWithData:(NSDictionary *)pushNotificationData {
-    if ([pushNotificationData objectForKey:@"url_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"url_deeplink"]];
+- (void)didReceiveNotificationActiveState:(NSDictionary *)data {
+    if ([data objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[data objectForKey:@"url_deeplink"]];
         [TPRoutes routeURL:url];
-    } else if ([pushNotificationData objectForKey:@"moe_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[pushNotificationData objectForKey:@"moe_deeplink"]];
+    } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
         [TPRoutes routeURL:url];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
+}
+
+- (void)didReceiveNotificationBackgroundState:(NSDictionary*)data {
+    if ([data objectForKey:@"url_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[data objectForKey:@"url_deeplink"]];
+        [TPRoutes routeURL:url];
+    } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
+        [TPRoutes routeURL:url];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect object:nil userInfo:data];
     }
 }
 
@@ -343,10 +357,9 @@
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
-        [self handlePushNotificationWithData:userInfo];
+        [self didReceiveNotificationBackgroundState:userInfo];
     } else {
-        [self handlePushNotificationWithData:userInfo];
-        [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
+        [self didReceiveNotificationActiveState:userInfo];
     }
 }
 
@@ -357,7 +370,7 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^(void){
         [UIViewController showNotificationWithMessage:notification.alertBody type:NotificationTypeError duration:10.0 buttonTitle:notification.userInfo[@"button_title"] dismissable:YES action:^{
-            [self handlePushNotificationWithData:notification.userInfo];
+            [self didReceiveNotificationActiveState:notification.userInfo];
         }];
     });
     
@@ -365,7 +378,7 @@
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler {
-    [self handlePushNotificationWithData:notification.userInfo];
+    [self didReceiveNotificationActiveState:notification.userInfo];
 }
 
 - (BOOL)application:(UIApplication *)application
