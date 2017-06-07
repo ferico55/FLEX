@@ -25,7 +25,10 @@ class DigitalService {
     ) -> Observable<Void> {
         
         // prevent crash on home
-        let viewController = viewController.navigationController!.topViewController!
+        guard let navigationController = viewController.navigationController else {
+            return
+        }
+        let viewController = navigationController.topViewController!
         
         if !UserAuthentificationManager().isLogin {
             onNavigateToCart()
@@ -84,8 +87,10 @@ class DigitalService {
                         }
                 } else {
                     onNavigateToCart()
-                    
-                    var viewControllers = viewController.navigationController!.childViewControllers
+                    guard let navigationController = viewController.navigationController else {
+                        return
+                    }
+                    var viewControllers = navigationController.childViewControllers
                     
                     while viewControllers.last !== viewController {
                         _ = viewControllers.popLast()
@@ -113,7 +118,10 @@ class DigitalService {
                 webView.shouldAuthorizeRequest = false
                 webView.strTitle = "Pembayaran"
 
-                var viewControllers = viewController.navigationController!.childViewControllers
+                guard let navigationController = viewController.navigationController else {
+                    return
+                }
+                var viewControllers = navigationController.childViewControllers
                 
                 //                while viewControllers.last !== viewController {
                 //                    _ = viewControllers.popLast()
@@ -121,17 +129,20 @@ class DigitalService {
                 
                 webView.onTapBackButton = { url in
                     if let paymentUrl = url?.absoluteString.contains("payment"), paymentUrl {
-                            viewController.navigationController?.popViewController(animated: true)
-                        } else {
-                            viewController.navigationController?.popToRootViewController(animated: true)
-                        }
+                        viewController.navigationController?.popViewController(animated: true)
+                    } else {
+                        viewController.navigationController?.popToRootViewController(animated: true)
+                    }
                 }
                 
                 viewControllers.append(webView)
                 
                 webView.onTapLinkWithUrl = { url in
                     if let openThanksPage = url?.absoluteString.contains("/thanks"), openThanksPage {
-                        var viewControllers = viewController.navigationController!.childViewControllers
+                        guard let navigationController = viewController.navigationController else {
+                            return
+                        }
+                        var viewControllers = navigationController.childViewControllers
                         
                         let vcs = Array(viewControllers[0...viewControllers.index(of: viewController)!]) + [webView]
                         viewController.navigationController?.setViewControllers(vcs, animated: false)
@@ -142,7 +153,7 @@ class DigitalService {
                     }
                 }
                 
-                viewController.navigationController!.setViewControllers(viewControllers, animated: true)
+                navigationController.setViewControllers(viewControllers, animated: true)
                 
                 return
             }
