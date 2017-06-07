@@ -26,7 +26,7 @@ class DigitalService {
         
         // prevent crash on home
         guard let navigationController = viewController.navigationController else {
-            return
+            fatalError("No Controller")
         }
         let viewController = navigationController.topViewController!
         
@@ -88,7 +88,7 @@ class DigitalService {
                 } else {
                     onNavigateToCart()
                     guard let navigationController = viewController.navigationController else {
-                        return
+                        fatalError("No Controller")
                     }
                     var viewControllers = navigationController.childViewControllers
                     
