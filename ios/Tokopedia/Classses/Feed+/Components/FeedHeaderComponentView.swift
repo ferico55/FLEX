@@ -118,7 +118,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             
             layout.height = 40.0
             layout.width = 100
-            layout.right = 0
+            layout.marginRight = 0
         }
         
         let author = Node<UIView>(identifier: "author-header") { _, layout, _ in
@@ -133,6 +133,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             Node<UIView>(identifier: "author-info-container") { _, layout, _ in
                 layout.flexDirection = .row
                 layout.alignItems = .center
+                layout.flexShrink = 1
             }.add(children: [
                 authorImage,
                 authorInfo

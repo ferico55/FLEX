@@ -514,6 +514,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                         _, layout, _ in
                         layout.marginHorizontal = 8
                         layout.flexShrink = 1
+                        layout.flexGrow = 1
                     }
                     
                     let locationLabel = Node<UILabel> {
@@ -537,6 +538,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                         layout.flexDirection = .row
                         layout.height = 15
                         layout.flexShrink = 1
+                        layout.alignContent = .stretch
                     }
                     
                     let goldBadgeView = Node<UIImageView> {
