@@ -77,6 +77,7 @@ def common_pods
     pod 'MoEngage-iOS-SDK', '~> 3.3.0'
     pod 'lottie-ios'
     pod 'Apollo'
+    pod 'WatchdogInspector' ,'~> 1.1.0', :configurations => ['Debug']
 
     #will be changed to proper version later
     pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'

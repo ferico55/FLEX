@@ -180,6 +180,7 @@ PODS:
   - UITableView+FDTemplateLayoutCell (1.4)
   - Unbox (2.4.0)
   - VMaskTextField (1.0.8)
+  - WatchdogInspector (1.1.0)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -244,6 +245,7 @@ DEPENDENCIES:
   - UITableView+FDTemplateLayoutCell (~> 1.4)
   - Unbox (~> 2.4)
   - VMaskTextField
+  - WatchdogInspector (~> 1.1.0)
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
@@ -351,8 +353,9 @@ SPEC CHECKSUMS:
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   Unbox: c8b2ab69d3337597b4a3f47a0538807dc12db670
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
+  WatchdogInspector: 5d097bc96319d8b4277317e74bdd291e8521a673
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 8cf463aa4ffb7f0ed7d4e1f4d898e0a8e7584f52
+PODFILE CHECKSUM: 1cb2c2f833cacc03f72a6008e2f47ea19ddf4d11
 
 COCOAPODS: 1.2.1
