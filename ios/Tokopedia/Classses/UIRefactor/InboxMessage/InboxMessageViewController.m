@@ -184,7 +184,7 @@
     };
 
     [_getInboxListNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                               path:@"/v1/message"
+                                               path:@"/message/v1/list"
                                              method:RKRequestMethodGET
                                           parameter:param
                                             mapping:[V4Response mappingWithData:[InboxMessageResult mapping]]
@@ -295,10 +295,10 @@
     };
 
     NSDictionary<NSString*, NSString*>* pathByAction = @{
-            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/v1/message/archive",
-            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/v1/message/delete",
-            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/v1/message/move_inbox",
-            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/v1/message/delete/forever"
+            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/message/v1/archive",
+            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/message/v1/delete",
+            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/message/v1/move_inbox",
+            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/message/v1/delete/forever"
     };
 
     [_messageActionNetworkManager requestWithBaseUrl:[NSString kunyitUrl]

@@ -157,7 +157,7 @@
                             };
 
     [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                   path:@"/v2/talk/create"
+                                   path:@"/talk/v2/create"
                                  method:RKRequestMethodPOST
                               parameter:param
                                 mapping:[ProductTalkForm mapping]

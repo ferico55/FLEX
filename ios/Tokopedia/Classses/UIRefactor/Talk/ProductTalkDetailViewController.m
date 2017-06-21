@@ -162,14 +162,14 @@
     _auth = [auth mutableCopy];
     
     if(_marksOpenedTalksAsRead) {
-        _urlPath = @"/v2/talk/inbox/detail";
+        _urlPath = @"/talk/v2/inbox/detail";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
     } else { //push notif msk sini
         if (_talk.talk_message == nil) {
-            _urlPath = @"/v2/talk/inbox/detail";
+            _urlPath = @"/talk/v2/inbox/detail";
             _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         } else {
-            _urlPath = @"/v2/talk/comment";
+            _urlPath = @"/talk/v2/comment";
             _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
         }
     }
@@ -439,7 +439,7 @@
                             };
 
     [_sendCommentNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                              path:@"/v2/talk/comment/create"
+                                              path:@"/talk/v2/comment/create"
                                             method:RKRequestMethodPOST
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
@@ -781,7 +781,7 @@
     };
 
     [_deleteCommentNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                                path:@"/v2/talk/comment/delete"
+                                                path:@"/talk/v2/comment/delete"
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[GeneralAction mapping]
@@ -857,7 +857,7 @@
     };
 
     [_reportNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                         path:@"/v2/talk/comment/report"
+                                         path:@"/talk/v2/comment/report"
                                        method:RKRequestMethodPOST
                                     parameter:parameter
                                       mapping:[GeneralAction mapping]

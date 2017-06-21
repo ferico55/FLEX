@@ -228,7 +228,7 @@ class MessageViewController: JSQMessagesViewController {
         
         sendMessageManager .
             request(withBaseUrl: NSString.kunyitUrl(),
-                               path: "/v1/message/reply",
+                               path: "/message/v1/reply",
                                method: .POST,
                                parameter: ["reply_message" : text, "message_id" : self.messageId],
                                mapping: InboxMessageAction.mapping(),
@@ -316,7 +316,7 @@ class MessageViewController: JSQMessagesViewController {
         showLoading()
         fetchMessageManager.request(
             withBaseUrl: NSString.kunyitUrl(),
-            path: "/v1/message/detail",
+            path: "/message/v1/detail",
             method: .GET,
             parameter: ["message_id" : messageId ?? "", "page" : page, "per_page" : "10", "nav" : messageTabName ?? ""],
             mapping: InboxMessageDetail.mapping(),

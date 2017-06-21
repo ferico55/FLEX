@@ -221,7 +221,7 @@
     }
 
     [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                   path:@"/v2/talk"
+                                   path:@"/talk/v2/read"
                                  method:RKRequestMethodGET
                               parameter:param
                                 mapping:[Talk mapping]

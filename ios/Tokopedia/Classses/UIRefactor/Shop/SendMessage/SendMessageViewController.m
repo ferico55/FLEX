@@ -202,7 +202,7 @@
     requestManager.isUsingHmac = YES;
     
     [requestManager requestWithBaseUrl:[NSString kunyitUrl]
-                                  path:@"/v1/message"
+                                  path:@"/message/v1/send"
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[GeneralAction mapping]

@@ -232,7 +232,7 @@
     [self showLoadingIndicator];
 
     [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                   path:@"/v2/talk/inbox"
+                                   path:@"/talk/v2/inbox"
                                  method:RKRequestMethodGET
                               parameter:[self requestParameter]
                                 mapping:[Talk mapping]

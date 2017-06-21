@@ -424,7 +424,7 @@
     };
 
     [_fetchConversationNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                                    path:@"/v1/message/detail"
+                                                    path:@"/message/v1/detail"
                                                   method:RKRequestMethodGET
                                                parameter:param
                                                  mapping:[InboxMessageDetail mapping]
@@ -520,7 +520,7 @@
 
     [_sendMessageNetworkManager
             requestWithBaseUrl:[NSString kunyitUrl]
-                          path:@"/v1/message/reply"
+                          path:@"/message/v1/reply"
                         method:RKRequestMethodPOST
                      parameter:param
                        mapping:[InboxMessageAction mapping]

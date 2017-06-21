@@ -196,7 +196,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                 };
     
     [_unfollowNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                           path:@"/v2/talk/follow"
+                                           path:@"/talk/v2/follow"
                                          method:RKRequestMethodPOST
                                       parameter:parameter
                                         mapping:[GeneralAction mapping]
@@ -378,7 +378,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                     };
 
         [_deleteNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                             path:@"/v2/talk/delete"
+                                             path:@"/talk/v2/delete"
                                            method:RKRequestMethodPOST
                                         parameter:parameter
                                           mapping:[GeneralAction mapping]
@@ -404,7 +404,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                 };
 
     [_reportNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
-                                         path:@"/v2/talk/report"
+                                         path:@"/talk/v2/report"
                                        method:RKRequestMethodPOST
                                     parameter:parameter
                                       mapping:[GeneralAction mapping]
