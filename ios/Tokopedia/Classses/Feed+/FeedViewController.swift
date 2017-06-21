@@ -154,7 +154,6 @@ class FeedViewController: UIViewController {
                 )
                 cell.state = item
                 cell.isUserInteractionEnabled = true
-                cell.render(in: tableView.frame.size)
                 return cell
             }
             .disposed(by: rx_disposeBag)
