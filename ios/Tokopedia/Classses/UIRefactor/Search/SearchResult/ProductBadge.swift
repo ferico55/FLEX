@@ -17,7 +17,7 @@ final class ProductBadge:NSObject, Unboxable {
     
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)!
-        mapping.addAttributeMappings(from: ["title", "color"])
+        mapping.addAttributeMappings(from: ["title", "image_url"])
         return mapping
     }
     
