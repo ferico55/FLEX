@@ -92,6 +92,13 @@ class OfficialStoreSectionViewController: UIViewController {
     
     fileprivate func goToWebView(_ urlString: String) {
         let authenticationManager = UserAuthentificationManager()
+        let loginState = authenticationManager.isLogin ? "Login" : "Non Login"
+        
+        AnalyticsManager.trackEventName(
+            "clickOfficialStore",
+            category: GA_EVENT_CATEGORY_HOMEPAGE,
+            action: GA_EVENT_ACTION_CLICK,
+            label: "Official Store Visit Microsite - \(loginState)")
         
         let webViewVC = WebViewController()
         webViewVC.strURL = authenticationManager.webViewUrl(fromUrl: urlString)
