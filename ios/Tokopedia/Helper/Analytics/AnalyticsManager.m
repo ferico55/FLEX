@@ -582,7 +582,9 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                            @"gclid" : [url.parameters objectForKey:@"gclid"]?:@""
                            };
     
-    [manager.dataLayer push:data];
+    if ([[data objectForKey:@"utmSource"] length] != 0 && [[data objectForKey:@"utmMedium"] length] != 0 && [[data objectForKey:@"utmCampaign"] length] != 0 ) {
+        [manager.dataLayer push:data];
+    }
 }
 
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {

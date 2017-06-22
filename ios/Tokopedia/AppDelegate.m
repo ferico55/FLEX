@@ -244,11 +244,10 @@
 }
 
 - (void)configureMoEngageInApplication:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions {
+    [[MoEngage sharedInstance] initializeDevWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0"
+        inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:NO];
 #ifdef DEBUG
-    [[MoEngage sharedInstance] initializeDevWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:YES];
     [MoEngage debug:LOG_ALL];
-#else
-    [[MoEngage sharedInstance] initializeProdWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:YES];
 #endif
 }
 
@@ -360,7 +359,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [[MoEngage sharedInstance] didReceieveNotificationinApplication:application withInfo:userInfo openDeeplinkUrlAutomatically:YES];
+    [[MoEngage sharedInstance] didReceieveNotificationinApplication:application withInfo:userInfo openDeeplinkUrlAutomatically:NO];
     
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||

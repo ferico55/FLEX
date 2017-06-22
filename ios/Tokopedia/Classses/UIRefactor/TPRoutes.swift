@@ -251,8 +251,9 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/webview") { (params: [String : Any]!) -> Bool in
             let encodedURL = params["url"] as! String
             let decodedURL = encodedURL.removingPercentEncoding!
-            
-            openWebView(URL(string: decodedURL)!)
+            let utmString = getUTMString(params)
+            let url = decodedURL + utmString
+            openWebView(URL(string: url)!)
             
             return true
         }
@@ -393,8 +394,9 @@ class TPRoutes: NSObject {
         
         //bantuan
         JLRoutes.global().addRoute("/bantuan/*") { (params: [String : Any]!) -> Bool in
-            let url = params[kJLRouteURLKey] as! NSURL
-            openWebView(url as URL)
+            let utmString = getUTMString(params)
+            let url = NSURL(string: (params[kJLRouteURLKey] as! String) + utmString)
+            openWebView(url! as URL)
             
             return true
         }
@@ -502,6 +504,15 @@ class TPRoutes: NSObject {
                 TPRoutes.retryRequestForFormId(formId)
             }
             
+            return true
+        }
+        
+        //home page
+        JLRoutes.global().addRoute("home") { (params: [String: Any]!) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 0
+                viewController.navigationController?.popToRootViewController(animated: true)
+            }
             return true
         }
         
