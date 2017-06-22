@@ -13,7 +13,7 @@ import SPTPersistentCache
 
 class TopAdsFilter: NSObject {
     var ep: TopAdsEp = .product
-    var numberOfProductItems: Int = UIDevice.current.userInterfaceIdiom == .pad ?4:2
+    var numberOfProductItems: Int = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
     var numberOfShopItems: Int = 1
     var source: TopAdsSource = .directory
     var currentPage: Int = 0
@@ -28,7 +28,7 @@ class TopAdsFilter: NSObject {
     }
     
     convenience init(source: TopAdsSource,
-                     ep:TopAdsEp? = nil,
+                     ep: TopAdsEp? = nil,
                      numberOfProductItems: Int? = nil,
                      numberOfShopItems: Int? = nil,
                      page: Int? = nil,
@@ -67,7 +67,7 @@ class TopAdsFilter: NSObject {
     case shop
     case random
     
-    func name () -> String {
+    func name() -> String {
         switch self {
         case .product: return "product"
         case .shop: return "shop"
@@ -91,21 +91,21 @@ class TopAdsFilter: NSObject {
     case emptyCart
     case intermediary
     
-    func name () -> String {
+    func name() -> String {
         switch self {
-            case .directory: return "directory"
-            case .hotlist: return "hotlist"
-            case .search: return "search"
-            case .favoriteProduct: return "fav_product"
-            case .favoriteShop: return "fav_shop"
-            case .recommendation: return "recommendation"
-            case .recentlyViewed: return "recently_viewed"
-            case .wishlist: return "wishlist"
-            case .inboxMessageDetail: return "inbox_message_detail"
-            case .catalog: return "catalog"
-            case .pageNotFound: return "page_not_found"
-            case .emptyCart: return "empty_cart"
-            case .intermediary: return "intermediary"
+        case .directory: return "directory"
+        case .hotlist: return "hotlist"
+        case .search: return "search"
+        case .favoriteProduct: return "fav_product"
+        case .favoriteShop: return "fav_shop"
+        case .recommendation: return "recommendation"
+        case .recentlyViewed: return "recently_viewed"
+        case .wishlist: return "wishlist"
+        case .inboxMessageDetail: return "inbox_message_detail"
+        case .catalog: return "catalog"
+        case .pageNotFound: return "page_not_found"
+        case .emptyCart: return "empty_cart"
+        case .intermediary: return "intermediary"
         }
     }
 }
@@ -115,9 +115,7 @@ class CategoryRecommendationResponse: NSObject {
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(for: self)
-        mapping?.addAttributeMappings(from:[
-            "user_categories_id":"categoryIds"
-        ])
+        mapping?.addAttributeMappings(from: ["user_categories_id": "categoryIds"])
         
         return mapping!
     }
@@ -128,7 +126,7 @@ class TopAdsService: NSObject {
     let cacheExpirationPeriod = 60 * 15 // 15 minutes
     var cache: SPTPersistentCache!
     
-    override init(){
+    override init() {
         super.init()
         
         let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first! + cacheIdentifier
@@ -137,20 +135,20 @@ class TopAdsService: NSObject {
         cacheOption.cachePath = cachePath
         cacheOption.cacheIdentifier = cacheIdentifier
         cacheOption.defaultExpirationPeriod = UInt(cacheExpirationPeriod)
-        cacheOption.garbageCollectionInterval = 1*SPTPersistentCacheDefaultGCIntervalSec
+        cacheOption.garbageCollectionInterval = 1 * SPTPersistentCacheDefaultGCIntervalSec
         
         self.cache = SPTPersistentCache(options: cacheOption)
     }
     
-    func getTopAds(topAdsFilter:TopAdsFilter, onSuccess:@escaping (_ result:[PromoResult])->Void, onFailure:@escaping (_ error:Error)->Void){
+    func getTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
         if topAdsFilter.isRecommendationCategory {
-            getTopAdsFromCategoryRecommendation(topAdsFilter: topAdsFilter, onSuccess:{ result in
+            self.getTopAdsFromCategoryRecommendation(topAdsFilter: topAdsFilter, onSuccess: { result in
                 onSuccess(result)
             }, onFailure: { error in
                 onFailure(error)
             })
-        }else{
-            requestTopAds(topAdsFilter: topAdsFilter, onSuccess:{ result in
+        } else {
+            self.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { result in
                 onSuccess(result)
             }, onFailure: { error in
                 onFailure(error)
@@ -162,15 +160,16 @@ class TopAdsService: NSObject {
         let data = NSKeyedArchiver.archivedData(withRootObject: ids)
         
         self.cache.store(data,
-                         forKey: "recommendationCategoryIds", ttl: UInt(cacheExpirationPeriod),
+                         forKey: "recommendationCategoryIds",
+                         ttl: UInt(cacheExpirationPeriod),
                          locked: false,
-                         withCallback: { (response: SPTPersistentCacheResponse) in
-                            
-        },
+                         withCallback: { (_: SPTPersistentCacheResponse) in
+                             
+                         },
                          on: DispatchQueue.main)
     }
     
-    private func loadRecommendationCategoryIds(_ onSuccess: @escaping (_ ids: [String]) -> ()) {
+    private func loadRecommendationCategoryIds(_ onSuccess: @escaping (_ ids: [String]) -> Void) {
         
         self.cache.loadData(forKey: "recommendationCategoryIds",
                             withCallback: { (response: SPTPersistentCacheResponse) in
@@ -180,72 +179,72 @@ class TopAdsService: NSObject {
                                 
                                 let ids = NSKeyedUnarchiver.unarchiveObject(with: record.data) as! [String]
                                 return onSuccess(ids)
-        },
+                            },
                             on: DispatchQueue.main)
     }
     
-    private func getTopAdsFromCategoryRecommendation(topAdsFilter:TopAdsFilter, onSuccess:@escaping (_ result:[PromoResult])->Void, onFailure:@escaping (_ error:Error)->Void){
+    private func getTopAdsFromCategoryRecommendation(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
         
-        loadRecommendationCategoryIds { [weak self] (ids) in
+        self.loadRecommendationCategoryIds { [weak self] ids in
             if ids.count > 0 {
                 let randomIndex = Int(arc4random_uniform(UInt32(ids.count)))
                 topAdsFilter.departementId = "\(ids[randomIndex])"
                 
-                self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { (result) in
+                self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { result in
                     onSuccess(result)
-                }, onFailure: { (error) in
+                }, onFailure: { error in
                     onFailure(error)
                 })
                 
-            }else{
+            } else {
                 let networkManager = TokopediaNetworkManager()
                 networkManager.isUsingHmac = true
                 let path = "/promo/v1/info/user"
-                let parameters = ["pub_id":"15"]
+                let parameters = ["pub_id": "15"]
                 
                 networkManager.request(withBaseUrl: NSString.topAdsUrl(),
                                        path: path,
                                        method: .GET,
                                        parameter: parameters,
                                        mapping: CategoryRecommendationResponse.mapping(),
-                                       onSuccess: { (successResult, operation) in
-                    
-                    if let response = successResult.dictionary()[""] as? CategoryRecommendationResponse {
-                        if response.categoryIds.count > 0 {
-                            var temp = [String]()
-                            for id in response.categoryIds {
-                                temp.append("\(id)")
-                            }
-                            self?.storeRecommendationCategoryIds(temp)
-                            let randomIndex = Int(arc4random_uniform(UInt32(response.categoryIds.count)))
-                            topAdsFilter.departementId = "\(response.categoryIds[randomIndex])"
-                        }
-                    }
-                    
-                    self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { (result) in
+                                       onSuccess: { successResult, _ in
+                                           
+                                           if let response = successResult.dictionary()[""] as? CategoryRecommendationResponse {
+                                               if response.categoryIds.count > 0 {
+                                                   var temp = [String]()
+                                                   for id in response.categoryIds {
+                                                       temp.append("\(id)")
+                                                   }
+                                                   self?.storeRecommendationCategoryIds(temp)
+                                                   let randomIndex = Int(arc4random_uniform(UInt32(response.categoryIds.count)))
+                                                   topAdsFilter.departementId = "\(response.categoryIds[randomIndex])"
+                                               }
+                                           }
+                                           
+                                           self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { result in
+                                               onSuccess(result)
+                                           }, onFailure: { error in
+                                               onFailure(error)
+                                           })
+                                           
+                }, onFailure: { _ in
+                    self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { result in
                         onSuccess(result)
-                    }, onFailure: { (error) in
+                    }, onFailure: { error in
                         onFailure(error)
                     })
-                    
-                }) {  _ in
-                    self?.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { (result) in
-                        onSuccess(result)
-                    }, onFailure: { (error) in
-                        onFailure(error)
-                    })
-                }
+                })
             }
         }
     }
     
-    private func requestTopAds(topAdsFilter:TopAdsFilter, onSuccess:@escaping (_ result:[PromoResult])->Void, onFailure:@escaping (_ error:Error)->Void){
+    private func requestTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         let path = "/promo/v1.1/display/ads"
         let parameters = generateParameters(adFilter: topAdsFilter)
         
-        networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: PromoResponse.mapping(), onSuccess: { (successResult, operation) in
+        networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: PromoResponse.mapping(), onSuccess: { successResult, _ in
             if let response = successResult.dictionary()[""] as? PromoResponse {
                 if let data = response.data as? [PromoResult] {
                     onSuccess(data)
@@ -257,31 +256,31 @@ class TopAdsService: NSObject {
                 let data = response.data as? [PromoResult] {
                 onSuccess(data)
                 return
-                
+                    
             }
-        }) { (error) in
+        }) { error in
             onFailure(error)
         }
     }
     
-    static func sendClickImpression(clickURLString:String){
-        guard let url = URL(string:clickURLString) else {
+    static func sendClickImpression(clickURLString: String) {
+        guard let url = URL(string: clickURLString) else {
             return
         }
         
-        let request = URLRequest(url:url)
+        let request = URLRequest(url: url)
         let queue = OperationQueue()
-        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler:{ response, data, error in
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { _, _, _ in
         })
     }
     
-    private func generateParameters(adFilter:TopAdsFilter) -> [String:String] {
+    private func generateParameters(adFilter: TopAdsFilter) -> [String: String] {
         
-        let parameters: NSMutableDictionary = ["ep":adFilter.ep.name(),
-                                               "item":"\(adFilter.numberOfProductItems),\(adFilter.numberOfShopItems)",
-                                               "src":adFilter.source.name(),
-                                               "page":adFilter.currentPage,
-                                               "device":"ios"]
+        let parameters: NSMutableDictionary = ["ep": adFilter.ep.name(),
+                                               "item": "\(adFilter.numberOfProductItems),\(adFilter.numberOfShopItems)",
+                                               "src": adFilter.source.name(),
+                                               "page": adFilter.currentPage,
+                                               "device": "ios"]
         
         if let depId = adFilter.departementId {
             parameters["dep_id"] = depId
@@ -292,15 +291,15 @@ class TopAdsService: NSObject {
         }
         
         if let filter = adFilter.userFilter {
-            parameters.addEntries(from: filter as! [AnyHashable : Any])
+            parameters.addEntries(from: filter as! [AnyHashable: Any])
         }
         
         if let searchKey = adFilter.searchKeyword {
             parameters["q"] = searchKey
         }
         
-        var dict = [String:String]()
-        for (key,value) in (parameters as NSDictionary) {
+        var dict = [String: String]()
+        for (key, value) in parameters as NSDictionary {
             dict[key as! String] = "\(value)"
         }
         

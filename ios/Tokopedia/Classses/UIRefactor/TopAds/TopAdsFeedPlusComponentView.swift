@@ -21,14 +21,14 @@ struct TopAdsFeedPlusState: Render.StateType, ReSwift.StateType {
 
 class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
     
-    private var callback:(_ state:TopAdsFeedPlusState)->()
+    private var callback: (_ state: TopAdsFeedPlusState) -> ()
     
     override init() {
-        callback = {_ in }
+        callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback:@escaping (_ state:TopAdsFeedPlusState)->()) {
+    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> ()) {
         self.init()
         callback = favoriteCallback
     }
@@ -37,7 +37,7 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
         self.init()
         var theState = TopAdsFeedPlusState()
         theState.topAds = ads
-        self.state = theState
+        state = theState
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,26 +52,26 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
         }
         
         if theTopAds.count > 0 && (theTopAds[0].product != nil) {
-            //product
+            // product
             return Node<UIView>().add(child:
                 TopAdsFeedPlusProductComponentView().construct(state: state, size: size)
             )
-        }else{
-            //shop
+        } else {
+            // shop
             return Node<UIView>().add(child:
-                TopAdsFeedPlusShopComponentView(favoriteCallback:callback).construct(state: state, size: size)
+                TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size)
             )
         }
     }
-
+    
 }
 
-//MARK: Product
+// MARK: Product
 
 class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TKPDAlertViewDelegate {
     
     private let disposeBag = DisposeBag()
-
+    
     override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let state = state, let theTopAds = state.topAds, theTopAds.count > 0 else {
             return Node<UIView> {
@@ -79,7 +79,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             }
         }
         
-        let divider:CGFloat = 2
+        let divider: CGFloat = 2
         
         let mainWrapper = Node<UIView> {
             view, layout, size in
@@ -90,7 +90,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
         func promotedInfoView() -> NodeType {
             
             let outerView = Node<UIView> {
-                view, layout, _ in
+                view, _, _ in
                 view.backgroundColor = .tpLine()
             }
             
@@ -110,13 +110,13 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
                 
                 return view
             }) {
-                view, layout, size in
+                _, layout, _ in
                 layout.alignItems = .center
                 layout.flexDirection = .row
                 layout.flexGrow = 1
                 layout.height = 50
                 layout.marginVertical = 1
-                layout.marginHorizontal = UIDevice.current.userInterfaceIdiom == .pad ? 1:0
+                layout.marginHorizontal = UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0
             }
             
             let promotedLabel = Node<UILabel> {
@@ -131,7 +131,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             let infoButtonImageView = Node<UIImageView> {
                 view, layout, _ in
                 view.contentMode = .center
-                view.image = UIImage(named:"icon_info_grey")
+                view.image = UIImage(named: "icon_info_grey")
                 view.backgroundColor = .clear
                 layout.width = 14
                 layout.height = 14
@@ -139,7 +139,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             
             promotedInfoView.add(children: [
                 promotedLabel,
-                infoButtonImageView,
+                infoButtonImageView
             ])
             
             return outerView.add(child: promotedInfoView)
@@ -180,33 +180,33 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
                     view.addGestureRecognizer(tapGesture)
                     
                     return view
-            }
+                }
             ) {
-                _, layout, size in
+                _, layout, _ in
                 
                 layout.flexDirection = .column
                 layout.flexGrow = 1
                 layout.marginBottom = 1
-                if (index+1)%2 != 0 {
+                if (index + 1) % 2 != 0 {
                     layout.marginRight = 1
                 }
                 
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     layout.marginRight = 1
-                    if (index+1)%2 != 0 {
+                    if (index + 1) % 2 != 0 {
                         layout.marginLeft = 1
                     }
                 }
             }
             
             let productImageView = Node<TopAdsCustomImageView> {
-                view, layout, size in
+                view, layout, _ in
                 view.clipsToBounds = true
                 view.cornerRadius = 2
                 view.ad = topAdsResult
                 view.setImageWith(URL(string: product.productThumbEcs), placeholderImage: UIImage(named: "grey-bg.png"))
                 layout.aspectRatio = 1
-                layout.margin = UIDevice.current.userInterfaceIdiom == .pad ?8:5
+                layout.margin = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5
             }
             
             let productNameWrapper = Node<UIView> {
@@ -215,7 +215,6 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
                 layout.marginHorizontal = 8
                 layout.paddingTop = 0
             }
-            
             
             let productNameLabel = Node<UILabel> {
                 view, _, _ in
@@ -226,7 +225,6 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             }
             
             productNameWrapper.add(child: productNameLabel)
-            
             
             let productPriceLabel = Node<UILabel> {
                 view, layout, _ in
@@ -263,7 +261,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             layout.height = 15
         }
         
-        return mainWrapper.add(children:[
+        return mainWrapper.add(children: [
             promotedInfoView(),
             adsWrapper,
             space
@@ -279,23 +277,19 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
     
 }
 
-
-
-
-
-//MARK: Shop
+// MARK: Shop
 
 class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDAlertViewDelegate {
     
     private let disposeBag = DisposeBag()
-    private var callback:(_ state:TopAdsFeedPlusState)->()
+    private var callback: (_ state: TopAdsFeedPlusState) -> ()
     
-    override init(){
-        callback = { _ in}
+    override init() {
+        callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback:@escaping (_ state:TopAdsFeedPlusState)->()) {
+    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> ()) {
         self.init()
         callback = favoriteCallback
     }
@@ -303,7 +297,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let state = state, let theTopAds = state.topAds, theTopAds.count > 0 else {
             return NilNode()
@@ -318,9 +312,9 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
         func adView(ad: PromoResult) -> NodeType {
             let shop = ad.shop!
             let isShopFavorited = state.isDoneFavoriteShop || !shop.enable_fav
-            let smallPhotoDivider: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 4.3 : 10/3
+            let smallPhotoDivider: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 4.3 : 10 / 3
             
-            let adView = Node<UIView> (
+            let adView = Node<UIView>(
                 create: {
                     let tapGesture = UITapGestureRecognizer()
                     tapGesture.rx.event
@@ -336,8 +330,8 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     view.addGestureRecognizer(tapGesture)
                     
                     return view
-            }
-            ){
+                }
+            ) {
                 view, layout, size in
                 view.backgroundColor = UIColor.tpLine()
                 layout.width = size.width
@@ -368,8 +362,8 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     layout.alignItems = .center
                     layout.flexDirection = .row
                     layout.flexGrow = 1
-                    layout.paddingTop  = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 18
-                    layout.paddingBottom  = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 10
+                    layout.paddingTop = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 18
+                    layout.paddingBottom = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 10
                 }
                 
                 let promotedLabel = Node<UILabel> {
@@ -384,7 +378,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 let infoButtonImageView = Node<UIImageView> {
                     view, layout, _ in
                     view.contentMode = .center
-                    view.image = UIImage(named:"icon_info_grey")
+                    view.image = UIImage(named: "icon_info_grey")
                     view.backgroundColor = .clear
                     layout.width = 14
                     layout.height = 14
@@ -393,13 +387,13 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 return promotedInfoView.add(children: [
                     promotedLabel,
                     infoButtonImageView
-                    ])
+                ])
             }
             
             func requestFavorite() {
-                self.callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: isShopFavorited, isLoadingFavoriteShop: true, currentViewController: state.currentViewController))
+                callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: isShopFavorited, isLoadingFavoriteShop: true, currentViewController: state.currentViewController))
                 
-                FavoriteShopRequest.requestActionButtonFavoriteShop(shop.shop_id, withAdKey: ad.ad_ref_key, onSuccess: { (result) in
+                FavoriteShopRequest.requestActionButtonFavoriteShop(shop.shop_id, withAdKey: ad.ad_ref_key, onSuccess: { _ in
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Favorite")
                     var messageString = CStringSuccessFavoriteShop
                     if isShopFavorited {
@@ -417,7 +411,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             let favButton = Node<UIButton> {
                 view, layout, _ in
                 
-                view.rx.tap.subscribe(onNext: {[weak self] _ in
+                view.rx.tap.subscribe(onNext: { [weak self] _ in
                     requestFavorite()
                 }).addDisposableTo(self.disposeBag)
                 
@@ -432,7 +426,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     layout.width = 100
                     layout.marginRight = 10
-                }else{
+                } else {
                     layout.flexGrow = 1
                     layout.margin = 7
                 }
@@ -448,11 +442,11 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             let plusIcon = Node<UIImageView> {
                 view, layout, _ in
                 view.contentMode = .scaleAspectFit
-                view.image = isShopFavorited ? UIImage(named:"icon_check_favorited") : UIImage(named:"icon_follow_plus")
-                var iconSize = UIDevice.current.userInterfaceIdiom == .pad ? 20:25
+                view.image = isShopFavorited ? UIImage(named: "icon_check_favorited") : UIImage(named: "icon_follow_plus")
+                var iconSize = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 25
                 if isShopFavorited {
                     layout.marginRight = 5
-                    iconSize = UIDevice.current.userInterfaceIdiom == .pad ? 10:15
+                    iconSize = UIDevice.current.userInterfaceIdiom == .pad ? 10 : 15
                 }
                 layout.height = CGFloat(iconSize)
                 layout.width = CGFloat(iconSize)
@@ -461,7 +455,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             favButton.add(children: [
                 plusIcon,
                 favButtonLabel
-                ])
+            ])
             
             let loadingIndicatorWrapper = Node<UIView> {
                 view, layout, _ in
@@ -473,18 +467,17 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     layout.width = 100
                     layout.marginRight = 10
-                }else{
+                } else {
                     layout.flexGrow = 1
                     layout.margin = 7
                 }
-                }.add(child:
-                    Node<UIActivityIndicatorView> {
-                        view, layout, _ in
-                        view.color = .gray
-                        view.startAnimating()
-                    }
+            }.add(child:
+                Node<UIActivityIndicatorView> {
+                    view, _, _ in
+                    view.color = .gray
+                    view.startAnimating()
+                }
             )
-            
             
             func shopInfoWrapper() -> NodeType {
                 let shopInfoWrapper = Node<UIView> {
@@ -529,7 +522,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     return shopNameAndLocationWrapper.add(children: [
                         shopNameWrapper(),
                         locationLabel
-                        ])
+                    ])
                 }
                 
                 func shopNameWrapper() -> NodeType {
@@ -567,12 +560,12 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 shopInfoWrapper.add(children: [
                     shopImageView,
                     shopNameAndLocationWrapper()
-                    ])
+                ])
                 
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     if state.isLoadingFavoriteShop {
                         shopInfoWrapper.add(child: loadingIndicatorWrapper)
-                    }else{
+                    } else {
                         shopInfoWrapper.add(child: favButton)
                     }
                 }
@@ -585,9 +578,9 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     view, layout, _ in
                     view.backgroundColor = .white
                     layout.paddingTop = 15
-                    layout.paddingLeft = UIDevice.current.userInterfaceIdiom == .pad ?8:5
-                    layout.paddingRight = UIDevice.current.userInterfaceIdiom == .pad ?0:5
-                    layout.paddingBottom = UIDevice.current.userInterfaceIdiom == .pad ?10:8
+                    layout.paddingLeft = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5
+                    layout.paddingRight = UIDevice.current.userInterfaceIdiom == .pad ? 0 : 5
+                    layout.paddingBottom = UIDevice.current.userInterfaceIdiom == .pad ? 10 : 8
                     layout.flexDirection = .rowReverse
                 }
                 
@@ -596,16 +589,16 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     view.borderWidth = 1
                     view.borderColor = UIColor.tpLine()
                     view.ad = ad
-                    if shop.productPhotoUrls.count > 0  {
-                        view.setImageWith(URL(string:shop.productPhotoUrls[0] as! String), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
+                    if shop.productPhotoUrls.count > 0 {
+                        view.setImageWith(URL(string: shop.productPhotoUrls[0] as! String), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                     }
                     view.contentMode = .scaleAspectFill
                     view.clipsToBounds = true
                     view.cornerRadius = 2
                     layout.flexGrow = 1
                     layout.flexShrink = 1
-                    layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ?8:5
-                    layout.height = (size.width/smallPhotoDivider)*2 + (UIDevice.current.userInterfaceIdiom == .pad ?8:5)
+                    layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5
+                    layout.height = (size.width / smallPhotoDivider) * 2 + (UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5)
                     
                 }
                 
@@ -613,43 +606,41 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     let smallPhotoImageView = Node<UIImageView> {
                         view, layout, _ in
                         if index <= shop.productPhotoUrls.count {
-                            view.setImageWith(URL(string:shop.productPhotoUrls[index] as! String), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
+                            view.setImageWith(URL(string: shop.productPhotoUrls[index] as! String), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                         }
                         view.borderWidth = 1
                         view.borderColor = UIColor.tpLine()
                         view.contentMode = .scaleAspectFill
                         view.clipsToBounds = true
                         view.cornerRadius = 2
-                        layout.width = size.width/smallPhotoDivider
+                        layout.width = size.width / smallPhotoDivider
                         layout.height = layout.width
-                        layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ?8:0
+                        layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 0
                     }
                     
                     return smallPhotoImageView
                 }
-                
                 
                 func smallPhotoWrapper() -> NodeType {
                     let smallPhotoWrapper = Node<UIView> {
                         _, layout, _ in
                         layout.flexDirection = .column
                         layout.justifyContent = .spaceBetween
-                        layout.height = (size.width/smallPhotoDivider)*2 + (UIDevice.current.userInterfaceIdiom == .pad ?8:5)
+                        layout.height = (size.width / smallPhotoDivider) * 2 + (UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5)
                         layout.flexWrap = .wrap
                     }
                     
-                    let smallPhotoCount = UIDevice.current.userInterfaceIdiom == .pad ?4:2
+                    let smallPhotoCount = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
                     
-                    return smallPhotoWrapper.add(children: (1..<smallPhotoCount+1).map { index in
+                    return smallPhotoWrapper.add(children: (1..<smallPhotoCount + 1).map { index in
                         smallPhotoImageView(index: index)
                     })
                 }
                 
-                
                 return photoWrapper.add(children: [
                     smallPhotoWrapper(),
                     bigPhotoImageView
-                    ])
+                ])
             }
             
             let favoriteButtonWrapper = Node<UIView> {
@@ -661,22 +652,22 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                 layout.alignItems = .center
             }
             
-            adView.add(children:[
+            adView.add(children: [
                 promotedInfoView(),
                 shopInfoWrapper(),
                 photoWrapper()
-                ])
+            ])
             
             if UIDevice.current.userInterfaceIdiom != .pad {
                 if state.isLoadingFavoriteShop {
                     adView.add(child: favoriteButtonWrapper.add(child: loadingIndicatorWrapper))
-                }else{
+                } else {
                     adView.add(child: favoriteButtonWrapper.add(child: favButton))
                 }
             }
             
             return adView
-
+            
         }
         
         func space() -> NodeType {
@@ -688,7 +679,6 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             }
             return space
         }
-        
         
         for ad in theTopAds {
             mainWrapper.add(children: [

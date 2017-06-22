@@ -32,13 +32,12 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             return
         }
         
-        self.construct(ads: ads)
+        construct(ads: ads)
     }
     
-    fileprivate func construct(ads: [PromoResult]){
+    fileprivate func construct(ads: [PromoResult]) {
         let theTopAds = ads
-        let divider:CGFloat = (UIDevice.current.userInterfaceIdiom == .pad ?4:2)
-        
+        let divider: CGFloat = (UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2)
         
         let mainWrapper = Node<UIView>(identifier: "topads") {
             view, layout, size in
@@ -75,13 +74,13 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 let imageView = UIImageView()
                 imageView.isUserInteractionEnabled = true
                 imageView.contentMode = .center
-                imageView.image = UIImage(named:"info.png")
+                imageView.image = UIImage(named: "info.png")
                 imageView.backgroundColor = .clear
                 imageView.addGestureRecognizer(tapGesture)
                 
                 return imageView
             }) {
-                view, layout, size in
+                _, layout, _ in
                 
                 layout.width = 30
                 layout.right = 8
@@ -91,7 +90,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             return promotedInfoView.add(children: [
                 promotedLabel,
                 infoButtonImageView
-                ])
+            ])
         }
         
         let adsWrapper = Node<UIView> {
@@ -122,20 +121,20 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     view.addGestureRecognizer(tapGesture)
                     
                     return view
-            }
+                }
             ) {
                 _, layout, size in
                 
                 layout.flexDirection = .column
-                layout.width = (size.width - (divider-1)) / divider
+                layout.width = (size.width - (divider - 1)) / divider
                 
-                if (index+1) != Int(divider) {
+                if (index + 1) != Int(divider) {
                     layout.marginRight = 1
                 }
             }
             
             let productImageView = Node<TopAdsCustomImageView> {
-                view, layout, size in
+                view, layout, _ in
                 view.ad = topAdsResult
                 view.setImageWith(URL(string: product.productThumbEcs), placeholderImage: UIImage(named: "grey-bg.png"))
                 layout.aspectRatio = 1
@@ -152,7 +151,6 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 layout.paddingTop = 0
             }
             
-            
             let productNameLabel = Node<UILabel> {
                 view, _, _ in
                 view.text = product.productName
@@ -164,7 +162,6 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
             
             productNameWrapper.add(child: productNameLabel)
             
-            
             let productPriceLabel = Node<UILabel> {
                 view, layout, _ in
                 view.textColor = UIColor.tpOrange()
@@ -172,7 +169,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 
                 view.text = product.productPrice
                 layout.marginHorizontal = 8
-                layout.marginBottom = self.isSimple ? 9:0
+                layout.marginBottom = self.isSimple ? 9 : 0
                 layout.height = 17
             }
             
@@ -286,7 +283,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     pinIcon,
                     locationLabel,
                     badgesWrapper
-                    ])
+                ])
             }
             
             if isSimple {
@@ -294,9 +291,8 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     productImageView,
                     productNameWrapper,
                     productPriceLabel
-                    ])
-            }
-            else {
+                ])
+            } else {
                 return adView.add(children: [
                     productImageView,
                     productNameWrapper,
@@ -305,17 +301,17 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                     statusWrapper(),
                     productShopLabel,
                     bottomWrapper()
-                    ])
+                ])
             }
         }
         
         adsWrapper.add(children: (0..<theTopAds.count).map { index in
             adView(topAdsResult: theTopAds[index], index: index)
         })
-        mainWrapper.add(children:[
+        mainWrapper.add(children: [
             promotedInfoView(),
             adsWrapper
-            ])
+        ])
         
         rootNode = mainWrapper
     }
@@ -371,7 +367,7 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
 
 class TopAdsView: UIView {
     
-    func setPromo(ads:[PromoResult]){
+    func setPromo(ads: [PromoResult]) {
         for view in self.subviews {
             view.removeFromSuperview()
         }
@@ -427,14 +423,14 @@ class TopAdsCustomImageView: UIImageView, UIGestureRecognizerDelegate {
         userPanned()
     }
     
-    @objc private func userPanned(){
+    @objc private func userPanned() {
         if let _ = ad.shop?.image_shop {
             if isVisible(view: self) && !isImpressionAlreadySent && ad.shop.image_shop.s_url != ad.shop.image_shop.s_ecs && !ad.isImpressionSent {
                 TopAdsService.sendClickImpression(clickURLString: ad.shop.image_shop.s_url)
                 isImpressionAlreadySent = true
                 ad.isImpressionSent = true
             }
-        }else{
+        } else {
             if isVisible(view: self) && !isImpressionAlreadySent && ad.viewModel.productThumbEcs != ad.viewModel.productThumbUrl && !ad.isImpressionSent {
                 TopAdsService.sendClickImpression(clickURLString: ad.viewModel.productThumbUrl)
                 isImpressionAlreadySent = true
@@ -474,7 +470,6 @@ class TopAdsCustomImageView: UIImageView, UIGestureRecognizerDelegate {
                 // It's out to the bottom
                 offset.y = (rect.origin.y + rect.height) - inRect.origin.y + inRect.height
             }
-            
             
             return offset
         }

@@ -102,6 +102,7 @@
 #import "LoadingView.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
+#import "RateProduct.h"
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
 #import "SearchResultViewController.h"

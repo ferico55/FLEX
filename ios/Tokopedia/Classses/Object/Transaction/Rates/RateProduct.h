@@ -18,5 +18,9 @@
 @property (nonatomic, strong) NSString *check_sum;
 @property (nonatomic, strong) NSString *formatted_price;
 @property NSInteger is_show_map;
+@property (nonatomic, strong) NSString *max_hours_id;
+@property (nonatomic, strong) NSString *max_hours;
+@property (nonatomic, strong) NSString *desc_hours_id;
+@property (nonatomic, strong) NSString *desc_hours;
 
 @end

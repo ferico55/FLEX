@@ -38,6 +38,27 @@ extension NSDate {
     }
 }
 
+extension String {
+    func bolded(last numOfWords:Int) -> NSAttributedString {
+        let num = numOfWords > self.characters.count ? self.characters.count : numOfWords
+        let attributedString = NSMutableAttributedString(string: self, attributes: [NSFontAttributeName: UIFont.microTheme()])
+        
+        let boldFontAttribute: [String:Any] = [
+            NSFontAttributeName: UIFont.microThemeSemibold(),
+            NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
+        ]
+        
+        let delimiter = " "
+        let stringArray = self.components(separatedBy: delimiter)
+        let nsString = self as NSString
+        for boldString in stringArray.suffix(num) {
+            attributedString.addAttributes(boldFontAttribute, range: nsString.range(of: boldString))
+        }
+        
+        return attributedString
+    }
+}
+
 extension NSString {
     func withNumberFormat() ->  NSString {
         let result = NSMutableString(string: self)

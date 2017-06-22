@@ -130,6 +130,7 @@ typedef enum
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
+    _headerTableView = [NSArray sortViewsWithTagInArray:_headerTableView];
     _isnodata = YES;
     
     [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
@@ -496,7 +497,7 @@ typedef enum
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _isnodata?0:3;
+    return _isnodata?0:4;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -516,6 +517,9 @@ typedef enum
             break;
         }
         case 2:
+            return _isnodata?0:1;
+            break;
+        case 3:
             return _isnodata?0:_tableViewPaymentDetailCell.count;
         default:
             return 0;
@@ -598,6 +602,14 @@ typedef enum
                 break;
             }
             case 2:
+            {
+                cell = [[UITableViewCell alloc] init];
+                CGRect theRect = CGRectMake(0, 0, tableView.frame.size.width, 155);
+                OnDemandInfoView *view = [[OnDemandInfoView alloc] initWithRateProduct:_selectedShipmentPackage rect:theRect];
+                [cell addSubview:view];
+                break;
+            }
+            case 3:
                 cell = _tableViewPaymentDetailCell[indexPath.row];
                 UILabel *label = (UILabel *)[cell viewWithTag:1];
                 switch (indexPath.row) {
@@ -703,6 +715,12 @@ typedef enum
             break;
         }
         case 2:
+            if (_selectedShipmentPackage.is_show_map == 1) {
+                return 155;
+            }
+            return 0;
+            break;
+        case 3:
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
                 if ([_productQuantityTextField.text integerValue]<=1) {
@@ -809,7 +827,14 @@ typedef enum
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == 2) {
+        return _selectedShipmentPackage.is_show_map == 0 ? CGFLOAT_MIN : 19;
+    }
     return [(_headerTableView[section]) frame].size.height;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

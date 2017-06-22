@@ -1802,6 +1802,7 @@
 		928FAE471EAF42FC00E33DE6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE461EAF42FC00E33DE6 /* libRCTActionSheet.a */; };
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
+		C00BE0A71EE8EFB70001995E /* OnDemandInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		F91036B31EE8FC00002743A6 /* OfficialStoreHomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */; };
 		F9E3C03D1EE6544C00FBD14E /* activateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */; };
@@ -5012,6 +5013,7 @@
 		9295B26D1EAF4238000F705C /* libAppHub.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppHub.a; path = "../node_modules/apphub/AppHub/build/Debug-iphoneos/libAppHub.a"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnDemandInfoView.swift; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -9621,6 +9623,7 @@
 				34F0B77E1EE66740005D7DB2 /* TransactionShipmentATCViewController.h */,
 				34F0B77F1EE66740005D7DB2 /* TransactionShipmentATCViewController.m */,
 				34F0B7801EE66740005D7DB2 /* TransactionShipmentATCViewController.xib */,
+				C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */,
 			);
 			path = AddToCart;
 			sourceTree = "<group>";
@@ -11862,6 +11865,7 @@
 				34F0BD551EE66747005D7DB2 /* SearchAutoCompleteViewController.m in Sources */,
 				34F0B91A1EE66741005D7DB2 /* ResolutionWebViewController.swift in Sources */,
 				34F0B8771EE66741005D7DB2 /* SecurityQuestionResult.m in Sources */,
+				C00BE0A71EE8EFB70001995E /* OnDemandInfoView.swift in Sources */,
 				34F0BD361EE66747005D7DB2 /* FilterShipmentConfirmationViewController.m in Sources */,
 				34F0BAFF1EE66743005D7DB2 /* FilterCategoryViewController.m in Sources */,
 				34F0BAAD1EE66743005D7DB2 /* AlertInfoView.m in Sources */,
