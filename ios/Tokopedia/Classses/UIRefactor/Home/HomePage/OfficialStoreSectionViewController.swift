@@ -10,25 +10,6 @@ import UIKit
 import OAStackView
 import Masonry
 import BlocksKit
-import RestKit
-
-@objc
-class OfficialStoreHomeItem: NSObject {
-    var shopId: String = ""
-    var imageUrl: String = ""
-    var shopName: String = ""
-    
-    static func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(for: OfficialStoreHomeItem.self)
-        
-        mapping?.addAttributeMappings(from: [
-            "shop_id": "shopId",
-            "logo_url": "imageUrl",
-            "shop_name": "shopName"
-        ])
-        return mapping!
-    }
-}
 
 @objc(OfficialStoreSectionViewController)
 class OfficialStoreSectionViewController: UIViewController {

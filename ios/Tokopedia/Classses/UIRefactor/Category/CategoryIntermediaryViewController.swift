@@ -645,21 +645,16 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     // MARK: API
-    
     private func requestOfficialStore() {
-        officialStoreNetworkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/os/api/v1/brands/list", method: .GET, parameter: ["category" : categoryIntermediaryResult.name.lowercased().replacingOccurrences(of: " ", with: "-")], mapping: V4Response<AnyObject>.mapping(withData: OfficialStoreHomeItem.mapping()), onSuccess: { (mappingResult, operation) in
-            
-            let result = mappingResult.dictionary()[""] as! V4Response<NSArray>
-            let shops = result.data as! [OfficialStoreHomeItem]
-            
-            self.intermediaryView.state?.officialStoreHomeItems = shops
-            self.intermediaryView.render(in: self.view.bounds.size)
-            
-        }, onFailure:{ error in
-        
-        })
+        _ = NetworkProvider<MojitoTarget>()
+            .request(.requestOfficialStore(categoryId: categoryIntermediaryResult.id))
+            .map(to: [OfficialStoreHomeItem.self], fromKey: "data")
+            .subscribe(onNext: { [weak self] result in
+                guard let `self` = self else { return }
+                self.intermediaryView.state?.officialStoreHomeItems = result
+                self.intermediaryView.render(in: self.view.bounds.size)
+            })
     }
-    
     
     func requestHotlist() {
         hotListNetworkManager.request(withBaseUrl: NSString.aceUrl(), path: "/hoth/hotlist/v1/category", method: .GET, parameter: ["categories" : categoryIntermediaryResult.id, "perPage" : "7"], mapping: CategoryIntermediaryHotListResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in

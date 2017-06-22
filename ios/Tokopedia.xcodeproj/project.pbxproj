@@ -1803,6 +1803,7 @@
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		F91036B31EE8FC00002743A6 /* OfficialStoreHomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */; };
 		F9E3C03D1EE6544C00FBD14E /* activateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */; };
 		F9E3C03E1EE6544C00FBD14E /* deactivateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03C1EE6544C00FBD14E /* deactivateWishlist.json */; };
 		F9E3D1D81EE6562B00FBD14E /* JSONAbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */; };
@@ -5014,6 +5015,7 @@
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfficialStoreHomeItem.swift; sourceTree = "<group>"; };
 		F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = activateWishlist.json; sourceTree = "<group>"; };
 		F9E3C03C1EE6544C00FBD14E /* deactivateWishlist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deactivateWishlist.json; sourceTree = "<group>"; };
 		F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAbleType.swift; sourceTree = "<group>"; };
@@ -7995,6 +7997,7 @@
 				34F0B3511EE6673E005D7DB2 /* OfficialStoreSectionViewController.xib */,
 				34F0B3521EE6673E005D7DB2 /* TokoCashSectionViewController.swift */,
 				34F0B3531EE6673E005D7DB2 /* TokoCashSectionViewController.xib */,
+				F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -12671,6 +12674,7 @@
 				34F0BE291EE66748005D7DB2 /* TransactionCartWebViewViewController.m in Sources */,
 				34F0BDE51EE66748005D7DB2 /* FilterViewController.m in Sources */,
 				34F0B8281EE66741005D7DB2 /* ExpiringCache.m in Sources */,
+				F91036B31EE8FC00002743A6 /* OfficialStoreHomeItem.swift in Sources */,
 				34F0BCA11EE66746005D7DB2 /* PromoRequest.m in Sources */,
 				34F0BA0A1EE66742005D7DB2 /* ShippingInfo.m in Sources */,
 				34F0B8E51EE66741005D7DB2 /* GooglePlaceDetailResults.m in Sources */,

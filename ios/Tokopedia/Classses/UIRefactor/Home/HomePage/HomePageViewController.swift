@@ -476,20 +476,15 @@ class HomePageViewController: UIViewController {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.request(
-            withBaseUrl: NSString.mojitoUrl(),
-            path: "/os/api/v1/brands/list",
-            method: .GET,
-            parameter: ["device":"ios"],
-            mapping: V4Response<AnyObject>.mapping(withData: OfficialStoreHomeItem.mapping()),
-            onSuccess: { [weak self] (mappingResult, operation) in
+        _ = NetworkProvider<MojitoTarget>()
+            .request(.requestOfficialStoreHomePage)
+            .map(to: [OfficialStoreHomeItem.self], fromKey: "data")
+            .subscribe(onNext: { [weak self] result in
                 guard let `self` = self else { return }
                 
                 self.isRequestingOfficialStore = false
                 self.officialStoreRequestSuccess = true
-                
-                let result = mappingResult.dictionary()[""] as! V4Response<NSArray>
-                let shops = result.data as! [OfficialStoreHomeItem]
+                let shops = result
                 
                 guard !shops.isEmpty else { return }
                 
@@ -501,9 +496,9 @@ class HomePageViewController: UIViewController {
                 officialStoreSection.view.mas_makeConstraints { (make) in
                     make?.edges.equalTo()(self.officialStorePlaceholder)
                 }
-            },
-            onFailure: {error in
-                self.isRequestingOfficialStore = false
+                }, onError: { [weak self] error in
+                    guard let `self` = self else { return }
+                    self.isRequestingOfficialStore = false
             })
     }
     
