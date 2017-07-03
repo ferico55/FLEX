@@ -23,9 +23,9 @@ static NSURL *bundleUrl() {
     };
     
     NSURL* jsCodeLocation;
-    NSString* localhost = FBTweakValue(@"React", @"Bundle", @"Local server URL", @"127.0.0.1");
+    NSString* localhost = FBTweakValue(@"Others", @"React", @"Local server URL", @"127.0.0.1");
     
-    ReactBundleSource source = FBTweakValue(@"React", @"Bundle", @"Source", ReactBundleSourceCodePush,
+    ReactBundleSource source = FBTweakValue(@"Others", @"React", @"Source", ReactBundleSourceCodePush,
                                             (@{
                                                @(ReactBundleSourceDevice): @"Device (QA use this)",
                                                @(ReactBundleSourceCodePush): @"CodePush (Production)",

@@ -25,8 +25,6 @@
     NSArray *_unloadViewControllers;
     BOOL _hascatalog;
     
-    UIBarButtonItem *_barbuttoncategory;
-    
     NSArray *_initialCategories;
     CategoryDetail *_selectedCategory;
 }
@@ -93,25 +91,6 @@
 
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
     self.navigationItem.leftBarButtonItem = backButton;
-    
-    
-    if (![self isUseDynamicFilter]) {
-        NSBundle* bundle = [NSBundle mainBundle];
-        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
-        
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-        }
-        else
-            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-        
-        _barbuttoncategory.tag = 11;
-        [_barbuttoncategory setEnabled:NO];
-        
-        self.navigationItem.rightBarButtonItem = _barbuttoncategory;
-    }
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -331,14 +310,6 @@
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
             ((SearchResultViewController *)_selectedViewController).delegate = self;
-            
-            if (![self isUseDynamicFilter]) {
-                if(_hascatalog && selectedIndex == 1){
-                    self.navigationItem.rightBarButtonItem = nil;
-                }else{
-                    self.navigationItem.rightBarButtonItem = _barbuttoncategory;
-                }
-            }
         }
         
         if (animated && (deselect != nil) && (navigate != 0)) {
@@ -394,14 +365,6 @@
             [_container addSubview:select.view];
             [select didMoveToParentViewController:self];
         }
-    }
-}
-
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
     }
 }
 
@@ -670,8 +633,6 @@
             _hascatalog = YES;
         }
     }
-    
-    _barbuttoncategory.enabled = YES;
     
     if (_segmentcontrol.numberOfSegments == 1) {
         _tabViewHeightConstraint.constant = 0;

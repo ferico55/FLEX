@@ -219,11 +219,7 @@ static NSString const *rows = @"12";
 
 
 - (IBAction)tapFilterButton:(id)sender {
-	if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicFilter];
-    } else {
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
@@ -256,20 +252,7 @@ static NSString const *rows = @"12";
 }
 
 -(IBAction)didTapFilterButton:(UIButton*)button{
-    if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicFilter];
-    } else {
-        [self pushFilter];
-    }
-}
-
--(void)pushFilter{
-    FilterViewController *vc = [FilterViewController new];
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                kTKPDFILTER_DATAFILTERKEY: _params};
-    vc.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [self searchWithDynamicFilter];
 }
 
 -(NSString *)searchShopType{
@@ -302,14 +285,6 @@ static NSString const *rows = @"12";
 
 -(void)showFilterIsActive:(BOOL)isActive{
     _activeFilterImageView.hidden = !isActive;
-}
-
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 #pragma mark - Methods
@@ -367,31 +342,7 @@ static NSString const *rows = @"12";
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)parameters {
-    if ([self isUseDynamicFilter]) {
-        return [self parameterDynamicFilter];
-    } else {
-        return [self parameterFilter];
-    }
-}
-
--(NSDictionary*)parameterFilter{
-    NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    NSString *categoryID = [_params objectForKey:@"sc"];
-    
-    NSDictionary* param = @{
-                            @"sc" : categoryID?: @"",
-                            @"q" : (categoryID == nil) ? (querry ?:@"") : @"",
-                            @"start" : @(_start),
-                            @"rows" : rows,
-                            @"device" : @"ios",
-                            @"ob" : [_params objectForKey:@"ob"]?:@"",
-                            @"floc" : [_params objectForKey:@"floc"]?:@"",
-                            @"fshop" : [_params objectForKey:@"fshop"]?:@"",
-                            @"pmin" : [_params objectForKey:@"pmin"]?:@"",
-                            @"pmax" : [_params objectForKey:@"pmax"]?:@"",
-                            @"source" : @"search"
-                            };
-     return param;
+    return [self parameterDynamicFilter];
 }
 
 -(NSDictionary*)parameterDynamicFilter{

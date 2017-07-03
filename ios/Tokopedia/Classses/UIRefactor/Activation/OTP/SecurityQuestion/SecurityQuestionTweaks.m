@@ -11,11 +11,11 @@
 @implementation SecurityQuestionTweaks
 
 + (BOOL)alwaysShowSecurityQuestion {
-    return FBTweakValue(@"Security Question", @"General", @"Show Security Question", NO);
+    return FBTweakValue(@"Others", @"Security", @"Show Security Question", NO);
 }
 
 + (BOOL)autoSendOTPBySMS {
-    return FBTweakValue(@"Security Question", @"General", @"Auto Send OTP By SMS", NO);
+    return FBTweakValue(@"Others", @"Security", @"Auto Send OTP By SMS", NO);
 }
 
 @end

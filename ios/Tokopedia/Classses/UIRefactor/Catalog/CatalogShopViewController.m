@@ -332,20 +332,8 @@
      return @"catalog_product";
 }
 
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
 - (IBAction)didTapSortButton:(id)sender {
-    if ([self isUseDynamicFilter]) {
-        [self isSearchWithDynamicSort];
-    } else{
-        [self pushSort];
-    }
+    [self isSearchWithDynamicSort];
 }
 
 -(void)isSearchWithDynamicSort{
@@ -385,31 +373,10 @@
     _activeSortImageView.hidden = !isActive;
 }
 
--(void)pushSort{
-    SortViewController *controller = [SortViewController new];
-    controller.sortType = SortCatalogDetailSeach;
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.delegate = self;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-}
-
 -(IBAction)didTapFilterButton:(id)sender{
-    if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicFilter];
-    } else {
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
--(void)pushFilter{
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:_filterCatalogController];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
 
 -(void)searchWithDynamicFilter{
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceCatalogProduct filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
@@ -520,11 +487,7 @@
 }
 
 - (NSDictionary *)parameters {
-    if ([self isUseDynamicFilter]) {
-        return [self parameterDynamicFilter];
-    } else {
-        return [self parameterFilter];
-    }
+    return [self parameterDynamicFilter];
 }
 
 -(NSDictionary*)parameterDynamicFilter{

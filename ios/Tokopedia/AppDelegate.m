@@ -62,7 +62,7 @@
 - (BOOL)shouldShowOnboarding {
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
     
-    BOOL alwaysShowOnboarding = FBTweakValue(@"Onboarding", @"General", @"Always show onboarding", NO);
+    BOOL alwaysShowOnboarding = FBTweakValue(@"Others", @"Onboarding", @"Always show onboarding", NO);
     
     BOOL shouldShowOnboarding = alwaysShowOnboarding?YES:!hasShownOnboarding;
     return shouldShowOnboarding;
@@ -293,7 +293,7 @@
 }
 
 - (BOOL)shouldShowLocalyticsTab {
-    return FBTweakValue(@"Localytics Tab", @"General", @"Show Localytics Tab", NO);
+    return FBTweakValue(@"Others", @"Localytics", @"Show Localytics Tab", NO);
 }
 
 - (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {

@@ -146,7 +146,7 @@ typedef enum TagRequest {
      object:nil
      queue:mainQueue
      usingBlock:^(NSNotification * _Nonnull note) {
-         if(FBTweakValue(@"Enable Share Screenshot", @"Enable Share Screenshot", @"Enabled", YES)) {
+         if(FBTweakValue(@"Others", @"Enable Share Screenshot", @"Enabled", YES)) {
              [AnalyticsManager trackEventName:@"clickScreenshot" category:GA_EVENT_CATEGORY_SCREENSHOT action:GA_EVENT_ACTION_CLICK label:@"Take Screenshot"];
              
              [self.screenshotHelper takeScreenshot];

@@ -160,10 +160,6 @@ static NSString const *rows = @"12";
 - (void) viewDidLoad {
     [super viewDidLoad];
     _page = 0;
-        
-    if (![self isUseDynamicFilter]) {
-        [self setRightButton];
-    }
     
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
     _requestHotlistManager.isParameterNotEncrypted = YES;
@@ -292,11 +288,6 @@ static NSString const *rows = @"12";
     [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
 }
 
-- (void)setRightButton {
-    UIImage* image = [UIImage imageNamed:@"icon_category_list_white.png"];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(didTapFilterSubCategoryButton)];
-}
-
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [Localytics triggerInAppMessage:@"Hot List Result Screen"];
@@ -306,14 +297,6 @@ static NSString const *rows = @"12";
 #pragma mark - Memory Management
 -(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 
@@ -330,11 +313,7 @@ static NSString const *rows = @"12";
 }
 
 - (IBAction)didTapSortButton:(id)sender {
-    if ([self isUseDynamicFilter]){
-        [self searchWithDynamicSort];
-    } else{
-        [self pushSort];
-    }
+    [self searchWithDynamicSort];
 }
 
 -(NSString*)hotlistFilterSource{
@@ -367,21 +346,8 @@ static NSString const *rows = @"12";
     _activeSortImageView.hidden = !isActive;
 }
 
--(void)pushSort{
-    SortViewController *controller = [SortViewController new];
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.sortType = SortHotlistDetail;
-    controller.delegate = self;
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self.navigationController presentViewController:navigation animated:YES completion:nil];
-}
-
 - (IBAction)didTapFilterButton:(id)sender {
-    if ([self isUseDynamicFilter]){
-        [self searchWithDynamicFilter];
-    } else{
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
 -(void)searchWithDynamicFilter{
@@ -412,15 +378,6 @@ static NSString const *rows = @"12";
 
 -(void)isShowFilterIsActive:(BOOL)isActive{
     _activeFilterImageView.hidden = !isActive;
-}
-
--(void)pushFilter{
-    FilterViewController *vc = [FilterViewController new];
-    vc.delegate = self;
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
-                kTKPDFILTER_DATAFILTERKEY: _detailfilter};
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)didTapChangeGridButton:(id)sender {
@@ -999,12 +956,7 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parameters {
-    if ([self isUseDynamicFilter]) {
-        return [self parametersDynamicFilter];
-    } else{
-        return [self parameterFilter];
-    }
-
+    return [self parametersDynamicFilter];
 }
 
 - (NSDictionary*)parametersDynamicFilter {

@@ -802,30 +802,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [self refreshView:nil];
 }
 
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
--(void)pushSort{
-    SortViewController *controller = [SortViewController new];
-    controller.delegate = self;
-    controller.selectedIndexPath = _sortIndexPath;
-    if(_isFromImageSearch){
-        controller.sortType = SortImageSearch;
-    }else if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
-        controller.sortType = SortProductSearch;
-    } else {
-        controller.sortType = SortCatalogSearch;
-    }
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
 -(void)searchWithDynamicSort{
     FiltersController *controller = [[FiltersController alloc]initWithSource:[self getSourceSearchData]
                                                                 sortResponse:_filterResponse?:[FilterData new]
@@ -880,19 +856,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (IBAction)didTapSortButton:(UIButton*)sender {
-    if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicSort];
-    } else{
-        [self pushSort];
-    }
+    [self searchWithDynamicSort];
 }
 
 -(IBAction)didTapFilterButton:(UIButton*)sender{
-    if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicFilter];
-    } else {
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
 -(Source)getSourceSearchData{
@@ -947,21 +915,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     }
 }
 
--(void)pushFilter{
-    // Action Filter Button
-    FilterViewController *vc = [FilterViewController new];
-    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]])
-        vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                    kTKPDFILTER_DATAFILTERKEY: _params
-                    };
-    else
-        vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                    kTKPDFILTER_DATAFILTERKEY: _params};
-    vc.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
 #pragma mark - LoadingView Delegate
 - (IBAction)pressRetryButton:(id)sender {
     [self requestSearch];
@@ -971,40 +924,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter {
-    if([self isUseDynamicFilter]){
-        return [self parameterDynamicFilter];
-    } else {
-        return [self parameterFilter];
-    }
+    return [self parameterDynamicFilter];
 }
 
--(NSDictionary *)parameterFilter{
-    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-    [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"sc"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"floc"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"ob"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"pmin"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"pmax"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"fshop"]?:@"" forKey:@"fshop"];
-    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    if(_isFromImageSearch){
-        [parameter setObject:_image_url forKey:@"image_url"];
-        if (_strImageSearchResult) {
-            [parameter setObject:_strImageSearchResult forKey:@"id"];
-            [parameter setObject:@(allProductsCount) forKey:@"rows"];
-        }
-        if([_product firstObject] != nil && [[_product firstObject] count] > 0){
-            [parameter setObject:@(0) forKey:@"start"];
-        }
-    } else {
-        [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
-        [parameter setObject:startPerPage forKey:@"rows"];
-        [parameter setObject:@(_start) forKey:@"start"];
-        [parameter setObject:@"true" forKey:@"breadcrumb"];
-    }
-    return parameter;
-}
 
 -(NSDictionary*)parameterDynamicFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];

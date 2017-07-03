@@ -1624,7 +1624,6 @@
 		34F0BE731EE66749005D7DB2 /* TalkModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F0B8231EE66740005D7DB2 /* TalkModelView.m */; };
 		34F0BE741EE66749005D7DB2 /* TalkProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34F0B8241EE66740005D7DB2 /* TalkProductCell.xib */; };
 		34F0BE751EE66749005D7DB2 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F0B8251EE66740005D7DB2 /* WalletService.swift */; };
-		452E82A41E64103E001191E0 /* TokopediaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E82A31E64103E001191E0 /* TokopediaUITests.swift */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
@@ -1849,13 +1848,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		452E82A61E64103E001191E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FC36DF7B19B0656400AF74C1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FC36DF8219B0656400AF74C1;
-			remoteInfo = Tokopedia;
-		};
 		7A0C43021EA5FADA00E1E977 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */;
@@ -4726,13 +4718,9 @@
 		34F0B8241EE66740005D7DB2 /* TalkProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkProductCell.xib; sourceTree = "<group>"; };
 		34F0B8251EE66740005D7DB2 /* WalletService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
 		43813BF315E24DEFAE03F2C5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
-		452E82A11E64103E001191E0 /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		452E82A31E64103E001191E0 /* TokopediaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokopediaUITests.swift; sourceTree = "<group>"; };
-		452E82A51E64103E001191E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
-		452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TokopediaUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -5073,13 +5061,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		452E829E1E64103E001191E0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		925BA62B1E518A54001CED3A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -9893,16 +9874,6 @@
 			path = Talk;
 			sourceTree = "<group>";
 		};
-		452E82A21E64103E001191E0 /* TokopediaUITests */ = {
-			isa = PBXGroup;
-			children = (
-				452E95881E64108F001191E0 /* TokopediaUITests-Bridging-Header.h */,
-				452E82A31E64103E001191E0 /* TokopediaUITests.swift */,
-				452E82A51E64103E001191E0 /* Info.plist */,
-			);
-			path = TokopediaUITests;
-			sourceTree = "<group>";
-		};
 		452E95811E64107E001191E0 /* Fixture */ = {
 			isa = PBXGroup;
 			children = (
@@ -10658,7 +10629,6 @@
 				7AA485291E9B34C20099D9CE /* Tokopedia */,
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				925BA62F1E518A54001CED3A /* ServiceExtension */,
-				452E82A21E64103E001191E0 /* TokopediaUITests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
 				E1A48FC656B05056B45251AD /* Pods */,
@@ -10672,7 +10642,6 @@
 				FC36DF8319B0656400AF74C1 /* Tokopedia.app */,
 				FC36DF9E19B0656400AF74C1 /* TokopediaTests.xctest */,
 				925BA62E1E518A54001CED3A /* ServiceExtension.appex */,
-				452E82A11E64103E001191E0 /* TokopediaUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -10770,24 +10739,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		452E82A01E64103E001191E0 /* TokopediaUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 452E82AA1E64103E001191E0 /* Build configuration list for PBXNativeTarget "TokopediaUITests" */;
-			buildPhases = (
-				452E829D1E64103E001191E0 /* Sources */,
-				452E829E1E64103E001191E0 /* Frameworks */,
-				452E829F1E64103E001191E0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				452E82A71E64103E001191E0 /* PBXTargetDependency */,
-			);
-			name = TokopediaUITests;
-			productName = TokopediaUITests;
-			productReference = 452E82A11E64103E001191E0 /* TokopediaUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		925BA62D1E518A54001CED3A /* ServiceExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 925BA6381E518A54001CED3A /* Build configuration list for PBXNativeTarget "ServiceExtension" */;
@@ -10861,12 +10812,6 @@
 				LastUpgradeCheck = 510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
-					452E82A01E64103E001191E0 = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = YQP4A2M94J;
-						ProvisioningStyle = Automatic;
-						TestTargetID = FC36DF8219B0656400AF74C1;
-					};
 					925BA62D1E518A54001CED3A = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = YQP4A2M94J;
@@ -10989,7 +10934,6 @@
 				FC36DF8219B0656400AF74C1 /* Tokopedia */,
 				FC36DF9D19B0656400AF74C1 /* TokopediaTests */,
 				925BA62D1E518A54001CED3A /* ServiceExtension */,
-				452E82A01E64103E001191E0 /* TokopediaUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -11208,13 +11152,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		452E829F1E64103E001191E0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		925BA62C1E518A54001CED3A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -11785,14 +11722,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		452E829D1E64103E001191E0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				452E82A41E64103E001191E0 /* TokopediaUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		925BA62A1E518A54001CED3A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -13186,11 +13115,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		452E82A71E64103E001191E0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FC36DF8219B0656400AF74C1 /* Tokopedia */;
-			targetProxy = 452E82A61E64103E001191E0 /* PBXContainerItemProxy */;
-		};
 		925BA6341E518A54001CED3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 925BA62D1E518A54001CED3A /* ServiceExtension */;
@@ -13231,72 +13155,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		452E82A81E64103E001191E0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = YQP4A2M94J;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = TokopediaUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = test.TokopediaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "TokopediaUITests/TokopediaUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = Tokopedia;
-			};
-			name = Debug;
-		};
-		452E82A91E64103E001191E0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = YQP4A2M94J;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = TokopediaUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = test.TokopediaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TokopediaUITests/TokopediaUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = Tokopedia;
-			};
-			name = Release;
-		};
 		925BA6361E518A54001CED3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */;
@@ -13649,15 +13507,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		452E82AA1E64103E001191E0 /* Build configuration list for PBXNativeTarget "TokopediaUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				452E82A81E64103E001191E0 /* Debug */,
-				452E82A91E64103E001191E0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		925BA6381E518A54001CED3A /* Build configuration list for PBXNativeTarget "ServiceExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
