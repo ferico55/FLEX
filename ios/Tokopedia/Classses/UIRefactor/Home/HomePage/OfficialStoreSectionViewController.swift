@@ -35,19 +35,16 @@ class OfficialStoreSectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var count = 0
         
-        shops.forEach { shop in
+        shops.enumerated().forEach { (index, shop) in
             let view = UIView()
             view.backgroundColor = .white
             view.mas_makeConstraints { make in
                 make?.height.equalTo()(75)
                 make?.width.equalTo()(75)
-//                make?.width.equalTo()(view.mas_height)
-//                make?.width.greaterThanOrEqualTo()(1)
             }
             
-            if count % 3 != 0 {
+            if index % 3 != 0 {
                 let separatorView = UIView()
                 separatorView.backgroundColor = separatorGrayColor
                 view.addSubview(separatorView)
@@ -70,7 +67,7 @@ class OfficialStoreSectionViewController: UIViewController {
 
             imageView.setImageWith(NSURL(string: shop.imageUrl)! as URL!)
             
-            if count > 2 {
+            if index > 2 {
                 secondRowImageContainer.addArrangedSubview(view)
             }
             else {
@@ -81,8 +78,7 @@ class OfficialStoreSectionViewController: UIViewController {
                 self.openShopWithItem(shop)
             })
 
-            count += 1
-            if !shop.isNew {
+            if shop.isNew {
                 let newText = UITextView()
                 newText.text = "BARU"
                 newText.textColor = .white
@@ -91,7 +87,6 @@ class OfficialStoreSectionViewController: UIViewController {
                 newText.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0)
                 newText.cornerRadius = 2
                 view.addSubview(newText)
-//                view.bringSubview(toFront: newText)
                 
                 newText.mas_makeConstraints{ make in
                     make?.left.top().equalTo()(view)?.offset()(5)
