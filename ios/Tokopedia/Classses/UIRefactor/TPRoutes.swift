@@ -178,6 +178,14 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //Resolution Detail
+        JLRoutes.global().addRoute("/resolution/:resolutionId") { (params: [String : Any]!) -> Bool in
+            let resolutionId = params["resolutionId"] as! String
+            let controller = ResolutionWebViewController(resolutionId: resolutionId)
+            UIApplication.topViewController()?.navigationController?.pushViewController(controller, animated: true)
+            return true
+        }
+        
         JLRoutes.global().unmatchedURLHandler = { (route, url, dictionary) in
             self.openWebView(url!)
         }
@@ -558,7 +566,6 @@ class TPRoutes: NSObject {
             
             return true
         }
-        
     }
     
     static func onLoginSuccess(login: Login) {
