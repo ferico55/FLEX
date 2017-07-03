@@ -89,7 +89,7 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return _product_is_received?2:1;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -233,7 +233,7 @@
 -(void)submitCreateResolution{
     if(!_selectedSolution) {
         [StickyAlertView showErrorMessage:@[@"Mohon pilih solusi yang Anda inginkan terlebih dahulu"]];
-    } else if(_selectedImages.count == 0) {
+    } else if(_selectedImages.count == 0 && _product_is_received) {
         [StickyAlertView showErrorMessage:@[@"Mohon lampirkan foto sebagai barang bukti"]];
     } else {
         [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
