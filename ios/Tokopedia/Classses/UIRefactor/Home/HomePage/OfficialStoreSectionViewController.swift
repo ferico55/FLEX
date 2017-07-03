@@ -14,13 +14,15 @@ import BlocksKit
 @objc(OfficialStoreSectionViewController)
 class OfficialStoreSectionViewController: UIViewController {
     
-    fileprivate var separatorGrayColor = UIColor(red: 241.0/255, green: 241.0/255, blue: 241.0/255, alpha: 1.0)
+    fileprivate var separatorGrayColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12)
+    fileprivate var newRedColor = UIColor(red: 234.0/255, green: 33.0/255, blue: 45.0/255, alpha: 1.0)
 
     private let shops: [OfficialStoreHomeItem]
     
     @IBOutlet weak var buttonSeeAll: UIButton!
     
     @IBOutlet private var imageContainer: OAStackView!
+    @IBOutlet private var secondRowImageContainer: OAStackView!
 
     init(shops: [OfficialStoreHomeItem]) {
         self.shops = shops
@@ -33,16 +35,28 @@ class OfficialStoreSectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var count = 0
         
         shops.forEach { shop in
             let view = UIView()
             view.backgroundColor = .white
-            view.layer.borderColor = separatorGrayColor.cgColor
-            view.layer.cornerRadius = 2
-            view.layer.borderWidth = 1
             view.mas_makeConstraints { make in
-                make?.width.equalTo()(view.mas_height)
-                make?.width.greaterThanOrEqualTo()(1)
+                make?.height.equalTo()(75)
+                make?.width.equalTo()(75)
+//                make?.width.equalTo()(view.mas_height)
+//                make?.width.greaterThanOrEqualTo()(1)
+            }
+            
+            if count % 3 != 0 {
+                let separatorView = UIView()
+                separatorView.backgroundColor = separatorGrayColor
+                view.addSubview(separatorView)
+                separatorView.mas_makeConstraints { make in
+                    make?.width.equalTo()(1)
+                    make?.left.equalTo()(0)?.offset()(-5)
+                    make?.bottom.equalTo()(0)
+                    make?.top.equalTo()(0)
+                }
             }
             
             let imageView = UIImageView()
@@ -56,16 +70,40 @@ class OfficialStoreSectionViewController: UIViewController {
 
             imageView.setImageWith(NSURL(string: shop.imageUrl)! as URL!)
             
-            imageContainer.addArrangedSubview(view)
+            if count > 2 {
+                secondRowImageContainer.addArrangedSubview(view)
+            }
+            else {
+                imageContainer.addArrangedSubview(view)
+            }
             
             view.bk_(whenTapped: { [unowned self] in
                 self.openShopWithItem(shop)
             })
-            
-            buttonSeeAll.bk_(whenTapped: { [unowned self] in
-                self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
-            })
+
+            count += 1
+            if !shop.isNew {
+                let newText = UITextView()
+                newText.text = "BARU"
+                newText.textColor = .white
+                newText.font = UIFont.superMicroTheme()
+                newText.backgroundColor = newRedColor
+                newText.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0)
+                newText.cornerRadius = 2
+                view.addSubview(newText)
+//                view.bringSubview(toFront: newText)
+                
+                newText.mas_makeConstraints{ make in
+                    make?.left.top().equalTo()(view)?.offset()(5)
+                    make?.width.equalTo()(36)
+                    make?.height.equalTo()(15)
+                }
+            }
         }
+        
+        buttonSeeAll.bk_(whenTapped: { [unowned self] in
+            self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
+        })
         
         for _ in stride(from: 0, to: 4-shops.count, by: 1) {
             let stretchView = UIView()
