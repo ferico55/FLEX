@@ -4938,6 +4938,7 @@
 		7A466B731EB2FEAE00A72105 /* UIViewController+TKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TKPAdditions.h"; sourceTree = "<group>"; };
 		7A466B741EB2FEAE00A72105 /* UIViewController+TKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TKPAdditions.m"; sourceTree = "<group>"; };
 		7A466B751EB2FEAE00A72105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7A6F08221EEF7F7C0017B8CD /* ScroogeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScroogeController.swift; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7A942E3C1E97A33300C76BD1 /* React.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = React.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Tokopedia-ckrgtecvlsrpdfasvfnpyqlhcyvc/Build/Products/Debug-iphonesimulator/React/React.framework"; sourceTree = "<group>"; };
@@ -7384,6 +7385,7 @@
 				34F0B7E61EE66740005D7DB2 /* UserPageView */,
 				34F0B8061EE66740005D7DB2 /* ViewModels */,
 				34F0B8251EE66740005D7DB2 /* WalletService.swift */,
+				7A6F08221EEF7F7C0017B8CD /* ScroogeController.swift */,
 			);
 			path = UIRefactor;
 			sourceTree = "<group>";

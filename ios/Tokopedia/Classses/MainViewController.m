@@ -43,6 +43,7 @@
 #import <MessageUI/MessageUI.h>
 
 #import "UIActivityViewController+Extensions.h"
+#import <WatchdogInspector/TWWatchdogInspector.h>
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -72,6 +73,7 @@
 }
 
 @property (strong, nonatomic) ScreenshotHelper *screenshotHelper;
+@property (nonatomic) BOOL showFPSMeter;
 
 @end
 
@@ -152,6 +154,9 @@ typedef enum TagRequest {
              [self.screenshotHelper takeScreenshot];
          }
      }];
+    
+    _showFPSMeter = NO;
+    FBTweakBind(self, showFPSMeter,  @"FPS Meter",  @"FPS Meter", @"Enabled", NO);
 }
 
 - (void)makeSureDeviceTokenExists {
@@ -792,6 +797,16 @@ typedef enum TagRequest {
         // Pakai remove observer karena iOS 7 tidak mau otomatis remove observer ketika TransactionCartRootVC dealloc
         [[NSNotificationCenter defaultCenter]removeObserver:transactionCartRootVC];
         [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartViewController new]]];
+    }
+}
+
+// MARK: Setter Getter
+
+- (void) setShowFPSMeter:(BOOL)show {
+    if (show) {
+        [TWWatchdogInspector start];
+    } else {
+        [TWWatchdogInspector stop];
     }
 }
 

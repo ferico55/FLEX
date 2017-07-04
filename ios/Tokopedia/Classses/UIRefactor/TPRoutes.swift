@@ -16,6 +16,11 @@ class TPRoutes: NSObject {
         
         //applinks..
         //shop
+        JLRoutes.global().addRoute("/pop-to-root") { (params: [String : Any]!) -> Bool in
+            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/shop/:shopId") { (params: [String : Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID:shopId)
