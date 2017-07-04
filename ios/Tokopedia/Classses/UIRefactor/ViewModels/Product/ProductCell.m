@@ -379,6 +379,11 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [self.iconOvalWhite setHidden:YES];
     
 }
+
+- (ProductModelView*) viewModel {
+    return self._viewModel;
+}
+
 - (void)prepareForReuse {
     [super prepareForReuse];
     [imageDownloader cancelAllOperations];
