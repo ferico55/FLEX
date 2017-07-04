@@ -383,7 +383,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 cell.applinks = curatedProduct.applinks
                 cell.delegate = state?.intermediaryViewController as! ProductCellDelegate
                 cell.bk_(whenTapped: {
-                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel().productName)", label: cell.viewModel().productName)
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel.productName)", label: cell.viewModel.productName)
                     TPRoutes.routeURL(URL(string: cell.applinks)!)
                 })
             }

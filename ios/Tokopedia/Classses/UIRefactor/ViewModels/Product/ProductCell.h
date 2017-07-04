@@ -19,7 +19,6 @@
 
 @interface ProductCell : UICollectionViewCell
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
-- (ProductModelView*) viewModel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UILabel *productPrice;
