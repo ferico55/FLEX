@@ -163,28 +163,9 @@
 
 }
 
--(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [webView stopLoading];
-    NSString *errorMessage ;
-    
-    NSLog(@"%@", error.localizedDescription);
-    
-    if (error.code==-1009) {
-        errorMessage = [NSString stringWithFormat:@"Tidak ada koneksi internet\n%@",error.localizedDescription];
-    } else {
-        errorMessage = [NSString stringWithFormat:@"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.\n%@",error.localizedDescription];
-    }
-    
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     [AnalyticsManager trackExceptionDescription:[NSString stringWithFormat:@"Payment ID: %@, User ID: %@, Gateway ID: %@, Error Description: %@, URL: %@", _paymentID?:@"", [userManager getUserId]?:@"", _gateway?:@"", error.localizedDescription?:@"", webView.request.URL.absoluteString?:@""]];
-    
-    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    if (!_isAlertShow) {
-        _isAlertShow = YES;
-        errorAlert.tag = 11;
-        [errorAlert show];
-    }
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
