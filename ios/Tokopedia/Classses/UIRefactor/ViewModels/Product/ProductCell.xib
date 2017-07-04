@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -188,6 +188,15 @@
                                     <constraint firstAttribute="width" constant="36" id="JgJ-ky-bBg"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiW-zW-pcp">
+                                <rect key="frame" x="130" y="0.0" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="lBu-4e-r99"/>
+                                    <constraint firstAttribute="width" constant="36" id="mch-kZ-6w3"/>
+                                </constraints>
+                                <state key="normal" image="icon_wishlist_outline"/>
+                                <state key="selected" image="icon_wishlist_filled_red"/>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ky-Uy-MKz">
                                 <rect key="frame" x="116" y="0.0" width="50" height="50"/>
                                 <constraints>
@@ -247,6 +256,7 @@
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="KCY-Kb-pCM"/>
                             <constraint firstItem="Ug2-8n-rO9" firstAttribute="leading" secondItem="Xcs-wg-GLM" secondAttribute="trailing" constant="3" id="LWg-Ly-ibl"/>
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="top" secondItem="eCk-Jy-Tnn" secondAttribute="bottom" constant="7" id="Mpw-uW-Pec"/>
+                            <constraint firstItem="kiW-zW-pcp" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="O8b-9a-BuW"/>
                             <constraint firstAttribute="trailing" secondItem="riz-i3-Xqh" secondAttribute="trailing" constant="8" id="Oym-qM-muL"/>
                             <constraint firstItem="eCk-Jy-Tnn" firstAttribute="leading" secondItem="Fki-cQ-9ac" secondAttribute="leading" id="PNm-9w-Qha"/>
                             <constraint firstAttribute="trailing" secondItem="5yJ-UZ-wYW" secondAttribute="trailing" id="SCb-RW-XrQ"/>
@@ -264,6 +274,7 @@
                             <constraint firstItem="YTf-ZV-fyn" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="jC2-Cn-m1d"/>
                             <constraint firstItem="FLo-Kn-Ink" firstAttribute="centerY" secondItem="Ug2-8n-rO9" secondAttribute="centerY" id="oLy-Ex-u4o"/>
                             <constraint firstItem="eCk-Jy-Tnn" firstAttribute="trailing" secondItem="g44-fl-fUl" secondAttribute="trailing" id="tvl-fv-WLa"/>
+                            <constraint firstAttribute="trailing" secondItem="kiW-zW-pcp" secondAttribute="trailing" id="ufG-hN-dA4"/>
                             <constraint firstItem="5yJ-UZ-wYW" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="v8Z-Ge-dao"/>
                             <constraint firstItem="YTf-ZV-fyn" firstAttribute="trailing" secondItem="g44-fl-fUl" secondAttribute="trailing" id="vdt-IH-BW7"/>
                             <constraint firstAttribute="trailing" secondItem="FLo-Kn-Ink" secondAttribute="trailing" constant="8" id="w5m-7R-GoH"/>
@@ -289,6 +300,7 @@
             <size key="customSize" width="166" height="284"/>
             <connections>
                 <outlet property="badgesView" destination="FLo-Kn-Ink" id="zIb-gW-Epu"/>
+                <outlet property="buttonWishlist" destination="kiW-zW-pcp" id="jex-qS-unz"/>
                 <outlet property="buttonWishlistExpander" destination="9ky-Uy-MKz" id="ueD-wi-6a9"/>
                 <outlet property="catalogPriceLabel" destination="wSA-So-qCi" id="5UT-BK-7xH"/>
                 <outlet property="discountLabel" destination="aMV-Pt-yMK" id="d5E-uM-AUJ"/>
@@ -315,5 +327,7 @@
         <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_oval_white" width="28" height="28"/>
         <image name="icon_star.png" width="16" height="16"/>
+        <image name="icon_wishlist_filled_red" width="18" height="16"/>
+        <image name="icon_wishlist_outline" width="20" height="18"/>
     </resources>
 </document>

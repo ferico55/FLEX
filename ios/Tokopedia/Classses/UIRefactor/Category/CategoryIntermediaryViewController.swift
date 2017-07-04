@@ -377,7 +377,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 productModelView.productId = String(curatedProduct.id)
                 productModelView.isOnWishlist = curatedProduct.isOnWishlist
                 
-                cell.setViewModel(productModelView)
+                cell.viewModel = productModelView
                 cell.removeWishlistButton()
                 cell.parentViewController = state?.intermediaryViewController
                 cell.applinks = curatedProduct.applinks
