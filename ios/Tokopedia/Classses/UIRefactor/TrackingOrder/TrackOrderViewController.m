@@ -54,6 +54,7 @@
     [self request];
     
     self.tableView.tableFooterView = _footerView;
+    self.tableView.estimatedRowHeight = 40;
     [self.activityIndicator startAnimating];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -316,10 +317,10 @@
         if (indexPath.section < 2) {
             return 44;
         } else {
-            return 110;
+            return UITableViewAutomaticDimension;
         }
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
-        return 110;
+        return UITableViewAutomaticDimension;
     }
     return 44;
 }
