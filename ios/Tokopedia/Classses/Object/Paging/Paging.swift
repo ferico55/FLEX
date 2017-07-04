@@ -38,7 +38,7 @@ final class Paging:NSObject, Unboxable {
     }
     public var isShowNext : Bool {
         get {
-            return !(uri_next == "0" || uri_next == "")
+            return uri_next != nil
         }
     }
     
