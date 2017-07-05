@@ -14,9 +14,9 @@ class CategoryIntermediaryHotListItem: NSObject {
     var url: String = ""
     var title: String = ""
     var alk: String = ""
-    var imgPortrait: CategoryIntermediaryHotListImagePortrait!
-    var img: CategoryIntermediaryHotListImage!
-    var imgSquare: CategoryIntermediaryHotListImageSquare!
+    var imgPortrait: CategoryIntermediaryHotListImagePortrait?
+    var img: CategoryIntermediaryHotListImage?
+    var imgSquare: CategoryIntermediaryHotListImageSquare?
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(for: CategoryIntermediaryHotListItem.self)

@@ -13,7 +13,8 @@
 
 @import SwiftOverlays;
 
-NSInteger const bannerIpadWidth = 450;
+const CGSize bannerIPadSize = {.width = 450, .height = 225};
+const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 
 @interface CarouselDataSource ()
     
@@ -40,17 +41,13 @@ NSInteger const bannerIpadWidth = 450;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
-    CGFloat bannerWidth;
-    if(IS_IPAD) {
-        bannerWidth = bannerIpadWidth;
-    } else {
-        bannerWidth = 375;
-    }
-
-    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, IS_IPAD ? 225 : 175)];
+    
+    CGSize bannerSize = IS_IPAD && (_isIntermediaryBanner == NO) ? bannerIPadSize : bannerIPhoneSize;
+    
+    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
+    
     Slide *banner = _banners[index];
     [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
-    
     
     return view;
 }

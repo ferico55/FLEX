@@ -19,7 +19,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Wt-FJ-6nS">
-                            <rect key="frame" x="-200" y="0.0" width="520" height="150"/>
+                            <rect key="frame" x="-100" y="0.0" width="420" height="150"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CATEGORY TITLE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdj-Ni-dxy">
                             <rect key="frame" x="15" y="62" width="305" height="29"/>
@@ -32,7 +32,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="6Wt-FJ-6nS" firstAttribute="leading" secondItem="kRv-i9-jAv" secondAttribute="leading" constant="-200" id="CAr-GE-gQL"/>
+                        <constraint firstItem="6Wt-FJ-6nS" firstAttribute="leading" secondItem="kRv-i9-jAv" secondAttribute="leading" constant="-100" id="CAr-GE-gQL"/>
                         <constraint firstItem="xdj-Ni-dxy" firstAttribute="top" secondItem="kRv-i9-jAv" secondAttribute="top" constant="62" id="DnQ-ej-lhJ"/>
                         <constraint firstItem="6Wt-FJ-6nS" firstAttribute="top" secondItem="kRv-i9-jAv" secondAttribute="top" id="N4D-eZ-r9T"/>
                         <constraint firstAttribute="trailing" secondItem="xdj-Ni-dxy" secondAttribute="trailing" id="Utz-jh-2LH"/>
