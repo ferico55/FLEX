@@ -22,7 +22,7 @@ extension UIViewController {
                                            duration: TimeInterval,
                                            buttonTitle: String?,
                                            dismissable: Bool,
-                                           action: (() -> Void)?) {
+                                           action: (() -> Void)?) -> UIView {
         let view = CustomNotificationView.new()
         
         view?.actionButton.layer.borderColor = UIColor.white.cgColor
@@ -74,7 +74,7 @@ extension UIViewController {
             action?()
         })
         
-        SwiftOverlays.closeAnnoyingNotificationOnTopOfStatusBar(view!)
         UIViewController.showNotificationOnTopOfStatusBar(view!, duration: duration)
+        return view!
     }
 }

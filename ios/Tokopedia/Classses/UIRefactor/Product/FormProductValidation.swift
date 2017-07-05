@@ -54,8 +54,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-enum Errors:Error{
-    case errorMessage(String)
+class FormError:Error{
+    let message:String
+    init(message:String) {
+        self.message = message
+    }
 }
 
 enum FormType:Int{
@@ -89,48 +92,48 @@ class FormProductValidation: NSObject {
         
         do{
             try self.imageValidation(form.product_images)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
         
         do{
             try self.categoryValidation(form.product.product_category)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
         
         do{
             try self.nameValidation(form.product.product_name, nameBeforeCopy: productNameBeforeCopy)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
         
         do{
             try self.minimalOrderValidation(form.product.product_min_order)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
         
         do{
             try self.priceValidation(form.product.product_price, currency: form.product.product_currency_id)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
         
         do{
             try self.weightValidation(form.product.product_weight, unit: form.product.product_weight_unit)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -145,8 +148,8 @@ class FormProductValidation: NSObject {
     func isValidFormSecondStep(_ form: ProductEditResult, type:Int) -> Bool {
         do{
             try self.etalaseValidation(form.product.product_etalase_id, etalaseName: form.product.product_etalase)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -161,8 +164,8 @@ class FormProductValidation: NSObject {
     func isValidFormProductWholesale(_ wholesales: [WholesalePrice], product: ProductEditDetail) -> Bool {
         do{
             try self.wholesaleValidation(wholesales, product: product)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -177,19 +180,19 @@ class FormProductValidation: NSObject {
     fileprivate func imageValidation(_ selectedImages: [ProductEditImages]) throws {
         
         guard selectedImages.count > 0 else {
-            throw Errors.errorMessage("Gambar harus tersedia")
+            throw FormError(message: "Gambar harus tersedia")
         }
     }
     
     fileprivate func nameValidation(_ name: String, nameBeforeCopy: String) throws {
         
         guard name != "" else {
-            throw Errors.errorMessage("Nama produk harus diisi.")
+            throw FormError(message: "Nama produk harus diisi.")
         }
         
         if type == .copyProduct {
             guard name != nameBeforeCopy else {
-                throw Errors.errorMessage("Tidak dapat menyalin dengan Nama Produk yang sama.")
+                throw FormError(message: "Tidak dapat menyalin dengan Nama Produk yang sama.")
             }
         }
     }
@@ -197,36 +200,36 @@ class FormProductValidation: NSObject {
     fileprivate func categoryValidation(_ category: CategoryDetail) throws {
         
         guard category.categoryId != "" else {
-            throw Errors.errorMessage("Kategori tidak benar")
+            throw FormError(message: "Kategori tidak benar")
         }
     }
     
     fileprivate func minimalOrderValidation(_ minimalOrder: String) throws {
         
         guard Int(minimalOrder) > 0 else {
-            throw Errors.errorMessage("Minimal pemesanan harus lebih dari 1")
+            throw FormError(message: "Minimal pemesanan harus lebih dari 1")
         }
         
         guard Int(minimalOrder) <= ProductDetail.maximumPurchaseQuantity() else {
-            throw Errors.errorMessage("Maksimal minimum pembelian untuk 1 produk adalah \(ProductDetail.maximumPurchaseQuantity())")
+            throw FormError(message: "Maksimal minimum pembelian untuk 1 produk adalah \(ProductDetail.maximumPurchaseQuantity())")
         }
     }
     
     fileprivate func priceValidation(_ price: String?, currency:String) throws {
         
         guard price != "" && price != nil else {
-            throw Errors.errorMessage("Harga harus diisi.")
+            throw FormError(message: "Harga harus diisi.")
         }
         
         if currency == PriceCurrencyType.IDR.rawValue {
             guard Float(price!) >= 100 && Float(price!) <= 50000000 else {
-                throw Errors.errorMessage("Rentang Harga 100 - 50000000")
+                throw FormError(message: "Rentang Harga 100 - 50000000")
             }
         }
         
         if currency == PriceCurrencyType.USD.rawValue {
             guard Float(price!) >= 1 && Float(price!) <= 4000 else {
-                throw Errors.errorMessage("Rentang Harga 1 - 4000")
+                throw FormError(message: "Rentang Harga 1 - 4000")
             }
         }
     }
@@ -234,25 +237,25 @@ class FormProductValidation: NSObject {
     fileprivate func weightValidation(_ weight: String, unit: String) throws {
         
         guard weight != "" else {
-            throw Errors.errorMessage("Berat produk harus diisi .")
+            throw FormError(message: "Berat produk harus diisi .")
         }
         
         if unit == WeightUnitType.Gram.rawValue {
             guard Int(weight) >= 1 && Int(weight) <= 35000 else {
-                throw Errors.errorMessage("Berat harus diisi antara 1 - 35000")
+                throw FormError(message: "Berat harus diisi antara 1 - 35000")
             }
         }
         
         if unit == WeightUnitType.Kilogram.rawValue {
             guard Int(weight) >= 1 && Int(weight) <= 35 else {
-                throw Errors.errorMessage("Berat harus diisi antara 1 - 35")
+                throw FormError(message: "Berat harus diisi antara 1 - 35")
             }
         }
     }
     
     fileprivate func etalaseValidation(_ etalaseID: String ,etalaseName: String) throws {
         guard etalaseID != "" else {
-            throw Errors.errorMessage("Etalase belum dipilih")
+            throw FormError(message: "Etalase belum dipilih")
         }
     }
     
@@ -263,16 +266,16 @@ class FormProductValidation: NSObject {
         wholesales.forEach({ (wholesale) in
             do{
                 try self.wholesalePriceValidation(wholesale.wholesale_price, product: product)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
+            } catch let error as FormError {
+                self.errorMessages.append(error.message)
             } catch {
                 //other error
             }
             
             do{
                 try self.wholesaleQuantityValidation(wholesale.wholesale_min, quantityMax: wholesale.wholesale_max, product: product)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
+            } catch let error as FormError {
+                self.errorMessages.append(error.message)
             } catch {
                 //other error
             }
@@ -281,8 +284,8 @@ class FormProductValidation: NSObject {
         if wholesales.count >= 2 {
             do{
                 try self.lastWholesaleValidation(wholesales[wholesales.count-2], newWholesale: wholesales.last!)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
+            } catch let error as FormError {
+                self.errorMessages.append(error.message)
             } catch {
                 //other error
             }
@@ -294,8 +297,8 @@ class FormProductValidation: NSObject {
         
         do{
             try self.wholesaleQuantityMinValidation(quantityMin, product: product)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -303,10 +306,10 @@ class FormProductValidation: NSObject {
         do{
             try self.wholesaleQuantityMaxValidation(quantityMax, product: product)
             guard Int(quantityMax) > Int(quantityMin) else {
-                throw Errors.errorMessage("Jumlah maksimum harus lebih besar dari jumlah minimum")
+                throw FormError(message: "Jumlah maksimum harus lebih besar dari jumlah minimum")
             }
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -314,37 +317,37 @@ class FormProductValidation: NSObject {
     
     fileprivate func wholesaleQuantityMinValidation(_ quantityMin:String, product:ProductEditDetail) throws {
         guard quantityMin != "" else {
-            throw Errors.errorMessage("Jumlah minimum harus diisi")
+            throw FormError(message: "Jumlah minimum harus diisi")
         }
         
         guard Int(quantityMin) > Int(product.product_min_order) else {
-            throw Errors.errorMessage("Jumlah barang grosir harus lebih besar dari minimum pemesanan")
+            throw FormError(message: "Jumlah barang grosir harus lebih besar dari minimum pemesanan")
         }
     }
     
     fileprivate func wholesaleQuantityMaxValidation(_ quantityMax:String, product:ProductEditDetail) throws {
         guard quantityMax != "" else {
-            throw Errors.errorMessage("Jumlah maksimum harus diisi")
+            throw FormError(message: "Jumlah maksimum harus diisi")
         }
         
         guard Int(quantityMax) > Int(product.product_min_order) else {
-            throw Errors.errorMessage("Jumlah barang grosir harus lebih besar dari minimum pemesanan")
+            throw FormError(message: "Jumlah barang grosir harus lebih besar dari minimum pemesanan")
         }
     }
     
     fileprivate func wholesalePriceValidation(_ price: String?, product: ProductEditDetail) throws {
         guard price != "" && price != nil else {
-            throw Errors.errorMessage("Harga harus diisi")
+            throw FormError(message: "Harga harus diisi")
         }
         
         guard Float(price!) < Float(product.product_price) else {
-            throw Errors.errorMessage("Harga grosir harus lebih murah dari harga pas")
+            throw FormError(message: "Harga grosir harus lebih murah dari harga pas")
         }
         
         do{
             try self.priceValidation(price, currency: product.product_currency_id)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -353,15 +356,15 @@ class FormProductValidation: NSObject {
     fileprivate func lastWholesaleValidation(_ lastWholesale: WholesalePrice, newWholesale: WholesalePrice) throws {
         
         guard Int(newWholesale.wholesale_min) > Int(lastWholesale.wholesale_min) else {
-            throw Errors.errorMessage("Total produk tidak valid")
+            throw FormError(message: "Total produk tidak valid")
         }
         
         guard Int(newWholesale.wholesale_max) > Int(lastWholesale.wholesale_max) else {
-            throw Errors.errorMessage("Total produk tidak valid")
+            throw FormError(message: "Total produk tidak valid")
         }
         
         guard Float(newWholesale.wholesale_price) < Float(lastWholesale.wholesale_price) else {
-            throw Errors.errorMessage("Harga harus lebih murah dari harga grosir sebelumnya")
+            throw FormError(message: "Harga harus lebih murah dari harga grosir sebelumnya")
         }
     }
     

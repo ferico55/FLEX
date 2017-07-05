@@ -8,9 +8,9 @@
 
 @class ProductPreorder;
 @class ProductReturnInfo;
+@class Errors;
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
-#import "Errors.h"
 
 #define CProductID @"product_id"
 #define CProductPrice @"product_price"

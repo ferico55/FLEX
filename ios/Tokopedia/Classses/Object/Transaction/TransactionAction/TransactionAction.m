@@ -7,6 +7,7 @@
 //
 
 #import "TransactionAction.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TransactionAction
 

@@ -176,7 +176,6 @@
 		34F0B8CB1EE66741005D7DB2 /* EnvelopeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE111EE6673C005D7DB2 /* EnvelopeData.swift */; };
 		34F0B8CC1EE66741005D7DB2 /* EnvelopeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE121EE6673C005D7DB2 /* EnvelopeHeader.swift */; };
 		34F0B8CD1EE66741005D7DB2 /* EnvelopeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE131EE6673C005D7DB2 /* EnvelopeResponse.swift */; };
-		34F0B8CE1EE66741005D7DB2 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE161EE6673C005D7DB2 /* Errors.m */; };
 		34F0B8CF1EE66741005D7DB2 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE171EE6673C005D7DB2 /* Errors.swift */; };
 		34F0B8D01EE66741005D7DB2 /* FavoritedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE1A1EE6673C005D7DB2 /* FavoritedResult.m */; };
 		34F0B8D11EE66741005D7DB2 /* ListFavorited.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F0AE1C1EE6673C005D7DB2 /* ListFavorited.m */; };
@@ -2372,8 +2371,6 @@
 		34F0AE111EE6673C005D7DB2 /* EnvelopeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeData.swift; sourceTree = "<group>"; };
 		34F0AE121EE6673C005D7DB2 /* EnvelopeHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeHeader.swift; sourceTree = "<group>"; };
 		34F0AE131EE6673C005D7DB2 /* EnvelopeResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeResponse.swift; sourceTree = "<group>"; };
-		34F0AE151EE6673C005D7DB2 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
-		34F0AE161EE6673C005D7DB2 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
 		34F0AE171EE6673C005D7DB2 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		34F0AE191EE6673C005D7DB2 /* FavoritedResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedResult.h; sourceTree = "<group>"; };
 		34F0AE1A1EE6673C005D7DB2 /* FavoritedResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedResult.m; sourceTree = "<group>"; };
@@ -5731,8 +5728,6 @@
 		34F0AE141EE6673C005D7DB2 /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				34F0AE151EE6673C005D7DB2 /* Errors.h */,
-				34F0AE161EE6673C005D7DB2 /* Errors.m */,
 				34F0AE171EE6673C005D7DB2 /* Errors.swift */,
 			);
 			path = Error;
@@ -12503,7 +12498,6 @@
 				34F0BCB71EE66746005D7DB2 /* PulsaProductRoot.swift in Sources */,
 				34F0B8841EE66741005D7DB2 /* CatalogAddProduct.m in Sources */,
 				34F0BB1D1EE66744005D7DB2 /* TKPDSearchBarViewController.swift in Sources */,
-				34F0B8CE1EE66741005D7DB2 /* Errors.m in Sources */,
 				34F0B8A71EE66741005D7DB2 /* CatalogReview.m in Sources */,
 				34F0B8481EE66741005D7DB2 /* DigitalCartViewController.swift in Sources */,
 				34F0B8FB1EE66741005D7DB2 /* InboxMessageDetailBetween.m in Sources */,

@@ -109,6 +109,7 @@
     NotificationManager *_notifManager;
     
     UIView *_lineView;
+    UIView *lastNotificationView;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
@@ -733,7 +734,12 @@
     
     NSLog(@"%d",isValid);
     if (!isValid && _errorMessages.count > 0) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
+        if(lastNotificationView) {
+            [lastNotificationView setHidden:YES];
+            lastNotificationView = nil;
+            [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
+        }
+        lastNotificationView = [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
                                                  type:NotificationTypeError
                                              duration:4.0
                                           buttonTitle:_shouldDisplayButtonOnErrorAlert?@"Belanja Lagi":nil
@@ -1496,6 +1502,7 @@
         [self reloadNotification];
         
     } error:^(NSError *error) {
+        [self doClearAllData];
         [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];

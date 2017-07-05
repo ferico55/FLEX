@@ -17,16 +17,16 @@ class ResolutionValidation: NSObject {
         if postObject.category_trouble_id == "1"{
             do{
                 try self.validateProductRelatedProblem(postObject)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
+            } catch let error as FormError {
+                self.errorMessages.append(error.message)
             } catch {
                 //other error
             }
         } else {
             do{
                 try self.validateNonProductRelatedProblem(postObject)
-            } catch Errors.errorMessage(let message) {
-                self.errorMessages.append(message)
+            } catch let error as FormError {
+                self.errorMessages.append(error.message)
             } catch {
                 //other error
             }
@@ -42,8 +42,8 @@ class ResolutionValidation: NSObject {
     func isValidSubmitEditResolution(_ postObject : ReplayConversationPostData) -> Bool{
         do{
             try self.validateSolution(postObject)
-        } catch Errors.errorMessage(let message) {
-            self.errorMessages.append(message)
+        } catch let error as FormError {
+            self.errorMessages.append(error.message)
         } catch {
             //other error
         }
@@ -58,36 +58,36 @@ class ResolutionValidation: NSObject {
     fileprivate func validateSolution(_ postObject : ReplayConversationPostData) throws {
         
         guard Int(postObject.refundAmount)! <= Int(postObject.maxRefundAmount)! else {
-            throw Errors.errorMessage("Nominal maksimal pengembalian dana sebesar \(postObject.maxRefundAmountIDR) .")
+            throw FormError(message: "Nominal maksimal pengembalian dana sebesar \(postObject.maxRefundAmountIDR) .")
         }
         
         guard postObject.replyMessage != "" else {
-            throw Errors.errorMessage("Alasan mengubah solusi belum diisi.")
+            throw FormError(message: "Alasan mengubah solusi belum diisi.")
         }
     }
     
     fileprivate func validateProductRelatedProblem(_ postObject: ReplayConversationPostData) throws {
         guard postObject.selectedProducts.count > 0 else{
-            throw Errors.errorMessage("Pilih produk yang bermasalah.")
+            throw FormError(message: "Pilih produk yang bermasalah.")
         }
         
         try postObject.selectedProducts.forEach { (product) in
             guard product.pt_last_selected_quantity != "" && Int(product.pt_last_selected_quantity)! > 0 else {
-                throw Errors.errorMessage("Jumlah produk \(product.pt_product_name) belum diisi")
+                throw FormError(message: "Jumlah produk \(product.pt_product_name) belum diisi")
             }
             
             guard product.pt_trouble_id != "" else {
-                throw Errors.errorMessage("Masalah pada produk \(product.pt_product_name) belum dipilih")
+                throw FormError(message: "Masalah pada produk \(product.pt_product_name) belum dipilih")
             }
             guard product.pt_solution_remark != "" else {
-                throw Errors.errorMessage("Keterangan Masalah pada produk \(product.pt_product_name) belum diisi")
+                throw FormError(message: "Keterangan Masalah pada produk \(product.pt_product_name) belum diisi")
             }
         }
     }
     
     fileprivate func validateNonProductRelatedProblem(_ postObject: ReplayConversationPostData) throws {
         guard postObject.troubleType != "" && Int(postObject.troubleType) != 0 else {
-            throw Errors.errorMessage("Pilih detail masalah")
+            throw FormError(message: "Pilih detail masalah")
         }
     }
 

@@ -46,8 +46,8 @@ class ProductModelViewSwift : NSObject {
     var badges:[ProductBadge] = []
     var labels:[ProductLabel] = []
     
-    var productErrors:[ErrorsSwift] = []
-    var cartErrors:[ErrorsSwift] = []
+    var productErrors:[Errors] = []
+    var cartErrors:[Errors] = []
     var preorder:ProductPreorder?
     var isProductBuyAble = false
     var isGoldShopProduct = false
