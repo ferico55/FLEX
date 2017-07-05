@@ -52,7 +52,9 @@ extension String {
         let stringArray = self.components(separatedBy: delimiter)
         let nsString = self as NSString
         for boldString in stringArray.suffix(num) {
-            attributedString.addAttributes(boldFontAttribute, range: nsString.range(of: boldString))
+            let delCharSet = CharacterSet(charactersIn: "(.)")
+            let trimedString = boldString.trimmingCharacters(in: delCharSet)
+            attributedString.addAttributes(boldFontAttribute, range: nsString.range(of: trimedString))
         }
         
         return attributedString
