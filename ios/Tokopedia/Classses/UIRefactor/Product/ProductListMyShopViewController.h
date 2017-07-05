@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ProductListMyShopDelegate <NSObject>
+
+- (void) productSelectedWithURL:(NSString*) url;
+
+@end
+
 @interface ProductListMyShopViewController : GAITrackedViewController
 
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) id<ProductListMyShopDelegate> delegate;
 
 @end

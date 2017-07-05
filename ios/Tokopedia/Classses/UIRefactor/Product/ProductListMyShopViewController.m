@@ -39,6 +39,8 @@
 #import "ProductRequest.h"
 #import "Breadcrumb.h"
 #import "ProcessingAddProducts.h"
+#import "Tokopedia-Swift.h"
+#import "UserAuthentificationManager.h"
 
 @interface ProductListMyShopViewController ()
 <
@@ -86,6 +88,8 @@ NoResultDelegate
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
 
 @property (strong, nonatomic) NSMutableArray<ManageProductList*> *products;
 
@@ -111,9 +115,9 @@ NoResultDelegate
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Toko Anda belum mempunyai produk"
-                                  desc:@"Segera tambahkan produk ke toko Anda!"
-                              btnTitle:@"Tambah Produk"];
+                                 title:[UserAuthentificationManager new].userHasShop ? @"Toko Anda belum mempunyai produk" : @"Anda belum memiliki Toko"
+                                  desc:[UserAuthentificationManager new].userHasShop ? @"Segera tambahkan produk ke toko Anda!" : @"Buka Toko Sekarang!"
+                              btnTitle:[UserAuthentificationManager new].userHasShop ? @"Tambah Produk" : @"Buka Toko"];
 }
 - (void)viewDidLoad
 {
@@ -184,11 +188,29 @@ NoResultDelegate
     _filterViewController = [ProductListMyShopFilterViewController new];
     
     [self adjustOnProcessProduct];
+    
+    if(self.delegate != nil) {
+        self.navigationItem.rightBarButtonItem = nil;
+        UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_close"] style: UIBarButtonItemStylePlain target:self action:@selector(popBack)];
+        self.navigationItem.leftBarButtonItem = leftButton;
+        self.title = @"Lampirkan Produk";
+        [self.footerView setHidden:YES];
+    }
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if(self.delegate != nil) {
+        self.tableViewBottomConstraint.constant = -self.footerView.frame.size.height;
+    }
+}
+
+- (void) popBack {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
     [AnalyticsManager trackScreenName:@"Shop - Manage Product"];
 }
 
@@ -258,7 +280,8 @@ NoResultDelegate
             ((ProductListMyShopCell*)cell).labelprice.textColor = [UIColor tpDisabledBlackText];
             ((ProductListMyShopCell*)cell).labeletalase.textColor = [UIColor tpDisabledBlackText];
         } else {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if(self.delegate != nil) cell.accessoryType = UITableViewCellAccessoryNone;
+            else cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.userInteractionEnabled = YES;
             ((ProductListMyShopCell*)cell).labelname.textColor = [UIColor tpPrimaryBlackText];
             ((ProductListMyShopCell*)cell).labelprice.textColor = [UIColor tpOrange];
@@ -278,6 +301,11 @@ NoResultDelegate
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _products[indexPath.row];
+    if(self.delegate != nil) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate productSelectedWithURL: list.product_url];
+        return;
+    }
     
     [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
 }
@@ -442,9 +470,12 @@ NoResultDelegate
                 [_noResultView hideButton:YES];
             }
         } else {
-            [_noResultView setNoResultTitle:@"Toko Anda belum mempunyai produk"];
-            [_noResultView setNoResultDesc:@"Segera tambahkan produk ke toko Anda"];
+            [_noResultView setNoResultTitle:[UserAuthentificationManager new].userHasShop ? @"Toko Anda belum mempunyai produk" : @"Anda belum memiliki Toko"];
+            [_noResultView setNoResultDesc:[UserAuthentificationManager new].userHasShop ? @"Segera tambahkan produk ke toko Anda!" : @"Buka Toko Sekarang!"];
+            [_noResultView setNoResultButtonTitle:[UserAuthentificationManager new].userHasShop ? @"Tambah Produk" : @"Buka Toko"];
             [_noResultView hideButton:NO];
+            self.searchbar.hidden = ![UserAuthentificationManager new].userHasShop;
+            self.footerView.hidden = ![UserAuthentificationManager new].userHasShop;;
         }
         self.tableView.tableFooterView = _noResultView;
     }
@@ -587,7 +618,7 @@ NoResultDelegate
 #pragma mark - Swipe Delegate
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction; {
-    return YES;
+    return self.delegate == nil;
 }
 
 - (NSArray *)swipeTableCell:(MGSwipeTableCell *) cell
@@ -803,6 +834,14 @@ NoResultDelegate
 
 #pragma mark - NoResult Delegate
 - (void)buttonDidTapped:(id)sender{
+    if (![UserAuthentificationManager new].userHasShop) {
+        //action buka toko
+        OpenShopViewController *controller = [[OpenShopViewController alloc] initWithNibName:@"OpenShopViewController" bundle:nil];
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
+        return;
+    }
     ProductAddEditViewController *vc = [ProductAddEditViewController new];
     vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];

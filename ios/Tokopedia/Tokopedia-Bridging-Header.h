@@ -185,5 +185,6 @@
 
 #import "NSString+MD5.h"
 #import "NSDictionaryCategory.h"
+#import "ProductListMyShopViewController.h"
 #import "ProductModelView.h"
 #import "CatalogModelView.h"

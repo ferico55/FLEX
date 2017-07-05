@@ -64,5 +64,6 @@
  *  @return `YES` if the text view contains text, `NO` otherwise.
  */
 - (BOOL)hasText;
+- (void)setText:(NSString *)text;
 
 @end

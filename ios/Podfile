@@ -46,7 +46,7 @@ def common_pods
     pod 'TPKeyboardAvoiding'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Appsee'
-    pod 'JSQMessagesViewController'
+    pod 'JSQMessagesViewController', :git => 'https://github.com/ferico55/JSQMessagesViewController', :branch => 'master'
     pod 'MXSegmentedPager', '~> 3.2.0'    
     pod 'MMNumberKeyboard'
     pod 'Localytics'
