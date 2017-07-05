@@ -15,13 +15,15 @@ final class WalletData:NSObject, Unboxable {
     let text: String
     let redirectUrl: String
     let link: Int
+    let hasPendingCashback:Bool
     
-    init(action:WalletAction?, balance:String, text:String, redirectUrl:String, link:Int) {
+    init(action:WalletAction?, balance:String, text:String, redirectUrl:String, link:Int, hasPendingCashback:Bool = false) {
         self.action = action
         self.balance = balance
         self.text = text
         self.redirectUrl = redirectUrl
         self.link = link
+        self.hasPendingCashback = hasPendingCashback
     }
     
     convenience init(unboxer: Unboxer) throws {
@@ -32,7 +34,7 @@ final class WalletData:NSObject, Unboxable {
         let link = try unboxer.unbox(keyPath: "link") as Int
         
         
-        self.init(action:action, balance:balance, text:text, redirectUrl:redirectUrl, link:link)
+        self.init(action:action, balance:balance, text:text, redirectUrl:redirectUrl, link:link, hasPendingCashback:false)
     }
     
     func walletActionFullUrl() -> String {

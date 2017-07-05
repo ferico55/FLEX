@@ -92,7 +92,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     BOOL _shouldDisplayTopPointsCell;
     NSString* _walletUrl;
     BOOL _isWalletActive;
-    BOOL _isTokocashExpired;
     CGRect _defaultTableFrame;
 }
 
@@ -231,8 +230,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 //    [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
-    [self updateSaldoTokopedia];
-    
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
 }
@@ -312,9 +309,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     __weak typeof(self) weakSelf = self;
     
     [WalletService getBalance:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
-        if(wallet.isExpired) {
-            _isTokocashExpired = wallet.isExpired;
-            [self.tableView reloadData];
+        if (wallet.isExpired) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         } else {
             _walletNameLabel.text = wallet.data.text;
             _walletBalanceLabel.text = wallet.data.balance;
@@ -453,11 +449,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            if (_isTokocashExpired)
-                return 1;
-            else
-                return 2;
-            break;
+            return 2;
         }
         
         case 1: return _shouldDisplayTopPointsCell?1:0;

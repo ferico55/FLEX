@@ -9,13 +9,16 @@
 import Foundation
 import Unbox
 
-final class WalletStore:NSObject, Unboxable {
+final class WalletStore: NSObject, Unboxable {
     let code: String?
     let message: String?
     let error: String?
     let data: WalletData?
+    var shouldShowActivation: Bool {
+        return self.data?.link == 0
+    }
     
-    init(code:String?, message:String?, error:String?, data:WalletData?) {
+    init(code: String?, message: String?, error: String?, data: WalletData?) {
         self.code = code
         self.message = message
         self.error = error
@@ -28,7 +31,7 @@ final class WalletStore:NSObject, Unboxable {
         let error = unboxer.unbox(keyPath: "error") as String?
         let data = unboxer.unbox(keyPath: "data") as WalletData?
         
-        self.init(code:code, message:message, error:error, data:data)
+        self.init(code: code, message: message, error: error, data: data)
     }
     
     func isExpired() -> Bool {
@@ -36,20 +39,15 @@ final class WalletStore:NSObject, Unboxable {
         let userInformation = userAuth.getUserLoginData()
         
         if let tokenType = userInformation?["oAuthToken.tokenType"] {
-                return self.error == "invalid_request"
+            return self.error == "invalid_request"
         }
         
         return true
     }
     
-    
-    func shouldShowActivation() -> Bool {
-        return data?.link == 0
-    }
-    
     func walletFullUrl() -> String {
         if let data = self.data {
-            if(self.shouldShowActivation()) {
+            if self.shouldShowActivation {
                 return "\(data.walletActionFullUrl())"
             } else {
                 return "\(data.redirectUrl)?flag_app=1"

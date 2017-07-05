@@ -1627,6 +1627,10 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		527674EE1EF21EA4001831C1 /* TokocashTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674ED1EF21EA4001831C1 /* TokocashTarget.swift */; };
+		527674F11EF21EED001831C1 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */; };
+		527674F51EF21EFF001831C1 /* WalletCashBackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */; };
+		527674F61EF21EFF001831C1 /* WalletCashBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F31EF21EFF001831C1 /* WalletCashBack.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -4720,6 +4724,10 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		527674ED1EF21EA4001831C1 /* TokocashTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashTarget.swift; sourceTree = "<group>"; };
+		527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
+		527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBackResponse.swift; sourceTree = "<group>"; };
+		527674F31EF21EFF001831C1 /* WalletCashBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBack.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -7258,6 +7266,8 @@
 		34F0B1AC1EE6673D005D7DB2 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */,
+				527674F31EF21EFF001831C1 /* WalletCashBack.swift */,
 				34F0B1AD1EE6673D005D7DB2 /* WalletAction.swift */,
 				34F0B1AE1EE6673D005D7DB2 /* WalletData.swift */,
 				34F0B1AF1EE6673D005D7DB2 /* WalletStore.swift */,
@@ -10533,6 +10543,7 @@
 		F9E3D1CB1EE6562B00FBD14E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */,
 				F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */,
 				F9E3D1CD1EE6562B00FBD14E /* NetworkProvider.swift */,
 				F9E3D1CE1EE6562B00FBD14E /* Observable+JSONAble.swift */,
@@ -10546,6 +10557,7 @@
 		F9E3D1CF1EE6562B00FBD14E /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				527674ED1EF21EA4001831C1 /* TokocashTarget.swift */,
 				F9E3D1D01EE6562B00FBD14E /* AceTarget.swift */,
 				F9E3D1D11EE6562B00FBD14E /* DigitalTarget.swift */,
 				F9E3D1D21EE6562B00FBD14E /* HadesTarget.swift */,
@@ -11919,6 +11931,7 @@
 				34F0B8F01EE66741005D7DB2 /* DepartmentTree.m in Sources */,
 				34F0BD821EE66747005D7DB2 /* SettingPrivacyCell.m in Sources */,
 				34F0B93F1EE66741005D7DB2 /* ManageProduct.m in Sources */,
+				527674F51EF21EFF001831C1 /* WalletCashBackResponse.swift in Sources */,
 				34F0BA5F1EE66743005D7DB2 /* TxOrderPaymentEditMethod.m in Sources */,
 				34F0BA061EE66742005D7DB2 /* PosMinWeight.m in Sources */,
 				34F0BA621EE66743005D7DB2 /* TxOrderPaymentEditSystemBank.m in Sources */,
@@ -12177,6 +12190,7 @@
 				34F0BE451EE66748005D7DB2 /* TxOrderTransactionDetailViewController.m in Sources */,
 				34F0BE111EE66748005D7DB2 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				34F0BE661EE66749005D7DB2 /* CartModelView.m in Sources */,
+				527674F11EF21EED001831C1 /* TokocashNetworkProvider.swift in Sources */,
 				34F0BE571EE66749005D7DB2 /* GoldShopView.m in Sources */,
 				34F0B95D1EE66741005D7DB2 /* PriceAlertResult.m in Sources */,
 				7A46721E1EB2FEB400A72105 /* UITableView+LoadingView.m in Sources */,
@@ -13026,6 +13040,7 @@
 				34F0BA4E1EE66743005D7DB2 /* TxOrderConfirmed.m in Sources */,
 				34F0BB581EE66744005D7DB2 /* ResetPasswordSuccessViewController.swift in Sources */,
 				34F0B8E41EE66741005D7DB2 /* GoogleplaceDetailResult.m in Sources */,
+				527674F61EF21EFF001831C1 /* WalletCashBack.swift in Sources */,
 				34F0BB651EE66744005D7DB2 /* GeneralTalkCommentCell.m in Sources */,
 				F9E3D1E01EE6562B00FBD14E /* WalletTarget.swift in Sources */,
 				34F0BCFA1EE66746005D7DB2 /* RejectReasonData.m in Sources */,
@@ -13042,6 +13057,7 @@
 				34F0BDB21EE66747005D7DB2 /* ShopDescriptionView.m in Sources */,
 				34F0BD951EE66747005D7DB2 /* OpenShopNameViewCell.m in Sources */,
 				34F0B9B71EE66742005D7DB2 /* ImageSearchResponse.m in Sources */,
+				527674EE1EF21EA4001831C1 /* TokocashTarget.swift in Sources */,
 				34F0BA7A1EE66743005D7DB2 /* WalletStore.swift in Sources */,
 				7A466B7E1EB2FEAE00A72105 /* FBTweak.m in Sources */,
 				34F0BBDF1EE66744005D7DB2 /* InboxTalkSplitViewController.m in Sources */,

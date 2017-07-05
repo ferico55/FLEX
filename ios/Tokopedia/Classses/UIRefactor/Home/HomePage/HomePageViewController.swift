@@ -37,7 +37,7 @@ class HomePageViewController: UIViewController {
     
     private var topPicksPlaceholder = UIView()
     private var isTopPicksDataEmpty = true
-
+    
     private var storeManager = TKPStoreManager()
     
     @IBOutlet private var homePageScrollView: UIScrollView!
@@ -46,9 +46,9 @@ class HomePageViewController: UIViewController {
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .pad) ? 275.0 : 225.0
     private let screenWidth = UIScreen.main.bounds.size.width
-    private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
+    private let backgroundColor = UIColor(red: 242 / 255.0, green: 242 / 255.0, blue: 242 / 255.0, alpha: 1.0)
     private let imageCategoryWidth: CGFloat = 25.0
-    private let iconSeparatorGrayColor: UIColor = UIColor(red: 241.0/255.0, green: 241.0/255.0, blue: 241.0/255.0, alpha: 1)
+    private let iconSeparatorGrayColor: UIColor = UIColor(red: 241.0 / 255.0, green: 241.0 / 255.0, blue: 241.0 / 255.0, alpha: 1)
     private let horizontalStackViewSpacing: CGFloat = 30.0
     
     private var isRequestingCategory: Bool = false
@@ -58,7 +58,7 @@ class HomePageViewController: UIViewController {
     private var isRequestingOfficialStore: Bool = false
     private var officialStoreRequestSuccess: Bool = false
     private var isShowTokoCash: Bool = false
-//    private var categoryId = ""
+    //    private var categoryId = ""
     
     private let officialStorePlaceholder = UIView()
     fileprivate let authenticationService = AuthenticationService()
@@ -74,51 +74,51 @@ class HomePageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        homePageScrollView.keyboardDismissMode = .onDrag
+        self.homePageScrollView.keyboardDismissMode = .onDrag
         self.initOuterStackView()
         self.initViewLayout()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogout(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLogoutNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogin(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogout(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLogoutNotification), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if userManager.isLogin {
+        if self.userManager.isLogin {
             self.requestTokocash()
         } else {
             self.tokocashPlaceholder.isHidden = true
         }
         
-        if isRequestingBanner == false {
+        if self.isRequestingBanner == false {
             self.requestBanner()
         }
-        if canRequestTicker == true {
+        if self.canRequestTicker == true {
             self.requestTicker()
         }
-        if pulsaActiveCategories == nil && isRequestingPulsaWidget == false {
+        if self.pulsaActiveCategories == nil && self.isRequestingPulsaWidget == false {
             self.requestPulsaWidget()
         }
-        if homePageCategoryData == nil && isRequestingCategory == false {
+        if self.homePageCategoryData == nil && self.isRequestingCategory == false {
             self.requestCategory()
         }
         
-        if !officialStoreRequestSuccess && !isRequestingOfficialStore {
+        if !self.officialStoreRequestSuccess && !self.isRequestingOfficialStore {
             self.requestOfficialStore()
         }
         
-        if isTopPicksDataEmpty {
+        if self.isTopPicksDataEmpty {
             let topPicksWidgetViewController = TopPicksWidgetViewController()
             topPicksWidgetViewController.didGetTopPicksData = { [unowned self] in
                 self.isTopPicksDataEmpty = false
             }
             self.addChildViewController(topPicksWidgetViewController)
             self.topPicksPlaceholder.addSubview(topPicksWidgetViewController.view)
-            topPicksWidgetViewController.view.mas_makeConstraints { (make) in
+            topPicksWidgetViewController.view.mas_makeConstraints { make in
                 make?.edges.mas_equalTo()(self.topPicksPlaceholder)
             }
         }
-        AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status":UserAuthentificationManager().isLogin])
+        AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status": UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
     }
     
@@ -130,23 +130,23 @@ class HomePageViewController: UIViewController {
     }
     
     func userDidLogin(notification: NSNotification) {
-        requestPulsaWidget()
+        self.requestPulsaWidget()
     }
     
     func userDidLogout(notification: NSNotification) {
-        requestPulsaWidget()
+        self.requestPulsaWidget()
     }
     
     // MARK: Setup StackView
     
     private func initOuterStackView() {
         self.outerStackView = OAStackView()
-        setStackViewAttribute(self.outerStackView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
+        self.setStackViewAttribute(self.outerStackView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
         self.homePageScrollView.addSubview(self.outerStackView)
-        setupOuterStackViewConstraint()
+        self.setupOuterStackViewConstraint()
     }
     
-    private func setStackViewAttribute(_ stackView: OAStackView, axis: UILayoutConstraintAxis ,alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
+    private func setStackViewAttribute(_ stackView: OAStackView, axis: UILayoutConstraintAxis, alignment: OAStackViewAlignment, distribution: OAStackViewDistribution, spacing: CGFloat) {
         stackView.axis = axis
         stackView.alignment = alignment
         stackView.distribution = distribution
@@ -154,7 +154,7 @@ class HomePageViewController: UIViewController {
     }
     
     private func setupOuterStackViewConstraint() {
-        self.outerStackView.mas_makeConstraints { (make) in
+        self.outerStackView.mas_makeConstraints { make in
             make?.top.mas_equalTo()(self.homePageScrollView.mas_top)
             make?.bottom.mas_equalTo()(self.homePageScrollView.mas_bottom)
             make?.left.mas_equalTo()(self.homePageScrollView.mas_left)
@@ -164,7 +164,7 @@ class HomePageViewController: UIViewController {
     }
     
     private func setCategoryTitleLabel(_ title: String) {
-        HomePageHeaderSectionStyle.setHeaderTitle(forStackView: categoryVerticalView, title: title)
+        HomePageHeaderSectionStyle.setHeaderTitle(forStackView: self.categoryVerticalView, title: title)
     }
     
     private func setIconImageContainerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
@@ -175,28 +175,28 @@ class HomePageViewController: UIViewController {
         }
         let imageViewContainer = UIView()
         imageViewContainer.addSubview(iconImageView)
-        iconImageView.mas_makeConstraints({ (make) in
+        iconImageView.mas_makeConstraints({ make in
             make?.left.equalTo()(imageViewContainer)
             make?.centerY.equalTo()(imageViewContainer)
             make?.height.width().mas_equalTo()(self.imageCategoryWidth)
         })
         iconImageView.contentMode = .scaleAspectFit
         iconStackView.addArrangedSubview(imageViewContainer)
-        imageViewContainer.mas_makeConstraints({ (make) in
+        imageViewContainer.mas_makeConstraints({ make in
             make?.width.mas_equalTo()(self.imageCategoryWidth)
         })
     }
     
-    private func setCategoryNameLabelContainerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) -> UIView{
+    private func setCategoryNameLabelContainerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) -> UIView {
         let categoryNameContainer = UIView()
         let categoryNameLabel = UILabel()
         categoryNameLabel.text = layoutRow.name
         categoryNameLabel.font = UIFont.microTheme()
-        categoryNameLabel.textColor = UIColor(red: 102.0/255, green: 102.0/255, blue: 102.0/255, alpha: 1.0)
+        categoryNameLabel.textColor = UIColor(red: 102.0 / 255, green: 102.0 / 255, blue: 102.0 / 255, alpha: 1.0)
         categoryNameLabel.textAlignment = .left
         categoryNameLabel.numberOfLines = 2
         categoryNameContainer.addSubview(categoryNameLabel)
-        categoryNameLabel.mas_makeConstraints({ (make) in
+        categoryNameLabel.mas_makeConstraints({ make in
             make?.left.right().mas_equalTo()(categoryNameContainer)
             make?.centerY.mas_equalTo()(categoryNameContainer)
         })
@@ -206,7 +206,7 @@ class HomePageViewController: UIViewController {
     }
     
     private func setTapGestureRecognizerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
-        let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizer(handler: { (recognizer, state, point) in
+        let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizer(handler: { _, _, _ in
             self.didTapCategory(layoutRow: layoutRow)
         }) as! UITapGestureRecognizer
         
@@ -215,7 +215,7 @@ class HomePageViewController: UIViewController {
     
     private func setHorizontalCategoryLayoutWithLayoutSections(_ layoutRows: [HomePageCategoryLayoutRow]) {
         var horizontalStackView = refreshHorizontalStackView()
-        for (index,layoutRow) in layoutRows.enumerated() {
+        for (index, layoutRow) in layoutRows.enumerated() {
             let iconStackView = OAStackView()
             self.setStackViewAttribute(iconStackView, axis: .horizontal, alignment: .fill, distribution: .fill, spacing: 8.0)
             self.setIconImageContainerToIconStackView(iconStackView, withLayoutRow: layoutRow)
@@ -225,23 +225,22 @@ class HomePageViewController: UIViewController {
             
             if index % self.totalColumnInOneRow() == self.numberNeededToChangeRow() {
                 self.categoryVerticalView.addArrangedSubview(horizontalStackView)
-                horizontalStackView = refreshHorizontalStackView()
-                if (index != layoutRows.count - 1) {
-                    drawHorizontalIconSeparator()
+                horizontalStackView = self.refreshHorizontalStackView()
+                if index != layoutRows.count - 1 {
+                    self.drawHorizontalIconSeparator()
                 }
             } else if index == layoutRows.count - 1 {
                 let verticalIconSeparator = UIView()
                 verticalIconSeparator.backgroundColor = iconSeparatorGrayColor
                 categoryNameContainer.addSubview(verticalIconSeparator)
-                verticalIconSeparator.mas_makeConstraints({ (make) in
+                verticalIconSeparator.mas_makeConstraints({ make in
                     make?.width.mas_equalTo()(1)
                     make?.right.mas_equalTo()(categoryNameContainer)?.with().offset()(self.horizontalStackViewSpacing / 2)
                     make?.top.mas_equalTo()(categoryNameContainer)?.with().offset()(5)
                     make?.bottom.mas_equalTo()(categoryNameContainer)?.with().offset()(-5)
                 })
                 
-                for _ in 1...self.totalColumnInOneRow() - (index % self.totalColumnInOneRow() + 1)
-                {
+                for _ in 1...self.totalColumnInOneRow() - (index % self.totalColumnInOneRow() + 1) {
                     let emptyIconView = UIView()
                     horizontalStackView.addArrangedSubview(emptyIconView)
                 }
@@ -250,9 +249,9 @@ class HomePageViewController: UIViewController {
                 let verticalIconSeparator = UIView()
                 verticalIconSeparator.backgroundColor = iconSeparatorGrayColor
                 categoryNameContainer.addSubview(verticalIconSeparator)
-                verticalIconSeparator.mas_makeConstraints({ (make) in
+                verticalIconSeparator.mas_makeConstraints({ make in
                     make?.width.mas_equalTo()(1)
-                    make?.right.mas_equalTo()(categoryNameContainer)?.with().offset()(self.horizontalStackViewSpacing/2)
+                    make?.right.mas_equalTo()(categoryNameContainer)?.with().offset()(self.horizontalStackViewSpacing / 2)
                     make?.top.mas_equalTo()(categoryNameContainer)?.with().offset()(5)
                     make?.bottom.mas_equalTo()(categoryNameContainer)?.with().offset()(-5)
                 })
@@ -265,41 +264,41 @@ class HomePageViewController: UIViewController {
     }
     
     private func numberNeededToChangeRow() -> Int {
-        return totalColumnInOneRow() - 1
+        return self.totalColumnInOneRow() - 1
     }
     
     private func setCategoryUpperSeparator() {
-        HomePageHeaderSectionStyle.setHeaderUpperSeparator(forStackView: categoryVerticalView)
+        HomePageHeaderSectionStyle.setHeaderUpperSeparator(forStackView: self.categoryVerticalView)
     }
     
     private func setOuterCategorySeparatorView() {
         let outerCategorySeparatorView = UIView()
-        outerCategorySeparatorView.mas_makeConstraints({ (make) in
+        outerCategorySeparatorView.mas_makeConstraints({ make in
             make?.height.mas_equalTo()(10)
         })
-        outerCategorySeparatorView.backgroundColor = UIColor(red: 241.0/255, green: 241.0/255, blue: 241.0/255, alpha: 1.0)
+        outerCategorySeparatorView.backgroundColor = UIColor(red: 241.0 / 255, green: 241.0 / 255, blue: 241.0 / 255, alpha: 1.0)
         categoryPlaceholder.addArrangedSubview(outerCategorySeparatorView)
     }
     
     private func setupOuterStackCategoryWithData(_ homePageCategoryData: HomePageCategoryData) {
         
-        for (index,layout_section) in homePageCategoryData.layout_sections.enumerated() {
+        for (index, layout_section) in homePageCategoryData.layout_sections.enumerated() {
             
-            setOuterCategorySeparatorView()
-            categoryVerticalView = OAStackView()
-            categoryVerticalView.isLayoutMarginsRelativeArrangement = true
-            categoryVerticalView.layoutMargins = UIEdgeInsets(top: 5, left: 20, bottom: 0, right: 20)
-            self.setStackViewAttribute(categoryVerticalView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
+            self.setOuterCategorySeparatorView()
+            self.categoryVerticalView = OAStackView()
+            self.categoryVerticalView.isLayoutMarginsRelativeArrangement = true
+            self.categoryVerticalView.layoutMargins = UIEdgeInsets(top: 5, left: 20, bottom: 0, right: 20)
+            self.setStackViewAttribute(self.categoryVerticalView, axis: .vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
             
-            setCategoryTitleLabel(layout_section.title)
+            self.setCategoryTitleLabel(layout_section.title)
             
-            setCategoryUpperSeparator()
+            self.setCategoryUpperSeparator()
             
-            setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
+            self.setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
             
             self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
-        setOuterCategorySeparatorView()
+        self.setOuterCategorySeparatorView()
     }
     
     private func initViewLayout() {
@@ -331,13 +330,12 @@ class HomePageViewController: UIViewController {
         // init top picks
         self.outerStackView.addArrangedSubview(self.topPicksPlaceholder)
         
-        
     }
     
     private func refreshHorizontalStackView() -> OAStackView {
         let horizontalStackView = OAStackView()
         self.setStackViewAttribute(horizontalStackView, axis: .horizontal, alignment: .fill, distribution: .fillProportionally, spacing: horizontalStackViewSpacing)
-        horizontalStackView.mas_makeConstraints({ (make) in
+        horizontalStackView.mas_makeConstraints({ make in
             make?.height.mas_equalTo()(50)
         })
         return horizontalStackView
@@ -347,7 +345,7 @@ class HomePageViewController: UIViewController {
         let horizontalIconSeparator = UIView()
         horizontalIconSeparator.backgroundColor = iconSeparatorGrayColor
         self.categoryVerticalView.addArrangedSubview(horizontalIconSeparator)
-        horizontalIconSeparator.mas_makeConstraints({ (make) in
+        horizontalIconSeparator.mas_makeConstraints({ make in
             make?.height.mas_equalTo()(1)
         })
     }
@@ -358,13 +356,13 @@ class HomePageViewController: UIViewController {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         isRequestingCategory = true
-        networkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
+        networkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] mappingResult, _ in
             self.isRequestingCategory = false
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
             self.homePageCategoryData = homePageCategoryResponse.data
             self.setupOuterStackCategoryWithData(self.homePageCategoryData!)
-        }) { [unowned self] (error) in
+        }) { [unowned self] error in
             self.isRequestingCategory = false
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
             stickyAlertView?.show()
@@ -376,7 +374,7 @@ class HomePageViewController: UIViewController {
         
         let backgroundColor = self.backgroundColor
         isRequestingBanner = true
-        bannersStore?.fetchBanner(completion: {[unowned self] (banner, error) in
+        bannersStore?.fetchBanner(completion: { [unowned self] banner, _ in
             self.isRequestingBanner = false
             guard banner != nil else {
                 return
@@ -390,13 +388,13 @@ class HomePageViewController: UIViewController {
                 make?.edges.mas_equalTo()(self.sliderPlaceholder)
             }
             
-            })
+        })
     }
     
     private func requestPulsaWidget() {
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
-        isRequestingPulsaWidget = true
+        self.isRequestingPulsaWidget = true
         self.requestManager.didReceiveCategory = { [unowned self] categories in
             self.isRequestingPulsaWidget = false
             self.pulsaActiveCategories = categories.filter({ (pulsaCategory) -> Bool in
@@ -413,7 +411,7 @@ class HomePageViewController: UIViewController {
             self.pulsaPlaceholder.removeAllSubviews()
             self.pulsaPlaceholder.backgroundColor = self.iconSeparatorGrayColor
             self.pulsaPlaceholder.addSubview(self.pulsaView)
-            self.pulsaView.mas_makeConstraints({ (make) in
+            self.pulsaView.mas_makeConstraints({ make in
                 make?.top.bottom().equalTo()(self.pulsaPlaceholder)
                 make?.left.mas_equalTo()(self.pulsaPlaceholder)?.offset()(7)
                 make?.right.mas_equalTo()(self.pulsaPlaceholder)?.offset()(-7)
@@ -433,17 +431,17 @@ class HomePageViewController: UIViewController {
                 self.navigator.navigateToPulsaProduct(products, selectedOperator: self.pulsaView.selectedOperator)
             }
             
-            self.pulsaView.didTapOperator = { [unowned self] (operators) in
+            self.pulsaView.didTapOperator = { [unowned self] operators in
                 self.navigator.navigateToPulsaOperator(operators)
             }
             
-            self.pulsaView.didSuccessPressBuy = { [unowned self] (url) in
+            self.pulsaView.didSuccessPressBuy = { [unowned self] url in
                 self.navigator.navigateToWKWebView(url)
             }
             
-//            self.pulsaView.didSuccessPressBuy = { [unowned self] (category) in
-//                self.navigator.navigateToCart(category)
-//            }
+            //            self.pulsaView.didSuccessPressBuy = { [unowned self] (category) in
+            //                self.navigator.navigateToCart(category)
+            //            }
             
             self.pulsaView.didTapAddressbook = { [unowned self] in
                 AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Click Phonebook Icon")
@@ -452,8 +450,8 @@ class HomePageViewController: UIViewController {
             
             self.pulsaView.didShowAlertPermission = { [unowned self] in
                 let alert = UIAlertController(title: "", message: "Aplikasi Tokopedia tidak dapat mengakses kontak kamu. Aktifkan terlebih dahulu di menu : Settings -> Privacy -> Contacts", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Aktifkan", style: .default, handler: { (action) in
-                    switch action.style{
+                alert.addAction(UIAlertAction(title: "Aktifkan", style: .default, handler: { action in
+                    switch action.style {
                     case .default:
                         JLContactsPermission.sharedInstance().displayAppSystemSettings()
                         
@@ -493,7 +491,7 @@ class HomePageViewController: UIViewController {
                 self.addChildViewController(officialStoreSection)
                 self.officialStorePlaceholder.addSubview(officialStoreSection.view)
                 
-                officialStoreSection.view.mas_makeConstraints { (make) in
+                officialStoreSection.view.mas_makeConstraints { make in
                     make?.edges.equalTo()(self.officialStorePlaceholder)
                 }
                 }, onError: { [weak self] error in
@@ -503,11 +501,11 @@ class HomePageViewController: UIViewController {
     }
     
     private func requestTicker() {
-        tickerRequest = AnnouncementTickerRequest()
-        canRequestTicker = false
-        tickerRequest.fetchTicker({[unowned self] (ticker) in
+        self.tickerRequest = AnnouncementTickerRequest()
+        self.canRequestTicker = false
+        self.tickerRequest.fetchTicker({ [unowned self] ticker in
             self.canRequestTicker = true
-            if (ticker.tickers.count > 0) {
+            if ticker.tickers.count > 0 {
                 
                 let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
                 let tick = ticker.tickers[randomIndex]
@@ -515,14 +513,14 @@ class HomePageViewController: UIViewController {
                 
                 if self.tickerView == nil {
                     
-                    self.tickerView = AnnouncementTickerView.init(message: tick.message, colorHexString: tick.color)
+                    self.tickerView = AnnouncementTickerView(message: tick.message, colorHexString: tick.color)
                     self.tickerPlaceholder.addSubview((self.tickerView)!)
                     
-                    self.tickerView.onTapMessageWithUrl = {[weak self] (url) in
+                    self.tickerView.onTapMessageWithUrl = { [weak self] url in
                         self!.navigator.navigateToWebTicker(url!)
                     }
                     
-                    self.tickerView.onTapCloseButton = {[unowned self] in
+                    self.tickerView.onTapCloseButton = { [unowned self] in
                         self.canRequestTicker = false
                         self.tickerPlaceholder.isHidden = true
                     }
@@ -542,41 +540,46 @@ class HomePageViewController: UIViewController {
                 }
                 
                 self.tickerView.setMessage(tick.message, withContentColorHexString: tick.color)
-            
+                
             } else {
                 
                 self.tickerPlaceholder.isHidden = true
             }
             
-        }) { (error) in
+        }) { _ in
             self.canRequestTicker = true
         }
     }
     
     private func requestTokocash() {
         
-        WalletService.getBalance(userId: self.userManager.getUserId())
+        guard let phoneNumber = self.userManager.getUserPhoneNumber(),
+            !phoneNumber.isEmpty else {
+            return
+        }
+        
+        WalletService.getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
             .subscribe(onNext: { [weak self] wallet in
-                if(wallet.isExpired()) {
-                    self?.tokocashPlaceholder.isHidden = true
+                if wallet.isExpired() {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                 } else {
-                    let tokocash = TokoCashSectionViewController(wallet:wallet)
+                    let tokocash = TokoCashSectionViewController(wallet: wallet)
                     self?.addChildViewController(tokocash)
                     self?.tokocashPlaceholder.addSubview(tokocash.view)
-                    tokocash.view.mas_makeConstraints { (make) in
+                    tokocash.view.mas_makeConstraints { make in
                         make?.edges.equalTo()(self?.tokocashPlaceholder)
                     }
+                    
                     self?.tokocashPlaceholder.mas_makeConstraints { make in
                         make?.left.right().equalTo()(self?.view)
                         make?.height.mas_equalTo()(tokocash.view.frame.height)
                     }
+                    
                     self?.tokocashPlaceholder.isHidden = false
                 }
-            }, onError: { error in
-                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-                stickyAlertView?.show()
-            })
-            .disposed(by: self.rx_disposeBag)
+            }, onError: { [weak self] _ in
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+            }).disposed(by: self.rx_disposeBag)
     }
     
     private func navigateToIntermediaryPage() {
@@ -596,26 +599,26 @@ class HomePageViewController: UIViewController {
         let categoryName = layoutRow.name
         
         AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
-        AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name" : categoryName ?? ""])
+        AnalyticsManager.localyticsEvent("Event : Clicked Category", attributes: ["Category Name": categoryName ?? ""])
         
-        if (layoutRow.type == LayoutRowType.Marketplace.rawValue) {
-                let navigateViewController = NavigateViewController()
+        if layoutRow.type == LayoutRowType.Marketplace.rawValue {
+            let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName, isIntermediary: true)
-        } else if (layoutRow.type == LayoutRowType.Digital.rawValue) {
+        } else if layoutRow.type == LayoutRowType.Digital.rawValue {
             guard let categoryId = layoutRow.category_id else {
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)
                 return
             }
             
             //tokocash ID = 103
-            if(categoryId  == "103") {
-                authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
+            if categoryId == "103" {
+                self.authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
                     self.navigateToIntermediaryPage()
                     WalletService.getBalance(userId: self.userManager.getUserId())
                         .subscribe(onNext: { wallet in
                             self.navigationController?.popViewController(animated: false)
-                            if (wallet.isExpired()) {
-                                TPRoutes.routeURL(URL(string: "tokopedia://tokocash")!)
+                            if wallet.isExpired() {
+                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
                                 TPRoutes.routeURL(URL(string: (wallet.data?.action?.applinks)!)!)
                             }

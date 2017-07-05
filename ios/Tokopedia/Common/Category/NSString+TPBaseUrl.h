@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (TPBaseUrl)
-
++ (nonnull NSNumber*)urlIndex;
 + (nonnull NSString*)basicUrl;
 + (nonnull NSString*)aceUrl;
 + (nonnull NSString*)v4Url;
@@ -29,5 +29,6 @@
 + (nonnull NSString*)walletUrl;
 + (nonnull NSString*)mobileSiteUrl;
 + (nonnull NSString*)feedsMobileSiteUrl;
++ (nonnull NSString*)tokocashUrl;
 
 @end
