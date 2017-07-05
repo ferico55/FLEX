@@ -1,4 +1,4 @@
-query Feeds ($userID: Int!, $limit: Int!, $cursor: String) {
+query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 	feed(limit: $limit, cursor: $cursor, userID: $userID) {
 		data {
 			id
@@ -52,6 +52,11 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String) {
 					min_transcation
 				}
 				status_activity
+				new_status_activity {
+					source
+					activity
+					amount
+				}
 			}
 		}
 		links {
@@ -62,6 +67,25 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String) {
 		meta {
 			total_data
 		}
-		token
+	}
+	inspiration(userID: $userID, page: $page) {
+		data {
+			source
+			title 
+			foreign_title
+			pagination {
+				current_page
+				next_page
+				prev_page
+			}
+			recommendation {
+				id
+				name
+				url
+				app_url
+				image_url
+				price
+			}
+		}
 	}
 }

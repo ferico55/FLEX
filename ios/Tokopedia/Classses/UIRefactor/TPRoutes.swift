@@ -280,6 +280,12 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("/promoNative") { (params: [String : Any]!) -> Bool in
+            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
+            
+            return true
+        }
+        
         //gold merchant
         JLRoutes.global().addRoute("/gold") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params as [String : AnyObject])

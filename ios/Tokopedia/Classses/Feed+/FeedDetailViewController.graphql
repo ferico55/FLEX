@@ -39,11 +39,15 @@ query FeedDetail ($detailID: String!, $pageDetail: Int!, $limitDetail: Int!){
 					rating
 				}
 				status_activity
+				new_status_activity {
+					source
+					activity
+					amount
+				}
 			}
 			meta {
 				has_next_page
 			}
 		}
-		token
 	}
 }

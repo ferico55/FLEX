@@ -58,7 +58,7 @@
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "MaintenanceViewController.h"
-
+#import "TransactionATCViewController.h"
 
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
@@ -940,6 +940,13 @@
 
 - (void)navigateToFeedDetailFromViewController:(UIViewController *)viewController withFeedCardID:(NSString *)cardID {
     FeedDetailViewController *vc = [[FeedDetailViewController alloc] initWithActivityID:cardID];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
+    TransactionATCViewController *vc = [TransactionATCViewController new];
+    vc.productID = productID;
     vc.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:vc animated:YES];
 }

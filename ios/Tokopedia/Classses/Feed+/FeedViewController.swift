@@ -40,7 +40,8 @@ class FeedViewController: UIViewController {
         let headers = [
             "Tkpd-UserId": userManager.getUserId(),
             "Tkpd-SessionId": userManager.getMyDeviceToken(),
-            "X-Device": "ios-\(appVersion)"
+            "X-Device": "ios-\(appVersion)",
+            "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")
         ]
         
         configuration.httpAdditionalHeaders = headers
@@ -211,10 +212,10 @@ class FeedViewController: UIViewController {
                 self.tableView.tableFooterView = self.footerView
             }
             
-            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userId: Int(userID!)!, limit: 5, cursor: cursor)) { result, error in
+            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userId: Int(userID!)!, limit: 5, cursor: cursor, page: self.page)) { result, error in
                 if let error = error {
                     NSLog("Error while fetching query: \(error.localizedDescription)")
-                    self.feedState = FeedStateManager().initFeedState(withResult: nil)
+                    self.feedState = FeedStateManager().initFeedState(queryResult: nil)
                     self.loadContent(onPage: self.page, total: -1)
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
@@ -222,14 +223,14 @@ class FeedViewController: UIViewController {
                 }
                 
                 if result?.errors != nil {
-                    self.feedState = FeedStateManager().initFeedState(withResult: nil)
+                    self.feedState = FeedStateManager().initFeedState(queryResult: nil)
                     self.loadContent(onPage: self.page, total: -1)
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
                     return
                 }
                 
-                self.feedState = FeedStateManager().initFeedState(withResult: (result?.data)!)
+                self.feedState = FeedStateManager().initFeedState(queryResult: (result?.data)!)
                 
                 self.loadContent(onPage: self.page, total: self.feedState.totalData)
             }
@@ -286,6 +287,8 @@ class FeedViewController: UIViewController {
             onSuccess: { [weak self] ads in
                 guard let `self` = self else { return }
                 
+                guard ads.count > 0 else { return }
+                
                 if totalData > 1 {
                     var card = FeedCardState()
                     card.topads = TopAdsFeedPlusState(topAds: ads, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
@@ -318,7 +321,8 @@ class FeedViewController: UIViewController {
         let headers = [
             "Tkpd-UserId": userManager.getUserId(),
             "Tkpd-SessionId": userManager.getMyDeviceToken(),
-            "X-Device": "ios-\(appVersion)"
+            "X-Device": "ios-\(appVersion)",
+            "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")
         ]
         
         configuration.httpAdditionalHeaders = headers

@@ -15,6 +15,31 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
     private var disposeBag = DisposeBag()
     
     override func construct(state: FeedDetailState?, size _: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
+        let shareButton = Node<UIButton>(identifier: "share") { button, layout, _ in
+            button.setTitle("Bagikan", for: .normal)
+            button.backgroundColor = .white
+            button.titleLabel?.font = .largeThemeSemibold()
+            button.setTitleColor(UIColor.tpSecondaryBlackText(), for: .normal)
+            
+            button.rx.tap
+                .subscribe(onNext: {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
+                    let title = state.source.shopState.shareDescription
+                    let url = state.source.shopState.shareURL
+                    
+                    let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
+                    
+                    UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                })
+                .disposed(by: self.rx_disposeBag)
+            
+            layout.height = 51.0
+            layout.flexGrow = 1
+            layout.flexBasis = 10
+        }
+        
         return Node<UIView>() { _, layout, _ in
             layout.flexDirection = .row
             layout.height = 51.0
@@ -24,28 +49,7 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
             layout.position = .absolute
             layout.bottom = 0
         }.add(children: [
-            Node<UIButton>(identifier: "share") { button, layout, _ in
-                button.setTitle("Bagikan", for: .normal)
-                button.backgroundColor = .white
-                button.titleLabel?.font = .largeThemeSemibold()
-                button.setTitleColor(UIColor.black.withAlphaComponent(0.54), for: .normal)
-                
-                button.rx.tap
-                    .subscribe(onNext: {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
-                        let title = state?.source.shopState.shareDescription
-                        let url = state?.source.shopState.shareURL
-                        
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url!), anchor: button)
-                        
-                        UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
-                    })
-                    .disposed(by: self.rx_disposeBag)
-                
-                layout.height = 51.0
-                layout.flexGrow = 1
-                layout.flexBasis = 10
-            },
+            shareButton,
             Node<UIView>() { view, layout, _ in
                 layout.width = 1
                 
@@ -59,7 +63,7 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
                 button.rx.tap
                     .subscribe(onNext: {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Kunjungi Toko - Shop")
-                        TPRoutes.routeURL(URL(string: (state?.source.shopState.shopURL)!)!)
+                        TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                     })
                     .disposed(by: self.disposeBag)
                 

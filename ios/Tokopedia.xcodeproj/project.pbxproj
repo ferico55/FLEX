@@ -1632,6 +1632,7 @@
 		527674F51EF21EFF001831C1 /* WalletCashBackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */; };
 		527674F61EF21EFF001831C1 /* WalletCashBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F31EF21EFF001831C1 /* WalletCashBack.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
+		621BF49E1EE8E53A00457E81 /* FeedInspirationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621BF49D1EE8E53A00457E81 /* FeedInspirationComponentView.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
@@ -4729,6 +4730,7 @@
 		527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBackResponse.swift; sourceTree = "<group>"; };
 		527674F31EF21EFF001831C1 /* WalletCashBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBack.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		621BF49D1EE8E53A00457E81 /* FeedInspirationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedInspirationComponentView.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
@@ -5268,6 +5270,7 @@
 		34F0AD171EE6673C005D7DB2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				621BF49D1EE8E53A00457E81 /* FeedInspirationComponentView.swift */,
 				34F0AD181EE6673C005D7DB2 /* EmptyStateComponentView.swift */,
 				34F0AD191EE6673C005D7DB2 /* FeedComponentView.swift */,
 				34F0AD1A1EE6673C005D7DB2 /* FeedDetailActionComponentView.swift */,
@@ -13023,6 +13026,7 @@
 				34F0BB931EE66744005D7DB2 /* MyWishlistShopReputation.swift in Sources */,
 				34F0B9A81EE66742005D7DB2 /* OrderResult.m in Sources */,
 				34F0B8AE1EE66741005D7DB2 /* CountRatingResult.m in Sources */,
+				621BF49E1EE8E53A00457E81 /* FeedInspirationComponentView.swift in Sources */,
 				34F0BCEA1EE66746005D7DB2 /* NoResultReusableView.m in Sources */,
 				34F0BCEE1EE66746005D7DB2 /* DueDateViewController.m in Sources */,
 				34F0B9721EE66741005D7DB2 /* FavoriteShopResult.m in Sources */,

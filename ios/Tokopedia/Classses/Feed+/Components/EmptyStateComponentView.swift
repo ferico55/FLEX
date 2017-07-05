@@ -90,7 +90,7 @@ class EmptyStateComponentView: ComponentView<FeedState> {
                     
                     label.text = (state?.errorType == .emptyFeed) ? "Oops, feed masih kosong" : "Oops, terjadi kendala pada server"
                     label.font = UIFont.boldSystemFont(ofSize: 16.0)
-                    label.textColor = UIColor.black.withAlphaComponent(0.54)
+                    label.textColor = UIColor.tpSecondaryBlackText()
                     label.textAlignment = .center
                     label.numberOfLines = 0
                 },
@@ -102,7 +102,7 @@ class EmptyStateComponentView: ComponentView<FeedState> {
                     
                     label.text = (state?.errorType == .emptyFeed) ? "Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru di sini." : "Terjadi kendala dalam memuat halaman ini. Silakan coba lagi."
                     label.font = .largeTheme()
-                    label.textColor = UIColor.black.withAlphaComponent(0.38)
+                    label.textColor = UIColor.tpDisabledBlackText()
                     label.textAlignment = .center
                     label.numberOfLines = 0
                 },

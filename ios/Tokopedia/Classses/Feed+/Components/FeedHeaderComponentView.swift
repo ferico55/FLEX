@@ -25,12 +25,15 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
     }
     
     override func construct(state: FeedCardState?, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         let authorImage: NodeType = Node<UIButton>() { button, _, _ in
             button.bk_(whenTapped: {
-                if !(state?.source.fromTokopedia)! {
+                if !(state.source.fromTokopedia) {
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - Shop")
-                    TPRoutes.routeURL(URL(string: (state?.source.shopState.shopURL)!)!)
+                    TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                 } else {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Promotion - Promo Page Header")
                     NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
                 }
             })
@@ -43,10 +46,10 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             imageView.borderColor = .tpLine()
             imageView.cornerRadius = 3.0
             
-            if (state?.source.fromTokopedia)! {
+            if state.source.fromTokopedia {
                 imageView.image = #imageLiteral(resourceName: "icon_source_tokopedia")
             } else {
-                imageView.setImageWith(URL(string: state?.source.shopState.shopImage ?? ""))
+                imageView.setImageWith(URL(string: state.source.shopState.shopImage))
             }
             
         })
@@ -55,13 +58,13 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             layout.flexDirection = .column
             layout.flexShrink = 1
             layout.flexGrow = 1
-            layout.marginLeft = (state?.oniPad)! ? 10.0 : 8.0
+            layout.marginLeft = state.oniPad ? 10.0 : 8.0
             
             view.rx.tap
                 .subscribe(onNext: {
-                    if !(state?.source.fromTokopedia)! {
+                    if !(state.source.fromTokopedia) {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - Product List")
-                        NavigateViewController().navigateToFeedDetail(from: self.viewController, withFeedCardID: state?.cardID)
+                        NavigateViewController().navigateToFeedDetail(from: self.viewController, withFeedCardID: state.cardID)
                     } else {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Promotion - Promo Page Header")
                         NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
@@ -70,27 +73,29 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
                 .disposed(by: self.disposeBag)
         }.add(children: [
             Node<UILabel>(identifier: "title") { label, layout, _ in
-                var authorName = ""
+                var activity: NSMutableAttributedString?
                 
                 layout.flexShrink = 1
                 layout.marginBottom = 3
                 
-                label.numberOfLines = 0
-                
-                if (state?.source.fromTokopedia)! {
-                    authorName = "Tokopedia"
+                if state.source.fromTokopedia {
+                    let boldAttribute: [String: Any] = [
+                        NSFontAttributeName: UIFont.largeThemeSemibold(),
+                        NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
+                    ]
+                    
+                    activity = NSMutableAttributedString(string: "Tokopedia", attributes: boldAttribute)
                 } else {
-                    authorName = (state?.source.shopState.shopName)!
+                    activity = self.attributedStringHeader(withActivity: state.content.activity, state: state.source)
                 }
                 
-                label.attributedText = self.attributedStringHeader(withAuthorName: authorName,
-                                                                   action: (state?.content.activity)!,
-                                                                   state: (state?.source)!)
+                label.numberOfLines = 0
+                label.attributedText = activity
             },
             Node<UILabel>(identifier: "timestamp") { label, _, _ in
-                label.text = (state?.source.fromTokopedia)! ? "Promo" : FeedService.feedCreateTimeFormatted(withCreatedTime: (state?.createTime)!)
+                label.text = state.source.fromTokopedia ? "Promo" : FeedService.feedCreateTimeFormatted(withCreatedTime: state.createTime!)
                 label.font = .microTheme()
-                label.textColor = UIColor.black.withAlphaComponent(0.38)
+                label.textColor = UIColor.tpDisabledBlackText()
             }
         ])
         
@@ -100,17 +105,17 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             button.backgroundColor = .white
             button.cornerRadius = 3.0
             button.titleLabel?.font = .smallThemeSemibold()
-            button.setTitleColor(UIColor.black.withAlphaComponent(0.38), for: .normal)
+            button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
             button.borderWidth = 1
             button.borderColor = .tpLine()
             
             button.rx.tap
                 .subscribe(onNext: {
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
-                    let title = state?.source.shopState.shareDescription
-                    let url = state?.source.shopState.shareURL
+                    let title = state.source.shopState.shareDescription
+                    let url = state.source.shopState.shareURL
                     
-                    let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url!), anchor: button)
+                    let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
                     
                     self.viewController?.present(controller!, animated: true, completion: nil)
                 })
@@ -138,7 +143,8 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
                 authorImage,
                 authorInfo
             ]),
-            ((state?.oniPad)! && !(state?.source.fromTokopedia)!) ? shareButton : NilNode()
+            
+            (state.oniPad && !(state.source.fromTokopedia)) ? shareButton : NilNode()
         ])
         
         let horizontalLine = Node<UIView>(identifier: "line") { view, layout, _ in
@@ -160,15 +166,19 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
         return header
     }
     
-    private func attributedStringHeader(withAuthorName author: String, action: String, state: FeedCardSourceState) -> NSAttributedString {
-        let attString: NSMutableAttributedString = NSMutableAttributedString()
+    private func attributedStringHeader(withActivity activity: FeedCardActivityState, state: FeedCardSourceState) -> NSMutableAttributedString {
+        let attString = NSMutableAttributedString()
         
-        let authorAttributes: [String: Any] = [
+        let bold: [String: Any] = [
             NSFontAttributeName: UIFont.largeThemeSemibold(),
-            NSForegroundColorAttributeName: UIColor.black.withAlphaComponent(0.70)
+            NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
+        ]
+        let normal: [String: Any] = [
+            NSFontAttributeName: UIFont.largeTheme(),
+            NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
         ]
         
-        var attachmentString: NSAttributedString?
+        var badges: NSAttributedString?
         
         if !state.fromTokopedia && (state.shopState.shopIsGold || state.shopState.shopIsOfficial) {
             let attachment = NSTextAttachment()
@@ -183,40 +193,18 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             
             attachment.bounds = CGRect(x: 0, y: -3, width: (attachment.image?.size.width)!, height: (attachment.image?.size.height)!)
             
-            attachmentString = NSAttributedString(attachment: attachment)
+            badges = NSAttributedString(attachment: attachment)
         }
         
-        if attachmentString != nil {
-            attString.append(attachmentString!)
-            attString.append(NSAttributedString(string: " ", attributes: authorAttributes))
+        if let badge = badges {
+            attString.append(badge)
+            attString.append(NSAttributedString(string: " ", attributes: bold))
         }
-        attString.append(NSAttributedString(string: "\(author) ", attributes: authorAttributes))
-        attString.append(self.splitActionString(action: action))
+        
+        attString.append(NSAttributedString(string: "\(activity.source) ", attributes: bold))
+        attString.append(NSAttributedString(string: "\(activity.activity) ", attributes: normal))
+        attString.append(NSAttributedString(string: "\(activity.amount) produk", attributes: bold))
         
         return attString
-    }
-    
-    private func splitActionString(action: String) -> NSAttributedString {
-        let actionString = NSMutableAttributedString()
-        
-        if action == "" {
-            return actionString
-        }
-        
-        let bold: [String: Any] = [
-            NSFontAttributeName: UIFont.largeThemeSemibold(),
-            NSForegroundColorAttributeName: UIColor.black.withAlphaComponent(0.70)
-        ]
-        let normal: [String: Any] = [
-            NSFontAttributeName: UIFont.largeTheme(),
-            NSForegroundColorAttributeName: UIColor.black.withAlphaComponent(0.70)
-        ]
-        
-        let act = action.components(separatedBy: " ")
-        
-        actionString.append(NSAttributedString(string: "\(act[0]) ", attributes: normal))
-        actionString.append(NSAttributedString(string: act[1...act.count - 1].joined(separator: " "), attributes: bold))
-        
-        return actionString
     }
 }

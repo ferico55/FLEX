@@ -347,7 +347,7 @@
 }
 
 + (CKComponent *)favoriteButtonIsFavorite:(BOOL)isFavorite {
-    NSString *title = isFavorite? @"Favorited": @"Favorit";
+    NSString *title = isFavorite? @"Favorit": @"Favoritkan";
     UIColor *green = [UIColor colorWithRed:0.259 green:0.710 blue:0.286 alpha:1.00];
     UIImage *image = isFavorite?[UIImage imageNamed:@"icon_check_favorited"]:[UIImage imageNamed:@"icon_follow_plus"];
     
