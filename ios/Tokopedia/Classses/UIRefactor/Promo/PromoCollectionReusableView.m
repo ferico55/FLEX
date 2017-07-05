@@ -9,7 +9,6 @@
 #import "PromoCollectionReusableView.h"
 #import "ProductCell.h"
 #import "ProductThumbCell.h"
-#import "PromoInfoAlertView.h"
 #import "WebViewController.h"
 #import "Tokopedia-Swift.h"
 
@@ -25,8 +24,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 @interface PromoCollectionReusableView ()
 <
 UICollectionViewDataSource,
-UICollectionViewDelegate,
-TKPDAlertViewDelegate
+UICollectionViewDelegate
 >
 
 @property (strong, nonatomic) UICollectionViewFlowLayout *flowLayout;
@@ -157,8 +155,7 @@ TKPDAlertViewDelegate
 }
 
 - (IBAction)tap:(id)sender {
-    PromoInfoAlertView *alert = [PromoInfoAlertView newview];
-    alert.delegate = self;
+    TopAdsInfoActionSheet *alert = [TopAdsInfoActionSheet new];
     [alert show];
 }
 
@@ -212,13 +209,6 @@ TKPDAlertViewDelegate
     if ([self.delegate respondsToSelector:@selector(promoDidScrollToPosition:atIndexPath:)]) {
         NSInteger position = scrollView.contentOffset.x / self.flowLayout.itemSize.width;
         [self.delegate promoDidScrollToPosition:[NSNumber numberWithInteger:position] atIndexPath:_indexPath];
-    }
-}
-
-- (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        NSString* urlString = [NSString stringWithFormat:@"https://www.tokopedia.com/iklan?source=tooltip&medium=ios"];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
 }
 

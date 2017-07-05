@@ -11,6 +11,7 @@ import UIKit
 import Render
 import RxSwift
 import ReSwift
+import CFAlertViewController
 
 struct TopAdsFeedPlusState: Render.StateType, ReSwift.StateType {
     var topAds: [PromoResult]?
@@ -68,9 +69,7 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
 
 // MARK: Product
 
-class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TKPDAlertViewDelegate {
-    
-    private let disposeBag = DisposeBag()
+class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
     
     override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let state = state, let theTopAds = state.topAds, theTopAds.count > 0 else {
@@ -95,18 +94,14 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             }
             
             let promotedInfoView = Node<UIView>(create: {
-                let tapGesture = UITapGestureRecognizer()
-                tapGesture.rx.event
-                    .subscribe(onNext: { _ in
-                        let alert = PromoInfoAlertView.newview() as! PromoInfoAlertView
-                        alert.delegate = self
-                        alert.show()
-                    }).addDisposableTo(self.disposeBag)
                 
                 let view = UIView()
                 view.isUserInteractionEnabled = true
                 view.backgroundColor = .white
-                view.addGestureRecognizer(tapGesture)
+                view.bk_(whenTapped: {
+                    let alertController = TopAdsInfoActionSheet()
+                    alertController.show()
+                })
                 
                 return view
             }) {
@@ -165,19 +160,16 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
             
             let adView = Node<UIView>(
                 create: {
-                    let tapGesture = UITapGestureRecognizer()
-                    tapGesture.rx.event
-                        .subscribe(onNext: { _ in
-                            if let url = URL(string: topAdsResult.applinks) {
-                                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Product")
-                                TopAdsService.sendClickImpression(clickURLString: topAdsResult.product_click_url)
-                                TPRoutes.routeURL(url)
-                            }
-                        }).addDisposableTo(self.disposeBag)
                     
                     let view = UIView()
                     view.backgroundColor = .white
-                    view.addGestureRecognizer(tapGesture)
+                    view.bk_(whenTapped: {
+                        if let url = URL(string: topAdsResult.applinks) {
+                            AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Product")
+                            TopAdsService.sendClickImpression(clickURLString: topAdsResult.product_click_url)
+                            TPRoutes.routeURL(url)
+                        }
+                    })
                     
                     return view
                 }
@@ -268,20 +260,12 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState>, TK
         ])
     }
     
-    func alertView(_ alertView: TKPDAlertView!, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            let urlString = "https://www.tokopedia.com/iklan?source=tooltip&medium=ios"
-            UIApplication.shared.openURL(URL(string: urlString)!)
-        }
-    }
-    
 }
 
 // MARK: Shop
 
-class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDAlertViewDelegate {
+class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
     
-    private let disposeBag = DisposeBag()
     private var callback: (_ state: TopAdsFeedPlusState) -> ()
     
     override init() {
@@ -316,18 +300,15 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             
             let adView = Node<UIView>(
                 create: {
-                    let tapGesture = UITapGestureRecognizer()
-                    tapGesture.rx.event
-                        .subscribe(onNext: { _ in
-                            if let url = URL(string: theTopAds[0].applinks) {
-                                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Shop")
-                                TopAdsService.sendClickImpression(clickURLString: ad.shop_click_url)
-                                TPRoutes.routeURL(url)
-                            }
-                        }).addDisposableTo(self.disposeBag)
                     
                     let view = UIView()
-                    view.addGestureRecognizer(tapGesture)
+                    view.bk_(whenTapped: {
+                        if let url = URL(string: theTopAds[0].applinks) {
+                            AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Shop")
+                            TopAdsService.sendClickImpression(clickURLString: ad.shop_click_url)
+                            TPRoutes.routeURL(url)
+                        }
+                    })
                     
                     return view
                 }
@@ -342,18 +323,14 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             func promotedInfoView() -> NodeType {
                 
                 let promotedInfoView = Node<UIView>(create: {
-                    let tapGesture = UITapGestureRecognizer()
-                    tapGesture.rx.event
-                        .subscribe(onNext: { _ in
-                            let alert = PromoInfoAlertView.newview() as! PromoInfoAlertView
-                            alert.delegate = self
-                            alert.show()
-                        }).addDisposableTo(self.disposeBag)
                     
                     let view = UIView()
                     view.isUserInteractionEnabled = true
                     view.backgroundColor = .white
-                    view.addGestureRecognizer(tapGesture)
+                    view.bk_(whenTapped: {
+                        let alertController = TopAdsInfoActionSheet()
+                        alertController.show()
+                    })
                     
                     return view
                 }) {
@@ -393,7 +370,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
             func requestFavorite() {
                 callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: isShopFavorited, isLoadingFavoriteShop: true, currentViewController: state.currentViewController))
                 
-                FavoriteShopRequest.requestActionButtonFavoriteShop(shop.shop_id, withAdKey: ad.ad_ref_key, onSuccess: { _ in
+                FavoriteShopRequest.requestActionButtonFavoriteShop(shop.shop_id, withAdKey: ad.ad_ref_key, onSuccess: { [weak self] _ in
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "TopAds Favorite")
                     var messageString = CStringSuccessFavoriteShop
                     if isShopFavorited {
@@ -402,19 +379,18 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
                     let stickyAlertView = StickyAlertView(successMessages: [messageString], delegate: state.currentViewController)
                     stickyAlertView?.show()
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateFavoriteShop"), object: nil)
-                    self.callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: !isShopFavorited, isLoadingFavoriteShop: false, currentViewController: state.currentViewController))
-                }, onFailure: {
-                    self.callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: isShopFavorited, isLoadingFavoriteShop: false, currentViewController: state.currentViewController))
+                    self?.callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: !isShopFavorited, isLoadingFavoriteShop: false, currentViewController: state.currentViewController))
+                }, onFailure: { [weak self] _ in
+                    self?.callback(TopAdsFeedPlusState(topAds: theTopAds, isDoneFavoriteShop: isShopFavorited, isLoadingFavoriteShop: false, currentViewController: state.currentViewController))
                 })
             }
             
             let favButton = Node<UIButton> {
                 view, layout, _ in
                 
-                view.rx.tap.subscribe(onNext: { [weak self] _ in
+                view.bk_(whenTapped: {
                     requestFavorite()
-                }).addDisposableTo(self.disposeBag)
-                
+                })
                 view.backgroundColor = isShopFavorited ? UIColor.white : UIColor.tpGreen()
                 view.borderColor = isShopFavorited ? UIColor.tpLine() : UIColor.tpGreen()
                 view.borderWidth = 1
@@ -688,13 +664,6 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState>, TKPDA
         }
         
         return mainWrapper
-    }
-    
-    func alertView(_ alertView: TKPDAlertView!, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            let urlString = "https://www.tokopedia.com/iklan?source=tooltip&medium=ios"
-            UIApplication.shared.openURL(URL(string: urlString)!)
-        }
     }
     
 }

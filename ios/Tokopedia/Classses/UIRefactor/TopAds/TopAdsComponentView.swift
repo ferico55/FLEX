@@ -15,7 +15,7 @@ struct TopAdsState: StateType {
     var topAds: [PromoResult]?
 }
 
-class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
+class TopAdsNode: NSObject, NodeType {
     
     private var rootNode: NodeType
     private let disposeBag = DisposeBag()
@@ -66,9 +66,8 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
                 let tapGesture = UITapGestureRecognizer()
                 tapGesture.rx.event
                     .subscribe(onNext: { _ in
-                        let alert = PromoInfoAlertView.newview() as! PromoInfoAlertView
-                        alert.delegate = self
-                        alert.show()
+                        let alertController = TopAdsInfoActionSheet()
+                        alertController.show()
                     }).addDisposableTo(self.disposeBag)
                 
                 let imageView = UIImageView()
@@ -314,13 +313,6 @@ class TopAdsNode: NSObject, NodeType, TKPDAlertViewDelegate {
         ])
         
         rootNode = mainWrapper
-    }
-    
-    func alertView(_ alertView: TKPDAlertView!, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            let urlString = "https://www.tokopedia.com/iklan?source=tooltip&medium=ios"
-            UIApplication.shared.openURL(URL(string: urlString)!)
-        }
     }
     
     var renderedView: UIView? {

@@ -14,7 +14,6 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 #import "LoadingView.h"
-#import "PromoInfoAlertView.h"
 #import "WebViewController.h"
 #import "FavoriteShopRequest.h"
 #import "PromoResult.h"
@@ -29,7 +28,6 @@ UITableViewDataSource,
 UITableViewDelegate,
 FavoritedShopCellDelegate,
 LoadingViewDelegate,
-TKPDAlertViewDelegate,
 FavoriteShopRequestDelegate
 >
 {
@@ -501,17 +499,8 @@ FavoriteShopRequestDelegate
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
-        PromoInfoAlertView *alert = [PromoInfoAlertView newview];
-        alert.delegate = self;
+        TopAdsInfoActionSheet *alert = [TopAdsInfoActionSheet new];
         [alert show];
-    }
-}
-
-#pragma mark - Tkpd alert delegate
-
-- (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan?source=tooltip&medium=ios"]];
     }
 }
 

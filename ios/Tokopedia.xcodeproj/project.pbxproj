@@ -1806,6 +1806,7 @@
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
 		C00BE0A71EE8EFB70001995E /* OnDemandInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */; };
+		C047F07E1F0CA003007792E2 /* TopAdsInfoActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047F07D1F0CA003007792E2 /* TopAdsInfoActionSheet.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		F91036B31EE8FC00002743A6 /* OfficialStoreHomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */; };
 		F9E3C03D1EE6544C00FBD14E /* activateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */; };
@@ -5010,6 +5011,7 @@
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnDemandInfoView.swift; sourceTree = "<group>"; };
+		C047F07D1F0CA003007792E2 /* TopAdsInfoActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAdsInfoActionSheet.swift; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -9551,6 +9553,7 @@
 		34F0B7541EE66740005D7DB2 /* TopAds */ = {
 			isa = PBXGroup;
 			children = (
+				C047F07D1F0CA003007792E2 /* TopAdsInfoActionSheet.swift */,
 				34F0B7551EE66740005D7DB2 /* TopAdsComponentView.swift */,
 				34F0B7561EE66740005D7DB2 /* TopAdsFeedPlusComponentView.swift */,
 				34F0B7571EE66740005D7DB2 /* TopAdsService.swift */,
@@ -11683,7 +11686,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		A8DB3E016682453708179B99 /* [CP] Check Pods Manifest.lock */ = {
@@ -11698,7 +11701,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D593009643BED8682DB62BA4 /* [CP] Copy Pods Resources */ = {
@@ -11728,7 +11731,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -13067,6 +13070,7 @@
 				34F0BBDF1EE66744005D7DB2 /* InboxTalkSplitViewController.m in Sources */,
 				34F0BC8C1EE66745005D7DB2 /* ReviewRatingComponent.mm in Sources */,
 				34F0BDCD1EE66748005D7DB2 /* ShopHomeViewController.swift in Sources */,
+				C047F07E1F0CA003007792E2 /* TopAdsInfoActionSheet.swift in Sources */,
 				34F0B8631EE66741005D7DB2 /* Login.m in Sources */,
 				34F0B9BA1EE66742005D7DB2 /* List.m in Sources */,
 				34F0B8821EE66741005D7DB2 /* AnnouncementTickerResult.swift in Sources */,
@@ -13411,7 +13415,10 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

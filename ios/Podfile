@@ -79,6 +79,7 @@ def common_pods
     pod 'Apollo'
     pod 'CFAlertViewController', '~> 2.3.1'
     pod 'WatchdogInspector' ,'~> 1.1.0', :configurations => ['Debug']
+    pod 'CFAlertViewController'
 
     #will be changed to proper version later
     pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'
