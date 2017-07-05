@@ -372,6 +372,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [self.unsetWishlistAnimationView setHidden: YES];
     [self.iconOvalWhite setHidden:YES];
     
+    [self removeWishlistButton];
 }
 
 - (void)prepareForReuse {
