@@ -10,11 +10,11 @@ import Unbox
 
 final class CategoryIntermediaryCuratedProduct: NSObject, Unboxable {
     var categoryId: Int = 0
-    var sections: [CategoryIntermediaryCuratedProductSection]!
+    var sections: [CategoryIntermediaryCuratedProductSection]?
     
     convenience init(unboxer:Unboxer) throws {
         self.init()
         self.categoryId = try unboxer.unbox(keyPath: "category_id")
-        self.sections = try unboxer.unbox(keyPath: "sections")
+        self.sections = try? unboxer.unbox(keyPath: "sections") as [CategoryIntermediaryCuratedProductSection]
     }
 }

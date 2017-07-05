@@ -490,13 +490,13 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             containerView.add(child: TopAdsNode(ads: (state?.ads)!))
         }
         
-        if let curatedProduct = categoryIntermediaryResult.curatedProduct, let curatedProductSections = curatedProduct.sections {
-            for curatedListSections in curatedProductSections {
+        if let sections = categoryIntermediaryResult.curatedProduct?.sections {
+            for (sectionIndex, curatedListSections) in sections.enumerated() {
                 let curatedListView = generateCuratedListView()
                 
-                curatedListView.add(children: [titleView(title: (curatedListSections.title))])
+                curatedListView.add(children: [titleView(title: (sections[sectionIndex].title))])
                 let curatedListProductContainer = generateCuratedListProductContainer()
-                for (productIndex, curatedProduct) in curatedListSections.products.enumerated() {
+                for (productIndex,curatedProduct) in curatedListSections.products.enumerated() {
                     if productIndex < 4 {
                         curatedListProductContainer.add(child: generateCuratedProductCell(curatedProduct: curatedProduct))
                     }
@@ -558,7 +558,8 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     
     func changeWishlist(forProductId productId: String, withStatus isOnWishlist: Bool) {
         guard let curatedProduct = categoryIntermediaryResult.curatedProduct else { return }
-        for section in curatedProduct.sections {
+        guard let sections = curatedProduct.sections else { return }
+        for section in sections {
             let product = section.products.first { $0.id == productId }
             product?.isOnWishlist = isOnWishlist
         }
