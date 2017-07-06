@@ -415,10 +415,6 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             let curatedProductCell = Node<ProductCell>(
                 create: {
                     let content = UINib(nibName: "ProductCell", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! ProductCell
-                    content.bk_(whenTapped: {
-                        AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(curatedProduct.name)", label: curatedProduct.name)
-                        TPRoutes.routeURL(URL(string: curatedProduct.applinks)!)
-                    })
                     return content
                 }
             , configure: { cell, layout, _ in
@@ -444,6 +440,10 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 cell.parentViewController = state?.intermediaryViewController
                 cell.applinks = curatedProduct.applinks
                 cell.delegate = state?.intermediaryViewController as! ProductCellDelegate
+                cell.bk_(whenTapped: {
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel.productName)", label: cell.viewModel.productName)
+                    TPRoutes.routeURL(URL(string: cell.applinks)!)
+                })
             })
 
             return curatedProductCell
