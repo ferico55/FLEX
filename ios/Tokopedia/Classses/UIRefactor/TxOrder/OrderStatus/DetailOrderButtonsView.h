@@ -22,5 +22,6 @@
 -(void)removeRequestCancelButton;
 -(void)removeAcceptButton;
 -(void)removeComplaintNotReceivedButton;
+- (void)removeCancelReplacementButton;
 
 @end

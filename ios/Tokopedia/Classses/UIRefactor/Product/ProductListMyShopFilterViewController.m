@@ -28,7 +28,7 @@ EtalaseViewControllerDelegate,
     NSString *_catalogValue;
     NSString *_pictureValue;
     NSString *_conditionValue;
-    CategoryDetail *_selectedCategory;
+    ListOption *_selectedCategory;
 }
 @end
 
@@ -232,7 +232,7 @@ EtalaseViewControllerDelegate,
 
 #pragma mark - Category menu delegate
 
-- (void)didSelectCategory:(CategoryDetail *)category {
+- (void)didSelectCategory:(ListOption *)category {
     _selectedCategory = category;
     _departmentName = category.name;
     _breadcrumb.department_id = category.categoryId;

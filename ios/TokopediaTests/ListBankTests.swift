@@ -9,6 +9,7 @@
 import XCTest
 import AFNetworking
 import UIKit
+import RestKit
 
 @testable import Tokopedia
 

@@ -198,12 +198,7 @@
     [cell setSubjectLabelText:history.history_action_by];
     cell.dateLabel.text = history.history_status_date_full;
     
-    NSString *status;
-    if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = [history.history_buyer_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
-    } else {
-        status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
-    }
+    NSString *status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     status = [status stringByAppendingString:history.history_comments];
 
     [cell setStatusLabelText:status];

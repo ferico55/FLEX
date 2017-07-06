@@ -11,6 +11,7 @@
 #import "ProductThumbCell.h"
 #import "WebViewController.h"
 #import "Tokopedia-Swift.h"
+#import "CarouselDataSource.h"
 
 @interface HeaderIntermediaryCollectionReusableView ()
 <
@@ -24,6 +25,11 @@ UICollectionViewDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet UILabel *headerTitleLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *promotedLabelHHeightConstraint;
+@property (strong, nonatomic) IBOutlet iCarousel *slider;
+@property (strong, nonatomic) IBOutlet UIView *headerContainer;
+@property (strong, nonatomic) CarouselDataSource *carouselDataSource;
+@property (strong, nonatomic) IBOutlet UIView *sliderContainer;
+
 
 @end
 
@@ -287,5 +293,50 @@ UICollectionViewDelegate
     _infoButton.hidden = NO;
 }
 
+- (void) setBanner: (CategoryIntermediaryBanner *) banner didSelectBanner: (void (^)(Slide* slide)) didSelectBanner{
+    if (_carouselDataSource == nil) {
+        StyledPageControl *pageControl = [[StyledPageControl alloc] init];
+        pageControl.pageControlStyle = PageControlStyleDefault;
+        pageControl.diameter = 11;
+        pageControl.gapWidth = 5;
+        pageControl.numberOfPages = banner.images.count;
+        pageControl.coreNormalColor = [UIColor colorWithRed:214.0/255 green:214.0/255 blue:214.0/255 alpha:1.0];
+        pageControl.coreSelectedColor = [UIColor colorWithRed:255.0/255 green:87.0/255 blue:34.0/255 alpha:1.0];
+        
+        if (banner.images.count > 1){
+            [_sliderContainer addSubview:pageControl];
+            
+            [pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.mas_equalTo(self.sliderContainer.mas_centerX);
+                make.bottom.mas_equalTo(self.sliderContainer.mas_bottom).offset(-5);
+                make.width.mas_equalTo(12*(banner.images.count));
+                make.height.mas_equalTo(12);
+            }];
+        } else {
+            _slider.scrollEnabled = NO;
+        }
+    
+        _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.images withPageControl:pageControl];
+        _carouselDataSource.isCategoryBanner = YES;
+        _carouselDataSource.didSelectBanner = ^(Slide * _Nonnull slide) {
+            didSelectBanner(slide);
+        };
+        
+        _slider.dataSource = _carouselDataSource;
+        _slider.delegate = _carouselDataSource;
+        _slider.decelerationRate = 0.5;
+        _slider.type = iCarouselTypeLinear;
+        
+        self.carouselDataSource.timer = [TKPDBannerTimer getTimerWithSlider: _slider];
+    }
+}
+
+- (void) hideHeader {
+    _headerContainer.hidden = YES;
+}
+
+- (void) closeHeader {
+    _headerViewHeightConstraint.constant = 0;;
+}
 
 @end

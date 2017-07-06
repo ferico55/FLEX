@@ -61,7 +61,6 @@
     #import "GAIFields.h"
     #import "TokopediaNetworkManager.h"
     #import "TKPString.h"
-    #import "TKPObjectMapping.h"
 
     #import <Localytics/Localytics.h>
     #import "UIViewController+TKPAdditions.h"

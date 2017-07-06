@@ -112,8 +112,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
             [_delegate shouldDoRequestTopPayThxCode:paymentID toppayParam:_toppayParam];
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            PurchaseViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
+            PurchaseViewController *vc = [PurchaseViewController new];;
             [vc setHidesBottomBarWhenPushed:YES];
             UINavigationController *controller = self.navigationController;
             NSMutableArray *controllers=[[NSMutableArray alloc] initWithArray:controller.viewControllers] ;

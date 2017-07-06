@@ -602,7 +602,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         pageControl.numberOfPages = categoryIntermediaryResult.banner!.images.count
         
         self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, with: pageControl)
-        carouselDataSource.isIntermediaryBanner = true
+        carouselDataSource.isCategoryBanner = true
         carouselDataSource.didSelectBanner = { [unowned self] banner in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.title)
         }

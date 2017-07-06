@@ -42,6 +42,13 @@ final class Paging:NSObject, Unboxable {
         }
     }
     
+    var nextPage: Int? {
+        get {
+            guard let uri = uri_next else { return nil }
+            return Int(TokopediaNetworkManager.getPageFromUri(uri))
+        }
+    }
+    
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)!
         mapping.addAttributeMappings(from: ["header","message_error", "uri_next"])

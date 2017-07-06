@@ -18,15 +18,15 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @protocol FilterCategoryViewDelegate <NSObject>
 
 @optional
-- (void)didSelectCategory:(CategoryDetail *)category;
-- (void)didSelectCategoryFilter:(CategoryDetail *)category;
+- (void)didSelectCategory:(ListOption *)category;
+- (void)didSelectCategoryFilter:(ListOption *)category;
 
 @end
 
 @interface FilterCategoryViewController : UITableViewController
 
 @property (strong, nonatomic) NSMutableArray *categories;
-@property (weak, nonatomic) CategoryDetail *selectedCategory;
+@property (weak, nonatomic) ListOption *selectedCategory;
 @property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
 @property FilterCategoryType filterType;
 @property (strong, nonatomic) NSString *rootCategoryID;

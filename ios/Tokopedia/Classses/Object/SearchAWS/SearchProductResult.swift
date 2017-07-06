@@ -17,7 +17,7 @@ final class SearchProductResult : NSObject, Unboxable {
     let departmentId:String?
     let st:String?
     let hashtags:[Hashtag]?
-    let breadcrumb:[CategoryDetail]?
+    let breadcrumb:[ListOption]?
     let redirectUrl:String?
     let shareUrl:String?
     let catalogs:[SearchProduct]?
@@ -29,7 +29,7 @@ final class SearchProductResult : NSObject, Unboxable {
          departmentId:String?,
          st:String?,
          hashtags:[Hashtag]?,
-         breadcrumb:[CategoryDetail]?,
+         breadcrumb:[ListOption]?,
          redirectUrl:String?,
          shareUrl:String?,
          catalogs:[SearchProduct]?) {
@@ -55,7 +55,7 @@ final class SearchProductResult : NSObject, Unboxable {
             departmentId: try? unboxer.unbox(keyPath: "department_id") as String,
             st: try? unboxer.unbox(keyPath: "st") as String,
             hashtags: try? unboxer.unbox(keyPath: "hashtag") as [Hashtag],
-            breadcrumb: try? unboxer.unbox(keyPath: "breadcrumb") as [CategoryDetail],
+            breadcrumb: try? unboxer.unbox(keyPath: "breadcrumb") as [ListOption],
             redirectUrl: try? unboxer.unbox(keyPath:"redirect_url") as String,
             shareUrl: try? unboxer.unbox(keyPath:"share_url") as String,
             catalogs: try? unboxer.unbox(keyPath:"catalogs") as [SearchProduct]

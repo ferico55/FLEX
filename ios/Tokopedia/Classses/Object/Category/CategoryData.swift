@@ -8,21 +8,22 @@
 
 import UIKit
 import RestKit
+import Unbox
 
-@objc class CategoryData: NSObject {
+@objc class CategoryData: NSObject, Unboxable {
     
-    var categories:[CategoryDetail] = []
-    
-    fileprivate class func attributeMappingDictionary() -> [AnyHashable: Any]! {
-        return nil
-    }
-    
+    var categories:[ListOption] = []
+
     class func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)
-        mapping.addAttributeMappings(from:self.attributeMappingDictionary())
-        let relMapping = RKRelationshipMapping(fromKeyPath: "categories", toKeyPath: "categories", with: CategoryDetail.mapping())
+        let relMapping = RKRelationshipMapping(fromKeyPath: "categories", toKeyPath: "categories", with: ListOption.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
+    }
+    
+    convenience required init(unboxer: Unboxer) throws {
+        self.init()
+        self.categories = try unboxer.unbox(keyPath: "categories")
     }
 }

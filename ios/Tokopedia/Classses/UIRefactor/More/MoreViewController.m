@@ -566,10 +566,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 2 && indexPath.row == 1) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
-        purchaseController.notification = _notifManager.notification;
         [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
+
+        PurchaseViewController *purchaseController = [PurchaseViewController new];
+        purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
@@ -592,7 +592,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Sales"];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
+            SalesViewController *salesController = [SalesViewController new];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];

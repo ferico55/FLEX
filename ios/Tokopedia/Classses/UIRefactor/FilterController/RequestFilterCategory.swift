@@ -10,7 +10,7 @@ import UIKit
 
 class RequestFilterCategory: NSObject {
     
-    class func fetchListFilterCategory(_ ID:String, success: @escaping (([CategoryDetail]) -> Void), failed:@escaping ((Error)->Void)) {
+    class func fetchListFilterCategory(_ ID:String, success: @escaping (([ListOption]) -> Void), failed:@escaping ((Error)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         

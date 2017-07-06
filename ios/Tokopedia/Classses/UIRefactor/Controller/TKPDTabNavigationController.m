@@ -26,7 +26,7 @@
     BOOL _hascatalog;
     
     NSArray *_initialCategories;
-    CategoryDetail *_selectedCategory;
+    ListOption *_selectedCategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
@@ -564,7 +564,7 @@
 }
 
 #pragma mark - Category delegate
-- (void)didSelectCategory:(CategoryDetail *)category {
+- (void)didSelectCategory:(ListOption *)category {
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId, @"department_name" : category.name?:@""}];
     [_data setObject:category.categoryId forKey:@"selected_id"];
 }
@@ -645,7 +645,7 @@
     }
 }
 
-- (void)updateTabCategory:(CategoryDetail *)category {
+- (void)updateTabCategory:(ListOption *)category {
     _selectedCategory = category;
 }
 

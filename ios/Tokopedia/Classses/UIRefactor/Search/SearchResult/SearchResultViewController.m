@@ -144,11 +144,10 @@ ProductCellDelegate
     NSArray *_initialBreadcrumb;
     
     FilterData *_filterResponse;
-    NSArray<ListOption*> *_selectedFilters;
+    NSMutableArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
-    NSArray<CategoryDetail*> *_selectedCategories;
     
     NSString *_rootCategoryID;
     
@@ -161,6 +160,7 @@ ProductCellDelegate
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _params = [NSMutableDictionary new];
+        _selectedFilters = [NSMutableArray new];
     }
     return self;
 }
@@ -416,7 +416,7 @@ ProductCellDelegate
     if (_data) {
         [_params addEntriesFromDictionary:_data];
         [_params removeObjectForKey:@"default_sc"];
-        [_params setObject:data[@"search"]?:@"" forKey:@"q"];
+        [_params setObject:data[@"search"]?:data[@"q"]?:@"" forKey:@"q"];
         _rootCategoryID = data[@"sc"]?:@"";
         [self adjustSelectedFilterFromData:_params];
         [self adjustSelectedSortFromData:_params];
@@ -440,7 +440,7 @@ ProductCellDelegate
             [selectedFilters addObject:filter];
         }
     }
-    _selectedFilters = [selectedFilters copy];
+    _selectedFilters = [selectedFilters mutableCopy];
     _selectedFilterParam = data;
 }
 
@@ -907,32 +907,20 @@ ProductCellDelegate
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:[self getSourceSearchData]
                                                                         filterResponse:_filterResponse?:[FilterData new]
                                                                         rootCategoryID:_rootCategoryID
-                                                                            categories:[_initialBreadcrumb copy]
-                                                                    selectedCategories:_selectedCategories
                                                                        selectedFilters:_selectedFilters
-                                                                           presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-                                                                               
-           _selectedCategories = selectedCategories;
-           if(_selectedCategories.count == 0) {
+                                                                           presentedVC:self onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+                                                                            
+           _selectedFilters = [selectedFilters mutableCopy];
+
+           NSArray *selectedCategories = [_selectedFilters bk_select:^BOOL(ListOption *obj) {
+               return ![obj.key isEqualToString:@"sc"];
+           }];
+           if(selectedCategories.count == 0) {
                _rootCategoryID = @"";
            }
-                                                                               
-          // if search result is category result, then if filter is being added, change the navigation title
-          for (ListFilter *filter in _filterResponse.filter){
-              if ([filter.title  isEqual: @"Kategori"]){
-                  if (filter.isMultipleSelect == NO) {
-                      if (selectedCategories.count > 0) {
-                          [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
-                      } else {
-                          [self.tkpdTabNavigationController setNavigationTitle: _defaultSearchCategory];
-                      }
-                  }
-              }
-          }
-                                                                               
-           _selectedFilters = selectedFilters;
+
            _selectedFilterParam = paramFilters;
-           [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
+           [self showFilterIsActive:(_selectedFilters.count > 0)];
            [_params removeObjectForKey:@"sc"];
 
            [self refreshView:nil];
@@ -942,10 +930,6 @@ ProductCellDelegate
            _filterResponse = filterDataOption;
            
        }];
-}
-
--(BOOL)hasSelectedFilterOrCategory {
-    return (_selectedCategories.count + _selectedFilters.count > 0);
 }
 
 -(void)showFilterIsActive:(BOOL)isActive{
@@ -969,7 +953,6 @@ ProductCellDelegate
 -(NSDictionary*)parameterDynamicFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[self selectedCategoryIDsString]?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url?:@"" forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -980,7 +963,7 @@ ProductCellDelegate
             [parameter setObject:@(0) forKey:@"start"];
         }
     } else {
-        [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
+        [parameter setObject:[_params objectForKey:@"search"]?:_params[@"q"]?:@"" forKey:@"q"];
         [parameter setObject:startPerPage forKey:@"rows"];
         [parameter setObject:@(_start) forKey:@"start"];
         [parameter setObject:@"true" forKey:@"breadcrumb"];
@@ -1010,12 +993,10 @@ ProductCellDelegate
 }
 
 -(NSString*)selectedCategoryIDsString{
-    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    NSString *selectedCategory = [_selectedFilterParam objectForKey:@"sc"];
     NSString *categories;
-    if ([[_params objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
+    if ([[_params objectForKey:@"sc"] integerValue] != 0  && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
-    } else if (_selectedCategories.count == 0){
-        categories = _rootCategoryID?:@"";
     } else {
         categories = selectedCategory;
     }
@@ -1133,6 +1114,14 @@ ProductCellDelegate
     return @"directory";
 }
 
+-(void)setSelectedCategoryFromCategoryId:(NSString* )categoryId{
+    ListOption *selectedCategory = [ListOption new];
+    selectedCategory.value = categoryId;
+    selectedCategory.key = @"sc";
+    selectedCategory.isNewCategory = true;
+    [_selectedFilters addObject:selectedCategory];
+}
+
 - (void)searchMappingResult:(SearchProductWrapper *)searchResult {
     _searchObject = searchResult;
     
@@ -1155,17 +1144,11 @@ ProductCellDelegate
     }
     
     NSString *redirect_url = searchResult.data.redirectUrl;
-    if(searchResult.data.departmentId && searchResult.data.departmentId != 0) {
-        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?searchResult.data.departmentId:_rootCategoryID;
-        NSString *departementID = searchResult.data.departmentId;
-        [_params setObject:departementID forKey:@"sc"];
-        NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
-        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            CategoryDetail *category = [CategoryDetail new];
-            category.categoryId = departementID;
-            category.name = departementName;
-            [_delegate updateTabCategory:category];
-        }
+    _rootCategoryID = ([_rootCategoryID integerValue] == 0)?searchResult.data.departmentId:_rootCategoryID;
+    NSString *departementID = ([searchResult.data.departmentId integerValue] != 0)?searchResult.data.departmentId:_rootCategoryID?:@"";
+    NSString *selectedCategories = _params[@"sc"];
+    if (selectedCategories){
+        [self setSelectedCategoryFromCategoryId:departementID];
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         int hascatalog = searchResult.data.hasCatalog;

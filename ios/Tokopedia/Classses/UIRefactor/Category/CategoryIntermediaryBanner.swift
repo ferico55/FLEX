@@ -8,7 +8,8 @@
 
 import Unbox
 
-final class CategoryIntermediaryBanner: Unboxable {
+@objc(CategoryIntermediaryBanner)
+final class CategoryIntermediaryBanner:NSObject, Unboxable {
     
     var images: [IntermediarySlide]!
     

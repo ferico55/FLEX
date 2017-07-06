@@ -197,7 +197,7 @@ class FormProductValidation: NSObject {
         }
     }
     
-    fileprivate func categoryValidation(_ category: CategoryDetail) throws {
+    fileprivate func categoryValidation(_ category: ListOption) throws {
         
         guard category.categoryId != "" else {
             throw FormError(message: "Kategori tidak benar")

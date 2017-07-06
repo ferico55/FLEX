@@ -10,7 +10,7 @@
 #import "ReputationDetail.h"
 #import "ShopType.h"
 
-@class CategoryDetail;
+@class ListOption;
 
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;
@@ -31,7 +31,7 @@
 - (null_unspecified NSString*)getShopId;
 - (null_unspecified NSString*)getShopName;
 - (null_unspecified NSString*)getShopHasTerm;
-- (null_unspecified CategoryDetail *)getLastProductAddCategory;
+- (null_unspecified ListOption *)getLastProductAddCategory;
 - (nonnull NSString*)getMyDeviceToken;
 - (BOOL)isMyShopWithShopId:(nonnull NSString*)shopId;
 - (BOOL)isMyUser:(nonnull NSString*)userId;

@@ -105,7 +105,7 @@ static NSString const *rows = @"12";
     NSIndexPath *_sortIndexPath;
     
     NSArray *_initialCategories;
-    CategoryDetail *_selectedCategory;
+    ListOption *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
     
     
@@ -114,7 +114,7 @@ static NSString const *rows = @"12";
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
-    NSArray<CategoryDetail*> *_selectedCategories;
+    NSArray<ListOption*> *_selectedCategories;
     
     NSString *_rootCategoryID;
 }
@@ -354,15 +354,12 @@ static NSString const *rows = @"12";
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
                                                                         filterResponse:_filterResponse?:[FilterData new]
                                                                         rootCategoryID:@""
-                                                                            categories:[_initialCategories copy]
-                                                                    selectedCategories:_selectedCategories
                                                                        selectedFilters:_selectedFilters
                                                                            presentedVC:self
-                                                                          onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+                                                                          onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
-        _selectedCategories = selectedCategories;
-        _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        _selectedFilters = selectedFilters;
         
         [self isShowFilterIsActive:[self filterIsActive]];
         [self refreshView:nil];
@@ -594,7 +591,7 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Category Delegate
-- (void)didSelectCategory:(CategoryDetail *)category {
+- (void)didSelectCategory:(ListOption *)category {
     _selectedCategory = category;
     [_detailfilter setObject:category.categoryId forKey:@"sc"];
     [self refreshView:nil];
@@ -861,18 +858,29 @@ static NSString const *rows = @"12";
 -(void)adjustSelectedFilterFromData:(NSDictionary*)data{
     NSMutableArray *selectedFilters = [NSMutableArray new];
     for (NSString *key in [data allKeys]) {
-        if (![key isEqualToString:@"sc"]) {
-            ListOption *filter = [ListOption new];
-            filter.key = key;
-            filter.value = [data objectForKey:key]?:@"";
-            if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
-                filter.input_type = [self filterTextInputType];
-            }
-            [selectedFilters addObject:filter];
+        if ([self isUnusedFilterFromKey:key andValue:[data objectForKey:key]]) {
+            break;
         }
+        ListOption *filter = [ListOption new];
+        filter.key = key;
+        filter.value = [data objectForKey:key]?:@"";
+        [selectedFilters addObject:filter];
     }
     _selectedFilters = [selectedFilters copy];
     _selectedFilterParam = data;
+}
+
+-(BOOL)isUnusedFilterFromKey:(NSString*)key andValue:(NSString*)value {
+    if ([value isEqualToString:@""]) {
+        return YES;
+    }
+    if ([key isEqualToString:@"fshop"] && [value isEqualToString:@"1"]) {
+        return YES;
+    }
+    if (([key isEqualToString:@"pmin"] || [key isEqualToString:@"pmax"]) && [value integerValue] == 0) {
+        return YES;
+    }
+    return NO;
 }
 
 -(NSString *)filterTextInputType{

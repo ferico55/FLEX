@@ -504,6 +504,15 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("/category/:categoryId") { (params: [String : Any]) -> Bool in
+            
+            let categoryName: String? = params["categoryName"] as! String
+            
+            navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: params["categoryId"] as! String, categoryName: categoryName, isIntermediary: true)
+            
+            return true
+        }
+        
         //search
         JLRoutes.global().addRoute("/search/*") { (params: [String : Any]!) -> Bool in
             navigator.navigateToSearch(from: UIApplication.topViewController(), with: (params[kJLRouteURLKey] as! NSURL) as URL!)

@@ -261,13 +261,11 @@ static NSString const *rows = @"12";
 
 -(void)searchWithDynamicFilter{
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceShop
-                                                              filterResponse:_filterResponse?:[FilterData new]
-                                                              rootCategoryID:@""
-                                                                  categories:nil
-                                                          selectedCategories:nil
-                                                             selectedFilters:_selectedFilters
-                                                                 presentedVC:self
-                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+                                                                        filterResponse:_filterResponse?:[FilterData new]
+                                                                        rootCategoryID:@""
+                                                                       selectedFilters:_selectedFilters
+                                                                           presentedVC:self
+                                                                          onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;

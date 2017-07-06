@@ -460,4 +460,36 @@ static failedCompletionBlock onFailure;
                              }];
 }
 
++(void)cancelReplacementOrderId:(NSString *)orderId onSuccess:(void (^)())onSuccess {
+    NSDictionary* param = @{
+                            @"order_id": orderId,
+                            @"r_code": @"9" //required, set it as 9 for cancel replacement reason code
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/replacement/cancel"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.is_success == 1)
+                                 {
+                                     NSArray *array = response.message_status?:@[@"Pesanan berhasil dibatalkan"];
+                                     [StickyAlertView showSuccessMessage:array];
+                                     onSuccess();
+                                 } else {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                             }];
+}
+
+
 @end

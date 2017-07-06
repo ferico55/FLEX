@@ -10,7 +10,7 @@ import UIKit
 
 @objc class CategoryResult: NSObject {
 
-    var list:[CategoryDetail] = []
+    var list:[ListOption] = []
     
     
 }

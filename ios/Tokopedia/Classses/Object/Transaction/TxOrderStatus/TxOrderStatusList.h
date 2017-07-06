@@ -49,6 +49,7 @@
 @property (nonatomic) BOOL canSeeComplaint;
 @property (nonatomic) BOOL canAskSeller;
 @property (nonatomic) BOOL canRequestCancel;
+@property (nonatomic) BOOL canCancelReplacement;
 @property (nonatomic) BOOL hasDueDate;
 @property (nonatomic) BOOL fromShippingStatus;
 

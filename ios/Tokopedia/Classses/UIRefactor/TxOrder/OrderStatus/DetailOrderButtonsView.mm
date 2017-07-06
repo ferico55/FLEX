@@ -40,6 +40,11 @@
     [self updateModel:_order mode:CKUpdateModeSynchronous];
 }
 
+- (void)removeCancelReplacementButton {
+    _order.canCancelReplacement = NO;
+    [self updateModel:_order mode:CKUpdateModeSynchronous];
+}
+
 -(void)removeSeeComplaintButton{
     _order.canSeeComplaint = NO;
     [self updateModel:_order mode:CKUpdateModeSynchronous];

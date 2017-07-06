@@ -8,6 +8,11 @@
 
 import UIKit
 
+@objc enum DirectionArrow : Int {
+    case up
+    case down
+}
+
 class TextFieldCell: UITableViewCell
 {
     var textField : UITextField = UITextField()
@@ -73,7 +78,6 @@ class FilterTableViewCell: UITableViewCell
 {
     var selectedImageView : UIImageView = UIImageView()
     var arrowImageView : UIImageView = UIImageView()
-    var leftPading : CGFloat = 0.0
     var label : UILabel = UILabel ()
     var disableSelected :Bool = true
     
@@ -92,16 +96,46 @@ class FilterTableViewCell: UITableViewCell
         self.addSubview(selectedImageView)
         self.addSubview(arrowImageView)
         self.addSubview(label)
+        
+        selectedImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(13)
+            make.height.width.equalTo(15)
+        }
+        
+        label.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(0)
+            make.left.equalTo(self.selectedImageView.snp.right).offset(10)
+        }
+        
+        arrowImageView.snp.makeConstraints { (make) in
+            make.rightMargin.equalTo(-15)
+            make.top.equalTo(15)
+            make.width.height.equalTo(10)
+            make.left.equalTo(self.label.snp.right)
+        }
     }
     
     func setPading(_ leftPading: CGFloat) {
         selectedImageView.isHidden = disableSelected
         arrowImageView.isHidden = !disableSelected
         
-        self.leftPading = leftPading
-        arrowImageView.frame = CGRect(origin: CGPoint(x: self.frame.size.width - 25, y: 15), size: CGSize(width: 10, height: 10))
-        selectedImageView.frame =  CGRect(origin: CGPoint(x: 0 + leftPading, y: 13), size: CGSize(width: 15, height: 15))
-        label.frame = CGRect(x: 0 + selectedImageView.frame.width + leftPading + 10, y: 0, width: self.frame.size.width - ( selectedImageView.frame.origin.x + selectedImageView.frame.size.width + arrowImageView.frame.size.width + 25), height: self.frame.size.height)
+        selectedImageView.snp.remakeConstraints { (make) in
+            make.top.equalTo(13)
+            make.left.equalTo(leftPading)
+            make.height.width.equalTo(self.selectedImageView.isHidden ? 0 : 15)
+        }
+        
+        label.snp.remakeConstraints  { (make) in
+            make.top.bottom.equalTo(0)
+            make.left.equalTo(self.selectedImageView.snp.right).offset(10)
+        }
+        
+        arrowImageView.snp.remakeConstraints { (make) in
+            make.rightMargin.equalTo(-15)
+            make.top.equalTo(15)
+            make.width.height.equalTo(10)
+            make.left.equalTo(self.label.snp.right)
+        }
     }
     
     func setArrowDirection(_ direction:DirectionArrow) {
@@ -114,7 +148,7 @@ class FilterTableViewCell: UITableViewCell
     
     override func setSelected(_ selected: Bool, animated: Bool){
         if (selected) {
-            selectedImageView.image = UIImage(named: "icon_checkmark_green")
+            selectedImageView.image = UIImage(named: "icon_check_green")
         } else {
             selectedImageView.image = UIImage(named: "icon_circle")
         }

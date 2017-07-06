@@ -389,7 +389,7 @@ FilterCategoryViewDelegate
             }
             if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                 NSString *departmentTitle = @"Pilih Kategori";
-                CategoryDetail *category =product.product_category;
+                ListOption *category =product.product_category;
                 departmentTitle = ([category.name isEqualToString:@""])?@"Pilih Kategori":category.name;
                 cell.detailTextLabel.text = departmentTitle;
             }
@@ -624,7 +624,7 @@ FilterCategoryViewDelegate
     if (_form.breadcrumb.count > 0) {
         Breadcrumb *category = [_form.breadcrumb lastObject];
         
-        CategoryDetail *filterCategory = [[CategoryDetail alloc] init];
+        ListOption *filterCategory = [[ListOption alloc] init];
         filterCategory.categoryId = category.department_id;
         filterCategory.name = category.department_name;
         _form.product.product_category = filterCategory;
@@ -749,7 +749,7 @@ FilterCategoryViewDelegate
 
 #pragma mark - Delegate
 
-- (void)didSelectCategory:(CategoryDetail *)category {
+- (void)didSelectCategory:(ListOption *)category {
     _form.product.product_category = category;
     if (_type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -952,8 +952,8 @@ FilterCategoryViewDelegate
     product.product_min_order = @"1";
     product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
     
-    CategoryDetail *lastCategory = [[self authManager] getLastProductAddCategory];
-    product.product_category = lastCategory?:[CategoryDetail new];
+    ListOption *lastCategory = [[self authManager] getLastProductAddCategory];
+    product.product_category = lastCategory?:[ListOption new];
     
     [self setProductDetail:product];
 }

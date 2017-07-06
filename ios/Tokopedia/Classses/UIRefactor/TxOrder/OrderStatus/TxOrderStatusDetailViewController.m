@@ -100,8 +100,51 @@
         [weakSelf tapAskSellerOrder:order];
     };
     
+    [headerView context].onTapCancelReplacement = ^(TxOrderStatusList *order){
+        [weakSelf tapCancelReplacement:order view:headerView];
+    };
+    
     _tableView.tableHeaderView = headerView;
 
+}
+
+-(void)tapCancelReplacement:(TxOrderStatusList *)order view:(DetailOrderButtonsView *)view {
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Batalkan Pesanan"
+                                  message:@"Apakah Anda ingin melakukan pembatalan pesanan ?"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) wself = self;
+    
+    UIAlertAction* yes = [UIAlertAction
+                          actionWithTitle:@"Ya"
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              [wself doRequestCancelReplacementOrder:order view:view];
+                              
+                          }];
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Tidak"
+                             style:UIAlertActionStyleCancel
+                             handler:nil];
+    
+    [alert addAction:yes];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)doRequestCancelReplacementOrder:(TxOrderStatusList *)order view:(DetailOrderButtonsView *)view {
+    __weak typeof(self) weakSelf = self;
+    [RequestOrderAction cancelReplacementOrderId:order.order_detail.detail_order_id onSuccess:^{
+        [view removeCancelReplacementButton];
+        if (weakSelf.didCancelReplacement) {
+            weakSelf.didCancelReplacement(order);
+        }
+    }];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -369,18 +412,7 @@
     [cell setSubjectLabelText:history.history_action_by];
     cell.dateLabel.text = history.history_status_date_full;
     
-    NSString *status;
-    if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = history.history_buyer_status;
-    } else {
-        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
-        if(range.location != NSNotFound){
-            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, _order.formattedStringRefNumber];
-        }
-        else
-            status = history.history_seller_status;
-        
-    }
+    NSString *status = history.history_buyer_status;
     status = [status stringByAppendingString:history.history_comments];
     
     [cell setStatusLabelText:status];

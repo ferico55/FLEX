@@ -42,7 +42,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
     
-    CGSize bannerSize = IS_IPAD && (_isIntermediaryBanner == NO) ? bannerIPadSize : bannerIPhoneSize;
+    CGSize bannerSize = IS_IPAD && (_isCategoryBanner == NO) ? bannerIPadSize : bannerIPhoneSize;
     
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
     
@@ -109,7 +109,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
     Slide *banner = _banners[index];
     self.didSelectBanner(banner);
 
-    if (_isIntermediaryBanner) {
+    if (_isCategoryBanner) {
         if (![banner.redirect_url isEqualToString:@""]) {
             [TPRoutes routeURL:[NSURL URLWithString:banner.applinks]];
         }

@@ -7,6 +7,7 @@
 //
 
 #import "MHVerticalTabBarButton.h"
+#import "UIColor+Theme.h"
 
 @implementation MHVerticalTabBarButton
 
@@ -76,19 +77,30 @@
 
 - (void)layoutSubviews {
 
-    if ([_titleLabel.attributedText length] > 0) {
-        if (CGSizeEqualToSize(_titleOffset, CGSizeZero)) {
-            _titleLabel.frame = CGRectOffset(self.bounds, 0, 0);
+    if (_isCategoryNavigation) {
+        _imageView.contentMode = UIViewContentModeCenter;
+
+        _titleLabel.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * 0.6);
+        _imageView.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * -0.2);
+        
+        _titleLabel.font = [UIFont microTheme];
+        _titleLabel.textColor = [UIColor tpPrimaryBlackText];
+    } else{
+        if ([_titleLabel.attributedText length] > 0) {
+            if (CGSizeEqualToSize(_titleOffset, CGSizeZero)) {
+                _titleLabel.frame = CGRectOffset(self.bounds, 0, 0);
+            }
+            else {
+                _titleLabel.frame = CGRectOffset(self.bounds, self.titleOffset.width, self.titleOffset.height);
+            }
+            
+            _imageView.frame = CGRectMake(5, self.bounds.size.height/2-5, 8, 8);
+            
         }
         else {
-            _titleLabel.frame = CGRectOffset(self.bounds, self.titleOffset.width, self.titleOffset.height);
+            _imageView.frame = self.bounds;
         }
-        
-        _imageView.frame = CGRectMake(5, self.bounds.size.height/2-5, 8, 8);
 
-    }
-    else {
-        _imageView.frame = self.bounds;
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height, self.frame.size.width, 0.5)];
