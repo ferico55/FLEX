@@ -1634,6 +1634,9 @@
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
+		627809F71EEF99E700A49D4C /* ProfileCompletionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627809F61EEF99E700A49D4C /* ProfileCompletionInfo.swift */; };
+		62780A031EEF99FA00A49D4C /* ProfileCompletionProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627809FD1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.swift */; };
+		62780A041EEF99FA00A49D4C /* ProfileCompletionProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 627809FE1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.xib */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -4747,6 +4750,9 @@
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		627809F61EEF99E700A49D4C /* ProfileCompletionInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCompletionInfo.swift; sourceTree = "<group>"; };
+		627809FD1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCompletionProgressViewController.swift; sourceTree = "<group>"; };
+		627809FE1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCompletionProgressViewController.xib; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppHub.xcodeproj; path = ../node_modules/apphub/AppHub/AppHub.xcodeproj; sourceTree = "<group>"; };
@@ -6299,6 +6305,7 @@
 		34F0AF5E1EE6673D005D7DB2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				627809F61EEF99E700A49D4C /* ProfileCompletionInfo.swift */,
 				34F0AF5F1EE6673D005D7DB2 /* Edit */,
 				34F0AF6F1EE6673D005D7DB2 /* FavoriteShop */,
 				34F0AF761EE6673D005D7DB2 /* Info */,
@@ -9788,6 +9795,8 @@
 		34F0B7E61EE66740005D7DB2 /* UserPageView */ = {
 			isa = PBXGroup;
 			children = (
+				627809FD1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.swift */,
+				627809FE1EEF99FA00A49D4C /* ProfileCompletionProgressViewController.xib */,
 				34F0B7E71EE66740005D7DB2 /* Biodata */,
 				34F0B7EE1EE66740005D7DB2 /* FavoriteShop */,
 				34F0B7F81EE66740005D7DB2 /* PenilaianUser */,
@@ -11270,6 +11279,7 @@
 				34F0BCB11EE66746005D7DB2 /* PulsaOperatorViewController.xib in Resources */,
 				34F0BD0F1EE66746005D7DB2 /* SalesNewOrderViewController.xib in Resources */,
 				34F0BD6A1EE66747005D7DB2 /* SettingAddressDetailViewController.xib in Resources */,
+				62780A041EEF99FA00A49D4C /* ProfileCompletionProgressViewController.xib in Resources */,
 				34F0BDEF1EE66748005D7DB2 /* InfoAddressView.xib in Resources */,
 				34F0BACD1EE66743005D7DB2 /* StickyAlertView.xib in Resources */,
 				34F0BD2C1EE66747005D7DB2 /* FilterSalesTransactionListViewController.xib in Resources */,
@@ -12467,6 +12477,7 @@
 				34F0B8701EE66741005D7DB2 /* RegisterResult.m in Sources */,
 				34F0BE361EE66748005D7DB2 /* CancelOrderViewController.swift in Sources */,
 				7A466B781EB2FEAE00A72105 /* _FBTweakArrayViewController.m in Sources */,
+				62780A031EEF99FA00A49D4C /* ProfileCompletionProgressViewController.swift in Sources */,
 				34F0BE0A1EE66748005D7DB2 /* RequestAddAddress.m in Sources */,
 				34F0BA6D1EE66743005D7DB2 /* UploadImage.m in Sources */,
 				34F0BE531EE66749005D7DB2 /* ProfileBiodataCell.m in Sources */,
@@ -12679,6 +12690,7 @@
 				34F0BCFF1EE66746005D7DB2 /* RejectReasonEmptyStockViewController.m in Sources */,
 				34F0B94C1EE66741005D7DB2 /* ResponseCommentResult.m in Sources */,
 				34F0BCE21EE66746005D7DB2 /* ResolutionCenterSellerEditViewController.m in Sources */,
+				627809F71EEF99E700A49D4C /* ProfileCompletionInfo.swift in Sources */,
 				34F0BE691EE66749005D7DB2 /* ProductCell.m in Sources */,
 				34F0BD151EE66746005D7DB2 /* OrderDetailDropshipView.swift in Sources */,
 				34F0B9331EE66741005D7DB2 /* DetailTotalLikeDislike.m in Sources */,

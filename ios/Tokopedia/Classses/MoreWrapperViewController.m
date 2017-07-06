@@ -30,6 +30,7 @@
     _moreViewController = moreNavController.viewControllers[0];
     _moreViewController.wrapperViewController = self;
     
+    [self addChildViewController:_moreViewController];
     [self.view addSubview:_moreViewController.tableView];
     
     if(IS_IPAD) {

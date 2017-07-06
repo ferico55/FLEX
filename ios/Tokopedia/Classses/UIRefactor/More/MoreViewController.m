@@ -97,9 +97,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
+@property (weak, nonatomic) IBOutlet UILabel *completeProfileLabel;
+@property (weak, nonatomic) IBOutlet UIButton *completeProfileButton;
+@property (weak, nonatomic) IBOutlet UILabel *verifiedAccountLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *verifiedAccountIcon;
 
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shopIsGoldLabel;
@@ -113,6 +116,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 @property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
+
+@property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (strong, nonatomic) UIColor *progressBarTrack;
+@property (strong, nonatomic) UIColor *progressBarColor;
+
 
 @property (strong, nonatomic) CMPopTipView *popTipView;
 
@@ -159,6 +168,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                                  selector:@selector(navigateToContactUs:)
                                                      name:@"navigateToContactUs" object:nil];
     }
+    
     return self;
 }
 
@@ -221,6 +231,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                              selector:@selector(appDidResume)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    _progressBar.layer.masksToBounds = true;
+    _progressBar.layer.cornerRadius = 5;
+    [self showProfileProgress];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -232,6 +246,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
+    
+    [self showProfileProgress];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -493,13 +509,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     return 1;
 }
 
-
 #pragma mark - Table delegate
 /*
 why we need to wrap more vc ?
 objective : to simply reduce the width of the table
 problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
  */
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _wrapperViewController.hidesBottomBarWhenPushed = YES;
@@ -908,5 +924,48 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - SplitVC Delegate
 - (void)deallocVC {
     splitViewController = nil;
+}
+
+
+#pragma mark - profile completion
+- (IBAction)tapProfileCompletion {
+    ProfileCompletionProgressViewController *progressController = [ProfileCompletionProgressViewController new];
+    progressController.hidesBottomBarWhenPushed = YES;
+    [AnalyticsManager trackEventName:@"profileCompletion" category: @"Profile" action: GA_EVENT_ACTION_CLICK label: @"Verify"];
+    [self pushViewController:progressController];
+}
+
+-(void)showProfileProgress {
+    [UserRequest getUserCompletionOnSuccess:^(ProfileCompletionInfo *profileInfo) {
+        double profileCompleted = profileInfo.completion/100.0;
+        //progress color
+        self.progressBarTrack = [UIColor colorWithRed:200.0/225.0 green:200.0/225.0 blue:200.0/225.0 alpha:1];
+        self.progressBarColor = [UIColor colorWithRed:175.0/225.0 green:213.0/225.0 blue:100.0/225.0 alpha:1]; //default: 0.5
+        self.progressLabel.text = @"50%";
+        _verifiedAccountLabel.textColor = [UIColor clearColor];
+        _verifiedAccountIcon.hidden = true;
+        if (profileCompleted>=0.6 && profileCompleted<0.7) {
+            self.progressBarColor = [UIColor colorWithRed:127.0/225.0 green:190.0/225.0 blue:51.0/225.0 alpha:1];
+            self.progressLabel.text = @"60%";
+        } else if (profileCompleted>=0.7 && profileCompleted<0.8) {
+            self.progressBarColor = [UIColor colorWithRed:78.0/225.0 green:188.0/225.0 blue:74.0/225.0 alpha:1];
+            self.progressLabel.text = @"70%";
+        } else if (profileCompleted>=0.8 && profileCompleted<0.9) {
+            self.progressBarColor = [UIColor colorWithRed:39.0/225.0 green:160.0/225.0 blue:46.0/225.0 alpha:1];
+            self.progressLabel.text = @"80%";
+        } else if (profileCompleted>=0.9 && profileCompleted<1.0) {
+            self.progressBarColor = [UIColor colorWithRed:8.0/225.0 green:132.0/225.0 blue:31.0/225.0 alpha:1];
+            self.progressLabel.text = @"90%";
+        } else if (profileCompleted >= 1.0) {
+            self.progressBarColor = [UIColor colorWithRed:0.0/225.0 green:112.0/225.0 blue:20.0/225.0 alpha:1];
+            self.progressLabel.text = @"100%";
+            _completeProfileButton.hidden = true;
+            _verifiedAccountLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.54];
+            _verifiedAccountIcon.hidden = false;
+        }
+        [self.progressBar setProgress:profileCompleted animated:true];
+        [self.progressBar setTrackTintColor:self.progressBarTrack];
+        [self.progressBar setProgressTintColor:self.progressBarColor];
+    }];
 }
 @end
