@@ -60,7 +60,7 @@ class UserRequest: NSObject {
         })
     }
     
-    class func editProfile(birthday:Date?, gender:String, onSuccess:@escaping(ProfileCompletionInfo) -> Void, onFailure:@escaping() -> Void) {
+    class func editProfile(birthday:Date?, gender:String, onSuccess:@escaping(GeneralAction) -> Void, onFailure:@escaping() -> Void) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
@@ -97,9 +97,9 @@ class UserRequest: NSObject {
                         "bday_mm" : mm,
                         "bday_yy" : yy,
                         "gender" : gender],
-            mapping: ProfileInfo.mapping(),
+            mapping: GeneralAction.mapping(),
             onSuccess: { (mappingResult, operation) in
-                let profileInfo = mappingResult.dictionary()[""] as! ProfileCompletionInfo
+                let profileInfo = mappingResult.dictionary()[""] as! GeneralAction
                 AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: "Fill Information Success", label: "DOB")
                 AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: "Fill Information Success", label: "Gender")
                 onSuccess(profileInfo)

@@ -21,7 +21,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var phoneVerifContainer: UIView!
+    @IBOutlet var phoneVerifContainer: UIView!
     //gender
     @IBOutlet var genderView: UIView!
     @IBOutlet weak var maleButton: UIButton!
