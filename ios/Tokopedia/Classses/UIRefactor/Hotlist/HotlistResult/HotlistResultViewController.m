@@ -763,7 +763,13 @@ static NSString const *rows = @"12";
                             category:GA_EVENT_CATEGORY_HOTLIST
                               action:GA_EVENT_ACTION_CLICK
                                label:list.product_name];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:list];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:list.product_id
+                                                        andName:list.product_name
+                                                       andPrice:list.product_price
+                                                    andImageURL:list.product_image
+                                                    andShopName:list.shop_name];
 }
 
 #pragma mark - Promo request delegate

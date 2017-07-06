@@ -342,6 +342,10 @@ FilterCategoryViewDelegate
     return NO;
 }
 
+- (void)forceProductEditType {
+    _type = TYPE_ADD_EDIT_PRODUCT_EDIT;
+}
+
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

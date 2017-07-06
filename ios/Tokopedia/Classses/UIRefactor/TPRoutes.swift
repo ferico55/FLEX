@@ -111,7 +111,7 @@ class TPRoutes: NSObject {
         //product
         JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
             let productId = params["productId"] as! String
-            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
         
@@ -554,7 +554,7 @@ class TPRoutes: NSObject {
         //product detail page
         JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
             let productId = params["productId"] as! String
-            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
         
@@ -565,11 +565,7 @@ class TPRoutes: NSObject {
             
             isShopExists(shopName, shopExists: { (isExists) in
                 if isExists {
-                    let data = [
-                        "product_key" : productName,
-                        "shop_domain" : shopName
-                    ]
-                    navigator.navigateToProduct(from: UIApplication.topViewController(), withData: data)
+                    NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: "", andName: productName, andPrice: "", andImageURL: "", andShopName: shopName)
                 } else {
                     openWebView(url as URL)
                 }

@@ -77,6 +77,20 @@ extension UIScreen {
     }
 }
 
+extension UIFont {
+    
+    func sizeOfString (string: String, constrainedToWidth width: Double) -> CGSize {
+        return sizeOfString (string: string, constrainedToWidth: width, andHeight: Double.greatestFiniteMagnitude)
+    }
+    
+    func sizeOfString (string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
+        return (string as NSString).boundingRect(with: CGSize(width: width, height: height),
+                                                 options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                 attributes: [NSFontAttributeName: self],
+                                                 context: nil).size
+    }
+}
+
 @IBDesignable
 extension UIView {
     

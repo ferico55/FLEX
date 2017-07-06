@@ -247,14 +247,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)tapToProduct {
     UINavigationController *controller = [_delegate getNavigationController:self];
-
-    [_navigateController navigateToProductFromViewController:controller
-                                                    withName:nil
-                                                   withPrice:nil
-                                                      withId:_talk.talk_product_id
-                                                withImageurl:nil
-                                                withShopName:nil];
-
+    
+    [NavigateViewController navigateToProductFromViewController:controller
+                                                  withProductID:_talk.talk_product_id
+                                                        andName:_talk.talk_product_name
+                                                       andPrice:nil
+                                                    andImageURL:_talk.talk_product_image
+                                                    andShopName:nil];
 }
 
 - (void)tapToUser {

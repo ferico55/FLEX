@@ -21,7 +21,16 @@
 
 +(void)navigateToMaintenanceViewController;
 
--(void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController
+                              withProductID:(NSString *)productID
+                                    andName:(NSString *)name
+                                   andPrice:(NSString *)price
+                                andImageURL:(NSString *)imageURL
+                                andShopName:(NSString *)shopName;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
+- (void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
+- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId;
 //-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId;
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId;
@@ -34,7 +43,6 @@
 -(void)navigateToShopTalkFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopReviewFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopNoteFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
--(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
 -(void)navigateToCartFromViewController:(UIViewController*)viewController;
 
 -(void)navigateToSellerNewOrderFromViewController:(UIViewController*)viewController;
@@ -49,24 +57,16 @@
 
 -(void)navigateToHotListFromViewController:(UIViewController*)viewController;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
-- (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key;
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
-- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
-- (void)navigateToProductFromViewController:(UIViewController*)viewController withProductID:(NSString*)productID;
+
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
+
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data;
 - (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
-
-
-- (void)navigateToProductFromViewController:(UIViewController *)viewController
-                                  promoData:(NSDictionary *)data
-                                productData:(NSDictionary *)productData;
-- (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(SearchAWSProduct *)product;
 
 -(void)popUpLuckyDeal:(LuckyDealWord*)words;
 +(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL;
@@ -77,11 +77,7 @@
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID;
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController;
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)product;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct withShopName:(NSString*)shopName;
 - (void)navigateToAddProductFromViewController:(UIViewController*)viewController;
-
--(void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName withShopId:(NSString*)shopId;
 
 - (void)navigateToFeedDetailFromViewController:(UIViewController *) viewController withFeedCardID:(NSString *) cardID;
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;

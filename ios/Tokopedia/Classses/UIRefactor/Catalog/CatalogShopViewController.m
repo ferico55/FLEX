@@ -644,13 +644,23 @@
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
-    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:nil
+                                                    andShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
-    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:nil
+                                                    andShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath

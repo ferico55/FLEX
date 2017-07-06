@@ -1627,8 +1627,6 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
-		527674EE1EF21EA4001831C1 /* TokocashTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674ED1EF21EA4001831C1 /* TokocashTarget.swift */; };
-		527674F11EF21EED001831C1 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */; };
 		527674F51EF21EFF001831C1 /* WalletCashBackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */; };
 		527674F61EF21EFF001831C1 /* WalletCashBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527674F31EF21EFF001831C1 /* WalletCashBack.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
@@ -1807,20 +1805,36 @@
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
 		C00BE0A71EE8EFB70001995E /* OnDemandInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BE0A61EE8EFB70001995E /* OnDemandInfoView.swift */; };
 		C047F07E1F0CA003007792E2 /* TopAdsInfoActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047F07D1F0CA003007792E2 /* TopAdsInfoActionSheet.swift */; };
+		DA58E01B1F0CDDEE00302536 /* ProductUnbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E00F1F0CDDEE00302536 /* ProductUnbox.swift */; };
+		DA58E01C1F0CDDEE00302536 /* ProductDescriptionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0111F0CDDEE00302536 /* ProductDescriptionNode.swift */; };
+		DA58E01D1F0CDDEE00302536 /* ProductDetailViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0121F0CDDEE00302536 /* ProductDetailViewComponent.swift */; };
+		DA58E01E1F0CDDEE00302536 /* ProductHeaderNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0131F0CDDEE00302536 /* ProductHeaderNode.swift */; };
+		DA58E01F1F0CDDEE00302536 /* ProductInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0141F0CDDEE00302536 /* ProductInfoNode.swift */; };
+		DA58E0201F0CDDEE00302536 /* ProductPriceNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0151F0CDDEE00302536 /* ProductPriceNode.swift */; };
+		DA58E0211F0CDDEE00302536 /* ProductRecommendationNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0161F0CDDEE00302536 /* ProductRecommendationNode.swift */; };
+		DA58E0221F0CDDEE00302536 /* ProductSellerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0171F0CDDEE00302536 /* ProductSellerNode.swift */; };
+		DA58E0251F0CDE2400302536 /* GlobalRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0241F0CDE2400302536 /* GlobalRenderComponent.swift */; };
+		DA58E0351F0CE3B700302536 /* JSONAbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0271F0CE3B700302536 /* JSONAbleType.swift */; };
+		DA58E0361F0CE3B700302536 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0281F0CE3B700302536 /* NetworkProvider.swift */; };
+		DA58E0371F0CE3B700302536 /* Observable+JSONAble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0291F0CE3B700302536 /* Observable+JSONAble.swift */; };
+		DA58E0381F0CE3B800302536 /* AceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E02B1F0CE3B700302536 /* AceTarget.swift */; };
+		DA58E0391F0CE3B800302536 /* DigitalTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E02C1F0CE3B700302536 /* DigitalTarget.swift */; };
+		DA58E03A1F0CE3B800302536 /* GoldMerchantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E02D1F0CE3B700302536 /* GoldMerchantTarget.swift */; };
+		DA58E03B1F0CE3B800302536 /* HadesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E02E1F0CE3B700302536 /* HadesTarget.swift */; };
+		DA58E03C1F0CE3B800302536 /* MojitoTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E02F1F0CE3B700302536 /* MojitoTarget.swift */; };
+		DA58E03D1F0CE3B800302536 /* ReactTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0301F0CE3B700302536 /* ReactTarget.swift */; };
+		DA58E03E1F0CE3B800302536 /* V4Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0311F0CE3B700302536 /* V4Target.swift */; };
+		DA58E03F1F0CE3B800302536 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0321F0CE3B700302536 /* WalletTarget.swift */; };
+		DA58E0401F0CE3B800302536 /* ProductAndWishlistNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0341F0CE3B700302536 /* ProductAndWishlistNetworkManager.swift */; };
+		DA58E0521F0CE8E700302536 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0511F0CE8E700302536 /* TokocashNetworkProvider.swift */; };
+		DA58E0551F0CE8F100302536 /* TokocashTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0541F0CE8F100302536 /* TokocashTarget.swift */; };
+		DA58E05A1F0CEBA600302536 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0571F0CEBA600302536 /* ProductDetailViewController.swift */; };
+		DA58E05B1F0CEBA600302536 /* ProductShipmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0581F0CEBA600302536 /* ProductShipmentViewController.swift */; };
+		DA58E05C1F0CEBA600302536 /* ProductWholesaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E0591F0CEBA600302536 /* ProductWholesaleViewController.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		F91036B31EE8FC00002743A6 /* OfficialStoreHomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */; };
 		F9E3C03D1EE6544C00FBD14E /* activateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */; };
 		F9E3C03E1EE6544C00FBD14E /* deactivateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = F9E3C03C1EE6544C00FBD14E /* deactivateWishlist.json */; };
-		F9E3D1D81EE6562B00FBD14E /* JSONAbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */; };
-		F9E3D1D91EE6562B00FBD14E /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1CD1EE6562B00FBD14E /* NetworkProvider.swift */; };
-		F9E3D1DA1EE6562B00FBD14E /* Observable+JSONAble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1CE1EE6562B00FBD14E /* Observable+JSONAble.swift */; };
-		F9E3D1DB1EE6562B00FBD14E /* AceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D01EE6562B00FBD14E /* AceTarget.swift */; };
-		F9E3D1DC1EE6562B00FBD14E /* DigitalTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D11EE6562B00FBD14E /* DigitalTarget.swift */; };
-		F9E3D1DD1EE6562B00FBD14E /* HadesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D21EE6562B00FBD14E /* HadesTarget.swift */; };
-		F9E3D1DE1EE6562B00FBD14E /* MojitoTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D31EE6562B00FBD14E /* MojitoTarget.swift */; };
-		F9E3D1DF1EE6562B00FBD14E /* ReactTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D41EE6562B00FBD14E /* ReactTarget.swift */; };
-		F9E3D1E01EE6562B00FBD14E /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D51EE6562B00FBD14E /* WalletTarget.swift */; };
-		F9E3D1E11EE6562B00FBD14E /* ProductAndWishlistNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1D71EE6562B00FBD14E /* ProductAndWishlistNetworkManager.swift */; };
 		F9E3D20C1EE6563F00FBD14E /* AnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1E51EE6563F00FBD14E /* AnalyticsManager.m */; };
 		F9E3D20D1EE6563F00FBD14E /* AuthenticationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1E61EE6563F00FBD14E /* AuthenticationServiceExtension.swift */; };
 		F9E3D20E1EE6563F00FBD14E /* CollectionViewCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E3D1E71EE6563F00FBD14E /* CollectionViewCellType.swift */; };
@@ -4726,8 +4740,6 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
-		527674ED1EF21EA4001831C1 /* TokocashTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashTarget.swift; sourceTree = "<group>"; };
-		527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
 		527674F21EF21EFF001831C1 /* WalletCashBackResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBackResponse.swift; sourceTree = "<group>"; };
 		527674F31EF21EFF001831C1 /* WalletCashBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBack.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -5014,20 +5026,36 @@
 		C047F07D1F0CA003007792E2 /* TopAdsInfoActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAdsInfoActionSheet.swift; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58E00F1F0CDDEE00302536 /* ProductUnbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductUnbox.swift; sourceTree = "<group>"; };
+		DA58E0111F0CDDEE00302536 /* ProductDescriptionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDescriptionNode.swift; sourceTree = "<group>"; };
+		DA58E0121F0CDDEE00302536 /* ProductDetailViewComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailViewComponent.swift; sourceTree = "<group>"; };
+		DA58E0131F0CDDEE00302536 /* ProductHeaderNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductHeaderNode.swift; sourceTree = "<group>"; };
+		DA58E0141F0CDDEE00302536 /* ProductInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductInfoNode.swift; sourceTree = "<group>"; };
+		DA58E0151F0CDDEE00302536 /* ProductPriceNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductPriceNode.swift; sourceTree = "<group>"; };
+		DA58E0161F0CDDEE00302536 /* ProductRecommendationNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductRecommendationNode.swift; sourceTree = "<group>"; };
+		DA58E0171F0CDDEE00302536 /* ProductSellerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductSellerNode.swift; sourceTree = "<group>"; };
+		DA58E0241F0CDE2400302536 /* GlobalRenderComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalRenderComponent.swift; sourceTree = "<group>"; };
+		DA58E0271F0CE3B700302536 /* JSONAbleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAbleType.swift; sourceTree = "<group>"; };
+		DA58E0281F0CE3B700302536 /* NetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		DA58E0291F0CE3B700302536 /* Observable+JSONAble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+JSONAble.swift"; sourceTree = "<group>"; };
+		DA58E02B1F0CE3B700302536 /* AceTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AceTarget.swift; sourceTree = "<group>"; };
+		DA58E02C1F0CE3B700302536 /* DigitalTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTarget.swift; sourceTree = "<group>"; };
+		DA58E02D1F0CE3B700302536 /* GoldMerchantTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoldMerchantTarget.swift; sourceTree = "<group>"; };
+		DA58E02E1F0CE3B700302536 /* HadesTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HadesTarget.swift; sourceTree = "<group>"; };
+		DA58E02F1F0CE3B700302536 /* MojitoTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MojitoTarget.swift; sourceTree = "<group>"; };
+		DA58E0301F0CE3B700302536 /* ReactTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTarget.swift; sourceTree = "<group>"; };
+		DA58E0311F0CE3B700302536 /* V4Target.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V4Target.swift; sourceTree = "<group>"; };
+		DA58E0321F0CE3B700302536 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
+		DA58E0341F0CE3B700302536 /* ProductAndWishlistNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAndWishlistNetworkManager.swift; sourceTree = "<group>"; };
+		DA58E0511F0CE8E700302536 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
+		DA58E0541F0CE8F100302536 /* TokocashTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashTarget.swift; sourceTree = "<group>"; };
+		DA58E0571F0CEBA600302536 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		DA58E0581F0CEBA600302536 /* ProductShipmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductShipmentViewController.swift; sourceTree = "<group>"; };
+		DA58E0591F0CEBA600302536 /* ProductWholesaleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductWholesaleViewController.swift; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F91036B21EE8FC00002743A6 /* OfficialStoreHomeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfficialStoreHomeItem.swift; sourceTree = "<group>"; };
 		F9E3C03B1EE6544C00FBD14E /* activateWishlist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = activateWishlist.json; sourceTree = "<group>"; };
 		F9E3C03C1EE6544C00FBD14E /* deactivateWishlist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deactivateWishlist.json; sourceTree = "<group>"; };
-		F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAbleType.swift; sourceTree = "<group>"; };
-		F9E3D1CD1EE6562B00FBD14E /* NetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
-		F9E3D1CE1EE6562B00FBD14E /* Observable+JSONAble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+JSONAble.swift"; sourceTree = "<group>"; };
-		F9E3D1D01EE6562B00FBD14E /* AceTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AceTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D11EE6562B00FBD14E /* DigitalTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D21EE6562B00FBD14E /* HadesTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HadesTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D31EE6562B00FBD14E /* MojitoTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MojitoTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D41EE6562B00FBD14E /* ReactTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D51EE6562B00FBD14E /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
-		F9E3D1D71EE6562B00FBD14E /* ProductAndWishlistNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAndWishlistNetworkManager.swift; sourceTree = "<group>"; };
 		F9E3D1E41EE6563F00FBD14E /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
 		F9E3D1E51EE6563F00FBD14E /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		F9E3D1E61EE6563F00FBD14E /* AuthenticationServiceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceExtension.swift; sourceTree = "<group>"; };
@@ -5157,6 +5185,7 @@
 		34F0ACDD1EE6673C005D7DB2 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				DA58E0091F0CDDEE00302536 /* ProductDetail */,
 				34F0ACDE1EE6673C005D7DB2 /* Cocoa */,
 				34F0ACFF1EE6673C005D7DB2 /* Digital */,
 				34F0AD161EE6673C005D7DB2 /* Feed+ */,
@@ -10340,10 +10369,10 @@
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				DA58E0261F0CE3B700302536 /* Networking */,
 				34F0ACDD1EE6673C005D7DB2 /* Classses */,
 				6202EF1B1EE4F07200AE68B5 /* API.swift */,
 				F9E3D1E21EE6563F00FBD14E /* Helper */,
-				F9E3D1CB1EE6562B00FBD14E /* Networking */,
 				7A25802A1EB32F700090C4F6 /* main.jsbundle */,
 				7A465F421EB2FEA900A72105 /* main.m */,
 				7A465F431EB2FEA900A72105 /* ThirdPartyLibs */,
@@ -10533,6 +10562,85 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		DA58E0091F0CDDEE00302536 /* ProductDetail */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0561F0CEBA600302536 /* ViewController */,
+				DA58E00E1F0CDDEE00302536 /* Model */,
+				DA58E0101F0CDDEE00302536 /* View */,
+			);
+			path = ProductDetail;
+			sourceTree = "<group>";
+		};
+		DA58E00E1F0CDDEE00302536 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E00F1F0CDDEE00302536 /* ProductUnbox.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DA58E0101F0CDDEE00302536 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0111F0CDDEE00302536 /* ProductDescriptionNode.swift */,
+				DA58E0121F0CDDEE00302536 /* ProductDetailViewComponent.swift */,
+				DA58E0131F0CDDEE00302536 /* ProductHeaderNode.swift */,
+				DA58E0141F0CDDEE00302536 /* ProductInfoNode.swift */,
+				DA58E0151F0CDDEE00302536 /* ProductPriceNode.swift */,
+				DA58E0161F0CDDEE00302536 /* ProductRecommendationNode.swift */,
+				DA58E0171F0CDDEE00302536 /* ProductSellerNode.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DA58E0261F0CE3B700302536 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0511F0CE8E700302536 /* TokocashNetworkProvider.swift */,
+				DA58E0271F0CE3B700302536 /* JSONAbleType.swift */,
+				DA58E0281F0CE3B700302536 /* NetworkProvider.swift */,
+				DA58E0291F0CE3B700302536 /* Observable+JSONAble.swift */,
+				DA58E02A1F0CE3B700302536 /* Target */,
+				DA58E0331F0CE3B700302536 /* Util */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		DA58E02A1F0CE3B700302536 /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0541F0CE8F100302536 /* TokocashTarget.swift */,
+				DA58E02B1F0CE3B700302536 /* AceTarget.swift */,
+				DA58E02C1F0CE3B700302536 /* DigitalTarget.swift */,
+				DA58E02D1F0CE3B700302536 /* GoldMerchantTarget.swift */,
+				DA58E02E1F0CE3B700302536 /* HadesTarget.swift */,
+				DA58E02F1F0CE3B700302536 /* MojitoTarget.swift */,
+				DA58E0301F0CE3B700302536 /* ReactTarget.swift */,
+				DA58E0311F0CE3B700302536 /* V4Target.swift */,
+				DA58E0321F0CE3B700302536 /* WalletTarget.swift */,
+			);
+			path = Target;
+			sourceTree = "<group>";
+		};
+		DA58E0331F0CE3B700302536 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0341F0CE3B700302536 /* ProductAndWishlistNetworkManager.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		DA58E0561F0CEBA600302536 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DA58E0571F0CEBA600302536 /* ProductDetailViewController.swift */,
+				DA58E0581F0CEBA600302536 /* ProductShipmentViewController.swift */,
+				DA58E0591F0CEBA600302536 /* ProductWholesaleViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -10546,45 +10654,10 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F9E3D1CB1EE6562B00FBD14E /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				527674F01EF21EED001831C1 /* TokocashNetworkProvider.swift */,
-				F9E3D1CC1EE6562B00FBD14E /* JSONAbleType.swift */,
-				F9E3D1CD1EE6562B00FBD14E /* NetworkProvider.swift */,
-				F9E3D1CE1EE6562B00FBD14E /* Observable+JSONAble.swift */,
-				F9E3D1CF1EE6562B00FBD14E /* Target */,
-				F9E3D1D61EE6562B00FBD14E /* Util */,
-			);
-			name = Networking;
-			path = Helper/Networking;
-			sourceTree = "<group>";
-		};
-		F9E3D1CF1EE6562B00FBD14E /* Target */ = {
-			isa = PBXGroup;
-			children = (
-				527674ED1EF21EA4001831C1 /* TokocashTarget.swift */,
-				F9E3D1D01EE6562B00FBD14E /* AceTarget.swift */,
-				F9E3D1D11EE6562B00FBD14E /* DigitalTarget.swift */,
-				F9E3D1D21EE6562B00FBD14E /* HadesTarget.swift */,
-				F9E3D1D31EE6562B00FBD14E /* MojitoTarget.swift */,
-				F9E3D1D41EE6562B00FBD14E /* ReactTarget.swift */,
-				F9E3D1D51EE6562B00FBD14E /* WalletTarget.swift */,
-			);
-			path = Target;
-			sourceTree = "<group>";
-		};
-		F9E3D1D61EE6562B00FBD14E /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				F9E3D1D71EE6562B00FBD14E /* ProductAndWishlistNetworkManager.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		F9E3D1E21EE6563F00FBD14E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				DA58E0241F0CDE2400302536 /* GlobalRenderComponent.swift */,
 				F9E3D1E31EE6563F00FBD14E /* Analytics */,
 				F9E3D1E61EE6563F00FBD14E /* AuthenticationServiceExtension.swift */,
 				F9E3D1E71EE6563F00FBD14E /* CollectionViewCellType.swift */,
@@ -11686,7 +11759,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		A8DB3E016682453708179B99 /* [CP] Check Pods Manifest.lock */ = {
@@ -11701,7 +11774,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D593009643BED8682DB62BA4 /* [CP] Copy Pods Resources */ = {
@@ -11731,7 +11804,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -11768,7 +11841,6 @@
 				34F0BBB91EE66744005D7DB2 /* FilterComplainViewController.m in Sources */,
 				34F0BB151EE66744005D7DB2 /* CategoryIntermediaryVideo.swift in Sources */,
 				34F0B9451EE66741005D7DB2 /* InboxReputation.m in Sources */,
-				F9E3D1D91EE6562B00FBD14E /* NetworkProvider.swift in Sources */,
 				34F0BB041EE66743005D7DB2 /* CategoryIntermediaryCuratedProductSection.swift in Sources */,
 				34F0BA641EE66743005D7DB2 /* TxOrderStatus.m in Sources */,
 				34F0B96D1EE66741005D7DB2 /* ProfileEditForm.m in Sources */,
@@ -11782,6 +11854,7 @@
 				34F0B9D41EE66742005D7DB2 /* AddShop.m in Sources */,
 				34F0BC221EE66745005D7DB2 /* ShipmentViewController.m in Sources */,
 				34F0BBC61EE66744005D7DB2 /* EditSolutionSellerCell.swift in Sources */,
+				DA58E05C1F0CEBA600302536 /* ProductWholesaleViewController.swift in Sources */,
 				34F0BD381EE66747005D7DB2 /* ShipmentConfirmationViewController.m in Sources */,
 				34F0B9E51EE66742005D7DB2 /* ClosedInfo.m in Sources */,
 				34F0B90F1EE66741005D7DB2 /* ResolutionTroubleSolution.swift in Sources */,
@@ -11802,7 +11875,6 @@
 				34F0B9CE1EE66742005D7DB2 /* ShipmentOrder.m in Sources */,
 				34F0B8C81EE66741005D7DB2 /* TheOtherProductList.m in Sources */,
 				34F0BD721EE66747005D7DB2 /* SettingBankNameCell.m in Sources */,
-				F9E3D1DD1EE6562B00FBD14E /* HadesTarget.swift in Sources */,
 				34F0BCE51EE66746005D7DB2 /* ResolutionProductResponse.m in Sources */,
 				34F0BE431EE66748005D7DB2 /* TxOrderStatusViewController.m in Sources */,
 				34F0B82B1EE66741005D7DB2 /* NSMutableAttributedString+TKPCategory.m in Sources */,
@@ -11815,6 +11887,7 @@
 				34F0BAAD1EE66743005D7DB2 /* AlertInfoView.m in Sources */,
 				7A46722B1EB2FEB400A72105 /* TKPGooglePlaceDetailProductStore.m in Sources */,
 				34F0BE2D1EE66748005D7DB2 /* RequestRates.m in Sources */,
+				DA58E05A1F0CEBA600302536 /* ProductDetailViewController.swift in Sources */,
 				34F0B8461EE66741005D7DB2 /* DigitalLastOrder.swift in Sources */,
 				34F0BC2B1EE66745005D7DB2 /* DepartmentTableViewController.m in Sources */,
 				F9E3D2111EE6563F00FBD14E /* LabelCopyable.swift in Sources */,
@@ -11835,6 +11908,7 @@
 				34F0BC901EE66745005D7DB2 /* ReviewSummaryViewController.m in Sources */,
 				34F0BA311EE66742005D7DB2 /* TransactionCartList.m in Sources */,
 				34F0B8A31EE66741005D7DB2 /* CatalogInfo.m in Sources */,
+				DA58E03C1F0CE3B800302536 /* MojitoTarget.swift in Sources */,
 				34F0BDFC1EE66748005D7DB2 /* TopAdsService.swift in Sources */,
 				34F0BD281EE66746005D7DB2 /* RequestSales.swift in Sources */,
 				34F0BBA11EE66744005D7DB2 /* HomeFlowLayout.m in Sources */,
@@ -11871,7 +11945,6 @@
 				34F0BBF71EE66745005D7DB2 /* PurchaseViewController.m in Sources */,
 				34F0BD321EE66747005D7DB2 /* CancelShipmentViewController.m in Sources */,
 				34F0BDC71EE66748005D7DB2 /* EtalaseCell.m in Sources */,
-				F9E3D1DA1EE6562B00FBD14E /* Observable+JSONAble.swift in Sources */,
 				34F0BBDA1EE66744005D7DB2 /* ResolutionCenterSystemCell.m in Sources */,
 				34F0B92B1EE66741005D7DB2 /* InboxTicketPaging.m in Sources */,
 				34F0B8311EE66741005D7DB2 /* TextMenu.m in Sources */,
@@ -11883,7 +11956,6 @@
 				7A4672181EB2FEB400A72105 /* UIColor+Theme.m in Sources */,
 				34F0BE2F1EE66748005D7DB2 /* TransactionObjectMapping.m in Sources */,
 				34F0BA2A1EE66742005D7DB2 /* TransactionATCFormDetail.m in Sources */,
-				F9E3D1DB1EE6562B00FBD14E /* AceTarget.swift in Sources */,
 				34F0BD091EE66746005D7DB2 /* RejectReasonWrongPriceCell.m in Sources */,
 				34F0BB011EE66743005D7DB2 /* CategoryIntermediaryBanner.swift in Sources */,
 				7A466BB61EB2FEAE00A72105 /* MarqueeLabel.m in Sources */,
@@ -11943,6 +12015,7 @@
 				34F0BA621EE66743005D7DB2 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				34F0B8811EE66741005D7DB2 /* AnnouncementTickerObject.swift in Sources */,
 				F9E3D2211EE6563F00FBD14E /* TouchIDHelper.swift in Sources */,
+				DA58E01D1F0CDDEE00302536 /* ProductDetailViewComponent.swift in Sources */,
 				34F0BCA41EE66746005D7DB2 /* PulsaCategory.swift in Sources */,
 				34F0B82C1EE66741005D7DB2 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				34F0B9F91EE66742005D7DB2 /* AddProductValidation.m in Sources */,
@@ -11950,6 +12023,7 @@
 				34F0BAA71EE66743005D7DB2 /* AlertDatePickerView.m in Sources */,
 				34F0BA3E1EE66742005D7DB2 /* InstallmentBank.m in Sources */,
 				34F0BE331EE66748005D7DB2 /* PaymentConfirmationForm.swift in Sources */,
+				DA58E03E1F0CE3B800302536 /* V4Target.swift in Sources */,
 				34F0B9B81EE66742005D7DB2 /* ImageSearchResponseData.m in Sources */,
 				34F0BB0A1EE66743005D7DB2 /* CategoryIntermediaryProduct.swift in Sources */,
 				34F0BE341EE66748005D7DB2 /* SystemBank.swift in Sources */,
@@ -12032,6 +12106,8 @@
 				34F0BBC31EE66744005D7DB2 /* EditSolutionBuyerViewController.swift in Sources */,
 				34F0BA291EE66742005D7DB2 /* TransactionATCForm.m in Sources */,
 				34F0B8D01EE66741005D7DB2 /* FavoritedResult.m in Sources */,
+				DA58E03B1F0CE3B800302536 /* HadesTarget.swift in Sources */,
+				DA58E01B1F0CDDEE00302536 /* ProductUnbox.swift in Sources */,
 				34F0BA9D1EE66743005D7DB2 /* AddressCell.m in Sources */,
 				34F0BA071EE66742005D7DB2 /* Province.m in Sources */,
 				34F0BC411EE66745005D7DB2 /* DetailProductWholesaleTableCell.m in Sources */,
@@ -12093,7 +12169,6 @@
 				34F0BE2C1EE66748005D7DB2 /* RequestCartShipment.swift in Sources */,
 				34F0B9EB1EE66742005D7DB2 /* Shop.m in Sources */,
 				34F0B8831EE66741005D7DB2 /* GeneralMetaData.swift in Sources */,
-				F9E3D1E11EE6562B00FBD14E /* ProductAndWishlistNetworkManager.swift in Sources */,
 				34F0B9DB1EE66742005D7DB2 /* EtalaseResult.m in Sources */,
 				34F0B9571EE66741005D7DB2 /* NotificationSales.m in Sources */,
 				34F0B9751EE66742005D7DB2 /* ProfileInfoResult.m in Sources */,
@@ -12171,6 +12246,7 @@
 				34F0B8C11EE66741005D7DB2 /* Talk.m in Sources */,
 				F9E3D20E1EE6563F00FBD14E /* CollectionViewCellType.swift in Sources */,
 				34F0B89E1EE66741005D7DB2 /* DepositSummaryDetail.m in Sources */,
+				DA58E0401F0CE3B800302536 /* ProductAndWishlistNetworkManager.swift in Sources */,
 				7A466BB31EB2FEAE00A72105 /* HPGrowingTextView.m in Sources */,
 				34F0B8301EE66741005D7DB2 /* RKObjectManagerCategory.m in Sources */,
 				34F0BA671EE66743005D7DB2 /* GeneratedHost.m in Sources */,
@@ -12195,8 +12271,8 @@
 				34F0B9CF1EE66742005D7DB2 /* ShipmentProvinceData.m in Sources */,
 				34F0BE451EE66748005D7DB2 /* TxOrderTransactionDetailViewController.m in Sources */,
 				34F0BE111EE66748005D7DB2 /* TransactionShipmentATCTableViewCell.m in Sources */,
+				DA58E0211F0CDDEE00302536 /* ProductRecommendationNode.swift in Sources */,
 				34F0BE661EE66749005D7DB2 /* CartModelView.m in Sources */,
-				527674F11EF21EED001831C1 /* TokocashNetworkProvider.swift in Sources */,
 				34F0BE571EE66749005D7DB2 /* GoldShopView.m in Sources */,
 				34F0B95D1EE66741005D7DB2 /* PriceAlertResult.m in Sources */,
 				7A46721E1EB2FEB400A72105 /* UITableView+LoadingView.m in Sources */,
@@ -12239,7 +12315,9 @@
 				34F0BBC11EE66744005D7DB2 /* EditResolutionBuyerDetailViewController.swift in Sources */,
 				34F0BAD51EE66743005D7DB2 /* CameraAlbumListCell.m in Sources */,
 				34F0BA351EE66742005D7DB2 /* OrderConfirmationDetail.m in Sources */,
+				DA58E01F1F0CDDEE00302536 /* ProductInfoNode.swift in Sources */,
 				F9E3D2221EE6563F00FBD14E /* UIApplication+React.m in Sources */,
+				DA58E0201F0CDDEE00302536 /* ProductPriceNode.swift in Sources */,
 				34F0B9361EE66741005D7DB2 /* LikeDislikePostResult.m in Sources */,
 				34F0B8441EE66741005D7DB2 /* DigitalCartPayment.swift in Sources */,
 				34F0BE4D1EE66748005D7DB2 /* TxOrderConfirmedViewController.m in Sources */,
@@ -12483,15 +12561,14 @@
 				34F0BA131EE66742005D7DB2 /* TrackOrderDetail.m in Sources */,
 				34F0B9881EE66742005D7DB2 /* PromoProductImage.m in Sources */,
 				34F0BC831EE66745005D7DB2 /* ProductDetailReputationViewController.m in Sources */,
+				DA58E03A1F0CE3B800302536 /* GoldMerchantTarget.swift in Sources */,
 				34F0BA1C1EE66742005D7DB2 /* RateResponse.m in Sources */,
 				34F0BDC91EE66748005D7DB2 /* EtalaseRequest.m in Sources */,
 				34F0BA541EE66743005D7DB2 /* TxOrderConfirmedDetailPayment.m in Sources */,
 				34F0B94B1EE66741005D7DB2 /* ResponseComment.m in Sources */,
 				34F0BA171EE66742005D7DB2 /* CartShipmentData.swift in Sources */,
 				34F0BD5A1EE66747005D7DB2 /* SearchViewController.m in Sources */,
-				F9E3D1D81EE6562B00FBD14E /* JSONAbleType.swift in Sources */,
 				7A4672121EB2FEB400A72105 /* NSString+TPBaseUrl.m in Sources */,
-				F9E3D1DF1EE6562B00FBD14E /* ReactTarget.swift in Sources */,
 				34F0B9691EE66741005D7DB2 /* ProductTalkFormResult.m in Sources */,
 				34F0BC361EE66745005D7DB2 /* DetailProductVideoCollectionViewCell.swift in Sources */,
 				34F0BA551EE66743005D7DB2 /* TxOrderConfirmedDetailResult.m in Sources */,
@@ -12508,10 +12585,10 @@
 				34F0BB061EE66743005D7DB2 /* CategoryIntermediaryHotListImagePortrait.swift in Sources */,
 				34F0BC5A1EE66745005D7DB2 /* ProductListMyShopCell.m in Sources */,
 				34F0BE711EE66749005D7DB2 /* TalkCell.m in Sources */,
+				DA58E03D1F0CE3B800302536 /* ReactTarget.swift in Sources */,
 				34F0BA7B1EE66743005D7DB2 /* ProductWishlistCheckResult.swift in Sources */,
 				34F0BCBE1EE66746005D7DB2 /* PulsaRequest.swift in Sources */,
 				34F0BB5E1EE66744005D7DB2 /* GeneralList1GestureCell.m in Sources */,
-				F9E3D1DC1EE6562B00FBD14E /* DigitalTarget.swift in Sources */,
 				34F0B8A81EE66741005D7DB2 /* CatalogShops.m in Sources */,
 				34F0B86B1EE66741005D7DB2 /* VerifiedStatusMSISDN.m in Sources */,
 				34F0B8321EE66741005D7DB2 /* TKPDSecureStorage.m in Sources */,
@@ -12610,6 +12687,7 @@
 				34F0B9D11EE66742005D7DB2 /* ShipmentResult.m in Sources */,
 				34F0B8451EE66741005D7DB2 /* DigitalCartUserInputPrice.swift in Sources */,
 				7A466B821EB2FEAE00A72105 /* FBTweakShakeWindow.m in Sources */,
+				DA58E01E1F0CDDEE00302536 /* ProductHeaderNode.swift in Sources */,
 				34F0BB671EE66744005D7DB2 /* GeneralTextFieldCell.m in Sources */,
 				34F0BD621EE66747005D7DB2 /* SearchResultShopViewController.m in Sources */,
 				34F0BA561EE66743005D7DB2 /* MethodList.m in Sources */,
@@ -12630,6 +12708,7 @@
 				34F0B8C31EE66741005D7DB2 /* TalkCommentList.m in Sources */,
 				34F0BDFA1EE66748005D7DB2 /* TopAdsComponentView.swift in Sources */,
 				34F0BE191EE66748005D7DB2 /* Donation.swift in Sources */,
+				DA58E0351F0CE3B700302536 /* JSONAbleType.swift in Sources */,
 				34F0BD841EE66747005D7DB2 /* SettingPrivacyViewController.m in Sources */,
 				34F0BAA31EE66743005D7DB2 /* AlertBaseUrl.m in Sources */,
 				34F0BA691EE66743005D7DB2 /* GenerateHostResult.m in Sources */,
@@ -12648,6 +12727,7 @@
 				34F0BBB11EE66744005D7DB2 /* InboxMessageDetailViewController.m in Sources */,
 				34F0B9E91EE66742005D7DB2 /* Shipment.m in Sources */,
 				34F0B9931EE66742005D7DB2 /* ShopBadgeLevel.m in Sources */,
+				DA58E0381F0CE3B800302536 /* AceTarget.swift in Sources */,
 				34F0B9B61EE66742005D7DB2 /* ImageSearchProduct.m in Sources */,
 				34F0BBFF1EE66745005D7DB2 /* MyShopAddressEditViewController.m in Sources */,
 				34F0BC331EE66745005D7DB2 /* DetailProductRequest.swift in Sources */,
@@ -12655,6 +12735,7 @@
 				34F0BC691EE66745005D7DB2 /* AttachedPicture.m in Sources */,
 				34F0B9CA1EE66742005D7DB2 /* ShipmentCourierData.m in Sources */,
 				34F0BC7A1EE66745005D7DB2 /* MyReviewDetailHeader.mm in Sources */,
+				DA58E03F1F0CE3B800302536 /* WalletTarget.swift in Sources */,
 				34F0BBA71EE66744005D7DB2 /* HotlistViewController.m in Sources */,
 				34F0BCD71EE66746005D7DB2 /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
 				34F0BA6B1EE66743005D7DB2 /* Upload.m in Sources */,
@@ -12695,6 +12776,7 @@
 				34F0BB8C1EE66744005D7DB2 /* MyWishlistBadge.swift in Sources */,
 				34F0B9F61EE66742005D7DB2 /* AddProductPictureResult.m in Sources */,
 				34F0B9561EE66741005D7DB2 /* NotificationResult.m in Sources */,
+				DA58E0521F0CE8E700302536 /* TokocashNetworkProvider.swift in Sources */,
 				34F0BAB91EE66743005D7DB2 /* AlertLuckyView.m in Sources */,
 				34F0B8371EE66741005D7DB2 /* DigitalCategoryMenuViewController.swift in Sources */,
 				34F0BB6D1EE66744005D7DB2 /* ResizeableImageCell.m in Sources */,
@@ -12756,14 +12838,15 @@
 				34F0B9BF1EE66742005D7DB2 /* SearchAutoCompleteHotlist.m in Sources */,
 				34F0B8F51EE66741005D7DB2 /* HotlistList.m in Sources */,
 				34F0BA261EE66742005D7DB2 /* TransactionAddressShippingResult.m in Sources */,
+				DA58E0221F0CDDEE00302536 /* ProductSellerNode.swift in Sources */,
 				34F0BC951EE66745005D7DB2 /* RequestAddEditProduct.swift in Sources */,
 				34F0BB9F1EE66744005D7DB2 /* SliderData.m in Sources */,
 				7A46721D1EB2FEB400A72105 /* UITableView+IndexPath.m in Sources */,
 				34F0BA891EE66743005D7DB2 /* LoginViewController.m in Sources */,
 				34F0B9971EE66742005D7DB2 /* ResponseSpeed.m in Sources */,
 				34F0B8A61EE66741005D7DB2 /* CatalogPrice.m in Sources */,
-				F9E3D1DE1EE6562B00FBD14E /* MojitoTarget.swift in Sources */,
 				34F0B8641EE66741005D7DB2 /* LoginResult.m in Sources */,
+				DA58E0361F0CE3B700302536 /* NetworkProvider.swift in Sources */,
 				34F0BA0C1EE66742005D7DB2 /* ShippingInfoShipmentPackage.m in Sources */,
 				34F0B9021EE66741005D7DB2 /* ResolutionActionResult.m in Sources */,
 				34F0B9391EE66741005D7DB2 /* TotalLikeDislikePost.m in Sources */,
@@ -12874,6 +12957,7 @@
 				34F0BE481EE66748005D7DB2 /* ListBankViewController.swift in Sources */,
 				34F0BC3D1EE66745005D7DB2 /* DetailProductViewController.m in Sources */,
 				34F0BBF81EE66745005D7DB2 /* SalesViewController.m in Sources */,
+				DA58E05B1F0CEBA600302536 /* ProductShipmentViewController.swift in Sources */,
 				34F0BA201EE66742005D7DB2 /* LuckyDealData.m in Sources */,
 				34F0BDD71EE66748005D7DB2 /* ShopTalkPageViewController.m in Sources */,
 				34F0BC4C1EE66745005D7DB2 /* ProcessingAddProducts.m in Sources */,
@@ -12913,6 +12997,7 @@
 				34F0BBCC1EE66744005D7DB2 /* RequestResolution.swift in Sources */,
 				34F0BC8F1EE66745005D7DB2 /* ReviewShareComponent.mm in Sources */,
 				7A466B771EB2FEAE00A72105 /* CMPopTipView.m in Sources */,
+				DA58E0391F0CE3B800302536 /* DigitalTarget.swift in Sources */,
 				34F0B8CD1EE66741005D7DB2 /* EnvelopeResponse.swift in Sources */,
 				34F0B85F1EE66741005D7DB2 /* CreatePasswordUserProfile.swift in Sources */,
 				34F0BB6F1EE66744005D7DB2 /* TagManagerHandler.m in Sources */,
@@ -12947,6 +13032,7 @@
 				34F0BBCB1EE66744005D7DB2 /* ReplayConversationPostData.swift in Sources */,
 				34F0BAD21EE66743005D7DB2 /* AddImageCaptionViewController.swift in Sources */,
 				34F0BC661EE66745005D7DB2 /* ReportProductSubmitResult.swift in Sources */,
+				DA58E0551F0CE8F100302536 /* TokocashTarget.swift in Sources */,
 				34F0B86C1EE66741005D7DB2 /* VerifiedStatusResult.m in Sources */,
 				34F0BBD01EE66744005D7DB2 /* InboxResolutionCenterTabViewController.m in Sources */,
 				34F0B96B1EE66741005D7DB2 /* ChangePhoneNumberResult.m in Sources */,
@@ -13033,6 +13119,7 @@
 				34F0BCEA1EE66746005D7DB2 /* NoResultReusableView.m in Sources */,
 				34F0BCEE1EE66746005D7DB2 /* DueDateViewController.m in Sources */,
 				34F0B9721EE66741005D7DB2 /* FavoriteShopResult.m in Sources */,
+				DA58E0371F0CE3B700302536 /* Observable+JSONAble.swift in Sources */,
 				34F0B84D1EE66741005D7DB2 /* FeedDetailHeaderComponentView.swift in Sources */,
 				34F0B9241EE66741005D7DB2 /* InboxTalkResult.m in Sources */,
 				34F0BDDB1EE66748005D7DB2 /* FilterConditionCell.m in Sources */,
@@ -13049,7 +13136,6 @@
 				34F0B8E41EE66741005D7DB2 /* GoogleplaceDetailResult.m in Sources */,
 				527674F61EF21EFF001831C1 /* WalletCashBack.swift in Sources */,
 				34F0BB651EE66744005D7DB2 /* GeneralTalkCommentCell.m in Sources */,
-				F9E3D1E01EE6562B00FBD14E /* WalletTarget.swift in Sources */,
 				34F0BCFA1EE66746005D7DB2 /* RejectReasonData.m in Sources */,
 				34F0BAE51EE66743005D7DB2 /* TKPDPhotoPicker.m in Sources */,
 				34F0BA4C1EE66743005D7DB2 /* TxOrderCancelPaymentFormForm.m in Sources */,
@@ -13064,12 +13150,12 @@
 				34F0BDB21EE66747005D7DB2 /* ShopDescriptionView.m in Sources */,
 				34F0BD951EE66747005D7DB2 /* OpenShopNameViewCell.m in Sources */,
 				34F0B9B71EE66742005D7DB2 /* ImageSearchResponse.m in Sources */,
-				527674EE1EF21EA4001831C1 /* TokocashTarget.swift in Sources */,
 				34F0BA7A1EE66743005D7DB2 /* WalletStore.swift in Sources */,
 				7A466B7E1EB2FEAE00A72105 /* FBTweak.m in Sources */,
 				34F0BBDF1EE66744005D7DB2 /* InboxTalkSplitViewController.m in Sources */,
 				34F0BC8C1EE66745005D7DB2 /* ReviewRatingComponent.mm in Sources */,
 				34F0BDCD1EE66748005D7DB2 /* ShopHomeViewController.swift in Sources */,
+				DA58E0251F0CDE2400302536 /* GlobalRenderComponent.swift in Sources */,
 				C047F07E1F0CA003007792E2 /* TopAdsInfoActionSheet.swift in Sources */,
 				34F0B8631EE66741005D7DB2 /* Login.m in Sources */,
 				34F0B9BA1EE66742005D7DB2 /* List.m in Sources */,
@@ -13087,6 +13173,7 @@
 				34F0BD9F1EE66747005D7DB2 /* CloseShopRequest.m in Sources */,
 				34F0BB7F1EE66744005D7DB2 /* HomePageViewController.swift in Sources */,
 				34F0B9211EE66741005D7DB2 /* InboxReviewResult.m in Sources */,
+				DA58E01C1F0CDDEE00302536 /* ProductDescriptionNode.swift in Sources */,
 				34F0BAE21EE66743005D7DB2 /* GenerateHostRequest.m in Sources */,
 				34F0B8AA1EE66741005D7DB2 /* DetailCatalogResult.m in Sources */,
 				34F0BACE1EE66743005D7DB2 /* TKPDAlert.m in Sources */,

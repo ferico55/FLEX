@@ -396,7 +396,12 @@ ShopTabChild
         shopName = [_data objectForKey:@"shop_name"];
     }
     
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:product.product_image
+                                                    andShopName:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -682,7 +687,13 @@ ShopTabChild
         shopName = [_data objectForKey:@"shop_name"];
     }
     
-    [NavigateViewController navigateToProductFromViewController:self withProduct:list];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:list.product_id
+                                                        andName:list.product_name
+                                                       andPrice:list.product_price
+                                                    andImageURL:list.product_image
+                                                    andShopName:list.shop_name];
 }
 
 #pragma mark - LoadingView Delegate

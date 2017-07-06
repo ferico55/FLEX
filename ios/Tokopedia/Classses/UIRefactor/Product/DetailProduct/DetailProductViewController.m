@@ -2387,7 +2387,13 @@ TTTAttributedLabelDelegate
 
 - (void)didSelectOtherProduct:(SearchAWSProduct *)product {
     [AnalyticsManager trackProductClick:product];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:product.product_image
+                                                    andShopName:product.shop_name];
 }
 
 - (BOOL)isProductActive {

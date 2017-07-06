@@ -451,7 +451,13 @@ typedef enum TagRequest {
                             category:GA_EVENT_CATEGORY_WISHLIST
                               action:GA_EVENT_ACTION_VIEW
                                label:product.name];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.id
+                                                        andName:product.name
+                                                       andPrice:[product.price stringValue]
+                                                    andImageURL:product.image
+                                                    andShopName:product.shop.name];
 }
 
 #pragma mark - Memory Management

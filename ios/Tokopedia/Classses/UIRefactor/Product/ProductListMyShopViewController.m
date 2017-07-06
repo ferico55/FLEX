@@ -307,7 +307,12 @@ NoResultDelegate
         return;
     }
     
-    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:[NSString stringWithFormat:@"%ld", (long)list.product_id]
+                                                        andName:list.product_name
+                                                       andPrice:nil
+                                                    andImageURL:list.product_image
+                                                    andShopName:[_auth objectForKey:@"shop_name"]];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

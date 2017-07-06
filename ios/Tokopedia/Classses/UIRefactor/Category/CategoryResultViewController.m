@@ -231,6 +231,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
+    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -571,7 +574,12 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:@"Kategori" action:GA_EVENT_ACTION_CLICK_PRODUCT label: _categoryIntermediaryResult.id];
     
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product andDelegate:self];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:product.product_image
+                                                    andShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -800,6 +808,38 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
+}
+
+- (void)didAddedProductToWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    for(NSArray* products in _product) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = YES;
+                break;
+            }
+        }
+    }
+}
+
+- (void)didRemovedProductFromWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    for(NSArray* products in _product) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = NO;
+                break;
+            }
+        }
+    }
 }
 
 -(void)searchWithDynamicSort{

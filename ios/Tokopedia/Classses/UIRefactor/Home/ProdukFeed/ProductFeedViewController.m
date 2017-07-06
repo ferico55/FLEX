@@ -231,7 +231,12 @@ FavoriteShopRequestDelegate
                             category:GA_EVENT_CATEGORY_FEED
                               action:GA_EVENT_ACTION_CLICK
                                label:product.product_name];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:product.product_image
+                                                    andShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section

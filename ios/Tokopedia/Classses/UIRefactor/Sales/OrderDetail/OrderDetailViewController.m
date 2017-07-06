@@ -241,12 +241,13 @@
         
         __weak typeof(self) weakSelf = self;
         productView.didTapProduct = ^{
-            [[NavigateViewController new] navigateToProductFromViewController:weakSelf
-                                                                     withName:product.product_name
-                                                                    withPrice:product.product_price
-                                                                       withId:product.product_id
-                                                                 withImageurl:nil
-                                                                 withShopName:nil];
+            
+            [NavigateViewController navigateToProductFromViewController:weakSelf
+                                                          withProductID:product.product_id
+                                                                andName:product.product_name
+                                                               andPrice:product.product_price
+                                                            andImageURL:product.product_picture
+                                                            andShopName:nil];
         };
     }
 }

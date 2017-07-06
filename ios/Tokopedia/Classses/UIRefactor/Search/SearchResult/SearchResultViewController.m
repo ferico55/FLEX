@@ -227,6 +227,9 @@ ProductCellDelegate
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
+    
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
         self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
@@ -581,7 +584,6 @@ ProductCellDelegate
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     SearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.catalog_name];
@@ -594,9 +596,19 @@ ProductCellDelegate
     } else {
         [AnalyticsManager trackProductClick:product];
         if (_isFromImageSearch) {
-            [navigateController navigateToProductFromViewController:self withProduct:product];
+            [NavigateViewController navigateToProductFromViewController:self
+                                                          withProductID:product.product_id
+                                                                andName:product.product_name
+                                                               andPrice:product.product_price
+                                                            andImageURL:product.product_image
+                                                            andShopName:nil];
         } else {
-            [NavigateViewController navigateToProductFromViewController:self withProduct:product andDelegate:self];
+            [NavigateViewController navigateToProductFromViewController:self
+                                                          withProductID:product.product_id
+                                                                andName:product.product_name
+                                                               andPrice:product.product_price
+                                                            andImageURL:product.product_image
+                                                            andShopName:product.shop_name];
         }
     }
 }
@@ -775,6 +787,38 @@ ProductCellDelegate
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
+}
+
+- (void)didAddedProductToWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    for(NSArray* products in _product) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = YES;
+                break;
+            }
+        }
+    }
+}
+
+- (void)didRemovedProductFromWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    for(NSArray* products in _product) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = NO;
+                break;
+            }
+        }
+    }
 }
 
 -(void)searchWithDynamicSort{

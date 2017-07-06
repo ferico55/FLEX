@@ -85,6 +85,8 @@ class ShopViewController: UIViewController {
             onSuccess: { [weak self] shop in
                 guard let `self` = self else { return }
                 
+                self.trackScreenWithShop(shop!)
+                
                 SwiftOverlays.removeAllOverlaysFromView(self.view)
                 
                 self.displayShop(shop!)
@@ -101,6 +103,24 @@ class ShopViewController: UIViewController {
                 self.showShopFailedToLoad()
             }
         )
+    }
+    
+    private func trackScreenWithShop(_ shop: Shop) {
+        let shopID = shop.result.info.shop_id        
+        var shopType = "regular"
+        
+        if shop.result.info.shop_is_gold == 1 {
+            shopType = "gold_merchant"
+        }
+        
+        if shop.result.info.isOfficial {
+            shopType = "official_store"
+        }
+        
+        let customLayer = ["shopId" : shopID,
+                           "shopType" : shopType]
+        
+        AnalyticsManager.trackScreenName("Shop Page", customDataLayer: customLayer)
     }
     
     fileprivate func showShopFailedToLoad() {

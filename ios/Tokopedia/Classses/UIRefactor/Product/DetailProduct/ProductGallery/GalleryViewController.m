@@ -81,6 +81,11 @@
 	return self;
 }
 
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork canDownload:(BOOL)canDownload {
+    self.canDownload = canDownload;
+    return [self initWithPhotoSource:photoSrc withStartingIndex:startIndex usingNetwork:usingNetwork];
+}
+
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork {
     useNetwork = usingNetwork;
     return [self initWithPhotoSource:photoSrc withStartingIndex:startIndex];

@@ -34,6 +34,7 @@
 @property (strong, nonatomic) NSString* message;
 
 - (instancetype)initToShop:(nonnull Shop *)shop;
+- (instancetype)initWithData:(NSDictionary *_Nonnull)data;
 - (void)displayFromViewController:(UIViewController *)viewController;
 
 @end

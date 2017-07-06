@@ -175,6 +175,22 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [Localytics tagScreen:name?:@""];
 }
 
++ (void)trackScreenName:(NSString *)name customDataLayer:(NSDictionary *)dataLayer {
+    AnalyticsManager *manager = [[self alloc] init];
+    
+    NSMutableDictionary *layer = [[NSMutableDictionary alloc] initWithDictionary:@{@"event": @"openScreen",
+                                                                                   @"screenName": name ?: @"",
+                                                                                   @"appsflyerID": [[AppsFlyerTracker sharedTracker] getAppsFlyerUID] ?: @"",
+                                                                                   @"environment": @"iOS",
+                                                                                   @"login": [manager.userManager isLogin] ? @"Logged In" : @"Non Logged In"}];
+    
+    [layer addEntriesFromDictionary:dataLayer];
+    
+    [manager.dataLayer push:layer];
+    
+    [Localytics tagScreen:name];
+}
+
 + (void)trackUserInformation {
     AnalyticsManager *manager = [[self alloc] init];
     

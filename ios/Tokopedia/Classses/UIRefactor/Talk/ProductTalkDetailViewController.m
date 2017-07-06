@@ -450,7 +450,12 @@
     }
     
     if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
-        [_navigateController navigateToProductFromViewController:self withName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME] withPrice:nil withId:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"] withImageurl:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE] withShopName:nil];
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"]
+                                                            andName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME]
+                                                           andPrice:nil
+                                                        andImageURL:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE]
+                                                        andShopName:nil];
     }
 }
 

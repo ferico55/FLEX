@@ -658,8 +658,13 @@
     
     if ([product.product_error_msg isEqualToString:@""] ||
         [product.product_error_msg isEqualToString:@"0"] ||
-        product.product_error_msg == nil ) {
-        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
+        product.product_error_msg == nil) {
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.product_id
+                                                            andName:product.product_name
+                                                           andPrice:product.product_price
+                                                        andImageURL:product.product_picture
+                                                        andShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -671,7 +676,12 @@
     ProductDetail *product = listProducts[indexProduct];
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
-        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.product_id
+                                                            andName:product.product_name
+                                                           andPrice:product.product_price
+                                                        andImageURL:product.product_picture
+                                                        andShopName:list.cart_shop.shop_name];
     }
 }
 

@@ -11,6 +11,7 @@ import Moya
 
 enum AceTarget{
     case getHotList(forCategory: String, perPage:Int)
+    case getOtherProduct(withProductID: String, shopID: String)
     case searchProduct(selectedCategoryString: String, rows: String, start: String, q: String, uniqueID: String, source:String, departmentName:String)
     case searchProductWith(params:[String:Any], path:String)
 }
@@ -23,6 +24,7 @@ extension AceTarget : TargetType {
     var path: String {
         switch self {
             case .getHotList: return "/hoth/hotlist/v1/category"
+            case .getOtherProduct: return "/search/v2.3/product"
             case .searchProduct: return "/search/v2.5/product"
             case let .searchProductWith(_, path): return path
         }
@@ -31,7 +33,10 @@ extension AceTarget : TargetType {
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .getHotList,.searchProduct, .searchProductWith: return .get
+        case .getHotList: return .get
+        case .getOtherProduct: return .get
+        case .searchProduct: return .get
+        case .searchProductWith: return .get
         }
     }
     
@@ -42,6 +47,13 @@ extension AceTarget : TargetType {
             return [
                 "categories" : category,
                 "perPage" : perPage
+            ]
+        case let .getOtherProduct(productID, shopID) :
+            return [
+                "shop_id" : shopID,
+                "device" : "ios",
+                "-id" : productID,
+                "source":"other_product"
             ]
         case let .searchProduct(selectedCategoryString, rows, start, q, uniqueID, source, departmentName) :
             return [
@@ -69,7 +81,6 @@ extension AceTarget : TargetType {
     
     /// Provides stub data for use in testing.
     var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
-    
     
     /// The type of HTTP task to be performed.
     var task: Task { return .request }

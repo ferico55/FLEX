@@ -21,4 +21,5 @@
 + (void)generateMedalWithLevel:(NSString *)level withSet:(NSString *)set withImage:(id)image isLarge:(BOOL)isLarge;
 + (UIImage *)generateImage:(UIImage *)image withCount:(int)count;
 - (void)showPopUpSmiley:(UIView *)viewContentPopUp andPadding:(int)paddingRightLeftContent withReputationNetral:(NSString *)strNetral withRepSmile:(NSString *)strGood withRepSad:(NSString *)strSad withDelegate:(id<SmileyDelegate>)delegate;
++ (NSArray<UIImage*>*)medalWithLevel:(NSString*)level andSet:(NSString*)set;
 @end

@@ -125,8 +125,6 @@
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = viewController;
-    _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    
     [_window makeKeyAndVisible];
     
 #ifdef DEBUG
