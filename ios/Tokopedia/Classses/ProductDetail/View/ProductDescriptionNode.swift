@@ -172,7 +172,7 @@ class ProductDescriptionNode: ContainerNode {
     }
     
     func productDescriptionView() -> NodeType {
-        guard let description = state.productDetail?.info.descriptionHtml() else { return NilNode() }
+        guard var description = state.productDetail?.info.descriptionHtml() else { return NilNode() }
         
         return Node<TTTAttributedLabel>() { view, layout, size in
             layout.width = size.width - 30
@@ -186,6 +186,7 @@ class ProductDescriptionNode: ContainerNode {
             view.isUserInteractionEnabled = true
             view.delegate = self.viewController
             
+            description = description.kv_decodeHTMLCharacterEntities()
             var fullString = NSString.extracTKPMEUrl(description) as String
             var fullAttributedString = NSMutableAttributedString(string: fullString,
                                                                  attributes: [

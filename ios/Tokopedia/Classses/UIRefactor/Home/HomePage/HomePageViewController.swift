@@ -577,8 +577,9 @@ class HomePageViewController: UIViewController {
                     
                     self?.tokocashPlaceholder.isHidden = false
                 }
-            }, onError: { [weak self] _ in
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+            }, onError: { [weak self] error in
+                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                stickyAlertView?.show()
             }).disposed(by: self.rx_disposeBag)
     }
     
