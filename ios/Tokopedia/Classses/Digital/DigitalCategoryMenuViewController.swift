@@ -129,6 +129,7 @@ class DigitalCategoryMenuViewController: UIViewController {
     }
     
     deinit {
+        guard let `store` = store, let `widgetView` = widgetView else { return }
         store.unsubscribe(widgetView)
     }
 }
