@@ -39,15 +39,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         NotificationCenter.default.addObserver(self, selector: #selector(self.productDetailDidModified(notification:)), name: Notification.Name(ADD_PRODUCT_POST_NOTIFICATION_NAME), object: nil)
     }
     
-    convenience init(productID: String) {
-        self.init(productID: productID, name: "", price: "", imageURL: "", shopName: "")
-    }
-    
-    convenience init(productID: String, name: String, price: String, imageURL: String, shopName: String) {
-        self.init(productID: productID, name: name, price: price, imageURL: imageURL, shopName: shopName, isReplacementMode: false)
-    }
-    
-    convenience init(productID: String, name: String, price: String, imageURL: String, shopName: String, isReplacementMode: Bool) {
+    convenience init(productID: String = "", name: String = "", price: String = "", imageURL: String = "", shopName: String = "", isReplacementMode: Bool = false) {
         self.init(nibName: nil, bundle: nil)
         self.isReplacementMode = isReplacementMode
         self.initialData = ["id": productID,

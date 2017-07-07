@@ -45,7 +45,7 @@ class ProductInfoNode: ContainerNode {
             ])
     }
     
-    func container() -> NodeType {
+    private func container() -> NodeType {
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
@@ -55,7 +55,7 @@ class ProductInfoNode: ContainerNode {
         }
     }
     
-    func titleLabel() -> NodeType {
+    private func titleLabel() -> NodeType {
         return Node<UILabel>() { view, layout, _ in
             layout.marginLeft = 15
             layout.marginTop = 22
@@ -66,7 +66,7 @@ class ProductInfoNode: ContainerNode {
         }
     }
     
-    func infoBoxView(iconImage: UIImage?, title: String, subtitle: String) -> NodeType {
+    private func infoBoxView(iconImage: UIImage?, title: String, subtitle: String) -> NodeType {
         return Node { _, layout, _ in
             layout.flexDirection = .column
             layout.alignItems = .center
@@ -94,7 +94,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productInfoBoxView() -> NodeType {
+    private func productInfoBoxView() -> NodeType {
         guard
             let sold = state.productDetail?.soldCount,
             let view = state.productDetail?.viewCount,
@@ -114,7 +114,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productInfoNoticeView() -> NodeType {
+    private func productInfoNoticeView() -> NodeType {
         guard let productInfo = state.productDetail?.info else { return NilNode() }
         
         if productInfo.returnInfo.info == "" { return NilNode() }
@@ -176,7 +176,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productPreorderView() -> NodeType {
+    private func productPreorderView() -> NodeType {
         guard let preorder = state.productDetail?.preorderDetail else { return NilNode() }
         
         return Node { _, layout, _ in
@@ -200,7 +200,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productConditionView() -> NodeType {
+    private func productConditionView() -> NodeType {
         guard let info = state.productDetail?.info else { return NilNode() }
         
         return Node { _, layout, _ in
@@ -224,7 +224,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productMinOrderView() -> NodeType {
+    private func productMinOrderView() -> NodeType {
         guard let info = state.productDetail?.info else { return NilNode() }
         
         return Node { _, layout, _ in
@@ -248,7 +248,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productCategoryView() -> NodeType {
+    private func productCategoryView() -> NodeType {
         guard let category = state.productDetail?.categories.last else { return NilNode() }
         
         return Node { _, layout, _ in
@@ -282,7 +282,7 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
-    func productStorefrontView() -> NodeType {
+    private func productStorefrontView() -> NodeType {
         guard let productDetail = state.productDetail else { return NilNode() }
         
         return Node { _, layout, _ in

@@ -101,7 +101,7 @@ import AFNetworking
     
     func showProductDetail() {
         let product = self.viewModel.rxReplacement.value.products.first!
-        let vc = ProductDetailViewController(productID: "\(product.identifier)", name: product.name, price: product.priceWithFormat, imageURL: product.thumbnailUrlString, shopName: "", isReplacementMode: true)
+        let vc = ProductDetailViewController(productID: product.identifier, name: product.name, price: product.priceWithFormat, imageURL: product.thumbnailUrlString, isReplacementMode: true)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

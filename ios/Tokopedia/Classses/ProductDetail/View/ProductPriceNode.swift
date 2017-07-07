@@ -39,7 +39,7 @@ class ProductPriceNode: ContainerNode {
             ])
     }
     
-    func container() -> NodeType {
+    private func container() -> NodeType {
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
@@ -49,7 +49,7 @@ class ProductPriceNode: ContainerNode {
         }
     }
     
-    func wholesaleView() -> NodeType {
+    private func wholesaleView() -> NodeType {
         guard let wholesales = state.productDetail?.wholesale,
             let minWholesalePrice = wholesales.last?.price else {
                 return NilNode()

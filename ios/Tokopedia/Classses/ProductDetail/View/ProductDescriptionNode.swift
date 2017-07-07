@@ -38,7 +38,7 @@ class ProductDescriptionNode: ContainerNode {
             ])
     }
     
-    func container() -> NodeType {
+    private func container() -> NodeType {
         return Node<UIView> { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
@@ -48,7 +48,7 @@ class ProductDescriptionNode: ContainerNode {
         }
     }
     
-    func titleLabel() -> NodeType {
+    private func titleLabel() -> NodeType {
         return Node<UILabel>() { view, layout, _ in
             layout.marginLeft = 15
             layout.marginTop = 22
@@ -59,7 +59,7 @@ class ProductDescriptionNode: ContainerNode {
         }
     }
     
-    func videoPlaceholderView(videoUrl: String) -> NodeType {
+    private func videoPlaceholderView(videoUrl: String) -> NodeType {
         if let nowPlayingVideo = self.state.nowPlayingVideo,
             nowPlayingVideo.url == videoUrl {
             return Node<UIActivityIndicatorView>(identifier: "ActivityIndicator-\(videoUrl)") { view, layout, _ in
@@ -82,7 +82,7 @@ class ProductDescriptionNode: ContainerNode {
         }
     }
     
-    func videoActivityView(videoUrl: String) -> NodeType {
+    private func videoActivityView(videoUrl: String) -> NodeType {
         return Node<UIActivityIndicatorView>(identifier: "ActivityIndicator-\(videoUrl)") { view, layout, _ in
             layout.alignSelf = .center
             view.activityIndicatorViewStyle = .whiteLarge
@@ -90,7 +90,7 @@ class ProductDescriptionNode: ContainerNode {
         }
     }
     
-    func videoView(video: ProductVideo) -> NodeType {
+    private func videoView(video: ProductVideo) -> NodeType {
         let imageUrl = "https://img.youtube.com/vi/\(video.url)/0.jpg"
         
         return Node<UIImageView>(identifier: video.url) { view, layout, _ in
@@ -118,7 +118,7 @@ class ProductDescriptionNode: ContainerNode {
                 ])
     }
     
-    func videoListView() -> NodeType {
+    private func videoListView() -> NodeType {
         guard let videos = state.productDetail?.videos.map({ (video) -> NodeType in
             videoView(video: video)
         }) else {
@@ -143,7 +143,7 @@ class ProductDescriptionNode: ContainerNode {
             }.add(children: videos)
     }
     
-    func productDescriptionButton() -> NodeType {
+    private func productDescriptionButton() -> NodeType {
         guard let description = state.productDetail?.info.descriptionHtml() else { return NilNode() }
         
         var fullString = NSString.extracTKPMEUrl(description) as String
@@ -171,7 +171,7 @@ class ProductDescriptionNode: ContainerNode {
         }
     }
     
-    func productDescriptionView() -> NodeType {
+    private func productDescriptionView() -> NodeType {
         guard var description = state.productDetail?.info.descriptionHtml() else { return NilNode() }
         
         return Node<TTTAttributedLabel>() { view, layout, size in

@@ -36,7 +36,7 @@ class ProductRecommendationNode: ContainerNode {
             ])
     }
     
-    func container() -> NodeType {
+    private func container() -> NodeType {
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
@@ -46,7 +46,7 @@ class ProductRecommendationNode: ContainerNode {
         }
     }
     
-    func titleLabel() -> NodeType {
+    private func titleLabel() -> NodeType {
         return Node<UILabel>() { view, layout, _ in
             layout.marginLeft = 15
             layout.marginTop = 22
@@ -57,7 +57,7 @@ class ProductRecommendationNode: ContainerNode {
         }
     }
     
-    func productRecommendListView() -> NodeType {
+    private func productRecommendListView() -> NodeType {
         guard let products = state.productDetail?.otherProducts.map({ (product) -> NodeType in
             productRecommendFrameView(product: product)
         }) else { return NilNode() }
@@ -75,7 +75,7 @@ class ProductRecommendationNode: ContainerNode {
         
     }
     
-    func productRecommendFrameView(product: OtherProduct) -> NodeType {
+    private func productRecommendFrameView(product: OtherProduct) -> NodeType {
         return Node { view, layout, _ in
             layout.flexDirection = .row
             view.isUserInteractionEnabled = true
@@ -85,7 +85,7 @@ class ProductRecommendationNode: ContainerNode {
                 ])
     }
     
-    func productRecommendView(product: OtherProduct) -> NodeType {
+    private func productRecommendView(product: OtherProduct) -> NodeType {
         return Node { view, layout, _ in
             layout.margin = 10
             layout.flexDirection = .column

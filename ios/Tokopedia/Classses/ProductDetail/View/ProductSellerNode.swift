@@ -36,7 +36,7 @@ class ProductSellerInfoNode: ContainerNode {
             ])
     }
     
-    func container() -> NodeType {
+    private func container() -> NodeType {
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
@@ -57,7 +57,7 @@ class ProductSellerInfoNode: ContainerNode {
         }
     }
     
-    func sellerBadge(shouldShowBadge: Bool) -> NodeType {
+    private func sellerBadge(shouldShowBadge: Bool) -> NodeType {
         guard let shop = state.productDetail?.shop,
             shouldShowBadge else {
                 return NilNode()
@@ -71,7 +71,7 @@ class ProductSellerInfoNode: ContainerNode {
         }
     }
     
-    func sellerInfoName(shouldShowBadge: Bool) -> NodeType {
+    private func sellerInfoName(shouldShowBadge: Bool) -> NodeType {
         guard let productDetail = state.productDetail else { return NilNode() }
         
         return Node<UIView>() { view, layout, _ in
@@ -101,7 +101,7 @@ class ProductSellerInfoNode: ContainerNode {
                 ])
     }
     
-    func sellerInfoPicture() -> NodeType {
+    private func sellerInfoPicture() -> NodeType {
         guard let shop = state.productDetail?.shop else { return NilNode() }
         
         return Node<UIImageView>() { view, layout, _ in
@@ -123,7 +123,7 @@ class ProductSellerInfoNode: ContainerNode {
         }
     }
     
-    func sellerInfoView() -> NodeType {
+    private func sellerInfoView() -> NodeType {
         guard let productDetail = state.productDetail else { return NilNode() }
         
         let shop = productDetail.shop
@@ -164,7 +164,7 @@ class ProductSellerInfoNode: ContainerNode {
                 ])
     }
     
-    func reputationBadgeView(image: UIImage) -> NodeType {
+    private func reputationBadgeView(image: UIImage) -> NodeType {
         return Node<UIImageView> { view, layout, _ in
             layout.width = 18
             layout.height = 18
@@ -173,7 +173,7 @@ class ProductSellerInfoNode: ContainerNode {
         }
     }
     
-    func reputationBadges() -> [NodeType] {
+    private func reputationBadges() -> [NodeType] {
         var badges = [NodeType]()
         
         guard let level = state.productDetail?.shop.badgeLevel, let set = state.productDetail?.shop.badgeSet else { return badges }
@@ -187,7 +187,7 @@ class ProductSellerInfoNode: ContainerNode {
         return badges
     }
     
-    func favoriteButton() -> NodeType {
+    private func favoriteButton() -> NodeType {
         guard let isFavorited = state.productDetail?.isShopFavorited else { return NilNode() }
         
         if state.productDetailActivity != .normal && state.productDetailActivity != .inactive && state.productDetailActivity != .replacement {
@@ -258,7 +258,7 @@ class ProductSellerInfoNode: ContainerNode {
             })
     }
     
-    func messageButton() -> NodeType {
+    private func messageButton() -> NodeType {
         if state.productDetailActivity == .normal || state.productDetailActivity == .inactive || state.productDetailActivity == .replacement {
             return Node<UIButton>() { view, layout, _ in
                 layout.width = 84
@@ -280,7 +280,7 @@ class ProductSellerInfoNode: ContainerNode {
         return NilNode()
     }
     
-    func sellerInfoDescription(iconImage: UIImage?, title: String) -> NodeType {
+    private func sellerInfoDescription(iconImage: UIImage?, title: String) -> NodeType {
         return Node { _, layout, _ in
             layout.flexDirection = .row
             layout.marginBottom = 5
@@ -302,7 +302,7 @@ class ProductSellerInfoNode: ContainerNode {
                 ])
     }
     
-    func sellerBottomView() -> NodeType {
+    private func sellerBottomView() -> NodeType {
         guard let productShop = state.productDetail?.shop else { return NilNode() }
         
         return Node(identifier: "wrapper-\(productShop.location)") { _, layout, _ in

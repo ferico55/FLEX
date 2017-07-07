@@ -265,7 +265,9 @@
                                                                                         name:name?:@""
                                                                                        price:price?:@""
                                                                                     imageURL:imageURL?:@""
-                                                                                    shopName:shopName?:@""];
+                                                                                    shopName:shopName?:@""
+                                                                           isReplacementMode:NO];
+    
     vc.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:vc animated:YES];
