@@ -336,6 +336,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
         
     } onFailure:^(NSError * error) {
+        _isWalletActive = NO;
         if(error.code == 9991) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         }
@@ -465,7 +466,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            return 2;
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.3")) {
+                return 2;
+            } else {
+                if (_isWalletActive) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
         }
         
         case 1: return _shouldDisplayTopPointsCell?1:0;

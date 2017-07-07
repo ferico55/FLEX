@@ -199,7 +199,7 @@ class FormProductValidation: NSObject {
     
     fileprivate func categoryValidation(_ category: ListOption) throws {
         
-        guard category.categoryId != "" else {
+        guard let _ = category.categoryId else {
             throw FormError(message: "Kategori tidak benar")
         }
     }

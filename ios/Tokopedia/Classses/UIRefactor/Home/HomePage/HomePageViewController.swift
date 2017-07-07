@@ -578,8 +578,12 @@ class HomePageViewController: UIViewController {
                     self?.tokocashPlaceholder.isHidden = false
                 }
             }, onError: { [weak self] error in
-                let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-                stickyAlertView?.show()
+                if #available(iOS 8.3, *) {
+                    let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                    stickyAlertView?.show()
+                } else {
+                    self?.tokocashPlaceholder.isHidden = true
+                }
             }).disposed(by: self.rx_disposeBag)
     }
     

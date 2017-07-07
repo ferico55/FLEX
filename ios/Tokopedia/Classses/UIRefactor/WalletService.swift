@@ -41,8 +41,14 @@ class WalletService: NSObject {
         return WalletProvider().request(.fetchStatus(userId: userId))
             .map(to: WalletStore.self)
             .do(onNext: { response in
-                if let error = response.error {
-                    throw error
+                if #available(iOS 8.3, *) {
+                    if let error = response.error, error != "invalid_request" {
+                        throw error
+                    }
+                } else {
+                    if let error = response.error {
+                        throw error
+                    }
                 }
             })
     }
