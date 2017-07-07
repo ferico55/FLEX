@@ -271,7 +271,7 @@ class FeedStateManager: NSObject {
             let productArray: [FeedCardProductState] = products.enumerated().map { (index, product) in
                 var productState = self.initFeedProduct(feedProduct: product!, cardID: cardID)
                 
-                if ((feedContent.products?.count)! > 6) && (index == 5) {
+                if products.count > 6 && index == 5 {
                     productState.isMore = true
                     productState.remaining = feedContent.totalProduct! - 5
                 }

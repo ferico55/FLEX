@@ -421,7 +421,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     func productCellLayout(withProductAmount amount: Int, size: CGSize) -> NodeType {
-        guard let state = state, amount > 0, amount < 7 else { return NilNode() }
+        guard let state = state, amount > 0 else { return NilNode() }
         
         let mainContent: NodeType = Node<UIView>(identifier: "main-content") { _, layout, size in
             layout.flexDirection = .column
