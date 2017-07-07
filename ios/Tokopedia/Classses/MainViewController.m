@@ -43,7 +43,6 @@
 #import <MessageUI/MessageUI.h>
 
 #import "UIActivityViewController+Extensions.h"
-#import <WatchdogInspector/TWWatchdogInspector.h>
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -73,7 +72,6 @@
 }
 
 @property (strong, nonatomic) ScreenshotHelper *screenshotHelper;
-@property (nonatomic) BOOL showFPSMeter;
 
 @end
 
@@ -154,9 +152,6 @@ typedef enum TagRequest {
              [self.screenshotHelper takeScreenshot];
          }
      }];
-    
-    _showFPSMeter = NO;
-    FBTweakBind(self, showFPSMeter,  @"FPS Meter",  @"FPS Meter", @"Enabled", NO);
 }
 
 - (void)makeSureDeviceTokenExists {
@@ -799,17 +794,5 @@ typedef enum TagRequest {
         [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartViewController new]]];
     }
 }
-
-// MARK: Setter Getter
-
-- (void) setShowFPSMeter:(BOOL)show {
-    if (show) {
-        [TWWatchdogInspector start];
-    } else {
-        [TWWatchdogInspector stop];
-    }
-}
-
-
 
 @end

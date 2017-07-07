@@ -35,14 +35,7 @@
 
 #ifdef DEBUG
 #import "FlexManager.h"
-#import <WatchdogInspector/TWWatchdogInspector.h>
 #endif
-
-@interface AppDelegate()
-
-@property (nonatomic) BOOL showFPSMeter;
-
-@end
 
 @implementation AppDelegate
 
@@ -129,7 +122,6 @@
     
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
-    FBTweakBind(self, showFPSMeter,  @"Others",  @"FPS Meter", @"Enabled", NO);
 #endif
         
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -485,17 +477,4 @@
         [self saveAppVersionToDefaults];
     }
 }
-
-// MARK: Setter Getter
-
-- (void) setShowFPSMeter:(BOOL)show {
-#ifdef DEBUG
-    if (show) {
-        [TWWatchdogInspector start];
-    } else {
-        [TWWatchdogInspector stop];
-    }
-#endif
-}
-
 @end

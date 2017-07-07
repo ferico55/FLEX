@@ -20,7 +20,7 @@ end
 
 platform :ios do
   before_all do
-    ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "600"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "600"
     ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     #cocoapods
   end
