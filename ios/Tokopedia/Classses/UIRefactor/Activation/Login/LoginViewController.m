@@ -539,6 +539,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 
 - (void)notifyUserDidLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:nil];
 }
 
 #pragma mark - Delegate
