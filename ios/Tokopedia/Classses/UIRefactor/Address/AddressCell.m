@@ -42,7 +42,7 @@
     _data = data;
     
     if (data) {
-        _label.text = [_data objectForKey:@"Name"];
+        _label.text = [_data objectForKey:@"name"];
     }
 }
 

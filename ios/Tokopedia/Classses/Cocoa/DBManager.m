@@ -197,7 +197,7 @@ static sqlite3_stmt *statement = nil;
                     districtID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 }
                 if (districtname != nil) {
-                    NSDictionary *nameAndID = @{@"Name":districtname, @"ID":districtID};
+                    NSDictionary *nameAndID = @{@"name":districtname, @"ID":districtID};
                     [resultArray addObject:nameAndID];
                 }
             }

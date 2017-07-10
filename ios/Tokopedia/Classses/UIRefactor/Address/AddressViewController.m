@@ -230,7 +230,7 @@
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
             AddressProvince *province = _addressObj.data.provinces[indexPath.row];
-            dataCell = @{@"Name":province.province_name,
+            dataCell = @{@"name":province.province_name,
                          @"ID" :province.province_id};
             isHiddenCeckmark = ([province.province_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
             break;
@@ -238,7 +238,7 @@
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
             AddressCity *city = _addressObj.data.cities[indexPath.row];
-            dataCell = @{@"Name":city.city_name,
+            dataCell = @{@"name":city.city_name,
                          @"ID" :city.city_id};
             isHiddenCeckmark = ([city.city_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
             break;
@@ -246,7 +246,7 @@
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
             AddressDistrict *district = _addressObj.data.districts[indexPath.row];
-            dataCell = @{@"Name":district.district_name,
+            dataCell = @{@"name":district.district_name,
                          @"ID" :district.district_id};
             isHiddenCeckmark = ([district.district_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
             break;

@@ -438,9 +438,9 @@
         [_buttoncity setTitle:list.city_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
         [_buttondistrict setTitle:list.district_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
         
-        _selectedProvince =@{@"ID":list.province_id?:@"",@"Name":list.province_name?:@""};
-        _selectedCity =@{@"ID":list.city_id?:@"",@"Name":list.city_name?:@""};
-        _selectedDistrict =@{@"ID":list.district_id?:@"",@"Name":list.district_name?:@""};
+        _selectedProvince =@{@"ID":list.province_id?:@"",@"name":list.province_name?:@""};
+        _selectedCity =@{@"ID":list.city_id?:@"",@"name":list.city_name?:@""};
+        _selectedDistrict =@{@"ID":list.district_id?:@"",@"name":list.district_name?:@""};
         
         if (list.province_id == 0) {
             _buttondistrict.enabled = NO;
