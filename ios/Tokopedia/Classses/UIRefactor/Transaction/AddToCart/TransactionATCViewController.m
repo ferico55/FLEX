@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "Tokopedia-swift.h"
+#import "Tokopedia-Swift.h"
 
 #import "AlertPickerView.h"
 

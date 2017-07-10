@@ -10,6 +10,7 @@
 #import "GeneralTableViewController.h"
 
 #import "AlertDatePickerView.h"
+#import "string_alert.h"
 
 #define ARRAY_FILTER_TRANSACTION @[@"Semua Status",@"Konfirmasi Pembayaran",@"Verifikasi Pembayaran",@"Dalam Proses",@"Dalam Pengiriman",@"Transaksi Terkirim",@"Transaksi Selesai",@"Transaksi Dibatalkan"]
 

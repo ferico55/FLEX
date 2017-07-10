@@ -10,6 +10,7 @@
 #import "AlertDatePickerView.h"
 #import "CloseShopRequest.h"
 #import <BlocksKit/BlocksKit.h>
+#import "string_alert.h"
 #define CENTER_VIEW_NORMAL_HEIGHT 305
 #define VIEW_TRANSITION_DELAY 2
 

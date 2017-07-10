@@ -23,7 +23,7 @@ typedef enum
 #define kTKPDLOCATION_DATAPROVINCEIDKEY @"province_id"
 
 #define DATA_SELECTED_LOCATION_KEY @"data_selected_location"
-#define DATA_NAME_KEY @"Name"
+#define DATA_NAME_KEY @"name"
 #define DATA_ID_KEY @"ID"
 
 #endif

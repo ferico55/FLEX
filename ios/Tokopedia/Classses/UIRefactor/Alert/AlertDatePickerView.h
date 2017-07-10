@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDAlertView.h"
-#import "string_alert.h"
 
 @interface AlertDatePickerView : TKPDAlertView
 
