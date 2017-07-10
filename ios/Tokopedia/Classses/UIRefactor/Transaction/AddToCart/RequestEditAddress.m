@@ -57,10 +57,10 @@
 
                           ProfileSettings *setting = [successResult.dictionary objectForKey:@""];
                           if ([setting.data.is_success boolValue]) {
-                              [StickyAlertView showSuccessMessage:setting.message_status?:@[@"Sukses mengubah lokasi"]];
+                              [StickyAlertView showSuccessMessage:setting.message_status.count>0?setting.message_status:@[@"Sukses mengubah lokasi"]];
                               success(setting.data);
                           } else {
-                              [StickyAlertView showErrorMessage:setting.message_error?:@[@"Gagal mengubah lokasi"]];
+                              [StickyAlertView showErrorMessage:setting.message_error.count>0?setting.message_error:@[@"Gagal mengubah lokasi"]];
                               failure(nil);
                           }
                           

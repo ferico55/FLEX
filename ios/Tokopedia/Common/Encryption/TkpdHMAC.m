@@ -15,6 +15,11 @@
 
 @implementation TkpdHMAC
 
+typedef NS_ENUM(NSUInteger, TPUrl) {
+    TPUrlProduction,
+    TPUrlStaging
+};
+    
 - (id)init {
     self = [super init];
     
@@ -173,6 +178,52 @@
     
     
 }
+
+- (void)signatureWithBaseUrlWallet:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                        parameter:(NSDictionary*)parameter
+{
+    NSString *output;
+    NSString *secret = [self tokocashKey];
+    NSString* date = [self getDate];
+    
+    
+    [self setRequestMethod:method];
+    _parameterMD5 = @"";
+    [self setTkpdPath:path];
+    [self setSecret:secret];
+    
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\nx-tkpd-userid:%@\nx-msisdn:%@\n%@", method, @"",@"",
+                              date, [[UserAuthentificationManager new] getUserId], [[UserAuthentificationManager new] getUserPhoneNumber], [self getTkpdPath]];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    _baseUrl = url;
+    _date = date;
+    _signature = output;
+    
+    
+}
+    
+- (NSString*)tokocashKey {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+        
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"CPAnAGpC3NIg7ZSj",
+                           @(TPUrlStaging) : @"cSPkELXf2GVk4pnT"
+                        };
+        
+    return [urls objectForKey:TPUrlIndex];
+}
+
 
 // convert NSData to NSString
 - (NSString*)base64forData:(NSData*)theData {

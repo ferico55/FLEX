@@ -35,14 +35,7 @@
 
 #ifdef DEBUG
 #import "FlexManager.h"
-#import <WatchdogInspector/TWWatchdogInspector.h>
 #endif
-
-@interface AppDelegate()
-
-@property (nonatomic) BOOL showFPSMeter;
-
-@end
 
 @implementation AppDelegate
 
@@ -62,7 +55,7 @@
 - (BOOL)shouldShowOnboarding {
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
     
-    BOOL alwaysShowOnboarding = FBTweakValue(@"Onboarding", @"General", @"Always show onboarding", NO);
+    BOOL alwaysShowOnboarding = FBTweakValue(@"Others", @"Onboarding", @"Always show onboarding", NO);
     
     BOOL shouldShowOnboarding = alwaysShowOnboarding?YES:!hasShownOnboarding;
     return shouldShowOnboarding;
@@ -125,13 +118,10 @@
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = viewController;
-    _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    
     [_window makeKeyAndVisible];
     
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
-    FBTweakBind(self, showFPSMeter,  @"Others",  @"FPS Meter", @"Enabled", NO);
 #endif
         
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -293,7 +283,7 @@
 }
 
 - (BOOL)shouldShowLocalyticsTab {
-    return FBTweakValue(@"Localytics Tab", @"General", @"Show Localytics Tab", NO);
+    return FBTweakValue(@"Others", @"Localytics", @"Show Localytics Tab", NO);
 }
 
 - (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
@@ -487,17 +477,4 @@
         [self saveAppVersionToDefaults];
     }
 }
-
-// MARK: Setter Getter
-
-- (void) setShowFPSMeter:(BOOL)show {
-#ifdef DEBUG
-    if (show) {
-        [TWWatchdogInspector start];
-    } else {
-        [TWWatchdogInspector stop];
-    }
-#endif
-}
-
 @end

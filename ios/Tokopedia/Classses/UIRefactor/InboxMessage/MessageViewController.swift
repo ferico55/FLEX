@@ -11,12 +11,13 @@ import JSQMessagesViewController
 import JLRoutes
 import SwiftOverlays
 
-class MessageViewController: JSQMessagesViewController {
+class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarDelegate, ProductListMyShopDelegate {
     var messageTitle: String!
     var messageSubtitle = ""
     var messageId: String!
     var messageTabName: String!
     var onMessagePosted: ((String) -> Void)?
+    var auth:[AnyHashable:Any] = [:]
     var labelColorsCollection = [
         "1" : UIColor(red: 248.0/255.0, green: 148.0/255.0, blue: 6.0/255.0, alpha: 1.0), //admin
         "2" : UIColor(red: 70.0/255.0, green: 136.0/255.0, blue: 71.0/255.0, alpha: 1.0), //pengguna
@@ -59,15 +60,31 @@ class MessageViewController: JSQMessagesViewController {
         
         //set margin between bubble, thus the bubble will adjust how it appear on iPad
         collectionView.collectionViewLayout.messageBubbleLeftRightMargin = 50.0
-        
         self.topContentAdditionalInset = 30
-        self.inputToolbar.isHidden = true
-        inputToolbar.contentView.leftBarButtonItem = nil
+        
         title = messageTitle
+        setupToolbar()
         setupBubbles()
         setupTitle()
         setupRoute()
         fetchMessages("1")
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidAppear), name: .UIKeyboardDidShow, object: nil)
+    }
+    
+    func keyboardDidAppear() {
+        self.scrollToBottom(animated: true)
+    }
+    
+    func setupToolbar() {
+        self.inputToolbar.delegate = self
+        self.inputToolbar.isHidden = true
+        inputToolbar.contentView.leftBarButtonItem = UIButton(frame: inputToolbar.contentView.leftBarButtonItem.frame)
+        inputToolbar.contentView.leftBarButtonItem.setImage(UIImage(named: "icon_attachment"), for: .normal)
+        inputToolbar.contentView.rightBarButtonItem.setImage(UIImage(named: "icon_send"), for: .normal)
+        inputToolbar.contentView.rightBarButtonItem.setTitle("", for: .normal)
+        inputToolbar.contentView.rightBarButtonItem.backgroundColor = UIColor(white: 1, alpha: 0)
+        inputToolbar.contentView.textView.placeHolder = " Tulis Pesan"
+        inputToolbar.contentView.backgroundColor = UIColor.white
     }
     
     fileprivate func setupRoute(){
@@ -84,8 +101,36 @@ class MessageViewController: JSQMessagesViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    //MARK: JSQMessagesInputToolbarDelegate
+    override func messagesInputToolbar(_ toolbar: JSQMessagesInputToolbar!, didPressRightBarButton sender: UIButton!) {
+        super.messagesInputToolbar(toolbar, didPressRightBarButton: sender)
+    }
+    
+    override func messagesInputToolbar(_ toolbar: JSQMessagesInputToolbar!, didPressLeftBarButton sender: UIButton!) {
+        inputToolbar.contentView.textView.resignFirstResponder()
+        let vc = ProductListMyShopViewController()
+        vc.hidesBottomBarWhenPushed = true
+        vc.data = ["auth": self.auth]
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: ProductListMyShopDelegate
+    func productSelected(withURL url: String!) {
+        var text = self.inputToolbar.contentView.textView.text!
+        text = text.trimmingCharacters(in: .whitespaces)
+        text = text + " " + url
+        text = text.trimmingCharacters(in: .whitespaces)
+        self.inputToolbar.contentView.textView.setText(text + " ")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let size = self.inputToolbar.contentView.textView.sizeThatFits(CGSize(width: self.inputToolbar.contentView.textView.frame.size.width, height: CGFloat.max))
+        let dy = size.height - self.inputToolbar.contentView.textView.frame.size.height
+        self.jsq_adjustInputToolbar(forComposerTextViewContentSizeChange: dy)
+        self.jsq_updateCollectionViewInsets()
+        self.inputToolbar.toggleSendButtonEnabled()
     }
     
     //MARK: JSQMessageDataSource

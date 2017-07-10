@@ -26,7 +26,6 @@
 
 @implementation ProductCell{
     QueueImageDownloader* imageDownloader;
-    UserAuthentificationManager *_userManager;
     NSDictionary *_auth;
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
@@ -41,10 +40,6 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [_shopLocation mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(_badgesView.mas_leading);
     }];
-    
-    _userManager = [UserAuthentificationManager new];
-    tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
-    [self setupWishlistButton];
 }
 
 - (void) setupWishlistButton {
@@ -56,11 +51,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(buttonWishlistTap:)];
     [self.setWishlistAnimationView addGestureRecognizer: tap];
     [self.contentView addSubview:self.setWishlistAnimationView];
-    [self.setWishlistAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconOvalWhite.mas_left);
-        make.top.equalTo(self.iconOvalWhite.mas_top);
-        make.size.equalTo(self.iconOvalWhite);
-    }];
+    self.setWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
     
     self.unsetWishlistAnimationView = [LOTAnimationView animationNamed:@"deactivateWishlist"];
     self.unsetWishlistAnimationView.loopAnimation = NO;
@@ -69,29 +60,29 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     self.unsetWishlistAnimationView.animationProgress = 0;
     UITapGestureRecognizer *unsetTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(buttonWishlistTap:)];
     [self.unsetWishlistAnimationView addGestureRecognizer: unsetTap];
+    self.unsetWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
     [self.contentView addSubview:self.unsetWishlistAnimationView];
-    [self.unsetWishlistAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconOvalWhite.mas_left);
-        make.top.equalTo(self.iconOvalWhite.mas_top);
-        make.size.equalTo(self.iconOvalWhite);
-    }];
-}
+    
+    [self.buttonWishlist setHidden:YES];}
 
 - (void) removeWishlistButton {
     [self.setWishlistAnimationView setHidden:YES];
     [self.unsetWishlistAnimationView setHidden:YES];
     [self.buttonWishlistExpander setHidden:YES];
     [self.iconOvalWhite setHidden:YES];
+    [self.buttonWishlist setHidden:YES];
     [self.setWishlistAnimationView removeFromSuperview];
 }
 
 - (void) setWishlistButtonState:(BOOL)isOnWishlist blockUI:(BOOL)block {
     if(isOnWishlist) {
-       [self.buttonWishlistExpander setSelected:YES];
-       [self.setWishlistAnimationView setHidden:YES];
-       [self.unsetWishlistAnimationView setHidden:NO];
+        [self.buttonWishlistExpander setSelected:YES];
+        [self.buttonWishlist setSelected:YES];
+        [self.setWishlistAnimationView setHidden:YES];
+        [self.unsetWishlistAnimationView setHidden:NO];
     } else {
         [self.buttonWishlistExpander setSelected:NO];
+        [self.buttonWishlist setSelected:NO];
         [self.setWishlistAnimationView setHidden:NO];
         [self.unsetWishlistAnimationView setHidden:YES];
     }
@@ -104,7 +95,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
-    self._viewModel = viewModel;
+    _viewModel = viewModel;
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];
     }
@@ -142,11 +133,6 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [self resetWishlistButtonAnimation];
     [self setWishlistButtonState:viewModel.isOnWishlist blockUI:NO];
     
-    UIFont *font = [UIFont largeTheme];
-    NSDictionary *attributes = @{NSFontAttributeName: font};
-    CGSize size = [viewModel.productPrice sizeWithAttributes:attributes];
-    self.productPriceLabelWidthConstraint.constant = size.width + 8;
-    
     [self.originalPriceLabel setHidden:YES];
     [self.discountView setHidden:YES];
     self.productPriceLabelTopConstraint.constant = 0;
@@ -180,8 +166,14 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
     [[AuthenticationService sharedService] ensureLoggedInFromViewController:self.parentViewController onSuccess:^{
         if(!isLoggedIn) return;
+        if(self.setWishlistAnimationView == nil) {
+            [self setupWishlistButton];
+            [self setWishlistButtonState:self.viewModel.isOnWishlist blockUI:NO];
+        }
+        else {
+            [self resetWishlistButtonAnimation];
+        }
         [self.buttonWishlistExpander setEnabled:NO];
-        [self resetWishlistButtonAnimation];
         if([self.setWishlistAnimationView isHidden]) {
             [self.unsetWishlistAnimationView playWithCompletion:^(BOOL animationFinished) {
                 if(!animationFinished) return;
@@ -213,7 +205,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
                                                                                    AFEventParamPrice : price?:@"",
                                                                                    AFEventParamContentType : @"Product",
-                                                                                   AFEventParamContentId : self._viewModel.productId,
+                                                                                   AFEventParamContentId : self.viewModel.productId,
                                                                                    AFEventParamCurrency : @"IDR",
                                                                                    AFEventParamQuantity : @(1)
                                                                                    }];
@@ -221,30 +213,31 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingDefaultError = NO;
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
-
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId:self._viewModel.productId]
+                                                   path:[self wishlistUrlPathWithProductId:self.viewModel.productId userId:[_userManager getUserId]]
                                                  method:RKRequestMethodPOST
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
                                               parameter: nil
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-            [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
+                                                  [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
                                               } onFailure:^(NSError *errorResult) {
-            [weakSelf didFailedAddWishListWithErrorResult:errorResult];
-    }];
+                                                  [weakSelf didFailedAddWishListWithErrorResult:errorResult];
+                                              }];
     [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:self._viewModel.productId];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:self.viewModel.productId];
 }
 
 -(void) didSuccessRemoveWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation{
     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil menghapus wishlist"] delegate:self.parentViewController];
     [alert show];
-    [self.delegate changeWishlistForProductId:self._viewModel.productId withStatus:NO];
+    [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:NO];
 }
 
 -(void) didSuccessAddWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation {
-    [self.delegate changeWishlistForProductId:self._viewModel.productId withStatus:YES];
+    [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:YES];
 }
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {
@@ -271,8 +264,8 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [alert show];
 }
 
-- (NSString *) wishlistUrlPathWithProductId: (NSString *)productId {
-    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", [_userManager getUserId], productId];
+- (NSString *) wishlistUrlPathWithProductId: (NSString *)productId userId:(NSString*) userId {
+    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", userId, productId];
 }
 
 - (void)setUnWishList
@@ -280,17 +273,18 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     __weak __typeof(self) weakSelf = self;
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId:self._viewModel.productId]
+                                                   path:[self wishlistUrlPathWithProductId:self.viewModel.productId userId: [_userManager getUserId]]
                                                  method:RKRequestMethodDELETE
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
                                               parameter: nil
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
-                                            } onFailure:^(NSError *errorResult) {
-        [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
-    }];
+                                                  [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
+                                              } onFailure:^(NSError *errorResult) {
+                                                  [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
+                                              }];
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {
@@ -378,7 +372,9 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [self.unsetWishlistAnimationView setHidden: YES];
     [self.iconOvalWhite setHidden:YES];
     
+    [self removeWishlistButton];
 }
+
 - (void)prepareForReuse {
     [super prepareForReuse];
     [imageDownloader cancelAllOperations];

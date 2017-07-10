@@ -44,7 +44,7 @@
         [self loadData];
     } else {
         if (self.filterType == FilterCategoryTypeSearchProduct) {
-            CategoryDetail *category = [CategoryDetail new];
+            ListOption *category = [ListOption new];
             category.categoryId = @"0";
             category.name = @"Semua Kategori";
             category.tree = @"1";
@@ -114,10 +114,10 @@
 }
 
 - (void)loadData {
-    [RequestFilterCategory fetchListFilterCategory:_rootCategoryID?:@"" success:^(NSArray<CategoryDetail *> * categories) {
+    [RequestFilterCategory fetchListFilterCategory:_rootCategoryID?:@"" success:^(NSArray<ListOption *> * categories) {
         self.initialCategories = [NSMutableArray arrayWithArray:categories];
         if (self.filterType == FilterCategoryTypeSearchProduct) {
-            CategoryDetail *category = [CategoryDetail new];
+            ListOption *category = [ListOption new];
             category.categoryId = @"0";
             category.name = @"Semua Kategori";
             category.tree = @"1";
@@ -137,10 +137,10 @@
 }
 
 - (void)showPresetCategories {
-    for (CategoryDetail *category in self.categories) {
-        for (CategoryDetail *childCategory in category.child) {
+    for (ListOption *category in self.categories) {
+        for (ListOption *childCategory in category.child) {
             childCategory.parent = category.categoryId;
-            for (CategoryDetail *lastCategory in childCategory.child) {
+            for (ListOption *lastCategory in childCategory.child) {
                 lastCategory.parent = childCategory.categoryId;
             }
         }
@@ -178,7 +178,7 @@
         cell = [[FilterCategoryViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
+    ListOption *category = [self.categories objectAtIndex:indexPath.row];
     
     cell.categoryNameLabel.text = category.name;
     
@@ -256,7 +256,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
+    ListOption *category = [self.categories objectAtIndex:indexPath.row];
     if (self.filterType == FilterCategoryTypeCategory ||
         self.filterType == FilterCategoryTypeHotlist ||
         self.filterType == FilterCategoryTypeSearchProduct) {
@@ -280,21 +280,21 @@
     [tableView reloadData];
 }
 
-- (void)selectCategory:(CategoryDetail *)category {
+- (void)selectCategory:(ListOption *)category {
     self.selectedCategory = category;
     [self expandSelectedCategories];
     [self scrollToCategory:category];
 }
 
-- (void)deselectCategory:(CategoryDetail *)selectedCategory {
+- (void)deselectCategory:(ListOption *)selectedCategory {
     self.selectedCategory = selectedCategory;
     [self collapseSelectedCategories];
     [self scrollToCategory:selectedCategory];
 }
 
-- (void)scrollToCategory:(CategoryDetail *)category {
+- (void)scrollToCategory:(ListOption *)category {
     NSInteger index = 0;
-    for (CategoryDetail *category in self.categories) {
+    for (ListOption *category in self.categories) {
         if ([self.selectedCategory isEqual:category]) {
             index = [self.categories indexOfObject:category];
         }
@@ -307,7 +307,7 @@
 - (void)expandSelectedCategories {
     [self collapseAllCategories];
     NSMutableArray *categories = [NSMutableArray new];
-    for (CategoryDetail *category in self.initialCategories) {
+    for (ListOption *category in self.initialCategories) {
         [categories addObject:category];
         if ([self.selectedCategory isEqual:category]) {
             category.isExpanded = YES;
@@ -315,14 +315,14 @@
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
             [categories insertObjects:category.child atIndexes:indexSet];
         } else {
-            for (CategoryDetail *childCategory in category.child) {
+            for (ListOption *childCategory in category.child) {
                 if ([self.selectedCategory isEqual:childCategory]) {
                     category.isExpanded = YES;
                     childCategory.isExpanded = YES;
                     categories = [self categories:categories addChildCategory:category];
                     categories = [self categories:categories addChildCategory:childCategory];
                 } else {
-                    for (CategoryDetail *lastCategory in childCategory.child) {
+                    for (ListOption *lastCategory in childCategory.child) {
                         if ([self.selectedCategory isEqual:lastCategory]) {
                             category.isExpanded = YES;
                             childCategory.isExpanded = YES;
@@ -343,7 +343,7 @@
 - (void)hidesOtherCategories {
     if (self.filterType == FilterCategoryTypeCategory) {
         NSMutableArray *deletedCategories = [NSMutableArray new];
-        for (CategoryDetail *category in self.initialCategories) {
+        for (ListOption *category in self.initialCategories) {
             if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
                 [deletedCategories addObject:category];
             }
@@ -352,7 +352,7 @@
     }
 }
 
-- (NSMutableArray *)categories:(NSMutableArray *)categories addChildCategory:(CategoryDetail *)category  {
+- (NSMutableArray *)categories:(NSMutableArray *)categories addChildCategory:(ListOption *)category  {
     NSInteger location = [categories indexOfObject:category] + 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
     [categories insertObjects:category.child atIndexes:indexSet];
@@ -361,12 +361,12 @@
 
 - (void)collapseSelectedCategories {
     NSMutableArray *categories = [NSMutableArray new];
-    for (CategoryDetail *category in self.initialCategories) {
+    for (ListOption *category in self.initialCategories) {
         [categories addObject:category];
         if ([self.selectedCategory isEqual:category]) {
             category.isExpanded = NO;
         }
-        for (CategoryDetail *childCategory in category.child) {
+        for (ListOption *childCategory in category.child) {
             if ([self.selectedCategory isEqual:childCategory]) {
                 childCategory.isExpanded = NO;
                 NSInteger location = [categories indexOfObject:category] + 1;
@@ -380,11 +380,11 @@
 }
 
 - (void)collapseAllCategories {
-    for (CategoryDetail *category in _categories) {
+    for (ListOption *category in _categories) {
         category.isExpanded = NO;
-        for (CategoryDetail *childCategory in category.child) {
+        for (ListOption *childCategory in category.child) {
             childCategory.isExpanded = NO;
-            for (CategoryDetail *lastCategory in childCategory.child) {
+            for (ListOption *lastCategory in childCategory.child) {
                 lastCategory.isExpanded = NO;
             }
         }

@@ -62,6 +62,10 @@
                .alignSelf = CKStackLayoutAlignSelfStretch,
                .flexGrow = YES
            },
+           {(order.canCancelReplacement)?[self buttonCancelReplacement]:nil,
+               .alignSelf = CKStackLayoutAlignSelfStretch,
+               .flexGrow = YES
+           },
        }]
      ];
     component -> _order = order;
@@ -95,6 +99,10 @@
 
 +(CKButtonComponent*)buttonReorder{
     return [self buttonWithTitle:@"Pesan Ulang" imageName:@"icon_pesan_ulang" action:@selector(tapReorder)];
+}
+
++(CKButtonComponent*)buttonCancelReplacement{
+    return [self buttonWithTitle:@"Batalkan Pesanan" imageName:@"icon_order_cancel" action:@selector(tapCancelReplacement)];
 }
 
 +(CKButtonComponent *)buttonWithTitle:(NSString*)title imageName:(NSString*)imageName action:(SEL)action{
@@ -166,6 +174,12 @@
 -(void)tapReorder{
     if (_context.onTapReorder){
         _context.onTapReorder(_order);
+    }
+}
+
+-(void)tapCancelReplacement{
+    if (_context.onTapCancelReplacement){
+        _context.onTapCancelReplacement(_order);
     }
 }
 

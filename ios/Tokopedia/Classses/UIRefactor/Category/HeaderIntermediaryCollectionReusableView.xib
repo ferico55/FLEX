@@ -15,11 +15,25 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="651"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRv-i9-jAv">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lzs-9N-NL8" userLabel="SliderContainer">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Oo-W8-NeV" userLabel="Slider" customClass="iCarousel">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="9Oo-W8-NeV" secondAttribute="bottom" id="JrH-lo-vi3"/>
+                        <constraint firstItem="9Oo-W8-NeV" firstAttribute="top" secondItem="Lzs-9N-NL8" secondAttribute="top" id="VKM-Zf-OpS"/>
+                        <constraint firstItem="9Oo-W8-NeV" firstAttribute="leading" secondItem="Lzs-9N-NL8" secondAttribute="leading" id="WB8-Gj-LXA"/>
+                        <constraint firstAttribute="trailing" secondItem="9Oo-W8-NeV" secondAttribute="trailing" id="ffI-T5-3xL"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRv-i9-jAv" userLabel="Header Container">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Wt-FJ-6nS">
-                            <rect key="frame" x="-200" y="0.0" width="520" height="150"/>
+                            <rect key="frame" x="-100" y="0.0" width="420" height="150"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CATEGORY TITLE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdj-Ni-dxy">
                             <rect key="frame" x="15" y="62" width="305" height="29"/>
@@ -32,7 +46,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="6Wt-FJ-6nS" firstAttribute="leading" secondItem="kRv-i9-jAv" secondAttribute="leading" constant="-200" id="CAr-GE-gQL"/>
+                        <constraint firstItem="6Wt-FJ-6nS" firstAttribute="leading" secondItem="kRv-i9-jAv" secondAttribute="leading" constant="-100" id="CAr-GE-gQL"/>
                         <constraint firstItem="xdj-Ni-dxy" firstAttribute="top" secondItem="kRv-i9-jAv" secondAttribute="top" constant="62" id="DnQ-ej-lhJ"/>
                         <constraint firstItem="6Wt-FJ-6nS" firstAttribute="top" secondItem="kRv-i9-jAv" secondAttribute="top" id="N4D-eZ-r9T"/>
                         <constraint firstAttribute="trailing" secondItem="xdj-Ni-dxy" secondAttribute="trailing" id="Utz-jh-2LH"/>
@@ -112,9 +126,13 @@
                 <constraint firstAttribute="bottom" secondItem="fPU-Np-Nrk" secondAttribute="bottom" id="6WK-lE-651"/>
                 <constraint firstAttribute="trailing" secondItem="kRv-i9-jAv" secondAttribute="trailing" id="EOs-Rb-XCw"/>
                 <constraint firstItem="sQS-Jj-0w3" firstAttribute="centerY" secondItem="3VC-oE-QcL" secondAttribute="centerY" id="Llo-ts-zjp"/>
+                <constraint firstAttribute="trailing" secondItem="Lzs-9N-NL8" secondAttribute="trailing" id="OMa-9x-IoH"/>
                 <constraint firstAttribute="trailing" secondItem="lQw-fC-BPu" secondAttribute="trailing" id="Plx-CQ-xEt"/>
+                <constraint firstItem="Lzs-9N-NL8" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="bk2-0y-HlL"/>
                 <constraint firstAttribute="trailing" secondItem="3VC-oE-QcL" secondAttribute="trailing" id="bpU-9Y-ZjP"/>
                 <constraint firstAttribute="trailing" secondItem="fPU-Np-Nrk" secondAttribute="trailing" id="cx7-e3-yig"/>
+                <constraint firstItem="Lzs-9N-NL8" firstAttribute="height" secondItem="kRv-i9-jAv" secondAttribute="height" id="dmE-gz-TbW"/>
+                <constraint firstItem="Lzs-9N-NL8" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="f6S-K8-eRM"/>
                 <constraint firstItem="fPU-Np-Nrk" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="hP6-2Q-QaH"/>
                 <constraint firstItem="sQS-Jj-0w3" firstAttribute="top" secondItem="3VC-oE-QcL" secondAttribute="top" id="ltH-OM-oqx"/>
                 <constraint firstItem="kRv-i9-jAv" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="o2R-dE-88g"/>
@@ -127,11 +145,14 @@
             <connections>
                 <outlet property="collectionView" destination="fPU-Np-Nrk" id="K2h-CN-ogP"/>
                 <outlet property="collectionViewHeightConstraint" destination="MUv-tG-euI" id="mN6-qK-0kJ"/>
+                <outlet property="headerContainer" destination="kRv-i9-jAv" id="fZq-2Z-6Qn"/>
                 <outlet property="headerImageView" destination="6Wt-FJ-6nS" id="6qW-Qq-tTp"/>
                 <outlet property="headerTitleLabel" destination="xdj-Ni-dxy" id="keV-dM-OtW"/>
                 <outlet property="headerViewHeightConstraint" destination="h47-un-C6W" id="3o2-Ne-4kc"/>
                 <outlet property="infoButton" destination="3VC-oE-QcL" id="2PM-NX-1tn"/>
                 <outlet property="promotedLabelHHeightConstraint" destination="le6-1T-pMN" id="y8g-Zm-AcK"/>
+                <outlet property="slider" destination="9Oo-W8-NeV" id="XHy-c9-BvX"/>
+                <outlet property="sliderContainer" destination="Lzs-9N-NL8" id="g8Y-ey-d9e"/>
                 <outlet property="subCategoryView" destination="lQw-fC-BPu" id="GNp-lq-ADC"/>
             </connections>
             <point key="canvasLocation" x="99" y="320.5"/>

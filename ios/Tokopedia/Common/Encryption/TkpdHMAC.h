@@ -39,6 +39,11 @@
                         path:(NSString*)path
                    parameter:(NSDictionary*)parameter;
 
+- (void)signatureWithBaseUrlWallet:(NSString*)url
+                           method:(NSString*)method
+                             path:(NSString*)path
+                        parameter:(NSDictionary*)parameter;
+
 - (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 
 @end

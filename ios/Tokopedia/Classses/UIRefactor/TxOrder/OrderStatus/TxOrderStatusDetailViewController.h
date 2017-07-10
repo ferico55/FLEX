@@ -17,6 +17,7 @@
 @property (nonatomic, copy) void(^didReceivedOrder)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^didComplaint)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^didRequestCancel)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^didCancelReplacement)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^didCancelComplaint)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^didCreateComplaint)(TxOrderStatusList *);
 

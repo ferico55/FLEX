@@ -11,7 +11,7 @@
 @implementation PulsaTweaks
 
 + (BOOL)shouldCacheRequest {
-    return FBTweakValue(@"Pulsa", @"Cache", @"Always cache pulsa request", YES);
+    return FBTweakValue(@"Others", @"Pulsa", @"Always cache pulsa request", YES);
 }
 
 @end

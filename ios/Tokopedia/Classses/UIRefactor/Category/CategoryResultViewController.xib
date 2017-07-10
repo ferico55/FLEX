@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -272,7 +272,7 @@
                                 <constraint firstAttribute="height" constant="22" id="4YF-dd-otu"/>
                                 <constraint firstAttribute="width" constant="22" id="9yd-cL-iKz"/>
                             </constraints>
-                            <state key="normal" image="icon_share.png">
+                            <state key="normal" image="icon_share">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -668,7 +668,7 @@
         <image name="icon_filter.png" width="30" height="30"/>
         <image name="icon_grid_dua.png" width="30" height="30"/>
         <image name="icon_oval" width="7" height="7"/>
-        <image name="icon_share.png" width="30" height="30"/>
+        <image name="icon_share" width="16" height="16"/>
         <image name="icon_urutkan.png" width="30" height="30"/>
         <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>

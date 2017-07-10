@@ -54,7 +54,7 @@ import UIKit
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductDataSource.productCellIdentifier, for: indexPath) as! ProductCell
         
         let product = _products[indexPath.section][indexPath.row]
-        cell.setViewModel(product.viewModel)
+        cell.viewModel = product.viewModel
         cell.removeWishlistButton()
         return cell
     }

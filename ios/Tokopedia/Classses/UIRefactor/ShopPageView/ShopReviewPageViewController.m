@@ -523,7 +523,13 @@
     ProductReputationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationTableViewCellIdentifier"];
     cell.viewModel = list.viewModel;
     cell.onTapProductName = ^(NSString *productName, NSString *productID){
-        [NavigateViewController navigateToProductFromViewController:weakSelf withName:productName withPrice:nil withId:productID withImageurl:nil withShopName:nil];
+        
+        [NavigateViewController navigateToProductFromViewController:weakSelf
+                                                      withProductID:productID
+                                                            andName:productName
+                                                           andPrice:nil
+                                                        andImageURL:nil
+                                                        andShopName:nil];
     };
     
     return cell;

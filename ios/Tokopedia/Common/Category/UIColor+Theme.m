@@ -9,11 +9,19 @@
 #import "UIColor+Theme.h"
 
 @implementation UIColor (Theme)
-    
+
+    +(UIColor *)tpNavigationBar{
+        return [UIColor fromHexString:@"#42BD41"];
+    }
+
     +(UIColor *)tpGreen{
         return [UIColor fromHexString:@"#42b549"];
     }
-    
+
+    +(UIColor *)tpLightGreen{
+        return [[UIColor fromHexString:@"#42b549"] colorWithAlphaComponent:0.5];
+    }
+
     +(UIColor *)tpOrange{
         return [UIColor fromHexString:@"#ff5732"];
     }

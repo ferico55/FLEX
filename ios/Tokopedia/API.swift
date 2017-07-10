@@ -52,13 +52,18 @@ public final class FeedDetailQuery: GraphQLQuery {
     "          rating" +
     "        }" +
     "        status_activity" +
+    "        new_status_activity {" +
+    "          __typename" +
+    "          source" +
+    "          activity" +
+    "          amount" +
+    "        }" +
     "      }" +
     "      meta {" +
     "        __typename" +
     "        has_next_page" +
     "      }" +
     "    }" +
-    "    token" +
     "  }" +
     "}"
 
@@ -86,12 +91,10 @@ public final class FeedDetailQuery: GraphQLQuery {
     public struct Feed: GraphQLMappable {
       public let __typename: String
       public let data: [Datum?]?
-      public let token: String?
 
       public init(reader: GraphQLResultReader) throws {
         __typename = try reader.value(for: Field(responseName: "__typename"))
         data = try reader.optionalList(for: Field(responseName: "data"))
-        token = try reader.optionalValue(for: Field(responseName: "token"))
       }
 
       public struct Datum: GraphQLMappable {
@@ -159,6 +162,7 @@ public final class FeedDetailQuery: GraphQLQuery {
           public let totalProduct: Int?
           public let products: [Product?]?
           public let statusActivity: String?
+          public let newStatusActivity: NewStatusActivity?
 
           public init(reader: GraphQLResultReader) throws {
             __typename = try reader.value(for: Field(responseName: "__typename"))
@@ -166,6 +170,7 @@ public final class FeedDetailQuery: GraphQLQuery {
             totalProduct = try reader.optionalValue(for: Field(responseName: "total_product"))
             products = try reader.optionalList(for: Field(responseName: "products"))
             statusActivity = try reader.optionalValue(for: Field(responseName: "status_activity"))
+            newStatusActivity = try reader.optionalValue(for: Field(responseName: "new_status_activity"))
           }
 
           public struct Product: GraphQLMappable {
@@ -209,6 +214,20 @@ public final class FeedDetailQuery: GraphQLQuery {
               }
             }
           }
+
+          public struct NewStatusActivity: GraphQLMappable {
+            public let __typename: String
+            public let source: String?
+            public let activity: String?
+            public let amount: Int?
+
+            public init(reader: GraphQLResultReader) throws {
+              __typename = try reader.value(for: Field(responseName: "__typename"))
+              source = try reader.optionalValue(for: Field(responseName: "source"))
+              activity = try reader.optionalValue(for: Field(responseName: "activity"))
+              amount = try reader.optionalValue(for: Field(responseName: "amount"))
+            }
+          }
         }
 
         public struct Metum: GraphQLMappable {
@@ -227,7 +246,7 @@ public final class FeedDetailQuery: GraphQLQuery {
 
 public final class FeedsQuery: GraphQLQuery {
   public static let operationDefinition =
-    "query Feeds($userID: Int!, $limit: Int!, $cursor: String) {" +
+    "query Feeds($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {" +
     "  feed(limit: $limit, cursor: $cursor, userID: $userID) {" +
     "    __typename" +
     "    data {" +
@@ -289,6 +308,12 @@ public final class FeedsQuery: GraphQLQuery {
     "          min_transcation" +
     "        }" +
     "        status_activity" +
+    "        new_status_activity {" +
+    "          __typename" +
+    "          source" +
+    "          activity" +
+    "          amount" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -302,29 +327,56 @@ public final class FeedsQuery: GraphQLQuery {
     "      __typename" +
     "      total_data" +
     "    }" +
-    "    token" +
+    "  }" +
+    "  inspiration(userID: $userID, page: $page) {" +
+    "    __typename" +
+    "    data {" +
+    "      __typename" +
+    "      source" +
+    "      title" +
+    "      foreign_title" +
+    "      pagination {" +
+    "        __typename" +
+    "        current_page" +
+    "        next_page" +
+    "        prev_page" +
+    "      }" +
+    "      recommendation {" +
+    "        __typename" +
+    "        id" +
+    "        name" +
+    "        url" +
+    "        app_url" +
+    "        image_url" +
+    "        price" +
+    "      }" +
+    "    }" +
     "  }" +
     "}"
 
   public let userId: Int
   public let limit: Int
   public let cursor: String?
+  public let page: Int
 
-  public init(userId: Int, limit: Int, cursor: String? = nil) {
+  public init(userId: Int, limit: Int, cursor: String? = nil, page: Int) {
     self.userId = userId
     self.limit = limit
     self.cursor = cursor
+    self.page = page
   }
 
   public var variables: GraphQLMap? {
-    return ["userID": userId, "limit": limit, "cursor": cursor]
+    return ["userID": userId, "limit": limit, "cursor": cursor, "page": page]
   }
 
   public struct Data: GraphQLMappable {
     public let feed: Feed?
+    public let inspiration: Inspiration?
 
     public init(reader: GraphQLResultReader) throws {
       feed = try reader.optionalValue(for: Field(responseName: "feed", arguments: ["limit": reader.variables["limit"], "cursor": reader.variables["cursor"], "userID": reader.variables["userID"]]))
+      inspiration = try reader.optionalValue(for: Field(responseName: "inspiration", arguments: ["userID": reader.variables["userID"], "page": reader.variables["page"]]))
     }
 
     public struct Feed: GraphQLMappable {
@@ -332,14 +384,12 @@ public final class FeedsQuery: GraphQLQuery {
       public let data: [Datum?]?
       public let links: Link?
       public let meta: Metum?
-      public let token: String?
 
       public init(reader: GraphQLResultReader) throws {
         __typename = try reader.value(for: Field(responseName: "__typename"))
         data = try reader.optionalList(for: Field(responseName: "data"))
         links = try reader.optionalValue(for: Field(responseName: "links"))
         meta = try reader.optionalValue(for: Field(responseName: "meta"))
-        token = try reader.optionalValue(for: Field(responseName: "token"))
       }
 
       public struct Datum: GraphQLMappable {
@@ -406,6 +456,7 @@ public final class FeedsQuery: GraphQLQuery {
           public let products: [Product?]?
           public let promotions: [Promotion?]?
           public let statusActivity: String?
+          public let newStatusActivity: NewStatusActivity?
 
           public init(reader: GraphQLResultReader) throws {
             __typename = try reader.value(for: Field(responseName: "__typename"))
@@ -414,6 +465,7 @@ public final class FeedsQuery: GraphQLQuery {
             products = try reader.optionalList(for: Field(responseName: "products"))
             promotions = try reader.optionalList(for: Field(responseName: "promotions"))
             statusActivity = try reader.optionalValue(for: Field(responseName: "status_activity"))
+            newStatusActivity = try reader.optionalValue(for: Field(responseName: "new_status_activity"))
           }
 
           public struct Product: GraphQLMappable {
@@ -487,6 +539,20 @@ public final class FeedsQuery: GraphQLQuery {
               minTranscation = try reader.value(for: Field(responseName: "min_transcation"))
             }
           }
+
+          public struct NewStatusActivity: GraphQLMappable {
+            public let __typename: String
+            public let source: String?
+            public let activity: String?
+            public let amount: Int?
+
+            public init(reader: GraphQLResultReader) throws {
+              __typename = try reader.value(for: Field(responseName: "__typename"))
+              source = try reader.optionalValue(for: Field(responseName: "source"))
+              activity = try reader.optionalValue(for: Field(responseName: "activity"))
+              amount = try reader.optionalValue(for: Field(responseName: "amount"))
+            }
+          }
         }
       }
 
@@ -517,6 +583,68 @@ public final class FeedsQuery: GraphQLQuery {
         public init(reader: GraphQLResultReader) throws {
           __typename = try reader.value(for: Field(responseName: "__typename"))
           totalData = try reader.optionalValue(for: Field(responseName: "total_data"))
+        }
+      }
+    }
+
+    public struct Inspiration: GraphQLMappable {
+      public let __typename: String
+      public let data: [Datum?]?
+
+      public init(reader: GraphQLResultReader) throws {
+        __typename = try reader.value(for: Field(responseName: "__typename"))
+        data = try reader.optionalList(for: Field(responseName: "data"))
+      }
+
+      public struct Datum: GraphQLMappable {
+        public let __typename: String
+        public let source: String?
+        public let title: String?
+        public let foreignTitle: String?
+        public let pagination: Pagination?
+        public let recommendation: [Recommendation?]?
+
+        public init(reader: GraphQLResultReader) throws {
+          __typename = try reader.value(for: Field(responseName: "__typename"))
+          source = try reader.optionalValue(for: Field(responseName: "source"))
+          title = try reader.optionalValue(for: Field(responseName: "title"))
+          foreignTitle = try reader.optionalValue(for: Field(responseName: "foreign_title"))
+          pagination = try reader.optionalValue(for: Field(responseName: "pagination"))
+          recommendation = try reader.optionalList(for: Field(responseName: "recommendation"))
+        }
+
+        public struct Pagination: GraphQLMappable {
+          public let __typename: String
+          public let currentPage: Int?
+          public let nextPage: Int?
+          public let prevPage: Int?
+
+          public init(reader: GraphQLResultReader) throws {
+            __typename = try reader.value(for: Field(responseName: "__typename"))
+            currentPage = try reader.optionalValue(for: Field(responseName: "current_page"))
+            nextPage = try reader.optionalValue(for: Field(responseName: "next_page"))
+            prevPage = try reader.optionalValue(for: Field(responseName: "prev_page"))
+          }
+        }
+
+        public struct Recommendation: GraphQLMappable {
+          public let __typename: String
+          public let id: GraphQLID?
+          public let name: String?
+          public let url: String?
+          public let appUrl: String?
+          public let imageUrl: String?
+          public let price: String?
+
+          public init(reader: GraphQLResultReader) throws {
+            __typename = try reader.value(for: Field(responseName: "__typename"))
+            id = try reader.optionalValue(for: Field(responseName: "id"))
+            name = try reader.optionalValue(for: Field(responseName: "name"))
+            url = try reader.optionalValue(for: Field(responseName: "url"))
+            appUrl = try reader.optionalValue(for: Field(responseName: "app_url"))
+            imageUrl = try reader.optionalValue(for: Field(responseName: "image_url"))
+            price = try reader.optionalValue(for: Field(responseName: "price"))
+          }
         }
       }
     }

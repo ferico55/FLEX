@@ -58,6 +58,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         self.tableView!.allowsMultipleSelection = true
         self.tableView!.reloadData()
+        
     }
     
     func reloadDataAfterFilter() {
@@ -87,36 +88,19 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         var cell:UITableViewCell = UITableViewCell()
         
-        let item : ListOption = self.item(indexPath.row)
+        let item = self.items(at: indexPath.row)
         
-        if item.input_type == self.checkmarType() as String {
-            cell = FilterTableViewCell(style: .default, reuseIdentifier: "cellCheckmark")
-            (cell as! FilterTableViewCell).label.text =  item.name
-            (cell as! FilterTableViewCell).disableSelected = false
-            (cell as! FilterTableViewCell).setPading(10)
-            for selected in selectedObjects {
-                if selected.value == item.value && selected.key == item.key {
-                    item.isSelected = true
-                    tableView .selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
-                }
-            }
-            
-            let customColorView = UIView()
-            customColorView.backgroundColor = UIColor.white
-            cell.selectedBackgroundView =  customColorView;
-        }
-        if item.input_type == self.textInputType() as String {
+        if item.input_type == self.textInputType() {
             cell = TextFieldCell(style: .default, reuseIdentifier: "cellTextField")
             (cell as! TextFieldCell).titleLabel.text = item.name
             
             for selected in selectedObjects {
                 if selected.key == item.key {
-                    
-                    if Int(selected.value) == 0 {
+                    if Int(selected.value!) == 0 {
                         selected.value = ""
                     }
                     (cell as! TextFieldCell).textField.text = selected.value
-                    break;
+                    break
                 } else {
                     (cell as! TextFieldCell).textField.text = ""
                 }
@@ -126,37 +110,91 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             (cell as! TextFieldCell).textField.delegate = self
             
             cell.selectionStyle = .none
+        } else {
+            cell = FilterTableViewCell(style: .default, reuseIdentifier: "cell")
+            
+            if let _ = item.child {
+                (cell as! FilterTableViewCell).disableSelected = true
+                if item.isExpanded {
+                    (cell as! FilterTableViewCell).setArrowDirection(.up)
+                } else {
+                    (cell as! FilterTableViewCell).setArrowDirection(.down)
+                }
+            } else {
+                (cell as! FilterTableViewCell).disableSelected = false
+            }
+            
+            let tree = Int(item.tree)!
+            (cell as! FilterTableViewCell).setPading(CGFloat(tree) * 20)
+            
+            (cell as! FilterTableViewCell).label.text = item.name
+            
+            let customColorView = UIView()
+            customColorView.backgroundColor = UIColor.clear
+            cell.selectedBackgroundView =  customColorView;
+            cell.bringSubview(toFront: cell.selectedBackgroundView!)
         }
-        
         return cell
     }
     
-    func textInputType() -> NSString {
+    func textInputType() -> String {
         return "textbox"
     }
     
-    func checkmarType() -> NSString {
+    func checkmarType() -> String {
         return "checkbox"
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let item : ListOption = self.item(indexPath.row)
+        let item = self.items(at: indexPath.row)
         
-        if item.input_type != textInputType() as String {
-            if item.isSelected {
-                item.isSelected = false
-                self.tableView!.deselectRow(at: indexPath, animated: false)
-                for (index, selected) in selectedObjects.enumerated() {
-                    if selected == item{
-                        selectedObjects.remove(at: index)
-                    }
+        guard item.input_type != textInputType() else { return }
+        
+        let cell:FilterTableViewCell = tableView.cellForRow(at: indexPath) as! FilterTableViewCell
+
+        if item.child != nil && item.input_type != textInputType(){
+            if item.isExpanded == true {
+                self.doCollapseItem(item)
+            } else {
+                self.doExpandItem(item)
+            }
+        } else {
+            if self.isMultipleSelect{
+                item.isSelected = !item.isSelected
+                if item.isSelected == false {
+                    self.tableView?.deselectRow(at: indexPath, animated: false)
+                    selectedObjects = selectedObjects.filter({ $0 != item })
+                } else {
+                    selectedObjects.append(item)
                 }
             } else{
-                item.isSelected = true
-                selectedObjects.append(item)
+                item.isSelected = self.isSelectedCategory(item)
+                item.isSelected = !item.isSelected
+                if selectedObjects.count > 0 {
+                    let selectedItem :ListOption = self.selectedObjects.first!
+                    for (index, itemShow) in self.items.enumerated() {
+                        if selectedItem == itemShow {
+                            selectedObjects.removeAll()
+                            self.tableView?.beginUpdates()
+                            self.tableView?.reloadRows(at:[IndexPath(row: index, section: 0)], with: .none)
+                            self.tableView?.endUpdates()
+                        }
+                    }
+                }
+                if item.isSelected == true {
+                    selectedObjects.append(item)
+                    cell.setSelected(true, animated: false)
+                }
             }
+            
             completionHandler(selectedObjects)
+        }
+    
+        if item.isExpanded {
+            cell.setArrowDirection(.up)
+        } else {
+            cell.setArrowDirection(.down)
         }
     }
     
@@ -171,8 +209,8 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         return self.searchBar;
     }
     
-    fileprivate func item(_ index:Int) -> ListOption {
-        var item : ListOption = items[index]
+    fileprivate func items(at index:Int) -> ListOption {
+        var item = items[index]
         
         if(searchActive){
             if searchBar.text == "" {
@@ -189,9 +227,9 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let item : ListOption = self.item(indexPath.row)
+        let item = self.items(at: indexPath.row)
         
-        if item.input_type == self.textInputType() as String {
+        if item.input_type == self.textInputType() {
             return 55
         } else {
             return 44
@@ -251,6 +289,8 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         self.tableView!.insertRows(at: indexPaths, with: .automatic)
         self.tableView!.endUpdates()
         
+        expandSelectedItem()
+
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -260,7 +300,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         
-        let item : ListOption = self.item(textField.tag)
+        let item = self.items(at: textField.tag)
         
         let selectedObject = item.copy() as! ListOption
         selectedObject.value = "\(newString)"
@@ -281,6 +321,136 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     func resetSelectedFilter() -> Void {
         selectedObjects = []
         items.forEach({$0.isSelected = false})
+    }
+    
+    fileprivate var lastSelectedIndexPath : IndexPath?
+    fileprivate var refreshControl : UIRefreshControl = UIRefreshControl()
+    fileprivate var rootCategoryID :String = ""
+    fileprivate var isMultipleSelect : Bool = true
+
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let option = self.items(at: indexPath.row)
+        if self.selectedObjects.contains(option) {
+            cell.setSelected(true, animated: false)
+        }
+    }
+    
+    func isSelectedCategory(_ category:ListOption) -> Bool {
+        if self.selectedObjects.contains(category) {
+            return true
+        } else  {
+            return false
+        }
+    }
+    
+    func doExpandItem(_ selectedItem:(ListOption)) {
+        for item in self.items {
+            if selectedItem.value == item.value{
+                self.expand(selectedItem, initItem: item)
+            } else  {
+                for childItem in item.child ?? [] {
+                    if selectedItem.value == childItem.value {
+                        self.expand(selectedItem, initItem: childItem)
+                    }
+                }
+            }
+        }
+    }
+    
+    func expand(_ selectedItem:(ListOption), initItem:(ListOption)) {
+        if selectedItem.value == initItem.value {
+            initItem.isExpanded = true
+            
+            let location : Int  = self.items.index(of: initItem)! + 1
+            var indexPaths : [IndexPath] = []
+            
+            self.tableView?.beginUpdates()
+            initItem.child?.forEach { child in
+                let index = initItem.child?.index(of: child) ?? 0
+                child.isExpanded = false
+                if !self.items.contains(child) {
+                    self.items.insert(child, at: location + index)
+                    indexPaths.append(IndexPath(row:location+index , section: 0))
+                }
+            }
+            tableView?.insertRows(at: indexPaths, with: .automatic)
+            tableView?.endUpdates()
+        }
+    }
+    
+    func doCollapseItem(_ selectedItem:(ListOption)) {
+        selectedItem.isExpanded = false
+        for (index,item) in self.items.enumerated() where item.parent == selectedItem.value {
+            
+            self.tableView?.beginUpdates()
+            items.remove(at: index)
+            self.tableView?.deleteRows(at: [IndexPath(row:index , section: 0)], with: .automatic)
+            self.tableView?.endUpdates()
+            self.doCollapseItem(item)
+            self.doCollapseItem(selectedItem)
+            break
+            
+        }
+    }
+    
+    func expandSelectedItem(){
+        for item in self.items {
+            for selectedItem in selectedObjects {
+                if selectedItem.isEqual(item) {
+                    item.isSelected = true
+                    item.isExpanded = true
+                } else {
+                    self.expandChildItem(item)
+                }
+            }
+        }
+    }
+    
+    func expandChildItem(_ item:(ListOption)) {
+        guard let childs = item.child else { return }
+        for childItem in childs {
+            for selectedItem in selectedObjects {
+                if childItem.isEqual(selectedItem) {
+                    childItem.isSelected = true
+                    self.addItemChild(item)
+                } else {
+                    self.expandLastItem(childItem, parentItem: item)
+                }
+            }
+        }
+    }
+    
+    func expandLastItem(_ item:(ListOption), parentItem:(ListOption)) {
+        guard let childs = item.child else { return }
+        for lastItem in childs {
+            for selectedItem in selectedObjects {
+                if lastItem.isEqual(selectedItem){
+                    lastItem.isSelected = true
+                    self.addItemChild(parentItem)
+                    self.addItemChild(item)
+                }
+            }
+        }
+    }
+    
+    func addItemChild(_ parentItem:(ListOption)) {
+        parentItem.isExpanded = true
+        
+        let location : Int  = self.items.index(of: parentItem)! + 1
+        var indexPaths : [IndexPath] = []
+        self.tableView?.beginUpdates()
+        parentItem.child?.forEach { child in
+            let index = parentItem.child?.index(of: child) ?? 0
+            if self.items.contains(child) == false {
+                child.isExpanded = false
+                self.items.insert(child, at: location + index)
+                indexPaths.append(IndexPath(row:location+index , section: 0))
+            }
+        }
+        tableView?.insertRows(at: indexPaths, with: .automatic)
+        tableView?.endUpdates()
     }
 
 }

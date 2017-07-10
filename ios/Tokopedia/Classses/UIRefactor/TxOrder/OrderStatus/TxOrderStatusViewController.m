@@ -291,8 +291,48 @@
             [weakSelf tapAskSellerOrder:order];
         };
         
+        [_dataManager context].onTapCancelReplacement = ^(TxOrderStatusList *order){
+            [weakSelf tapCancelReplacement:order];
+        };
+        
     }
     return _dataManager;
+}
+
+-(void)tapCancelReplacement:(TxOrderStatusList *)order {
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Batalkan Pesanan"
+                                  message:@"Apakah Anda ingin melakukan pembatalan pesanan ?"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) wself = self;
+    
+    UIAlertAction* yes = [UIAlertAction
+                          actionWithTitle:@"Ya"
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              [wself doRequestCancelReplacementOrder:order];
+                              
+                          }];
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Tidak"
+                             style:UIAlertActionStyleCancel
+                             handler:nil];
+    
+    [alert addAction:yes];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)doRequestCancelReplacementOrder:(TxOrderStatusList *)order {
+    __weak typeof(self) wself = self;
+    [RequestOrderAction cancelReplacementOrderId:order.order_detail.detail_order_id onSuccess:^{
+        [wself refreshRequest];
+    }];
 }
 
 -(void)tapAskSellerOrder:(TxOrderStatusList *)order{
@@ -615,6 +655,9 @@
         [weakSelf refreshRequest];
     };
     detail.didCreateComplaint = ^(TxOrderStatusList *order){
+        [weakSelf refreshRequest];
+    };
+    detail.didCancelReplacement = ^(TxOrderStatusList *order){
         [weakSelf refreshRequest];
     };
     

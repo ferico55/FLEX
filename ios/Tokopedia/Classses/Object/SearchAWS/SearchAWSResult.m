@@ -35,10 +35,10 @@
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]];
     [resultMapping addPropertyMapping:pageRel];
     
-    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:[CategoryDetail mapping]];
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:[ListOption mapping]];
     [resultMapping addPropertyMapping:categoryRelationship];
 
-    RKRelationshipMapping *categoriesRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:[CategoryDetail mapping]];
+    RKRelationshipMapping *categoriesRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:[ListOption mapping]];
     [resultMapping addPropertyMapping:categoriesRelationship];
 
     return resultMapping;

@@ -13,6 +13,7 @@
 #import <BlocksKit/BlocksKit.h>
 #import "NSArray+BlocksKit.h"
 #import "RejectOrderRequest.h"
+#import "string_alert.h"
 
 @interface RejectReasonCloseShopViewController ()<TKPDAlertViewDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;

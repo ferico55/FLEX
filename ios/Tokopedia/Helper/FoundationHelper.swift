@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RxSwift
 
 extension NSDate {
     static func convertDateString(_ string: String, fromFormat format1: String, toFormat format2: String ) -> String{
@@ -52,7 +51,9 @@ extension String {
         let stringArray = self.components(separatedBy: delimiter)
         let nsString = self as NSString
         for boldString in stringArray.suffix(num) {
-            attributedString.addAttributes(boldFontAttribute, range: nsString.range(of: boldString))
+            let delCharSet = CharacterSet(charactersIn: "(.)")
+            let trimedString = boldString.trimmingCharacters(in: delCharSet)
+            attributedString.addAttributes(boldFontAttribute, range: nsString.range(of: trimedString))
         }
         
         return attributedString
@@ -146,21 +147,16 @@ extension Collection where Indices.Iterator.Element == Index {
     }
 }
 
-extension UIScrollView {
-    var rx_reachedBottom: Observable<Void> {
-        return rx.contentOffset
-            .debounce(0.025, scheduler: MainScheduler.instance)
-            .flatMap { [weak self] contentOffset -> Observable<Void> in
-                guard let scrollView = self else {
-                    return Observable.empty()
-                }
-                
-                let visibleHeight = scrollView.frame.height - scrollView.contentInset.top - scrollView.contentInset.bottom
-                let y = contentOffset.y + scrollView.contentInset.top
-                let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
-                
-                return y > threshold ? Observable.just() : Observable.empty()
-        }
-        
+extension Dictionary {
+    
+    mutating func merge(with dictionary: Dictionary) {
+        dictionary.forEach { updateValue($1, forKey: $0) }
+    }
+    
+    func merged(with dictionary: Dictionary) -> Dictionary {
+        var dict = self
+        dict.merge(with: dictionary)
+        return dict
     }
 }
+

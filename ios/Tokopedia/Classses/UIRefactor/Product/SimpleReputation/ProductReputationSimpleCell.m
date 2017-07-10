@@ -225,8 +225,12 @@
 }
 
 - (IBAction)tapProduct:(id)sender {
-    NavigateViewController *navigator = [[NavigateViewController alloc] init];
-    [navigator navigateToProductFromViewController:_delegate withName:_productName withPrice:nil withId:_productID withImageurl:_productImage withShopName:nil];
+    [NavigateViewController navigateToProductFromViewController:_delegate
+                                                  withProductID:_productID
+                                                        andName:_productName
+                                                       andPrice:nil
+                                                    andImageURL:_productImage
+                                                    andShopName:nil];
 }
 
 #pragma mark - TTTAttributedLabel Delegate

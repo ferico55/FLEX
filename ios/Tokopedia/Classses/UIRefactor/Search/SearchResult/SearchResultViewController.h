@@ -12,7 +12,7 @@
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
-- (void)updateTabCategory:(CategoryDetail *)category;
+- (void)updateTabCategory:(ListOption *)category;
 - (void)updateCategories:(NSArray *)categories;
 
 @end

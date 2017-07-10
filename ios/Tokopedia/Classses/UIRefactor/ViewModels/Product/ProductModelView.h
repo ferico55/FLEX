@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Errors.h"
-
+@class Errors;
 @class ProductPreorder;
 @interface ProductModelView : NSObject
 

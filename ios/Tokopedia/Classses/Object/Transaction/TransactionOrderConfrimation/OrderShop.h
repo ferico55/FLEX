@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderShop : NSObject <TKPObjectMapping>
+@interface OrderShop : NSObject
 
 @property (nonatomic, strong) NSString *shop_uri;
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
 
 @property (nonatomic, strong) NSString *shop_pic;
+
++(RKObjectMapping*)mapping;
 
 @end

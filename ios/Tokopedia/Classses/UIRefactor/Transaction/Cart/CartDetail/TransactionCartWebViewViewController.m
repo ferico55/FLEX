@@ -17,6 +17,7 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>
 #import "PurchaseViewController.h"
+#import "UIBarButtonItem+BlocksKit.h"
 
 @interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
 {
@@ -45,14 +46,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-    
-    if ([self isModal]) {
-        self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    }
+
+    __weak typeof(self) wself = self;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                             bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
+                                             style:UIBarButtonItemStylePlain
+                                             handler:^(id sender) {
+                                                 [wself.navigationController popViewControllerAnimated:YES];
+                                             }];
     
     _isAlertShow = NO;
     [self loadRequest];
@@ -111,8 +112,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
             [_delegate shouldDoRequestTopPayThxCode:paymentID toppayParam:_toppayParam];
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            PurchaseViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
+            PurchaseViewController *vc = [PurchaseViewController new];;
             [vc setHidesBottomBarWhenPushed:YES];
             UINavigationController *controller = self.navigationController;
             NSMutableArray *controllers=[[NSMutableArray alloc] initWithArray:controller.viewControllers] ;
@@ -124,6 +124,7 @@
         }
         return NO;
     }
+    
     return YES;
 }
 
@@ -142,49 +143,29 @@
     
     return [dictionary copy];
 }
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
+-(void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
     NSLog(@"html String WebView %@", html);
     NSLog(@"URL webViewDidFinishLoad: %@", webView.request.URL.absoluteString);
 
+    __weak typeof(self) wself = self;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                             bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
+                                             style:UIBarButtonItemStylePlain
+                                             handler:^(id sender) {
+                                                 if(![webView.request.URL.host isEqualToString:@"pay.tokopedia.com"]) {
+                                                    [wself.navigationController popViewControllerAnimated:YES];
+                                                 } else {
+                                                     [wself.webView stringByEvaluatingJavaScriptFromString:@"handlePop()"];
+                                                 }
+                                             }];
+
 }
 
--(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [webView stopLoading];
-    NSString *errorMessage ;
-    
-    NSLog(@"%@", error.localizedDescription);
-    
-    if (error.code==-1009) {
-        errorMessage = [NSString stringWithFormat:@"Tidak ada koneksi internet\n%@",error.localizedDescription];
-    } else {
-        errorMessage = [NSString stringWithFormat:@"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.\n%@",error.localizedDescription];
-    }
-    
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     [AnalyticsManager trackExceptionDescription:[NSString stringWithFormat:@"Payment ID: %@, User ID: %@, Gateway ID: %@, Error Description: %@, URL: %@", _paymentID?:@"", [userManager getUserId]?:@"", _gateway?:@"", error.localizedDescription?:@"", webView.request.URL.absoluteString?:@""]];
-    
-    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    if (!_isAlertShow) {
-        _isAlertShow = YES;
-        errorAlert.tag = 11;
-        [errorAlert show];
-    }
 }
-
-
--(IBAction)tap:(id)sender
-{
-    UIBarButtonItem *button = (UIBarButtonItem*)sender;
-    if (button.tag == TAG_BAR_BUTTON_TRANSACTION_BACK) {
-        UIAlertView *alertCancel = [[UIAlertView alloc]initWithTitle:nil message:@"Apakah Anda yakin ingin membatalkan transaksi pembayaran Anda?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-        [alertCancel show];
-    }
-    
-}
-
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

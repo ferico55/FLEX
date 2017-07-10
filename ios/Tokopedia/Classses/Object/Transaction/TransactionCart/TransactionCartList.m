@@ -7,6 +7,7 @@
 //
 
 #import "TransactionCartList.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TransactionCartList
 

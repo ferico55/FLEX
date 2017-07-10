@@ -105,7 +105,7 @@ static NSString const *rows = @"12";
     NSIndexPath *_sortIndexPath;
     
     NSArray *_initialCategories;
-    CategoryDetail *_selectedCategory;
+    ListOption *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
     
     
@@ -114,7 +114,7 @@ static NSString const *rows = @"12";
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
-    NSArray<CategoryDetail*> *_selectedCategories;
+    NSArray<ListOption*> *_selectedCategories;
     
     NSString *_rootCategoryID;
 }
@@ -160,10 +160,6 @@ static NSString const *rows = @"12";
 - (void) viewDidLoad {
     [super viewDidLoad];
     _page = 0;
-        
-    if (![self isUseDynamicFilter]) {
-        [self setRightButton];
-    }
     
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
     _requestHotlistManager.isParameterNotEncrypted = YES;
@@ -292,11 +288,6 @@ static NSString const *rows = @"12";
     [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
 }
 
-- (void)setRightButton {
-    UIImage* image = [UIImage imageNamed:@"icon_category_list_white.png"];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(didTapFilterSubCategoryButton)];
-}
-
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [Localytics triggerInAppMessage:@"Hot List Result Screen"];
@@ -306,14 +297,6 @@ static NSString const *rows = @"12";
 #pragma mark - Memory Management
 -(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 
@@ -330,11 +313,7 @@ static NSString const *rows = @"12";
 }
 
 - (IBAction)didTapSortButton:(id)sender {
-    if ([self isUseDynamicFilter]){
-        [self searchWithDynamicSort];
-    } else{
-        [self pushSort];
-    }
+    [self searchWithDynamicSort];
 }
 
 -(NSString*)hotlistFilterSource{
@@ -367,36 +346,20 @@ static NSString const *rows = @"12";
     _activeSortImageView.hidden = !isActive;
 }
 
--(void)pushSort{
-    SortViewController *controller = [SortViewController new];
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.sortType = SortHotlistDetail;
-    controller.delegate = self;
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self.navigationController presentViewController:navigation animated:YES completion:nil];
-}
-
 - (IBAction)didTapFilterButton:(id)sender {
-    if ([self isUseDynamicFilter]){
-        [self searchWithDynamicFilter];
-    } else{
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
 -(void)searchWithDynamicFilter{
     FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
                                                                         filterResponse:_filterResponse?:[FilterData new]
                                                                         rootCategoryID:@""
-                                                                            categories:[_initialCategories copy]
-                                                                    selectedCategories:_selectedCategories
                                                                        selectedFilters:_selectedFilters
                                                                            presentedVC:self
-                                                                          onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+                                                                          onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
-        _selectedCategories = selectedCategories;
-        _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        _selectedFilters = selectedFilters;
         
         [self isShowFilterIsActive:[self filterIsActive]];
         [self refreshView:nil];
@@ -412,15 +375,6 @@ static NSString const *rows = @"12";
 
 -(void)isShowFilterIsActive:(BOOL)isActive{
     _activeFilterImageView.hidden = !isActive;
-}
-
--(void)pushFilter{
-    FilterViewController *vc = [FilterViewController new];
-    vc.delegate = self;
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
-                kTKPDFILTER_DATAFILTERKEY: _detailfilter};
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)didTapChangeGridButton:(id)sender {
@@ -637,7 +591,7 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Category Delegate
-- (void)didSelectCategory:(CategoryDetail *)category {
+- (void)didSelectCategory:(ListOption *)category {
     _selectedCategory = category;
     [_detailfilter setObject:category.categoryId forKey:@"sc"];
     [self refreshView:nil];
@@ -806,7 +760,13 @@ static NSString const *rows = @"12";
                             category:GA_EVENT_CATEGORY_HOTLIST
                               action:GA_EVENT_ACTION_CLICK
                                label:list.product_name];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:list];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:list.product_id
+                                                        andName:list.product_name
+                                                       andPrice:list.product_price
+                                                    andImageURL:list.product_image
+                                                    andShopName:list.shop_name];
 }
 
 #pragma mark - Promo request delegate
@@ -898,18 +858,29 @@ static NSString const *rows = @"12";
 -(void)adjustSelectedFilterFromData:(NSDictionary*)data{
     NSMutableArray *selectedFilters = [NSMutableArray new];
     for (NSString *key in [data allKeys]) {
-        if (![key isEqualToString:@"sc"]) {
-            ListOption *filter = [ListOption new];
-            filter.key = key;
-            filter.value = [data objectForKey:key]?:@"";
-            if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
-                filter.input_type = [self filterTextInputType];
-            }
-            [selectedFilters addObject:filter];
+        if ([self isUnusedFilterFromKey:key andValue:[data objectForKey:key]]) {
+            break;
         }
+        ListOption *filter = [ListOption new];
+        filter.key = key;
+        filter.value = [data objectForKey:key]?:@"";
+        [selectedFilters addObject:filter];
     }
     _selectedFilters = [selectedFilters copy];
     _selectedFilterParam = data;
+}
+
+-(BOOL)isUnusedFilterFromKey:(NSString*)key andValue:(NSString*)value {
+    if ([value isEqualToString:@""]) {
+        return YES;
+    }
+    if ([key isEqualToString:@"fshop"] && [value isEqualToString:@"1"]) {
+        return YES;
+    }
+    if (([key isEqualToString:@"pmin"] || [key isEqualToString:@"pmax"]) && [value integerValue] == 0) {
+        return YES;
+    }
+    return NO;
 }
 
 -(NSString *)filterTextInputType{
@@ -999,12 +970,7 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parameters {
-    if ([self isUseDynamicFilter]) {
-        return [self parametersDynamicFilter];
-    } else{
-        return [self parameterFilter];
-    }
-
+    return [self parametersDynamicFilter];
 }
 
 - (NSDictionary*)parametersDynamicFilter {

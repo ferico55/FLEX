@@ -31,8 +31,7 @@
 
 #import "RequestEditAddress.h"
 #import "RequestAddAddress.h"
-
-#import "Errors.h"
+@import SwiftOverlays;
 
 #define TAG_PICKER_ALERT_INSURANCE 10
 
@@ -41,6 +40,7 @@
 {
     BOOL _isFinishCalculate;
     NSArray *_shipments;
+    UIView *lastNotificationView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -694,6 +694,11 @@
 }
 
 - (void)showError:(Errors *)error {
+    if(lastNotificationView) {
+        [lastNotificationView setHidden:YES];
+        lastNotificationView = nil;
+        [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
+    }
     [UIViewController showNotificationWithMessage:[NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc]
                                              type:0
                                          duration:4.0

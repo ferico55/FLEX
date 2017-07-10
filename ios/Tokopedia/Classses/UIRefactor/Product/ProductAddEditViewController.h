@@ -24,5 +24,5 @@ typedef NS_ENUM(NSInteger, TYPE_ADD_EDIT_PRODUCT)
 @property (nonatomic) TYPE_ADD_EDIT_PRODUCT type;
 
 - (instancetype)initWithForm:(ProductEditResult*)form;
-
+- (void)forceProductEditType;
 @end

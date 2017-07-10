@@ -11,8 +11,8 @@
 #import "ShippingInfoShipments.h"
 #import "AddressFormList.h"
 #import "ShopInfo.h"
-#import "Errors.h"
 #import "CartModelView.h"
+@class Errors;
 
 @class ProductPreorder;
 @interface TransactionCartList : NSObject <TKPObjectMapping>

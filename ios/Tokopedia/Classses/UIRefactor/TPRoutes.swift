@@ -16,6 +16,11 @@ class TPRoutes: NSObject {
         
         //applinks..
         //shop
+        JLRoutes.global().addRoute("/pop-to-root") { (params: [String : Any]!) -> Bool in
+            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/shop/:shopId") { (params: [String : Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID:shopId)
@@ -106,7 +111,7 @@ class TPRoutes: NSObject {
         //product
         JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
             let productId = params["productId"] as! String
-            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
         
@@ -175,6 +180,14 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/feedcommunicationdetail/:feedID") { (params: [String : Any]!) -> Bool in
             let feedCardID = params["feedID"] as! String
             navigator.navigateToFeedDetail(from: UIApplication.topViewController(), withFeedCardID: feedCardID)
+            return true
+        }
+        
+        //Resolution Detail
+        JLRoutes.global().addRoute("/resolution/:resolutionId") { (params: [String : Any]!) -> Bool in
+            let resolutionId = params["resolutionId"] as! String
+            let controller = ResolutionWebViewController(resolutionId: resolutionId)
+            UIApplication.topViewController()?.navigationController?.pushViewController(controller, animated: true)
             return true
         }
         
@@ -263,6 +276,12 @@ class TPRoutes: NSObject {
             let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://www.tokopedia.com/promo" + utmString
             openWebView(NSURL(string: urlString)! as URL)
+            
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/promoNative") { (params: [String : Any]!) -> Bool in
+            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
             
             return true
         }
@@ -485,6 +504,15 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("/category/:categoryId") { (params: [String : Any]) -> Bool in
+            
+            let categoryName: String? = params["categoryName"] as! String
+            
+            navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: params["categoryId"] as! String, categoryName: categoryName, isIntermediary: true)
+            
+            return true
+        }
+        
         //search
         JLRoutes.global().addRoute("/search/*") { (params: [String : Any]!) -> Bool in
             navigator.navigateToSearch(from: UIApplication.topViewController(), with: (params[kJLRouteURLKey] as! NSURL) as URL!)
@@ -535,7 +563,7 @@ class TPRoutes: NSObject {
         //product detail page
         JLRoutes.global().addRoute("/product/:productId") { (params: [String : Any]!) -> Bool in
             let productId = params["productId"] as! String
-            navigator.navigateToProduct(from: UIApplication.topViewController(), withProductID:productId)
+            NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
         
@@ -546,11 +574,7 @@ class TPRoutes: NSObject {
             
             isShopExists(shopName, shopExists: { (isExists) in
                 if isExists {
-                    let data = [
-                        "product_key" : productName,
-                        "shop_domain" : shopName
-                    ]
-                    navigator.navigateToProduct(from: UIApplication.topViewController(), withData: data)
+                    NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: "", andName: productName, andPrice: "", andImageURL: "", andShopName: shopName)
                 } else {
                     openWebView(url as URL)
                 }
@@ -558,7 +582,6 @@ class TPRoutes: NSObject {
             
             return true
         }
-        
     }
     
     static func onLoginSuccess(login: Login) {

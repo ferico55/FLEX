@@ -48,6 +48,7 @@
 // Google Analytics (via GTM)
 + (void)trackScreenName:(NSString *)name;
 + (void)trackScreenName:(NSString *)name gridType:(NSInteger)gridType;
++ (void)trackScreenName:(NSString *)name customDataLayer:(NSDictionary *)dataLayer;
 + (void)trackUserInformation;
 + (void)trackProductImpressions:(NSArray *)products;
 + (void)trackProductClick:(id)product;

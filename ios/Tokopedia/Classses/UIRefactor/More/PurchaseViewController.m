@@ -8,28 +8,17 @@
 
 #import "PurchaseViewController.h"
 
+#import <Masonry/Masonry.h>
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
+#import "UIColor+Theme.h"
 
-@interface PurchaseViewController ()<NotificationManagerDelegate>
+@interface PurchaseViewController ()<NotificationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     NotificationManager *_notificationManager;
+    UITableView *tableView;
 }
-
-@property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel *orderStatusValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receiveConfirmationValueLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationLabel;
-@property (weak, nonatomic) IBOutlet UILabel *orderStatusLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receiveStatusLabel;
-@property (weak, nonatomic) IBOutlet UILabel *transactionListLabel;
-
-@property (weak, nonatomic) IBOutlet UIView *paymentConfirmationView;
-@property (weak, nonatomic) IBOutlet UIView *orderStatusView;
-@property (weak, nonatomic) IBOutlet UIView *receiveConfirmationView;
-@property (weak, nonatomic) IBOutlet UIView *transactionListView;
 
 @end
 
@@ -38,13 +27,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Pembelian";
+    
+    tableView = [UITableView new];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.rowHeight = 64;
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    tableView.backgroundColor = [UIColor tpBackground];
+
+    [self.view addSubview:tableView];
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(updateValues:)
                                                 name:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME
                                               object:nil];
     
-    [self setValues];
-
     [Localytics triggerInAppMessage:@"Pembelian Screen"];
 }
 
@@ -65,40 +66,92 @@
     [super didReceiveMemoryWarning];
 }
 
-- (IBAction)paymentConfirmationDidTap:(id)sender {
+- (void)paymentConfirmationDidTap {
     TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)orderStatusDidTap:(id)sender {
+- (void)orderStatusDidTap{
     TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
     vc.action = @"get_tx_order_status";
     vc.viewControllerTitle = @"Status Pemesanan";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)receiveConfirmationDidTap:(id)sender {
+- (void)receiveConfirmationDidTap{
     TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
     vc.action = @"get_tx_order_deliver";
     vc.viewControllerTitle = @"Konfirmasi Penerimaan";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)listTransactionDidTap:(id)sender {
+- (void)listTransactionDidTap {
     TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
     vc.action = @"get_tx_order_list";
     vc.viewControllerTitle = @"Daftar Transaksi";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)setValues
-{
-    NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
-    
-    _paymentConfirmationValueLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation]?:@"0";
-    _orderStatusValueLabel.text = _notification.result.purchase.purchase_order_status?:@"0";
-    _receiveConfirmationValueLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
+#pragma mark - Table View Delegate
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 4;
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+    cell.textLabel.font = [UIFont title1Theme];
+    cell.textLabel.textColor = [UIColor tpSecondaryBlackText];
+    cell.detailTextLabel.font = [UIFont title1ThemeMedium];
+    cell.detailTextLabel.textColor = [UIColor tpGreen];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    switch (indexPath.row) {
+        case 0:
+            cell.textLabel.text = @"Status Pembayaran";
+            NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +[_notification.result.purchase.purchase_payment_confirm integerValue];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation]?:@"0";
+            break;
+        case 1:
+            cell.textLabel.text = @"Status Pemesanan";
+            cell.detailTextLabel.text =  _notification.result.purchase.purchase_order_status?:@"0";
+            break;
+        case 2:
+            cell.textLabel.text = @"Konfirmasi Penerimaan";
+            cell.detailTextLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
+            break;
+        case 3:
+            cell.textLabel.text = @"Daftar Transaksi";
+            cell.detailTextLabel.text = @"";
+            break;
+            
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:
+            [self paymentConfirmationDidTap];
+            break;
+        case 1:
+            [self orderStatusDidTap];
+            break;
+        case 2:
+            [self receiveConfirmationDidTap];
+            break;
+        case 3:
+            [self listTransactionDidTap];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 
 #pragma mark - Notification Manager Delegate
 
@@ -107,25 +160,14 @@
     _notificationManager = [NotificationManager new];
     [_notificationManager initNotificationRequest];
     _notificationManager.delegate = self;
-    
-    //NSDictionary* userInfo = notification.userInfo;
-    //
-    //NSString *paymentConfirmationValue = [userInfo objectForKey:DATA_PAYMENT_CONFIRMATION_COUNT_KEY]?:_notification.result.purchase.purchase_payment_conf;
-    //_notification.result.purchase.purchase_payment_conf = paymentConfirmationValue;
-    //
-    //NSString *orderStatusValue = [userInfo objectForKey:DATA_STATUS_COUNT_KEY]?:_notification.result.purchase.purchase_order_status;
-    //_notification.result.purchase.purchase_order_status = orderStatusValue;
-    //
-    //NSString *confirmDeliveryValue = [userInfo objectForKey:DATA_CONFIRM_DELIVERY_COUNT_KEY]?:_notification.result.purchase.purchase_delivery_confirm;
-    //_notification.result.purchase.purchase_delivery_confirm = confirmDeliveryValue;
-    
-    [self setValues];
+
+    [tableView reloadData];
 }
 
 - (void)didReceiveNotification:(Notification *)notification
 {
     _notification = notification;
-    [self setValues];
+    [tableView reloadData];
 }
 
 -(void)dealloc

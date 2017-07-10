@@ -43,5 +43,8 @@
 - (void) setPromotionNotEmpty;
 + (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type;
 + (CGFloat)collectionViewNormalHeight;
+- (void) setBanner: (CategoryIntermediaryBanner *) banner didSelectBanner: (void (^)(Slide* slide)) didSelectBanner;
+- (void) hideHeader;
+- (void) closeHeader;
 
 @end

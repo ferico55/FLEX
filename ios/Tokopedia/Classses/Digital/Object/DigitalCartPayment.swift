@@ -10,10 +10,10 @@ import Foundation
 import Unbox
 
 final class DigitalCartPayment:Unboxable {
-    var redirectUrl:String
-    var callbackUrlSuccess:String
-    var callbackUrlFailed:String
-    var queryString:String
+    var redirectUrl:String?
+    var callbackUrlSuccess:String?
+    var callbackUrlFailed:String?
+    var queryString:String?
     var transactionId:String?
     var errorMessage:String?
 //    var merchantCode:String
@@ -37,7 +37,7 @@ final class DigitalCartPayment:Unboxable {
 //    var voucher:[String]
 //    var pid:String
 
-    init(redirectUrl: String, callbackUrlSuccess: String, callbackUrlFailed: String, queryString: String, transactionId: String?, errorMessage: String?) {
+    init(redirectUrl: String?, callbackUrlSuccess: String?, callbackUrlFailed: String?, queryString: String?, transactionId: String?, errorMessage: String?) {
         self.redirectUrl = redirectUrl
         self.callbackUrlSuccess = callbackUrlSuccess
         self.callbackUrlFailed = callbackUrlFailed
@@ -47,17 +47,21 @@ final class DigitalCartPayment:Unboxable {
     }
     
     convenience init(unboxer: Unboxer) throws {
-        let redirectUrl = try unboxer.unbox(keyPath: "data.attributes.redirect_url") as String
-        let thanksUrl = try unboxer.unbox(keyPath: "data.attributes.thanks_url") as String
+        let redirectUrl = try? unboxer.unbox(keyPath: "data.attributes.redirect_url") as String
+        let thanksUrl = try? unboxer.unbox(keyPath: "data.attributes.thanks_url") as String
         var url = ""
-        if !thanksUrl.isEmpty {
-            url = thanksUrl
-        } else {
-            url = redirectUrl
+        
+        if let redirectUrl = redirectUrl, let thanksUrl = thanksUrl {
+            if !thanksUrl.isEmpty {
+                url = thanksUrl
+            } else {
+                url = redirectUrl
+            }
         }
-        let callbackUrlSuccess = try unboxer.unbox(keyPath: "data.attributes.callback_url_success") as String
-        let callbackUrlFailed = try unboxer.unbox(keyPath: "data.attributes.callback_url_failed") as String
-        let queryString = try unboxer.unbox(keyPath: "data.attributes.query_string") as String
+
+        let callbackUrlSuccess = try? unboxer.unbox(keyPath: "data.attributes.callback_url_success") as String
+        let callbackUrlFailed = try? unboxer.unbox(keyPath: "data.attributes.callback_url_failed") as String
+        let queryString = try? unboxer.unbox(keyPath: "data.attributes.query_string") as String
         let transactionId = try? unboxer.unbox(keyPath: "data.attributes.parameter.transaction_id") as String
         let errorMessage = try? unboxer.unbox(keyPath: "errors.0.title") as String
         

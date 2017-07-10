@@ -189,6 +189,14 @@
     return @"";
 }
 
+-(void)setCanCancelReplacement:(BOOL)canCancelReplacement{
+    self.order_button.button_cancel_replacement = canCancelReplacement?1:0;
+}
+
+-(BOOL)canCancelReplacement{
+    return (self.order_button.button_cancel_replacement == 1);
+}
+
 
 +(NSDictionary *)attributeMappingDictionary
 {

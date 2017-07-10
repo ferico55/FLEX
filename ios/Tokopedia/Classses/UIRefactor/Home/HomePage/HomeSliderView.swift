@@ -65,11 +65,7 @@ class HomeSliderView: UIView {
         slider.delegate = self.carouselDataSource
         slider.decelerationRate = 0.5
         
-        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { (timer) in
-            slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
-            }, repeats: true)
-        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
-        self.carouselDataSource.timer = timer
+        self.carouselDataSource.timer = TKPDBannerTimer.getTimer(slider: slider)
         
         customPageControl.numberOfPages = banner.count
         customPageControl.mas_makeConstraints { (make) in

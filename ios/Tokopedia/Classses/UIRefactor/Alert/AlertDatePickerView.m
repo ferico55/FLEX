@@ -7,6 +7,7 @@
 //
 
 #import "AlertDatePickerView.h"
+#import "string_alert.h"
 
 #pragma mark -
 #pragma mark TKPDAlertView category

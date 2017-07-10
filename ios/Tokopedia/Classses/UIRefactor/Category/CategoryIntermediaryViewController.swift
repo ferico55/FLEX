@@ -27,20 +27,20 @@ struct IntermediaryState: StateType {
 
 class IntermediaryViewComponent: ComponentView<IntermediaryState> {
     
-    var parentViewController:UIViewController?
+    var parentViewController: UIViewController?
     
     override func construct(state: IntermediaryState?, size: CGSize) -> NodeType {
-        let containerView = Node<UIScrollView>{ scrollView, layout, size in
+        let containerView = Node<UIScrollView> { scrollView, layout, size in
             scrollView.backgroundColor = UIColor.tpBackground()
             
             layout.width = size.width
             layout.height = size.height
         }
         
-        containerView.add(child: Node<UIRefreshControl>() { refreshControl, layout, size in
+        containerView.add(child: Node<UIRefreshControl>() { refreshControl, layout, _ in
             refreshControl.endRefreshing()
             layout.height = 0
-            refreshControl.bk_addEventHandler({ (sender) in
+            refreshControl.bk_addEventHandler({ _ in
                 state?.intermediaryViewController?.requestHotlist()
             }, for: .valueChanged)
         })
@@ -48,24 +48,24 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         guard let categoryIntermediaryResult = state?.categoryIntermediaryResult,
             let categoryIntermediaryNonHiddenChildren = state?.categoryIntermediaryNonHiddenChildren,
             let categoryIntermediaryNotExpandedChildren = state?.categoryIntermediaryNotExpandedChildren else {
-                return containerView
+            return containerView
         }
-    
-        let bannerView = Node<UIView>() { view, layout, size in
+        
+        let bannerView = Node<UIView>() { view, layout, _ in
             layout.height = 150
             view.clipsToBounds = true
-            if ((state?.banner?.numberOfItems)! > 0) {
+            if (state?.banner?.numberOfItems)! > 0 {
                 view.addSubview((state?.banner)!)
-                state?.banner?.snp.makeConstraints({ (make) in
+                state?.banner?.snp.makeConstraints({ make in
                     make.edges.equalTo(view)
                 })
-
-                if  (state?.banner?.numberOfItems)! > 1{
+                
+                if (state?.banner?.numberOfItems)! > 1 {
                     view.addSubview((state?.pageControl)!)
-                    state?.pageControl?.snp.makeConstraints({ (make) in
+                    state?.pageControl?.snp.makeConstraints({ make in
                         make.centerX.equalTo(view.snp.centerX)
                         make.bottom.equalTo(view.snp.bottom).offset(-5)
-                        make.width.equalTo(12*(state?.banner?.numberOfItems)!)
+                        make.width.equalTo(12 * (state?.banner?.numberOfItems)!)
                         make.height.equalTo(12)
                     })
                 } else {
@@ -80,16 +80,16 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 headerImageView.clipsToBounds = true
                 headerImageView.contentMode = .scaleAspectFill
                 view.addSubview(headerImageView)
-                headerImageView.snp.makeConstraints({ (make) in
+                headerImageView.snp.makeConstraints({ make in
                     make.edges.equalTo(view)
                 })
-
-                headerImageView.setImageWith(URL(string:(categoryIntermediaryResult.headerImage!)))
+                
+                headerImageView.setImageWith(URL(string: (categoryIntermediaryResult.headerImage!)))
                 let label = UILabel()
                 view.addSubview(label)
                 if UI_USER_INTERFACE_IDIOM() == .phone {
-                    headerImageView.snp.updateConstraints({ (make) in
-                        make.left.equalTo(view.snp.left).offset(-200)
+                    headerImageView.snp.updateConstraints({ make in
+                        make.left.equalTo(view.snp.left).offset(-100)
                     })
                 }
                 label.text = categoryIntermediaryResult.name.uppercased()
@@ -101,7 +101,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 }
                 label.shadowColor = UIColor.tpDisabledBlackText()
                 label.shadowOffset = CGSize(width: 1, height: 1)
-                label.snp.makeConstraints({ (make) in
+                label.snp.makeConstraints({ make in
                     make.centerY.equalTo(view.snp.centerY)
                     make.left.equalTo(view.snp.left).offset(15)
                 })
@@ -126,8 +126,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             }
         }
         
-        func generateCuratedListView() -> Node<UIView>{
-            let curatedListView = Node<UIView> { view, layout, size in
+        func generateCuratedListView() -> Node<UIView> {
+            let curatedListView = Node<UIView> { view, layout, _ in
                 view.backgroundColor = UIColor.tpLine()
                 layout.flexDirection = .column
                 layout.justifyContent = .flexStart
@@ -138,7 +138,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         }
         
         func borderView() -> NodeType {
-            let borderView = Node<UIView>() { view, layout, size in
+            let borderView = Node<UIView>() { view, layout, _ in
                 view.backgroundColor = .tpLine()
                 layout.height = 0.75
             }
@@ -151,27 +151,27 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 view.backgroundColor = .white
                 layout.justifyContent = .spaceBetween
                 layout.width = size.width
-                }.add(children: [borderView(), Node<UIView>() { view, layout, size in
-                    layout.justifyContent = .center
-                    layout.height = 58
-                    }.add(child: Node<UILabel>() { label, layout, size in
-                        if #available(iOS 8.2, *) {
-                            label.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightSemibold)
-                        } else {
-                            label.font = UIFont.systemFont(ofSize: 16)
-                        }
-                        label.textColor = UIColor.tpPrimaryBlackText()
-                        label.adjustsFontSizeToFitWidth = true
-                        label.minimumScaleFactor = 0.5
-                        label.text = title
-                        layout.marginLeft = 10
-                    }), borderView()])
+            }.add(children: [borderView(), Node<UIView>() { _, layout, _ in
+                layout.justifyContent = .center
+                layout.height = 58
+                }.add(child: Node<UILabel>() { label, layout, _ in
+                    if #available(iOS 8.2, *) {
+                        label.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightSemibold)
+                    } else {
+                        label.font = UIFont.systemFont(ofSize: 16)
+                    }
+                    label.textColor = UIColor.tpPrimaryBlackText()
+                    label.adjustsFontSizeToFitWidth = true
+                    label.minimumScaleFactor = 0.5
+                    label.text = title
+                    layout.marginLeft = 10
+            }), borderView()])
             
             return titleContainerView
         }
         
         func generateCuratedListProductContainer() -> Node<UIView> {
-            let curatedListProductContainer = Node<UIView> { view, layout, size in
+            let curatedListProductContainer = Node<UIView> { view, layout, _ in
                 layout.flexDirection = .row
                 layout.justifyContent = .flexStart
                 layout.flexWrap = .wrap
@@ -182,36 +182,89 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             return curatedListProductContainer
         }
         
-        func totalProductPerRowNeededBasedOnDevice() -> CGFloat{
+        func totalProductPerRowNeededBasedOnDevice() -> CGFloat {
             return (UI_USER_INTERFACE_IDIOM() == .phone ? 2 : 4)
         }
         
-        func rectangleHotlist(hotListItems: [CategoryIntermediaryHotListItem]) -> [NodeType] {
-            var views: [NodeType] = [] as! [NodeType]
-            for hotListItem in hotListItems {
-                views.append((Node<UIView>() { view, layout, size in
-                    view.borderWidth = 0.5
-                    view.borderColor = .tpLine()
-                    view.bk_(whenTapped: {
-                        AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
-                        TPRoutes.routeURL(URL(string:"\(hotListItem.url)")!)
-                    })
-                    layout.flexGrow = 1
-                    layout.flexBasis = size.width / (UI_USER_INTERFACE_IDIOM() == .phone ? 2 : 4)
-
-                    }.add(child: Node<UIImageView>() { view, layout, size in
-                        layout.margin = 10
-                        layout.aspectRatio = 1
-                        view.layer.cornerRadius = 3
-                        view.clipsToBounds = true
-                        view.setImageWith(URL(string: hotListItem.imgSquare.url))
-                })))
-            }
-            return views
+        func horizontalRectangleHotList(hotListItem: CategoryIntermediaryHotListItem) -> NodeType {
+            return Node<UIView>(create: {
+                let view = UIView()
+                view.bk_(whenTapped: {
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
+                    TPRoutes.routeURL(URL(string: hotListItem.url)!)
+                })
+                return view
+            }, configure: { view, layout, size in
+                view.borderWidth = 0.5
+                view.borderColor = .tpLine()
+                
+                layout.flexGrow = 2
+                layout.flexBasis = size.width / (UI_USER_INTERFACE_IDIOM() == .phone ? 1 : 2)
+            }).add(child: Node<UIImageView>() { view, layout, _ in
+                layout.margin = 10
+                layout.aspectRatio = 15 / 7
+                view.layer.cornerRadius = 3
+                view.clipsToBounds = true
+                view.contentMode = .scaleAspectFill
+                guard let hotListImg = hotListItem.img else { return }
+                guard let hotListImgUrl = URL(string: hotListImg.url) else { return }
+                view.setImageWith(hotListImgUrl)
+            })
+        }
+        
+        func squareHotList(hotListItem: CategoryIntermediaryHotListItem) -> NodeType {
+            
+            return Node<UIView>(create: {
+                let view = UIView()
+                view.bk_(whenTapped: {
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
+                    TPRoutes.routeURL(URL(string: "\(hotListItem.url)")!)
+                })
+                
+                return view
+            }, configure: { view, layout, size in
+                view.borderWidth = 0.5
+                view.borderColor = .tpLine()
+                layout.flexGrow = 1
+                layout.flexBasis = size.width / (UI_USER_INTERFACE_IDIOM() == .phone ? 2 : 4)
+                
+            }).add(child: Node<UIImageView>() { view, layout, _ in
+                layout.margin = 10
+                layout.aspectRatio = 1
+                view.layer.cornerRadius = 3
+                view.clipsToBounds = true
+                guard let hotListImgSquare = hotListItem.imgSquare else { return }
+                guard let hotListImgSquareUrl = URL(string: hotListImgSquare.url) else { return }
+                view.setImageWith(hotListImgSquareUrl)
+            })
+        }
+        
+        func verticalRectangleHotList(hotListItem: CategoryIntermediaryHotListItem) -> NodeType {
+            return Node<UIView>(create: {
+                let view = UIView()
+                view.bk_(whenTapped: {
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
+                    TPRoutes.routeURL(URL(string: hotListItem.url)!)
+                })
+                return view
+            }, configure: { view, layout, size in
+                layout.width = size.width / totalProductPerRowNeededBasedOnDevice()
+                layout.alignItems = .stretch
+                view.borderWidth = 0.5
+                view.borderColor = .tpLine()
+            }).add(children: [Node<UIImageView>() { view, layout, _ in
+                layout.margin = 10
+                layout.aspectRatio = 7.0 / 10
+                view.layer.cornerRadius = 3
+                view.clipsToBounds = true
+                guard let imgPortrait = hotListItem.imgPortrait else { return }
+                guard let imgPortraitUrl = URL(string: imgPortrait.url) else { return }
+                view.setImageWith(imgPortraitUrl)
+            }])
         }
         
         func getTopicContainerView() -> NodeType {
-            return Node<UIView>() { view, layout, size in
+            return Node<UIView>() { view, layout, _ in
                 layout.marginTop = 15
                 layout.justifyContent = .flexStart
                 layout.flexDirection = .column
@@ -220,42 +273,42 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         }
         
         func getVideoView() -> NodeType {
-            return getTopicContainerView().add(children: [Node<UILabel>() { label, layout, size in
+            return getTopicContainerView().add(children: [Node<UILabel>() { label, layout, _ in
                     layout.marginTop = 20
                     layout.marginLeft = 10
                     layout.marginRight = 10
-                
+                    
                     label.text = categoryIntermediaryResult.video?.title
                     label.textColor = .tpPrimaryBlackText()
                     label.font = UIFont.smallThemeMedium()
                     label.textAlignment = .center
-                    },
-                    Node<UILabel>() { label, layout, size in
-                        layout.marginTop = 20
-                        layout.marginLeft = 10
-                        layout.marginRight = 10
-                        
-                        label.numberOfLines = 0
-                        label.text = categoryIntermediaryResult.video?.videoDescription
-                        label.textColor = .tpDisabledBlackText()
-                        label.font = UIFont.microTheme()
-                        label.textAlignment = .center
-                        
-                    }
-                    , Node<YTPlayerView>() { playerView, layout, size in
-                                    layout.marginTop = 10
-                                    layout.marginBottom = 15
-                                    layout.height = 150
-                                    layout.width = size.width
-                                    playerView.backgroundColor = .green
-                        playerView.delegate = state?.intermediaryViewController
-                        
-                        playerView.load(withVideoId: ((categoryIntermediaryResult.video?.videoUrl)?.components(separatedBy: "/").last!)!, playerVars: [
-                            "origin" : "https://www.tokopedia.com",
-                            "showinfo" : "0"
-                            ])
-                    }
+                },
+                Node<UILabel>() { label, layout, _ in
+                    layout.marginTop = 20
+                    layout.marginLeft = 10
+                    layout.marginRight = 10
+                    
+                    label.numberOfLines = 0
+                    label.text = categoryIntermediaryResult.video?.videoDescription
+                    label.textColor = .tpDisabledBlackText()
+                    label.font = UIFont.microTheme()
+                    label.textAlignment = .center
+                    
+                }
+                , Node<YTPlayerView>() { playerView, layout, size in
+                    layout.marginTop = 10
+                    layout.marginBottom = 15
+                    layout.height = 150
+                    layout.width = size.width
+                    playerView.backgroundColor = .green
+                    playerView.delegate = state?.intermediaryViewController
+                    
+                    playerView.load(withVideoId: ((categoryIntermediaryResult.video?.videoUrl)?.components(separatedBy: "/").last!)!, playerVars: [
+                        "origin": "https://www.tokopedia.com",
+                        "showinfo": "0"
                     ])
+                }
+            ])
         }
         
         func officialStoreContentLeftPlusRightMargin() -> CGFloat {
@@ -263,14 +316,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         }
         
         func officialStoreData(officialStoreHomeItem: OfficialStoreHomeItem) -> NodeType {
-            return Node<UIView>() { view, layout, size in
-                layout.alignItems = .stretch
-                view.clipsToBounds = true
-                view.layer.cornerRadius = 3
-                view.layer.borderWidth = 1
-                view.layer.borderColor = UIColor.tpLine().cgColor
-                layout.margin = 5
-                layout.width = ((size.width - officialStoreContentLeftPlusRightMargin()) / (UI_USER_INTERFACE_IDIOM() == .phone ? 3.0 : 6.0)) - layout.margin * 2
+            return Node<UIView>(create: {
+                let view = UIView()
                 view.bk_(whenTapped: {
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Official Store", label: officialStoreHomeItem.shopName)
                     let viewController = ShopViewController()
@@ -280,13 +327,23 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                     
                     state?.intermediaryViewController?.navigationController?.pushViewController(viewController, animated: true)
                 })
-                }.add(child: Node<UIImageView>() { imageView, layout, size in
-                    layout.aspectRatio = 1
-                    imageView.layer.cornerRadius = 3
-                    imageView.contentMode = .scaleAspectFit
-                    layout.margin = 10
-                    imageView.setImageWith(URL(string: officialStoreHomeItem.imageUrl))
-                })
+                
+                return view
+            }, configure: { view, layout, size in
+                layout.alignItems = .stretch
+                view.clipsToBounds = true
+                view.layer.cornerRadius = 3
+                view.layer.borderWidth = 1
+                view.layer.borderColor = UIColor.tpLine().cgColor
+                layout.margin = 5
+                layout.width = ((size.width - officialStoreContentLeftPlusRightMargin()) / (UI_USER_INTERFACE_IDIOM() == .phone ? 3.0 : 6.0)) - layout.margin * 2
+            }).add(child: Node<UIImageView>() { imageView, layout, _ in
+                layout.aspectRatio = 1
+                imageView.layer.cornerRadius = 3
+                imageView.contentMode = .scaleAspectFit
+                layout.margin = 10
+                imageView.setImageWith(URL(string: officialStoreHomeItem.imageUrl))
+            })
         }
         
         func generateOfficialStoreData() -> [NodeType] {
@@ -299,7 +356,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         }
         
         func getOfficialStoreContentView() -> NodeType {
-            return Node<UIView>() { view, layout, size in
+            return Node<UIView>() { view, layout, _ in
                 layout.flexDirection = .row
                 layout.justifyContent = .flexStart
                 layout.alignItems = .flexStart
@@ -312,22 +369,25 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         }
         
         func seeAllContainerView() -> NodeType {
-            if (state?.officialStoreHomeItems?.count)! > 6{
-            return Node<UIView>() { view, layout, size in
-                layout.justifyContent = .flexEnd
-                layout.flexDirection = .row
-                view.bk_(whenTapped: { 
-                    TPRoutes.routeURL(URL(string:"www.tokopedia.com")!)
-                })
-                }.add(children: [Node<UILabel>() { label, layout, size in
-                    layout.marginTop = 15
-                    layout.marginBottom = 15
-                    layout.marginRight = 5
-                    label.text = "Lihat Semua"
-                    label.font = UIFont.largeThemeMedium()
-                    label.textColor = .tpGreen()
-                },
-                    Node<UIImageView>() { imageView, layout, size in
+            if (state?.officialStoreHomeItems?.count)! > 6 {
+                return Node<UIView>(create: {
+                    let view = UIView()
+                    view.bk_(whenTapped: {
+                        TPRoutes.routeURL(URL(string: "www.tokopedia.com")!)
+                    })
+                    return view
+                }, configure: { _, layout, _ in
+                    layout.justifyContent = .flexEnd
+                    layout.flexDirection = .row
+                }).add(children: [Node<UILabel>() { label, layout, _ in
+                        layout.marginTop = 15
+                        layout.marginBottom = 15
+                        layout.marginRight = 5
+                        label.text = "Lihat Semua"
+                        label.font = UIFont.largeThemeMedium()
+                        label.textColor = .tpGreen()
+                    },
+                    Node<UIImageView>() { imageView, layout, _ in
                         imageView.image = UIImage(named: "icon_forward")
                         imageView.tintColor = .tpGreen()
                         imageView.contentMode = .scaleAspectFit
@@ -335,8 +395,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                         layout.marginBottom = 15
                         layout.marginRight = 15
                     }
-                                 
-                                 ])
+                    
+                ])
             } else {
                 return NilNode()
             }
@@ -348,18 +408,16 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 getOfficialStoreContentView(),
                 borderView(),
                 seeAllContainerView()
-                ])
+            ])
         }
         
         func generateCuratedProductCell(curatedProduct: CategoryIntermediaryProduct) -> Node<ProductCell> {
             let curatedProductCell = Node<ProductCell>(
                 create: {
                     let content = UINib(nibName: "ProductCell", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! ProductCell
-                    
-                    
                     return content
-            }
-            ) { cell, layout, size in
+                }
+            , configure: { cell, layout, _ in
                 let cellSize = ProductCellSize.sizeWithType(1)
                 layout.width = cellSize.width
                 layout.height = cellSize.height
@@ -377,93 +435,54 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 productModelView.productId = String(curatedProduct.id)
                 productModelView.isOnWishlist = curatedProduct.isOnWishlist
                 
-                cell.setViewModel(productModelView)
+                cell.viewModel = productModelView
                 cell.removeWishlistButton()
                 cell.parentViewController = state?.intermediaryViewController
                 cell.applinks = curatedProduct.applinks
                 cell.delegate = state?.intermediaryViewController as! ProductCellDelegate
                 cell.bk_(whenTapped: {
-                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(curatedProduct.name)", label: curatedProduct.name)
-                    TPRoutes.routeURL(URL(string: curatedProduct.applinks)!)
+                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel.productName)", label: cell.viewModel.productName)
+                    TPRoutes.routeURL(URL(string: cell.applinks)!)
                 })
-            }
+            })
+
             return curatedProductCell
         }
         
         containerView.add(children: [
             bannerView,
             subCategoryView
-        ]);
+        ])
         
         if (state?.categoryIntermediaryHotListItems.count)! > 0 {
-            let arraySliceForBottom4Hotlist = [3,4,5,6]
-            let categoryIntermediaryHotListItemsBottom4: [CategoryIntermediaryHotListItem] = arraySliceForBottom4Hotlist.map({ (index) -> CategoryIntermediaryHotListItem in
-                return (state?.categoryIntermediaryHotListItems[index])!
-            })
-            
-            let arraySliceForRectangleHotlist = [1,2]
-            
-            let hotListContainerView = Node<UIView>() {view, layout, size in
+            let hotListContainerView = Node<UIView>() { _, layout, _ in
                 layout.marginTop = 15
                 layout.flexDirection = .column
                 layout.justifyContent = .flexStart
                 layout.alignItems = .stretch
-                }.add(children: [titleView(title: "Hot List"),
-                                 Node<UIView>() { view, layout, size in
-                                    layout.flexDirection = .row
-                                    layout.flexWrap = .wrap
-                                    view.backgroundColor = .white
-                                    }.add(children: [Node<UIView>() { view, layout, size in
-                                        view.borderWidth = 0.5
-                                        view.borderColor = .tpLine()
-                                        view.bk_(whenTapped: {
-                                            AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: state?.categoryIntermediaryHotListItems[0].title)
-                                            TPRoutes.routeURL(URL(string:(state?.categoryIntermediaryHotListItems[0].url)!)!)
-                                        })
-                                        layout.flexGrow = 2
-                                        layout.flexBasis = size.width / (UI_USER_INTERFACE_IDIOM() == .phone ? 1 : 2)
-                                        }.add(child: Node<UIImageView>() { view, layout, size in
-                                            layout.margin = 10
-                                            layout.aspectRatio = 15 / 7
-                                            view.layer.cornerRadius = 3
-                                            view.clipsToBounds = true
-                                            view.contentMode = .scaleAspectFill
-                                            view.setImageWith(URL(string: (state?.categoryIntermediaryHotListItems[0].img.url)!))
-                                        })]
-                                        +
-                                        
-                                        rectangleHotlist(hotListItems: arraySliceForRectangleHotlist.map({ (index) -> CategoryIntermediaryHotListItem in
-                                            return (state?.categoryIntermediaryHotListItems[index])!
-                                        }))
-                                        
-                                        
-                                        + (categoryIntermediaryHotListItemsBottom4.map { child in
-                                            return Node<UIView>() { view, layout, size in
-                                                layout.width = size.width / totalProductPerRowNeededBasedOnDevice()
-                                                layout.alignItems = .stretch
-                                                view.borderWidth = 0.5
-                                                view.borderColor = .tpLine()
-                                                view.bk_(whenTapped: {
-                                                    AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: child.title)
-                                                    TPRoutes.routeURL(URL(string:child.url)!)
-                                                })
-                                                
-                                                }.add(children: [Node<UIImageView>() { view, layout, size in
-                                                    layout.margin = 10
-                                                    layout.aspectRatio = 7.0/10
-                                                    view.setImageWith(URL(string: (child.imgPortrait.url)))
-                                                    view.layer.cornerRadius = 3
-                                                    view.clipsToBounds = true
-                                                    }])
-                                        })
-                                        
-                    )
-                    ])
+            }.add(children: [titleView(title: "Hot List"),
+                             Node<UIView>() { view, layout, _ in
+                                 layout.flexDirection = .row
+                                 layout.flexWrap = .wrap
+                                 view.backgroundColor = .white
+                             }.add(children:
+                                 (state?.categoryIntermediaryHotListItems.enumerated().map({ index, hotListItem in
+                                     
+                                     if index == 0 {
+                                         return horizontalRectangleHotList(hotListItem: hotListItem)
+                                     } else if index == 1 || index == 2 {
+                                         return squareHotList(hotListItem: hotListItem)
+                                     }
+                                     
+                                     return verticalRectangleHotList(hotListItem: hotListItem)
+                                 }))!
+                                 
+            )])
             
             containerView.add(child: hotListContainerView)
         }
         
-        if ((state?.officialStoreHomeItems?.count)! > 0) {
+        if (state?.officialStoreHomeItems?.count)! > 0 {
             containerView.add(child: getOfficialStoreContainerView())
         }
         
@@ -471,11 +490,11 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             containerView.add(child: TopAdsNode(ads: (state?.ads)!))
         }
         
-        if let curatedProduct = categoryIntermediaryResult.curatedProduct {
-            for (sectionIndex, curatedListSections) in curatedProduct.sections.enumerated() {
+        if let sections = categoryIntermediaryResult.curatedProduct?.sections {
+            for (sectionIndex, curatedListSections) in sections.enumerated() {
                 let curatedListView = generateCuratedListView()
                 
-                curatedListView.add(children: [titleView(title: (curatedProduct.sections[sectionIndex].title))])
+                curatedListView.add(children: [titleView(title: (sections[sectionIndex].title))])
                 let curatedListProductContainer = generateCuratedListProductContainer()
                 for (productIndex,curatedProduct) in curatedListSections.products.enumerated() {
                     if productIndex < 4 {
@@ -487,17 +506,23 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             }
         }
         
-        
         if categoryIntermediaryResult.video?.videoUrl != nil {
             containerView.add(child: getVideoView())
         }
         
-        containerView.add(child: Node<UIView>() { view, layout, size in
+        containerView.add(child: Node<UIView>() { view, layout, _ in
             view.backgroundColor = .tpBackground()
             layout.flexDirection = .row
             layout.alignItems = .center
             
-            }.add(children: [Node<UIButton>() { button, layout, size in
+        }.add(children: [Node<UIButton>(create: {
+            let button = UIButton()
+            button.bk_(whenTapped: {
+                let navigateController = NavigateViewController()
+                navigateController.navigateToIntermediaryCategory(from: state?.intermediaryViewController, withCategoryId: categoryIntermediaryResult.id, categoryName: categoryIntermediaryResult.name, isIntermediary: false)
+            })
+            return button
+        }, configure: { button, layout, _ in
                 layout.marginTop = 25
                 layout.marginBottom = 25
                 layout.marginLeft = 10
@@ -512,14 +537,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 } else {
                     button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
                 }
-                
-                button.bk_(whenTapped: {
-                    let navigateController = NavigateViewController()
-                    navigateController.navigateToIntermediaryCategory(from: state?.intermediaryViewController, withCategoryId: categoryIntermediaryResult.id, categoryName: categoryIntermediaryResult.name, isIntermediary: false)
-                })
-                }]))
-
-        
+        })]))
         
         return containerView
     }
@@ -540,7 +558,8 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     
     func changeWishlist(forProductId productId: String, withStatus isOnWishlist: Bool) {
         guard let curatedProduct = categoryIntermediaryResult.curatedProduct else { return }
-        for section in curatedProduct.sections {
+        guard let sections = curatedProduct.sections else { return }
+        for section in sections {
             let product = section.products.first { $0.id == productId }
             product?.isOnWishlist = isOnWishlist
         }
@@ -575,15 +594,15 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         
         let pageControl = StyledPageControl()
         pageControl.pageControlStyle = PageControlStyleDefault
-        pageControl.coreNormalColor = UIColor(red: 214.0/255.0, green: 214.0/255.0, blue: 214.0/255.0, alpha: 1)
-        pageControl.coreSelectedColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 34.0/255, alpha: 1)
+        pageControl.coreNormalColor = UIColor(red: 214.0 / 255.0, green: 214.0 / 255.0, blue: 214.0 / 255.0, alpha: 1)
+        pageControl.coreSelectedColor = UIColor(red: 255.0 / 255.0, green: 87.0 / 255.0, blue: 34.0 / 255, alpha: 1)
         pageControl.diameter = 11
         pageControl.gapWidth = 5
-
+        
         pageControl.numberOfPages = categoryIntermediaryResult.banner!.images.count
         
         self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, with: pageControl)
-        carouselDataSource.isIntermediaryBanner = true
+        carouselDataSource.isCategoryBanner = true
         carouselDataSource.didSelectBanner = { [unowned self] banner in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.title)
         }
@@ -593,7 +612,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         slider.delegate = self.carouselDataSource
         slider.decelerationRate = 0.5
         
-        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { (timer) in
+        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { _ in
             slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
         }, repeats: true)
         RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
@@ -606,7 +625,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         intermediaryView.state?.categoryIntermediaryNotExpandedChildren = categoryIntermediaryResult.nonExpandedChildren
         intermediaryView.render(in: self.view.bounds.size)
         
-        let backButtonItem = UIBarButtonItem(image: UIImage(named:"icon_arrow_white"), style: .plain, target: self, action: #selector(CategoryIntermediaryViewController.back))
+        let backButtonItem = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(CategoryIntermediaryViewController.back))
         
         self.view.addSubview(self.intermediaryView)
         
@@ -640,8 +659,8 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.definesPresentationContext = true;
-        self.uiSearchController.searchResultsController?.view.isHidden = true;
+        self.definesPresentationContext = true
+        self.uiSearchController.searchResultsController?.view.isHidden = true
     }
     
     // MARK: API
@@ -657,7 +676,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     func requestHotlist() {
-        hotListNetworkManager.request(withBaseUrl: NSString.aceUrl(), path: "/hoth/hotlist/v1/category", method: .GET, parameter: ["categories" : categoryIntermediaryResult.id, "perPage" : "7"], mapping: CategoryIntermediaryHotListResponse.mapping(), onSuccess: { [unowned self] (mappingResult, operation) in
+        self.hotListNetworkManager.request(withBaseUrl: NSString.aceUrl(), path: "/hoth/hotlist/v1/category", method: .GET, parameter: ["categories": categoryIntermediaryResult.id, "perPage": "7"], mapping: CategoryIntermediaryHotListResponse.mapping(), onSuccess: { [unowned self] mappingResult, _ in
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let categoryIntermediaryHotListResponse: CategoryIntermediaryHotListResponse = result[""] as! CategoryIntermediaryHotListResponse
             self.intermediaryView.state?.categoryIntermediaryHotListItems = categoryIntermediaryHotListResponse.list
@@ -673,12 +692,10 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
                 self.intermediaryView.state?.ads = ads
                 self.intermediaryView.render(in: self.view.bounds.size)
                 
-                }, onFailure: { error in })
+            }, onFailure: { _ in })
             
+        }, onFailure: { _ in
             
-            
-            }, onFailure: {error in
-                
         })
     }
     
@@ -687,7 +704,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
 }
 
 extension CategoryIntermediaryViewController: YTPlayerViewDelegate {
-
+    
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         playerView.webView?.allowsInlineMediaPlayback = false
     }
@@ -699,5 +716,3 @@ extension CategoryIntermediaryViewController: YTPlayerViewDelegate {
         }
     }
 }
-
-

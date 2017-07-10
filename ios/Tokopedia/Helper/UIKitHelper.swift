@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 extension UIApplication {
     class func getAppVersionStringWithoutDot() -> String {
@@ -74,6 +75,20 @@ extension UIScreen {
      */
     public static func bounds() -> CGRect {
         return UIScreen.main.bounds
+    }
+}
+
+extension UIFont {
+    
+    func sizeOfString (string: String, constrainedToWidth width: Double) -> CGSize {
+        return sizeOfString (string: string, constrainedToWidth: width, andHeight: Double.greatestFiniteMagnitude)
+    }
+    
+    func sizeOfString (string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
+        return (string as NSString).boundingRect(with: CGSize(width: width, height: height),
+                                                 options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                 attributes: [NSFontAttributeName: self],
+                                                 context: nil).size
     }
 }
 
@@ -256,3 +271,23 @@ extension UINavigationController {
         }
     }
 }
+
+extension UIScrollView {
+    var rx_reachedBottom: Observable<Void> {
+        return rx.contentOffset
+            .debounce(0.025, scheduler: MainScheduler.instance)
+            .flatMap { [weak self] contentOffset -> Observable<Void> in
+                guard let scrollView = self else {
+                    return Observable.empty()
+                }
+                
+                let visibleHeight = scrollView.frame.height - scrollView.contentInset.top - scrollView.contentInset.bottom
+                let y = contentOffset.y + scrollView.contentInset.top
+                let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
+                
+                return y > threshold ? Observable.just() : Observable.empty()
+        }
+        
+    }
+}
+

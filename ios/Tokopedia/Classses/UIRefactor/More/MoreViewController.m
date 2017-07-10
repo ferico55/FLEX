@@ -92,15 +92,17 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     BOOL _shouldDisplayTopPointsCell;
     NSString* _walletUrl;
     BOOL _isWalletActive;
-    BOOL _isTokocashExpired;
     CGRect _defaultTableFrame;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
+@property (weak, nonatomic) IBOutlet UILabel *completeProfileLabel;
+@property (weak, nonatomic) IBOutlet UIButton *completeProfileButton;
+@property (weak, nonatomic) IBOutlet UILabel *verifiedAccountLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *verifiedAccountIcon;
 
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shopIsGoldLabel;
@@ -114,6 +116,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 @property (weak, nonatomic) IBOutlet UILabel* walletBalanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel* walletNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton* walletActivationButton;
+
+@property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (strong, nonatomic) UIColor *progressBarTrack;
+@property (strong, nonatomic) UIColor *progressBarColor;
+
 
 @property (strong, nonatomic) CMPopTipView *popTipView;
 
@@ -160,6 +168,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                                  selector:@selector(navigateToContactUs:)
                                                      name:@"navigateToContactUs" object:nil];
     }
+    
     return self;
 }
 
@@ -222,6 +231,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                              selector:@selector(appDidResume)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    _progressBar.layer.masksToBounds = true;
+    _progressBar.layer.cornerRadius = 5;
+    [self showProfileProgress];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -231,10 +244,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 //    [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
-    [self updateSaldoTokopedia];
-    
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
+    
+    [self showProfileProgress];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -312,9 +325,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     __weak typeof(self) weakSelf = self;
     
     [WalletService getBalance:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
-        if(wallet.isExpired) {
-            _isTokocashExpired = wallet.isExpired;
-            [self.tableView reloadData];
+        if (wallet.isExpired) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         } else {
             _walletNameLabel.text = wallet.data.text;
             _walletBalanceLabel.text = wallet.data.balance;
@@ -324,6 +336,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
         
     } onFailure:^(NSError * error) {
+        _isWalletActive = NO;
         if(error.code == 9991) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         }
@@ -453,11 +466,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            if (_isTokocashExpired)
-                return 1;
-            else
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.3")) {
                 return 2;
-            break;
+            } else {
+                if (_isWalletActive) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
         }
         
         case 1: return _shouldDisplayTopPointsCell?1:0;
@@ -501,13 +518,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     return 1;
 }
 
-
 #pragma mark - Table delegate
 /*
 why we need to wrap more vc ?
 objective : to simply reduce the width of the table
 problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
  */
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _wrapperViewController.hidesBottomBarWhenPushed = YES;
@@ -558,10 +575,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 2 && indexPath.row == 1) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
-        purchaseController.notification = _notifManager.notification;
         [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
+
+        PurchaseViewController *purchaseController = [PurchaseViewController new];
+        purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
@@ -584,7 +601,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Sales"];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
+            SalesViewController *salesController = [SalesViewController new];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
@@ -916,5 +933,48 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - SplitVC Delegate
 - (void)deallocVC {
     splitViewController = nil;
+}
+
+
+#pragma mark - profile completion
+- (IBAction)tapProfileCompletion {
+    ProfileCompletionProgressViewController *progressController = [ProfileCompletionProgressViewController new];
+    progressController.hidesBottomBarWhenPushed = YES;
+    [AnalyticsManager trackEventName:@"profileCompletion" category: @"Profile" action: GA_EVENT_ACTION_CLICK label: @"Verify"];
+    [self pushViewController:progressController];
+}
+
+-(void)showProfileProgress {
+    [UserRequest getUserCompletionOnSuccess:^(ProfileCompletionInfo *profileInfo) {
+        double profileCompleted = profileInfo.completion/100.0;
+        //progress color
+        self.progressBarTrack = [UIColor colorWithRed:200.0/225.0 green:200.0/225.0 blue:200.0/225.0 alpha:1];
+        self.progressBarColor = [UIColor colorWithRed:175.0/225.0 green:213.0/225.0 blue:100.0/225.0 alpha:1]; //default: 0.5
+        self.progressLabel.text = @"50%";
+        _verifiedAccountLabel.textColor = [UIColor clearColor];
+        _verifiedAccountIcon.hidden = true;
+        if (profileCompleted>=0.6 && profileCompleted<0.7) {
+            self.progressBarColor = [UIColor colorWithRed:127.0/225.0 green:190.0/225.0 blue:51.0/225.0 alpha:1];
+            self.progressLabel.text = @"60%";
+        } else if (profileCompleted>=0.7 && profileCompleted<0.8) {
+            self.progressBarColor = [UIColor colorWithRed:78.0/225.0 green:188.0/225.0 blue:74.0/225.0 alpha:1];
+            self.progressLabel.text = @"70%";
+        } else if (profileCompleted>=0.8 && profileCompleted<0.9) {
+            self.progressBarColor = [UIColor colorWithRed:39.0/225.0 green:160.0/225.0 blue:46.0/225.0 alpha:1];
+            self.progressLabel.text = @"80%";
+        } else if (profileCompleted>=0.9 && profileCompleted<1.0) {
+            self.progressBarColor = [UIColor colorWithRed:8.0/225.0 green:132.0/225.0 blue:31.0/225.0 alpha:1];
+            self.progressLabel.text = @"90%";
+        } else if (profileCompleted >= 1.0) {
+            self.progressBarColor = [UIColor colorWithRed:0.0/225.0 green:112.0/225.0 blue:20.0/225.0 alpha:1];
+            self.progressLabel.text = @"100%";
+            _completeProfileButton.hidden = true;
+            _verifiedAccountLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.54];
+            _verifiedAccountIcon.hidden = false;
+        }
+        [self.progressBar setProgress:profileCompleted animated:true];
+        [self.progressBar setTrackTintColor:self.progressBarTrack];
+        [self.progressBar setProgressTintColor:self.progressBarColor];
+    }];
 }
 @end

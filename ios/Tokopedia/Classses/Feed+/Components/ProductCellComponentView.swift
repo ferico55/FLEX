@@ -34,7 +34,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
         }.add(child: Node<UILabel>(identifier: "product-name") { label, layout, _ in
             label.text = state?.productName
             label.font = .smallThemeSemibold()
-            label.textColor = UIColor.black.withAlphaComponent(0.70)
+            label.textColor = UIColor.tpPrimaryBlackText()
             label.numberOfLines = 2
             
             layout.flexShrink = 1
@@ -42,7 +42,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
         
         let productPrice = Node<UILabel>(identifier: "product-price") { label, layout, _ in
             label.text = state?.productPrice
-            label.font = .smallTheme()
+            label.font = .smallThemeSemibold()
             label.textColor = .tpOrange()
             
             layout.marginBottom = 0
@@ -94,7 +94,12 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
                 })
             } else {
                 view.bk_(whenTapped: {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
+                    if (state?.isRecommendationProduct)! {
+                        AnalyticsManager.trackEventName("r3", category: "r3User", action: GA_EVENT_ACTION_CLICK, label: "feed - \((state?.recommendationProductSource)!)")
+                    } else {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
+                    }
+                    
                     TPRoutes.routeURL(URL(string: (state?.productURL)!)!)
                 })
             }
@@ -111,7 +116,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
                 layout.alignItems = .center
                 layout.justifyContent = .center
                 
-                view.backgroundColor = UIColor.black.withAlphaComponent(0.70)
+                view.backgroundColor = UIColor.tpPrimaryBlackText()
             }.add(child: Node<UILabel>(identifier: "more-label") { label, layout, _ in
                 layout.position = .absolute
                 

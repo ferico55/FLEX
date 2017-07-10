@@ -205,12 +205,12 @@
     NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
     NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
     NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-    NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
-    NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
-    NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
-    NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
-    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
-    NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
+    NSString *district = _selectedDistrict[DATA_ID_KEY];
+    NSString *city = _selectedCity[DATA_ID_KEY];
+    NSString *prov = _selectedProvince[DATA_ID_KEY];
+    NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY];
+    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY];
+    NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[0-9]*"];
     
@@ -220,7 +220,7 @@
     
     if (addressname == nil || addressname.length == 0) {
         isValid = NO;
-        [messages addObject:@"Nama Alamat harus diisi."];
+        [messages addObject:@"Nama Lokasi harus diisi."];
     }
     if (address == nil || address.length == 0) {
         isValid = NO;
@@ -236,21 +236,21 @@
     }
     if (city == nil || city.length == 0) {
         isValid = NO;
-        [messages addObject:@"Kota harus diisi."];
+        [messages addObject:@"Kotamadya harus diisi."];
     }
     if (district == nil || district.length == 0) {
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
     if (email.length > 0 && [email isEmail] == nil) {
-        [messages addObject:@"Format tidak benar."];
+        [messages addObject:@"Format Email tidak benar."];
     }
     if (phone.length > 0) {
         if ([predicate evaluateWithObject:phone] == NO) {
             [messages addObject:@"Telepon harus berupa angka."];
         }
         if (phone.length < 6) {
-            [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
+            [messages addObject:@"Telepon terlalu pendek, minimum 6 angka."];
         }
     }
     if (fax.length > 0) {
@@ -258,7 +258,7 @@
             [messages addObject:@"Fax harus berupa angka."];
         }
         if (phone.length < 6) {
-            [messages addObject:@"Fax terlalu pendek, minimum 6 karakter."];
+            [messages addObject:@"Fax terlalu pendek, minimum 6 angka."];
         }
     }
     
@@ -380,6 +380,9 @@
             address.location_email = [email isEqualToString:@""]?@"-":email;
             address.location_fax = [fax isEqualToString:@""]?@"-":fax;
             
+            address.location_area = [NSString stringWithFormat:@"%@, %@, %@",
+                                     address.location_district_name, address.location_city_name, address.location_postal_code];
+            
             [self.delegate successEditAddress:address];
         }
         
@@ -464,7 +467,7 @@
     if (_data) {
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         _textfieldaddressname.text = list.location_address_name?:@"";
-        _textviewaddress.text = [NSString convertHTML:list.location_address];
+        _textviewaddress.text = list.location_address?:@"";
         NSString *postalcode = list.location_postal_code?:@"";
         _textfieldpostcode.text = postalcode;
         if ([list.location_email isEqualToString:@"0"]) {
@@ -606,9 +609,7 @@
 
 -(void) textViewDidChange:(UITextView *)textView
 {
-    if(_textviewaddress.text.length == 0){
-        [_textviewaddress resignFirstResponder];
-    }
+    [_datainput setObject:textView.text forKey:kTKPDSHOP_APIADDRESSKEY];
 }
 
 #pragma mark - Scroll delegate

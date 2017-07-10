@@ -77,7 +77,8 @@ class ProductAndWishlistNetworkManager: NSObject {
                 }
                 
                 if let curatedProduct = searchResult.curatedProduct {
-                    productIds = curatedProduct.sections.reduce([]) { allIds, section in
+                    guard let sections = curatedProduct.sections else { return Observable<CategoryIntermediaryResult>.just(searchResult) }
+                    productIds = sections.reduce([]) { allIds, section in
                         return allIds + section.products.map { $0.id }
                     }
                 }
@@ -91,9 +92,11 @@ class ProductAndWishlistNetworkManager: NSObject {
                     .map { checkResult in
                         let _ = checkResult.ids.map { id in
                             if let curatedProduct = searchResult.curatedProduct {
-                                let _ = curatedProduct.sections.map { section in
-                                    let product = section.products.first { $0.id == id }
-                                    product?.isOnWishlist = true
+                                if let sections = curatedProduct.sections {
+                                    let _ = sections.map { section in
+                                        let product = section.products.first { $0.id == id }
+                                        product?.isOnWishlist = true
+                                    }
                                 }
                             }
                         }

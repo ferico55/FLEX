@@ -359,12 +359,12 @@
 #pragma mark - Reputation Detail Cells Delegate
 - (void)didTapProductWithReview:(DetailReputationReview *)review{
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        [_navigator navigateToProductFromViewController:self
-                                               withName:review.product_name
-                                              withPrice:nil
-                                                 withId:review.product_id
-                                           withImageurl:review.product_image
-                                           withShopName:review.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:review.product_id
+                                                            andName:review.product_name
+                                                           andPrice:nil
+                                                        andImageURL:review.product_image
+                                                        andShopName:review.shop_name];
     }
 }
 

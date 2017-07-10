@@ -356,12 +356,9 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                    EMAIL_PASSWORD(@"alwan.ubaidillah+003@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"julius.gonawan+buyer@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"julius.gonawan+seller@tokopedia.com", @"tokopedia2016"),
-                   EMAIL_PASSWORD(@"justin+buyer@tokopedia.com", @"tokopedia123"),
-                   EMAIL_PASSWORD(@"justin+seller@tokopedia.com", @"tokopedia123"),
                    EMAIL_PASSWORD(@"feni.manurung+123@tokopedia.com", @"123tokopedia"),
                    EMAIL_PASSWORD(@"feni.manurung+456@tokopedia.com", @"123toped"),
                    EMAIL_PASSWORD(@"mochamad.rizki+31@tokopedia.com", @"tokopedia"),
-                   EMAIL_PASSWORD(@"andhika.djaffri+2@tokopedia.com", @"tokopedia789")
                    })
                 );
 }
@@ -542,6 +539,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 
 - (void)notifyUserDidLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:nil];
 }
 
 #pragma mark - Delegate

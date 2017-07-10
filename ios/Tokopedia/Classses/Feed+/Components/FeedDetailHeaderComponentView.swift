@@ -14,12 +14,14 @@ import RxCocoa
 class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
     
     override func construct(state: FeedDetailState?, size _: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         let mainContent = Node<UIView>(identifier: "main-content") { view, layout, _ in
             layout.flexDirection = .row
             layout.alignItems = .center
             
             view.bk_(whenTapped: {
-                TPRoutes.routeURL(URL(string: (state?.source.shopState.shopURL)!)!)
+                TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
             })
         }.add(children: [
             Node<UIImageView>(identifier: "author-image") { imageView, layout, _ in
@@ -29,13 +31,13 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 imageView.borderWidth = 1.0
                 imageView.borderColor = .tpLine()
                 imageView.cornerRadius = 3.0
-                imageView.setImageWith(URL(string: (state?.source.shopState.shopImage)!), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
+                imageView.setImageWith(URL(string: state.source.shopState.shopImage), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                 
             },
             Node<UIView>(identifier: "author-info") { _, layout, _ in
                 layout.flexDirection = .column
                 layout.flexShrink = 1
-                layout.marginLeft = (state?.oniPad)! ? 10.0 : 8.0
+                layout.marginLeft = state.oniPad ? 10.0 : 8.0
             }.add(children: [
                 Node<UIView>(identifier: "author-name") { _, layout, _ in
                     layout.flexDirection = .row
@@ -44,50 +46,50 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 }.add(child: Node<UILabel>(identifier: "title") { label, layout, _ in
                     layout.flexShrink = 1
                     
-                    let authorName = state?.source.shopState.shopName
-                    
                     label.numberOfLines = 0
-                    label.attributedText = self.attributedStringHeader(withAuthorName: authorName!, action: (state?.content.activity)!, state: (state?.source.shopState)!)
+                    label.attributedText = self.attributedStringHeader(withActivity: state.content.activity, state: state.source.shopState)
                 }),
                 Node<UILabel>(identifier: "create-time") { label, layout, _ in
                     layout.marginBottom = 3
                     
-                    label.text = FeedService.feedCreateTimeFormatted(withCreatedTime: (state?.createTime)!)
+                    label.text = FeedService.feedCreateTimeFormatted(withCreatedTime: state.createTime)
                     label.font = .microTheme()
-                    label.textColor = UIColor.black.withAlphaComponent(0.38)
+                    label.textColor = UIColor.tpDisabledBlackText()
                 }
             ])
         ])
         
-        let buttonContent = (state?.oniPad)! ? Node<UIView>(identifier: "button-content-ipad") { _, layout, _ in
+        let shareButton = Node<UIButton>(identifier: "share-button-ipad") { button, layout, _ in
+            button.setTitle(" Bagikan", for: .normal)
+            button.setImage(#imageLiteral(resourceName: "icon_button_share"), for: .normal)
+            button.backgroundColor = .white
+            button.cornerRadius = 3.0
+            button.titleLabel?.font = .smallThemeSemibold()
+            button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
+            button.borderWidth = 1
+            button.borderColor = .tpLine()
+            
+            button.rx.tap
+                .subscribe(onNext: {
+                    let title = state.source.shopState.shareDescription
+                    let url = state.source.shopState.shareURL
+                    
+                    let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
+                    
+                    UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                })
+                .disposed(by: self.rx_disposeBag)
+            
+            layout.height = 40.0
+            layout.width = 203.0
+        }
+        
+        let buttonContent = state.oniPad ? Node<UIView>(identifier: "button-content-ipad") { _, layout, _ in
             layout.flexDirection = .row
             layout.alignItems = .center
             layout.justifyContent = .center
         }.add(children: [
-            Node<UIButton>(identifier: "share-button-ipad") { button, layout, _ in
-                button.setTitle(" Bagikan", for: .normal)
-                button.setImage(#imageLiteral(resourceName: "icon_button_share"), for: .normal)
-                button.backgroundColor = .white
-                button.cornerRadius = 3.0
-                button.titleLabel?.font = .smallThemeSemibold()
-                button.setTitleColor(UIColor.black.withAlphaComponent(0.38), for: .normal)
-                button.borderWidth = 1
-                button.borderColor = .tpLine()
-                
-                button.rx.tap
-                    .subscribe(onNext: {
-                        let title = self.state?.source.shopState.shareDescription
-                        let url = self.state?.source.shopState.shareURL
-                        
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url!), anchor: button)
-                        
-                        UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
-                    })
-                    .disposed(by: self.rx_disposeBag)
-                
-                layout.height = 40.0
-                layout.width = 203.0
-            },
+            shareButton,
             Node<UIButton>(identifier: "visit-shop-ipad") { button, layout, _ in
                 button.setTitle("Kunjungi Toko", for: .normal)
                 button.backgroundColor = .tpGreen()
@@ -98,7 +100,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 button.rx.tap
                     .subscribe(onNext: {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - Shop")
-                        TPRoutes.routeURL(URL(string: (state?.source.shopState.shopURL)!)!)
+                        TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                     })
                     .disposed(by: self.rx_disposeBag)
                 
@@ -110,14 +112,14 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
         
         return Node<UIView>() { view, layout, _ in
             layout.flexDirection = .column
-            layout.width = (state?.oniPad)! ? 560.0 : UIScreen.main.bounds.width
+            layout.width = state.oniPad ? 560.0 : UIScreen.main.bounds.width
             
             view.backgroundColor = .white
         }.add(children: [
             Node<UIView>() { view, layout, _ in
                 layout.flexDirection = .column
                 layout.padding = 10.0
-                layout.width = (state?.oniPad)! ? 560.0 : UIScreen.main.bounds.width
+                layout.width = state.oniPad ? 560.0 : UIScreen.main.bounds.width
                 layout.flexGrow = 1
                 
                 view.backgroundColor = .white
@@ -127,7 +129,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
             ]),
             Node<UIView>(identifier: "horizontal-line") { view, layout, _ in
                 layout.height = 1
-                layout.width = (state?.oniPad)! ? 560.0 : UIScreen.main.bounds.width
+                layout.width = state.oniPad ? 560.0 : UIScreen.main.bounds.width
                 layout.flexGrow = 1
                 
                 view.backgroundColor = .tpBackground()
@@ -135,16 +137,16 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
         ])
     }
     
-    private func attributedStringHeader(withAuthorName author: String, action: String, state: FeedDetailShopState) -> NSAttributedString {
+    private func attributedStringHeader(withActivity activity: FeedDetailActivityState, state: FeedDetailShopState) -> NSAttributedString {
         let attString: NSMutableAttributedString = NSMutableAttributedString()
         
-        let authorAttributes: [String: Any] = [
+        let bold: [String: Any] = [
             NSFontAttributeName: UIFont.largeThemeSemibold(),
-            NSForegroundColorAttributeName: UIColor.black.withAlphaComponent(0.70)
+            NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
         ]
-        let actionAttributes: [String: Any] = [
+        let normal: [String: Any] = [
             NSFontAttributeName: UIFont.largeTheme(),
-            NSForegroundColorAttributeName: UIColor.black.withAlphaComponent(0.70)
+            NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
         ]
         
         var attachmentString: NSAttributedString?
@@ -167,10 +169,12 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
         
         if attachmentString != nil {
             attString.append(attachmentString!)
-            attString.append(NSAttributedString(string: " ", attributes: authorAttributes))
+            attString.append(NSAttributedString(string: " ", attributes: bold))
         }
-        attString.append(NSAttributedString(string: "\(author) ", attributes: authorAttributes))
-        attString.append(NSAttributedString(string: action, attributes: actionAttributes))
+        
+        attString.append(NSAttributedString(string: "\(activity.source) ", attributes: bold))
+        attString.append(NSAttributedString(string: "\(activity.activity) ", attributes: normal))
+        attString.append(NSAttributedString(string: "\(activity.amount) produk", attributes: normal))
         
         return attString
     }

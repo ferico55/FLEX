@@ -51,13 +51,6 @@ class FiltersTableViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        
-    }
-    
     //Mark: - reset Filter
     func resetSelectedFilter() -> Void {
         self.selectedObjects = []

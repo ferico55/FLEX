@@ -33,7 +33,21 @@ struct FeedDetailContentState: Render.StateType {
     var type: FeedContentType = .newProduct
     var totalProduct: Int! = 0
     var product: [FeedDetailProductState] = []
+    var activity = FeedDetailActivityState()
+}
+
+struct FeedDetailActivityState: Render.StateType {
+    var source = ""
     var activity = ""
+    var amount = 0
+    
+    init() { }
+    
+    init(statusActivity: FeedDetailQuery.Data.Feed.Datum.Content.NewStatusActivity) {
+        self.source = NSString.convertHTML(statusActivity.source!)
+        self.activity = statusActivity.activity!
+        self.amount = statusActivity.amount!
+    }
 }
 
 struct FeedDetailShopState: Render.StateType {
@@ -52,7 +66,7 @@ struct FeedDetailShopState: Render.StateType {
 struct FeedDetailProductState: Render.StateType {
     let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
     
-    var productID = 0
+    var productID = ""
     var productName = ""
     var productImage = ""
     var productURL = ""
@@ -103,7 +117,7 @@ class FeedDetailStateManager: NSObject {
         
         content.product = productArray
         content.totalProduct = feedContent.totalProduct
-        content.activity = feedContent.statusActivity!
+        content.activity = FeedDetailActivityState(statusActivity: feedContent.newStatusActivity!)
         
         return content
     }
@@ -126,7 +140,7 @@ class FeedDetailStateManager: NSObject {
     private class func initFeedProduct(with feedProduct: FeedDetailQuery.Data.Feed.Datum.Content.Product) -> FeedDetailProductState {
         var product = FeedDetailProductState()
         
-        product.productID = feedProduct.id!
+        product.productID = "\(feedProduct.id!)"
         product.productName = feedProduct.name!
         product.productRating = feedProduct.rating!
         product.productCashback = feedProduct.cashback!

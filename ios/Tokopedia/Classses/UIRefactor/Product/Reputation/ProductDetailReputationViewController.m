@@ -394,12 +394,12 @@ MGSwipeTableCellDelegate
 }
 
 - (void)goToDetailProduct:(id)sender {
-    [_TKPDNavigator navigateToProductFromViewController:self
-                                               withName:_detailReputationReview.product_name
-                                              withPrice:nil
-                                                 withId:_detailReputationReview.review_product_id
-                                           withImageurl:_detailReputationReview.product_image
-                                           withShopName:_detailReputationReview.product_owner.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:_detailReputationReview.review_product_id
+                                                        andName:_detailReputationReview.product_name
+                                                       andPrice:nil
+                                                    andImageURL:_detailReputationReview.product_image
+                                                    andShopName:_detailReputationReview.product_owner.shop_name];
 }
 
 - (void)actionVote:(id)sender

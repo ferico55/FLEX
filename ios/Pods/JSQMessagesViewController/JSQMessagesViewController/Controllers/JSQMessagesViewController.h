@@ -323,5 +323,9 @@
  @param notification The posted notification.
  */
 - (void)didReceiveMenuWillHideNotification:(NSNotification *)notification;
+- (void)jsq_adjustInputToolbarForComposerTextViewContentSizeChange:(CGFloat)dy;
+- (void)jsq_updateCollectionViewInsets;
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressLeftBarButton:(UIButton *)sender;
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender;
 
 @end

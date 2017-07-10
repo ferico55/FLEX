@@ -8,8 +8,9 @@
 
 import UIKit
 import RestKit
+import Unbox
 
-@objc class CategoryResponse: NSObject {
+@objc class CategoryResponse: NSObject, Unboxable {
     
     var status:String = ""
     var result:CategoryData = CategoryData(){
@@ -30,6 +31,11 @@ import RestKit
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: CategoryData.mapping()))
         
         return mapping
+    }
+    
+    convenience required init(unboxer: Unboxer) throws {
+        self.init()
+        self.data = try unboxer.unbox(keyPath: "result")
     }
     
 }

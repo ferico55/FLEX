@@ -24,7 +24,7 @@ class ProductEditDetail: NSObject {
     var product_status: String = ""
     var product_weight_unit_name: String = ""
     var product_catalog: CatalogList = CatalogList()
-    var product_category :CategoryDetail = CategoryDetail()
+    var product_category :ListOption = ListOption()
     var product_name_editable: String = ""
     
     var productEtalaseEnc: String = ""

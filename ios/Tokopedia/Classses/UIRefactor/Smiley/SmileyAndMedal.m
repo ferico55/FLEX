@@ -166,4 +166,31 @@ enum emoticonTag {
     [viewContentPopUp addSubview:btnKuning];
     [viewContentPopUp addSubview:btnHijau];
 }
+
++ (NSArray<UIImage*>*)medalWithLevel:(NSString*)level andSet:(NSString*)set {
+    NSMutableArray<UIImage*>* images = [[NSMutableArray alloc] init];
+    
+    NSDictionary* badgesImageBySet = @{
+                                       @"0" : @"icon_medal",
+                                       @"1" : @"icon_medal_bronze",
+                                       @"2" : @"icon_medal_silver",
+                                       @"3" : @"icon_medal_gold",
+                                       @"4" : @"icon_medal_diamond_one"
+                                       };
+    
+    if([set isEqualToString:@"0"]) {
+        UIImage* image = [UIImage imageNamed:[badgesImageBySet objectForKey:set]];
+        [images addObject:image];
+        
+        return images;
+    }
+    
+    for (int i = 0; i < level.integerValue; i++) {
+        UIImage* image = [UIImage imageNamed:[badgesImageBySet objectForKey:set]];
+        [images addObject:image];
+    }
+    
+    return images;
+}
+
 @end

@@ -58,7 +58,7 @@
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "MaintenanceViewController.h"
-
+#import "TransactionATCViewController.h"
 
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
@@ -255,6 +255,24 @@
     [viewController.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
++ (void)navigateToProductFromViewController:(UIViewController *)viewController
+                              withProductID:(NSString *)productID
+                                    andName:(NSString *)name
+                                   andPrice:(NSString *)price
+                                andImageURL:(NSString *)imageURL
+                                andShopName:(NSString *)shopName {
+    ProductDetailViewController *vc = [[ProductDetailViewController alloc] initWithProductID:productID?:@""
+                                                                                        name:name?:@""
+                                                                                       price:price?:@""
+                                                                                    imageURL:imageURL?:@""
+                                                                                    shopName:shopName?:@""
+                                                                           isReplacementMode:NO];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{@"product_id" : productID?:@""};
@@ -290,46 +308,6 @@
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
-}
-
--(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxRootViewController *inboxController = [InboxRootViewController new];
-        [viewController.navigationController pushViewController:inboxController animated:YES];
-        
-    } else {
-        InboxMessageViewController *vc = [InboxMessageViewController new];
-        vc.data=@{@"nav":@"inbox-message"};
-        
-        InboxMessageViewController *vc1 = [InboxMessageViewController new];
-        vc1.data=@{@"nav":@"inbox-message-sent"};
-        
-        InboxMessageViewController *vc2 = [InboxMessageViewController new];
-        vc2.data=@{@"nav":@"inbox-message-archive"};
-        
-        InboxMessageViewController *vc3 = [InboxMessageViewController new];
-        vc3.data=@{@"nav":@"inbox-message-trash"};
-        NSArray *vcs = @[vc,vc1, vc2, vc3];
-        
-        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-        [inboxController setSelectedIndex:2];
-        [inboxController setViewControllers:vcs];
-        
-        [viewController.navigationController pushViewController:inboxController animated:YES];
-    }
-}
-
-//push notif message/[messageId]
--(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId
-{
-    UserAuthentificationManager *userMng = [UserAuthentificationManager new];
-    MessageViewController *vc = [[MessageViewController alloc] init];
-    vc.senderId = userMng.getUserId;
-    vc.senderDisplayName = @"";
-    vc.messageId = messageId;
-    vc.hidesBottomBarWhenPushed = YES;
-    [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 + (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
@@ -502,6 +480,45 @@
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxRootViewController *inboxController = [InboxRootViewController new];
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+        
+    } else {
+        InboxMessageViewController *vc = [InboxMessageViewController new];
+        vc.data=@{@"nav":@"inbox-message"};
+        
+        InboxMessageViewController *vc1 = [InboxMessageViewController new];
+        vc1.data=@{@"nav":@"inbox-message-sent"};
+        
+        InboxMessageViewController *vc2 = [InboxMessageViewController new];
+        vc2.data=@{@"nav":@"inbox-message-archive"};
+        
+        InboxMessageViewController *vc3 = [InboxMessageViewController new];
+        vc3.data=@{@"nav":@"inbox-message-trash"};
+        NSArray *vcs = @[vc,vc1, vc2, vc3];
+        
+        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+        [inboxController setSelectedIndex:2];
+        [inboxController setViewControllers:vcs];
+        
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+    }
+}
+
+//push notif message/[messageId]
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId
+{
+    UserAuthentificationManager *userMng = [UserAuthentificationManager new];
+    MessageViewController *vc = [[MessageViewController alloc] init];
+    vc.senderId = userMng.getUserId;
+    vc.senderDisplayName = @"";
+    vc.messageId = messageId;
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
 
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController
 {
@@ -940,6 +957,13 @@
 
 - (void)navigateToFeedDetailFromViewController:(UIViewController *)viewController withFeedCardID:(NSString *)cardID {
     FeedDetailViewController *vc = [[FeedDetailViewController alloc] initWithActivityID:cardID];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
+    TransactionATCViewController *vc = [TransactionATCViewController new];
+    vc.productID = productID;
     vc.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:vc animated:YES];
 }

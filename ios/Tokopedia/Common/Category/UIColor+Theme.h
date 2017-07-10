@@ -10,7 +10,9 @@
 
 @interface UIColor (Theme)
 
++(nonnull UIColor *)tpNavigationBar;
 +(nonnull UIColor *)tpGreen;
++(nonnull UIColor *)tpLightGreen;
 +(nonnull UIColor *)tpOrange;
 +(nonnull UIColor *)tpPrimaryBlackText;
 +(nonnull UIColor *)tpSecondaryBlackText;

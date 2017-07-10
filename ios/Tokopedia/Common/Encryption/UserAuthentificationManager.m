@@ -121,10 +121,10 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(CategoryDetail *)getLastProductAddCategory
+-(ListOption *)getLastProductAddCategory
 {
     if ([[self secureStorageDictionary] objectForKey:LAST_CATEGORY_VALUE]) {
-        CategoryDetail *category = [[CategoryDetail alloc] init];
+        ListOption *category = [[ListOption alloc] init];
         category.categoryId = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:LAST_CATEGORY_VALUE]];
         category.name = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:LAST_CATEGORY_NAME]];
         return category;

@@ -7,7 +7,6 @@
 //
 
 #import "TransactionCartCell.h"
-#import "Errors.h"
 #import "Tokopedia-Swift.h"
 
 @implementation TransactionCartCell

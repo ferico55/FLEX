@@ -20,7 +20,8 @@
                       @"button_upload_proof",
                       @"button_ask_seller",
                       @"button_cancel_request",
-                      @"show_reorder"
+                      @"show_reorder",
+                      @"button_cancel_replacement"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

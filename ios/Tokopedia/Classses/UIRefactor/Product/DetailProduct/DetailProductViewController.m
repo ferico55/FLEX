@@ -2084,7 +2084,10 @@ TTTAttributedLabelDelegate
                                label:@"Add to Wishlist"];
 
     Breadcrumb *category = _product.data.breadcrumb[0];
-    Breadcrumb *subcategory = _product.data.breadcrumb[1];
+    Breadcrumb *subcategory = nil;
+    if (_product.data.breadcrumb.count > 1) {
+        subcategory = _product.data.breadcrumb[1];
+    }
     NSDictionary *attributes = @{@"subcategory_id":subcategory.department_id ? :@"", @"category":category.department_name ? :@"", @"category_id":category.department_id ? :@"", @"product_name":_product.data.product.product_name ? :@"", @"product_id":_product.data.product.product_id ? :@"", @"product_url":_product.data.product.product_url ? :@"", @"product_price":_product.data.product.product_price ? :@""};
     [AnalyticsManager moEngageTrackEventWithName:@"Product_Added_To_Wishlist_Marketplace" attributes:attributes];
     
@@ -2384,7 +2387,13 @@ TTTAttributedLabelDelegate
 
 - (void)didSelectOtherProduct:(SearchAWSProduct *)product {
     [AnalyticsManager trackProductClick:product];
-    [NavigateViewController navigateToProductFromViewController:self withProduct:product];
+    
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:product.product_image
+                                                    andShopName:product.shop_name];
 }
 
 - (BOOL)isProductActive {

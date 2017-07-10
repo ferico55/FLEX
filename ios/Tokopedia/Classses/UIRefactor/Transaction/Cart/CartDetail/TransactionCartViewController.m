@@ -109,6 +109,7 @@
     NotificationManager *_notifManager;
     
     UIView *_lineView;
+    UIView *lastNotificationView;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
@@ -657,8 +658,13 @@
     
     if ([product.product_error_msg isEqualToString:@""] ||
         [product.product_error_msg isEqualToString:@"0"] ||
-        product.product_error_msg == nil ) {
-        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
+        product.product_error_msg == nil) {
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.product_id
+                                                            andName:product.product_name
+                                                           andPrice:product.product_price
+                                                        andImageURL:product.product_picture
+                                                        andShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -670,7 +676,12 @@
     ProductDetail *product = listProducts[indexProduct];
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
-        [NavigateViewController navigateToProductFromViewController:self withProduct:product withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.product_id
+                                                            andName:product.product_name
+                                                           andPrice:product.product_price
+                                                        andImageURL:product.product_picture
+                                                        andShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -733,7 +744,12 @@
     
     NSLog(@"%d",isValid);
     if (!isValid && _errorMessages.count > 0) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
+        if(lastNotificationView) {
+            [lastNotificationView setHidden:YES];
+            lastNotificationView = nil;
+            [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
+        }
+        lastNotificationView = [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
                                                  type:NotificationTypeError
                                              duration:4.0
                                           buttonTitle:_shouldDisplayButtonOnErrorAlert?@"Belanja Lagi":nil
@@ -1496,6 +1512,7 @@
         [self reloadNotification];
         
     } error:^(NSError *error) {
+        [self doClearAllData];
         [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];

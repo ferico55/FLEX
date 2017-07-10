@@ -80,4 +80,7 @@
                        onSuccess:(void (^)())onSuccess
                        onFailure:(void (^)())onFailure;
 
++(void)cancelReplacementOrderId:(NSString *)orderId
+                      onSuccess:(void (^)())onSuccess;
+
 @end

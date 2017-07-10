@@ -33,22 +33,30 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     override func construct(state: FeedCardState?, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         let topAdsComponent = TopAdsFeedPlusComponentView(favoriteCallback: { state in
             self.onTopAdsStateChanged(state)
         })
         
-        if (state?.isEmptyState)! {
+        if state.isEmptyState {
             return self.emptyState(state: state, size: size)
         }
         
-        if (state?.isNextPageError)! {
+        if state.isNextPageError {
             return self.nextPageError(state: state, size: size)
         }
         
-        return (state?.topads != nil) ? topAdsComponent.construct(state: state?.topads, size: size) : self.feedCard(state: state, size: size)
+        if let inspiration = state.inspiration {
+            return FeedInspirationComponentView().construct(state: inspiration, size: size)
+        }
+        
+        return (state.topads != nil) ? topAdsComponent.construct(state: state.topads, size: size) : self.feedCard(state: state, size: size)
     }
     
     func nextPageError(state: FeedCardState?, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         let desc = Node<UILabel>(identifier: "empty-state-desc") { label, layout, _ in
             layout.flexShrink = 1
             layout.marginTop = 26
@@ -57,7 +65,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
             
             label.text = "Mohon maaf terjadi kendala, silakan coba lagi."
             label.font = .largeTheme()
-            label.textColor = UIColor.black.withAlphaComponent(0.38)
+            label.textColor = UIColor.tpDisabledBlackText()
             label.textAlignment = .center
             label.numberOfLines = 0
         }
@@ -79,13 +87,13 @@ class FeedComponentView: ComponentView<FeedCardState> {
             
             layout.height = 40.0
             layout.width = 200.0
-            layout.alignSelf = (state?.oniPad)! ? .flexStart : .center
+            layout.alignSelf = .center
             layout.flexDirection = .row
             
-            if !(state?.oniPad)! {
+            if !(state.oniPad) {
                 layout.marginBottom = 25
             }
-        }.add(child: (state?.nextPageReloadIsLoading)! ? Node<UIActivityIndicatorView> { view, layout, _ in
+        }.add(child: state.nextPageReloadIsLoading ? Node<UIActivityIndicatorView> { view, layout, _ in
             view.activityIndicatorViewStyle = .white
             view.startAnimating()
             
@@ -115,21 +123,23 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     func emptyState(state: FeedCardState?, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         let cactusImage = Node<UIView>(identifier: "empty-state-image") { view, layout, _ in
             view.backgroundColor = .clear
             
             layout.alignSelf = .center
-            layout.width = (state?.oniPad)! ? 202 : 161
-            layout.height = (state?.oniPad)! ? 125 : 100
+            layout.width = state.oniPad ? 202 : 161
+            layout.height = state.oniPad ? 125 : 100
             
-            if !(state?.oniPad)! {
+            if !(state.oniPad) {
                 layout.marginTop = 30
                 layout.marginBottom = 12
             }
             
             let animationView = LOTAnimationView(name: "FeedEmptyState")
             animationView?.loopAnimation = true
-            animationView?.frame.size = CGSize(width: (state?.oniPad)! ? 202 : 161, height: (state?.oniPad)! ? 125 : 100)
+            animationView?.frame.size = CGSize(width: state.oniPad ? 202 : 161, height: state.oniPad ? 125 : 100)
             animationView?.contentMode = .scaleAspectFill
             animationView?.backgroundColor = .clear
             
@@ -143,11 +153,11 @@ class FeedComponentView: ComponentView<FeedCardState> {
         let title = Node<UILabel>(identifier: "empty-state-title") { label, layout, _ in
             layout.flexShrink = 1
             layout.marginBottom = 12
-            layout.alignSelf = (state?.oniPad)! ? .flexStart : .center
+            layout.alignSelf = state.oniPad ? .flexStart : .center
             
-            label.text = (state?.errorType == .emptyFeed) ? "Oops, feed masih kosong" : "Oops!"
+            label.text = (state.errorType == .emptyFeed) ? "Oops, feed masih kosong" : "Oops!"
             label.font = UIFont.boldSystemFont(ofSize: 16.0)
-            label.textColor = UIColor.black.withAlphaComponent(0.54)
+            label.textColor = UIColor.tpSecondaryBlackText()
             label.textAlignment = .center
             label.numberOfLines = 0
         }
@@ -155,42 +165,42 @@ class FeedComponentView: ComponentView<FeedCardState> {
         let desc = Node<UILabel>(identifier: "empty-state-desc") { label, layout, _ in
             layout.flexShrink = 1
             layout.marginBottom = 25
-            layout.alignSelf = (state?.oniPad)! ? .flexStart : .center
+            layout.alignSelf = state.oniPad ? .flexStart : .center
             
-            if !(state?.oniPad)! {
+            if !(state.oniPad) {
                 layout.maxWidth = 262
             }
             
-            label.text = (state?.errorType == .emptyFeed) ? "Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru di sini." : "Mohon maaf terjadi kendala pada server.\nSilakan coba lagi."
+            label.text = (state.errorType == .emptyFeed) ? "Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru di sini." : "Mohon maaf terjadi kendala pada server.\nSilakan coba lagi."
             label.font = .largeTheme()
-            label.textColor = UIColor.black.withAlphaComponent(0.38)
-            label.textAlignment = (state?.oniPad)! ? .left : .center
+            label.textColor = UIColor.tpDisabledBlackText()
+            label.textAlignment = state.oniPad ? .left : .center
             label.numberOfLines = 0
         }
         
         let button = Node<UIButton>(identifier: "action-button") { button, layout, _ in
-            button.setTitle((state?.errorType == .emptyFeed) ? "Cari Toko" : "Coba Lagi", for: .normal)
+            button.setTitle((state.errorType == .emptyFeed) ? "Cari Toko" : "Coba Lagi", for: .normal)
             button.setTitleColor(.white, for: .normal)
             button.titleLabel?.font = .smallThemeSemibold()
             button.backgroundColor = .tpGreen()
             button.cornerRadius = 3
-            button.isEnabled = !(state?.refreshButtonIsLoading)!
+            button.isEnabled = !(state.refreshButtonIsLoading)
             
             button.rx.tap
                 .subscribe(onNext: {
-                    self.onEmptyStateButtonPressed((state?.errorType)!)
+                    self.onEmptyStateButtonPressed(state.errorType)
                 })
                 .disposed(by: self.rx_disposeBag)
             
             layout.height = 40.0
             layout.width = 233.0
-            layout.alignSelf = (state?.oniPad)! ? .flexStart : .center
+            layout.alignSelf = state.oniPad ? .flexStart : .center
             layout.flexDirection = .row
             
-            if !(state?.oniPad)! {
+            if !(state.oniPad) {
                 layout.marginBottom = 25
             }
-        }.add(child: (state?.refreshButtonIsLoading)! ? Node<UIActivityIndicatorView> { view, layout, _ in
+        }.add(child: state.refreshButtonIsLoading ? Node<UIActivityIndicatorView> { view, layout, _ in
             view.activityIndicatorViewStyle = .white
             view.startAnimating()
             
@@ -245,21 +255,23 @@ class FeedComponentView: ComponentView<FeedCardState> {
             emptySpace
         ])
         
-        return (state?.oniPad)! ? iPadLayout : iPhoneLayout
+        return state.oniPad ? iPadLayout : iPhoneLayout
     }
     
     func feedCard(state: FeedCardState?, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         var feedContent: NodeType = NilNode()
         
-        if state?.content.type == .newProduct || state?.content.type == .editProduct {
-            feedContent = self.productCellLayout(withProductAmount: (state?.content.product.count)!, size: size)
-        } else if state?.content.type == .promotion {
-            feedContent = self.promotionLayout(withPromotionAmount: (state?.content.promotion.count)!, size: size)
+        if state.content.type == .newProduct || state.content.type == .editProduct {
+            feedContent = self.productCellLayout(withProductAmount: state.content.product.count, size: size)
+        } else if state.content.type == .promotion {
+            feedContent = self.promotionLayout(withPromotionAmount: state.content.promotion.count, size: size)
         }
         
         var promotionPageControl: NodeType = NilNode()
         
-        if state?.content.type == .promotion && (state?.content.promotion.count)! > 1 {
+        if state.content.type == .promotion && state.content.promotion.count > 1 {
             promotionPageControl = Node<UIView>() { _, layout, _ in
                 layout.flexDirection = .column
             }.add(children: [
@@ -272,7 +284,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
                     view.backgroundColor = .white
                 }.add(children: [
                     Node<UIPageControl>(identifier: "page-control") { [weak self] view, layout, _ in
-                        view.numberOfPages = (state?.content.promotion.count)!
+                        view.numberOfPages = state.content.promotion.count
                         view.currentPage = 0
                         view.currentPageIndicatorTintColor = .tpGreen()
                         view.pageIndicatorTintColor = .tpLine()
@@ -333,7 +345,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
             FeedHeaderComponentView(viewController: self.viewController!).construct(state: state, size: size),
             feedContent,
             promotionPageControl,
-            ((state?.oniPad)! || (state?.content.type == .promotion)) ? NilNode() : self.shareButton(withSize: size)
+            state.oniPad || (state.content.type == .promotion) ? NilNode() : self.shareButton(withSize: size)
         ])
         
         return Node<UIView> { _, layout, _ in
@@ -376,13 +388,15 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     func promotionLayout(withPromotionAmount amount: Int, size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         var mainContent: NodeType
         
         if amount == 1 {
-            mainContent = FeedPromotionComponentView().construct(state: state?.content.promotion[0], size: size)
+            mainContent = FeedPromotionComponentView().construct(state: state.content.promotion[0], size: size)
         } else {
             let promotionArray = NSMutableArray()
-            state?.content.promotion.forEach({ promotionState in
+            state.content.promotion.forEach({ promotionState in
                 promotionArray.add(FeedPromotionComponentView().construct(state: promotionState, size: size))
             })
             
@@ -407,7 +421,9 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     func productCellLayout(withProductAmount amount: Int, size: CGSize) -> NodeType {
-        let mainContent: NodeType = (amount < 1) ? NilNode() : Node<UIView>(identifier: "main-content") { _, layout, size in
+        guard let state = state, amount > 0 else { return NilNode() }
+        
+        let mainContent: NodeType = Node<UIView>(identifier: "main-content") { _, layout, size in
             layout.flexDirection = .column
             layout.width = size.width
         }
@@ -417,7 +433,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -426,9 +442,9 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[1], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[1], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -437,11 +453,11 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[1], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[1], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[2], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[2], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -450,17 +466,17 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[1], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[1], size: size)
                 ]),
                 self.horizontalLine(withSize: size),
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[2], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[2], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[3], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[3], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -469,19 +485,19 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[1], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[1], size: size)
                 ]),
                 self.horizontalLine(withSize: size),
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[2], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[2], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[3], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[3], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[4], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[4], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -490,21 +506,21 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[0], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[0], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[1], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[1], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[2], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[2], size: size)
                 ]),
                 self.horizontalLine(withSize: size),
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
                 }.add(children: [
-                    ProductCellComponentView().construct(state: state?.content.product[3], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[3], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[4], size: size),
+                    ProductCellComponentView().construct(state: state.content.product[4], size: size),
                     self.verticalLine(withSize: size),
-                    ProductCellComponentView().construct(state: state?.content.product[5], size: size)
+                    ProductCellComponentView().construct(state: state.content.product[5], size: size)
                 ]),
                 self.horizontalLine(withSize: size)
             ])
@@ -514,6 +530,8 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     func shareButton(withSize size: CGSize) -> NodeType {
+        guard let state = state else { return NilNode() }
+        
         return Node<UIView>(identifier: "share-button-view") { _, layout, size in
             layout.flexDirection = .column
             layout.width = size.width
@@ -524,14 +542,14 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 button.backgroundColor = .white
                 button.cornerRadius = 5.0
                 button.titleLabel?.font = .smallThemeSemibold()
-                button.setTitleColor(UIColor.black.withAlphaComponent(0.38), for: .normal)
+                button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
                 
                 button.rx.tap
                     .subscribe(onNext: {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
-                        let title = self.state?.source.shopState.shareDescription
-                        let url = self.state?.source.shopState.shareURL
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url!), anchor: button)
+                        let title = state.source.shopState.shareDescription
+                        let url = state.source.shopState.shareURL
+                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
                         
                         self.viewController?.present(controller!, animated: true, completion: nil)
                     })
@@ -542,5 +560,4 @@ class FeedComponentView: ComponentView<FeedCardState> {
             self.horizontalLine(withSize: size)
         ])
     }
-    
 }

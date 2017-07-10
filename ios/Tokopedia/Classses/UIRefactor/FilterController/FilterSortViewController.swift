@@ -15,14 +15,14 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     fileprivate var completionHandler:(ListOption, [String:String])->Void = {_ in}
     fileprivate var completionHandlerResponse:(FilterData)->Void = {_ in}
     fileprivate var tableView: UITableView = UITableView()
-    fileprivate var source : String = ""
+    fileprivate var source : Source!
     fileprivate var refreshControl : UIRefreshControl = UIRefreshControl()
     fileprivate var rootCategoryID : String = String()
     
     /*
         The designated initializer for sorting list view controller called from FitersController. Items is list of sorting option. E.g:Sorting by promotion, best match, etc.
      */
-    init(source: String, items:[ListOption],selectedObject:ListOption, rootCategoryID:String, onCompletion: @escaping ((ListOption, [String:String]) -> Void), response:@escaping ((FilterData) -> Void)){
+    init(source: Source, items:[ListOption],selectedObject:ListOption, rootCategoryID:String, onCompletion: @escaping ((ListOption, [String:String]) -> Void), response:@escaping ((FilterData) -> Void)){
         
         completionHandler = onCompletion
         completionHandlerResponse = response
@@ -138,9 +138,11 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     func requestFilter(){
-        RequestFilter.fetchFilter(source,
+        let requestFilter = RequestFilter()
+        requestFilter.fetchFilter(source,
                                   departmentID: self.rootCategoryID,
-                                  success: { (response) in
+                                  onSuccess: { response  in
+                                    
             self.items.removeAll()
             self.tableView.reloadData()
             
@@ -160,9 +162,9 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
             self.completionHandlerResponse(response)
             self.tableView.reloadData()
             
-        }) { (error) in
+        }, onFailure: {
             self.tableView.setContentOffset(CGPoint.zero, animated:true)
             self.refreshControl.endRefreshing()
-        }
+        })
     }
 }

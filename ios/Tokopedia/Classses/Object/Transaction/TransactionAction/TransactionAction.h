@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TransactionActionResult.h"
-#import "Errors.h"
+@class Errors;
 
 @interface TransactionAction : NSObject <TKPObjectMapping>
 

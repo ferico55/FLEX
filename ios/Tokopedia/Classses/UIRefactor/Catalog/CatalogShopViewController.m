@@ -91,7 +91,7 @@
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
-    NSArray<CategoryDetail*> *_selectedCategories;
+    NSArray<ListOption*> *_selectedCategories;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -332,20 +332,8 @@
      return @"catalog_product";
 }
 
--(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
 - (IBAction)didTapSortButton:(id)sender {
-    if ([self isUseDynamicFilter]) {
-        [self isSearchWithDynamicSort];
-    } else{
-        [self pushSort];
-    }
+    [self isSearchWithDynamicSort];
 }
 
 -(void)isSearchWithDynamicSort{
@@ -385,36 +373,14 @@
     _activeSortImageView.hidden = !isActive;
 }
 
--(void)pushSort{
-    SortViewController *controller = [SortViewController new];
-    controller.sortType = SortCatalogDetailSeach;
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.delegate = self;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-}
-
 -(IBAction)didTapFilterButton:(id)sender{
-    if ([self isUseDynamicFilter]) {
-        [self searchWithDynamicFilter];
-    } else {
-        [self pushFilter];
-    }
+    [self searchWithDynamicFilter];
 }
 
--(void)pushFilter{
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:_filterCatalogController];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
 
 -(void)searchWithDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceCatalogProduct filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceCatalogProduct filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
-        _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
         
@@ -520,11 +486,7 @@
 }
 
 - (NSDictionary *)parameters {
-    if ([self isUseDynamicFilter]) {
-        return [self parameterDynamicFilter];
-    } else {
-        return [self parameterFilter];
-    }
+    return [self parameterDynamicFilter];
 }
 
 -(NSDictionary*)parameterDynamicFilter{
@@ -681,13 +643,23 @@
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
-    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:nil
+                                                    andShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
-    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:product.product_id
+                                                        andName:product.product_name
+                                                       andPrice:product.product_price
+                                                    andImageURL:nil
+                                                    andShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath

@@ -10,10 +10,13 @@ import Foundation
 import RestKit
 import Unbox
 
-final class ErrorsSwift:NSObject, Unboxable {
-    let name:String
-    let title:String
-    let desc:String
+@objc(Errors)
+final class Errors:NSObject, Unboxable {
+    var name:String = ""
+    var title:String = ""
+    var desc:String = ""
+    
+    override init() { }
     
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)!

@@ -13,6 +13,9 @@ enum MojitoTarget{
     case getProductWishStatus(productIds: [String])
     case setWishlist(withProductId: String)
     case unsetWishlist(withProductId: String)
+    case getProductCampaignInforFor(productIds:String)
+    case requestOfficialStore(categoryId: String)
+    case requestOfficialStoreHomePage
 }
 
 extension MojitoTarget : TargetType {
@@ -31,31 +34,41 @@ extension MojitoTarget : TargetType {
         case let .setWishlist(productId), let .unsetWishlist(productId):
             let userManager = UserAuthentificationManager()
             return "/users/\(userManager.getUserId()!)/wishlist/\(productId)/v1.1"
+        case .getProductCampaignInforFor:
+            return "os/v1/campaign/product/info"
+        case let .requestOfficialStore(categoryId):
+            return "os/api/v1/brands/category/ios/\(categoryId)"
+        case .requestOfficialStoreHomePage:
+            return "/os/api/v1/brands/list"
         }
     }
     
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .getProductWishStatus: return .get
+        case .getProductWishStatus, .requestOfficialStore, .requestOfficialStoreHomePage: return .get
         case .setWishlist: return .post
         case .unsetWishlist: return .delete
+        case .getProductCampaignInforFor: return .get
         }
     }
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
-        case .setWishlist, .unsetWishlist: return nil
+        case let .getProductCampaignInforFor(productIds): return [
+                    "pid":productIds
+                    ]
+        case .requestOfficialStore: return nil
+        case .requestOfficialStoreHomePage: return ["device":"ios"]
         default: return [:]
         }
-        
     }
     
     /// The method used for parameter encoding.
     var parameterEncoding: ParameterEncoding {
         switch self {
-        case .setWishlist, .unsetWishlist: return JSONEncoding.default
+            case .requestOfficialStore: return JSONEncoding.default
         default: return URLEncoding.default
         }
     }

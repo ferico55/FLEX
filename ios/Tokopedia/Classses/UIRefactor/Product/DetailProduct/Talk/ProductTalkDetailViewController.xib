@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -44,27 +44,8 @@
                                 <constraint firstAttribute="height" constant="1" id="GNo-Fg-FxC"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
-                            <rect key="frame" x="250" y="10" width="65" height="30"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="65" id="43i-ky-8oI"/>
-                                <constraint firstAttribute="height" constant="30" id="iTw-17-E94"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
-                            <state key="normal" title="Kirim">
-                                <color key="titleColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="disabled">
-                                <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="btnSendTapped" destination="-1" eventType="touchUpInside" id="2b7-jV-hhZ"/>
-                            </connections>
-                        </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6u1-H4-Esw" customClass="RSKGrowingTextView" customModule="RSKGrowingTextView">
-                            <rect key="frame" x="10" y="10" width="238" height="30"/>
+                            <rect key="frame" x="36" y="10" width="276" height="30"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -76,9 +57,9 @@
                                     <integer key="value" value="6"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="animateHeightChange" value="NO"/>
-                                <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Kirim pesanmu di sini.."/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tulis Pesan"/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                    <real key="value" value="5"/>
+                                    <real key="value" value="15"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                     <color key="value" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,23 +67,56 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                     <real key="value" value="0.5"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="8B8-2I-3DH"/>
                             </connections>
                         </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
+                            <rect key="frame" x="280" y="10" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="43i-ky-8oI"/>
+                                <constraint firstAttribute="height" constant="30" id="iTw-17-E94"/>
+                            </constraints>
+                            <state key="normal" image="icon_send">
+                                <color key="titleColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <state key="disabled">
+                                <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="btnSendTapped" destination="-1" eventType="touchUpInside" id="2b7-jV-hhZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cou-1N-CnP">
+                            <rect key="frame" x="8" y="14" width="20" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="tXY-sU-c2C"/>
+                            </constraints>
+                            <state key="normal" image="icon_attachment"/>
+                            <connections>
+                                <action selector="tapButtonAttachProduct:" destination="-1" eventType="touchUpInside" id="T6N-vg-urP"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="JEw-kx-nQw" firstAttribute="top" secondItem="0qe-6u-X0z" secondAttribute="top" id="0u6-GH-yV4"/>
-                        <constraint firstItem="I0F-UY-vER" firstAttribute="leading" secondItem="6u1-H4-Esw" secondAttribute="trailing" constant="2" id="8XI-O6-9cA"/>
-                        <constraint firstItem="6u1-H4-Esw" firstAttribute="leading" secondItem="0qe-6u-X0z" secondAttribute="leading" constant="10" id="Djv-wE-hJd"/>
-                        <constraint firstItem="I0F-UY-vER" firstAttribute="top" secondItem="JEw-kx-nQw" secondAttribute="bottom" constant="9" id="Ho1-4B-emc"/>
+                        <constraint firstItem="I0F-UY-vER" firstAttribute="trailing" secondItem="6u1-H4-Esw" secondAttribute="trailing" constant="-2" id="7Yu-yx-S75"/>
+                        <constraint firstItem="Cou-1N-CnP" firstAttribute="leading" secondItem="0qe-6u-X0z" secondAttribute="leading" constant="8" id="DrQ-YW-93T"/>
                         <constraint firstAttribute="height" constant="50" placeholder="YES" id="NP2-zM-0IZ"/>
+                        <constraint firstAttribute="trailing" secondItem="6u1-H4-Esw" secondAttribute="trailing" constant="8" id="Q9L-On-N65"/>
                         <constraint firstAttribute="bottom" secondItem="6u1-H4-Esw" secondAttribute="bottom" constant="10" id="ZuY-gW-lxQ"/>
+                        <constraint firstItem="Cou-1N-CnP" firstAttribute="centerY" secondItem="6u1-H4-Esw" secondAttribute="centerY" id="gG5-2s-lSW"/>
+                        <constraint firstItem="I0F-UY-vER" firstAttribute="centerY" secondItem="6u1-H4-Esw" secondAttribute="centerY" id="gXU-Jc-U4U"/>
+                        <constraint firstItem="6u1-H4-Esw" firstAttribute="leading" secondItem="Cou-1N-CnP" secondAttribute="trailing" constant="8" id="lVn-Zn-UMG"/>
                         <constraint firstItem="JEw-kx-nQw" firstAttribute="leading" secondItem="0qe-6u-X0z" secondAttribute="leading" id="szB-ip-2e2"/>
                         <constraint firstItem="6u1-H4-Esw" firstAttribute="top" secondItem="0qe-6u-X0z" secondAttribute="top" constant="10" id="uQi-MV-VAM"/>
-                        <constraint firstAttribute="trailing" secondItem="I0F-UY-vER" secondAttribute="trailing" constant="5" id="vb3-K1-Uxl"/>
                         <constraint firstAttribute="trailing" secondItem="JEw-kx-nQw" secondAttribute="trailing" id="zd2-53-Sia"/>
                     </constraints>
                 </view>
@@ -162,6 +176,10 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="icon_attachment" width="19" height="20"/>
+        <image name="icon_send" width="20" height="17"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

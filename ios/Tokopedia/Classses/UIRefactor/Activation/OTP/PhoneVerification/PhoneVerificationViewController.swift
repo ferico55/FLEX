@@ -44,6 +44,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet fileprivate var verifyView: UIView!
     @IBOutlet fileprivate var verifyButton: UIButton!
     
+    @IBOutlet fileprivate var tokocashButton: UIButton!
+    
     fileprivate let phoneNumber : String
     fileprivate let isFirstTimeVisit : Bool
     fileprivate let didVerifiedPhoneNumber : ((Void) -> Void)?
@@ -179,6 +181,15 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             _ = make?.centerY.equalTo()(button.mas_centerY)
         })
     }
+    
+    @IBAction fileprivate func didTapTokoCashButton(_ sender: Any) {
+        let userManager = UserAuthentificationManager()
+        let controller = WKWebViewController(urlString: userManager.webViewUrl(fromUrl: "https://www.tokocash.com"), shouldAuthorizeRequest: true)
+        controller.title = "TokoCash"
+        AnalyticsManager.trackEventName("clickVerify", category: GA_EVENT_CATEGORY_VERIFY_PHONE_NUMBER, action: GA_EVENT_ACTION_CLICK, label: "Tokocash")
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     
     //MARK: Requests
     fileprivate func onRequestOTPSuccess() {

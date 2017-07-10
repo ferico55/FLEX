@@ -49,7 +49,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                         Node<UILabel>(identifier: "product-name") { label, layout, size in
                             label.text = state?.productName
                             label.font = .smallThemeSemibold()
-                            label.textColor = UIColor.black.withAlphaComponent(0.70)
+                            label.textColor = UIColor.tpPrimaryBlackText()
                             label.numberOfLines = 2
                             
                             layout.marginBottom = 3.0
@@ -60,7 +60,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                             layout.marginBottom = 3.0
                             
                             label.text = state?.productPrice
-                            label.font = .smallTheme()
+                            label.font = .smallThemeSemibold()
                             label.textColor = .tpOrange()
                         },
                         self.starsComponent(withRate: (state?.productRating)!),
@@ -120,7 +120,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
             layout.padding = 5
             
             label.text = "Grosir"
-            label.textColor = UIColor.black.withAlphaComponent(0.54)
+            label.textColor = UIColor.tpSecondaryBlackText()
             label.font = .systemFont(ofSize: 10)
             label.layer.borderColor = UIColor.fromHexString("e0e0e0").cgColor
             label.layer.borderWidth = 1
@@ -133,7 +133,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
             layout.padding = 5
             
             label.text = "PO"
-            label.textColor = UIColor.black.withAlphaComponent(0.54)
+            label.textColor = UIColor.tpSecondaryBlackText()
             label.font = .systemFont(ofSize: 10)
             label.layer.borderColor = UIColor.fromHexString("e0e0e0").cgColor
             label.layer.borderWidth = 1

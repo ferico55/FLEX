@@ -18,8 +18,6 @@
 @end
 
 @interface ProductCell : UICollectionViewCell
-
-- (void)setViewModel:(ProductModelView*)viewModel;
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
@@ -48,7 +46,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *discountLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceLabelWidthConstraint;
 @property (strong, nonatomic) NSString* applinks;
-@property (strong, nonatomic) ProductModelView *_viewModel;
+@property (strong, nonatomic) ProductModelView *viewModel;
 
 - (void) removeWishlistButton;
 - (void) updateLayout;

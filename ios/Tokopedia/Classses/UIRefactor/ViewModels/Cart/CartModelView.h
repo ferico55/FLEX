@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Errors.h"
+@class Errors;
 
 @interface CartModelView : NSObject
 

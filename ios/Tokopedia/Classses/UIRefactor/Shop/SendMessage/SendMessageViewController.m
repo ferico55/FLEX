@@ -139,6 +139,13 @@
     return self;
 }
 
+- (instancetype)initWithData:(NSDictionary *)data {
+    if (self = [super init]) {
+        self.data = data;
+    }
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
