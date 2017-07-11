@@ -11,7 +11,7 @@
 #import "HybridNavigationManager.h"
 
 #import <React/RCTBridge.h>
-#import <AppHub/AppHub.h>
+#import <CodePush/CodePush.h>
 
 @import BlocksKit;
 
@@ -33,9 +33,7 @@ static NSURL *bundleUrl() {
                                                }));
     
     if (source == ReactBundleSourceCodePush) {
-        AHBuild *build = [[AppHub buildManager] currentBuild];
-        jsCodeLocation = [build.bundle URLForResource:@"main"
-                                        withExtension:@"jsbundle"];
+        jsCodeLocation = [CodePush bundleURL];
     } else if (source == ReactBundleSourceLocalServer) {
         jsCodeLocation = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios", localhost]];
     } else {

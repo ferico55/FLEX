@@ -29,7 +29,6 @@
 #import "ReactViewController.h"
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
-#import <AppHub/AppHub.h>
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 
@@ -107,7 +106,6 @@
     notificationCenter.delegate = self;
 
     [TPRoutes configureRoutes];
-    [AppHub setApplicationID:@"lpyi0FLrC4LNGTm6R7UJ"];
     
     [self startAppsee];
     [self hideTitleBackButton];
