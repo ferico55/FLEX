@@ -40,7 +40,11 @@ class OfficialStoreSectionViewController: UIViewController {
             let view = UIView()
             view.backgroundColor = .white
             view.mas_makeConstraints { make in
-                make?.height.equalTo()(75)
+                if (UIDevice.current.userInterfaceIdiom == .pad) {
+                    make?.height.equalTo()(150)
+                } else {
+                    make?.height.equalTo()(75)
+                }
                 make?.width.equalTo()(75)
             }
             
