@@ -19,7 +19,13 @@ class OfficialStoreSectionViewController: UIViewController {
 
     private let shops: [OfficialStoreHomeItem]
     
+    @IBOutlet weak var baseView: UIView!
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var separator2: UIView!
     @IBOutlet weak var buttonSeeAll: UIButton!
+    @IBOutlet weak var separator2ToTop: NSLayoutConstraint!
+    @IBOutlet weak var baseViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var secondImageContainerHeight: NSLayoutConstraint!
     
     @IBOutlet private var imageContainer: OAStackView!
     @IBOutlet private var secondRowImageContainer: OAStackView!
@@ -48,7 +54,13 @@ class OfficialStoreSectionViewController: UIViewController {
                 make?.width.equalTo()(75)
             }
             
-            if index % 3 != 0 {
+            var modIndex:Int!
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                modIndex = 6
+            } else {
+                modIndex = 3
+            }
+            if index % modIndex != 0 {
                 let separatorView = UIView()
                 separatorView.backgroundColor = separatorGrayColor
                 view.addSubview(separatorView)
@@ -71,13 +83,21 @@ class OfficialStoreSectionViewController: UIViewController {
 
             imageView.setImageWith(NSURL(string: shop.imageUrl)! as URL!)
             
-            if index > 2 {
-                secondRowImageContainer.addArrangedSubview(view)
-            }
-            else {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                if index > 2 {
+                    secondRowImageContainer.addArrangedSubview(view)
+                }
+                else {
+                    imageContainer.addArrangedSubview(view)
+                }
+            } else {
                 imageContainer.addArrangedSubview(view)
+                secondImageContainerHeight.constant = 0
+                baseViewHeight.constant = 209
+                separator2ToTop.constant = -15;
+                separator2.backgroundColor = .clear
             }
-            
+        
             view.bk_(whenTapped: { [unowned self] in
                 self.openShopWithItem(shop)
             })

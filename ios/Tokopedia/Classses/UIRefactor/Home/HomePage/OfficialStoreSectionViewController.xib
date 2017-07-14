@@ -11,9 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OfficialStoreSectionViewController">
             <connections>
+                <outlet property="baseView" destination="ZOt-kU-nqk" id="QpP-1g-I6o"/>
+                <outlet property="baseViewHeight" destination="ffc-SY-SJH" id="FUk-Fk-ptG"/>
                 <outlet property="buttonSeeAll" destination="vvU-RE-kTk" id="zz1-ot-gUe"/>
                 <outlet property="imageContainer" destination="7sZ-Iq-FA4" id="poI-fv-zNR"/>
+                <outlet property="secondImageContainerHeight" destination="eoX-hy-dfT" id="uGH-qA-wK3"/>
                 <outlet property="secondRowImageContainer" destination="iXa-sM-m8I" id="VQ2-iU-WFS"/>
+                <outlet property="separator" destination="h7a-uQ-lke" id="Cu8-vu-qmA"/>
+                <outlet property="separator2" destination="iuE-Rk-czz" id="DM7-RR-7pl"/>
+                <outlet property="separator2ToTop" destination="zdY-7g-b27" id="jFD-vL-lmQ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="9yS-PV-aZx"/>
             </connections>
         </placeholder>
@@ -45,21 +51,9 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7sZ-Iq-FA4" customClass="OAStackView">
                             <rect key="frame" x="20" y="58" width="371" height="86"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="distributionValue">
-                                    <integer key="value" value="1"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
-                                    <integer key="value" value="0"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="spacing">
-                                    <real key="value" value="10"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iXa-sM-m8I" customClass="OAStackView">
-                            <rect key="frame" x="20" y="174" width="371" height="86"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="86" id="PVT-Il-hB4"/>
+                            </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="distributionValue">
                                     <integer key="value" value="1"/>
@@ -79,6 +73,24 @@
                                 <constraint firstAttribute="height" constant="1" id="Nqb-BY-HvN"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iXa-sM-m8I" customClass="OAStackView">
+                            <rect key="frame" x="20" y="174" width="371" height="86"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="86" id="eoX-hy-dfT"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="distributionValue">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                    <integer key="value" value="0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                         <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuE-Rk-czz" userLabel="separator">
                             <rect key="frame" x="10" y="270" width="391" height="1"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
@@ -88,6 +100,9 @@
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vvU-RE-kTk">
                             <rect key="frame" x="292" y="276" width="99" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="29" id="NOf-P1-JKA"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                             <state key="normal" title="Lihat Semua  &gt;">
                                 <color key="titleColor" red="0.25882352941176467" green="0.70980392156862748" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
@@ -96,7 +111,6 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="vvU-RE-kTk" secondAttribute="bottom" constant="15" id="1Mw-2L-JN5"/>
                         <constraint firstItem="h7a-uQ-lke" firstAttribute="top" secondItem="7sZ-Iq-FA4" secondAttribute="bottom" constant="15" id="2sg-4X-4Ng"/>
                         <constraint firstItem="VRL-np-zeb" firstAttribute="leading" secondItem="fzO-oR-4Ge" secondAttribute="leading" id="3Ek-PJ-s82"/>
                         <constraint firstItem="iuE-Rk-czz" firstAttribute="leading" secondItem="ZOt-kU-nqk" secondAttribute="leading" constant="10" id="65P-yn-P16"/>
@@ -111,10 +125,10 @@
                         <constraint firstItem="fzO-oR-4Ge" firstAttribute="top" secondItem="VRL-np-zeb" secondAttribute="bottom" constant="10" id="VrT-ZU-y82"/>
                         <constraint firstItem="VRL-np-zeb" firstAttribute="top" secondItem="ZOt-kU-nqk" secondAttribute="top" constant="20" id="Vrg-hO-d6q"/>
                         <constraint firstItem="iuE-Rk-czz" firstAttribute="trailing" secondItem="ZOt-kU-nqk" secondAttribute="trailing" constant="-10" id="b7q-8i-BJs"/>
+                        <constraint firstAttribute="height" constant="320" id="ffc-SY-SJH"/>
                         <constraint firstItem="7sZ-Iq-FA4" firstAttribute="leading" secondItem="VRL-np-zeb" secondAttribute="leading" id="n7u-gy-9cY"/>
                         <constraint firstItem="vvU-RE-kTk" firstAttribute="top" secondItem="iuE-Rk-czz" secondAttribute="bottom" constant="5" id="ohn-5H-mEW"/>
                         <constraint firstItem="iXa-sM-m8I" firstAttribute="width" secondItem="7sZ-Iq-FA4" secondAttribute="width" id="sfK-A9-BQH"/>
-                        <constraint firstItem="iXa-sM-m8I" firstAttribute="height" secondItem="7sZ-Iq-FA4" secondAttribute="height" id="vhq-mb-HtS"/>
                         <constraint firstItem="iuE-Rk-czz" firstAttribute="top" secondItem="iXa-sM-m8I" secondAttribute="bottom" constant="10" id="zdY-7g-b27"/>
                     </constraints>
                 </view>
