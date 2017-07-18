@@ -51,7 +51,7 @@ class OfficialStoreSectionViewController: UIViewController {
                 } else {
                     make?.height.equalTo()(75)
                 }
-                make?.width.equalTo()(75)
+//                make?.width.equalTo()(75)
             }
             
             var modIndex:Int!
@@ -90,6 +90,12 @@ class OfficialStoreSectionViewController: UIViewController {
                 else {
                     imageContainer.addArrangedSubview(view)
                 }
+                if shops.count < 4 {
+                    secondImageContainerHeight.constant = 0
+                    baseViewHeight.constant = 209
+                    separator2ToTop.constant = -15;
+                    separator2.backgroundColor = .clear
+                }
             } else {
                 imageContainer.addArrangedSubview(view)
                 secondImageContainerHeight.constant = 0
@@ -123,13 +129,6 @@ class OfficialStoreSectionViewController: UIViewController {
         buttonSeeAll.bk_(whenTapped: { [unowned self] in
             self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
         })
-        
-        for _ in stride(from: 0, to: 4-shops.count, by: 1) {
-            let stretchView = UIView()
-            stretchView.backgroundColor = .clear
-            
-            imageContainer.addArrangedSubview(stretchView)
-        }
     }
 
     private func openShopWithItem(_ shop: OfficialStoreHomeItem) {
