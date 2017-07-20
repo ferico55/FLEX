@@ -51,7 +51,6 @@ class OfficialStoreSectionViewController: UIViewController {
                 } else {
                     make?.height.equalTo()(75)
                 }
-//                make?.width.equalTo()(75)
             }
             
             var modIndex:Int!
