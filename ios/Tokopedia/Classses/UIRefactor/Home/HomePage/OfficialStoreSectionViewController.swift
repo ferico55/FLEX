@@ -43,20 +43,15 @@ class OfficialStoreSectionViewController: UIViewController {
         super.viewDidLoad()
         
         var modIndex:Int!
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            if shops.count < 4 {
-                secondImageContainerHeight.constant = 0
-                baseViewHeight.constant = 209
-                separator2ToTop.constant = -15;
-                separator2.backgroundColor = .clear
-            }
-            modIndex = 3
-        } else {
+        modIndex = shops.count
+        if UIDevice.current.userInterfaceIdiom == .pad || shops.count < 4{
             secondImageContainerHeight.constant = 0
             baseViewHeight.constant = 209
             separator2ToTop.constant = -15;
             separator2.backgroundColor = .clear
-            modIndex = 6
+        }
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            modIndex = 3
         }
         
         shops.enumerated().forEach { (index, shop) in
