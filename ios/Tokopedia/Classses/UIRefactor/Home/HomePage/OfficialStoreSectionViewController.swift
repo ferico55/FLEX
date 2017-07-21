@@ -42,6 +42,23 @@ class OfficialStoreSectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var modIndex:Int!
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            if shops.count < 4 {
+                secondImageContainerHeight.constant = 0
+                baseViewHeight.constant = 209
+                separator2ToTop.constant = -15;
+                separator2.backgroundColor = .clear
+            }
+            modIndex = 3
+        } else {
+            secondImageContainerHeight.constant = 0
+            baseViewHeight.constant = 209
+            separator2ToTop.constant = -15;
+            separator2.backgroundColor = .clear
+            modIndex = 6
+        }
+        
         shops.enumerated().forEach { (index, shop) in
             let view = UIView()
             view.backgroundColor = .white
@@ -53,12 +70,6 @@ class OfficialStoreSectionViewController: UIViewController {
                 }
             }
             
-            var modIndex:Int!
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                modIndex = 6
-            } else {
-                modIndex = 3
-            }
             if index % modIndex != 0 {
                 let separatorView = UIView()
                 separatorView.backgroundColor = separatorGrayColor
@@ -89,18 +100,8 @@ class OfficialStoreSectionViewController: UIViewController {
                 else {
                     imageContainer.addArrangedSubview(view)
                 }
-                if shops.count < 4 {
-                    secondImageContainerHeight.constant = 0
-                    baseViewHeight.constant = 209
-                    separator2ToTop.constant = -15;
-                    separator2.backgroundColor = .clear
-                }
             } else {
                 imageContainer.addArrangedSubview(view)
-                secondImageContainerHeight.constant = 0
-                baseViewHeight.constant = 209
-                separator2ToTop.constant = -15;
-                separator2.backgroundColor = .clear
             }
         
             view.bk_(whenTapped: { [unowned self] in
