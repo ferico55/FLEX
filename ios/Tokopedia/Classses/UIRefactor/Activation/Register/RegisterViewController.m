@@ -424,6 +424,7 @@ MMNumberKeyboardDelegate
     [_act startAnimating];
     
     _textfieldFullName.enabled = NO;
+    _signUpButton.enabled = NO;
     
     NSDictionary* param = @{kTKPDREGISTER_APIACTIONKEY :kTKPDREGISTER_APIDOREGISTERKEY,
                             kTKPDREGISTER_APIFULLNAMEKEY:[data objectForKey:kTKPDREGISTER_APIFULLNAMEKEY],
@@ -487,6 +488,7 @@ MMNumberKeyboardDelegate
     }
     
     _textfieldFullName.enabled = YES;
+    _signUpButton.enabled = YES;
 }
 
 - (void)requestfailure {
@@ -495,6 +497,7 @@ MMNumberKeyboardDelegate
     _act.hidden = YES;
     [_act stopAnimating];
     _textfieldFullName.enabled = YES;
+    _signUpButton.enabled = YES;
 }
 
 - (void)requesttimeout
