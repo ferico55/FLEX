@@ -225,11 +225,14 @@
     }
 }
 
+
+
 - (void)configureAppIndexing {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
 //        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
 }
+
 
 - (void)configureMoEngageInApplication:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions {
 #ifdef DEBUG

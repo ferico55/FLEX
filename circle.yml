@@ -8,7 +8,13 @@ machine:
 dependencies:
   override:
     - brew install node
+    - brew install yarn
     - npm install
+    - yarn
+
+test:
+  override:
+    - yarn danger
 
 # deployment:
 #   production:
