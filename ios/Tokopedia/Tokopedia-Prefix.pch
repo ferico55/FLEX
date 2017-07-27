@@ -62,7 +62,6 @@
     #import "TokopediaNetworkManager.h"
     #import "TKPString.h"
 
-    #import <Localytics/Localytics.h>
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"

@@ -465,15 +465,11 @@ MMNumberKeyboardDelegate
             StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:_register.message_error
                                                                                delegate:self];
             [alertView show];
-            
-            [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             
-            [AnalyticsManager localyticsTrackRegistration:@"Email" success:YES];
-            [AnalyticsManager localyticsValue:@"Yes" profileAttribute:@"Is Login"];
             [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
             
             TKPDAlert *alert = [TKPDAlert newview];
@@ -493,7 +489,6 @@ MMNumberKeyboardDelegate
 
 - (void)requestfailure {
     [self cancel];
-    [AnalyticsManager localyticsTrackRegistration:@"Email" success:NO];
     _act.hidden = YES;
     [_act stopAnimating];
     _textfieldFullName.enabled = YES;

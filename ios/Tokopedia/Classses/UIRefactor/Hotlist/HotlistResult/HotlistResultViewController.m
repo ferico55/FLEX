@@ -290,7 +290,6 @@ static NSString const *rows = @"12";
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
 }
 
 

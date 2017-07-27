@@ -138,7 +138,6 @@
                                       successCallback(obj);
                                   }
                                   onFailure:^(NSError *errorResult) {
-                                      [AnalyticsManager localyticsTrackLogin:NO];
                                       errorCallback(errorResult);
                                   }];
 }

@@ -250,7 +250,6 @@
                                                                   
                                                                   if (!action.message_error) {
                                                                       if ([action.data.is_success isEqualToString:@"1"]) {
-                                                                          [AnalyticsManager localyticsTrackWithdraw:YES];
                                                                           [AnalyticsManager trackEventName:@"clickSaldo" category:@"Saldo" action:GA_EVENT_ACTION_SUCCESS label:@"Withdraw"];
                                                                           [self.navigationController popViewControllerAnimated:YES];
                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
@@ -268,14 +267,12 @@
                                                                       [stickyAlertView show];
                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                                                                   } else if(action.message_error) {
-                                                                      [AnalyticsManager localyticsTrackWithdraw:NO];
                                                                       NSArray *array = action.message_error;
                                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                                                                       [alert show];
                                                                   }
                                                               }
                                                               onFailure:^(NSError *errorResult) {
-                                                                  [AnalyticsManager localyticsTrackWithdraw:NO];
                                                                   [self enableButton];
                                                               }];
                 }

@@ -527,8 +527,6 @@
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
     
-    [AnalyticsManager localyticsTrackRegistration:_userProfile.providerName success:YES];
-    
     [AnalyticsManager trackEventName:@"registerSuccess"
                             category:GA_EVENT_CATEGORY_REGISTER
                               action:GA_EVENT_ACTION_REGISTER_SUCCESS
@@ -540,9 +538,6 @@
                             category:GA_EVENT_CATEGORY_REGISTER
                               action:GA_EVENT_ACTION_REGISTER_ERROR
                                label:providerName];
-    
-    [AnalyticsManager localyticsTrackRegistration:_userProfile.providerName
-                                          success:NO];
 }
 
 - (void)trackAbandonRegistrationWithProviderName:(NSString *)providerName {

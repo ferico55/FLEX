@@ -306,9 +306,6 @@ BarCodeDelegate
 
 - (void)request{
     [ShipmentRequest fetchProceedShipping:[self proceedShippingObjectRequest] onSuccess:^{
-        
-        [AnalyticsManager localyticsTrackShipmentConfirmation:YES];
-        
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
         if ([self.delegate respondsToSelector:@selector(successConfirmOrder:)]) {
@@ -316,8 +313,6 @@ BarCodeDelegate
         }
         
     } onFailure:^{
-        
-        [AnalyticsManager localyticsTrackShipmentConfirmation:NO];
         
     }];
 }

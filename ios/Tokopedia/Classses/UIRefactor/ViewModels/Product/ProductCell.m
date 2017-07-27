@@ -226,7 +226,6 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
                                               } onFailure:^(NSError *errorResult) {
                                                   [weakSelf didFailedAddWishListWithErrorResult:errorResult];
                                               }];
-    [AnalyticsManager localyticsIncrementValue:1 profileAttribute:@"Profile : Has Wishlist" scope:LLProfileScopeApplication];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:self.viewModel.productId];
 }
 

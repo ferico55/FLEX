@@ -45,8 +45,6 @@
                                             selector:@selector(updateValues:)
                                                 name:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME
                                               object:nil];
-    
-    [Localytics triggerInAppMessage:@"Pembelian Screen"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

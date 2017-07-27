@@ -231,7 +231,6 @@ typedef enum TagRequest {
     
     [self registerNib];
     
-    [Localytics triggerInAppMessage:@"Wishlist Screen"];
     if(![_userManager isLogin]) {
         [_noResultScrollView addSubview:_notLoggedInView];
         [_collectionView addSubview:_noResultScrollView];

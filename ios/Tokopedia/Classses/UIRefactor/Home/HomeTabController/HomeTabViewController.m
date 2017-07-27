@@ -257,8 +257,6 @@
     }
     [self initNotificationManager];
     
-    [Localytics triggerInAppMessage:@"Home - Hot List"];
-    
 }
 
 

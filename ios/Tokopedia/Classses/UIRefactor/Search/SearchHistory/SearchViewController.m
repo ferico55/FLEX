@@ -150,8 +150,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    [Localytics triggerInAppMessage:@"Search Product"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

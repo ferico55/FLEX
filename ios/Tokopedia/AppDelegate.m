@@ -128,7 +128,6 @@
 
         // Configure Third Party Apps
         [self configureGTMInApplication:application withOptions:launchOptions];
-        [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
@@ -284,19 +283,6 @@
                                    notifier:self];
 }
 
-- (BOOL)shouldShowLocalyticsTab {
-    return FBTweakValue(@"Others", @"Localytics", @"Show Localytics Tab", NO);
-}
-
-- (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
-    [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
-                launchOptions:launchOptions];
-#ifdef DEBUG
-    [Localytics setTestModeEnabled:[self shouldShowLocalyticsTab]];
-    [Localytics tagEvent:@"Developer Options"];
-#endif
-}
-
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
@@ -394,8 +380,6 @@
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
-        return YES;
-    } else if ([Localytics handleTestModeURL:url]) {
         return YES;
     } else if([TPRoutes routeURL: url]) {
         return YES;
