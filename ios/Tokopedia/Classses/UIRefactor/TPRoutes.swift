@@ -540,6 +540,17 @@ class TPRoutes: NSObject {
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
                 viewController.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page":1])
+            }
+            return true
+        }
+        
+        //home page
+        JLRoutes.global().addRoute("feed") { (params: [String: Any]!) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 0
+                viewController.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page":2])
             }
             return true
         }

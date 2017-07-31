@@ -250,6 +250,7 @@
                                                  name:@"reloadNotification"
                                                object:nil];
     [self goToPage:_page];
+    [self tapButtonAnimate:_scrollView.frame.size.width*(_page)];
     if([_userManager isLogin]) {
         [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
     } else {
@@ -334,12 +335,10 @@
 }
 
 - (void)goToPage:(NSInteger)page {
-//    _productFeedController.isOpened = false;
+    if (!_viewControllers) return;
+
     _shopViewController.isOpened = false;
-    if(page == 1){
-//        _productFeedController.isOpened = true;
-    }
-    else if(page == 4){
+    if(page == 4){
         _shopViewController.isOpened = true;
     }
     
