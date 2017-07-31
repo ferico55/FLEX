@@ -23,6 +23,7 @@
 +(nonnull UIColor *)tpBackground;
 +(nonnull UIColor *)tpLine;
 +(nonnull UIColor *)tpGray;
++(nonnull UIColor *)tpRed;
 
 +(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 

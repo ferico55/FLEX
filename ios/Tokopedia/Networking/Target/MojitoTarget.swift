@@ -61,7 +61,7 @@ extension MojitoTarget : TargetType {
         case let .requestOfficialStore(categoryId):
             return "os/api/v1/brands/category/ios/\(categoryId)"
         case .requestOfficialStoreHomePage:
-            return "/os/api/v1/brands/list"
+            return "/os/api/v2/brands/list/widget/ios"
         }
     }
     
