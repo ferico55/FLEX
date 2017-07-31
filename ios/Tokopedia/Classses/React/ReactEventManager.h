@@ -9,8 +9,12 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface ReactTabManager : RCTEventEmitter<RCTBridgeModule>
+@interface ReactEventManager : RCTEventEmitter<RCTBridgeModule>
 
 - (void)sendScrollToTopEvent;
+- (void)sendLoginEvent;
+- (void)sendLogoutEvent;
+- (void)didWishlistProduct:(NSString*)productId;
+- (void)didRemoveWishlistProduct:(NSString*)productId;
 
 @end

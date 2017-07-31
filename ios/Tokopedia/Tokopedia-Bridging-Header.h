@@ -50,6 +50,7 @@
 #import "AddressObj.h"
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
+#import "OfficialStoreBrandsViewController.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>
 #import <BlocksKit/BlocksKit.h>
@@ -206,5 +207,7 @@
 #import "GalleryViewController.h"
 #import "DetailProductResult.h"
 #import "CMPopTipView.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 #import "AlertDatePickerView.h"

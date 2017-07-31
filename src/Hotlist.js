@@ -18,10 +18,10 @@ import {
   TKPReactURLManager, 
   ReactNetworkManager,
   TKPReactAnalytics,
-  NativeTab 
+  EventManager 
 } from 'NativeModules';
 
-const nativeTabEmitter = new NativeEventEmitter(NativeTab);
+const nativeTabEmitter = new NativeEventEmitter(EventManager);
 
 class Hotlist extends React.PureComponent {
 

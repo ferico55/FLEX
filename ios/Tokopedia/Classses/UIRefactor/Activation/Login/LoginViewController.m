@@ -40,6 +40,8 @@
 #import <AppsFlyer/AppsFlyer.h>
 #import "UIAlertController+Blocks.h"
 #import "CMPopTipView.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
@@ -540,6 +542,9 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 - (void)notifyUserDidLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:nil];
+    
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+    [tabManager sendLoginEvent];
 }
 
 #pragma mark - Delegate

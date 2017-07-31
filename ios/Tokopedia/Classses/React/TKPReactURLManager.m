@@ -33,7 +33,8 @@ RCT_EXPORT_MODULE();
 - (NSDictionary*)constantsToExport {
     return @{
              @"tokopediaUrl" : NSString.tokopediaUrl,
-             @"v4Url" : NSString.v4Url
+             @"v4Url" : NSString.v4Url,
+             @"mojitoUrl" : NSString.mojitoUrl
              };
 }
 

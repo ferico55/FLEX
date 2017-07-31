@@ -9,7 +9,7 @@
 #import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
 #import "UIApplication+React.h"
-#import "ReactTabManager.h"
+#import "ReactEventManager.h"
 #import "CategoryResultViewController.h"
 #import <React/RCTRootView.h>
 
@@ -153,7 +153,7 @@
 }
 
 - (void)scrollToTop {
-    ReactTabManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactTabManager class]];
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
     [tabManager sendScrollToTopEvent];
 }
 

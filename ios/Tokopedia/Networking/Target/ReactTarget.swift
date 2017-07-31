@@ -16,25 +16,34 @@ class ReactNetworkProviderObjcBridge: NSObject {
         path: String,
         method: String,
         params: [String: Any],
-        onSuccess: @escaping ([String: Any]) -> Void,
+        headers: [String: String]?,
+        onSuccess: @escaping ([String: Any]?) -> Void,
         onError: @escaping (NSError) -> Void
-    ) {
+        ) {
         
         let target = ReactTarget(targetBaseUrl: url, targetPath: path, targetMethod: method, params: params)
         
-        _ = NetworkProvider<ReactTarget>().request(target)
-            .mapJSON()
+        let endpointClosure = { (target: ReactTarget) in
+            return NetworkProvider<ReactTarget>.defaultEndpointCreator(for: target)
+                .adding(httpHeaderFields: headers ?? [:])
+        }
+        
+        _ = NetworkProvider<ReactTarget>(endpointClosure: endpointClosure).request(target)
+            .mapJSON(failsOnEmptyData: false)
             .subscribe(
                 onNext: { json in
                     guard let dictionary = json as? [String: Any] else {
                         print("Error converting json to dictionary")
+                        onSuccess(nil)
                         return
                     }
                     
                     onSuccess(dictionary)
                 },
-                onError: { error in onError(error as NSError) }
-            )
+                onError: { error in
+                    onError(error as NSError)
+                }
+        )
     }
 }
 

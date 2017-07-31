@@ -63,7 +63,8 @@ class OfficialStoreSectionViewController: UIViewController {
             })
             
             buttonSeeAll.bk_(whenTapped: { [unowned self] in
-                self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
+                let controller = OfficialStoreBrandsViewController()
+                self.navigationController?.pushViewController(controller, animated: true)
             })
         }
         

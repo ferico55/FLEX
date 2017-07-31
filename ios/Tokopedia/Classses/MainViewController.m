@@ -43,6 +43,8 @@
 #import <MessageUI/MessageUI.h>
 
 #import "UIActivityViewController+Extensions.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -558,6 +560,9 @@ typedef enum TagRequest {
     
     [self reinitCartTabBar];
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLogoutNotification object:nil];
+    
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+    [tabManager sendLogoutEvent];
     
     [[QuickActionHelper sharedInstance] registerShortcutItems];
 }
