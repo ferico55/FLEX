@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, TopadsSource) {
 @property (weak, nonatomic) id<PromoCollectionViewDelegate> delegate;
 @property (strong, nonatomic) NSNumber *scrollPosition;
 @property (strong, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
 
 - (void)scrollToCenter;
 - (void)scrollToCenterWithoutAnimation;

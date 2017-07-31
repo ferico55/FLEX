@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,8 +15,15 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zkV-qx-stq" userLabel="Header">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                    <color key="backgroundColor" red="0.40696314560000002" green="0.8828607798" blue="0.26406851040000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="lvN-5p-QH0"/>
+                    </constraints>
+                </view>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dPa-5U-yMh">
-                    <rect key="frame" x="0.0" y="35" width="320" height="220"/>
+                    <rect key="frame" x="0.0" y="135" width="320" height="120"/>
                     <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJH-EI-ym4">
                         <size key="itemSize" width="160" height="205"/>
@@ -30,9 +37,10 @@
                     </connections>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promoted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmB-1i-PZW">
-                    <rect key="frame" x="8" y="10" width="124" height="23"/>
+                    <rect key="frame" x="8" y="110" width="124" height="23"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="603-jZ-EBJ"/>
+                        <constraint firstAttribute="height" constant="23" id="Evo-K1-rr6"/>
                         <constraint firstAttribute="width" constant="124" id="FqA-vj-nB5"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -45,9 +53,10 @@
                     </variation>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-Ex-PU8">
-                    <rect key="frame" x="282" y="10" width="30" height="23"/>
+                    <rect key="frame" x="282" y="110" width="30" height="23"/>
                     <gestureRecognizers/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="23" id="3PQ-US-4Tx"/>
                         <constraint firstAttribute="height" constant="30" id="Y8k-aS-uAU"/>
                         <constraint firstAttribute="width" constant="30" id="cqi-bj-5yU"/>
                     </constraints>
@@ -62,17 +71,18 @@
             <constraints>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="efZ-Ex-PU8" secondAttribute="bottom" constant="2" id="5b8-wy-bya"/>
                 <constraint firstAttribute="trailing" secondItem="efZ-Ex-PU8" secondAttribute="trailing" constant="8" id="90L-NZ-T8e"/>
-                <constraint firstItem="efZ-Ex-PU8" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="AcP-yt-IZB"/>
-                <constraint firstItem="DmB-1i-PZW" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="Awx-vr-L68"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="3" id="MtC-ld-lnR"/>
                 <constraint firstItem="DmB-1i-PZW" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="8" id="bRN-r7-hgZ"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="2" id="beY-4C-7N0"/>
                 <constraint firstItem="DmB-1i-PZW" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="8" id="iMs-FF-fQa"/>
                 <constraint firstAttribute="bottom" secondItem="dPa-5U-yMh" secondAttribute="bottom" id="lex-AK-Iky"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="zkV-qx-stq" secondAttribute="bottom" constant="35" id="m7b-jL-zg7"/>
+                <constraint firstItem="zkV-qx-stq" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="n6T-xB-HNX"/>
                 <constraint firstAttribute="trailing" secondItem="dPa-5U-yMh" secondAttribute="trailing" id="r1P-rb-QJQ"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="rzW-7X-YgT"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="35" id="sej-aZ-tLS"/>
+                <constraint firstItem="zkV-qx-stq" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="wPa-LI-niq"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="xVy-eM-iWb"/>
+                <constraint firstAttribute="trailing" secondItem="zkV-qx-stq" secondAttribute="trailing" id="z5T-6a-zw9"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
@@ -83,8 +93,11 @@
             </variation>
             <connections>
                 <outlet property="collectionView" destination="dPa-5U-yMh" id="sGO-Zm-GhK"/>
+                <outlet property="headerView" destination="zkV-qx-stq" id="6ql-5J-rRx"/>
+                <outlet property="headerViewHeightConstraint" destination="lvN-5p-QH0" id="uzZ-fK-AKQ"/>
                 <outlet property="infoButton" destination="efZ-Ex-PU8" id="DVc-xf-EbM"/>
             </connections>
+            <point key="canvasLocation" x="34" y="103.5"/>
         </collectionReusableView>
     </objects>
     <resources>
