@@ -350,7 +350,10 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/toppicks") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://www.tokopedia.com/toppicks" + utmString
-            openWebView(NSURL(string: urlString)! as URL)
+            
+            let urlWithAddedFlagApp = addFlagApp(urlString: urlString)
+            guard let toppicksUrl = urlWithAddedFlagApp else { return false }
+            openWebView(toppicksUrl)
             
             return true
         }
@@ -360,8 +363,11 @@ class TPRoutes: NSObject {
             let topPicksName = params["toppicksName"] as! String
             let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://www.tokopedia.com/toppicks/" + topPicksName + utmString
-            openWebView(NSURL(string: urlString)! as URL)
             
+            let urlWithAddedFlagApp = addFlagApp(urlString: urlString)
+            guard let toppicksUrl = urlWithAddedFlagApp else { return false }
+            openWebView(toppicksUrl)
+
             return true
         }
         
@@ -716,5 +722,18 @@ class TPRoutes: NSObject {
             }) { (error) in
                 shopExists(false)
         }
+    }
+    
+    static func addFlagApp(urlString: String) -> URL? {
+        let queryItem = URLQueryItem(name: "flag_app", value: "1")
+        var urlComponents = URLComponents(string: urlString)
+        guard (urlComponents?.queryItems) != nil else {
+            urlComponents?.queryItems = [queryItem]
+            return urlComponents?.url
+        }
+        
+        urlComponents?.queryItems?.append(queryItem)
+        
+        return urlComponents?.url
     }
 }
