@@ -711,6 +711,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
+                                        [[GIDSignIn sharedInstance] signOut];
+                                        [[GIDSignIn sharedInstance] disconnect];
+                                        
                                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];

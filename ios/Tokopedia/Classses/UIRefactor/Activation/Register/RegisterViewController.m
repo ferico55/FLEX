@@ -229,7 +229,7 @@ MMNumberKeyboardDelegate
              [self onLoginSuccess:login];
          }
          failureCallback:^(NSError *error) {
-             
+             [self hideLoadingMode];
          }];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -286,6 +286,13 @@ MMNumberKeyboardDelegate
 - (void)showLoadingMode {
     _contentView.hidden = YES;
     _loadingView.hidden = NO;
+}
+
+- (void)hideLoadingMode {
+    _act.hidden = YES;
+    [_act stopAnimating];
+    _contentView.hidden = NO;
+    _loadingView.hidden = YES;
 }
 
 #pragma mark - View Action
@@ -656,7 +663,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     if (error) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error.localizedDescription] delegate:self];
         [alert show];
+        _act.hidden = YES;
+        [_act stopAnimating];
     } else {
+        _act.hidden = YES;
+        [_act stopAnimating];
         FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
         if (accessToken) {
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -709,7 +720,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
          [self onLoginSuccess:login];
      }
      onFailure:^(NSError *error) {
-         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+         [self hideLoadingMode];
      }];
 }
 
@@ -779,13 +791,18 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
          [self onLoginSuccess:login];
      }
      onFailure:^(NSError *error) {
-         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+         [[GIDSignIn sharedInstance] signOut];
+         [[GIDSignIn sharedInstance] disconnect];
+         [self hideLoadingMode];
+         
+         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
      }];
 }
 
 - (void)onLoginSuccess:(Login *)login {
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
+    [self hideLoadingMode];
     
     SecureStorageManager *storageManager = [SecureStorageManager new];
     [storageManager storeLoginInformation:login.result];
