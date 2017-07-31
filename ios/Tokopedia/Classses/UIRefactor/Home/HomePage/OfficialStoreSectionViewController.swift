@@ -57,12 +57,9 @@ class OfficialStoreSectionViewController: UIViewController {
         shops.enumerated().forEach { (index, shop) in
             let view = UIView()
             view.backgroundColor = .white
+            let height = (UIDevice.current.userInterfaceIdiom == .pad ? 150 : 75)
             view.mas_makeConstraints { make in
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
-                    make?.height.equalTo()(150)
-                } else {
-                    make?.height.equalTo()(75)
-                }
+                make?.height.equalTo()(height)
             }
             
             if index % modIndex != 0 {
@@ -88,13 +85,8 @@ class OfficialStoreSectionViewController: UIViewController {
 
             imageView.setImageWith(NSURL(string: shop.imageUrl)! as URL!)
             
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                if index > 2 {
-                    secondRowImageContainer.addArrangedSubview(view)
-                }
-                else {
-                    imageContainer.addArrangedSubview(view)
-                }
+            if UIDevice.current.userInterfaceIdiom == .phone && index > 2 {
+                secondRowImageContainer.addArrangedSubview(view)
             } else {
                 imageContainer.addArrangedSubview(view)
             }
