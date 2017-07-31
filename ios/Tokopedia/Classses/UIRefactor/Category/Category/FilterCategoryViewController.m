@@ -36,6 +36,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Pilih Kategori";
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -56,6 +58,7 @@
         [self setCancelButton];
     }
     [self setDoneButton];
+    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

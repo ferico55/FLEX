@@ -9,6 +9,116 @@
 import UIKit
 import RxSwift
 
+extension UISearchBar {
+    
+    private func getViewElement<T>(type: T.Type) -> T? {
+        
+        let allSubviews = subviews.flatMap { $0.subviews }
+        guard let element = (allSubviews.filter { $0 is T }).first as? T else { return nil }
+        return element
+    }
+    
+    func getSearchBarTextField() -> UITextField? {
+        
+        return getViewElement(type: UITextField.self)
+    }
+    
+    func setTextColor(color: UIColor) {
+        
+        if let textField = getSearchBarTextField() {
+            textField.textColor = color
+        }
+    }
+    
+    func setTextFieldColor(color: UIColor) {
+        
+        if let textField = getViewElement(type: UITextField.self) {
+            switch searchBarStyle {
+            case .minimal:
+                textField.layer.backgroundColor = color.cgColor
+                textField.layer.cornerRadius = 6
+                
+            case .prominent, .default:
+                textField.backgroundColor = color
+            }
+        }
+    }
+    
+    func setPlaceholderTextColor(color: UIColor) {
+        
+        if let textField = getSearchBarTextField() {
+            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSForegroundColorAttributeName: color])
+        }
+    }
+    
+    func setTextFieldClearButtonColor(color: UIColor) {
+        
+        if let textField = getSearchBarTextField() {
+            
+            let button = textField.value(forKey: "clearButton") as! UIButton
+            if let image = button.imageView?.image {
+                button.setImage(image.transform(withNewColor: color), for: .normal)
+            }
+        }
+    }
+    
+    func setSearchImageColor(color: UIColor) {
+        
+        if let imageView = getSearchBarTextField()?.leftView as? UIImageView {
+            imageView.image = imageView.image?.transform(withNewColor: color)
+        }
+    }
+}
+
+extension UISearchController {
+    
+    func setSearchBarToTop(viewController: UIViewController, title: String) {
+        
+        delegate = self
+        searchResultsUpdater = self
+        searchBar.placeholder = "Cari Produk atau Toko"
+        searchBar.barTintColor = .white
+        searchBar.setTextFieldColor(color: UIColor.fromHexString("E5E5E5"))
+        searchBar.setTextColor(color: UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.7))
+        searchBar.layer.borderColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0).cgColor
+        hidesNavigationBarDuringPresentation = false
+        dimsBackgroundDuringPresentation = false
+        searchBar.text = title
+        searchBar.sizeToFit()
+        let searchWrapper = UIView(frame: self.searchBar.bounds)
+        searchWrapper.addSubview(self.searchBar)
+        searchWrapper.backgroundColor = .clear
+        searchBar.layer.borderWidth = 1
+        searchBar.snp.makeConstraints { (make) in
+            make.left.right.top.equalTo(searchWrapper)
+        }
+        viewController.navigationItem.titleView = searchWrapper
+        
+    }
+}
+
+extension UISearchController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchResultsController?.view.isHidden = false
+        }
+    }
+}
+
+extension UISearchController: UISearchControllerDelegate {
+    public func willPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchResultsController?.view.isHidden = false
+        }
+    }
+    
+    public func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchResultsController?.view.isHidden = false
+        }
+    }
+}
+
 extension UIApplication {
     class func getAppVersionStringWithoutDot() -> String {
         var appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
@@ -189,6 +299,35 @@ extension UIScrollView {
 }
 
 extension UIImage {
+    convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.init(cgImage: (image?.cgImage!)!)
+    }
+    
+    func transform(withNewColor color: UIColor) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        
+        let context = UIGraphicsGetCurrentContext()!
+        context.translateBy(x: 0, y: size.height)
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setBlendMode(.normal)
+        
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        context.clip(to: rect, mask: cgImage!)
+        
+        color.setFill()
+        context.fill(rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
     func resizedImage() -> (UIImage){
         var actualHeight = self.size.height
         var actualWidth = self.size.width
@@ -269,6 +408,36 @@ extension UINavigationController {
         if self.viewControllers.count > 0  {
             self.viewControllers[self.viewControllers.count - 1] = viewController
         }
+    }
+    
+    func setGreen() {
+        self.navigationBar.setBackgroundImage(UIImage(color: UIColor.tpGreen()), for: .default)
+        self.navigationBar.shadowOpacity = 0
+        self.navigationBar.tintColor = .white
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
+        self.navigationBar.isTranslucent = false;
+        self.navigationBar.shadowImage = UIImage(color: UIColor.tpGreen(), size: CGSize(width: 1, height: 0.3))
+        
+        let barButtonAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes as? [String:AnyObject], for: UIControlState.normal)
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+    }
+    
+    func setWhite() {
+        self.navigationBar.setBackgroundImage(UIImage(color: .white), for: .default)
+        self.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
+        self.navigationBar.isTranslucent = false;
+        self.navigationBar.shadowImage = UIImage(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
+
+        let barButtonAttributes = [NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
+        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes as? [String:AnyObject], for: UIControlState.normal)
+        
+        
+        
+        UIApplication.shared.statusBarStyle = .default
+        
     }
 }
 

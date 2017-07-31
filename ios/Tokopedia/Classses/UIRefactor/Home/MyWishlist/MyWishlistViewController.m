@@ -163,7 +163,7 @@ typedef enum TagRequest {
                                  title:@"Anda belum login"
                                   desc:@"Belum punya akun Tokopedia ?"
                               btnTitle:@"Daftar disini!"];
-    _notLoggedInView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _notLoggedInView.button.backgroundColor = [UIColor tpGreen];
     _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
         RegisterViewController* controller = [RegisterViewController new];
@@ -310,9 +310,10 @@ typedef enum TagRequest {
     return [NSString stringWithFormat:@"/v1.0.3/users/%@/wishlist/products", userId];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setGreen];
     [AnalyticsManager trackScreenName:@"Home - Wish List"];
 }
 

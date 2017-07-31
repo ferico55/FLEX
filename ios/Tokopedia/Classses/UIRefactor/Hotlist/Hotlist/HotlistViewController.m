@@ -35,10 +35,10 @@
     self.view = rootView;
 }
 
-
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.navigationController setGreen];
     [AnalyticsManager trackScreenName:@"Hot List Page"];
     
     [self initNotificationManager];
@@ -46,7 +46,6 @@
     
     [self checkForPhoneVerification];
 }
-
 
 -(void)checkForPhoneVerification{
     if([self shouldShowPhoneVerif]){

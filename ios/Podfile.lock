@@ -102,6 +102,7 @@ PODS:
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - KeychainAccess (3.0.1)
+  - KMNavigationBarTransition (1.0.0)
   - lottie-ios (1.5.1)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.5)
@@ -215,6 +216,7 @@ DEPENDENCIES:
   - JLRoutes (~> 1.6.2)
   - JSQMessagesViewController (from `https://github.com/ferico55/JSQMessagesViewController`, branch `master`)
   - KeychainAccess (~> 3.0)
+  - KMNavigationBarTransition
   - lottie-ios
   - Masonry
   - MMNumberKeyboard
@@ -325,6 +327,7 @@ SPEC CHECKSUMS:
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
+  KMNavigationBarTransition: b3fb8337f7a1e4542add07fd6c45fb9980794d59
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
@@ -365,6 +368,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: bb286579f2f6fbf4f9199362e0c2c0c6843bdbdc
+PODFILE CHECKSUM: 24a80f3dcc7036d7c6def6b77cf2eefb082154e0
 
 COCOAPODS: 1.2.1

@@ -11,6 +11,7 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxTalkSplitViewController () <UISplitViewControllerDelegate>
 
@@ -88,7 +89,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
+    [self.navigationController setWhite];
 }
 
 

@@ -115,6 +115,12 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
+}
+
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStylePlain
@@ -210,9 +216,6 @@
                 _selectedOrder = order;
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
-                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                navigationController.navigationBar.translucent = NO;
-                navigationController.navigationBar.tintColor = [UIColor whiteColor];
                 
                 ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
                 controller.receiptNumber = _selectedOrder.order_detail.detail_ship_ref_num;
@@ -369,12 +372,7 @@
 
 - (void)didTapFilterButton:(id)sender {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
     navigationController.viewControllers = @[_filterViewController];
-    
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 

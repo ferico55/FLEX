@@ -134,6 +134,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.setTabbarViewController([vc]);
         
         let navigation: UINavigationController = UINavigationController(rootViewController: tabBarController)
+        navigation.setWhite()
         navigation.navigationBar.isTranslucent = false
         presentedController.navigationController!.present(navigation, animated: true, completion: nil)
         
@@ -164,6 +165,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         }
         
         let navigation: UINavigationController = UINavigationController(rootViewController: controller)
+        navigation.setWhite()
         navigation.navigationBar.isTranslucent = false
         presentedController.navigationController!.present(navigation, animated: true, completion: nil)
     }

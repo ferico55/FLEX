@@ -241,9 +241,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     [super viewWillAppear:animated];
     
-//    [self initNotificationManager];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
     
@@ -579,6 +576,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
         PurchaseViewController *purchaseController = [PurchaseViewController new];
         purchaseController.notification = _notifManager.notification;
+        purchaseController.hidesBottomBarWhenPushed = YES;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
         
     }
@@ -792,7 +790,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [emailController setSubject:@"Feedback"];
         [emailController setMessageBody:messageBody isHTML:YES];
         [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
-        [emailController.navigationBar setTintColor:[UIColor whiteColor]];
+        [emailController.navigationBar setTintColor:[UIColor tpPrimaryBlackText]];
         
         //prevent changing table frame from setStatusBarHidden
         _defaultTableFrame = self.tableView.frame;

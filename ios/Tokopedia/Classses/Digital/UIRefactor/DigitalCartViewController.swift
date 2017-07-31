@@ -85,6 +85,10 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+        
         AnalyticsManager.trackScreenName("Recharge Cart Page")
     }
     

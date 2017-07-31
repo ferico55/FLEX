@@ -10,6 +10,7 @@
 #import "WebViewController.h"
 #import "TkpdHMAC.h"
 #import "NSURL+Dictionary.h"
+#import "Tokopedia-Swift.h"
 
 @interface WebViewController ()
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
@@ -24,6 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.navigationController setWhite];
     _shouldAuthorizeRequest = YES;
     
     self.navigationItem.title = strTitle;

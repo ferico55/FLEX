@@ -8,6 +8,7 @@
 
 #import "FilterShipmentConfirmationViewController.h"
 #import "GeneralTableViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface FilterShipmentConfirmationViewController () <GeneralTableViewControllerDelegate> {
     NSString *_invoice;
@@ -42,6 +43,12 @@
     _invoice = @"";
     _dueDate = @"Pilih";
     _courier = @"Pilih";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

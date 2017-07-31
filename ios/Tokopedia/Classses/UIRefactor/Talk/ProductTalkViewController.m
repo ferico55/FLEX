@@ -122,6 +122,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    [self.navigationController setWhite];
     // UA
     [AnalyticsManager trackScreenName:@"Product - Talk List"];
 }
@@ -134,7 +135,7 @@
         UIBarButtonItem *addButton;
         UIImage *imgadd = [UIImage imageNamed:@"icon_shop_addproduct"];
 
-        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAutomatic];
         addButton = [[UIBarButtonItem alloc] initWithImage:image
                                                      style:UIBarButtonItemStylePlain
                                                     target:self

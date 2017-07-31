@@ -250,6 +250,8 @@ MMNumberKeyboardDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    
+    [self.navigationController setWhite];
     self.title = @"Daftar";
     
     [AnalyticsManager trackScreenName:@"Register Page"];

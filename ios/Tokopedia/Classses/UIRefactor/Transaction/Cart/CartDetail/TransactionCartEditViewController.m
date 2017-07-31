@@ -84,6 +84,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     self.title = @"Ubah Pesanan";
 }
 
@@ -92,6 +94,7 @@
     [super viewDidDisappear:YES];
     self.title = nil;
 }
+
 
 -(void)dealloc
 {

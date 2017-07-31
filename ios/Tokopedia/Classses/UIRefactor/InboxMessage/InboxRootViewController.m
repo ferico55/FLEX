@@ -11,6 +11,7 @@
 #import "TKPDTabInboxMessageNavigationController.H"
 #import "InboxMessageViewController.h"
 #import "InboxMessageDetailViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxRootViewController ()<UISplitViewControllerDelegate>
 
@@ -80,9 +81,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
 }
+
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
 {

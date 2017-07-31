@@ -100,8 +100,7 @@ class DigitalService {
                     cartViewController.hidesBottomBarWhenPushed = true
                     cartViewController.categoryId = categoryId
                     
-                    viewControllers.append(cartViewController)
-                    viewController.navigationController?.setViewControllers(viewControllers, animated: true)
+                    viewController.navigationController?.pushViewController(cartViewController, animated: true)
                     
                     return cartViewController.cartPayment
                         .map { cartPayment in
@@ -260,7 +259,10 @@ class DigitalService {
                 observer.onCompleted()
             }
             
-            viewController.present(UINavigationController(rootViewController: securityViewController), animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: securityViewController)
+            navigationController.setWhite()
+            
+            viewController.present(navigationController, animated: true, completion: nil)
             
             return Disposables.create()
         }

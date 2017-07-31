@@ -124,7 +124,7 @@
     if([_userManager isLogin]) {
         if([_userManager isMyUser:_profileUserID]) {
             //button config
-            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_setting"];
+            UIImage *infoImage = [UIImage imageNamed:@"icon_setting_grey"];
             
             CGRect frame = CGRectMake(0, 0, 20, 20);
             UIButton* button = [[UIButton alloc] initWithFrame:frame];
@@ -222,10 +222,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     self.pageController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
     _userManager = [UserAuthentificationManager new];
     [AnalyticsManager trackScreenName:@"Profile Page"];
 }
+
+
 
 #pragma  - UIPageViewController Methods
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {

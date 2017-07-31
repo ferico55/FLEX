@@ -385,8 +385,6 @@ TTTAttributedLabelDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
     if([_userManager isMyShopWithShopId:_product.data.shop_info.shop_id]) {
         _favButton.hidden = YES;
     } else {

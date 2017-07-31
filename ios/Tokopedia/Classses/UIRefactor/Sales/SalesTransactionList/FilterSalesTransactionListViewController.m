@@ -8,6 +8,7 @@
 
 #import "FilterSalesTransactionListViewController.h"
 #import "GeneralTableViewController.h"
+#import "Tokopedia-Swift.h"
 
 #import "AlertDatePickerView.h"
 #import "string_alert.h"
@@ -100,6 +101,12 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

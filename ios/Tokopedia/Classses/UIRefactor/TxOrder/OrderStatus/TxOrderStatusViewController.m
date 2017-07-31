@@ -167,6 +167,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setWhite];
+    
     self.title = _viewControllerTitle?:@" ";
     
     if ([_action isEqualToString:ACTION_GET_TX_ORDER_STATUS]) {
@@ -200,9 +202,6 @@
         NSString *filterStatus = [_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
         
         UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
         controller.invoiceMark = filterInvoice;

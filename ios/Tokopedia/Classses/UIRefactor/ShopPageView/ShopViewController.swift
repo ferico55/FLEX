@@ -59,6 +59,12 @@ class ShopViewController: UIViewController {
         self.requestShopInfo()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+    }
+    
     @objc
     fileprivate func favoriteStatusChanged(_ notification: Notification) {
         if notification.object as? ShopViewController !== self {

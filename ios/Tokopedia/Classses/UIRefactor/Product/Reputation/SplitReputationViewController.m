@@ -8,6 +8,7 @@
 
 #import "SplitReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SplitReputationViewController
 @synthesize splitViewController;
@@ -59,6 +60,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 

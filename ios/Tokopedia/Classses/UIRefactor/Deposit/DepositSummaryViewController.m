@@ -106,16 +106,12 @@
 }
 
 - (void)initBarButton {
-    UIImage *infoImage = [UIImage imageNamed:@"icon_info_white.png"];
-    
-    CGRect frame = CGRectMake(0, 0, 20, 20);
-    UIButton* button = [[UIButton alloc] initWithFrame:frame];
-    [button setBackgroundImage:infoImage forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchDown];
-    [button setTag:14];
-    
-    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonright setCustomView:button];
+    UIImage *infoImage = [[UIImage imageNamed:@"icon_info_white"]imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    _barbuttonright = [[UIBarButtonItem alloc] initWithImage:infoImage
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(tap:)];
+    [_barbuttonright setTag:14];
     [_barbuttonright setEnabled:NO];
     self.navigationItem.rightBarButtonItem = _barbuttonright;
 }
@@ -180,12 +176,15 @@
     [self resetDates];
     [self reloadListDeposit:nil];
     [self updateSaldoTokopedia:nil];
+    
+    [self.navigationController setWhite];
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
+
 
 - (void)resetDates {
     NSDateFormatter *dateFormat = [NSDateFormatter new];
@@ -429,6 +428,24 @@
                 [alertView show];
                 break;
             }
+            case 14 :  {
+                NSMutableString *infoSaldo = [NSMutableString stringWithFormat:@"\n -Total Saldo Tokopedia Anda adalah %@", _totalSaldoTokopedia];
+                
+                if (![_holdDepositByTokopedia isEqualToString:@"Rp 0"]) {
+                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@\n%@\n%@", @" Saldo Tokopedia Anda sejumlah",_holdDepositByTokopedia, @"sedang kami review.\nJika review melebihi 1x24 jam, silakan hubungi Customer Service kami untuk penjelasan lebih lanjut. Terima kasih."]];
+                }
+                
+                [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia yang dapat Anda tarik sebesar", _useableSaldoIDR]];
+                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia"
+                                                                    message:infoSaldo
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+                
+                break;
+            }
                 
             default:
                 break;
@@ -489,26 +506,7 @@
                 [self loadData];
                 break;
             }
-                
-            case 14 :  {
-                NSMutableString *infoSaldo = [NSMutableString stringWithFormat:@"\n -%@ %@", @" Total Saldo Tokopedia Anda adalah", _totalSaldoTokopedia];
-                
-                if (![_holdDepositByTokopedia isEqualToString:@"Rp 0"]) {
-                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@\n%@\n%@", @" Saldo Tokopedia Anda sejumlah",_holdDepositByTokopedia, @"sedang kami review.\nJika review melebihi 1x24 jam, silakan hubungi Customer Service kami untuk penjelasan lebih lanjut. Terima kasih."]];
-                }
-                
-                [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia yang dapat Anda tarik sebesar", _useableSaldoIDR]];
-                
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia"
-                                                                    message:infoSaldo
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil];
-                [alertView show];
-                
-                break;
-            }
-                
+            
             case 15 : {
                 
                 break;

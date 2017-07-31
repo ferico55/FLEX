@@ -147,9 +147,6 @@
         } else if (button.tag == 2) {
 
             UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
             
             ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
             controller.receiptNumber = _order.order_detail.detail_ship_ref_num;

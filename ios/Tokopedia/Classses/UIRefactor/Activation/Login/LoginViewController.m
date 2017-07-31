@@ -156,6 +156,8 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.navigationController setGreen];
+    
     [AnalyticsManager trackScreenName:@"Login Page"];
     
     _loginButton.layer.cornerRadius = 3;
@@ -197,6 +199,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     [self showLoginUi];
     [self unsetLoggingInState];
     

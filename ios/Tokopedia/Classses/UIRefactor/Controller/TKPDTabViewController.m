@@ -30,7 +30,7 @@
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white"] forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
         [backButton setFrame:CGRectMake(0, 0, 25, 35)];
         [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
@@ -88,9 +88,17 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+
 
 - (IBAction)valueChangedSegmentedControl:(UISegmentedControl *)sender {
     [AnalyticsManager trackSegmentedControlTapped:_inboxType label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
@@ -145,7 +153,7 @@
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor tpPrimaryBlackText] forState:UIControlStateNormal];
     
     CGSize calculateSize = [title sizeWithFont:button.titleLabel.font constrainedToSize:CGSizeMake(320, 9999) lineBreakMode:NSLineBreakByWordWrapping];
     CGRect tempButtonRect = button.frame;
@@ -187,7 +195,7 @@
 
 - (void)hideMenu
 {
-    self.arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
+    self.arrowImage = [UIImage imageNamed:@"icon_triangle_down_white"];
 
     [UIView animateWithDuration:0.15 animations:^{
         self.menuTopConstraint.constant = 0 - self.menuContainerView.frame.size.height;
@@ -207,7 +215,7 @@
 
 - (void)showMenu
 {
-    self.arrowImage = [UIImage imageNamed:@"icon_triangle_up_white.png"];
+    self.arrowImage = [UIImage imageNamed:@"icon_triangle_up_white"];
     
     self.menuView.hidden = NO;
     [UIView animateWithDuration:0.15 animations:^{

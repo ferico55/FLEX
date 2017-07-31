@@ -192,8 +192,7 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     self.searchController.searchResultsUpdater = self;
     self.searchController.searchBar.placeholder = @"Cari produk atau toko";
-    self.searchController.searchBar.tintColor = [UIColor blackColor];
-    self.searchController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    self.searchController.searchBar.barTintColor = [UIColor tpGreen];
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.delegate = self;
@@ -207,7 +206,7 @@
     [searchWrapper setBackgroundColor:[UIColor clearColor]];
     [searchWrapper addSubview:self.searchController.searchBar];
     self.searchController.searchBar.layer.borderWidth = 1;
-    self.searchController.searchBar.layer.borderColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR.CGColor;
+    self.searchController.searchBar.layer.borderColor = [UIColor tpGreen].CGColor;
     
     [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(searchWrapper);
@@ -242,7 +241,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    [self.navigationController setGreen];
     self.navigationController.title = @"Home";
     
     [[NSNotificationCenter defaultCenter] addObserver:self

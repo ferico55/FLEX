@@ -31,6 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AHKActionSheet.h"
 #import "FBSDKShareKit.h"
+#import "UIColor+Theme.h"
 
 @interface MyReviewDetailViewController ()
 <
@@ -195,6 +196,7 @@
     self.navigationItem.backBarButtonItem = backBarButton;
     
     _invoiceTitleLabel.text = _detailMyInboxReputation.invoice_ref_num;
+    [_invoiceTitleLabel setTextColor:[UIColor tpPrimaryBlackText]];
     _pageTitleView.frame = CGRectMake(0, 0, self.view.bounds.size.width-(72*2), self.navigationController.navigationBar.bounds.size.height);
     _pageTitleView.userInteractionEnabled = YES;
     [_pageTitleView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self

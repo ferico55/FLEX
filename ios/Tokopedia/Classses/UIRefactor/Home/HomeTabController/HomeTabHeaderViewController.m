@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "OAStackView.h"
 #import "Masonry.h"
+#import "UIColor+Theme.h"
 
 #define STACKVIEW_LEFTRIGHT_MARGIN 20
 
@@ -112,7 +113,7 @@
     [self initNotificationCenter];
     
     _scrollView.delegate = self;
-    _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _scrollView.backgroundColor = [UIColor tpGreen];
     _scrollView.bounces = NO;
     
     _userAuthManager = [[UserAuthentificationManager alloc] init];

@@ -22,6 +22,7 @@ open class TKPImagePickerUIDelegate: DKImagePickerControllerDefaultUIDelegate {
             let button = UIButton(type: .custom)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
             button.addTarget(self.imagePickerController, action: #selector(DKImagePickerController.done), for: .touchUpInside)
+            button.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.7), for: .normal)
             self.doneButton = button
         }
         

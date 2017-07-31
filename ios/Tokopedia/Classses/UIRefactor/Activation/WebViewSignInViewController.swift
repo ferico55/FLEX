@@ -51,6 +51,12 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         webView.loadRequest(request as URLRequest)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+    }
+    
     func webViewProgress(_ webViewProgress: NJKWebViewProgress, updateProgress progress: Float) {
         progressView.setProgress(progress, animated: true)
     }

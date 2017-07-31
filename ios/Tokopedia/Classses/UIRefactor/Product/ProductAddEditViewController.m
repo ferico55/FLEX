@@ -81,6 +81,7 @@ FilterCategoryViewDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController setWhite];
     
     _addImageButtons = [NSArray sortViewsWithTagInArray:_addImageButtons];
     _defaultImageLabels = [NSArray sortViewsWithTagInArray:_defaultImageLabels];

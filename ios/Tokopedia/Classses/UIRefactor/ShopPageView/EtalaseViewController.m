@@ -9,6 +9,7 @@
 #import "EtalaseViewController.h"
 #import "EtalaseCell.h"
 #import "LoadingView.h"
+#import "Tokopedia-Swift.h"
 #import "EtalaseRequest.h"
 #import "Tokopedia-Swift.h"
 
@@ -90,6 +91,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     if (_enableAddEtalase) {
         self.tambahEtalaseTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 36)];
         self.tambahEtalaseTextField.leftViewMode = UITextFieldViewModeAlways;
@@ -98,6 +101,7 @@
     
     [AnalyticsManager trackScreenName:@"Etalase Page"];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

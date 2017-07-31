@@ -115,7 +115,6 @@
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     [self setData:_data];
     
@@ -190,7 +189,6 @@
                                                                      target:self
                                                                      action:@selector(tap:)];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 -(void)requestShopInfo { //to handle push notif

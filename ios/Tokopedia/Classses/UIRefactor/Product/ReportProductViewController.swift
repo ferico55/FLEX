@@ -48,6 +48,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setWhite()
         self.navigationItem.title = "Laporkan Produk"
     }
 

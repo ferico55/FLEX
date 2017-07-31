@@ -95,17 +95,12 @@ static CGFloat rowHeight = 40;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     self.navigationItem.backBarButtonItem = backButton;
 
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
-    [[UIImage imageNamed:@"icon_share_white"] drawInRect:CGRectMake(0, 0, 30, 30)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIImageView *tempImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    tempImage.image = newImage;
-    [tempImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)]];
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithCustomView:tempImage];
+    UIImage *imgShare = [[UIImage imageNamed:@"icon_share_white"]imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithImage:imgShare
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(tap:)];
     actionButton.tag = 1;
-
     self.navigationItem.rightBarButtonItem = actionButton;
 //    [self setBackgroundPriceAlert:NO];
     
@@ -463,7 +458,7 @@ static CGFloat rowHeight = 40;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
                 UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                                   url:url
-                                                                                               anchor:button];
+                                                                                               anchor:self.view];
                 
                 [self presentViewController:controller animated:YES completion:nil];
             }

@@ -159,6 +159,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _topAdsService = [TopAdsService new];
@@ -311,7 +313,7 @@
                                     title:@"Anda belum login"
                                      desc:@"Belum punya akun Tokopedia ?"
                                  btnTitle:@"Daftar disini!"];
-    _noLoginView.button.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _noLoginView.button.backgroundColor = [UIColor tpGreen];
     _noLoginView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
         RegisterViewController* controller = [RegisterViewController new];
@@ -326,6 +328,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setGreen];
     
     if (_popFromToppay) {
         _popFromToppay = NO;

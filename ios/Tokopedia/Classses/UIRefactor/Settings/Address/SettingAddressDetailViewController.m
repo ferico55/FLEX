@@ -98,7 +98,6 @@ typedef void (^SuccessDeleteAddress)(AddressFormList* address);
     self.navigationItem.rightBarButtonItem = editBarButton;
     
     backBarButton.tag = 10;
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     [self setDetailAddress:_address];
 

@@ -12,6 +12,7 @@
 
 #import "AlertLuckyView.h"
 #import "LuckyDealWord.h"
+#import "Tokopedia-Swift.h"
 
 #define CInboxReputation @"inbox-reputation"
 #define CInboxReputationMyProduct @"inbox-reputation-my-product"
@@ -57,6 +58,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setWhite];
     if(viewContent.subviews.count == 0) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -106,7 +108,7 @@
 - (void)initNavigation
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnTitle setTitleColor:[UIColor tpPrimaryBlackText] forState:UIControlStateNormal];
     btnTitle.titleLabel.font = [UIFont title1ThemeMedium];
     btnTitle.backgroundColor = [UIColor clearColor];
     [btnTitle addTarget:self action:@selector(actionChangeFilter:) forControlEvents:UIControlEventTouchUpInside];

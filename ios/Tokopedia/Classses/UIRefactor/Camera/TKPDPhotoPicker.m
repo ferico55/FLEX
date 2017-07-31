@@ -9,6 +9,7 @@
 #import "TKPDPhotoPicker.h"
 #import "NSDictionaryCategory.h"
 #import "camera.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TKPDPhotoPicker {
     UIModalTransitionStyle _transitionStyle;
@@ -94,6 +95,7 @@
 
     [imagePicker setDelegate:self];
     [imagePicker setModalTransitionStyle:_transitionStyle];
+    [imagePicker setWhite];
     [_parentViewController presentViewController:imagePicker animated:YES completion:nil];
     
     if (_spinner == nil) {
@@ -137,7 +139,7 @@
     __weak typeof(self) wself = self;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [wself.parentViewController dismissViewControllerAnimated:NO completion:nil];
+        [wself.parentViewController dismissViewControllerAnimated:YES completion:nil];
     });
 }
 

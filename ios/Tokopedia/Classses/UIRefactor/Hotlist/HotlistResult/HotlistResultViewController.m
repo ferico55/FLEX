@@ -159,6 +159,7 @@ static NSString const *rows = @"12";
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
     _page = 0;
     
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
@@ -290,8 +291,8 @@ static NSString const *rows = @"12";
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setWhite];
 }
-
 
 #pragma mark - Memory Management
 -(void)dealloc {

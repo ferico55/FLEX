@@ -369,7 +369,7 @@
         
     }
     
-    if (_titleNoteTextField.text.length > 0 && _noteTextEditor.text.length > 0) {
+    if (_titleNoteTextField.text.length > 0 && _noteTextEditor.html.length > 0) {
         _barbuttonedit.enabled = YES;
         _barbuttonedit.tintColor = [UIColor whiteColor];
     }

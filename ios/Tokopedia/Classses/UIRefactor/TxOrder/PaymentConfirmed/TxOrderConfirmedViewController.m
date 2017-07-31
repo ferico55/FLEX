@@ -106,9 +106,11 @@
     _tableView.estimatedRowHeight = 40;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
+    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -121,7 +123,6 @@
     inset.bottom = 20;
     [_tableView setContentInset:inset];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidDisappear:(BOOL)animated

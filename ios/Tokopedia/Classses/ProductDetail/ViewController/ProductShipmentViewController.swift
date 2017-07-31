@@ -22,6 +22,12 @@ class ProductShipmentViewController: UIViewController, UITableViewDataSource, UI
         super.init(nibName: nil, bundle: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+    }
+    
     override func loadView() {
         super.loadView()
         

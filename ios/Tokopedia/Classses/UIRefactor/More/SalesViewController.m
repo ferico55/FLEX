@@ -12,6 +12,7 @@
 #import "ShipmentStatusViewController.h"
 #import "SalesTransactionListViewController.h"
 #import "NotificationManager.h"
+#import "Tokopedia-Swift.h"
 
 @interface SalesViewController ()
 <
@@ -62,10 +63,10 @@
     }];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.navigationController setWhite];
     [AnalyticsManager trackScreenName:@"Sales Page"];
     
     self.hidesBottomBarWhenPushed = YES;    
@@ -84,6 +85,7 @@
 {
     [super viewWillDisappear:animated];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

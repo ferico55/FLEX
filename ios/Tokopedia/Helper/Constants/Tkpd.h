@@ -198,9 +198,6 @@ typedef enum {
 #define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f)
 #define kTKPD_SETUSERSTICKYMESSAGEKEY @"stickymessage"
 
-#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
-#define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
-
 #define HelpshiftKey @"a61b53892e353d1828be5154db0ac6c2"
 #define HelpshiftDomain @"tokopedia.helpshift.com"
 #define HelpshiftAppid @"tokopedia_platform_20150407082530564-f41c14c841c644e"

@@ -12,7 +12,7 @@
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
-#import "UIColor+Theme.h"
+#import "Tokopedia-Swift.h"
 
 @interface PurchaseViewController ()<NotificationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -50,6 +50,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setWhite];
     
     [AnalyticsManager trackScreenName:@"Purchase Page"];
     

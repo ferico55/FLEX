@@ -108,6 +108,12 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -380,9 +386,6 @@
     _selectedOrder = order;
     
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
     controller.orderID = _selectedOrder.order_detail.detail_order_id;
@@ -462,12 +465,7 @@
 
 - (void)tap:(id)sender {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
     navigationController.viewControllers = @[_filterController];
-    
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 

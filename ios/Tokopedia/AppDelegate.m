@@ -5,7 +5,7 @@
 //  Created by IT Tkpd on 8/19/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import <AFNetworking/AFNetworking.h>
+#import "AFNetworking.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Fabric/Fabric.h>
@@ -114,7 +114,7 @@
     UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-    _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _window.backgroundColor = [UIColor whiteColor];
     _window.rootViewController = viewController;
     [_window makeKeyAndVisible];
     
@@ -193,6 +193,16 @@
     
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor tpPrimaryBlackText]}];
+    [[UINavigationBar appearance] setTranslucent:NO];
+    [[UINavigationBar appearance] setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.12]];
+    [[UINavigationBar appearance] setShadowImage:nil];
+    [[UINavigationBar appearance] setShadowRadius:0.3];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    
     return didFinishLaunching;
 }
 

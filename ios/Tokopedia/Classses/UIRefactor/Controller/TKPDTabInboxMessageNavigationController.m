@@ -9,7 +9,8 @@
 #import "controller.h"
 #import "string_inbox_message.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-
+#import "UIColor+Theme.h"
+#import "Tokopedia-Swift.h"
 
 @interface TKPDTabInboxMessageNavigationController () {
     UIView* _tabbar;
@@ -151,6 +152,12 @@
     _buttonsContainer.frame = frame;
     
     
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -681,7 +688,7 @@
 - (void)setLabelButtonWithArrow:(UIButton *)button withString:(NSString*)string withDirection:(NSInteger)direction
 {
     NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
+                                 NSForegroundColorAttributeName : [UIColor tpPrimaryBlackText],
                                  NSFontAttributeName            : [UIFont title1ThemeMedium],
                                  };
     

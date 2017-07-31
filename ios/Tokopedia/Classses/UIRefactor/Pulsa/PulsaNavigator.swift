@@ -19,22 +19,26 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToAddressBook() {
-        UINavigationBar.appearance().isTranslucent = false
         if #available(iOS 9.0, *) {
             let contactPicker = CNContactPickerViewController()
             
             contactPicker.delegate = self
             contactPicker.displayedPropertyKeys = [CNContactPhoneNumbersKey]
             
-            self.controller.present(contactPicker, animated: true, completion: nil)
-
+            self.controller.present(contactPicker, animated: true) {
+                self.controller.navigationController?.setWhite()
+            }
+            
         } else {
             // Fallback on earlier versions
             let contactPicker = ABPeoplePickerNavigationController()
             contactPicker.peoplePickerDelegate = self
             contactPicker.displayedProperties = [NSNumber(value: kABPersonPhoneProperty as Int32)]
 
-            self.controller.present(contactPicker, animated: true, completion: nil)
+            self.controller.present(contactPicker, animated: true) {
+                self.controller.navigationController?.setWhite()
+            }
+
         }
         
     }

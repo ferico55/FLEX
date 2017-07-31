@@ -9,6 +9,7 @@
 #import "MoreWrapperViewController.h"
 #import "MoreViewController.h"
 #import "UIView+HVDLayout.h"
+#import "Tokopedia-Swift.h"
 
 @implementation MoreWrapperViewController {
     MoreViewController *_moreViewController;
@@ -40,6 +41,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setGreen];
     [self initNotificationManager];
     if (_moreViewController) {
         [_moreViewController updateSaldoTokopedia];

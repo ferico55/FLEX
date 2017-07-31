@@ -20,6 +20,7 @@
 #import "MMNumberKeyboard.h"
 #import "PreorderDetail.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "Tokopedia-Swift.h"
 
 @import GoogleMaps;
 
@@ -141,7 +142,6 @@ typedef enum
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -183,6 +183,8 @@ typedef enum
     [placeholderLabel sizeToFit];
 }
 
+
+
 -(void)refreshView{
     if (_isnodata)
     {
@@ -217,6 +219,8 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 
     self.title = @"Beli";
     [AnalyticsManager trackScreenName:@"Add to Cart"];

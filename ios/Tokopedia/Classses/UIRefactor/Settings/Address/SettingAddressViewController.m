@@ -152,6 +152,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [AnalyticsManager trackScreenName:@"Setting Address Page"];
 }
 

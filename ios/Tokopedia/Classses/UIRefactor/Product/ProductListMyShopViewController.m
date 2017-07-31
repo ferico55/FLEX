@@ -40,7 +40,9 @@
 #import "Breadcrumb.h"
 #import "ProcessingAddProducts.h"
 #import "Tokopedia-Swift.h"
+
 #import "UserAuthentificationManager.h"
+
 
 @interface ProductListMyShopViewController ()
 <
@@ -211,6 +213,9 @@ NoResultDelegate
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    [self.navigationController setWhite];
+
     [AnalyticsManager trackScreenName:@"Shop - Manage Product"];
 }
 

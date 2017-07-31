@@ -11,6 +11,7 @@
 #import "string_inbox_resolution_center.h"
 #import "AlertListFilterView.h"
 #import "GeneralTableViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate, ResolutionComplainDelegate, GeneralTableViewControllerDelegate>
 {
@@ -160,6 +161,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setWhite];
 
     self.title = @"Pusat Resolusi";
     
@@ -174,6 +176,8 @@
     [_filterAlertView dismissWithClickedButtonIndex:0 animated:NO];
     self.title = nil;
 }
+
+
 
 - (IBAction)tap:(UISegmentedControl*)sender {
     [AnalyticsManager trackEventName:@"clickResolution" category:GA_EVENT_CATEGORY_INBOX_RESOLUTION action:GA_EVENT_ACTION_CLICK label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];
@@ -334,7 +338,7 @@
     button.titleLabel.numberOfLines = 2;
     button.titleLabel.font = [UIFont title1ThemeMedium];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
-    button.titleLabel.textColor = [UIColor whiteColor];
+    button.titleLabel.textColor = [UIColor tpPrimaryBlackText];
 
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ",string]];
     [myString appendAttributedString:attachmentString];

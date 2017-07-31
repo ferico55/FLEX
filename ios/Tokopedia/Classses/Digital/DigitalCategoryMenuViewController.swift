@@ -69,6 +69,8 @@ class DigitalCategoryMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.setWhite()
+        
         let barButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon-option"), style: .plain, target: nil, action: nil)
         
         barButton.rx.tap.subscribe(onNext: { [unowned self] in
@@ -118,7 +120,12 @@ class DigitalCategoryMenuViewController: UIViewController {
         widgetView.state = state
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+        
         AnalyticsManager.trackScreenName("Recharge Category Page")
     }
     

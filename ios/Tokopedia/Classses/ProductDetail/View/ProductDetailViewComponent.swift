@@ -417,6 +417,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.setImage(UIImage(named: "icon_arrow_white"), for: .normal)
                     view.addTarget(self, action: #selector(self.backButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+                    view.imageView?.tintColor = .white
                 },
                 Node { _, layout, _ in
                     layout.justifyContent = .spaceBetween
@@ -429,6 +430,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.setImage(UIImage(named: "icon_share_white"), for: .normal)
                     view.addTarget(self, action: #selector(self.shareButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+                    view.imageView?.tintColor = .white
                 },
                 Node<UIButton>() { view, layout, _ in
                     layout.width = 40
@@ -439,6 +441,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.setImage(UIImage(named: "icon_cart_white"), for: .normal)
                     view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+                    view.imageView?.tintColor = .white
                 },
                 Node<UIButton>() { view, layout, _ in
                     layout.width = 40
@@ -448,6 +451,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.setImage(UIImage(named: "icon_more_plain"), for: .normal)
                     view.addTarget(self, action: #selector(self.moreButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+                    view.imageView?.tintColor = .white
                 }
             ])
         }

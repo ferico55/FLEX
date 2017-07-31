@@ -10,6 +10,7 @@
 #import "GeneralTableViewController.h"
 #import "ResizeableImageCell.h"
 #import "NoResultReusableView.h"
+#import "Tokopedia-Swift.h"
 
 @interface GeneralTableViewController ()
 <
@@ -112,6 +113,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     
     [AnalyticsManager trackScreenName:@"General Table Page"];
 }

@@ -7,7 +7,7 @@
 //
 
 #import "MHVerticalTabBarController.h"
-
+#import "UIColor+Theme.h"
 
 @implementation MHVerticalTabBarController
 
@@ -112,8 +112,7 @@
         resetButton.frame = CGRectMake(0, self.view.frame.size.height - 44 - 60, _tabBarWidth, 40);
         [resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-        UIColor *color = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
-        [resetButton setBackgroundColor:color];
+        [resetButton setBackgroundColor:[UIColor tpGreen]];
         resetButton.titleLabel.font = [UIFont smallTheme];
         [resetButton addTarget:self action:@selector(tapResetButton:) forControlEvents:UIControlEventTouchUpInside];
         

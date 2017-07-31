@@ -337,7 +337,7 @@ class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarD
         
         titleLabel.text = messageTitle
         titleLabel.font = UIFont.largeThemeMedium()
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.tpPrimaryBlackText()
         titleLabel.textAlignment = .center
         titleLabel.mas_makeConstraints { (make) in
             make?.top.left().right().equalTo()(self.titleView)
@@ -347,7 +347,7 @@ class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarD
         betweenLabel.text = messageSubtitle
         betweenLabel.font = UIFont.smallTheme()
         betweenLabel.textAlignment = .center
-        betweenLabel.textColor = UIColor.white
+        betweenLabel.textColor = UIColor.tpPrimaryBlackText()
         betweenLabel.mas_makeConstraints { (make) in
             make?.top.equalTo()(titleLabel.mas_bottom)
             make?.left.right().equalTo()(self.titleView)

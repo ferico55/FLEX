@@ -59,6 +59,11 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         genderLanjut.layer.cornerRadius = 3
         seeProfileButton.layer.cornerRadius = 3
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setWhite()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

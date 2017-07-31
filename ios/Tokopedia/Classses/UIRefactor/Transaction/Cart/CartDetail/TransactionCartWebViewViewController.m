@@ -17,6 +17,7 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import <objc/runtime.h>
 #import "PurchaseViewController.h"
+#import "Tokopedia-Swift.h"
 #import "UIBarButtonItem+BlocksKit.h"
 
 @interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
@@ -59,6 +60,11 @@
     [self loadRequest];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
+}
 -(IBAction)didTapSuccess:(id)sender
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

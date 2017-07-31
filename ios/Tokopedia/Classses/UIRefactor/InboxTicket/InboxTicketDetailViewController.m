@@ -69,11 +69,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (self.inboxTicket) {
-        [self setTitleView];
-    }
-    
+  
     UIView *emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 44)];
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
     self.navigationItem.rightBarButtonItem = rightBarButton;
@@ -194,7 +190,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     label.numberOfLines = 2;
     label.font = [UIFont microTheme];
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor whiteColor];
+    label.textColor = [UIColor tpPrimaryBlackText];
     label.attributedText = attributedText;
     
     self.navigationItem.titleView = label;

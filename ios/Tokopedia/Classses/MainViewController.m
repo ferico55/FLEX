@@ -87,8 +87,7 @@ typedef enum TagRequest {
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-       [self.navigationController.navigationBar setTranslucent:NO];
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+       
     }
     return self;
 }
@@ -113,12 +112,10 @@ typedef enum TagRequest {
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
-    [self adjustnavigationbar];
-        
     _auth = [NSMutableDictionary new];
     _cacheController = [URLCacheController new];
 
-    [[UISegmentedControl appearance] setTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    [[UISegmentedControl appearance] setTintColor:[UIColor tpGreen]];
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
 
@@ -287,31 +284,6 @@ typedef enum TagRequest {
     _tabBarController.selectedIndex = pageIndex;
     
     [self initTabBar];
-}
-
-- (void)adjustnavigationbar
-{
-    // Move to root view controller
-    UINavigationBar *proxy = [UINavigationBar appearance];
-    [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
-    [proxy setTintColor:[UIColor whiteColor]];
-    [[UIView appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]]; //to set 'Cancel' button color on search bar white
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor darkGrayColor]]; //to set cursor color on search bar
-    [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
-                                      forBarPosition:UIBarPositionAny
-                                          barMetrics:UIBarMetricsDefault];
-    
-    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = kTKPDNAVIGATION_TITLESHADOWCOLOR;
-    
-    proxy.titleTextAttributes = @{
-                                  NSForegroundColorAttributeName: kTKPDNAVIGATION_TITLECOLOR,
-                                  NSShadowAttributeName: shadow,
-                                  };
-    proxy.translucent = NO;
 }
 
 -(void)initTabBar {

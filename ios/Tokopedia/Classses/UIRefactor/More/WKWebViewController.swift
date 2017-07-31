@@ -36,6 +36,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setWhite()
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), for: UIControlEvents.valueChanged)
         webView.scrollView.addSubview(refreshControl)

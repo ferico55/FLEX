@@ -12,6 +12,7 @@
 #import "GeneralAction.h"
 #import "string_settings.h"
 #import "RegisterViewController.h"
+#import "Tokopedia-Swift.h"
 @import BlocksKit;
 
 @interface ForgotPasswordViewController (){
@@ -57,6 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.navigationController setWhite];
     [AnalyticsManager trackScreenName:@"Forgot Password Page"];
 }
 

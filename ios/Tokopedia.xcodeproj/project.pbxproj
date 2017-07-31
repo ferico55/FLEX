@@ -797,7 +797,6 @@
 		457B95491F0E311F005851E5 /* HeaderIntermediaryCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457B8C241F0E311B005851E5 /* HeaderIntermediaryCollectionReusableView.xib */; };
 		457B954A1F0E311F005851E5 /* RequestCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8C261F0E311B005851E5 /* RequestCategory.m */; };
 		457B954B1F0E311F005851E5 /* TKPDBannerTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B8C271F0E311B005851E5 /* TKPDBannerTimer.swift */; };
-		457B954C1F0E311F005851E5 /* TKPDSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B8C281F0E311B005851E5 /* TKPDSearchBarViewController.swift */; };
 		457B954D1F0E311F005851E5 /* TKPDTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457B8C2B1F0E311B005851E5 /* TKPDTabBarController.xib */; };
 		457B954E1F0E311F005851E5 /* TKPDTabBarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8C2D1F0E311B005851E5 /* TKPDTabBarNavigationController.m */; };
 		457B954F1F0E311F005851E5 /* TKPDTabInboxMessageNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8C2F1F0E311B005851E5 /* TKPDTabInboxMessageNavigationController.m */; };
@@ -12627,7 +12626,6 @@
 				457B986F1F0E3123005851E5 /* PaymentConfirmation.swift in Sources */,
 				457B94891F0E311F005851E5 /* UploadDataImage.m in Sources */,
 				457B98EB1F0E3124005851E5 /* TPSpotlight.m in Sources */,
-				457B954C1F0E311F005851E5 /* TKPDSearchBarViewController.swift in Sources */,
 				7A466B901EB2FEAE00A72105 /* UIImageView%2BAFNetworking.swift in Sources */,
 				457B95D61F0E3120005851E5 /* HotlistViewController.m in Sources */,
 				457B93F61F0E311E005851E5 /* EtalaseList.m in Sources */,
