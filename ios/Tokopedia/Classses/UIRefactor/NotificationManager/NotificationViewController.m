@@ -14,6 +14,7 @@
 #import "ShipmentConfirmationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SplitReputationViewController.h"
+#import "SalesTransactionListViewController.h"
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
 
@@ -193,11 +194,11 @@
             break;
             
         case 1:
-            numberOfRows = 3;
+            numberOfRows = 4;
             break;
             
         case 2:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
             
         default:
@@ -231,6 +232,8 @@
             return 0;
         } else if(row == 2 && [_notification.result.sales.sales_shipping_status integerValue] == 0) {
             return 0;
+        } else if(![UserAuthentificationManager new].userHasShop) {
+            return 0;
         }
     } else if(section == 2) {
         NSInteger row = indexPath.row;
@@ -251,18 +254,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if(section == 1) {
-        if([_notification.result.sales.sales_new_order integerValue] == 0 &&
-           [_notification.result.sales.sales_shipping_confirm integerValue] == 0 &&
-           [_notification.result.sales.sales_shipping_status integerValue] == 0
-           ) {
-            return  0;
-        }
-    } else if(section == 2) {
-        if([_notification.result.purchase.purchase_reorder integerValue] == 0 &&
-           [_notification.result.purchase.purchase_payment_confirm integerValue] == 0 &&
-           [_notification.result.purchase.purchase_order_status integerValue] == 0 &&
-           [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0
-           ) {
+        if ([[_auth objectForKey:@"shop_id"] integerValue] == 0){
             return 0;
         }
     }
@@ -512,6 +504,14 @@
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
+        } else if([indexPath row] == 3) {
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Sales Transaction List"];
+            SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            [self.delegate pushViewController:controller];
         }
     }
     
@@ -554,6 +554,16 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_deliver";
             vc.viewControllerTitle = @"Konfirmasi Penerimaan";
+            [self.delegate pushViewController:vc];
+        } else if([indexPath row] == 4) {
+            [AnalyticsManager trackEventName:@"clickTopedIcon"
+                                    category:GA_EVENT_CATEGORY_NOTIFICATION
+                                      action:GA_EVENT_ACTION_CLICK
+                                       label:@"Order Transaction List"];
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_list";
+            vc.viewControllerTitle = @"Daftar Transaksi";
+            vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         }
     }
