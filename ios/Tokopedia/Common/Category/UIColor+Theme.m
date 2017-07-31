@@ -62,6 +62,10 @@
         return [UIColor fromHexString:@"#bdbdbd"];
     }
 
+    +(UIColor *)tpRed{
+        return [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
+    }
+
     +(UIColor *)fromHexString:(NSString *)hexString{
         
         unsigned int rgbValue = 0;
