@@ -19,38 +19,10 @@ class NotificationService: UNNotificationServiceExtension {
         
         let notificationData = request.content.userInfo["data"] as? [String : String]
         
-        let localyticsImageUrl = self.bestAttemptContent?.userInfo["ll_attachment_url"]
-        let localyticsImageType = self.bestAttemptContent?.userInfo["ll_attachment_type"]
-        
-        if ((localyticsImageUrl == nil || localyticsImageType == nil) && notificationData != nil) {
+        if notificationData != nil {
             self.handleTransactionalNotification(request)
-        } else if (localyticsImageUrl != nil && localyticsImageType != nil) {
-            self.handleLocalyticsNotification(request)
         } else {
             self.handleMoEngageNotification(request, andContentHandler: contentHandler)
-        }
-    }
-    
-    // Handle notification from Localytics
-    private func handleLocalyticsNotification(_ request: UNNotificationRequest) {
-        if let bestAttemptContent = bestAttemptContent,
-            let attachmentUrl = bestAttemptContent.userInfo["ll_attachment_url"] as? String,
-            let fileUrl  = URL(string: attachmentUrl) {
-            URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
-                if let location = location {
-                    let tmpDirectory = NSTemporaryDirectory()
-                    let tmpFile = "file://\(tmpDirectory)\((fileUrl.lastPathComponent))"
-                    
-                    let tmpUrl = URL(string: tmpFile)!
-                    
-                    _ = try? FileManager.default.moveItem(at: location, to: tmpUrl)
-                    
-                    if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options: nil) {
-                        bestAttemptContent.attachments = [attachment]
-                    }
-                }
-                self.contentHandler?(bestAttemptContent)
-                }.resume()
         }
     }
     

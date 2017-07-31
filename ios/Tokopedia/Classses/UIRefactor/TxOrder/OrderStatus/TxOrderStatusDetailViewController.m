@@ -202,8 +202,6 @@
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
-        
-        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         [weakSelf showAlertForReview];
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         
@@ -215,7 +213,7 @@
         }
         
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
+        
     }];
 }
 
@@ -243,7 +241,6 @@
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         
-        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         [weakSelf showAlertForReview];
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         
@@ -255,7 +252,6 @@
         [view removeComplaintNotReceivedButton];
         
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
 
     }];
 }

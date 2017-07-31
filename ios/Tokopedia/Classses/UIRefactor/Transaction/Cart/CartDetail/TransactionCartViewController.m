@@ -1461,18 +1461,6 @@
                                                                                                                  AFEventParamCurrency : param[@"currency"]?:@"",
                                                                                                                  AFEventOrderId : paymentID}];
                                        
-                                       [AnalyticsManager localyticsEvent:@"Event : Finished Transaction"
-                                                              attributes:@{
-                                                                           @"Payment Method" : paymentMethod,
-                                                                           @"Total Transaction" : [revenue stringValue]?:@"",
-                                                                           @"Total Quantity" : [@(quantity) stringValue]?:@"",
-                                                                           @"Total Shipping Fee" : @""
-                                                                           }
-                                                   customerValueIncrease:revenue];
-                                       
-                                       [AnalyticsManager localyticsIncrementValue:[revenue integerValue]
-                                                                 profileAttribute:@"Profile : Total Transaction"
-                                                                            scope:LLProfileScopeApplication];
                                    }
                                    [self requestCartData];
                                } error:^(NSError *error) {
@@ -1508,7 +1496,6 @@
         
         [self adjustGrandTotal];
         [self isLoading:NO];
-        [AnalyticsManager localyticsTrackCartView:_cart];
         [self reloadNotification];
         
     } error:^(NSError *error) {

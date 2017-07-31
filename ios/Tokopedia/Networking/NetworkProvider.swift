@@ -69,12 +69,21 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
         let parameters = !(target.parameterEncoding is Moya.JSONEncoding) ? (target.parameters as! NSDictionary).autoParameters() : target.parameters
         
         if !(target.parameterEncoding is Moya.JSONEncoding) {
-            hmac.signature(
-                withBaseUrlPulsa: target.baseURL.absoluteString,
-                method: target.method.rawValue,
-                path: target.path,
-                parameter: parameters
-            )
+            //TODO:: due to different signature creation of mojito, we need to handle it separately
+            if(target.baseURL == URL(string: NSString.mojitoUrl())) {
+                hmac.signature(withBaseUrl: target.baseURL.absoluteString,
+                               method: target.method.rawValue,
+                               path: target.path,
+                               parameter: parameters)
+            } else {
+                hmac.signature(
+                    withBaseUrlPulsa: target.baseURL.absoluteString,
+                    method: target.method.rawValue,
+                    path: target.path,
+                    parameter: parameters
+                )
+            }
+            
         } else {
             hmac.signature(
                 withBaseUrl: target.baseURL.absoluteString,

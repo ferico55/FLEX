@@ -66,6 +66,7 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
+    ((UIButton *)sender).enabled = NO;
     [_delegate didFollowPromotedShop:_promoResult];
 }
 

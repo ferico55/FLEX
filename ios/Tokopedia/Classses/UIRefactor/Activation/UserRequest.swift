@@ -41,8 +41,13 @@ class UserRequest: NSObject {
         
         let userManager = UserAuthentificationManager()
         let userInformation = userManager.getUserLoginData()
-        let type = userInformation?["oAuthToken.tokenType"] as! String
-        let token = userInformation?["oAuthToken.accessToken"] as! String
+        guard let type = userInformation?["oAuthToken.tokenType"] as? String else {
+            return
+        }
+        guard let token = userInformation?["oAuthToken.accessToken"] as? String else {
+            return
+        }
+        
         let headers = [
             "Authorization" : "\(type) \(token)"
         ]
@@ -55,7 +60,9 @@ class UserRequest: NSObject {
             parameter: [:],
             mapping: ProfileCompletionInfo.mapping(),
             onSuccess: { (mappingResult, operation) in
-                let profileInfo = mappingResult.dictionary()[""] as! ProfileCompletionInfo
+                guard let profileInfo = mappingResult.dictionary()[""] as? ProfileCompletionInfo else {
+                    return
+                }
                 onSuccess(profileInfo)
         })
     }

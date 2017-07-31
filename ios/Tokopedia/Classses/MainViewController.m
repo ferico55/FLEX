@@ -43,6 +43,8 @@
 #import <MessageUI/MessageUI.h>
 
 #import "UIActivityViewController+Extensions.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -108,7 +110,6 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [Localytics tagEvent:@"Enter Main Page"];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
@@ -194,13 +195,6 @@ typedef enum TagRequest {
     	
     _data = nil;
     [self presentcontrollers];
-    
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [AnalyticsManager localyticsSetCustomerID:[_userManager getUserId]];
-        [AnalyticsManager localyticsValue:[_userManager getUserId] profileAttribute:@"user_id"];
-    });
-    
 }
 
 -(void)presentcontrollers
@@ -564,10 +558,11 @@ typedef enum TagRequest {
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
-    [AnalyticsManager localyticsValue:@"No" profileAttribute:@"Is Login"];
-    
     [self reinitCartTabBar];
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLogoutNotification object:nil];
+    
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+    [tabManager sendLogoutEvent];
     
     [[QuickActionHelper sharedInstance] registerShortcutItems];
 }

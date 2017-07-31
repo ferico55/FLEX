@@ -636,7 +636,7 @@
 		457B94A81F0E311F005851E5 /* ProductWholesaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B2C1F0E311B005851E5 /* ProductWholesaleViewController.swift */; };
 		457B94A91F0E311F005851E5 /* HybridNavigationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B301F0E311B005851E5 /* HybridNavigationManager.m */; };
 		457B94AA1F0E311F005851E5 /* ReactNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B321F0E311B005851E5 /* ReactNetworkManager.m */; };
-		457B94AB1F0E311F005851E5 /* ReactTabManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B341F0E311B005851E5 /* ReactTabManager.m */; };
+		457B94AB1F0E311F005851E5 /* ReactEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B341F0E311B005851E5 /* ReactEventManager.m */; };
 		457B94AC1F0E311F005851E5 /* ReactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B361F0E311B005851E5 /* ReactViewController.m */; };
 		457B94AD1F0E311F005851E5 /* TKPReactAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B381F0E311B005851E5 /* TKPReactAnalytics.m */; };
 		457B94AE1F0E311F005851E5 /* TKPReactURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B8B3A1F0E311B005851E5 /* TKPReactURLManager.m */; };
@@ -1747,11 +1747,10 @@
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
-		6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6270659B1D7EB80600BDE9F8 /* Localytics.framework */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
-		7A25802B1EB32F710090C4F6 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A25802A1EB32F700090C4F6 /* main.jsbundle */; };
+		7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FD3121F2843A100ADF80D /* main.jsbundle */; };
 		7A466B761EB2FEAE00A72105 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A465F421EB2FEA900A72105 /* main.m */; };
 		7A466B771EB2FEAE00A72105 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A465F461EB2FEA900A72105 /* CMPopTipView.m */; };
 		7A466B781EB2FEAE00A72105 /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A465F491EB2FEA900A72105 /* _FBTweakArrayViewController.m */; };
@@ -1833,8 +1832,23 @@
 		7A4672031EB2FEB400A72105 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 7A466B161EB2FEAD00A72105 /* GTM-NCTWRP */; };
 		7A4672041EB2FEB400A72105 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A466B181EB2FEAD00A72105 /* LaunchScreen.xib */; };
 		7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */; };
+		7A6CB12D1F1DF75F006FA253 /* OfficialStoreBrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CB12C1F1DF75F006FA253 /* OfficialStoreBrandsViewController.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7A88EFA31F15DB1A00C443C3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A88EFA21F15DB1A00C443C3 /* libRNVectorIcons.a */; };
+		7AC8370C1F161DA9001AF8CC /* ReactTPRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC8370B1F161DA9001AF8CC /* ReactTPRoutes.m */; };
+		7AC837101F1633B3001AF8CC /* ReactUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC8370F1F1633B3001AF8CC /* ReactUserManager.m */; };
+		7AC8375F1F1712A4001AF8CC /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC837551F1712A4001AF8CC /* Entypo.ttf */; };
+		7AC837601F1712A4001AF8CC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC837561F1712A4001AF8CC /* EvilIcons.ttf */; };
+		7AC837611F1712A4001AF8CC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC837571F1712A4001AF8CC /* FontAwesome.ttf */; };
+		7AC837621F1712A4001AF8CC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC837581F1712A4001AF8CC /* Foundation.ttf */; };
+		7AC837631F1712A4001AF8CC /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC837591F1712A4001AF8CC /* Ionicons.ttf */; };
+		7AC837641F1712A4001AF8CC /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC8375A1F1712A4001AF8CC /* MaterialCommunityIcons.ttf */; };
+		7AC837651F1712A4001AF8CC /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC8375B1F1712A4001AF8CC /* MaterialIcons.ttf */; };
+		7AC837661F1712A4001AF8CC /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC8375C1F1712A4001AF8CC /* Octicons.ttf */; };
+		7AC837671F1712A4001AF8CC /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC8375D1F1712A4001AF8CC /* SimpleLineIcons.ttf */; };
+		7AC837681F1712A4001AF8CC /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AC8375E1F1712A4001AF8CC /* Zocial.ttf */; };
+		7AC850901F0DE72E0061B19C /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AC8508F1F0DE72D0061B19C /* libCodePush.a */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -1860,7 +1874,6 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
-		928FAE311EAF425D00E33DE6 /* libAppHub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE301EAF425D00E33DE6 /* libAppHub.a */; };
 		928FAE331EAF426C00E33DE6 /* libRCTAdSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE321EAF426C00E33DE6 /* libRCTAdSupport.a */; };
 		928FAE351EAF427800E33DE6 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE341EAF427800E33DE6 /* libRCTAnimation.a */; };
 		928FAE371EAF428600E33DE6 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE361EAF428600E33DE6 /* libRCTGeolocation.a */; };
@@ -1894,19 +1907,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7A0C43021EA5FADA00E1E977 /* PBXContainerItemProxy */ = {
+		7A88EFA11F15DB1A00C443C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */;
+			containerPortal = 7A88EF8D1F15DA4800C443C3 /* RNVectorIcons.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 555FF3AF1B37AC8D0064F175;
-			remoteInfo = AppHub;
-		};
-		7A0C43041EA5FADA00E1E977 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 555FF3BA1B37AC8D0064F175;
-			remoteInfo = AppHubTests;
+			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
+			remoteInfo = RNVectorIcons;
 		};
 		7AA497FA1E9B35110099D9CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2096,6 +2102,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
 			remoteInfo = RNDeviceInfo;
+		};
+		7AC8508E1F0DE72D0061B19C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
 		};
 		925BA6331E518A54001CED3A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3283,8 +3296,8 @@
 		457B8B301F0E311B005851E5 /* HybridNavigationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HybridNavigationManager.m; sourceTree = "<group>"; };
 		457B8B311F0E311B005851E5 /* ReactNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNetworkManager.h; sourceTree = "<group>"; };
 		457B8B321F0E311B005851E5 /* ReactNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNetworkManager.m; sourceTree = "<group>"; };
-		457B8B331F0E311B005851E5 /* ReactTabManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTabManager.h; sourceTree = "<group>"; };
-		457B8B341F0E311B005851E5 /* ReactTabManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTabManager.m; sourceTree = "<group>"; };
+		457B8B331F0E311B005851E5 /* ReactEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactEventManager.h; sourceTree = "<group>"; };
+		457B8B341F0E311B005851E5 /* ReactEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactEventManager.m; sourceTree = "<group>"; };
 		457B8B351F0E311B005851E5 /* ReactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactViewController.h; sourceTree = "<group>"; };
 		457B8B361F0E311B005851E5 /* ReactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactViewController.m; sourceTree = "<group>"; };
 		457B8B371F0E311B005851E5 /* TKPReactAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactAnalytics.h; sourceTree = "<group>"; };
@@ -4942,8 +4955,7 @@
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppHub.xcodeproj; path = ../node_modules/apphub/AppHub/AppHub.xcodeproj; sourceTree = "<group>"; };
-		7A25802A1EB32F700090C4F6 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		7A3FD3121F2843A100ADF80D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		7A465F421EB2FEA900A72105 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7A465F451EB2FEA900A72105 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		7A465F461EB2FEA900A72105 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
@@ -5066,8 +5078,11 @@
 		7A466B191EB2FEAD00A72105 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7A466B751EB2FEAE00A72105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7A6CB12B1F1DF75F006FA253 /* OfficialStoreBrandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OfficialStoreBrandsViewController.h; path = OfficialStore/OfficialStoreBrandsViewController.h; sourceTree = "<group>"; };
+		7A6CB12C1F1DF75F006FA253 /* OfficialStoreBrandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OfficialStoreBrandsViewController.m; path = OfficialStore/OfficialStoreBrandsViewController.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7A88EF8D1F15DA4800C443C3 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		7A942E3C1E97A33300C76BD1 /* React.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = React.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Tokopedia-ckrgtecvlsrpdfasvfnpyqlhcyvc/Build/Products/Debug-iphonesimulator/React/React.framework"; sourceTree = "<group>"; };
 		7AA497EF1E9B35100099D9CE /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		7AA4980B1E9B35600099D9CE /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -5082,6 +5097,21 @@
 		7AA498541E9B36320099D9CE /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		7AA4985A1E9B363B0099D9CE /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		7AB27CBB1EAEFB1E00DEA67A /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		7AC8370A1F161DA9001AF8CC /* ReactTPRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTPRoutes.h; sourceTree = "<group>"; };
+		7AC8370B1F161DA9001AF8CC /* ReactTPRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTPRoutes.m; sourceTree = "<group>"; };
+		7AC8370E1F1633B3001AF8CC /* ReactUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactUserManager.h; sourceTree = "<group>"; };
+		7AC8370F1F1633B3001AF8CC /* ReactUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactUserManager.m; sourceTree = "<group>"; };
+		7AC837551F1712A4001AF8CC /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
+		7AC837561F1712A4001AF8CC /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
+		7AC837571F1712A4001AF8CC /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		7AC837581F1712A4001AF8CC /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Foundation.ttf; sourceTree = "<group>"; };
+		7AC837591F1712A4001AF8CC /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		7AC8375A1F1712A4001AF8CC /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		7AC8375B1F1712A4001AF8CC /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		7AC8375C1F1712A4001AF8CC /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
+		7AC8375D1F1712A4001AF8CC /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
+		7AC8375E1F1712A4001AF8CC /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -5164,7 +5194,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				928FAE311EAF425D00E33DE6 /* libAppHub.a in Frameworks */,
+				7A88EFA31F15DB1A00C443C3 /* libRNVectorIcons.a in Frameworks */,
+				7AC850901F0DE72E0061B19C /* libCodePush.a in Frameworks */,
 				7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				928FAE331EAF426C00E33DE6 /* libRCTAdSupport.a in Frameworks */,
@@ -5221,7 +5252,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6270659D1D7EB8F300BDE9F8 /* Localytics.framework in Frameworks */,
 				627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */,
 				627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */,
 				FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -7450,14 +7480,18 @@
 				457B8B301F0E311B005851E5 /* HybridNavigationManager.m */,
 				457B8B311F0E311B005851E5 /* ReactNetworkManager.h */,
 				457B8B321F0E311B005851E5 /* ReactNetworkManager.m */,
-				457B8B331F0E311B005851E5 /* ReactTabManager.h */,
-				457B8B341F0E311B005851E5 /* ReactTabManager.m */,
+				457B8B331F0E311B005851E5 /* ReactEventManager.h */,
+				457B8B341F0E311B005851E5 /* ReactEventManager.m */,
 				457B8B351F0E311B005851E5 /* ReactViewController.h */,
 				457B8B361F0E311B005851E5 /* ReactViewController.m */,
 				457B8B371F0E311B005851E5 /* TKPReactAnalytics.h */,
 				457B8B381F0E311B005851E5 /* TKPReactAnalytics.m */,
 				457B8B391F0E311B005851E5 /* TKPReactURLManager.h */,
 				457B8B3A1F0E311B005851E5 /* TKPReactURLManager.m */,
+				7AC8370A1F161DA9001AF8CC /* ReactTPRoutes.h */,
+				7AC8370B1F161DA9001AF8CC /* ReactTPRoutes.m */,
+				7AC8370E1F1633B3001AF8CC /* ReactUserManager.h */,
+				7AC8370F1F1633B3001AF8CC /* ReactUserManager.m */,
 			);
 			path = React;
 			sourceTree = "<group>";
@@ -7465,6 +7499,7 @@
 		457B8B3B1F0E311B005851E5 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7A6CB1271F1DF69B006FA253 /* OfficialStore */,
 				457B8B3C1F0E311B005851E5 /* Activation */,
 				457B8B651F0E311B005851E5 /* Address */,
 				457B8B701F0E311B005851E5 /* Alert */,
@@ -10063,6 +10098,7 @@
 		457B91B11F0E311D005851E5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7AC837541F1712A4001AF8CC /* Fonts */,
 				457B91B21F0E311D005851E5 /* CacheController */,
 				457B91B91F0E311D005851E5 /* Category */,
 				457B91EC1F0E311D005851E5 /* Encryption */,
@@ -10277,15 +10313,6 @@
 				457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		7A0C42FC1EA5FAD700E1E977 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7A0C43031EA5FADA00E1E977 /* libAppHub.a */,
-				7A0C43051EA5FADA00E1E977 /* AppHub.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		7A465F431EB2FEA900A72105 /* ThirdPartyLibs */ = {
@@ -10597,15 +10624,32 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		7A6CB1271F1DF69B006FA253 /* OfficialStore */ = {
+			isa = PBXGroup;
+			children = (
+				7A6CB12B1F1DF75F006FA253 /* OfficialStoreBrandsViewController.h */,
+				7A6CB12C1F1DF75F006FA253 /* OfficialStoreBrandsViewController.m */,
+			);
+			name = OfficialStore;
+			sourceTree = "<group>";
+		};
+		7A88EF8E1F15DA4800C443C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7A88EFA21F15DB1A00C443C3 /* libRNVectorIcons.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				7A3FD3121F2843A100ADF80D /* main.jsbundle */,
 				457B86391F0E3118005851E5 /* Classses */,
 				457B91B11F0E311D005851E5 /* Common */,
 				457B920B1F0E311D005851E5 /* Helper */,
 				457B92291F0E311D005851E5 /* Networking */,
 				6202EF1B1EE4F07200AE68B5 /* API.swift */,
-				7A25802A1EB32F700090C4F6 /* main.jsbundle */,
 				7A465F421EB2FEA900A72105 /* main.m */,
 				7A465F431EB2FEA900A72105 /* ThirdPartyLibs */,
 				7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */,
@@ -10629,8 +10673,9 @@
 		7AA4913F1E9B34CA0099D9CE /* ReactLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				7A88EF8D1F15DA4800C443C3 /* RNVectorIcons.xcodeproj */,
+				7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */,
 				7AB27CBB1EAEFB1E00DEA67A /* RNDeviceInfo.xcodeproj */,
-				7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */,
 				7AA4985A1E9B363B0099D9CE /* RCTWebSocket.xcodeproj */,
 				7AA498541E9B36320099D9CE /* RCTVibration.xcodeproj */,
 				7AA4984B1E9B36270099D9CE /* RCTText.xcodeproj */,
@@ -10762,6 +10807,31 @@
 			isa = PBXGroup;
 			children = (
 				7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7AC837541F1712A4001AF8CC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7AC837551F1712A4001AF8CC /* Entypo.ttf */,
+				7AC837561F1712A4001AF8CC /* EvilIcons.ttf */,
+				7AC837571F1712A4001AF8CC /* FontAwesome.ttf */,
+				7AC837581F1712A4001AF8CC /* Foundation.ttf */,
+				7AC837591F1712A4001AF8CC /* Ionicons.ttf */,
+				7AC8375A1F1712A4001AF8CC /* MaterialCommunityIcons.ttf */,
+				7AC8375B1F1712A4001AF8CC /* MaterialIcons.ttf */,
+				7AC8375C1F1712A4001AF8CC /* Octicons.ttf */,
+				7AC8375D1F1712A4001AF8CC /* SimpleLineIcons.ttf */,
+				7AC8375E1F1712A4001AF8CC /* Zocial.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		7AC850681F0DE60E0061B19C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7AC8508F1F0DE72D0061B19C /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -10948,7 +11018,7 @@
 				9852790493753292549B327E /* [CP] Check Pods Manifest.lock */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
-				7AB27C6E1EAA00F500DEA67A /* Bundle React Native */,
+				7A3FD30E1F283FC200ADF80D /* Bundling React Native Script */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
@@ -11052,8 +11122,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 7A0C42FC1EA5FAD700E1E977 /* Products */;
-					ProjectRef = 7A0C42FB1EA5FAD600E1E977 /* AppHub.xcodeproj */;
+					ProductGroup = 7AC850681F0DE60E0061B19C /* Products */;
+					ProjectRef = 7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */;
 				},
 				{
 					ProductGroup = 7AA4980C1E9B35600099D9CE /* Products */;
@@ -11111,6 +11181,10 @@
 					ProductGroup = 7AB27C991EAEFA2800DEA67A /* Products */;
 					ProjectRef = 43813BF315E24DEFAE03F2C5 /* RNDeviceInfo.xcodeproj */;
 				},
+				{
+					ProductGroup = 7A88EF8E1F15DA4800C443C3 /* Products */;
+					ProjectRef = 7A88EF8D1F15DA4800C443C3 /* RNVectorIcons.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -11122,18 +11196,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		7A0C43031EA5FADA00E1E977 /* libAppHub.a */ = {
+		7A88EFA21F15DB1A00C443C3 /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libAppHub.a;
-			remoteRef = 7A0C43021EA5FADA00E1E977 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7A0C43051EA5FADA00E1E977 /* AppHub.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = AppHub.xctest;
-			remoteRef = 7A0C43041EA5FADA00E1E977 /* PBXContainerItemProxy */;
+			path = libRNVectorIcons.a;
+			remoteRef = 7A88EFA11F15DB1A00C443C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7AA497FB1E9B35110099D9CE /* libReact.a */ = {
@@ -11325,6 +11392,13 @@
 			remoteRef = 7AB27CB91EAEFA2800DEA67A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		7AC8508F1F0DE72D0061B19C /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 7AC8508E1F0DE72D0061B19C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9295B2371EAF4132000F705C /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -11374,9 +11448,9 @@
 				457B966B1F0E3120005851E5 /* DetailProductDescriptionCell.xib in Resources */,
 				457B95451F0E311F005851E5 /* CategoryPageViewController.xib in Resources */,
 				457B98A91F0E3124005851E5 /* ProductCell.xib in Resources */,
-				7A25802B1EB32F710090C4F6 /* main.jsbundle in Resources */,
 				457B967B1F0E3121005851E5 /* DetailProductWholesaleCell.xib in Resources */,
 				457B96E91F0E3121005851E5 /* PulsaOperatorCell.xib in Resources */,
+				7AC837671F1712A4001AF8CC /* SimpleLineIcons.ttf in Resources */,
 				7A466BAF1EB2FEAE00A72105 /* icon_wishlist@3x.png in Resources */,
 				457B975D1F0E3122005851E5 /* OrderProductView.xib in Resources */,
 				457B965A1F0E3120005851E5 /* ShipmentLocationViewCell.xib in Resources */,
@@ -11421,6 +11495,7 @@
 				457B96841F0E3121005851E5 /* ProductTalkDetailViewController.xib in Resources */,
 				7A466BB11EB2FEAE00A72105 /* icon_wishlist_active@2x.png in Resources */,
 				457B95FE1F0E3120005851E5 /* InboxResolSplitViewController.xib in Resources */,
+				7AC837621F1712A4001AF8CC /* Foundation.ttf in Resources */,
 				457B96CC1F0E3121005851E5 /* ReviewSummaryViewController.xib in Resources */,
 				457B97B61F0E3122005851E5 /* SettingBankEditViewController.xib in Resources */,
 				457B94E01F0E311F005851E5 /* AlertListView.xib in Resources */,
@@ -11434,6 +11509,7 @@
 				457B97B41F0E3122005851E5 /* SettingBankDetailViewController.xib in Resources */,
 				7A4672031EB2FEB400A72105 /* GTM-NCTWRP in Resources */,
 				457B97D81F0E3122005851E5 /* ShopTagDescriptionViewCell.xib in Resources */,
+				7AC8375F1F1712A4001AF8CC /* Entypo.ttf in Resources */,
 				457B95501F0E311F005851E5 /* TKPDTabInboxMessageNavigationController.xib in Resources */,
 				7A466B961EB2FEAE00A72105 /* icon_snap.png in Resources */,
 				457B97F41F0E3123005851E5 /* ShopInfoAddressCell.xib in Resources */,
@@ -11498,6 +11574,7 @@
 				457B97F21F0E3123005851E5 /* DetailStatisticViewController.xib in Resources */,
 				457B94E81F0E311F005851E5 /* AlertPickerView.xib in Resources */,
 				7A466BAE1EB2FEAE00A72105 /* icon_wishlist@2x.png in Resources */,
+				7AC837601F1712A4001AF8CC /* EvilIcons.ttf in Resources */,
 				457B964B1F0E3120005851E5 /* CourierAvailabilityViewCell.xib in Resources */,
 				457B97821F0E3122005851E5 /* ShipmentStatusCell.xib in Resources */,
 				457B96171F0E3120005851E5 /* InboxTicketReplyViewController.xib in Resources */,
@@ -11509,6 +11586,7 @@
 				457B98101F0E3123005851E5 /* ShopReviewPageViewController.xib in Resources */,
 				457B95DA1F0E3120005851E5 /* HotlistResultViewController.xib in Resources */,
 				457B956E1F0E311F005851E5 /* DepositListBankCell.xib in Resources */,
+				7AC837641F1712A4001AF8CC /* MaterialCommunityIcons.ttf in Resources */,
 				457B97EA1F0E3123005851E5 /* ShopFavoritedCell.xib in Resources */,
 				7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */,
 				457B96BF1F0E3121005851E5 /* ProductDetailReputationViewController.xib in Resources */,
@@ -11558,6 +11636,7 @@
 				457B955B1F0E311F005851E5 /* LoadingView.xib in Resources */,
 				7A466B9A1EB2FEAE00A72105 /* notifikasi.png in Resources */,
 				457B97571F0E3122005851E5 /* OrderDetailReceiverView.xib in Resources */,
+				7AC837631F1712A4001AF8CC /* Ionicons.ttf in Resources */,
 				7A466BC01EB2FEAE00A72105 /* Main.storyboard in Resources */,
 				7A466BA41EB2FEAE00A72105 /* icon_login@2x.png in Resources */,
 				457B97D11F0E3122005851E5 /* OpenShopNameViewCell.xib in Resources */,
@@ -11668,6 +11747,7 @@
 				457B979E1F0E3122005851E5 /* SearchResultShopViewController.xib in Resources */,
 				457B95231F0E311F005851E5 /* CatalogSellerCell.xib in Resources */,
 				457B95541F0E311F005851E5 /* TKPDTabNavigationController.xib in Resources */,
+				7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */,
 				457B95941F0E311F005851E5 /* GeneralTalkCommentCell.xib in Resources */,
 				457B96021F0E3120005851E5 /* InboxResolutionCenterOpenViewController.xib in Resources */,
 				457B967D1F0E3121005851E5 /* DetailProductWholesaleTableCell.xib in Resources */,
@@ -11681,6 +11761,8 @@
 				457B95F81F0E3120005851E5 /* EditSolutionSellerViewController.xib in Resources */,
 				457B96681F0E3120005851E5 /* PriceAlertCell.xib in Resources */,
 				7A466BAA1EB2FEAE00A72105 /* icon_more_active.png in Resources */,
+				7AC837611F1712A4001AF8CC /* FontAwesome.ttf in Resources */,
+				7AC837651F1712A4001AF8CC /* MaterialIcons.ttf in Resources */,
 				457B981F1F0E3123005851E5 /* FilterLocationViewController.xib in Resources */,
 				7A466BB71EB2FEAE00A72105 /* LICENSE in Resources */,
 				457B94D01F0E311F005851E5 /* AlertCameraView.xib in Resources */,
@@ -11735,6 +11817,7 @@
 				457B961A1F0E3120005851E5 /* InboxTicketSplitViewController.xib in Resources */,
 				457B96CE1F0E3121005851E5 /* SegmentedReviewReputationViewController.xib in Resources */,
 				457B97841F0E3122005851E5 /* ShipmentStatusViewController.xib in Resources */,
+				7AC837661F1712A4001AF8CC /* Octicons.ttf in Resources */,
 				457B96C11F0E3121005851E5 /* ProductReputationCell.xib in Resources */,
 				457B96541F0E3120005851E5 /* CourierProductViewCell.xib in Resources */,
 				457B97611F0E3122005851E5 /* PickupAddressView.xib in Resources */,
@@ -11749,6 +11832,7 @@
 				7A466BBD1EB2FEAE00A72105 /* vt-iOSlib-1.0.1.tar.gz in Resources */,
 				457B97DE1F0E3122005851E5 /* CloseShopViewController.xib in Resources */,
 				457B97771F0E3122005851E5 /* SubmitShipmentConfirmationViewController.xib in Resources */,
+				7AC837681F1712A4001AF8CC /* Zocial.ttf in Resources */,
 				457B959C1F0E3120005851E5 /* ResizeableImageCell.xib in Resources */,
 				457B97C01F0E3122005851E5 /* SettingPrivacyViewController.xib in Resources */,
 				457B972C1F0E3121005851E5 /* OrderRejectExplanationViewController.xib in Resources */,
@@ -11816,14 +11900,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7AB27C6E1EAA00F500DEA67A /* Bundle React Native */ = {
+		7A3FD30E1F283FC200ADF80D /* Bundling React Native Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Bundle React Native";
+			name = "Bundling React Native Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12331,7 +12415,7 @@
 				457B94E71F0E311F005851E5 /* AlertPickerView.m in Sources */,
 				457B934C1F0E311E005851E5 /* TotalLikeDislike.m in Sources */,
 				457B98231F0E3123005851E5 /* ChangeMessageUrlTagHandler.m in Sources */,
-				457B94AB1F0E311F005851E5 /* ReactTabManager.m in Sources */,
+				457B94AB1F0E311F005851E5 /* ReactEventManager.m in Sources */,
 				457B97F91F0E3123005851E5 /* ShopInfoShipmentCell.m in Sources */,
 				457B94201F0E311E005851E5 /* Gojek.m in Sources */,
 				457B970D1F0E3121005851E5 /* ResolutionCenterCreateSolutionList.m in Sources */,
@@ -12411,6 +12495,7 @@
 				457B95F71F0E3120005851E5 /* EditSolutionSellerViewController.swift in Sources */,
 				457B931D1F0E311E005851E5 /* ResolutionBy.m in Sources */,
 				457B98571F0E3123005851E5 /* NoLoginView.swift in Sources */,
+				7A6CB12D1F1DF75F006FA253 /* OfficialStoreBrandsViewController.m in Sources */,
 				457B95FA1F0E3120005851E5 /* ReplayConversationPostData.swift in Sources */,
 				457B932C1F0E311E005851E5 /* ResolutionOrder.m in Sources */,
 				457B96BC1F0E3121005851E5 /* ProductDetailReputationCell.m in Sources */,
@@ -12460,6 +12545,7 @@
 				457B98F51F0E3124005851E5 /* GoldMerchantTarget.swift in Sources */,
 				457B936C1F0E311E005851E5 /* Paging.swift in Sources */,
 				457B98151F0E3123005851E5 /* SmileyAndMedal.m in Sources */,
+				7AC837101F1633B3001AF8CC /* ReactUserManager.m in Sources */,
 				457B92601F0E311D005851E5 /* FeedComponentView.swift in Sources */,
 				457B93E41F0E311E005851E5 /* SendMessageResult.m in Sources */,
 				457B97061F0E3121005851E5 /* ResolutionCenterCreateList.m in Sources */,
@@ -13007,6 +13093,7 @@
 				457B949D1F0E311F005851E5 /* WishListObjectResult.m in Sources */,
 				457B96B41F0E3121005851E5 /* MyReviewDetailDataManager.mm in Sources */,
 				457B96421F0E3120005851E5 /* MyShopNoteDetailViewController.m in Sources */,
+				7AC8370C1F161DA9001AF8CC /* ReactTPRoutes.m in Sources */,
 				457B95641F0E311F005851E5 /* StarsRateView.m in Sources */,
 				457B98601F0E3123005851E5 /* TransactionCartHeaderView.m in Sources */,
 				457B92DA1F0E311D005851E5 /* TalkList.m in Sources */,
@@ -13554,6 +13641,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODEPUSH_KEY = "z6TUWzXBqXFHk-cxMFh8SOjGiXTc541ce7e1-ab64-41f9-845c-cde8b0ac2964";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -13609,6 +13697,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODEPUSH_KEY = "ZSvkwYIcHs4uXYNdxM99fYYlMaoX541ce7e1-ab64-41f9-845c-cde8b0ac2964 ";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

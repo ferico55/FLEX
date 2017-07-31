@@ -9,6 +9,28 @@
 import MoyaUnbox
 import Moya
 
+class MojitoProvider: NetworkProvider<MojitoTarget> {
+    init() {
+        super.init(endpointClosure: MojitoProvider.endpointClosure)
+    }
+    
+    fileprivate class func endpointClosure(for target: MojitoTarget) -> Endpoint<MojitoTarget> {
+        guard let userId = UserAuthentificationManager().getUserId() else {
+            return NetworkProvider.defaultEndpointCreator(for: target)
+        }
+        
+        let headers = target.method == .get ? [:] : [
+            "X-User-ID": userId,
+        ]
+        
+        return NetworkProvider.defaultEndpointCreator(for: target)
+            .adding(
+                httpHeaderFields: headers
+        )
+        
+    }
+}
+
 enum MojitoTarget{
     case getProductWishStatus(productIds: [String])
     case setWishlist(withProductId: String)

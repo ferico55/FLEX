@@ -10,6 +10,7 @@ import {
   NavigationActions,
   addNavigationHelpers,
 } from 'react-navigation';
+import CodePush from "react-native-code-push";
 
 const {
   HybridNavigationManager,
@@ -95,6 +96,15 @@ const HybridContainer = (ReactScreens) => {
         <Component navigation={navigation} />
       );
     }
+
+    componentDidMount() {
+      try {
+        CodePush.sync();
+      } catch (error) {
+        CodePush.log(error);
+      }
+    }
+
     componentWillUpdate(props, state) {
       const { name, rootTag } = props;
       const ScreenView = ReactScreens[name];

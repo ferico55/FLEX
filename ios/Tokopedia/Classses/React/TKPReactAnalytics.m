@@ -31,14 +31,6 @@ RCT_EXPORT_MODULE();
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(localyticsEvent:(NSString*)event) {
-    [AnalyticsManager localyticsEvent:event];
-}
-
-RCT_EXPORT_METHOD(localyticsEvent:(NSString*)event attributes:(NSDictionary*)attributes) {
-    [AnalyticsManager localyticsEvent:event attributes:attributes];
-}
-
 RCT_EXPORT_METHOD(trackScreenName:(NSString*)name) {
     [AnalyticsManager trackScreenName:name];
 }

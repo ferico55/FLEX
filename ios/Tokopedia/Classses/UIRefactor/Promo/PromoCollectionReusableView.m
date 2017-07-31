@@ -57,6 +57,8 @@ UICollectionViewDelegate
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     _infoButton.userInteractionEnabled = YES;
     [_infoButton addGestureRecognizer:tap];
+    
+    _headerViewHeightConstraint.constant = 0;
 }
 
 - (void)setCollectionViewCellType:(PromoCollectionViewCellType)collectionViewCellType {
@@ -70,9 +72,6 @@ UICollectionViewDelegate
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
         
-        CGRect frame = self.frame;
-        frame.size.height = [self viewHeight];
-        self.frame = frame;
     }
     
     else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
@@ -86,9 +85,6 @@ UICollectionViewDelegate
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
         
-        CGRect frame = self.frame;
-        frame.size.height = [self viewHeight];
-        self.frame = frame;
     }
     
     [_collectionView reloadData];

@@ -29,7 +29,6 @@
 #import "ReactViewController.h"
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
-#import <AppHub/AppHub.h>
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 
@@ -107,7 +106,6 @@
     notificationCenter.delegate = self;
 
     [TPRoutes configureRoutes];
-    [AppHub setApplicationID:@"lpyi0FLrC4LNGTm6R7UJ"];
     
     [self startAppsee];
     [self hideTitleBackButton];
@@ -130,7 +128,6 @@
 
         // Configure Third Party Apps
         [self configureGTMInApplication:application withOptions:launchOptions];
-        [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
@@ -227,17 +224,21 @@
     }
 }
 
+
+
 - (void)configureAppIndexing {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
 //        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
 }
 
+
 - (void)configureMoEngageInApplication:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions {
-    [[MoEngage sharedInstance] initializeDevWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0"
-        inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:NO];
 #ifdef DEBUG
+    [[MoEngage sharedInstance] initializeDevWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:NO];
     [MoEngage debug:LOG_ALL];
+#else
+    [[MoEngage sharedInstance] initializeProdWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:NO];
 #endif
 }
 
@@ -280,19 +281,6 @@
                                    openType:kTAGOpenTypePreferFresh
                                     timeout:nil
                                    notifier:self];
-}
-
-- (BOOL)shouldShowLocalyticsTab {
-    return FBTweakValue(@"Others", @"Localytics", @"Show Localytics Tab", NO);
-}
-
-- (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
-    [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
-                launchOptions:launchOptions];
-#ifdef DEBUG
-    [Localytics setTestModeEnabled:[self shouldShowLocalyticsTab]];
-    [Localytics tagEvent:@"Developer Options"];
-#endif
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -392,8 +380,6 @@
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
-        return YES;
-    } else if ([Localytics handleTestModeURL:url]) {
         return YES;
     } else if([TPRoutes routeURL: url]) {
         return YES;

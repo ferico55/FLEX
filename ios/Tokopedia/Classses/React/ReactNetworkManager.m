@@ -20,6 +20,7 @@ RCT_EXPORT_METHOD(request:(NSDictionary *)methodParams resolver:(RCTPromiseResol
                                         path:methodParams[@"path"]
                                       method:methodParams[@"method"]
                                       params:methodParams[@"params"]
+                                     headers:methodParams[@"headers"]
                                    onSuccess:resolve
                                      onError:^(NSError *error) {
                                          reject(@(error.code).stringValue, error.localizedDescription, error);

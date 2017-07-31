@@ -49,7 +49,6 @@ def common_pods
     pod 'JSQMessagesViewController', :git => 'https://github.com/ferico55/JSQMessagesViewController', :branch => 'master'
     pod 'MXSegmentedPager', '~> 3.2.0'    
     pod 'MMNumberKeyboard'
-    pod 'Localytics'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
@@ -80,7 +79,6 @@ def common_pods
     pod 'lottie-ios'
     pod 'Apollo'
     pod 'CFAlertViewController', '~> 2.3.1'
-    pod 'CFAlertViewController'
 
     #will be changed to proper version later
     pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'

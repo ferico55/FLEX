@@ -49,8 +49,6 @@
     
     self.title = @"Penjualan";
     
-    [Localytics triggerInAppMessage:@"Penjualan Screen"];
-    
     tableView = [UITableView new];
     tableView.delegate = self;
     tableView.dataSource = self;

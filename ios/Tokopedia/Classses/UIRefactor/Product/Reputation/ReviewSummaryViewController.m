@@ -313,7 +313,6 @@
                                                                    token:_token
                                                                     host:_generatedHost.upload_host
                                                                onSuccess:^(SubmitReviewResult *result) {
-                                                                   [AnalyticsManager localyticsTrackGiveReview:YES accuracy:_accuracyRate quality:_qualityRate];
                                                                    [AnalyticsManager trackSuccessSubmitReview:1];
                                                                    NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
                                                                    
@@ -336,7 +335,6 @@
                                                                }
                                                                onFailure:^(NSError *error) {
                                                                    [AnalyticsManager trackEventName:@"clickReview" category:GA_EVENT_CATEGORY_INBOX_REVIEW action:GA_EVENT_ACTION_ERROR label:@"Review"];
-                                                                   [AnalyticsManager localyticsTrackGiveReview:NO accuracy:_accuracyRate quality:_qualityRate];
                                                                    [AnalyticsManager trackSuccessSubmitReview:0];
                                                                    [weakSelf sendButtonIsLoading:NO];
                                                                }];

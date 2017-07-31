@@ -525,14 +525,12 @@
      __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [weakSelf refreshRequest];
-        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertSuccess show];
         alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     } failure:^(NSError *error, TxOrderStatusList* order) {
         
-        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
         
     }];
 }
@@ -541,14 +539,13 @@
     __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [weakSelf refreshRequest];
-        [AnalyticsManager localyticsTrackReceiveConfirmation:YES];
         UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertSuccess show];
         alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [AnalyticsManager localyticsTrackReceiveConfirmation:NO];
+        
     }];
 }
 

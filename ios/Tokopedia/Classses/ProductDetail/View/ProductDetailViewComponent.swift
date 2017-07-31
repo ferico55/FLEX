@@ -556,8 +556,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                       self.viewController.navigationController?.pushViewController(vc, animated: true)
                                   },
                                   didTapWishlist: { [unowned self] isWishlist in
-                                      AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
-                                      
+                                      if isWishlist {
+                                          AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
+                                      }
+    
                                       self.updateWishlist(isWishlist)
                                   },
                                   didTapProductEdit: { [unowned self] productDetail in
@@ -913,6 +915,8 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, true))
         
+        let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as! ReactEventManager
+        
         if isWishlist {
             if let category = productDetail.categories.first {
                 let attributes = ["subcategory_id" : productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
@@ -940,6 +944,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                        self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, false))
                                        _ = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
+                                        tabManager.didWishlistProduct(productDetail.id)
                                    },
                                    onFailure: { _ in
                                        self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist, false))
@@ -960,11 +965,14 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                        self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, false))
                                        _ = UIViewController.showNotificationWithMessage("Anda berhasil menghapus wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
+                                        tabManager.didRemoveWishlistProduct(productDetail.id)
                                    },
                                    onFailure: { _ in
                                        self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist, false))
             })
         }
+        
+        
     }
     
     func sendMessage() {

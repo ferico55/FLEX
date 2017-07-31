@@ -290,7 +290,6 @@ static NSString const *rows = @"12";
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
 }
 
 
@@ -659,12 +658,42 @@ static NSString const *rows = @"12";
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (indexPath.section == 0) {
+        
+        [_header removeFromSuperview];
+        [_iPadView removeFromSuperview];
+        
+        BOOL isNoPromo = YES;
+        if (_promo.count > indexPath.section) {
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if (currentPromo && currentPromo.count > 0) {
+                isNoPromo = NO;
+                [_header removeFromSuperview];
+                [_iPadView removeFromSuperview];
+                
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                ((PromoCollectionReusableView *)reusableView).headerViewHeightConstraint.constant = 0;
+                
+                if (indexPath.section == 0) {
+                    ((PromoCollectionReusableView *)reusableView).headerViewHeightConstraint.constant = _header.bounds.size.height;
+                    if(IS_IPAD) {
+                        [((PromoCollectionReusableView *)reusableView).headerView addSubview: _iPadView];
+                    } else {
+                        [((PromoCollectionReusableView *)reusableView).headerView addSubview: _header];
+                    }
+                }
+            }
+        }
+        
+        if (isNoPromo && indexPath.section == 0) {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                               withReuseIdentifier:CTagHeaderIdentifier
                                                                      forIndexPath:indexPath];
-            [_header removeFromSuperview];
-            
             CGRect frame = _noResultView.frame;
             frame.origin.y = reusableView.frame.size.height;
             _noResultView.frame = frame;
@@ -674,20 +703,6 @@ static NSString const *rows = @"12";
             } else {
                 [reusableView addSubview:_header];
             }
-
-        } else if (_promo.count > indexPath.section -1) {
-            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section-1];
-            if (currentPromo && currentPromo.count > 0) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-            }
-        } else {
-            reusableView = nil;
         }
     }
     else if(kind == UICollectionElementKindSectionFooter) {
@@ -708,35 +723,25 @@ static NSString const *rows = @"12";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
+    CGFloat headerHeight = 0.0;
     if (section == 0) {
         if(IS_IPAD) {
             _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _iPadView.frame.size.height);
         } else {
             _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
         }
-
-        size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
-    } else {
-        if (_promo.count > section-1) {
-            NSArray *currentPromo = [_promo objectAtIndex:section-1];
-            
-//            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-//                if(section % 2 == 1){
-//                    if (currentPromo && currentPromo.count > 0) {
-//                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-//                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
-//                    }
-//                }
-//            }else{
-                if (currentPromo && currentPromo.count > 0) {
-                    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                    size = CGSizeMake(self.view.frame.size.width, headerHeight);
-                }else{
-                    size = CGSizeZero;
-                }
-//            }
+        
+        headerHeight = _header.bounds.size.height;
+    }
+    
+    if (_promo.count > section) {
+        NSArray *currentPromo = [_promo objectAtIndex:section];
+        if (currentPromo && currentPromo.count > 0) {
+            headerHeight += [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
         }
     }
+    
+    size = CGSizeMake(self.view.frame.size.width, headerHeight);
     return size;
 }
 
@@ -790,15 +795,14 @@ static NSString const *rows = @"12";
         [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
             if (promoResult) {
                 [_promo addObject:promoResult];
+                [_collectionView reloadData];
+                [_collectionView layoutIfNeeded];
             }
         } onFailure:^(NSError * error) {
             
         }];
         
     }
-    
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate
@@ -962,7 +966,8 @@ static NSString const *rows = @"12";
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
     
-    if (![self isInitialRequest] && [_bannerResult.query.shop_id isEqualToString:@""]) [self requestPromo];
+//    if (![self isInitialRequest] && [_bannerResult.query.shop_id isEqualToString:@""])
+        [self requestPromo];
     
     [_collectionView reloadData];
     

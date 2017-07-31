@@ -1134,14 +1134,6 @@ ProductCellDelegate
             [_delegate updateCategories:searchResult.data.breadcrumb];
         }
     }
-
-    if (_start == 0) {
-        if (searchResult.data.products.count > 0) {
-            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
-        } else {
-            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
-        }
-    }
     
     NSString *redirect_url = searchResult.data.redirectUrl;
     _rootCategoryID = ([_rootCategoryID integerValue] == 0)?searchResult.data.departmentId:_rootCategoryID;
@@ -1259,16 +1251,10 @@ ProductCellDelegate
             categoryResultVC.hidesBottomBarWhenPushed = YES;
             
             [self.navigationController replaceTopViewControllerWithViewController:categoryResultVC];
-            
-            [Localytics triggerInAppMessage:@"Category Result Screen"];
         }
         
         else if ([query[1] isEqualToString:@"catalog"]) {
             [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
-        }
-        
-        else {
-            [Localytics triggerInAppMessage:@"Search Result Screen"];
         }
     }
 }
@@ -1295,9 +1281,7 @@ ProductCellDelegate
     self.navigationController.viewControllers = viewControllers;
 }
 
-- (void)redirectToHotlistResult{
-    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
-    
+- (void)redirectToHotlistResult{    
     NSURL *url = [NSURL URLWithString:_searchObject.data.redirectUrl];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     

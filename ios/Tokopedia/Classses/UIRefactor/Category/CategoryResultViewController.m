@@ -1108,14 +1108,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
     }
     
-    if (_start == 0) {
-        if (searchResult.data.products.count > 0) {
-            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
-        } else {
-            [AnalyticsManager localyticsEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
-        }
-    }
-    
     NSString *redirect_url = searchResult.data.redirectUrl;
     if(searchResult.data.departmentId && searchResult.data.departmentId != 0) {
         _rootCategoryID = ([_rootCategoryID integerValue] == 0)? searchResult.data.departmentId:_rootCategoryID;
@@ -1226,16 +1218,10 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [_networkManager requestCancel];
             
             [self refreshView:nil];
-            
-            [Localytics triggerInAppMessage:@"Category Result Screen"];
         }
         
         else if ([query[1] isEqualToString:@"catalog"]) {
             [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
-        }
-        
-        else {
-            [Localytics triggerInAppMessage:@"Search Result Screen"];
         }
     }
 }
@@ -1263,8 +1249,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 - (void)redirectToHotlistResult{
-    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
-    
     NSURL *url = [NSURL URLWithString:_searchObject.data.redirectUrl];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     

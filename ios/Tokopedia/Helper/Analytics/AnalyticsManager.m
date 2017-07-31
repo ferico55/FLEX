@@ -45,92 +45,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     return self;
 }
 
-#pragma mark - Localytics trackers
-
-+ (void)localyticsEvent:(NSString *)event {
-    [Localytics tagEvent:event?:@""];
-}
-
-+ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes {
-    [Localytics tagEvent:event?:@""
-              attributes:attributes];
-}
-
-+ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes customerValueIncrease:(NSNumber *)value {
-    [Localytics tagEvent:event?:@""
-              attributes:attributes
-   customerValueIncrease:value];
-}
-
-+ (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute {
-    [Localytics setValue:value forProfileAttribute:attribute];
-}
-
-+ (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope {
-    [Localytics setValue:value forProfileAttribute:attribute withScope:scope];
-}
-
-+ (void)localyticsSetCustomerID:(NSString *)userID {
-    [Localytics setCustomerId:userID?:@""];
-}
-
-+ (void)localyticsSetCustomerFullName:(NSString *)fullName {
-    [Localytics setCustomerFullName:fullName?:@""];
-}
-
-+ (void)localyticsIncrementValue:(NSInteger)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope {
-    [Localytics incrementValueBy:value forProfileAttribute:attribute withScope:scope];
-}
-
-+ (void)localyticsTrackCartView:(TransactionCartResult *)cart {
-    NSInteger itemsInCart = 0;
-    for (TransactionCartList *c in cart.list) {
-        for (ProductDetail *product in c.cart_products) {
-            itemsInCart = itemsInCart + [product.product_quantity integerValue];
-        }
-    }
-    
-    NSDictionary *attributes = @{
-                                 @"Items in Cart" : @(itemsInCart),
-                                 @"Value of Cart" : cart.grand_total_idr?:@""
-                                 };
-    
-    [self localyticsEvent:@"Cart Viewed" attributes:attributes];
-}
-
-+ (void)localyticsTrackRegistration:(NSString *)providerName success:(BOOL)success {
-    NSDictionary *attributes = @{
-                                 @"Success" : success? @"Yes" : @"No",
-                                 @"Previous Screen" : @"Login",
-                                 @"Method" : providerName?:@""
-                                 };
-    
-    [self localyticsEvent:@"Registration Summary" attributes:attributes];
-}
-
-+ (void)localyticsTrackLogin:(BOOL)success {
-    [self localyticsValue:success?@"Yes":@"No" profileAttribute:@"Is Login"];
-    [self localyticsEvent:@"Login" attributes:@{@"success" : success?@"Yes":@"No"}];
-}
-
-+ (void)localyticsTrackWithdraw:(BOOL)success {
-    [self localyticsEvent:@"Deposit Withdraw" attributes:@{@"Success" : success?@"Yes":@"No"}];
-}
-
-+ (void)localyticsTrackShipmentConfirmation:(BOOL)success {
-    [self localyticsEvent:@"Shipment Confirmation" attributes:@{@"Success" : success?@"Yes":@"No"}];
-}
-
-+ (void)localyticsTrackReceiveConfirmation:(BOOL)success {
-    [self localyticsEvent:@"Receive Confirmation" attributes:@{@"Success" : success?@"Yes":@"No"}];
-}
-
-+ (void)localyticsTrackGiveReview:(BOOL)success accuracy:(NSInteger)accuracy quality:(NSInteger)quality {
-    [self localyticsEvent:@"Give Review" attributes:@{@"Success" : success?@"Yes":@"No",
-                                                      @"Accuracy" : [@(accuracy) stringValue]?:@"",
-                                                      @"Quality" : [@(quality) stringValue]?:@""}];
-}
-
 #pragma mark - Google Analytics Trackers
 
 + (void)trackScreenName:(NSString *)name {
@@ -157,8 +71,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                               @"appsflyerID" : [[AppsFlyerTracker sharedTracker] getAppsFlyerUID]?:@"",
                               @"environment": @"iOS",
                               @"login" : [manager.userManager isLogin]?@"Logged In":@"Non Logged In"}];
-    
-    [Localytics tagScreen:name];
 }
 
 + (void)trackScreenName:(NSString *)name gridType:(NSInteger)gridType {
@@ -171,8 +83,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                            };
     
     [manager.dataLayer push:data];
-    
-    [Localytics tagScreen:name?:@""];
 }
 
 + (void)trackScreenName:(NSString *)name customDataLayer:(NSDictionary *)dataLayer {
@@ -187,8 +97,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [layer addEntriesFromDictionary:dataLayer];
     
     [manager.dataLayer push:layer];
-    
-    [Localytics tagScreen:name];
 }
 
 + (void)trackUserInformation {
@@ -196,9 +104,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     
     if ([manager.userManager isLogin]) {
         [manager.dataLayer push:@{@"user_id" : [manager.userManager getUserId]?:@""}];
-        
-        [self localyticsValue:[manager.userManager getUserId]?:@"" profileAttribute:@"user_id"];
-        [self localyticsValue:[manager.userManager getShopId]?:@"" profileAttribute:@"shop_id"];
     }
 }
 
@@ -279,21 +184,9 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     
     [manager.dataLayer push:data];
     
-    // Localytics Tracking
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.data.info.price?:product.data.info.product_price];
-    Breadcrumb *category = product.data.breadcrumb[product.data.breadcrumb.count - 1];
-    
-    NSDictionary *attributes = @{
-                                 @"Product ID" : product.data.info.product_id?:@"",
-                                 @"Category" : category.department_name?:@"",
-                                 @"Price" : price?:@(0),
-                                 @"Price Alert" : product.data.info.product_price_alert?:@"",
-                                 @"Wishlist" : product.data.info.product_already_wishlist?:@""
-                                 };
-    
-    [self localyticsEvent:@"Product Viewed" attributes:attributes];
-    
     // AppsFlyer Tracking
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.data.info.price?:product.data.info.product_price];
+    
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView
                                       withValues:@{
                                                    AFEventParamPrice : price?:@"",
@@ -335,9 +228,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
-    
-    [self localyticsEvent:@"Product Added to Cart" attributes:attributes];
-    [self localyticeValue:currentDate profileAttribute:profileAttribute scope:LLProfileScopeApplication];
 }
 
 + (void)trackRemoveProductFromCart:(id)product {
@@ -644,11 +534,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         [moEngage setUserAttribute:[userManager userIsGoldMerchant] forKey:@"is_gold_merchant"];
         
         [moEngage setUserDateOfBirth:[userManager convertStringToDateWithLocaleID:[userManager getDOB]]];
-//        [moEngage setUserAttribute:[userManager getCity] forKey:@"city"];
-//        [moEngage setUserAttribute:[userManager getProvince] forKey:@"province"];
         [moEngage setUserAttribute:[userManager getTotalItemSold] forKey:@"total_sold_item"];
-//        [moEngage setUserAttribute:[userManager getRegistrationDate] forKey:@"registration_date"];
-//        [moEngage setUserAttribute:[userManager getDateShopCreated] forKey:@"date_shop_created"];
         [moEngage setUserAttribute:[userManager getShopLocation] forKey:@"shop_location"];
         
         [moEngage syncNow];
@@ -664,14 +550,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 + (void)trackLogin:(Login *)login {
     // GA Tracking
     [self trackAuthenticatedWithLoginResult:login.result];
-    
-    // Localytics Tracking
-    [self localyticsTrackLogin:YES];
-    [self localyticsSetCustomerID:login.result.user_id];
-    [self localyticsSetCustomerFullName:login.result.full_name];
-    [self localyticsValue:login.result.user_id?:@"" profileAttribute:@"user_id"];
-    [self localyticsValue:login.result.email?:@"" profileAttribute:@"user_email"];
-    [self localyticsValue:@"Yes" profileAttribute:@"Is Login"];
     
     // AppsFlyer Tracking
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];

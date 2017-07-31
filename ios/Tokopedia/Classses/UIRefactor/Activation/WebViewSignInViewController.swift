@@ -72,7 +72,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         if path == "/wv/activation-social" {
             URLSession.shared.reset() {}
             
-            let message = url.parameters()["message"] as! String
+            let message = (url.parameters()["message"] as! String).removingPercentEncoding!
             
             let alertView = UIAlertView.bk_alertView(withTitle: "Perhatian", message: message) as! UIAlertView
             alertView.bk_addButton(withTitle: "OK", handler: {[unowned self] in

@@ -415,7 +415,7 @@ typedef enum
         }
     }
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
-    _selectedShipmentPackage = _selectedShipment.products.firstObject;
+    _selectedShipmentPackage = _selectedShipment ? _selectedShipment.products.firstObject : nil;
     
     [self adjustErrorMessageView];
 }
@@ -444,7 +444,7 @@ typedef enum
         [self updateSelectedShipmentPriceFromShipments:shipments];
         return _selectedShipment;
     } else {
-        return shipments.firstObject;
+        return nil;
     }
 }
 

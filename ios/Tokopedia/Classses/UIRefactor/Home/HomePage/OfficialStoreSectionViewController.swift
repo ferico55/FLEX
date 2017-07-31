@@ -124,7 +124,7 @@ class OfficialStoreSectionViewController: UIViewController {
 
         let viewController = ShopViewController()
         viewController.data = [
-            "shop_id": shop.shopId,
+            "shop_id": shop.shopId
         ]
 
         navigationController?.pushViewController(viewController, animated: true)

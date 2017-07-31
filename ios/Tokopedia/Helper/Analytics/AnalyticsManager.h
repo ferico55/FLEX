@@ -15,7 +15,6 @@
 #import "LoginResult.h"
 #import "Login.h"
 #import "TransactionCartResult.h"
-#import <Localytics/LocalyticsTypes.h>
 #import "InboxTicketViewController.h"
 #import "string_product.h"
 #import "AddressFormList.h"
@@ -25,25 +24,6 @@
 #import <MoEngage_iOS_SDK/MOGeofenceHandler.h>
 
 @interface AnalyticsManager : NSObject
-
-// Localytics
-+ (void)localyticsEvent:(NSString *)event;
-+ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes;
-+ (void)localyticsEvent:(NSString *)event attributes:(NSDictionary *)attributes customerValueIncrease:(NSNumber *)value;
-+ (void)localyticsValue:(NSObject *)value profileAttribute:(NSString *)attribute;
-+ (void)localyticeValue:(NSObject *)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
-+ (void)localyticsSetCustomerID:(NSString *)userID;
-+ (void)localyticsSetCustomerFullName:(NSString *)fullName;
-+ (void)localyticsIncrementValue:(NSInteger)value profileAttribute:(NSString *)attribute scope:(LLProfileScope)scope;
-
-+ (void)localyticsTrackCartView:(TransactionCartResult *)cart;
-+ (void)localyticsTrackRegistration:(NSString *)providerName success:(BOOL)success;
-+ (void)localyticsTrackLogin:(BOOL)success;
-
-+ (void)localyticsTrackWithdraw:(BOOL)success;
-+ (void)localyticsTrackShipmentConfirmation:(BOOL)success;
-+ (void)localyticsTrackGiveReview:(BOOL)success accuracy:(NSInteger)accuracy quality:(NSInteger)quality;
-+ (void)localyticsTrackReceiveConfirmation:(BOOL)success;
 
 // Google Analytics (via GTM)
 + (void)trackScreenName:(NSString *)name;
