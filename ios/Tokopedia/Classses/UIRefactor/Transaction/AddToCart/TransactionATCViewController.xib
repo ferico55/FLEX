@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -374,10 +374,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="162.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan (Optional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qA-Um-DB1">
-                        <rect key="frame" x="15" y="12" width="170" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catatan untuk Penjual (Optional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qA-Um-DB1">
+                        <rect key="frame" x="15" y="12" width="289" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="170" id="NmE-jp-jDe"/>
+                            <constraint firstAttribute="width" constant="289" id="NmE-jp-jDe"/>
                             <constraint firstAttribute="height" constant="21" id="xDy-rB-ChY"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -414,7 +414,7 @@
                     <constraint firstItem="I21-g8-bwl" firstAttribute="leading" secondItem="DO3-T4-jKk" secondAttribute="leading" id="J37-6h-eXC"/>
                     <constraint firstItem="yu3-sb-cQ1" firstAttribute="trailing" secondItem="DO3-T4-jKk" secondAttribute="trailingMargin" id="kTq-OT-Hke"/>
                     <constraint firstItem="yu3-sb-cQ1" firstAttribute="leading" secondItem="DO3-T4-jKk" secondAttribute="leadingMargin" constant="2" id="r79-bl-mD2"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6qA-Um-DB1" secondAttribute="trailing" constant="135" id="twk-b1-vk3"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6qA-Um-DB1" secondAttribute="trailing" constant="16" id="twk-b1-vk3"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="886" y="-296.5"/>
