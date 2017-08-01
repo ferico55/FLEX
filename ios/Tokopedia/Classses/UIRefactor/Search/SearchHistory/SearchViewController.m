@@ -408,7 +408,14 @@ NSString *const RECENT_SEARCH = @"recent_search";
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
         [AnalyticsManager trackSearch:@"search" keyword:searchString];
-        [self goToResultPage:_searchBar.text withAutoComplete:NO];
+        NSString *lowercaseSearchString = [searchString lowercaseString];
+        if ([lowercaseSearchString isEqualToString:@"official store"]
+            || [lowercaseSearchString isEqualToString:@"officialstore"]
+            || [lowercaseSearchString isEqualToString:@"official-store"]) {
+                [TPRoutes routeURL:[NSURL URLWithString:@"tokopedia://official-store/mobile"]];
+        } else {
+            [self goToResultPage:_searchBar.text withAutoComplete:NO];
+        }
     }
     else {
         [_collectionView reloadData];
