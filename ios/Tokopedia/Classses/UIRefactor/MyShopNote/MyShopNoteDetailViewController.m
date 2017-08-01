@@ -45,11 +45,12 @@
     
     BOOL _isBeingPresented;
     BOOL _isNewNoteReturnableProduct;
+    
+    CGSize _keyboardSize;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
-@property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
 @property (strong, nonatomic) IBOutlet RichEditorView *noteTextEditor;
 @property (strong, nonatomic) RichEditorViewKeyboardManager *keyboardManager;
 
@@ -73,8 +74,11 @@
     
     CGRect frame = self.keyboardManager.toolbar.frame;
     frame.size.width = self.view.frame.size.width;
-    
     self.keyboardManager.toolbar.frame = frame;
+    
+    CGRect bkgndRect = _noteTextEditor.frame;
+    bkgndRect.size.height -= _keyboardSize.height + 44;
+    [_noteTextEditor setFrame:bkgndRect];
 }
 
 - (void)viewDidLoad
@@ -85,6 +89,7 @@
     self.keyboardManager.toolbar.editor = self.noteTextEditor;
     
     self.noteTextEditor.delegate = self;
+    self.noteTextEditor.clipsToBounds = YES;
     
     _auth = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
@@ -494,6 +499,11 @@
     }
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [_noteTextEditor focus];
+    return YES;
+}
+
 - (void)updateSaveTabbarTitle:(NSString *)title content:(NSString *)content
 {
     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -638,14 +648,8 @@
 #pragma mark - Keyboard notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    
-    UIEdgeInsets editorInset = _noteTextEditor.webView.scrollView.contentInset;
-    editorInset.bottom = keyboardFrameBeginRect.size.height + _keyboardManager.toolbar.frame.size.height;
-    
-    _noteTextEditor.webView.scrollView.contentInset = editorInset;
+    NSDictionary* info = [notification userInfo];
+    _keyboardSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 }
 
 #pragma mark - My shop note delegate

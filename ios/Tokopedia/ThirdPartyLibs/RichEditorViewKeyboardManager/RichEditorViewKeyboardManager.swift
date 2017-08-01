@@ -29,7 +29,7 @@ class RichEditorViewKeyboardManager: NSObject {
     init(view: UIView) {
         self.view = view
         toolbar = RichEditorToolbar(frame: CGRect(x: 0, y: view.bounds.height, width: view.bounds.width, height: 44))
-        toolbar.options = [RichEditorOptions.bold, RichEditorOptions.italic, RichEditorOptions.underline, RichEditorOptions.unorderedList, RichEditorOptions.orderedList]
+        toolbar.options = [RichEditorDefaultOption.bold, RichEditorDefaultOption.italic, RichEditorDefaultOption.underline, RichEditorDefaultOption.unorderedList, RichEditorDefaultOption.orderedList]
     }
 
     /**
