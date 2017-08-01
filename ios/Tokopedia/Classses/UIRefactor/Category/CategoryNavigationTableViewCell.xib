@@ -18,9 +18,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvW-Fk-Y4d">
-                        <rect key="frame" x="10" y="15" width="31" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvW-Fk-Y4d">
+                        <rect key="frame" x="10" y="13.5" width="271" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -44,6 +44,7 @@
                     <constraint firstItem="5p9-2I-QSC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="S7V-LV-HDz"/>
                     <constraint firstItem="VjC-rD-0cM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="dAv-0H-wiU"/>
                     <constraint firstAttribute="trailing" secondItem="5p9-2I-QSC" secondAttribute="trailing" constant="10" id="eGR-1V-SCT"/>
+                    <constraint firstItem="5p9-2I-QSC" firstAttribute="leading" secondItem="lvW-Fk-Y4d" secondAttribute="trailing" constant="15" id="lZq-pn-zDN"/>
                     <constraint firstItem="lvW-Fk-Y4d" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rcJ-sL-WVt"/>
                     <constraint firstItem="lvW-Fk-Y4d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="tKf-wZ-Noc"/>
                     <constraint firstAttribute="bottom" secondItem="VjC-rD-0cM" secondAttribute="bottom" id="y1P-8T-ktE"/>

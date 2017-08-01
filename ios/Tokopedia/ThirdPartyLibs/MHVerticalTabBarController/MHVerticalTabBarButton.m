@@ -78,13 +78,22 @@
 - (void)layoutSubviews {
 
     if (_isCategoryNavigation) {
-        _imageView.contentMode = UIViewContentModeCenter;
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
 
-        _titleLabel.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * 0.6);
-        _imageView.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * -0.2);
+        
+        _imageView.frame = CGRectMake(22, 10, 35, 35);
+        
+        CGRect titleLabelOffset = _imageView.frame;
+        titleLabelOffset.size.width = self.bounds.size.width;
+        titleLabelOffset.origin.x = 0;
+        _titleLabel.frame = CGRectOffset(titleLabelOffset, 0, _imageView.frame.size.height);
         
         _titleLabel.font = [UIFont microTheme];
         _titleLabel.textColor = [UIColor tpPrimaryBlackText];
+        _titleLabel.numberOfLines = 2;
+        _titleLabel.adjustsFontSizeToFitWidth = YES;
+        _titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        
     } else{
         if ([_titleLabel.attributedText length] > 0) {
             if (CGSizeEqualToSize(_titleOffset, CGSizeZero)) {

@@ -134,8 +134,10 @@ class RequestFilter: NSObject {
         let newCategory : ListOption = ListOption();
         newCategory.categoryId = category.categoryId;
         newCategory.name = "Semua \(category.name)"
-        let tree: Int = Int(category.tree)!
-        newCategory.tree = "\(tree+1)"
+        if let categoryTree = category.tree {
+            let tree: Int = Int(categoryTree)!
+            newCategory.tree = "\(tree+1)"
+        }
         newCategory.child = nil
         newCategory.isNewCategory = true
         newCategory.parent = category.categoryId

@@ -26,7 +26,7 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable {
     var iconImageUrl: String?
     var weight: String?
     var parent: String?
-    var tree: String = "1"
+    var tree: String? = "1"
     var has_catalog :String?
     var identifier :String?
     var url : String?
@@ -154,7 +154,7 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable {
         self.name = try unboxer.unbox(keyPath: "name")
         self.weight = try? unboxer.unbox(keyPath: "weight")
         self.parent = try? unboxer.unbox(keyPath: "parent")
-        self.tree = try unboxer.unbox(keyPath: "tree")
+        self.tree = try? unboxer.unbox(keyPath: "tree")
         self.has_catalog = try? unboxer.unbox(keyPath: "has_catalog")
         self.identifier = try? unboxer.unbox(keyPath: "identifier")
         self.url = try? unboxer.unbox(keyPath: "url")

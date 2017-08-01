@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderCustomer : NSObject <TKPObjectMapping>
+@interface OrderCustomer : NSObject
 
 @property (strong, nonatomic) NSString *customer_url;
 @property (strong, nonatomic) NSString *customer_id;
 @property (strong, nonatomic) NSString *customer_name;
 @property (strong, nonatomic) NSString *customer_image;
+
++ (RKObjectMapping *)mapping;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderDestination : NSObject <TKPObjectMapping>
+@interface OrderDestination : NSObject
 
 @property (strong, nonatomic, nonnull) NSString *receiver_name;
 @property (strong, nonatomic, nonnull) NSString *address_country;
@@ -18,5 +18,7 @@
 @property (strong, nonatomic, nonnull) NSString *address_street;
 @property (strong, nonatomic, nonnull) NSString *address_city;
 @property (strong, nonatomic, nonnull) NSString *address_province;
+
++(RKObjectMapping*)mapping;
 
 @end

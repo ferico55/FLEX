@@ -124,8 +124,10 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
                 (cell as! FilterTableViewCell).disableSelected = false
             }
             
-            let tree = Int(item.tree)!
-            (cell as! FilterTableViewCell).setPading(CGFloat(tree) * 20)
+            if let itemTree = item.tree {
+                let tree = Int(itemTree)!
+                (cell as! FilterTableViewCell).setPading(CGFloat(tree) * 20)
+            }
             
             (cell as! FilterTableViewCell).label.text = item.name
             

@@ -27,6 +27,9 @@ class CategoryNavigationTableViewCell: UITableViewCell {
                 self.hideArrowImage()
             }
         }
+        
+        let imageName = listOption.isExpanded ? "collapse_arrow" : "expand_arrow"
+        self.arrowImageView.setImage(UIImage(named: imageName), animated: false)
     }
     
     func setCategoryNameIndentation(level: Int) {

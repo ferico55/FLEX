@@ -512,7 +512,8 @@ class TPRoutes: NSObject {
         
         JLRoutes.global().addRoute("/category/:categoryId") { (params: [String : Any]) -> Bool in
             
-            let categoryName: String? = params["categoryName"] as! String
+            var categoryName: String = (params["categoryName"] as? String) ?? ""
+            categoryName =  categoryName.replacingOccurrences(of: "+", with: " ")
             
             navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: params["categoryId"] as! String, categoryName: categoryName, isIntermediary: true)
             

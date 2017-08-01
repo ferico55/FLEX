@@ -12,6 +12,7 @@ class FiltersTableViewController: UIViewController {
 
     fileprivate var tableView: UITableView = UITableView()
     fileprivate var filtersDatasource : FiltersListDataSource = FiltersListDataSource()
+    fileprivate var initialItems: [ListOption] = []
     fileprivate var items: [ListOption] = []
     fileprivate var showSearchBar: Bool = false
     var selectedObjects : [ListOption] = []

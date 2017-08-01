@@ -692,39 +692,12 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         case 12:
         {
+            CategoryNavigationViewController *categoryNavigationVC = [[CategoryNavigationViewController alloc] initWithCategoryId:_rootCategoryID];
             
-// temporary commented, because the navigation category project is postponed
-//            CategoryNavigationViewController *categoryNavigationVC = [CategoryNavigationViewController new];
-//            
-//            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:categoryNavigationVC];
-//            
-//            
-//            [self.navigationController presentViewController: navigationController animated: YES completion: nil];
-//            break;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:categoryNavigationVC];
             
-            NSString *title = @"";
-            if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
-                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
-            } else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY]) {
-                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY];
-            } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
-                title = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-            }else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]){
-                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENT_1];
-            }
             
-            title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
-            NSURL *url = [NSURL URLWithString: _searchObject.data.shareUrl?:@"www.tokopedia.com"];
-            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                              url:url
-                                                                                           anchor:button];
-            
-            [controller setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed,  NSArray *returnedItems, NSError *activityError) {
-                NSString *departmentIDString = [NSString stringWithFormat:@"%d", _searchObject.data.departmentId];
-                [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:GA_EVENT_ACTION_NAVIGATION_SHARE label:[NSString stringWithFormat:@"%@ - %@", [_data objectForKey:@"sc"] ?: departmentIDString, activityType]];
-            }];
-            
-            [self presentViewController:controller animated:YES completion:nil];
+            [self.navigationController presentViewController: navigationController animated: YES completion: nil];
             break;
         }
         case 13:

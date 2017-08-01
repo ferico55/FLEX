@@ -27,7 +27,7 @@ class HadesProvider: RxMoyaProvider<HadesTarget> {
 
 enum HadesTarget{
     case getCategoryIntermediary(forCategoryID:String)
-    case getNavigationCategory(categoryId: String)
+    case getNavigationCategory(categoryId: String, root: Bool) //if root true then API will give all the root category, this will going true if user hit API directly from category result controller
     case getFilterCategories(categoryId: String)
 }
 
@@ -40,7 +40,7 @@ extension HadesTarget : TargetType {
         switch self {
         case let .getCategoryIntermediary(categoryID):
             return "/v1/categories/\(categoryID)/detail"
-        case let .getNavigationCategory(categoryId):
+        case let .getNavigationCategory(categoryId, root):
             return "/v1/category_layout/\(categoryId)"
         case let .getFilterCategories(categoryID):
             var path : String = "/v1/categories"
@@ -68,8 +68,8 @@ extension HadesTarget : TargetType {
         switch self {
         case .getCategoryIntermediary :
             return [:]
-        case .getNavigationCategory :
-            return ["type" : "root"]
+        case let .getNavigationCategory(categoryId, root) :
+            return root ? ["type" : "root"] : [:]
         case .getFilterCategories :
             return ["filter":"type==tree"]
         }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderShipment : NSObject <TKPObjectMapping>
+@interface OrderShipment : NSObject
 
 @property (strong, nonatomic, nonnull) NSString *shipment_logo;
 @property (strong, nonatomic, nonnull) NSString *shipment_package_id;
@@ -17,5 +17,7 @@
 @property (strong, nonatomic, nonnull) NSString *shipment_name;
 
 @property (nonatomic) BOOL isIDrop;
+
++(RKObjectMapping*)mapping;
 
 @end

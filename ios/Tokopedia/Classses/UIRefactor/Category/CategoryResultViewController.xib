@@ -272,14 +272,14 @@
                                 <constraint firstAttribute="height" constant="22" id="4YF-dd-otu"/>
                                 <constraint firstAttribute="width" constant="22" id="9yd-cL-iKz"/>
                             </constraints>
-                            <state key="normal" image="icon_share">
+                            <state key="normal" image="icon-category-navigation">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="lHw-BZ-aH1"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdj-Wp-93a">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kategori" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdj-Wp-93a">
                             <rect key="frame" x="306.5" y="25" width="42" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="42" id="TUG-I0-zgU"/>
@@ -665,10 +665,10 @@
         </view>
     </objects>
     <resources>
+        <image name="icon-category-navigation" width="24" height="24"/>
         <image name="icon_filter.png" width="30" height="30"/>
         <image name="icon_grid_dua.png" width="30" height="30"/>
         <image name="icon_oval" width="7" height="7"/>
-        <image name="icon_share" width="16" height="16"/>
         <image name="icon_urutkan.png" width="30" height="30"/>
         <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>

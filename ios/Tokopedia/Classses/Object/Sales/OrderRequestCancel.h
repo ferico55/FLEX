@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderRequestCancel : NSObject <TKPObjectMapping>
+@interface OrderRequestCancel : NSObject
 
 @property (strong, nonatomic) NSString *cancel_request;
 @property (strong, nonatomic) NSString *reason_time;
 @property (strong, nonatomic) NSString *reason;
 
 @property (strong, nonatomic) NSAttributedString *reasonFormattedString;
+
++(RKObjectMapping*)mapping;
 
 @end

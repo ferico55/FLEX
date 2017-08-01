@@ -10,7 +10,7 @@
 
 #import "OrderRequestCancel.h"
 
-@interface OrderDetail : NSObject <TKPObjectMapping>
+@interface OrderDetail : NSObject
 
 @property (strong, nonatomic) NSString *detail_insurance_price;
 @property (strong, nonatomic) NSString *detail_open_amount;
@@ -50,5 +50,7 @@
 @property (strong, nonatomic) NSString *partialString;
 @property (strong, nonatomic) NSString *additionalFeeTitle;
 @property (strong, nonatomic) NSString *additionalFee;
+
++(RKObjectMapping*)mapping;
 
 @end

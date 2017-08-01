@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
 
-@interface OrderProduct : NSObject <TKPObjectMapping>
+@interface OrderProduct : NSObject
 
 @property NSInteger order_deliver_quantity;
 @property (strong, nonatomic) NSString *product_picture;
@@ -36,5 +36,7 @@
 
 //not used for mapping
 @property BOOL emptyStock;
+
++(RKObjectMapping*)mapping;
 
 @end

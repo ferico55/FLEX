@@ -110,7 +110,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
     self.didSelectBanner(banner);
 
     if (_isCategoryBanner) {
-        if (![banner.redirect_url isEqualToString:@""]) {
+        if (![banner.applinks isEqualToString:@""]) {
             [TPRoutes routeURL:[NSURL URLWithString:banner.applinks]];
         }
     } else {
