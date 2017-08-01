@@ -20,7 +20,7 @@ final class DigitalVoucher:Unboxable {
     var totalAmount:Double = 0
     var message = ""
     
-    init(voucherCode:String, userId:String, discount:String, discountAmount:Double, cashback:String, cashbackAmount:Double, total:String, totalAmount:Double, message:String) {
+    init(voucherCode:String = "", userId:String = "", discount:String = "", discountAmount:Double = 0.0, cashback:String = "", cashbackAmount:Double = 0.0, total:String = "", totalAmount:Double = 0.0, message:String = "") {
         self.voucherCode = voucherCode
         self.userId = userId
         self.discount = discount

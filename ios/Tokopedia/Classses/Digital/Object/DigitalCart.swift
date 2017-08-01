@@ -23,11 +23,12 @@ final class DigitalCart:Unboxable {
     var instantCheckout = false
     var needOTP = false
     var smsState = ""
+    var voucherCode = ""
     var mainInfo = [DigitalCartInfoDetail]()
     var additionalInfo:[DigitalCartInfo]?
     var userInputPrice:DigitalCartUserInputPrice?
     
-    init(cartId:String, userId:String, clientNumber:String, title:String, categoryName:String, operatorName:String, icon:String, priceText:String, price:Double, instantCheckout:Bool, needOTP:Bool, smsState:String, mainInfo:[DigitalCartInfoDetail], additionalInfo:[DigitalCartInfo]?, userInputPrice:DigitalCartUserInputPrice?) {
+    init(cartId:String = "", userId:String = "", clientNumber:String = "", title:String = "", categoryName:String = "", operatorName:String = "", icon:String = "", priceText:String = "", price:Double = 0.0, instantCheckout:Bool = false, needOTP:Bool = false, smsState:String = "", voucherCode:String = "", mainInfo:[DigitalCartInfoDetail] = [], additionalInfo:[DigitalCartInfo]? = nil, userInputPrice:DigitalCartUserInputPrice? = nil) {
         self.cartId = cartId
         self.userId = userId
         self.clientNumber = clientNumber
@@ -40,6 +41,7 @@ final class DigitalCart:Unboxable {
         self.instantCheckout = instantCheckout
         self.needOTP = needOTP
         self.smsState = smsState
+        self.voucherCode = voucherCode
         self.mainInfo = mainInfo
         self.additionalInfo = additionalInfo
         self.userInputPrice = userInputPrice
@@ -58,10 +60,26 @@ final class DigitalCart:Unboxable {
         let instantCheckout = try unboxer.unbox(keyPath: "data.attributes.instant_checkout") as Bool
         let needOTP = try unboxer.unbox(keyPath: "data.attributes.need_otp") as Bool
         let smsState = try unboxer.unbox(keyPath: "data.attributes.sms_state") as String
+        let voucherCode = try unboxer.unbox(keyPath: "data.attributes.voucher_autocode") as String
         let mainInfo = try unboxer.unbox(keyPath: "data.attributes.main_info") as [DigitalCartInfoDetail]
         let additionalInfo = try? unboxer.unbox(keyPath: "data.attributes.additional_info") as [DigitalCartInfo]
         let userInputPrice = try? unboxer.unbox(keyPath: "data.attributes.user_input_price") as DigitalCartUserInputPrice
         
-        self.init(cartId:cartId, userId:userId, clientNumber:clientNumber, title:title, categoryName:categoryName, operatorName:operatorName, icon:icon, priceText:priceText, price:price, instantCheckout:instantCheckout, needOTP:needOTP, smsState:smsState, mainInfo:mainInfo, additionalInfo:additionalInfo, userInputPrice:userInputPrice)
+        self.init(cartId:cartId,
+                  userId:userId,
+                  clientNumber:clientNumber,
+                  title:title,
+                  categoryName:categoryName,
+                  operatorName:operatorName,
+                  icon:icon,
+                  priceText:priceText,
+                  price:price,
+                  instantCheckout:instantCheckout,
+                  needOTP:needOTP,
+                  smsState:smsState,
+                  voucherCode:voucherCode,
+                  mainInfo:mainInfo,
+                  additionalInfo:additionalInfo,
+                  userInputPrice:userInputPrice)
     }
 }

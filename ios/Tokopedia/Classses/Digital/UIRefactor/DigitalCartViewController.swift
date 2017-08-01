@@ -51,8 +51,8 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate var isVoucherUsed = false
     fileprivate var isDiscount = false
     fileprivate var networkManager:TokopediaNetworkManager = TokopediaNetworkManager()
-    fileprivate var cart:DigitalCart = DigitalCart(cartId:"", userId:"", clientNumber:"", title:"", categoryName:"", operatorName:"", icon:"", priceText:"", price:0, instantCheckout:false, needOTP:false, smsState:"", mainInfo:[], additionalInfo:nil, userInputPrice:nil)
-    fileprivate var voucher:DigitalVoucher = DigitalVoucher(voucherCode:"", userId:"", discount:"", discountAmount:0, cashback:"", cashbackAmount:0, total:"", totalAmount:0, message:"")
+    fileprivate var cart:DigitalCart = DigitalCart()
+    fileprivate var voucher:DigitalVoucher = DigitalVoucher()
     fileprivate var noResultView: NoResultReusableView!
     
     let cartPayment = PublishSubject<DigitalCartPayment>()
@@ -192,6 +192,14 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         }
     }
     
+    fileprivate func setVoucher() {
+        guard !self.cart.voucherCode.isEmpty else { return }
+        checkbox.on = true
+        setVoucherUsed()
+        voucherText.text = self.cart.voucherCode
+        getVoucher()
+    }
+    
     fileprivate func setLabelAndValue(label:String, value:String) -> OAStackView {
         let view = OAStackView()
         
@@ -262,6 +270,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         setInputView()
         setMainInfo()
         setAdditionalInfo()
+        setVoucher()
         
         categoryLabel.setText(self.cart.categoryName, animated: true)
         operatorLabel.setText(self.cart.operatorName, animated: true)
