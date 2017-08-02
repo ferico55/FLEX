@@ -24,4 +24,7 @@
 @property BOOL isLPWebView;
 @property BOOL shouldAuthorizeRequest;
 
+@property (strong, nonatomic) IBOutlet UIView *popView;
+@property BOOL navigationPivotVisible;
+
 @end

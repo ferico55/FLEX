@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2AEC9CED1F31E2D100993981 /* PivotNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AEC9CEC1F31E2D100993981 /* PivotNavigationView.xib */; };
+		2AEC9CF01F31E2D800993981 /* WebviewPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC9CEF1F31E2D800993981 /* WebviewPopover.swift */; };
 		349451101F306BAB00EEB628 /* AFNetworkingImageDownloader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 349445951F306BA700EEB628 /* AFNetworkingImageDownloader.mm */; };
 		349451111F306BAB00EEB628 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 349445971F306BA700EEB628 /* DBManager.m */; };
 		349451121F306BAB00EEB628 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 349445991F306BA700EEB628 /* ExpiringCache.m */; };
@@ -2151,6 +2153,8 @@
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		2AEC9CEC1F31E2D100993981 /* PivotNavigationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PivotNavigationView.xib; sourceTree = "<group>"; };
+		2AEC9CEF1F31E2D800993981 /* WebviewPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebviewPopover.swift; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		349445941F306BA700EEB628 /* AFNetworkingImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingImageDownloader.h; sourceTree = "<group>"; };
 		349445951F306BA700EEB628 /* AFNetworkingImageDownloader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFNetworkingImageDownloader.mm; sourceTree = "<group>"; };
@@ -8488,11 +8492,13 @@
 				34944CF01F306BAA00EEB628 /* MoreViewController.m */,
 				34944CF11F306BAA00EEB628 /* PurchaseViewController.h */,
 				34944CF21F306BAA00EEB628 /* PurchaseViewController.m */,
+				2AEC9CEF1F31E2D800993981 /* WebviewPopover.swift */,
 				34944CF31F306BAA00EEB628 /* SalesViewController.h */,
 				34944CF41F306BAA00EEB628 /* SalesViewController.m */,
 				34944CF51F306BAA00EEB628 /* string_more.h */,
 				34944CF61F306BAA00EEB628 /* TopPointRequest.swift */,
 				34944CF71F306BAA00EEB628 /* WebViewController.h */,
+				2AEC9CEC1F31E2D100993981 /* PivotNavigationView.xib */,
 				34944CF81F306BAA00EEB628 /* WebViewController.m */,
 				34944CF91F306BAA00EEB628 /* WebViewController.xib */,
 				34944CFA1F306BAA00EEB628 /* WKWebViewController.swift */,
@@ -11698,6 +11704,7 @@
 				3494563E1F306BB000EEB628 /* FilterSalesTransactionListViewController.xib in Resources */,
 				349455FD1F306BAF00EEB628 /* NoResultReusableView.xib in Resources */,
 				349454351F306BAD00EEB628 /* NoResultView.xib in Resources */,
+				2AEC9CED1F31E2D100993981 /* PivotNavigationView.xib in Resources */,
 				349454441F306BAE00EEB628 /* DepositListBankCell.xib in Resources */,
 				3494550C1F306BAE00EEB628 /* WebViewController.xib in Resources */,
 				3494589B1F306BDB00EEB628 /* vt-iOSlib-1.0.1.tar.gz in Resources */,
@@ -12618,6 +12625,7 @@
 				457B98F51F0E3124005851E5 /* GoldMerchantTarget.swift in Sources */,
 				349454931F306BAE00EEB628 /* MyWishlistLabel.swift in Sources */,
 				349451C71F306BAB00EEB628 /* GoogleDistanceMatrixElement.m in Sources */,
+				2AEC9CF01F31E2D800993981 /* WebviewPopover.swift in Sources */,
 				349452C71F306BAC00EEB628 /* AddShopResult.m in Sources */,
 				349452271F306BAC00EEB628 /* LoyaltyPointResult.m in Sources */,
 				457B98ED1F0E3124005851E5 /* UIApplication+React.m in Sources */,

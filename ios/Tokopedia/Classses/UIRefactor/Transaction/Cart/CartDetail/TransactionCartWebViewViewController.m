@@ -41,6 +41,7 @@
     controller.callbackURL = data.callback_url;
     controller.title = @"Pembayaran";
     controller.hidesBottomBarWhenPushed = YES;
+    controller.navigationItem.rightBarButtonItem = nil;
     
     [vc.navigationController pushViewController:controller animated:YES];
 }

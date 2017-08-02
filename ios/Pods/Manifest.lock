@@ -138,6 +138,7 @@ PODS:
   - NSObject+Rx (2.0.0):
     - RxSwift
   - OAStackView (1.0.1)
+  - Popover (1.0.6)
   - RATreeView (2.1.2)
   - Render (2.1.1)
   - RestKit (0.27.0):
@@ -229,6 +230,7 @@ DEPENDENCIES:
   - NSAttributedString-DDHTML (= 1.2.0)
   - NSObject+Rx (~> 2.0.0)
   - OAStackView (~> 1.0.1)
+  - Popover (from `https://github.com/corin8823/Popover.git`, branch `master`)
   - RATreeView (~> 2.1.2)
   - Render (from `https://github.com/esam091/Render.git`, branch `temporary-fix`)
   - RestKit (~> 0.27.0)
@@ -258,6 +260,9 @@ EXTERNAL SOURCES:
   JSQMessagesViewController:
     :branch: master
     :git: https://github.com/ferico55/JSQMessagesViewController
+  Popover:
+    :branch: master
+    :git: https://github.com/corin8823/Popover.git
   Render:
     :branch: temporary-fix
     :git: https://github.com/esam091/Render.git
@@ -272,6 +277,9 @@ CHECKOUT OPTIONS:
   JSQMessagesViewController:
     :commit: 06d48783e1dc81a6cc018cae724df9d54ab88bde
     :git: https://github.com/ferico55/JSQMessagesViewController
+  Popover:
+    :commit: 468c0c09187b571d74a256d4e796d9ed104cfd2a
+    :git: https://github.com/corin8823/Popover.git
   Render:
     :commit: fd92ba10121dd0a438ed35de08d630dc11184745
     :git: https://github.com/esam091/Render.git
@@ -336,6 +344,7 @@ SPEC CHECKSUMS:
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
   NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
+  Popover: f811ed4eb4c4843d7bfff357816ed0d97c4ba69e
   RATreeView: 380cde0090cfde21dc6ac29137f49d3b768fdd28
   Render: bb3ec7d0956ea409263fbfda5ff60b8ba16c9579
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
@@ -362,6 +371,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 9dad49ae3a46e7b9f80afd8cabe8b17dfa1d04eb
+PODFILE CHECKSUM: 2a36bf81430d2e7865e27abf808fd1e36fdecb42
 
 COCOAPODS: 1.2.1

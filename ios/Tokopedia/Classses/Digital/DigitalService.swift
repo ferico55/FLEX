@@ -111,6 +111,7 @@ class DigitalService {
                 onNavigateToCart()
 
                 let webView = WebViewController()
+                webView.navigationPivotVisible = false
                 webView.hidesBottomBarWhenPushed = true
                 webView.strURL = cartPayment.redirectUrl
                 webView.strQuery = cartPayment.queryString

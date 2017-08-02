@@ -12,8 +12,14 @@
 #import "NSURL+Dictionary.h"
 #import "Tokopedia-Swift.h"
 
+#import "Tokopedia-Swift.h"
+#import <Popover/Popover-Swift.h>
+#import "HomeTabViewController.h"
+#import "NavigateViewController.h"
+
 @interface WebViewController ()
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) WebviewPopover *popover;
 @end
 
 @implementation WebViewController
@@ -22,6 +28,13 @@
     NJKWebViewProgressView *progressView;
 }
 @synthesize strURL, strTitle, strContentHTML, strQuery;
+
+-(id)init{
+    if ((self = [super init])) {
+        _navigationPivotVisible = YES;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,7 +54,6 @@
         progressProxy.webViewProxyDelegate = self;
         progressProxy.progressDelegate = self;
         
-        
         //SetUp Progress View
         CGFloat progressBarHeight = 2.f;
         CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
@@ -59,13 +71,18 @@
             [_webView loadRequest:[self requestForUrl:url query:strQuery]];
         }
     }
+    
+    //popover
+    if (_navigationPivotVisible) {
+        _popover = [[WebviewPopover alloc] initWithViewController:self];
+        self.navigationItem.rightBarButtonItem = [UIBarButtonItem makeWithController:self selector:@selector(tapPopover)];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -112,7 +129,6 @@
     return YES;
 }
 
-
 #pragma mark - NJKWebViewProgressDelegate
 - (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
@@ -146,4 +162,10 @@
     
     return request;
 }
+    
+#pragma mark - pop over
+- (void)tapPopover {
+    [self.popover tapShowWithCoordinate:CGPointMake(self.view.frame.size.width-26, 50)];
+}
+
 @end

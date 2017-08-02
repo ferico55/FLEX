@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Popover
 
 class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, NoResultDelegate {
 
@@ -19,6 +20,8 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     fileprivate var progressView: UIProgressView!
     fileprivate var noInternetView: NoResultReusableView!
     
+    fileprivate var popover : WebviewPopover!
+    
     //intercept when user click on action here
     var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
     var didTapBack:(() -> ())?
@@ -29,9 +32,10 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
         
-        
         view = webView
         initProgressView()
+        
+        popover = WebviewPopover(viewController: self)
     }
     
     override func viewDidLoad() {
@@ -48,6 +52,9 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         
         initNoInternetView()
         loadWebView()
+        
+        //popover
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem.make(controller: self, selector: #selector(WKWebViewController.tapPopover))
     }
     
     func didTapBackButton() {
@@ -182,5 +189,10 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
             noInternetView.removeFromSuperview()
         }
         refreshWebView()
+    }
+    
+    //MARK: pop over
+    func tapPopover() {
+        self.popover.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: 50))
     }
 }
