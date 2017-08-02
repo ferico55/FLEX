@@ -18,7 +18,8 @@ import {
   TKPReactURLManager, 
   ReactNetworkManager,
   TKPReactAnalytics,
-  EventManager 
+  EventManager,
+  ReactUserManager 
 } from 'NativeModules';
 
 const nativeTabEmitter = new NativeEventEmitter(EventManager);
@@ -129,6 +130,10 @@ class Hotlist extends React.PureComponent {
       if (page > this.state.page) {
         return;
       }
+
+      ReactUserManager.userIsLogin((error, isLogin) => {
+        TKPReactAnalytics.moEngageEvent('Hotlist_Screen_Launched', {logged_in_status : isLogin})
+      })
 
       this.setState({
         dataSource: this.state.dataSource.concat(response.data.list),

@@ -81,6 +81,7 @@ public enum ProductInfoStatus: String, UnboxableEnum {
 
 struct ProductInfo {
     let price: String
+    let priceUnformatted: Int
     let description: String
     let minimumOrder: String
     let weight: String
@@ -98,6 +99,7 @@ struct ProductInfo {
 extension ProductInfo: Unboxable {
     init(unboxer: Unboxer) throws {
         self.price = try unboxer.unbox(keyPath: "product_price")
+        self.priceUnformatted = try unboxer.unbox(keyPath: "product_price_unfmt")
         self.description = try unboxer.unbox(keyPath: "product_description")
         self.minimumOrder = try unboxer.unbox(keyPath: "product_min_order")
         self.weight = try unboxer.unbox(keyPath: "product_weight") + " " + unboxer.unbox(keyPath: "product_weight_unit") as String

@@ -451,7 +451,7 @@ MMNumberKeyboardDelegate
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   _act.hidden = YES;
                                   [_act stopAnimating];
-                                  [self requestsuccess:successResult withOperation:operation];
+                                  [self requestsuccess:successResult withOperation:operation data:data];
                               }
                               onFailure:^(NSError *errorResult) {
                                   _act.hidden = YES;
@@ -460,7 +460,7 @@ MMNumberKeyboardDelegate
                               }];
 }
 
-- (void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation {
+- (void)requestsuccess:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation data:(NSDictionary *)data {
     _register = [mappingResult.dictionary objectForKey:@""];
     
     if (_register.result.action == RegisterActionTypeActivation) {
@@ -480,6 +480,17 @@ MMNumberKeyboardDelegate
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             
             [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:@"Email"];            
+            
+            NSString *phoneNumber = [data objectForKey:@"phone"];
+            NSRange firstZeroRange = [phoneNumber rangeOfString:@"0"];
+            
+            if (NSNotFound != firstZeroRange.location && [phoneNumber hasPrefix:@"0"]) {
+                phoneNumber = [phoneNumber stringByReplacingCharactersInRange:firstZeroRange withString:@"62"];
+            }
+            
+            [AnalyticsManager moEngageTrackEventWithName:@"Registration_Completed"
+                                              attributes:@{@"Name" : [data objectForKey:@"full_name"],
+                                                           @"Mobile Number" : phoneNumber}];
             
             TKPDAlert *alert = [TKPDAlert newview];
             NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldEmail.text];

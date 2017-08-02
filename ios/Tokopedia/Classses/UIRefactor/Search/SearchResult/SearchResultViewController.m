@@ -1140,6 +1140,18 @@ ProductCellDelegate
             [_delegate updateCategories:searchResult.data.breadcrumb];
         }
     }
+
+    if (_start == 0) {
+        if (searchResult.data.products.count > 0) {
+            [AnalyticsManager moEngageTrackEventWithName:@"Search_Attempt"
+                                              attributes:@{@"keyword" : _defaultSearchCategory ?: @"",
+                                                           @"is_result_found" : @(YES)}];
+        } else {
+            [AnalyticsManager moEngageTrackEventWithName:@"Search_Attempt"
+                                              attributes:@{@"keyword" : _defaultSearchCategory ?: @"",
+                                                           @"is_result_found" : @(NO)}];
+        }
+    }
     
     NSString *redirect_url = searchResult.data.redirectUrl;
     _rootCategoryID = ([_rootCategoryID integerValue] == 0)?searchResult.data.departmentId:_rootCategoryID;

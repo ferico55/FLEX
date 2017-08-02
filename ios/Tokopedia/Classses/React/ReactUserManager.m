@@ -32,4 +32,10 @@ RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(__unused RCT
     resolve(userManager.getUserId);
 }
 
+RCT_EXPORT_METHOD(userIsLogin:(RCTResponseSenderBlock)callback) {
+    BOOL userIsLogin = [[UserAuthentificationManager new] isLogin];
+    
+    callback(@[[NSNull null], @(userIsLogin)]);
+}
+
 @end

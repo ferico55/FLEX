@@ -212,22 +212,17 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:data];
     
     NSString *productID = product.product_id;
+    NSString *productName = product.product_name;
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.product_price];
-    NSString *total = [NSString stringWithFormat:@"%zd", [product.product_total_price integerValue]];
-    NSString *productQuantity = product.product_quantity;
     
-    NSDictionary *attributes = @{
-                                 @"Product Id" : productID?:@"",
-                                 @"Category" : product.product_cat_name?:@"",
-                                 @"Price" : price?:@(0),
-                                 @"Value of Cart" : total?:@"",
-                                 @"Items in Cart" : productQuantity?:@""
-                                 };
+    NSArray *categories = [product.product_cat_name componentsSeparatedByString:@" - "];
     
-    NSString *profileAttribute = @"Profile : Last date has product in cart";
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+    [AnalyticsManager moEngageTrackEventWithName:@"Product_Added_To_Cart_Marketplace"
+                                      attributes:@{@"product_id" : productID,
+                                                   @"product_name" : productName,
+                                                   @"product_price" : price,
+                                                   @"category" : categories[0],
+                                                   @"subcategory" : (categories.count > 1) ? categories[1] : @""}];
 }
 
 + (void)trackRemoveProductFromCart:(id)product {

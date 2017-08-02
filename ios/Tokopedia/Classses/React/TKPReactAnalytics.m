@@ -39,7 +39,9 @@ RCT_EXPORT_METHOD(trackEvent:(NSDictionary*)event) {
     [AnalyticsManager trackEventName:event[@"name"] category:event[@"category"] action:event[@"action"] label:event[@"label"]];
 }
 
-
+RCT_EXPORT_METHOD(moEngageEvent:(NSString *)name attributes:(NSDictionary *)attributes) {
+    [AnalyticsManager moEngageTrackEventWithName:name attributes:attributes];
+}
 
 
 @end

@@ -193,6 +193,17 @@
                              parameter:param mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
+                                 NSArray<ProductDetail *> *cartProducts = cart.cart_products;
+                                 
+                                 for (ProductDetail *product in cartProducts) {
+                                     [AnalyticsManager moEngageTrackEventWithName:@"Product_Removed_From_Cart_Marketplace"
+                                                                       attributes:@{@"product_id" : product.product_id ?: @"",
+                                                                                    @"product_name" : product.product_name ?: @"",
+                                                                                    @"product_price" : product.product_price ?: @(0),
+                                                                                    @"product_url" : product.product_url ?: @""}];
+                                 }                                
+                                 
+                                 
                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                  id stat = [result objectForKey:@""];
                                  

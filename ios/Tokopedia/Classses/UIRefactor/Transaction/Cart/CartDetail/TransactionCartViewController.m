@@ -1464,6 +1464,11 @@
                                                                                                                  AFEventParamCurrency : param[@"currency"]?:@"",
                                                                                                                  AFEventOrderId : paymentID}];
                                        
+                                       [AnalyticsManager moEngageTrackEventWithName:@"Thank_You_Page_Launched"
+                                                                         attributes:@{@"payment_type" : paymentMethod,
+                                                                                      @"purchase_site" : @"Marketplace",
+                                                                                      @"total_price" : revenue}];
+                                       
                                    }
                                    [self requestCartData];
                                } error:^(NSError *error) {

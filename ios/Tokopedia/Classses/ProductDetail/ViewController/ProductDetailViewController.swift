@@ -78,6 +78,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AnalyticsManager.trackScreenName("Product Information")
         
         self.navigationController?.isNavigationBarHidden = true
         UIApplication.shared.statusBarStyle = .default
@@ -154,6 +155,8 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     }
     
     private func trackScreenWithProduct(product: ProductUnbox) {
+        guard product.categories.count > 0 else { return }
+        
         let shopID = product.shop.id
         var shopType = "regular"
         
@@ -168,7 +171,30 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         let customLayer = ["shopId": shopID,
                            "shopType": shopType]
         
-        AnalyticsManager.trackScreenName("Product Detail Page", customDataLayer: customLayer)
+        AnalyticsManager.trackScreenName("Product Detail Page Finished Load", customDataLayer: customLayer)
+        
+        AnalyticsManager.moEngageTrackEvent(withName: "Product_Page_Opened",
+                                            attributes: self.moengageAttributes(product: product))
+    }
+    
+    private func moengageAttributes(product: ProductUnbox) -> [String : Any] {
+        var attributes = ["product_name" : product.name,
+                          "product_url" : product.url,
+                          "product_id" : product.id,
+                          "product_image_url" : product.images.first?.normalURL ?? "",
+                          "product_price" : product.info.priceUnformatted,
+                          "shop_id" : product.shop.id,
+                          "is_official_store" : product.shop.isOfficial,
+                          "shop_name" : product.shop.name,
+                          "category" : product.categories.first?.name ?? "",
+                          "category_id" : product.categories.first?.id ?? ""] as [String : Any]
+        
+        if product.categories.count > 1 {
+            attributes["subcategory"] = product.categories[1].name
+            attributes["subcategory_id"] = product.categories[1].id
+        }
+        
+        return attributes
     }
     
     private func checkProductAndDispatch(product: ProductUnbox) {

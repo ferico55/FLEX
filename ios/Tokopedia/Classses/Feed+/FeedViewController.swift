@@ -37,12 +37,10 @@ class FeedViewController: UIViewController {
         
         let appVersion = UIApplication.getAppVersionString()
         
-        let headers = [
-            "Tkpd-UserId": userManager.getUserId(),
-            "Tkpd-SessionId": userManager.getMyDeviceToken(),
-            "X-Device": "ios-\(appVersion)",
-            "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")
-        ]
+        let headers = ["Tkpd-UserId": userManager.getUserId(),
+                       "Tkpd-SessionId": userManager.getMyDeviceToken(),
+                       "X-Device": "ios-\(appVersion)",
+                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")]
         
         configuration.httpAdditionalHeaders = headers
         
@@ -95,7 +93,7 @@ class FeedViewController: UIViewController {
         self.tableView.addSubview(self.refreshControl)
         
         feedCardSource.asObservable()
-            .bindTo(self.tableView.rx.items) { tableView, _, item in
+            .bindTo(self.tableView.rx.items) { _, _, item in
                 let cell = ComponentTableViewCell<FeedComponentView>()
                 cell.mountComponentIfNecessary(
                     FeedComponentView(
@@ -149,7 +147,7 @@ class FeedViewController: UIViewController {
                             
                             self.feedCardSource.onNext(self.feedCards)
                             
-                            self.loadFeed(withCursor: self.currentCursor)
+                            self.loadFeed(cursor: self.currentCursor, shouldTrackMoengage: false)
                         }
                     )
                 )
@@ -176,12 +174,12 @@ class FeedViewController: UIViewController {
                 guard let `self` = self else { return }
                 if self.feedState.hasNextPage && !self.isRequesting {
                     self.isRefreshing = false
-                    self.loadFeed(withCursor: self.feedState.cursor)
+                    self.loadFeed(cursor: self.feedState.cursor, shouldTrackMoengage: false)
                 }
             })
             .disposed(by: rx_disposeBag)
         
-        self.refreshFeed()
+        self.loadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -197,10 +195,18 @@ class FeedViewController: UIViewController {
         self.isRefreshing = true
         self.feedClient = self.reinitApolloClient()
         self.feedCards = []
-        self.loadFeed(withCursor: "")
+        self.loadFeed(cursor: "", shouldTrackMoengage: false)
     }
     
-    private func loadFeed(withCursor cursor: String) {
+    private func loadData() {
+        self.page = 1
+        self.isRefreshing = true
+        self.feedClient = self.reinitApolloClient()
+        self.feedCards = []
+        self.loadFeed(cursor: "", shouldTrackMoengage: true)
+    }
+    
+    private func loadFeed(cursor: String, shouldTrackMoengage: Bool) {
         self.currentCursor = cursor
         let userManager = UserAuthentificationManager()
         let userID = userManager.getUserId()
@@ -214,6 +220,10 @@ class FeedViewController: UIViewController {
             
             self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userId: Int(userID!)!, limit: 5, cursor: cursor, page: self.page)) { result, error in
                 if let error = error {
+                    if shouldTrackMoengage {
+                        AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
+                                                                                                           "is_feed_empty": true])
+                    }
                     NSLog("Error while fetching query: \(error.localizedDescription)")
                     self.feedState = FeedStateManager().initFeedState(queryResult: nil)
                     self.loadContent(onPage: self.page, total: -1)
@@ -223,11 +233,20 @@ class FeedViewController: UIViewController {
                 }
                 
                 if result?.errors != nil {
+                    if shouldTrackMoengage {
+                        AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
+                                                                                                           "is_feed_empty": true])
+                    }
                     self.feedState = FeedStateManager().initFeedState(queryResult: nil)
                     self.loadContent(onPage: self.page, total: -1)
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
                     return
+                }
+                
+                if shouldTrackMoengage {
+                    AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
+                                                                                                       "is_feed_empty": false])
                 }
                 
                 self.feedState = FeedStateManager().initFeedState(queryResult: (result?.data)!)
@@ -318,12 +337,10 @@ class FeedViewController: UIViewController {
         
         let appVersion = UIApplication.getAppVersionString()
         
-        let headers = [
-            "Tkpd-UserId": userManager.getUserId(),
-            "Tkpd-SessionId": userManager.getMyDeviceToken(),
-            "X-Device": "ios-\(appVersion)",
-            "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")
-        ]
+        let headers = ["Tkpd-UserId": userManager.getUserId(),
+                       "Tkpd-SessionId": userManager.getMyDeviceToken(),
+                       "X-Device": "ios-\(appVersion)",
+                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")]
         
         configuration.httpAdditionalHeaders = headers
         

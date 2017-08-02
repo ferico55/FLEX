@@ -194,7 +194,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-
+        
     }
     
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
@@ -497,6 +497,32 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             }
         }
         
+        func moengageAttributes(product: ProductUnbox) -> [String : Any] {
+            var attributes = ["product_name" : product.name,
+                              "product_url" : product.url,
+                              "product_id" : product.id,
+                              "product_price" : product.info.priceUnformatted,
+                              "shop_id" : product.shop.id,
+                              "is_official_store" : product.shop.isOfficial,
+                              "shop_name" : product.shop.name] as [String : Any]
+            
+            if product.images.count > 0 {
+                attributes["product_image_url"] = product.images[0].normalURL
+            }
+            
+            if product.categories.count > 0 {
+                attributes["category"] = product.categories[0].name
+                attributes["category_id"] = product.categories[0].id
+            }
+            
+            if product.categories.count > 1 {
+                attributes["subcategory"] = product.categories[1].name
+                attributes["subcategory_id"] = product.categories[1].id
+            }
+            
+            return attributes
+        }
+        
         func contentScrollView(state: ProductDetailState?, size: CGSize) -> NodeType {
             guard let state = state else { return NilNode() }
             
@@ -523,13 +549,18 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                   didTapReview: { [unowned self] productDetail in
                                       AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Review")
                                       
+                                      AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
+                                      
                                       let vc = ProductReputationViewController()
                                       vc.strShopDomain = productDetail.shop.domain
                                       vc.strProductID = productDetail.id
+                                      
                                       self.viewController.navigationController?.pushViewController(vc, animated: true)
                                   },
                                   didTapDiscussion: { [unowned self] productDetail in
                                       AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Talk")
+                                      
+                                      AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Diskusi_Pdp", attributes: moengageAttributes(product: productDetail))
                                       
                                       let vc = ProductTalkViewController()
                                       let images = productDetail.images
@@ -923,16 +954,19 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         if isWishlist {
             if let category = productDetail.categories.first {
-                let attributes = ["subcategory_id" : productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
-                                  "category" : category.name,
-                                  "category_id" : category.id,
-                                  "product_name" : productDetail.name,
-                                  "product_id" : productDetail.id,
-                                  "product_url" : productDetail.url,
-                                  "product_price" : productDetail.info.price]
+                let attributes = [
+                    "subcategory" : productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
+                    "subcategory_id": productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
+                    "category": category.name,
+                    "category_id": category.id,
+                    "product_name": productDetail.name,
+                    "product_id": productDetail.id,
+                    "product_url": productDetail.url,
+                    "product_price": productDetail.info.priceUnformatted
+                ] as [String : Any]
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Added_To_Wishlist_Marketplace", attributes: attributes)
             }
-
+            
             AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
             
             let networkManager = TokopediaNetworkManager()
@@ -955,6 +989,19 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             })
             
         } else {
+            if let category = productDetail.categories.first {
+                let attributes = [
+                    "subcategory" : productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
+                    "subcategory_id": productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
+                    "category": category.name,
+                    "category_id": category.id,
+                    "product_name": productDetail.name,
+                    "product_id": productDetail.id,
+                    "product_url": productDetail.url,
+                    "product_price": productDetail.info.priceUnformatted
+                    ] as [String : Any]
+                AnalyticsManager.moEngageTrackEvent(withName: "Product_Removed_From_Wishlist_Marketplace", attributes: attributes)
+            }
             
             let networkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
@@ -1104,4 +1151,3 @@ class ContainerNode: NodeType {
         node.build(with: reusable)
     }
 }
-

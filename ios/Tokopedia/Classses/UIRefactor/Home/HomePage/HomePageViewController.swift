@@ -604,10 +604,14 @@ class HomePageViewController: UIViewController {
         let categoryName = layoutRow.name
         
         AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
+        AnalyticsManager.moEngageTrackEvent(withName: "Maincategory_Icon_Tapped", attributes: ["category" : categoryName ?? ""])
         
         if layoutRow.type == LayoutRowType.Marketplace.rawValue {
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName, isIntermediary: true)
+            AnalyticsManager.moEngageTrackEvent(withName: "Category_Screen_Launched",
+                                                attributes: ["category" : categoryName ?? "",
+                                                             "category_id" : layoutRow.category_id])
         } else if layoutRow.type == LayoutRowType.Digital.rawValue {
             guard let categoryId = layoutRow.category_id else {
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)
@@ -634,6 +638,9 @@ class HomePageViewController: UIViewController {
                         .disposed(by: self.rx_disposeBag)
                 })
             } else {
+                AnalyticsManager.moEngageTrackEvent(withName: "Digital_Category_Screen_Launched",
+                                                    attributes: ["category" : categoryName ?? "",
+                                                                 "digital_category_id" : layoutRow.category_id])
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)
             }
             

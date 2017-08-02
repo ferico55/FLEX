@@ -847,8 +847,7 @@ typedef enum
 }
 
 #pragma mark - requestATC
--(void)requestATC {
-    
+-(void)requestATC {    
     [self adjustViewIsLoading:YES];
 
     NSString *quantity = _productQuantityTextField.text;
@@ -881,10 +880,6 @@ typedef enum
     [alertView show];
     
     [AnalyticsManager trackProductAddToCart:_selectedProduct];
-    
-    if (self.isSnapSearchProduct) {
-        [AnalyticsManager trackSnapSearchAddToCart:_selectedProduct];
-    }
     
     NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
     

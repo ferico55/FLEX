@@ -302,10 +302,18 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //halaman kota
+        //laman kota
         JLRoutes.global().addRoute("/kota") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://kota.tokopedia.com" + utmString
+            openWebView(NSURL(string: urlString)! as URL)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/kota/:cityName") { (params: [String : Any]!) -> Bool in
+            let cityName = params["cityName"] as! String
+            let utmString = getUTMString(params as [String : AnyObject])
+            let urlString = "https://kota.tokopedia.com/" + cityName + utmString
             openWebView(NSURL(string: urlString)! as URL)
             return true
         }

@@ -336,6 +336,10 @@ FavoriteShopRequestDelegate
         [_shops addObjectsFromArray: favoriteShops.list];
     }
     
+    [AnalyticsManager moEngageTrackEventWithName:@"Favorite_Screen_Launched"
+                                      attributes:@{@"logged_in_status" : @(YES),
+                                                   @"is_favorite_empty" : @((_shops.count == 0))}];
+    
     if (_shops.count > 0) {
         _isnodata = NO;
         _urinext =  favoriteShops.paging.uri_next;
