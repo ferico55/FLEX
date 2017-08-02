@@ -142,14 +142,14 @@ class FeedComponentView: ComponentView<FeedCardState> {
             }
             
             let animationView = LOTAnimationView(name: "FeedEmptyState")
-            animationView?.loopAnimation = true
-            animationView?.frame.size = CGSize(width: state.oniPad ? 202 : 161, height: state.oniPad ? 125 : 100)
-            animationView?.contentMode = .scaleAspectFill
-            animationView?.backgroundColor = .clear
+            animationView.loopAnimation = true
+            animationView.frame.size = CGSize(width: state.oniPad ? 202 : 161, height: state.oniPad ? 125 : 100)
+            animationView.contentMode = .scaleAspectFill
+            animationView.backgroundColor = .clear
             
-            view.addSubview(animationView!)
+            view.addSubview(animationView)
             
-            animationView!.play(completion: { _ in
+            animationView.play(completion: { _ in
                 
             })
         }

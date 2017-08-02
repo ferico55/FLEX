@@ -600,7 +600,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [NavigateViewController navigateToProductFromViewController:self
                                                   withProductID:product.product_id
                                                         andName:product.product_name
-                                                       andPrice:product.product_price
+                                                       andPrice:product.catalog_price
                                                     andImageURL:product.product_image
                                                     andShopName:product.shop_name];
 }

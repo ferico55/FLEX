@@ -19,6 +19,7 @@ class PromoViewController: UIViewController {
             make?.edges.mas_equalTo()(self.view)
         }
         promoView.didTapPromoDetail = { webViewController in
+            webViewController.strTitle = "Promo"
             self.navigationController?.pushViewController(webViewController, animated: true)
         }
         promoView.onTapLinkWithUrl = { url in

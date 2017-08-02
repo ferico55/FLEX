@@ -43,9 +43,10 @@ class ProductWholesaleViewController: UIViewController, UITableViewDataSource, U
         AnalyticsManager.trackScreenName("Product Detail - Wholesale Page")
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
     }
     
     // MARK: - UITableView Data Source

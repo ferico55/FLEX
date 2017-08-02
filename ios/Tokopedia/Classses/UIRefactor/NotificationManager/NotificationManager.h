@@ -36,6 +36,7 @@
 @property (strong, nonatomic) NotificationViewController *notificationController;
 @property (strong, nonatomic) NotificationRequest *notificationRequest;
 @property (weak, nonatomic) id<NotificationManagerDelegate> delegate;
+@property (assign, nonatomic) NSInteger totalCart;
 
 - (void)clearCacheNotificationPanel;
 - (void)tapNotificationBar;

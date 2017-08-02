@@ -10,14 +10,14 @@ import UIKit
 import Render
 
 class ProductDescriptionNode: ContainerNode {
-    fileprivate let didTapDescription: (() -> Void)
+    fileprivate let didTapDescription: ((ProductInfo) -> Void)
     fileprivate let didLongPressDescription: (UILabel) -> Void
     fileprivate let didTapVideo: (ProductVideo) -> Void
     fileprivate var state: ProductDetailState
     fileprivate var scrollView: UIScrollView?
     fileprivate var viewController: ProductDetailViewController
     
-    init(identifier: String, viewController: ProductDetailViewController, state: ProductDetailState, didTapDescription: @escaping (() -> Void), didTapVideo: @escaping (ProductVideo) -> Void, didLongPressDescription: @escaping (UILabel) -> Void) {
+    init(identifier: String, viewController: ProductDetailViewController, state: ProductDetailState, didTapDescription: @escaping ((ProductInfo) -> Void), didTapVideo: @escaping (ProductVideo) -> Void, didLongPressDescription: @escaping (UILabel) -> Void) {
         self.didTapDescription = didTapDescription
         self.didTapVideo = didTapVideo
         self.didLongPressDescription = didLongPressDescription
@@ -144,9 +144,9 @@ class ProductDescriptionNode: ContainerNode {
     }
     
     private func productDescriptionButton() -> NodeType {
-        guard let description = state.productDetail?.info.descriptionHtml() else { return NilNode() }
+        guard let productInfo = state.productDetail?.info else { return NilNode() }
         
-        var fullString = NSString.extracTKPMEUrl(description) as String
+        var fullString = NSString.extracTKPMEUrl(productInfo.descriptionHtml()) as String
         if fullString.characters.count > 300 {
             return Node<UILabel>() { view, layout, size in
                 layout.width = size.width
@@ -155,12 +155,12 @@ class ProductDescriptionNode: ContainerNode {
                 view.textAlignment = .center
                 view.font = .title2Theme()
                 view.textColor = UIColor.tpGreen()
-                view.text = self.state.isCollapseDescription ? "Selengkapnya" : "Sembunyikan"
+                view.text = "Selengkapnya" 
                 view.isUserInteractionEnabled = true
                 
                 let tapGestureRecognizer = UITapGestureRecognizer()
                 _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
-                    self.didTapDescription()
+                    self.didTapDescription(productInfo)
                 })
                 view.addGestureRecognizer(tapGestureRecognizer)
             }
@@ -193,7 +193,7 @@ class ProductDescriptionNode: ContainerNode {
                                                                     NSFontAttributeName: UIFont.title1Theme(),
                                                                     NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()
                 ])
-            if fullString.characters.count > 300 && self.state.isCollapseDescription {
+            if fullString.characters.count > 300 {
                 let range = fullString.startIndex..<fullString.index(description.startIndex, offsetBy: 300)
                 let subtringDesc = fullString[range]
                 

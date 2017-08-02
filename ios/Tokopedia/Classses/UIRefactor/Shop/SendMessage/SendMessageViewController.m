@@ -266,7 +266,7 @@
 - (void)sendButtonConditionIsLoading:(BOOL)isLoading {
     if (isLoading) {
         UIActivityIndicatorView *act = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-        act.color = [UIColor whiteColor];
+        act.color = [UIColor blackColor];
         [act startAnimating];
         self.navigationItem.rightBarButtonItem.customView = act;
     } else {

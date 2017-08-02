@@ -13,7 +13,8 @@ Here is just a small sampling of the power of Lottie
 ![Example1](_Gifs/Examples1.gif)
 ![Example2](_Gifs/Examples2.gif)
 
-![Community](_Gifs/Community 2_3.gif)
+<img src="_Gifs/Community 2_3.gif" />
+
 ![Example3](_Gifs/Examples3.gif)
 
 ![Abcs](_Gifs/Examples4.gif)
@@ -97,13 +98,16 @@ Lottie works just fine in Swift too!
 Simply `import Lottie` at the top of your swift class, and use Lottie as follows
 
 ```swift
-let animationView = LOTAnimationView.animationNamed("hamburger")
-self.view.addSubview(animationView!)
+let animationView = LOTAnimationView(name: "hamburger")
+self.view.addSubview(animationView)
 
-animationView?.play(completion: { (finished) in
-  // Do Something
+animationView.play(completion: { finished in
+    // Do Something
 })
 ```
+## Note:
+Animation file name should be first added to your project. as for the above code sample, It won't work until you add an animation file called `hamburger.json`.. 
+`let animationView = LOTAnimationView(name: "here_goes_your_json_file_name_without_.json")` 
 
 ## Supported After Effects Features
 
@@ -200,7 +204,7 @@ animationView?.play(completion: { (finished) in
 * Parenting Layers
 * Alpha Matte Layers
 
-## Currently Unsupport After Effects Features
+## Currently Unsupported After Effects Features
 
 * Even-Odd winding paths
 * Merge Shapes
@@ -214,7 +218,7 @@ animationView?.play(completion: { (finished) in
 
 ## Install Lottie
 
-###CocoaPods
+### CocoaPods
 Add the pod to your podfile
 ```
 pod 'lottie-ios'
@@ -224,7 +228,7 @@ run
 pod install
 ```
 
-###Carthage
+### Carthage
 Install Carthage (https://github.com/Carthage/Carthage)
 Add Lottie to your Cartfile
 ```

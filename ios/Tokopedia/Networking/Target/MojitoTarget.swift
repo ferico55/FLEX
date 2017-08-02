@@ -35,7 +35,7 @@ enum MojitoTarget{
     case getProductWishStatus(productIds: [String])
     case setWishlist(withProductId: String)
     case unsetWishlist(withProductId: String)
-    case getProductCampaignInforFor(productIds:String)
+    case getProductCampaignInfo(withProductIds:String)
     case requestOfficialStore(categoryId: String)
     case requestOfficialStoreHomePage
 }
@@ -56,7 +56,7 @@ extension MojitoTarget : TargetType {
         case let .setWishlist(productId), let .unsetWishlist(productId):
             let userManager = UserAuthentificationManager()
             return "/users/\(userManager.getUserId()!)/wishlist/\(productId)/v1.1"
-        case .getProductCampaignInforFor:
+        case .getProductCampaignInfo:
             return "os/v1/campaign/product/info"
         case let .requestOfficialStore(categoryId):
             return "os/api/v1/brands/category/ios/\(categoryId)"
@@ -68,17 +68,16 @@ extension MojitoTarget : TargetType {
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .getProductWishStatus, .requestOfficialStore, .requestOfficialStoreHomePage: return .get
+        case .getProductWishStatus, .requestOfficialStore, .requestOfficialStoreHomePage, .getProductCampaignInfo: return .get
         case .setWishlist: return .post
         case .unsetWishlist: return .delete
-        case .getProductCampaignInforFor: return .get
         }
     }
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
-        case let .getProductCampaignInforFor(productIds): return [
+        case let .getProductCampaignInfo(productIds): return [
                     "pid":productIds
                     ]
         case .requestOfficialStore: return nil

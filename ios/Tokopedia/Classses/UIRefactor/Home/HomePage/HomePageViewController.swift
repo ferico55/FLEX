@@ -622,7 +622,11 @@ class HomePageViewController: UIViewController {
                                                              "category_id" : layoutRow.category_id])
         } else if layoutRow.type == LayoutRowType.Digital.rawValue {
             guard let categoryId = layoutRow.category_id else {
-                TPRoutes.routeURL(URL(string: layoutRow.url)!)
+                let categoryNameEncoding = categoryName!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+                let paramTitle = layoutRow.url.contains("?") ? "&title=" + categoryNameEncoding : "?title=" + categoryNameEncoding
+                let layoutURL = layoutRow.url + paramTitle
+                TPRoutes.routeURL(URL(string: layoutURL)!)
+            
                 return
             }
             
@@ -651,7 +655,6 @@ class HomePageViewController: UIViewController {
                                                                  "digital_category_id" : layoutRow.category_id])
                 TPRoutes.routeURL(URL(string: layoutRow.url)!)
             }
-            
         }
     }
 }

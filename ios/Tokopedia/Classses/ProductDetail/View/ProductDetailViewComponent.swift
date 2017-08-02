@@ -15,6 +15,8 @@ import youtube_ios_player_helper
 import EZYGradientView_ObjC
 import UIAlertController_Blocks
 import TTTAttributedLabel
+import Lottie
+import SwiftOverlays
 
 enum ProductDetailActivity {
     case initial
@@ -29,10 +31,9 @@ enum ProductDetailActivity {
 enum ProductDetailAction: Action {
     case begin([String: String])
     case receive(ProductUnbox, ProductDetailActivity?)
-    case collapseDescription
     case tapVideo(ProductVideo?, Bool)
     case updateActivity(ProductDetailActivity)
-    case updateWishlist(Bool, Bool)
+    case updateWishlist(Bool)
     case updateFavorite(Bool, Bool)
 }
 
@@ -52,17 +53,14 @@ struct ProductDetailReducer: Reducer {
         case let .receive(product, activity):
             return state.receive(productDetail: product, activity: activity)
             
-        case .collapseDescription:
-            return state.collapseDescription()
-            
         case let .tapVideo(video, isPlay):
             return state.tapVideo(productVideo: video, isPlaying: isPlay)
             
         case let .updateActivity(activity):
             return state.updateActivity(activity: activity)
             
-        case let .updateWishlist(isWishlist, isLoading):
-            return state.updateWishlist(isWishlist: isWishlist, isLoading: isLoading)
+        case let .updateWishlist(isWishlist):
+            return state.updateWishlist(isWishlist: isWishlist)
             
         case let .updateFavorite(isFavorite, isLoading):
             return state.updateFavorite(isFavorite: isFavorite, isLoading: isLoading)
@@ -75,11 +73,10 @@ struct ProductDetailState: Render.StateType, ReSwift.StateType {
     
     var productDetail: ProductUnbox?
     var initialData: [String: String]?
-    var isCollapseDescription: Bool = true
     var nowPlayingVideo: ProductVideo?
     var isVideoLoading: Bool = false
     var isFavoriteLoading: Bool = false
-    var isWishlistLoading: Bool = false
+    var isWishlist: Bool = false
     var productDetailActivity: ProductDetailActivity = .initial
     
     func begin(data: [String: String]) -> ProductDetailState {
@@ -99,13 +96,6 @@ struct ProductDetailState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func collapseDescription() -> ProductDetailState {
-        var newState = self
-        newState.isCollapseDescription = !self.isCollapseDescription
-        
-        return newState
-    }
-    
     func tapVideo(productVideo: ProductVideo?, isPlaying: Bool) -> ProductDetailState {
         var newState = self
         newState.nowPlayingVideo = productVideo
@@ -121,13 +111,9 @@ struct ProductDetailState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func updateWishlist(isWishlist: Bool, isLoading: Bool) -> ProductDetailState {
+    func updateWishlist(isWishlist: Bool) -> ProductDetailState {
         var newState = self
-        if !isLoading {
-            newState.productDetail?.isWishlisted = isWishlist
-        }
-        
-        newState.isWishlistLoading = isLoading
+        newState.isWishlist = isWishlist
         
         return newState
     }
@@ -154,8 +140,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
     fileprivate var scrollView = UIScrollView()
     fileprivate var fullNavigationView = UIView()
     fileprivate var navigationView = UIView()
+    fileprivate var wishlistNotificationView = UIView()
+    fileprivate var unwishlistNotificationView = UIView()
     
-    fileprivate var youtubePlayerView: YTPlayerView
+    fileprivate var youtubePlayerBackgroundView = UIView()
+    fileprivate var youtubePlayerView: YTPlayerView!
     
     final let buyViewHeight: CGFloat = 52.0
     
@@ -167,12 +156,8 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
     init(store: Store<ProductDetailState>, viewController: ProductDetailViewController) {
         self.store = store
         self.viewController = viewController
-        self.youtubePlayerView = YTPlayerView()
         
         super.init()
-        
-        self.youtubePlayerView.webView?.allowsInlineMediaPlayback = false
-        self.youtubePlayerView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -204,6 +189,8 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
     func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
         switch state {
         case .ended, .paused, .unknown:
+            self.youtubePlayerBackgroundView.isHidden = true
+            self.youtubePlayerView.isHidden = true
             self.store.dispatch(ProductDetailAction.tapVideo(nil, false))
         default:
             break
@@ -326,19 +313,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .black
                 },
-                Node<UIButton>() { view, layout, _ in
-                    layout.width = 40
-                    layout.height = 40
-                    layout.marginLeft = 8
-                    layout.marginRight = 8
-                    layout.marginTop = 20
-                    
-                    let cartButtonImage = UIImage(named: "icon_cart_white")?.withRenderingMode(.alwaysTemplate)
-                    view.setImage(cartButtonImage, for: .normal)
-                    view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
-                    view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
-                    view.imageView?.tintColor = .black
-                },
+                cartButton(isFullNavigation: true),
                 Node<UIButton>() { view, layout, _ in
                     layout.width = 40
                     layout.height = 40
@@ -359,6 +334,46 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.backgroundColor = .tpLine()
                 }
             ])
+        }
+        
+        func cartButton(isFullNavigation: Bool) -> NodeType {
+            return Node<UIButton>() { view, layout, _ in
+                layout.width = 40
+                layout.height = 40
+                layout.marginLeft = 8
+                layout.marginRight = 8
+                layout.marginTop = 20
+                
+                let cartButtonImage = UIImage(named: "icon_cart_white")?.withRenderingMode(.alwaysTemplate)
+                view.setImage(cartButtonImage, for: .normal)
+                view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
+                view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+                view.imageView?.tintColor = isFullNavigation ? .black : .white 
+            }.add(child: badgeView())
+        }
+        
+        func badgeView() -> NodeType {
+            guard let totalCart = UserDefaults.standard.string(forKey: "total_cart"),
+                totalCart != "0" else {
+                return NilNode()
+            }
+            
+            return Node<UILabel>() { view, layout, _ in
+                layout.height = 17
+                layout.marginLeft = 24
+                layout.marginTop = 0
+                layout.position = .absolute
+                
+                view.font = .microTheme()
+                view.backgroundColor = .red
+                view.textColor = .white
+                view.textAlignment = .center
+                view.layer.cornerRadius = 9
+                view.clipsToBounds = true
+                view.text = totalCart
+                let badgeSize = view.font.sizeOfString(string: view.text!, constrainedToWidth: 100)
+                layout.width = badgeSize.width + 10
+            }
         }
         
         func lastUpdateInfoView() -> NodeType {
@@ -432,17 +447,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .white
                 },
-                Node<UIButton>() { view, layout, _ in
-                    layout.width = 40
-                    layout.height = 40
-                    layout.marginLeft = 8
-                    layout.marginRight = 8
-                    layout.marginTop = 20
-                    view.setImage(UIImage(named: "icon_cart_white"), for: .normal)
-                    view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
-                    view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
-                    view.imageView?.tintColor = .white
-                },
+                cartButton(isFullNavigation: false),
                 Node<UIButton>() { view, layout, _ in
                     layout.width = 40
                     layout.height = 40
@@ -495,6 +500,72 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     }
                 }
             }
+        }
+        
+        func youtubePlayerNodeView(state: ProductDetailState?, size: CGSize) -> NodeType {
+            guard let state = state else { return NilNode() }
+            
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                return Node<YTPlayerView>(identifier: "Youtube-Player-View") { view, layout, size in
+                    layout.width = size.width
+                    layout.height = size.height
+                    layout.position = .absolute
+                    layout.top = 0
+                    layout.left = 0
+                    
+                    view.isHidden = !state.isVideoLoading
+                    view.webView?.allowsInlineMediaPlayback = false
+                    view.delegate = self
+                    view.backgroundColor = .black
+                    self.youtubePlayerView = view
+                }
+            }
+            
+            return Node<UIView>() { view, layout, size in
+                layout.width = size.width
+                layout.height = size.height
+                layout.position = .absolute
+                layout.top = 0
+                layout.right = 0
+                view.backgroundColor = .black
+                view.isHidden = !state.isVideoLoading
+                
+                self.youtubePlayerBackgroundView = view
+            }.add(children: [
+                Node<UIButton>(identifier: "Youtube-Done-Button") { view, layout, _ in
+                    layout.width = 84
+                    layout.height = 32
+                    layout.position = .absolute
+                    layout.top = 34
+                    layout.right = 24
+                    
+                    view.layer.cornerRadius = 4
+                    view.layer.masksToBounds = true
+                    view.layer.borderWidth = 1
+                    view.layer.borderColor = UIColor.white.cgColor
+                    view.titleLabel?.font = .microTheme()
+                    view.setTitle("Done", for: .normal)
+                    view.setTitleColor(.white, for: .normal)
+                    _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
+                        self.youtubePlayerBackgroundView.isHidden = true
+                        self.youtubePlayerView.isHidden = true
+                        self.youtubePlayerView.stopVideo()
+                        self.store.dispatch(ProductDetailAction.tapVideo(nil, false))
+                    })
+                },
+                Node<YTPlayerView>(identifier: "Youtube-Player-View") { view, layout, size in
+                    layout.width = size.width
+                    layout.height = size.height - 70
+                    layout.position = .absolute
+                    layout.top = 70
+                    
+                    view.isHidden = !state.isVideoLoading
+                    view.webView?.allowsInlineMediaPlayback = false
+                    view.delegate = self
+                    view.backgroundColor = .black
+                    self.youtubePlayerView = view
+                }
+            ])
         }
         
         func moengageAttributes(product: ProductUnbox) -> [String : Any] {
@@ -594,8 +665,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                       if isWishlist {
                                           AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
                                       }
-    
                                       self.updateWishlist(isWishlist)
+                                  },
+                                  updateWishlistState: { [unowned self] isWishlist in
+                                      self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist))
                                   },
                                   didTapProductEdit: { [unowned self] productDetail in
                                       let vc = ProductAddEditViewController()
@@ -607,6 +680,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                   },
                                   didTapProductImage: { [unowned self] index in
                                       let vc = GalleryViewController(photoSource: self.viewController, withStarting: Int32(index), usingNetwork: true, canDownload: true)
+                                      self.viewController.hideNavigationBarWhenPush = false
                                       self.viewController.navigationController?.present(vc!, animated: true, completion: nil)
                 }),
                 navigationView(),
@@ -691,16 +765,20 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 ProductDescriptionNode(identifier: "description",
                                        viewController: self.viewController,
                                        state: state,
-                                       didTapDescription: { [weak self] in
-                                           self?.store.dispatch(ProductDetailAction.collapseDescription)
+                                       didTapDescription: { [unowned self] productInfo in
+                                           let vc = ProductDescriptionViewController(productInfo: productInfo)
+                                           self.viewController.navigationController?.pushViewController(vc, animated: true)
                                        },
                                        didTapVideo: { [unowned self] video in
                                            let playerVars = [
-                                               "origin": "https://www.tokopedia.com"
+                                               "origin": "https://www.tokopedia.com",
+                                               "playsinline": "0"
                                            ]
                                            
                                            if !state.isVideoLoading {
                                                self.store.dispatch(ProductDetailAction.tapVideo(video, true))
+                                               self.youtubePlayerBackgroundView.isHidden = false
+                                               self.youtubePlayerView.isHidden = false
                                                self.youtubePlayerView.load(withVideoId: video.url, playerVars: playerVars)
                                            }
                                        },
@@ -734,7 +812,8 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         return container(state: state, size: size).add(children: [
             contentScrollView(state: state, size: size),
             fullNavigationView(state: state, size: size),
-            actionButton(state: state, size: size)
+            actionButton(state: state, size: size),
+            youtubePlayerNodeView(state: state, size: size)
         ])
     }
     
@@ -948,8 +1027,6 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             return
         }
         
-        self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, true))
-        
         let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as! ReactEventManager
         
         if isWishlist {
@@ -979,13 +1056,16 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                    parameter: nil,
                                    mapping: GeneralAction.mapping(),
                                    onSuccess: { _, _ in
-                                       self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, false))
-                                       _ = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                                       self.wishlistNotificationView.isHidden = true
+                                       self.wishlistNotificationView = UIView()
+                                       NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                                       
+                                       self.wishlistNotificationView = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
-                                        tabManager.didWishlistProduct(productDetail.id)
+                                       tabManager.didWishlistProduct(productDetail.id)
                                    },
                                    onFailure: { _ in
-                                       self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist, false))
+                                       self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist))
             })
             
         } else {
@@ -1013,16 +1093,18 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                    parameter: nil,
                                    mapping: GeneralAction.mapping(),
                                    onSuccess: { _, _ in
-                                       self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist, false))
-                                       _ = UIViewController.showNotificationWithMessage("Anda berhasil menghapus wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                                       self.unwishlistNotificationView.isHidden = true
+                                       self.unwishlistNotificationView = UIView()
+                                       NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                                       
+                                       self.unwishlistNotificationView = UIViewController.showNotificationWithMessage("Anda berhasil menghapus wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
-                                        tabManager.didRemoveWishlistProduct(productDetail.id)
+                                       tabManager.didRemoveWishlistProduct(productDetail.id)
                                    },
                                    onFailure: { _ in
-                                       self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist, false))
+                                       self.store.dispatch(ProductDetailAction.updateWishlist(!isWishlist))
             })
         }
-        
         
     }
     

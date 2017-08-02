@@ -31,8 +31,10 @@ struct ProductUnbox {
     let wholesale: [ProductWholesale]
     let preorderDetail: ProductPreorderDetail
     var shipments: [ProductShipment]
+    var installments: [ProductInstallment]
     var videos: [ProductVideo]
     var otherProducts: [OtherProduct]
+    var campaign: ShopProductPageCampaignInfo?
 }
 
 extension ProductUnbox: Unboxable {
@@ -59,8 +61,10 @@ extension ProductUnbox: Unboxable {
         self.wholesale = try unboxer.unbox(keyPath: "data.wholesale_price")
         self.preorderDetail = try unboxer.unbox(keyPath: "data.preorder")
         self.shipments = try unboxer.unbox(keyPath: "data.shop_info.shop_shipments")
+        self.installments = try unboxer.unbox(keyPath: "data.info.product_installments")
         self.videos = [ProductVideo]()
         self.otherProducts = [OtherProduct]()
+        self.campaign = nil
     }
 
     func lastLevelCategory() -> ProductCategory {
@@ -314,3 +318,34 @@ extension ProductWholesale: Unboxable {
         self.price = try unboxer.unbox(key: "wholesale_price")
     }
 }
+
+struct ProductInstallment {
+    let id: String
+    let name: String
+    let icon: String
+    let terms: [String : ProductInstallmentTerm]
+}
+
+extension ProductInstallment: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.id = try unboxer.unbox(key: "id")
+        self.name = try unboxer.unbox(key: "name")
+        self.icon = try unboxer.unbox(key: "icon")
+        self.terms = try unboxer.unbox(key: "terms")
+    }
+}
+
+struct ProductInstallmentTerm {
+    let minimumPurchase: String
+    let installmentPrice: String
+    let percentage: String
+}
+
+extension ProductInstallmentTerm: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.minimumPurchase = try unboxer.unbox(key: "min_purchase")
+        self.installmentPrice = try unboxer.unbox(key: "installment_price")
+        self.percentage = try unboxer.unbox(key: "percentage")
+    }
+}
+

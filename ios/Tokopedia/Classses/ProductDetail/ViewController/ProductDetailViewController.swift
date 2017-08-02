@@ -22,12 +22,16 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     fileprivate var productView: ProductDetailViewComponent!
     fileprivate var initialData: [String: String]?
     fileprivate var isReplacementMode: Bool!
+    fileprivate var campaignTimer = Timer()
+    fileprivate var campaignEndDate: Date?
+    
+    var hideNavigationBarWhenPush: Bool = true
     
     override var canBecomeFirstResponder: Bool { return true }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.default
     }
-    
+
     // MARK: - Lifecycle
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -41,16 +45,13 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     convenience init(productID: String = "", name: String = "", price: String = "", imageURL: String = "", shopName: String = "", isReplacementMode: Bool = false) {
         self.init(nibName: nil, bundle: nil)
+        
         self.isReplacementMode = isReplacementMode
         self.initialData = ["id": productID,
                             "name": name,
                             "price": price,
                             "imageURL": imageURL,
                             "shopName": shopName]
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -81,20 +82,27 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         AnalyticsManager.trackScreenName("Product Information")
         
         self.navigationController?.isNavigationBarHidden = true
-        UIApplication.shared.statusBarStyle = .default
+        
+        if let product = self.product {
+            self.store.dispatch(ProductDetailAction.receive(product, nil))
+        }
+        
+        if let campaignEndDate = campaignEndDate,
+            campaignEndDate > Date() {
+            self.campaignTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ProductDetailViewController.campaignScheduledProcess), userInfo: nil, repeats: true)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.navigationController?.isNavigationBarHidden = false
-        UIApplication.shared.statusBarStyle = .lightContent
+        self.campaignTimer.invalidate()
         
-        // return navigation bar style to default
-        self.navigationController?.navigationBar.barTintColor = .tpNavigationBar()
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        if self.hideNavigationBarWhenPush {
+            self.navigationController?.isNavigationBarHidden = false
+        } else {
+            self.hideNavigationBarWhenPush = true
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,56 +112,12 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         self.store.subscribe(self.productView)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    deinit {
+        campaignTimer.invalidate()
+        NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Data
-    private func loadProductDetail(data: [String: String]) {
-        let provider = NetworkProvider<V4Target>(plugins: [NetworkLoggerPlugin()])
-        provider.request(.getProductDetail(withProductId: data["id"], productName: data["name"], shopName: data["shopName"]))
-            .do(onError: { error in
-                    
-                var errorMessages: [String]
-                switch (error as NSError).code {
-                case NSURLErrorBadServerResponse:
-                    errorMessages = ["Mohon maaf, terjadi kendala pada server kami. Mohon kirimkan screenshot halaman ini ke ios[dot]feedback@tokopedia[dot]com untuk kami investigasi lebih lanjut."]
-                case NSURLErrorNotConnectedToInternet:
-                    errorMessages = ["Tidak ada koneksi internet"]
-                case NSURLErrorCancelled:
-                    errorMessages = ["Terjadi kendala pada koneksi internet"]
-                default:
-                    errorMessages = [error.localizedDescription]
-                }
-                StickyAlertView.showErrorMessage(errorMessages)
-            })
-            .map(to: ProductUnbox.self)
-            .subscribe({ event in
-                switch event {
-                case let .next(product) :
-                    self.trackScreenWithProduct(product: product)
-                    self.product = product
-                    self.loadOtherProduct(product: product)
-                    if product.shop.isGoldMerchant {
-                        self.loadProductVideos(product: product)
-                    }
-                    self.checkProductAndDispatch(product: product)
-                    
-                case let .error(error) :
-                    if let moyaError = error as? MoyaError,
-                        let _ = moyaError.response {
-                        self.store.dispatch(ProductDetailAction.updateActivity(.noResult))
-                    }
-                    
-                default:
-                    break
-                }
-            })
-            .disposed(by: self.rx_disposeBag)
-        
-    }
-    
+    // MARK: - Analytic    
     private func trackScreenWithProduct(product: ProductUnbox) {
         guard product.categories.count > 0 else { return }
         
@@ -195,6 +159,53 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         }
         
         return attributes
+    }
+    
+    // MARK: - Data
+    private func loadProductDetail(data: [String: String]) {
+        let provider = NetworkProvider<V4Target>(plugins: [NetworkLoggerPlugin()])
+        provider.request(.getProductDetail(withProductId: data["id"], productName: data["name"], shopName: data["shopName"]))
+            .do(onError: { error in
+                
+                var errorMessages: [String]
+                switch (error as NSError).code {
+                case NSURLErrorBadServerResponse:
+                    errorMessages = ["Mohon maaf, terjadi kendala pada server kami. Mohon kirimkan screenshot halaman ini ke ios[dot]feedback@tokopedia[dot]com untuk kami investigasi lebih lanjut."]
+                case NSURLErrorNotConnectedToInternet:
+                    errorMessages = ["Tidak ada koneksi internet"]
+                case NSURLErrorCancelled:
+                    errorMessages = ["Terjadi kendala pada koneksi internet"]
+                default:
+                    errorMessages = [error.localizedDescription]
+                }
+                StickyAlertView.showErrorMessage(errorMessages)
+            })
+            .map(to: ProductUnbox.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(product) :
+                    self.trackScreenWithProduct(product: product)
+                    self.product = product
+                    self.store.dispatch(ProductDetailAction.updateWishlist((self.product?.isWishlisted)!))
+                    
+                    self.loadOtherProduct(product: product)
+                    self.loadProductCampaign(product: product)
+                    if product.shop.isGoldMerchant {
+                        self.loadProductVideos(product: product)
+                    }
+                    self.checkProductAndDispatch(product: product)
+                case let .error(error) :
+                    if let moyaError = error as? MoyaError,
+                        let _ = moyaError.response {
+                        self.store.dispatch(ProductDetailAction.updateActivity(.noResult))
+                    }
+                    
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+        
     }
     
     private func checkProductAndDispatch(product: ProductUnbox) {
@@ -265,7 +276,52 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                 }
             })
             .disposed(by: self.rx_disposeBag)
+    }
+    
+    private func loadProductCampaign(product: ProductUnbox) {
+        let provider = NetworkProvider<MojitoTarget>(plugins: [NetworkLoggerPlugin()])
+        provider.request(.getProductCampaignInfo(withProductIds: product.id))
+            .map(to: ShopProductPageCampaignInfoResponse.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(other) :
+                    guard other.data.count > 0 else {
+                        return
+                    }
+                    
+                    let campaign = other.data[0]
+                    self.product?.campaign = campaign
+                    self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
+                    
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    
+                    if let endPromoDate = formatter.date(from: campaign.end_date),
+                        endPromoDate > Date(),
+                        endPromoDate.timeIntervalSinceNow < 24 * 60 * 60 {
+                        self.campaignEndDate = endPromoDate
+                        self.campaignTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ProductDetailViewController.campaignScheduledProcess), userInfo: nil, repeats: true)
+                    }
+                    
+                case let .error(error) :
+                    print("\(error.localizedDescription)")
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
+    @objc
+    private func campaignScheduledProcess() {
+        if let campaignEndDate = campaignEndDate,
+            campaignEndDate < Date() {
+            self.campaignTimer.invalidate()
+            self.campaignEndDate = nil
+            self.product?.campaign = nil
+        }
         
+        self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
     }
     
     // MARK: - EtalaseViewController Delegate
@@ -296,7 +352,8 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     // MARK: - GalleryViewController Delegate
     func numberOfPhotos(forPhotoGallery gallery: GalleryViewController!) -> Int32 {
-        guard let images = store.state.productDetail?.images else {
+        guard let images = store.state.productDetail?.images,
+            images.count > 0 else {
             return 0
         }
         return Int32(images.count)
@@ -307,16 +364,18 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     }
     
     func photoGallery(_ gallery: GalleryViewController!, captionForPhotoAt index: UInt) -> String! {
-        guard let images = store.state.productDetail?.images else {
-            return ""
+        guard let images = store.state.productDetail?.images,
+            images.count > Int(index) else {
+                return ""
         }
         
         return images[Int(index)].imageDescription
     }
     
     func photoGallery(_ gallery: GalleryViewController!, urlFor size: GalleryPhotoSize, at index: UInt) -> String! {
-        guard let images = store.state.productDetail?.images else {
-            return ""
+        guard let images = store.state.productDetail?.images,
+            images.count > Int(index) else {
+                return ""
         }
         
         return images[Int(index)].normalURL

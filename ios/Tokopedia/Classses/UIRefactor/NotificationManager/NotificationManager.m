@@ -20,6 +20,8 @@
 
 @implementation NotificationManager
 
+@synthesize totalCart;
+
 - (id)init {
     self = [super init];
     if(self) {
@@ -31,7 +33,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUnreadNotification:) name:@"setUnreadNotification" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-        
     }
     return self;
 }
@@ -255,6 +256,10 @@
         NSLog(@"total cart:%@", [_notification.result.total_cart stringValue]);
 
     }
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:[_notification.result.total_cart stringValue] forKey:@"total_cart"];
+    [prefs synchronize];
 }
 
 

@@ -455,7 +455,7 @@ typedef enum TagRequest {
     [NavigateViewController navigateToProductFromViewController:self
                                                   withProductID:product.id
                                                         andName:product.name
-                                                       andPrice:[product.price stringValue]
+                                                       andPrice:product.price_formatted
                                                     andImageURL:product.image
                                                     andShopName:product.shop.name];
 }

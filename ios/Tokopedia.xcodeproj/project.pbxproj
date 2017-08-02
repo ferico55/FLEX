@@ -1892,6 +1892,9 @@
 		928FAE471EAF42FC00E33DE6 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE461EAF42FC00E33DE6 /* libRCTActionSheet.a */; };
 		928FAE491EAF431500E33DE6 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 928FAE481EAF431500E33DE6 /* libReact.a */; };
 		9295B26C1EAF4231000F705C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AB27CBA1EAEFA2800DEA67A /* libRNDeviceInfo.a */; };
+		DA434DBF1F31E215009A9DA8 /* ProductDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA434DBE1F31E215009A9DA8 /* ProductDescriptionViewController.swift */; };
+		DA434DC31F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA434DC11F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift */; };
+		DA434DC41F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA434DC21F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5169,6 +5172,9 @@
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA434DBE1F31E215009A9DA8 /* ProductDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDescriptionViewController.swift; sourceTree = "<group>"; };
+		DA434DC11F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopProductPageCampaignInfo.swift; sourceTree = "<group>"; };
+		DA434DC21F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopProductPageCampaignInfoResponse.swift; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -6894,6 +6900,8 @@
 		3494493F1F306BA800EEB628 /* ShopPage */ = {
 			isa = PBXGroup;
 			children = (
+				DA434DC11F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift */,
+				DA434DC21F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift */,
 				349449401F306BA800EEB628 /* ShopProductPageList.h */,
 				349449411F306BA800EEB628 /* ShopProductPageList.m */,
 				349449421F306BA800EEB628 /* ShopProductPageResponse.h */,
@@ -7463,6 +7471,7 @@
 		34944A821F306BA900EEB628 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DA434DBE1F31E215009A9DA8 /* ProductDescriptionViewController.swift */,
 				34944A831F306BA900EEB628 /* ProductDetailViewController.swift */,
 				34944A841F306BA900EEB628 /* ProductShipmentViewController.swift */,
 				34944A851F306BA900EEB628 /* ProductWholesaleViewController.swift */,
@@ -12852,6 +12861,7 @@
 				3494526E1F306BAC00EEB628 /* PrivacyFormPrivacy.m in Sources */,
 				7A466B881EB2FEAE00A72105 /* MHVerticalTabBarButton.m in Sources */,
 				3494515F1F306BAB00EEB628 /* SecurityAnswer.m in Sources */,
+				DA434DC31F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift in Sources */,
 				349451D51F306BAB00EEB628 /* HotlistBannerQuery.m in Sources */,
 				349453321F306BAC00EEB628 /* TransactionSummary.m in Sources */,
 				349454581F306BAE00EEB628 /* RequestShippingCity.swift in Sources */,
@@ -13084,6 +13094,7 @@
 				3494528C1F306BAC00EEB628 /* Order.m in Sources */,
 				349452231F306BAC00EEB628 /* LoyaltyPoint.m in Sources */,
 				349455E91F306BAF00EEB628 /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
+				DA434DC41F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift in Sources */,
 				349451211F306BAB00EEB628 /* DigitalCategoryMenuViewController.swift in Sources */,
 				3494532A1F306BAC00EEB628 /* TxOrderConfirmation.m in Sources */,
 				349454E41F306BAE00EEB628 /* InboxTalkSplitViewController.m in Sources */,
@@ -13417,6 +13428,7 @@
 				349453181F306BAC00EEB628 /* TransactionAddressShippingResult.m in Sources */,
 				349455CC1F306BAF00EEB628 /* PulsaRelationCategory.swift in Sources */,
 				349453141F306BAC00EEB628 /* TransactionAction.m in Sources */,
+				DA434DBF1F31E215009A9DA8 /* ProductDescriptionViewController.swift in Sources */,
 				349452351F306BAC00EEB628 /* ResponseCommentResult.m in Sources */,
 				349453A41F306BAD00EEB628 /* AlertBaseUrl.m in Sources */,
 				349455591F306BAF00EEB628 /* ProductGalleryViewController.m in Sources */,

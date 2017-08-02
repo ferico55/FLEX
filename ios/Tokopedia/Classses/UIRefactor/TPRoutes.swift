@@ -438,7 +438,8 @@ class TPRoutes: NSObject {
         JLRoutes.global().add(["/kereta-api", "/tiket/kereta-api"]) { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/kereta-api" + utmString
-            openWebView(NSURL(string: urlString)! as URL)
+            let title = params["title"] != nil ? params["title"] as! String : ""
+            openWebView(NSURL(string: urlString)! as URL, title: title)
             
             return true
         }
@@ -572,13 +573,14 @@ class TPRoutes: NSObject {
         
         //shop page
         JLRoutes.global().addRoute("/:shopName") { (params: [String : Any]!) -> Bool in
-            let url = params[kJLRouteURLKey] as! NSURL
+            let url = params[kJLRouteURLKey] as! URL
             let shopName = params["shopName"] as! String
             isShopExists(shopName, shopExists: { (isExists) in
                 if isExists {
                     navigator.navigateToShop(from: UIApplication.topViewController(), withShopName: shopName)
                 } else {
-                    openWebView(url as URL)
+                    let title = params["title"] != nil ? params["title"] as! String : ""
+                    openWebView(url, title: title)
                 }
             })
             
@@ -676,13 +678,14 @@ class TPRoutes: NSObject {
         }
     }
     
-    static func openWebView(_ url: URL) {
+    static func openWebView(_ url: URL, title: String = "") {
         let controller = WebViewController()
         let userManager = UserAuthentificationManager()
         
         let urlString = url.absoluteString
         
         controller.strURL = userManager.webViewUrl(fromUrl: urlString)
+        controller.strTitle = title
         controller.shouldAuthorizeRequest = true
         controller.hidesBottomBarWhenPushed = true
         

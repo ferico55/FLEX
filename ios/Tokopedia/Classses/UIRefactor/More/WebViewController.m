@@ -108,6 +108,11 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    NSString *documentTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    if (documentTitle && ![documentTitle isEqualToString:@""] &&
+        (!self.strTitle || [self.strTitle isEqualToString:@""])) {
+        self.navigationItem.title = documentTitle;
+    }
 }
 
 

@@ -264,6 +264,7 @@ class TopPicksWidgetViewController: UIViewController {
     fileprivate func goToWebView(_ urlString: String) {
         let webViewVC = WebViewController()
         webViewVC.strURL = urlString
+        webViewVC.strTitle = "Top Picks"
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
 

@@ -14,6 +14,7 @@
 +(nonnull UIColor *)tpGreen;
 +(nonnull UIColor *)tpLightGreen;
 +(nonnull UIColor *)tpOrange;
++(nonnull UIColor *)tpRed;
 +(nonnull UIColor *)tpPrimaryBlackText;
 +(nonnull UIColor *)tpSecondaryBlackText;
 +(nonnull UIColor *)tpDisabledBlackText;
@@ -23,7 +24,6 @@
 +(nonnull UIColor *)tpBackground;
 +(nonnull UIColor *)tpLine;
 +(nonnull UIColor *)tpGray;
-+(nonnull UIColor *)tpRed;
 
 +(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 

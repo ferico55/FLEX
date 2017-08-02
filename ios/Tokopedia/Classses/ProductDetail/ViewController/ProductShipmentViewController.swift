@@ -22,12 +22,6 @@ class ProductShipmentViewController: UIViewController, UITableViewDataSource, UI
         super.init(nibName: nil, bundle: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationController?.setWhite()
-    }
-    
     override func loadView() {
         super.loadView()
         
@@ -49,9 +43,10 @@ class ProductShipmentViewController: UIViewController, UITableViewDataSource, UI
         AnalyticsManager.trackScreenName("Product Detail - Shipment Page")
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
     }
     
     // MARK: - UITableView Data Source

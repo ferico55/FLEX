@@ -8,6 +8,7 @@
 
 import UIKit
 import Render
+import Lottie
 
 class ProductHeaderNode: ContainerNode {
     fileprivate var state: ProductDetailState
@@ -15,6 +16,7 @@ class ProductHeaderNode: ContainerNode {
     fileprivate let didTapDiscussion: (ProductUnbox) -> Void
     fileprivate let didTapCourier: (ProductUnbox) -> Void
     fileprivate let didTapWishlist: (Bool) -> Void
+    fileprivate let updateWishlistState: (Bool) -> Void
     fileprivate let didTapProductEdit: (ProductUnbox) -> Void
     fileprivate let didTapProductImage: (Int) -> Void
     
@@ -37,12 +39,13 @@ class ProductHeaderNode: ContainerNode {
         return star
     }()
     
-    init(identifier: String, state: ProductDetailState, didTapReview: @escaping (ProductUnbox) -> Void, didTapDiscussion: @escaping (ProductUnbox) -> Void, didTapCourier: @escaping (ProductUnbox) -> Void, didTapWishlist: @escaping (Bool) -> Void, didTapProductEdit: @escaping (ProductUnbox) -> Void, didTapProductImage: @escaping (Int) -> Void) {
+    init(identifier: String, state: ProductDetailState, didTapReview: @escaping (ProductUnbox) -> Void, didTapDiscussion: @escaping (ProductUnbox) -> Void, didTapCourier: @escaping (ProductUnbox) -> Void, didTapWishlist: @escaping (Bool) -> Void, updateWishlistState: @escaping (Bool) -> Void, didTapProductEdit: @escaping (ProductUnbox) -> Void, didTapProductImage: @escaping (Int) -> Void) {
         self.state = state
         self.didTapReview = didTapReview
         self.didTapDiscussion = didTapDiscussion
         self.didTapCourier = didTapCourier
         self.didTapWishlist = didTapWishlist
+        self.updateWishlistState = updateWishlistState
         self.didTapProductEdit = didTapProductEdit
         self.didTapProductImage = didTapProductImage
         
@@ -55,21 +58,21 @@ class ProductHeaderNode: ContainerNode {
                 GlobalRenderComponent.horizontalLine(identifier: "Header-Line-1", marginLeft: 0),
                 productPageControl(),
                 productTitleLabel(),
-                productPriceView(),
+                productComponentPriceView(),
                 GlobalRenderComponent.horizontalLine(identifier: "Header-Line-2", marginLeft: 0),
                 Node(identifier: "Container-Box-View") { _, layout, _ in
                     layout.flexDirection = .row
                     layout.marginTop = 10
                     layout.marginBottom = 10
-                    }.add(children: [
-                        reviewBoxView(),
-                        discussionBoxView(),
-                        courierBoxView()
-                        ]),
+                }.add(children: [
+                    reviewBoxView(),
+                    discussionBoxView(),
+                    courierBoxView()
+                ]),
                 GlobalRenderComponent.horizontalLine(identifier: "Header-Line-3", marginLeft: 0),
                 headerActionButton()
-                ])
             ])
+        ])
     }
     
     private func container() -> NodeType {
@@ -117,35 +120,35 @@ class ProductHeaderNode: ContainerNode {
             layout.width = size.width
             layout.height = self.productImageHeightRatio * size.width
             layout.justifyContent = .center
-            }.add(children: [
-                Node<UIView>() { view, layout, size in
-                    layout.position = .absolute
-                    layout.top = 0
-                    layout.width = size.width
-                    layout.height = self.productImageHeightRatio * size.width
-                    layout.justifyContent = .center
-                    view.backgroundColor = .black
-                    view.alpha = 0.7
-                },
-                Node<UILabel>() { view, layout, _ in
-                    layout.alignSelf = .center
-                    view.font = .largeThemeMedium()
-                    view.textColor = .white
-                    view.text = title
-                },
-                Node<UILabel>() { view, layout, _ in
-                    layout.alignSelf = .center
-                    layout.margin = 20
-                    view.font = .microTheme()
-                    view.textColor = .white
-                    view.numberOfLines = 0
-                    view.textAlignment = .center
-                    view.text = message
-                }
-                ])
+        }.add(children: [
+            Node<UIView>() { view, layout, size in
+                layout.position = .absolute
+                layout.top = 0
+                layout.width = size.width
+                layout.height = self.productImageHeightRatio * size.width
+                layout.justifyContent = .center
+                view.backgroundColor = .black
+                view.alpha = 0.7
+            },
+            Node<UILabel>() { view, layout, _ in
+                layout.alignSelf = .center
+                view.font = .largeThemeMedium()
+                view.textColor = .white
+                view.text = title
+            },
+            Node<UILabel>() { view, layout, _ in
+                layout.alignSelf = .center
+                layout.margin = 20
+                view.font = .microTheme()
+                view.textColor = .white
+                view.numberOfLines = 0
+                view.textAlignment = .center
+                view.text = message
+            }
+        ])
     }
     
-    private func productImageView(imageUrl: String) -> NodeType {
+    private func productImageView(imageUrl: String, tappable: Bool) -> NodeType {
         return Node<UIImageView>() { view, layout, size in
             layout.width = size.width
             layout.height = self.productImageHeightRatio * size.width
@@ -154,12 +157,14 @@ class ProductHeaderNode: ContainerNode {
             view.clipsToBounds = true
             view.setImageWith(URL(string: imageUrl))
             view.isUserInteractionEnabled = true
-            let tapGestureRecognizer = UITapGestureRecognizer()
-            _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
-                let index = self.state.currentPage
-                self.didTapProductImage(index!)
-            })
-            view.addGestureRecognizer(tapGestureRecognizer)
+            if tappable {
+                let tapGestureRecognizer = UITapGestureRecognizer()
+                _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                    let index = self.state.currentPage
+                    self.didTapProductImage(index!)
+                })
+                view.addGestureRecognizer(tapGestureRecognizer)
+            }
         }
     }
     
@@ -168,12 +173,12 @@ class ProductHeaderNode: ContainerNode {
         if let images = state.productDetail?.images,
             images.count > 0 {
             imageNodes = images.map({ (image) -> NodeType in
-                productImageView(imageUrl: image.normalURL)
+                productImageView(imageUrl: image.normalURL, tappable: true)
             })
         } else if let initialData = self.state.initialData,
             let imageURL = initialData["imageURL"],
             imageURL != "" {
-            imageNodes = [productImageView(imageUrl: imageURL)]
+            imageNodes = [productImageView(imageUrl: imageURL, tappable: false)]
         } else {
             return Node<UIView>() { view, layout, size in
                 layout.width = size.width
@@ -181,13 +186,13 @@ class ProductHeaderNode: ContainerNode {
                 layout.justifyContent = .center
                 view.backgroundColor = .lightGray
                 view.isUserInteractionEnabled = true
-                }.add(child: Node<UIActivityIndicatorView>() { view, layout, _ in
-                    layout.width = 48
-                    layout.height = 48
-                    layout.alignSelf = .center
-                    view.activityIndicatorViewStyle = .gray
-                    view.startAnimating()
-                })
+            }.add(child: Node<UIActivityIndicatorView>() { view, layout, _ in
+                layout.width = 48
+                layout.height = 48
+                layout.alignSelf = .center
+                view.activityIndicatorViewStyle = .gray
+                view.startAnimating()
+            })
             
         }
         
@@ -210,7 +215,7 @@ class ProductHeaderNode: ContainerNode {
             })
             view.contentSize.width = size.width * CGFloat(imageNodes.count)
             
-            }.add(children: imageNodes)
+        }.add(children: imageNodes)
     }
     
     private func productPageControl() -> NodeType {
@@ -222,7 +227,7 @@ class ProductHeaderNode: ContainerNode {
             layout.position = .absolute
             view.currentPageIndicatorTintColor = .tpGreen()
             view.pageIndicatorTintColor = .white
-            if let scrollView = self.scrollView {
+            if let scrollView = self.scrollView, size.width > 0 {
                 view.currentPage = Int(scrollView.contentOffset.x / size.width)
             } else {
                 view.currentPage = 0
@@ -251,52 +256,9 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func wishlistButton() -> NodeType {
-        guard let isWishlisted = state.productDetail?.isWishlisted else { return NilNode() }
+        guard let _ = state.productDetail else { return NilNode() }
         
-        if self.state.isWishlistLoading {
-            return Node<UIView>(identifier: "Wishlist-Button-indicator") { view, layout, size in
-                layout.width = 48
-                layout.height = 48
-                layout.position = .absolute
-                layout.top = self.productImageHeightRatio * size.width - 24
-                layout.right = 15
-                view.layer.cornerRadius = 24
-                view.layer.masksToBounds = true
-                view.backgroundColor = .white
-                view.layer.shadowColor = UIColor.black.cgColor
-                view.layer.shadowOpacity = 0.5
-                view.layer.shadowOffset = CGSize(width: -15, height: 20)
-                view.layer.shadowRadius = 10
-                }.add(child: Node<UIActivityIndicatorView>() { view, layout, _ in
-                    layout.width = 48
-                    layout.height = 48
-                    layout.alignSelf = .center
-                    view.activityIndicatorViewStyle = .gray
-                    view.startAnimating()
-                })
-        } else if isWishlisted {
-            return Node<UIButton>(identifier: "Wishlist-Button") { view, layout, size in
-                layout.width = 48
-                layout.height = 48
-                layout.position = .absolute
-                layout.top = self.productImageHeightRatio * size.width - 24
-                layout.right = 15
-                view.layer.cornerRadius = 24
-                view.layer.masksToBounds = true
-                view.backgroundColor = .white
-                view.layer.shadowColor = UIColor.black.cgColor
-                view.layer.shadowOpacity = 0.5
-                view.layer.shadowOffset = CGSize(width: -15, height: 20)
-                view.layer.shadowRadius = 10
-                view.setImage(UIImage(named: "icon_wishlist_red"), for: .normal)
-                view.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
-                _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
-                    self.didTapWishlist(false)
-                })
-            }
-        }
-        
-        return Node<UIButton>(identifier: "Wishlist-Button") { view, layout, size in
+        return Node<UIView>(identifier: "Wishlist-Button") { view, layout, size in
             layout.width = 48
             layout.height = 48
             layout.position = .absolute
@@ -309,11 +271,67 @@ class ProductHeaderNode: ContainerNode {
             view.layer.shadowOpacity = 0.5
             view.layer.shadowOffset = CGSize(width: -15, height: 20)
             view.layer.shadowRadius = 10
-            view.setImage(UIImage(named: "icon_wishlist_plain"), for: .normal)
-            _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
+        }.add(child: wishlistLottie(isWishlisted: state.isWishlist))
+    }
+    
+    private func wishlistLottie(isWishlisted: Bool) -> NodeType {
+        if isWishlisted {
+            return Node<LOTAnimationView>(identifier: "Wishlisted-Lottie", create: {
+                let view = LOTAnimationView(name: "deactivateWishlist")
+                return view
+                
+            }, configure: { view, layout, size in
+                layout.width = 48
+                layout.height = 48
+                layout.position = .absolute
+                layout.top = 0
+                layout.left = 0
+                view.loopAnimation = false
+                view.contentMode = .scaleAspectFill
+                view.backgroundColor = .clear
+                
+                let tapGestureRecognizer = UITapGestureRecognizer()
+                _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                    let userAuthManager = UserAuthentificationManager()
+                    if let _ = userAuthManager.getUserId(),
+                        userAuthManager.isLogin {
+                        view.play(completion: { animationFinished in
+                            self.updateWishlistState(false)
+                        })
+                    }
+                    self.didTapWishlist(false)
+                })
+                view.addGestureRecognizer(tapGestureRecognizer)
+            } )
+        }
+        
+        return Node<LOTAnimationView>(identifier: "Wishlist-Lottie", create: {
+            let view = LOTAnimationView(name: "activateWishlist")
+            return view
+        
+        }, configure: { view, layout, size in
+            layout.width = 48
+            layout.height = 48
+            layout.position = .absolute
+            layout.top = 0
+            layout.left = 0
+            view.loopAnimation = false
+            view.contentMode = .scaleAspectFill
+            view.backgroundColor = .clear
+            
+            let tapGestureRecognizer = UITapGestureRecognizer()
+            _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                let userAuthManager = UserAuthentificationManager()
+                if let _ = userAuthManager.getUserId(),
+                    userAuthManager.isLogin {
+                    view.play(completion: { animationFinished in
+                        self.updateWishlistState(true)
+                    })
+                }
                 self.didTapWishlist(true)
             })
-        }
+            view.addGestureRecognizer(tapGestureRecognizer)
+        } )
     }
     
     private func editProductButton() -> NodeType {
@@ -362,26 +380,58 @@ class ProductHeaderNode: ContainerNode {
         }
     }
     
-    private func productPriceView() -> NodeType {
-        return Node(identifier: "Product-Price-View") { _, layout, _ in
-            layout.flexDirection = .row
+    private func productComponentPriceView() -> NodeType {
+        return Node(identifier: "Product-Campaign-Price-View") { _, layout, _ in
+            layout.flexDirection = .column
             }.add(children: [
-                productPriceLabel(),
-                productCashbackView()
+                productOriginalPriceView(),
+                productPriceView(),
+                productPricePromoView()
                 ])
     }
     
-    private func productPriceLabel() -> NodeType {
-        return Node<UILabel>(identifier: "Product-Price-Label") { view, layout, _ in
+    private func productOriginalPriceView() -> NodeType {
+        guard let originalPrice = state.productDetail?.campaign?.original_price else {
+            return NilNode()
+        }
+        
+        return Node<UILabel>(identifier: "Product-Original-Price-View") { view, layout, _ in
             layout.marginTop = 11
             layout.marginLeft = 15
-            layout.marginBottom = 22
+            view.font = .microTheme()
+            view.textColor = .tpSecondaryBlackText()
+            let price = NSAttributedString(string: originalPrice, attributes: [NSStrikethroughStyleAttributeName: 2])
+            view.attributedText = price
+        }
+    }
+    
+    private func productPriceView() -> NodeType {
+        var marginTop: CGFloat = 11
+        var marginBottom: CGFloat = 22
+        if let _ = state.productDetail?.campaign?.percentage_amount {
+            marginTop = 2
+            marginBottom = 10
+        }
+        return Node(identifier: "Product-Price-View") { _, layout, _ in
+            layout.flexDirection = .row
+            layout.marginTop = marginTop
+            layout.marginLeft = 15
+            layout.marginBottom = marginBottom
+        }.add(children: [
+            productPriceLabel(),
+            productCashbackView(),
+            productDiscountView()
+        ])
+    }
+    
+    private func productPriceLabel() -> NodeType {
+        return Node<UILabel>(identifier: "Product-Price-Label") { view, _, _ in
             view.font = .title1ThemeSemibold()
             view.textColor = .tpOrange()
             
             if let initialData = self.state.initialData,
                 let initialDataPrice = initialData["price"] {
-                view.text = initialDataPrice
+                view.text = "\(initialDataPrice)"
             }
             
             if let productDetail = self.state.productDetail {
@@ -393,7 +443,7 @@ class ProductHeaderNode: ContainerNode {
     private func productCashbackView() -> NodeType {
         guard let cashback = state.productDetail?.cashback,
             cashback != "" else {
-                return NilNode()
+            return NilNode()
         }
         
         return Node<UILabel>(identifier: "Product-Cashback-View") { view, layout, _ in
@@ -401,7 +451,6 @@ class ProductHeaderNode: ContainerNode {
             layout.paddingRight = 4
             layout.height = 18
             layout.marginLeft = 5
-            layout.marginTop = 12
             view.backgroundColor = .tpGreen()
             view.textColor = .white
             view.font = .microTheme()
@@ -409,6 +458,77 @@ class ProductHeaderNode: ContainerNode {
             view.layer.masksToBounds = true
             view.textAlignment = .center
             view.text = "Cashback \(cashback)"
+        }
+    }
+    
+    private func productDiscountView() -> NodeType {
+        guard let percentage = state.productDetail?.campaign?.percentage_amount else {
+            return NilNode()
+        }
+        
+        return Node<UILabel>(identifier: "Product-Discount-View") { view, layout, _ in
+            layout.paddingLeft = 4
+            layout.paddingRight = 4
+            layout.height = 18
+            layout.marginLeft = 5
+            view.backgroundColor = .tpRed()
+            view.textColor = .white
+            view.font = .microTheme()
+            view.layer.cornerRadius = 4
+            view.layer.masksToBounds = true
+            view.textAlignment = .center
+            view.text = "\(percentage)%OFF"
+        }
+    }
+    
+    private func productPricePromoView() -> NodeType {
+        guard let endDate = state.productDetail?.campaign?.end_date else {
+            return NilNode()
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let endPromoDate = formatter.date(from:endDate),
+            endPromoDate > Date(),
+            endPromoDate.timeIntervalSinceNow < 24 * 60 * 60 else {
+                return NilNode()
+        }
+        
+        return Node(identifier: "Product-Promo-View") { _, layout, _ in
+            layout.flexDirection = .row
+            layout.marginLeft = 15
+            layout.marginBottom = 22
+        }.add(children: [
+            productPricePromoLabel(),
+            productPriceTimerView()
+        ])
+    }
+    
+    private func productPricePromoLabel() -> NodeType {
+        return Node<UILabel>(identifier: "Product-Price-Promo-Label") { view, layout, _ in
+            layout.height = 20
+            view.textColor = .tpSecondaryBlackText()
+            view.font = .microTheme()
+            view.text = "Promo berakhir dalam : "
+        }
+    }
+    
+    private func productPriceTimerView() -> NodeType {
+        guard let expiredDate = state.productDetail?.campaign?.end_date else {
+            return NilNode()
+        }
+        
+        return Node<UILabel>(identifier: "Product-Price-Promo-Label") { view, layout, _ in
+            layout.height = 20
+            layout.width = 110
+            view.textColor = .tpGreen()
+            view.font = .microTheme()
+            view.layer.borderWidth = 1.0
+            view.layer.borderColor = UIColor.tpGreen().cgColor
+            view.layer.cornerRadius = 10
+            view.layer.masksToBounds = true
+            view.textAlignment = .center
+            view.text = self.timeRemainingString(withEndPromo: expiredDate)
         }
     }
     
@@ -434,28 +554,28 @@ class ProductHeaderNode: ContainerNode {
                 view.addGestureRecognizer(tapGestureRecognizer)
             }
             
-            }.add(children: [
-                Node<UIView>() { view, layout, _ in
-                    layout.width = 80
-                    layout.height = 32
-                    layout.alignSelf = .center
-                    layout.flexShrink = 1
-                    view.isUserInteractionEnabled = true
-                    
-                    self.starRating.center = CGPoint(x: layout.width / 2, y: layout.height / 2)
-                    self.starRating.rating = Float(productRating)!
-                    view.addSubview(self.starRating)
-                },
-                Node<UILabel>() { view, layout, _ in
-                    layout.alignSelf = .center
-                    
-                    view.text = "\(reviewCount) Ulasan"
-                    view.textColor = .tpGreen()
-                    view.highlightedTextColor = .tpLightGreen()
-                    view.font = .microTheme()
-                    view.isUserInteractionEnabled = true
-                }
-                ])
+        }.add(children: [
+            Node<UIView>() { view, layout, _ in
+                layout.width = 80
+                layout.height = 32
+                layout.alignSelf = .center
+                layout.flexShrink = 1
+                view.isUserInteractionEnabled = true
+                
+                self.starRating.center = CGPoint(x: layout.width / 2, y: layout.height / 2)
+                self.starRating.rating = Float(productRating)!
+                view.addSubview(self.starRating)
+            },
+            Node<UILabel>() { view, layout, _ in
+                layout.alignSelf = .center
+                
+                view.text = "\(reviewCount) Ulasan"
+                view.textColor = .tpGreen()
+                view.highlightedTextColor = .tpLightGreen()
+                view.font = .microTheme()
+                view.isUserInteractionEnabled = true
+            }
+        ])
     }
     
     private func discussionBoxView() -> NodeType {
@@ -478,23 +598,23 @@ class ProductHeaderNode: ContainerNode {
                 view.addGestureRecognizer(tapGestureRecognizer)
             }
             
-            }.add(children: [
-                Node<UIImageView>() { view, layout, _ in
-                    layout.width = 32
-                    layout.height = 32
-                    layout.alignSelf = .center
-                    view.image = UIImage(named: "icon_discussion_green")
-                    view.isUserInteractionEnabled = true
-                },
-                Node<UILabel>() { view, layout, _ in
-                    layout.alignSelf = .center
-                    view.text = "\(talkCount) Diskusi"
-                    view.textColor = .tpGreen()
-                    view.highlightedTextColor = .tpLightGreen()
-                    view.font = .microTheme()
-                    view.isUserInteractionEnabled = true
-                }
-                ])
+        }.add(children: [
+            Node<UIImageView>() { view, layout, _ in
+                layout.width = 32
+                layout.height = 32
+                layout.alignSelf = .center
+                view.image = UIImage(named: "icon_discussion_green")
+                view.isUserInteractionEnabled = true
+            },
+            Node<UILabel>() { view, layout, _ in
+                layout.alignSelf = .center
+                view.text = "\(talkCount) Diskusi"
+                view.textColor = .tpGreen()
+                view.highlightedTextColor = .tpLightGreen()
+                view.font = .microTheme()
+                view.isUserInteractionEnabled = true
+            }
+        ])
     }
     
     private func courierBoxView() -> NodeType {
@@ -517,23 +637,42 @@ class ProductHeaderNode: ContainerNode {
                 view.addGestureRecognizer(tapGestureRecognizer)
             }
             
-            }.add(children: [
-                Node<UIImageView>() { view, layout, _ in
-                    layout.width = 32
-                    layout.height = 32
-                    layout.alignSelf = .center
-                    view.image = UIImage(named: "icon_courier_green")
-                    view.isUserInteractionEnabled = true
-                },
-                Node<UILabel>() { view, layout, _ in
-                    layout.alignSelf = .center
-                    view.text = "\(shipments) Kurir"
-                    view.textColor = .tpGreen()
-                    view.highlightedTextColor = .tpLightGreen()
-                    view.font = .microTheme()
-                    view.isUserInteractionEnabled = true
-                }
-                ])
+        }.add(children: [
+            Node<UIImageView>() { view, layout, _ in
+                layout.width = 32
+                layout.height = 32
+                layout.alignSelf = .center
+                view.image = UIImage(named: "icon_courier_green")
+                view.isUserInteractionEnabled = true
+            },
+            Node<UILabel>() { view, layout, _ in
+                layout.alignSelf = .center
+                view.text = "\(shipments) Kurir"
+                view.textColor = .tpGreen()
+                view.highlightedTextColor = .tpLightGreen()
+                view.font = .microTheme()
+                view.isUserInteractionEnabled = true
+            }
+        ])
+    }
+    
+    private func timeRemainingString(withEndPromo endPromo: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let endPromoDate = formatter.date(from: endPromo) else {
+            return "00h : 00m : 00s"
+        }
+        
+        let currentDate = Date()
+        
+        let unitFlags = Set<Calendar.Component>([.month, .day, .hour, .minute, .second])
+        let components = Calendar.current.dateComponents(unitFlags, from: currentDate, to: endPromoDate)
+        
+        let hourComponent = components.hour ?? 0
+        let minuteComponent = components.minute ?? 0
+        let secondComponent = components.second ?? 0
+        
+        return "\(String(format: "%02d", hourComponent))h : \(String(format: "%02d", minuteComponent))m : \(String(format: "%02d", secondComponent))s"
     }
     
 }

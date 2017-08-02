@@ -25,7 +25,11 @@
     +(UIColor *)tpOrange{
         return [UIColor fromHexString:@"#ff5732"];
     }
-    
+
+    +(UIColor *)tpRed{
+        return [UIColor fromHexString:@"#f02222"];
+    }
+
     +(UIColor *)tpPrimaryBlackText{
         return [[UIColor fromHexString:@"#000000"] colorWithAlphaComponent:0.7];
     }
@@ -60,10 +64,6 @@
 
     +(UIColor *)tpGray{
         return [UIColor fromHexString:@"#bdbdbd"];
-    }
-
-    +(UIColor *)tpRed{
-        return [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
     }
 
     +(UIColor *)fromHexString:(NSString *)hexString{

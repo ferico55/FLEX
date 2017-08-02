@@ -512,6 +512,10 @@ typedef enum TagRequest {
     [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs removeObjectForKey:@"total_cart"];
+    [prefs synchronize];
+    
     [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
