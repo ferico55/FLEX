@@ -115,6 +115,12 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
         }
     } else {
         // if home page banner
+        NSURL *url = [self sanitizedUrlForUrl:banner.redirect_url];
+        
+        if (![@[@"tokopedia.com", @"m.tokopedia.com", @"www.tokopedia.com"] containsObject:url.host]) {
+            [self openWebViewWithUrl:banner.redirect_url];
+            return;
+        }
         
         // will use TPRoute when new banner api is up
         [self navigateToIntermediaryPage];
