@@ -140,10 +140,12 @@ class FeedPromotionComponentView: ComponentView<FeedCardPromotionState> {
                 label.textColor = .black
                 label.alpha = 0.38
             },
-            Node<UILabel>(identifier: "date") { label, _, _ in
-                label.text = date
+            Node<UILabel>(identifier: "date") { label, layout, _ in
+                label.text = (date == "") ? "-" : date
                 label.font = .smallTheme()
                 label.textColor = UIColor.black.withAlphaComponent(0.7)
+                
+                layout.flexShrink = 1
             }
         ])
     }

@@ -1807,6 +1807,7 @@
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
+		627351021F31B1E400487CCE /* FeedOfficialStoreComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627351011F31B1E400487CCE /* FeedOfficialStoreComponentView.swift */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -2203,7 +2204,6 @@
 		349445C71F306BA700EEB628 /* DigitalVoucher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalVoucher.swift; sourceTree = "<group>"; };
 		349445C91F306BA700EEB628 /* DigitalCartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalCartViewController.swift; sourceTree = "<group>"; };
 		349445CA1F306BA700EEB628 /* DigitalCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalCartViewController.xib; sourceTree = "<group>"; };
-		349445CD1F306BA700EEB628 /* EmptyStateComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStateComponentView.swift; sourceTree = "<group>"; };
 		349445CE1F306BA700EEB628 /* FeedComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedComponentView.swift; sourceTree = "<group>"; };
 		349445CF1F306BA700EEB628 /* FeedDetailActionComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDetailActionComponentView.swift; sourceTree = "<group>"; };
 		349445D01F306BA700EEB628 /* FeedDetailHeaderComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDetailHeaderComponentView.swift; sourceTree = "<group>"; };
@@ -5029,6 +5029,7 @@
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6270659B1D7EB80600BDE9F8 /* Localytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Localytics.framework; sourceTree = "<group>"; };
+		627351011F31B1E400487CCE /* FeedOfficialStoreComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedOfficialStoreComponentView.swift; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A3FD3121F2843A100ADF80D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -5385,7 +5386,7 @@
 		349445CC1F306BA700EEB628 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				349445CD1F306BA700EEB628 /* EmptyStateComponentView.swift */,
+				627351011F31B1E400487CCE /* FeedOfficialStoreComponentView.swift */,
 				349445CE1F306BA700EEB628 /* FeedComponentView.swift */,
 				349445CF1F306BA700EEB628 /* FeedDetailActionComponentView.swift */,
 				349445D01F306BA700EEB628 /* FeedDetailHeaderComponentView.swift */,
@@ -12603,6 +12604,7 @@
 				349453941F306BAD00EEB628 /* SecurityQuestionTweaks.m in Sources */,
 				3494561F1F306BB000EEB628 /* RejectOrderRequest.m in Sources */,
 				349454991F306BAE00EEB628 /* MyWishlistViewController.m in Sources */,
+				627351021F31B1E400487CCE /* FeedOfficialStoreComponentView.swift in Sources */,
 				349453391F306BAD00EEB628 /* TransactionVoucherResult.m in Sources */,
 				349453621F306BAD00EEB628 /* UploadImageImage.m in Sources */,
 				349455C11F306BAF00EEB628 /* PulsaOperatorRoot.swift in Sources */,

@@ -314,6 +314,65 @@ public final class FeedsQuery: GraphQLQuery {
     "          activity" +
     "          amount" +
     "        }" +
+    "        seller_story {" +
+    "          __typename" +
+    "          id" +
+    "          title" +
+    "          date" +
+    "          link" +
+    "          image" +
+    "          youtube" +
+    "        }" +
+    "        redirect_url_app" +
+    "        official_store {" +
+    "          __typename" +
+    "          shop_id" +
+    "          shop_apps_url" +
+    "          shop_name" +
+    "          logo_url" +
+    "          microsite_url" +
+    "          brand_img_url" +
+    "          is_owner" +
+    "          shop_tagline" +
+    "          is_new" +
+    "          title" +
+    "          mobile_img_url" +
+    "          feed_hexa_color" +
+    "          redirect_url_app" +
+    "          products {" +
+    "            __typename" +
+    "            brand_id" +
+    "            brand_logo" +
+    "            data {" +
+    "              __typename" +
+    "              id" +
+    "              name" +
+    "              url_app" +
+    "              image_url" +
+    "              image_url_700" +
+    "              price" +
+    "              shop {" +
+    "                __typename" +
+    "                name" +
+    "                url_app" +
+    "                location" +
+    "              }" +
+    "              original_price" +
+    "              discount_percentage" +
+    "              discount_expired" +
+    "              badges {" +
+    "                __typename" +
+    "                title" +
+    "                image_url" +
+    "              }" +
+    "              labels {" +
+    "                __typename" +
+    "                title" +
+    "                color" +
+    "              }" +
+    "            }" +
+    "          }" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -457,6 +516,9 @@ public final class FeedsQuery: GraphQLQuery {
           public let promotions: [Promotion?]?
           public let statusActivity: String?
           public let newStatusActivity: NewStatusActivity?
+          public let sellerStory: SellerStory?
+          public let redirectUrlApp: String?
+          public let officialStore: [OfficialStore?]?
 
           public init(reader: GraphQLResultReader) throws {
             __typename = try reader.value(for: Field(responseName: "__typename"))
@@ -466,6 +528,9 @@ public final class FeedsQuery: GraphQLQuery {
             promotions = try reader.optionalList(for: Field(responseName: "promotions"))
             statusActivity = try reader.optionalValue(for: Field(responseName: "status_activity"))
             newStatusActivity = try reader.optionalValue(for: Field(responseName: "new_status_activity"))
+            sellerStory = try reader.optionalValue(for: Field(responseName: "seller_story"))
+            redirectUrlApp = try reader.optionalValue(for: Field(responseName: "redirect_url_app"))
+            officialStore = try reader.optionalList(for: Field(responseName: "official_store"))
           }
 
           public struct Product: GraphQLMappable {
@@ -551,6 +616,146 @@ public final class FeedsQuery: GraphQLQuery {
               source = try reader.optionalValue(for: Field(responseName: "source"))
               activity = try reader.optionalValue(for: Field(responseName: "activity"))
               amount = try reader.optionalValue(for: Field(responseName: "amount"))
+            }
+          }
+
+          public struct SellerStory: GraphQLMappable {
+            public let __typename: String
+            public let id: GraphQLID?
+            public let title: String?
+            public let date: String?
+            public let link: String?
+            public let image: String?
+            public let youtube: String?
+
+            public init(reader: GraphQLResultReader) throws {
+              __typename = try reader.value(for: Field(responseName: "__typename"))
+              id = try reader.optionalValue(for: Field(responseName: "id"))
+              title = try reader.optionalValue(for: Field(responseName: "title"))
+              date = try reader.optionalValue(for: Field(responseName: "date"))
+              link = try reader.optionalValue(for: Field(responseName: "link"))
+              image = try reader.optionalValue(for: Field(responseName: "image"))
+              youtube = try reader.optionalValue(for: Field(responseName: "youtube"))
+            }
+          }
+
+          public struct OfficialStore: GraphQLMappable {
+            public let __typename: String
+            public let shopId: Int?
+            public let shopAppsUrl: String?
+            public let shopName: String?
+            public let logoUrl: String?
+            public let micrositeUrl: String?
+            public let brandImgUrl: String?
+            public let isOwner: Bool?
+            public let shopTagline: String?
+            public let isNew: Bool?
+            public let title: String?
+            public let mobileImgUrl: String?
+            public let feedHexaColor: String?
+            public let redirectUrlApp: String?
+            public let products: [Product?]?
+
+            public init(reader: GraphQLResultReader) throws {
+              __typename = try reader.value(for: Field(responseName: "__typename"))
+              shopId = try reader.optionalValue(for: Field(responseName: "shop_id"))
+              shopAppsUrl = try reader.optionalValue(for: Field(responseName: "shop_apps_url"))
+              shopName = try reader.optionalValue(for: Field(responseName: "shop_name"))
+              logoUrl = try reader.optionalValue(for: Field(responseName: "logo_url"))
+              micrositeUrl = try reader.optionalValue(for: Field(responseName: "microsite_url"))
+              brandImgUrl = try reader.optionalValue(for: Field(responseName: "brand_img_url"))
+              isOwner = try reader.optionalValue(for: Field(responseName: "is_owner"))
+              shopTagline = try reader.optionalValue(for: Field(responseName: "shop_tagline"))
+              isNew = try reader.optionalValue(for: Field(responseName: "is_new"))
+              title = try reader.optionalValue(for: Field(responseName: "title"))
+              mobileImgUrl = try reader.optionalValue(for: Field(responseName: "mobile_img_url"))
+              feedHexaColor = try reader.optionalValue(for: Field(responseName: "feed_hexa_color"))
+              redirectUrlApp = try reader.optionalValue(for: Field(responseName: "redirect_url_app"))
+              products = try reader.optionalList(for: Field(responseName: "products"))
+            }
+
+            public struct Product: GraphQLMappable {
+              public let __typename: String
+              public let brandId: Int?
+              public let brandLogo: String?
+              public let data: Datum?
+
+              public init(reader: GraphQLResultReader) throws {
+                __typename = try reader.value(for: Field(responseName: "__typename"))
+                brandId = try reader.optionalValue(for: Field(responseName: "brand_id"))
+                brandLogo = try reader.optionalValue(for: Field(responseName: "brand_logo"))
+                data = try reader.optionalValue(for: Field(responseName: "data"))
+              }
+
+              public struct Datum: GraphQLMappable {
+                public let __typename: String
+                public let id: Int?
+                public let name: String?
+                public let urlApp: String?
+                public let imageUrl: String?
+                public let imageUrl_700: String?
+                public let price: String?
+                public let shop: Shop?
+                public let originalPrice: String?
+                public let discountPercentage: Int?
+                public let discountExpired: String?
+                public let badges: [Badge?]?
+                public let labels: [Label?]?
+
+                public init(reader: GraphQLResultReader) throws {
+                  __typename = try reader.value(for: Field(responseName: "__typename"))
+                  id = try reader.optionalValue(for: Field(responseName: "id"))
+                  name = try reader.optionalValue(for: Field(responseName: "name"))
+                  urlApp = try reader.optionalValue(for: Field(responseName: "url_app"))
+                  imageUrl = try reader.optionalValue(for: Field(responseName: "image_url"))
+                  imageUrl_700 = try reader.optionalValue(for: Field(responseName: "image_url_700"))
+                  price = try reader.optionalValue(for: Field(responseName: "price"))
+                  shop = try reader.optionalValue(for: Field(responseName: "shop"))
+                  originalPrice = try reader.optionalValue(for: Field(responseName: "original_price"))
+                  discountPercentage = try reader.optionalValue(for: Field(responseName: "discount_percentage"))
+                  discountExpired = try reader.optionalValue(for: Field(responseName: "discount_expired"))
+                  badges = try reader.optionalList(for: Field(responseName: "badges"))
+                  labels = try reader.optionalList(for: Field(responseName: "labels"))
+                }
+
+                public struct Shop: GraphQLMappable {
+                  public let __typename: String
+                  public let name: String?
+                  public let urlApp: String?
+                  public let location: String?
+
+                  public init(reader: GraphQLResultReader) throws {
+                    __typename = try reader.value(for: Field(responseName: "__typename"))
+                    name = try reader.optionalValue(for: Field(responseName: "name"))
+                    urlApp = try reader.optionalValue(for: Field(responseName: "url_app"))
+                    location = try reader.optionalValue(for: Field(responseName: "location"))
+                  }
+                }
+
+                public struct Badge: GraphQLMappable {
+                  public let __typename: String
+                  public let title: String
+                  public let imageUrl: String
+
+                  public init(reader: GraphQLResultReader) throws {
+                    __typename = try reader.value(for: Field(responseName: "__typename"))
+                    title = try reader.value(for: Field(responseName: "title"))
+                    imageUrl = try reader.value(for: Field(responseName: "image_url"))
+                  }
+                }
+
+                public struct Label: GraphQLMappable {
+                  public let __typename: String
+                  public let title: String
+                  public let color: String
+
+                  public init(reader: GraphQLResultReader) throws {
+                    __typename = try reader.value(for: Field(responseName: "__typename"))
+                    title = try reader.value(for: Field(responseName: "title"))
+                    color = try reader.value(for: Field(responseName: "color"))
+                  }
+                }
+              }
             }
           }
         }

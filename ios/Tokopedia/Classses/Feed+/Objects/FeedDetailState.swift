@@ -41,7 +41,7 @@ struct FeedDetailActivityState: Render.StateType {
     var activity = ""
     var amount = 0
     
-    init() { }
+    init() {}
     
     init(statusActivity: FeedDetailQuery.Data.Feed.Datum.Content.NewStatusActivity) {
         self.source = NSString.convertHTML(statusActivity.source!)

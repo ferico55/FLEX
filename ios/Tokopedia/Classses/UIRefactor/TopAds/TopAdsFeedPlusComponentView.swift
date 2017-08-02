@@ -212,7 +212,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
                 view, _, _ in
                 view.text = product.productName
                 view.textColor = UIColor.tpPrimaryBlackText().withAlphaComponent(0.70)
-                view.font = .smallThemeMedium()
+                view.font = .smallThemeSemibold()
                 view.numberOfLines = 2
             }
             
@@ -221,7 +221,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
             let productPriceLabel = Node<UILabel> {
                 view, layout, _ in
                 view.textColor = UIColor.tpOrange()
-                view.font = .smallTheme()
+                view.font = .smallThemeSemibold()
                 view.text = product.productPrice
                 layout.marginHorizontal = 8
                 layout.marginBottom = 9

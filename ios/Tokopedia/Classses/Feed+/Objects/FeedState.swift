@@ -13,9 +13,12 @@ import ReSwift
 import Apollo
 
 enum FeedContentType {
+    case notHandled
     case newProduct
     case editProduct
     case promotion
+    case officialStoreBrand
+    case officialStoreCampaign
 }
 
 enum FeedErrorType {
@@ -56,7 +59,7 @@ struct FeedInspirationState: Render.StateType {
     var title = ""
     var products: [FeedCardProductState?] = []
     
-    init() { }
+    init() {}
     
     init(data: FeedsQuery.Data.Inspiration.Datum) {
         self.title = data.title!
@@ -88,6 +91,8 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var product: [FeedCardProductState?] = []
     var promotion: [FeedCardPromotionState] = []
     var activity = FeedCardActivityState()
+    var officialStore: [FeedCardOfficialStoreState]?
+    var redirectURL = ""
 }
 
 struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
@@ -95,7 +100,7 @@ struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
     var activity = ""
     var amount = 0
     
-    init() { }
+    init() {}
     
     init(statusActivity: FeedsQuery.Data.Feed.Datum.Content.NewStatusActivity) {
         self.source = NSString.convertHTML(statusActivity.source!)
@@ -115,6 +120,7 @@ struct FeedCardShopState: Render.StateType, ReSwift.StateType {
 }
 
 struct FeedCardProductState: Render.StateType, ReSwift.StateType {
+    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
     var productID = ""
     var productName = ""
     var productPrice = ""
@@ -134,7 +140,17 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
     var isRecommendationProduct = false
     var recommendationProductSource = ""
     
-    init() { }
+    var isCampaign = false
+    var originalPrice = ""
+    var discountPercentage = 0
+    var hasLabels = false
+    var labels: [FeedCardProductLabelState] = []
+    var shopImageURL = ""
+    var shopName = ""
+    var shopURL = ""
+    var isFreeReturns = false
+    
+    init() {}
     
     init(recommendationProduct: FeedsQuery.Data.Inspiration.Datum.Recommendation) {
         self.productName = recommendationProduct.name!
@@ -142,6 +158,38 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
         self.productImageSmall = recommendationProduct.imageUrl!
         self.productURL = recommendationProduct.appUrl!
         self.isRecommendationProduct = true
+    }
+    
+    init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product) {
+        guard let product = officialStoreProduct.data, let shop = product.shop, let badges = product.badges else { return }
+        
+        self.productPrice = product.price!
+        self.productName = product.name!
+        self.productImageSmall = product.imageUrl!
+        self.originalPrice = product.originalPrice!
+        self.discountPercentage = product.discountPercentage!
+        self.isCampaign = true
+        self.productURL = product.urlApp!
+        
+        self.shopName = NSString.convertHTML(shop.name!)
+        self.shopImageURL = officialStoreProduct.brandLogo!
+        self.shopURL = shop.urlApp!
+        
+        _ = badges.map { badge in
+            if badge?.title == "Free Return" {
+                self.isFreeReturns = true
+            }
+        }
+        
+        if let productLabels = product.labels {
+            if productLabels.count > 0 {
+                self.labels = productLabels.map { productLabel in
+                    guard let productLabel = productLabel else { return FeedCardProductLabelState() }
+                    
+                    return FeedCardProductLabelState(productLabel: productLabel)
+                }
+            }
+        }
     }
 }
 
@@ -160,34 +208,108 @@ struct FeedCardPromotionState: Render.StateType, ReSwift.StateType {
     var promoName = ""
 }
 
+struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
+    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    var title = ""
+    var shopImageURL = ""
+    var shopURL = ""
+    var isCampaign = false
+    var bannerURL = ""
+    var borderHexString = ""
+    var redirectURL = "tokopedia://official-store/mobile"
+    var products: [FeedCardOfficialStoreProductState] = []
+    var incomplete = false
+    
+    init() {}
+    
+    init(data: FeedsQuery.Data.Feed.Datum.Content.OfficialStore, redirectURL: String) {
+        self.shopURL = data.shopAppsUrl ?? ""
+        self.shopImageURL = data.micrositeUrl ?? ""
+        
+        self.title = data.title ?? ""
+        self.bannerURL = data.mobileImgUrl ?? ""
+        self.borderHexString = data.feedHexaColor ?? ""
+        self.redirectURL = redirectURL
+        
+        if let offStoreProducts = data.products {
+            let tempProducts: [FeedCardOfficialStoreProductState] = offStoreProducts.map { product in
+                return FeedCardOfficialStoreProductState(productData: product!)
+            }
+            
+            self.products = tempProducts
+            self.isCampaign = true
+            
+            if self.products.count != (self.oniPad ? 6 : 4) {
+                self.incomplete = true
+            }
+        }
+    }
+}
+
+struct FeedCardOfficialStoreProductState: Render.StateType, ReSwift.StateType {
+    var brandLogoURL = ""
+    var productDetail = FeedCardProductState()
+    
+    init() {}
+    
+    init(productData: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product) {
+        self.brandLogoURL = productData.brandLogo ?? ""
+        self.productDetail = FeedCardProductState(officialStoreProduct: productData)
+    }
+}
+
+struct FeedCardProductLabelState: Render.StateType, ReSwift.StateType {
+    var hasLabel = false
+    var backgroundColor = ""
+    var text = ""
+    var textColor: UIColor = .white
+    
+    init() {}
+    
+    init(productLabel: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product.Datum.Label) {
+        self.backgroundColor = productLabel.color
+        self.text = productLabel.title
+        
+        if self.backgroundColor == "#ffffff" {
+            self.textColor = .tpDisabledBlackText()
+        }
+    }
+}
+
 class FeedStateManager: NSObject {
     func initFeedState(queryResult: FeedsQuery.Data?) -> FeedState {
-        guard let `queryResult` = queryResult else { return FeedState() }
+        guard let result = queryResult,
+            let feed = result.feed,
+            let feedData = feed.data,
+            let feedMeta = feed.meta,
+            let feedLinks = feed.links,
+            let pagination = feedLinks.pagination,
+            let inspiration = result.inspiration,
+            let inspirationData = inspiration.data else { return FeedState() }
         
         var feedState = FeedState()
-        feedState.totalData = queryResult.feed?.meta?.totalData ?? 0
-        feedState.hasNextPage = (queryResult.feed?.links?.pagination?.hasNextPage)!
+        feedState.totalData = feedMeta.totalData ?? 0
+        feedState.hasNextPage = pagination.hasNextPage!
         
         if feedState.hasNextPage {
-            let dataSize = queryResult.feed?.data?.count
-            feedState.cursor = (queryResult.feed?.data?[dataSize! - 1]?.cursor)!
+            let dataSize = feedData.count
+            feedState.cursor = (feedData[dataSize - 1]?.cursor)!
         }
         
         var cards: [FeedCardState] = []
         
-        queryResult.feed?.data?.forEach({ card in
+        feedData.forEach({ card in
             let feedCard = self.initFeedCard(feedData: card!)
+            
+            if feedCard.content.type == .notHandled {
+                return
+            }
+            
             cards += [feedCard]
         })
         
-        var inspirationAmountIsCorrect = false
-        
-        if let recommendationCount = queryResult.inspiration?.data?[0]?.recommendation?.count, (feedState.oniPad && recommendationCount == 6) || (!feedState.oniPad && recommendationCount == 4) {
-            inspirationAmountIsCorrect = true
-        }
-        
-        if inspirationAmountIsCorrect {
-            let feedInspiration = self.initFeedInspirationCard(data: (queryResult.inspiration?.data?[0])!)
+        if inspirationData.count > 0, let recommendationCount = inspirationData[0]?.recommendation?.count, (feedState.oniPad && recommendationCount == 6) || (!feedState.oniPad && recommendationCount == 4) {
+            let feedInspiration = self.initFeedInspirationCard(data: inspirationData[0]!)
             
             cards += [feedInspiration]
         }
@@ -268,7 +390,7 @@ class FeedStateManager: NSObject {
             
             guard let products = feedContent.products else { return FeedCardContentState() }
             
-            let productArray: [FeedCardProductState] = products.enumerated().map { (index, product) in
+            let productArray: [FeedCardProductState] = products.enumerated().map { index, product in
                 var productState = self.initFeedProduct(feedProduct: product!, cardID: cardID)
                 
                 if products.count > 6 && index == 5 {
@@ -286,6 +408,23 @@ class FeedStateManager: NSObject {
             content.product = productArray
             content.totalProduct = feedContent.totalProduct!
             content.activity = FeedCardActivityState(statusActivity: feedContent.newStatusActivity!)
+        } else if feedContent.type == "official_store_brand" || feedContent.type == "official_store_campaign" {
+            content.type = (feedContent.type == "official_store_brand") ? .officialStoreBrand : .officialStoreCampaign
+            content.redirectURL = feedContent.redirectUrlApp ?? "tokopedia://official-store/mobile"
+            
+            if let officialStores = feedContent.officialStore {
+                content.officialStore = officialStores.map { officialStore in
+                    let store = FeedCardOfficialStoreState(data: officialStore!, redirectURL: officialStore?.redirectUrlApp ?? "tokopedia://official-store/mobile")
+                    
+                    if store.incomplete {
+                        content.type = .notHandled
+                    }
+                    
+                    return store
+                }
+            }
+        } else {
+            content.type = .notHandled
         }
         
         return content

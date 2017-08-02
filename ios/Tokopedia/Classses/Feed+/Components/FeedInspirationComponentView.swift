@@ -20,44 +20,48 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
             view.backgroundColor = .white
             
             layout.width = size.width
-            }.add(child: Node<UILabel> (identifier: "title") { label, layout, size in
-                label.text = state?.title
-                label.font = UIFont.semiboldSystemFont(ofSize: 16.0)
-                label.textColor = UIColor.tpPrimaryBlackText()
-                
-                layout.marginLeft = 10
-                layout.marginTop = 16
-                layout.marginBottom = 16
-            }
+        }.add(child: Node<UILabel>(identifier: "title") { label, layout, _ in
+            label.text = state?.title
+            label.font = UIFont.semiboldSystemFont(ofSize: 16.0)
+            label.textColor = UIColor.tpPrimaryBlackText()
+            
+            layout.marginLeft = 10
+            layout.marginTop = 16
+            layout.marginBottom = 16
+        }
         )
         
-        let horizontalLine = Node<UIView>(identifier: "line") { view, layout, _ in
-            layout.height = 1
-            
-            view.backgroundColor = .tpLine()
-        }
-        
-        let card = Node<UIView>(identifier: "inspiration-card") { _, layout, size in
+        let card = Node<UIView>(identifier: "inspiration-card") { _, layout, _ in
             layout.flexDirection = .column
             layout.alignItems = .stretch
             layout.flexShrink = 1
             layout.flexGrow = 1
+        }.add(children: [
+            Node<UIView>() { view, layout, _ in
+                view.borderWidth = 1
+                view.borderColor = .tpLine()
+                
+                layout.flexDirection = .column
+                layout.alignItems = .stretch
+                layout.flexShrink = 1
+                layout.flexGrow = 1
             }.add(children: [
                 titleView,
-                horizontalLine,
-                self.productCellLayout(state: state, size: size),
-                Node<UIView>(identifier: "blank-space") { view, layout, size in
-                    layout.height = 15
-                    layout.width = size.width
-                    view.backgroundColor = .tpBackground()
-                }
-                ])
+                self.horizontalLine(),
+                self.productCellLayout(state: state, size: size)
+            ]),
+            Node<UIView>(identifier: "blank-space") { view, layout, size in
+                layout.height = 15
+                layout.width = size.width
+                view.backgroundColor = .tpBackground()
+            }
+        ])
         
         return card
     }
     
     func productCellLayout(state: FeedInspirationState?, size: CGSize) -> NodeType {
-        guard let `state` = state else { return NilNode() }
+        guard let state = state else { return NilNode() }
         
         let mainContent: NodeType = Node<UIView>(identifier: "main-content") { _, layout, size in
             layout.flexDirection = .column
@@ -68,62 +72,60 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
             mainContent.add(children: [
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
-                    }.add(children: [
-                        ProductCellComponentView().construct(state: state.products[0], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[1], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[2], size: size)
-                        ]),
-                self.horizontalLine(withSize: size),
+                }.add(children: [
+                    ProductCellComponentView().construct(state: state.products[0], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[1], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[2], size: size)
+                ]),
+                self.horizontalLine(),
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
-                    }.add(children: [
-                        ProductCellComponentView().construct(state: state.products[3], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[4], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[5], size: size)
-                        ]),
-                self.horizontalLine(withSize: size)
+                }.add(children: [
+                    ProductCellComponentView().construct(state: state.products[3], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[4], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[5], size: size)
                 ])
+            ])
         } else {
             mainContent.add(children: [
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
-                    }.add(children: [
-                        ProductCellComponentView().construct(state: state.products[0], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[1], size: size)
-                        ]),
-                self.horizontalLine(withSize: size),
+                }.add(children: [
+                    ProductCellComponentView().construct(state: state.products[0], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[1], size: size)
+                ]),
+                self.horizontalLine(),
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row
-                    }.add(children: [
-                        ProductCellComponentView().construct(state: state.products[2], size: size),
-                        self.verticalLine(withSize: size),
-                        ProductCellComponentView().construct(state: state.products[3], size: size)
-                        ]),
-                self.horizontalLine(withSize: size)
+                }.add(children: [
+                    ProductCellComponentView().construct(state: state.products[2], size: size),
+                    self.verticalLine(),
+                    ProductCellComponentView().construct(state: state.products[3], size: size)
                 ])
+            ])
         }
         
         return mainContent
     }
     
-    func horizontalLine(withSize size: CGSize) -> NodeType {
+    func horizontalLine() -> NodeType {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = .tpLine()
+            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
         }
     }
     
-    func verticalLine(withSize size: CGSize) -> NodeType {
+    func verticalLine() -> NodeType {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.width = 1
             
-            view.backgroundColor = .tpLine()
+            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
         }
     }
 }

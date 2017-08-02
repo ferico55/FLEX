@@ -51,6 +51,10 @@ class FeedComponentView: ComponentView<FeedCardState> {
             return FeedInspirationComponentView().construct(state: inspiration, size: size)
         }
         
+        if state.content.officialStore != nil {
+            return FeedOfficialStoreComponentView().construct(state: state.content, size: size)
+        }
+        
         return (state.topads != nil) ? topAdsComponent.construct(state: state.topads, size: size) : self.feedCard(state: state, size: size)
     }
     

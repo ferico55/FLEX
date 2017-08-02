@@ -57,6 +57,58 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 					activity
 					amount
 				}
+				seller_story {
+					id
+					title
+					date
+					link
+					image
+					youtube
+				}
+				redirect_url_app
+				official_store {
+					shop_id
+					shop_apps_url
+					shop_name
+					logo_url
+					microsite_url
+					brand_img_url
+					is_owner
+					shop_tagline
+					is_new
+					title
+					mobile_img_url
+					feed_hexa_color
+					redirect_url_app
+					products {
+						brand_id
+						brand_logo
+						data {
+							id
+							name
+							url_app
+							image_url
+							image_url_700
+							price
+							shop {
+								name
+								url_app
+								location
+							}
+							original_price
+							discount_percentage
+							discount_expired
+							badges {
+								title
+								image_url
+							}
+							labels {
+								title
+								color
+							}
+						}
+					}
+				}
 			}
 		}
 		links {
