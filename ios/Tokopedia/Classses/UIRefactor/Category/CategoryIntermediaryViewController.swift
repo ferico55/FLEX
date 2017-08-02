@@ -636,7 +636,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     func back() {
-        _ = self.navigationController?.popToRootViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     override func didReceiveMemoryWarning() {

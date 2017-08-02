@@ -1013,7 +1013,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                _categoryIntermediaryResult = result;
                                                if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
                                                    CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult];
-                                                   [self.navigationController pushViewController:categoryIntermediaryViewController animated:NO];
+                                                   categoryIntermediaryViewController.hidesBottomBarWhenPushed = YES;
+                                                   [self.navigationController replaceTopViewControllerWithViewController:categoryIntermediaryViewController];
                                                } else {
                                                    _isCategorySubviewExpanded = NO;
                                                    [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"%@%@", @"Browse Category - ", _categoryIntermediaryResult.id]];
