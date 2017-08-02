@@ -91,6 +91,11 @@ class OfficialStoreSectionViewController: UIViewController {
             view.bk_(whenTapped: { [unowned self] in
                 self.openShopWithItem(shop)
             })
+            
+            buttonSeeAll.bk_(whenTapped: { [unowned self] in
+                let controller = OfficialStoreBrandsViewController()
+                self.navigationController?.pushViewController(controller, animated: true)
+            })
 
             if shop.isNew {
                 let newText = UITextView()
@@ -109,10 +114,6 @@ class OfficialStoreSectionViewController: UIViewController {
                 }
             }
         }
-
-        buttonSeeAll.bk_(whenTapped: { [unowned self] in
-            self.goToWebView("\(NSString.mobileSiteUrl())/official-store/mobile")
-        })
     }
 
     private func openShopWithItem(_ shop: OfficialStoreHomeItem) {

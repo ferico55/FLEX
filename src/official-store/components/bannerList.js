@@ -25,8 +25,16 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
   }
 
   return (
-    <View>
-      <Swiper autoplay={true} showsPagination={false} height={185} autoplayTimeout={5}>
+    <View height={215} backgroundColor={'rgba(0, 0, 0, 0.05)'} paddingBottom={10}>
+      <Swiper 
+        autoplay={true}
+        showsPagination={true}
+        autoplayTimeout={5}
+        height={205}
+        style={styles.bannerSwipe}
+        paginationStyle={styles.bannerPagination}
+        activeDotColor={'#FF5722'}
+        >
         {
           topBanners.map((banner, index) => (
             <View key={banner.banner_id}>
@@ -58,25 +66,29 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
       <Text
         style={styles.viewAll}
         onPress={onViewAllPress}> Lihat Semua Promo  >
-    </Text>
+      </Text>
     </View>
   )
 }
 
 var styles = StyleSheet.create({
   container: {
-    marginVertical: 10
+    //marginVertical: 10
+  },
+  bannerBox: {
+    width: width,
+    height: 180
   },
   pageStyle: {
     alignItems: 'center',
-    padding: 20,
     width: width,
-    height: 173,
-  },
-  viewPager: {
-    height: 185,
+    height: 180,
+    resizeMode: 'contain',
   },
   viewAll: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
     color: '#42b549',
     fontSize: 12,
     fontWeight: '600',
@@ -87,6 +99,13 @@ var styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  bannerPagination: {
+    justifyContent: 'flex-start',
+    position: 'absolute',
+    width: 210,
+    left: 10,
+    bottom: 0,
   }
 })
 

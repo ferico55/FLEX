@@ -181,6 +181,7 @@ function getBrands(limit, offset) {
         microsite_url: shop.microsite_url,
         shop_mobile_url: shop.shop_mobile_url,
         shop_domain: shop.shop_domain,
+        shop_apps_url: shop.shop_apps_url,
         isFav: false,
       }))
       let shopIds = brands.map(shop => shop.shop_id)
@@ -217,6 +218,7 @@ function getBrands(limit, offset) {
                 badges: product.badges,
                 discount_percentage: product.discount_percentage,
                 original_price: product.original_price,
+                url_app: product.url_app
               }))
               
               return shop

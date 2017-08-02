@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableHighlight,
   Dimensions,
-  RefreshControl } from 'react-native'
+  RefreshControl
+} from 'react-native'
 import { connect } from 'react-redux'
 import BannerContainer from '../containers/bannerContainer'
 import CampaignContainer from '../containers/campaignContainer'
@@ -15,16 +16,18 @@ import BrandContainer from '../containers/brandContainer'
 import Infographic from '../components/infographic'
 import BackToTop from '../common/BackToTop/backToTop'
 import Seo from '../components/seo'
+import OfficialStoreIntro from '../components/OfficialStoreIntro'
 import {
   fetchBanners,
   fetchCampaigns,
   fetchBrands,
-  refreshState } from '../actions/actions'
+  refreshState
+} from '../actions/actions'
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { showBtn: false, refreshing: false };
+    this.state = { showBtn: false, refreshing: false, }
   }
   onBackToTopTap = (event) => {
     var currentOffset = event.nativeEvent
@@ -67,11 +70,12 @@ class App extends Component {
               onRefresh={this._onRefresh}
               colors={['#42b549']}/>
           } 
-        >
+          >
+          <OfficialStoreIntro />
           <BannerContainer />
-          <CampaignContainer/>
+          <CampaignContainer />
           <BrandContainer />
-          <Infographic/>
+          <Infographic />
           <Seo />
         </ScrollView>
         {

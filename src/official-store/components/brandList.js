@@ -41,11 +41,11 @@ const BrandList = (props) => {
           <View key={b.id} style={styles.brandContainer}>
             <View style={styles.shopHeadContainer}>
               <View style={styles.shopImageWrapper}>
-                <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(b.shop_mobile_url)}>
+                <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(b.shop_apps_url)}>
                   <Image style={styles.shopImage} source={{ uri: b.logo_url }} />
                 </TouchableWithoutFeedback>
               </View>
-              <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(b.shop_mobile_url)} >
+              <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(b.shop_apps_url)} >
                 <View style={{ flexGrow: 1, flexShrink: 1 }}>
                   <Text
                     style={styles.shopName}
@@ -69,7 +69,7 @@ const BrandList = (props) => {
                 {
                   b.products.map(p => (
                     <View style={styles.thumb} key={p.id}>
-                      <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(p.url)}>
+                      <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(p.url_app)}>
                         <View>
                           <Image style={styles.productImage} source={{ uri: p.image_url }} />
                           <Text style={styles.productName}

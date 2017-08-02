@@ -1850,6 +1850,7 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7A88EFA31F15DB1A00C443C3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A88EFA21F15DB1A00C443C3 /* libRNVectorIcons.a */; };
+		7AC251FC1F31A414001D5FA3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7AC251FB1F31A413001D5FA3 /* assets */; };
 		7AC850901F0DE72E0061B19C /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AC8508F1F0DE72D0061B19C /* libCodePush.a */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
@@ -5113,6 +5114,7 @@
 		7AA498541E9B36320099D9CE /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		7AA4985A1E9B363B0099D9CE /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		7AB27CBB1EAEFB1E00DEA67A /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		7AC251FB1F31A413001D5FA3 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
@@ -10661,6 +10663,7 @@
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				7AC251FB1F31A413001D5FA3 /* assets */,
 				349458261F306BDB00EEB628 /* Resources */,
 				3494578C1F306BC700EEB628 /* Common */,
 				349445921F306BA700EEB628 /* Classses */,
@@ -11814,6 +11817,7 @@
 				3494588C1F306BDB00EEB628 /* icon_wishlist@2x.png in Resources */,
 				3494588D1F306BDB00EEB628 /* icon_wishlist@3x.png in Resources */,
 				349457281F306BB100EEB628 /* TransactionShipmentATCTableViewController.xib in Resources */,
+				7AC251FC1F31A414001D5FA3 /* assets in Resources */,
 				349455261F306BAE00EEB628 /* CourierNoteViewCell.xib in Resources */,
 				349455DA1F306BAF00EEB628 /* ResolutionCenterChooseSolutionViewController.xib in Resources */,
 				349453FA1F306BAD00EEB628 /* CatalogSellerCell.xib in Resources */,

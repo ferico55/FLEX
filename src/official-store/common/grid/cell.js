@@ -26,7 +26,7 @@ const Cell = ({ isLastRowCell, isLastCell, data, loadMore, limit, offset, onSlid
 const getCellContent = (data) => {
   if (data) {
     return (
-      <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(data.shop_mobile_url)}>
+      <TouchableWithoutFeedback onPress={() => ReactTPRoutes.navigate(data.shop_apps_url)}>
       <View style={styles.cellWrapper}>
         <Image style={styles.img} source={{ uri: data.microsite_url }} />
       </View>
