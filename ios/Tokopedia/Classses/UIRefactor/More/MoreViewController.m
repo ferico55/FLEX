@@ -321,23 +321,37 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
     
-    [WalletService getBalance:[userManager getUserId] onSuccess:^(WalletStore * wallet) {
-        if (wallet.isExpired) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-        } else {
-            _walletNameLabel.text = wallet.data.text;
-            _walletBalanceLabel.text = wallet.data.balance;
-            _walletUrl = wallet.walletFullUrl;
-            
-            [weakSelf showActivationButton:wallet];
-        }
-        
-    } onFailure:^(NSError * error) {
-        _isWalletActive = NO;
-        if(error.code == 9991) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-        }
-    }];
+    [WalletService getBalance:[userManager getUserId]
+                    onSuccess:^(WalletStore * wallet) {
+                        if (wallet.isExpired) {
+                            [weakSelf requestWalletWithNewToken];
+                        } else {
+                            _walletNameLabel.text = wallet.data.text;
+                            _walletBalanceLabel.text = wallet.data.balance;
+                            _walletUrl = wallet.walletFullUrl;
+                            
+                            [weakSelf showActivationButton:wallet];
+                        }
+                        
+                    }
+                    onFailure:^(NSError * error) {
+                        _isWalletActive = NO;
+                        if(error.code == 9991) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+                        }
+                    }];
+}
+
+- (void)requestWalletWithNewToken {
+    __weak typeof(self) weakSelf = self;
+    
+    [[AuthenticationService sharedService]
+     getNewTokenOnSuccess:^(OAuthToken *token) {
+         [weakSelf requestWallet];
+     }
+     onFailure:^{
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+     }];
 }
 
 - (void)showActivationButton:(WalletStore*)wallet {

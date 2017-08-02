@@ -61,4 +61,7 @@
                       onSuccess:(void (^)(Login *))successCallback
                       onFailure:(void (^)(NSError *))failureCallback;
 
+- (void)getNewTokenOnSuccess:(void (^)(OAuthToken *))onSuccess
+                   onFailure:(void (^)(void))failure;
+
 @end

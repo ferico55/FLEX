@@ -561,7 +561,7 @@ class HomePageViewController: UIViewController {
         WalletService.getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
             .subscribe(onNext: { [weak self] wallet in
                 if wallet.isExpired() {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+                    self?.requestTokocashWithNewToken()
                 } else {
                     let tokocash = TokoCashSectionViewController(wallet: wallet)
                     self?.addChildViewController(tokocash)
@@ -585,6 +585,14 @@ class HomePageViewController: UIViewController {
                     self?.tokocashPlaceholder.isHidden = true
                 }
             }).disposed(by: self.rx_disposeBag)
+    }
+    
+    private func requestTokocashWithNewToken() {
+        AuthenticationService.shared().getNewToken(onSuccess: { [weak self] token in
+            self?.requestTokocash()
+        }, onFailure: {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+        })
     }
     
     private func navigateToIntermediaryPage() {

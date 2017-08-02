@@ -89,15 +89,15 @@ class ShopViewController: UIViewController {
             shopDomain: shopDomain,
             
             onSuccess: { [weak self] shop in
-                guard let `self` = self else { return }
+                guard let `self` = self, let shop = shop else { return }
                 
-                self.trackScreenWithShop(shop!)
+                self.trackScreenWithShop(shop)
                 
                 SwiftOverlays.removeAllOverlaysFromView(self.view)
                 
-                self.displayShop(shop!)
-                self.renderShopHeaderWithShop(shop!)
-                self.renderBarButtonsWithShop(shop!)
+                self.displayShop(shop)
+                self.renderShopHeaderWithShop(shop)
+                self.renderBarButtonsWithShop(shop)
                 
                 self.segmentedPagerController.segmentedPager.scrollToTop(animated: false)
             },

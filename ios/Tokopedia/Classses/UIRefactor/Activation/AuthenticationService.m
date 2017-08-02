@@ -413,4 +413,37 @@
                              }];
 }
 
+- (void)getNewTokenOnSuccess:(void (^)(OAuthToken *))onSuccess onFailure:(void (^)(void))failure {
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    NSDictionary *userInformation = [userManager getUserLoginData];
+    
+    [networkManager requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/token"
+                                method:RKRequestMethodPOST
+                                header:[self basicAuthorizationHeader]
+                             parameter:@{
+                                         @"grant_type" : @"refresh_token",
+                                         @"refresh_token" : userInformation[@"oAuthToken.refreshToken"] ?: @""
+                                         }
+                               mapping:[OAuthToken mapping]
+                             onSuccess:^(RKMappingResult * _Nonnull successResult, RKObjectRequestOperation * _Nonnull operation) {
+                                 OAuthToken *token = successResult.dictionary[@""];
+                                 
+                                 if ([token.error isEqualToString:@"invalid_grant"]) {
+                                     failure();
+                                     return;
+                                 }
+                                 
+                                 [[SecureStorageManager new] storeToken:token];
+                                 
+                                 onSuccess(token);
+                             }
+                             onFailure:^(NSError * _Nonnull errorResult) {
+                                 failure();
+                             }];
+}
+
 @end
