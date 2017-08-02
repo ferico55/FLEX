@@ -13,7 +13,7 @@ enum DigitalWidgetAction: Action {
     case selectProduct(DigitalProduct)
     case selectOperator(DigitalOperator?)
     case toggleInstantPayment
-    case receiveForm(DigitalForm, DigitalLastOrder)
+    case receiveForm(DigitalForm, DigitalLastOrder, Bool)
     case loadForm
     case loadFailed
     case showError(String)
@@ -49,8 +49,8 @@ struct DigitalWidgetReducer: Reducer {
         case .toggleInstantPayment:
             return state.toggleInstantPayment()
             
-        case let .receiveForm(form, lastOrder):
-            return state.receive(form: form, lastOrder:lastOrder)
+        case let .receiveForm(form, lastOrder, isInstant):
+            return state.receive(form: form, lastOrder:lastOrder, isInstant:isInstant)
             
         case .loadForm:
             return state.loadForm()

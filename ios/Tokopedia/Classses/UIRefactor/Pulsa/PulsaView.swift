@@ -16,7 +16,6 @@ import JLPermissions
 
 @objc
 class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
-    
     weak var navigator: PulsaNavigator!
     
     fileprivate var stackView: OAStackView = OAStackView()
@@ -362,10 +361,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
         AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Widget Bar")
-        self.resetCheckBox()
         self.resetPulsaOperator()
         self.buildAllView(category)
         self.getLastOrder(category: category.id!)
+        self.resetCheckBox()
         
         //Ignoring add action on number field, when client_number attribute is not show
         //instead find product directly, because some product which doesn't has number field (saldo), will show product only
@@ -832,6 +831,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             let cache = PulsaCache()
             let lastOrder = DigitalLastOrder(categoryId: self.selectedCategory.id!, operatorId: self.selectedOperator.id, productId: self.selectedProduct.id, clientNumber: clientNumber)
             cache.storeLastOrder(lastOrder: lastOrder)
+            self.saveInstantPaymentCheck()
             
             DigitalService()
                 .purchase(from: self.navigator.controller,
@@ -970,7 +970,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     }
     
     fileprivate func resetCheckBox() {
-        saldoCheckBox.on = false
+        saldoCheckBox.on = loadInstantPaymentCheck()
     }
     
     fileprivate func findPrefix(_ inputtedString: String) -> Prefix {
@@ -1101,6 +1101,19 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         } else {
             AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Uncheck Instant Saldo from Widget")
         }
+    }
+    
+    fileprivate func saveInstantPaymentCheck() {
+        if !self.saldoCheckBox.isHidden {
+            UserDefaults.standard.isInstantPaymentEnabled = self.saldoCheckBox.on
+        }
+    }
+    
+    fileprivate func loadInstantPaymentCheck() -> Bool{
+        if !self.saldoCheckBox.isHidden {
+            return UserDefaults.standard.isInstantPaymentEnabled
+        }
+        return false
     }
 }
 

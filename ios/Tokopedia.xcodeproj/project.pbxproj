@@ -1804,6 +1804,7 @@
 		457B98FC1F0E3125005851E5 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92371F0E311D005851E5 /* WalletTarget.swift */; };
 		457B98FD1F0E3125005851E5 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */; };
 		457B98FE1F0E3125005851E5 /* ProductAndWishlistNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */; };
+		522485C81F31AB90009C513A /* UserDefaultsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522485C71F31AB90009C513A /* UserDefaultsCategory.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -5023,6 +5024,7 @@
 		457B92371F0E311D005851E5 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
 		457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAndWishlistNetworkManager.swift; sourceTree = "<group>"; };
+		522485C71F31AB90009C513A /* UserDefaultsCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsCategory.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -10121,6 +10123,7 @@
 		349457941F306BC700EEB628 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				522485C71F31AB90009C513A /* UserDefaultsCategory.swift */,
 				349457951F306BC700EEB628 /* ALAsset+Date.h */,
 				349457961F306BC700EEB628 /* ALAsset+Date.m */,
 				349457971F306BC700EEB628 /* HomePageHeaderSectionStyle.swift */,
@@ -13247,6 +13250,7 @@
 				349451B21F306BAB00EEB628 /* TheOtherProductList.m in Sources */,
 				349455D51F306BAF00EEB628 /* PulsaView.swift in Sources */,
 				349451BD1F306BAB00EEB628 /* FavoritedShopResult.m in Sources */,
+				522485C81F31AB90009C513A /* UserDefaultsCategory.swift in Sources */,
 				349457811F306BB100EEB628 /* ProductModelView.m in Sources */,
 				349453EF1F306BAD00EEB628 /* CatalogSectionHeaderView.m in Sources */,
 				3494517B1F306BAB00EEB628 /* ContactUsActionResult.m in Sources */,

@@ -473,15 +473,15 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     layout.marginTop = 20
                     button.rx.tap
                         .subscribe(onNext: {
-                            guard state!.passesTextValidations && state!.selectedProduct != nil else {
+                            guard let `state` = state, let `form` = state.form, state.passesTextValidations && state.selectedProduct != nil else {
                                 self.store.dispatch(DigitalWidgetAction.buyButtonTap)
                                 return
                             }
                             
                             self.store.dispatch(DigitalWidgetAction.addToCart)
                             
-                            let productId = state!.selectedProduct?.id
-                            let textInputs = state!.textInputStates.map { key, value in
+                            let productId = state.selectedProduct?.id
+                            let textInputs = state.textInputStates.map { key, value in
                                 return [key, value.text]
                                 }
                                 .reduce([String: String]()) { result, item in
@@ -491,14 +491,18 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             }
                             
                             guard productId != nil else { return }
-                            if (self.state!.isInstantPaymentEnabled) {
-                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Click Beli with Instant Saldo")
+                            if (state.isInstantPaymentEnabled) {
+                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action:"Click Beli with Instant Saldo")
                             } else {
-                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Click Beli")
+                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action:"Click Beli")
                             }
                             let cache = PulsaCache()
-                           let lastOrder = DigitalLastOrder(categoryId: self.categoryId, operatorId: self.state?.selectedOperator?.id, productId: productId, clientNumber: textInputs["client_number"])
+                            let lastOrder = DigitalLastOrder(categoryId: self.categoryId,
+                                                             operatorId: state.selectedOperator?.id,
+                                                             productId: productId,
+                                                             clientNumber: textInputs["client_number"])
                             cache.storeLastOrder(lastOrder: lastOrder)
+                            self.saveInstantPaymentCheck()
                             
                             DigitalService()
                                 .purchase(
@@ -506,7 +510,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                     withProductId: productId!,
                                     categoryId: self.categoryId,
                                     inputFields: textInputs,
-                                    instantPaymentEnabled: state!.isInstantPaymentEnabled,
+                                    instantPaymentEnabled: form.isInstantPaymentAvailable && state.isInstantPaymentEnabled,
                                     onNavigateToCart: { [weak self] in
                                         self?.store.dispatch(DigitalWidgetAction.navigateToCart)
                                     },
@@ -515,7 +519,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                     })
                                 .subscribe(onError: { error in
                                         let errorMessage = error as? String ?? "Kendala koneksi internet, silakan coba kembali"
-                                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Homepage Error - \(errorMessage)")
+                                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action:"Homepage Error - \(errorMessage)")
                                         self.store.dispatch(DigitalWidgetAction.showError(errorMessage))
                                 })
                                 .disposed(by: self.rx_disposeBag)
@@ -776,10 +780,10 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         let lastOrder = DigitalService()
             .lastOrder(categoryId: categoryId)
         
-        Observable.zip(form, lastOrder) {form,lastOrder in
+        Observable.zip(form, lastOrder) { form,lastOrder in
                 return (form, lastOrder)
             }.subscribe(onNext: { [weak self] form, lastOrder in
-                self?.store.dispatch(DigitalWidgetAction.receiveForm(form, lastOrder))
+                self?.store.dispatch(DigitalWidgetAction.receiveForm(form, lastOrder, self?.loadInstantPaymentCheck() ?? false))
             })
     }
     
@@ -795,6 +799,19 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         } else {
             AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action:"Uncheck Instant Saldo")
         }
+    }
+    
+    fileprivate func saveInstantPaymentCheck() {
+        guard let isInstantPaymentAvailable = state?.form?.isInstantPaymentAvailable,
+            let isInstantPaymentEnabled = state?.isInstantPaymentEnabled else { return }
+        
+        if isInstantPaymentAvailable {
+            UserDefaults.standard.isInstantPaymentEnabled = isInstantPaymentEnabled
+        }
+    }
+    
+    func loadInstantPaymentCheck() -> Bool{
+        return UserDefaults.standard.isInstantPaymentEnabled
     }
 }
 

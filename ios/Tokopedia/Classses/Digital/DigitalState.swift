@@ -124,7 +124,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func receive(form: DigitalForm, lastOrder:DigitalLastOrder) -> DigitalState {
+    func receive(form: DigitalForm, lastOrder:DigitalLastOrder, isInstant:Bool) -> DigitalState {
         var newState = self
         newState.form = form
         newState.isLoadingForm = false
@@ -154,9 +154,8 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
                 newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
             }
         }
-        
         newState.textInputStates = textInputStates
-        
+        newState.isInstantPaymentEnabled = isInstant
         return newState
     }
     
