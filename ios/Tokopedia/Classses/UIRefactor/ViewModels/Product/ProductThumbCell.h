@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <OAStackView/OAStackView.h>
 #import "TKPDStackView.h"
+#import "ProductCell.h"
 @class ProductModelView;
 @class CatalogModelView;
 
 @interface ProductThumbCell : UICollectionViewCell
 
-- (void)setViewModel:(ProductModelView*)viewModel;
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
+- (void) removeWishlistButton;
 
 @property(nonatomic, weak) IBOutlet UILabel* productName;
 @property(nonatomic, weak) IBOutlet UILabel* productPrice;
@@ -30,5 +31,9 @@
 
 @property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
+
+@property (strong, nonatomic) UIViewController *parentViewController;
+@property (weak, nonatomic) id<ProductCellDelegate> delegate;
+@property (strong, nonatomic) ProductModelView *viewModel;
 
 @end

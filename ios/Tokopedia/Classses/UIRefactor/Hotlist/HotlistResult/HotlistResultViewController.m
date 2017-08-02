@@ -631,6 +631,7 @@ static NSString const *rows = @"12";
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
+        [(ProductSingleViewCell *)cell removeWishlistButton];
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cell = (ProductCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
         [(ProductCell *)cell setViewModel:list.viewModel];
@@ -638,6 +639,7 @@ static NSString const *rows = @"12";
     } else {
         cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
+        [(ProductThumbCell *)cell removeWishlistButton];
     }
     
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;

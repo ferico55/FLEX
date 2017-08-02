@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <OAStackView/OAStackView.h>
 #import "TKPDStackView.h"
+#import "ProductCell.h"
 @class ProductModelView;
 @class CatalogModelView;
 
@@ -29,7 +30,11 @@
 @property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
 
-- (void)setViewModel:(ProductModelView*)viewModel;
+@property (strong, nonatomic) UIViewController *parentViewController;
+@property (weak, nonatomic) id<ProductCellDelegate> delegate;
+@property (strong, nonatomic) ProductModelView *viewModel;
+
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
+- (void) removeWishlistButton;
 
 @end

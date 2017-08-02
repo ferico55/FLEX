@@ -465,6 +465,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
+        ((ProductSingleViewCell*) cell).parentViewController = self;
+        ((ProductSingleViewCell*) cell).delegate = self;
+        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
+            [(ProductSingleViewCell*)cell removeWishlistButton];
+        }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -486,6 +491,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             [(ProductThumbCell*)cell setCatalogViewModel:list.catalogViewModel];
         } else {
             [(ProductThumbCell*)cell setViewModel:list.viewModel];
+        }
+        ((ProductThumbCell*) cell).parentViewController = self;
+        ((ProductThumbCell*) cell).delegate = self;
+        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
+            [(ProductThumbCell*)cell removeWishlistButton];
         }
     }
     

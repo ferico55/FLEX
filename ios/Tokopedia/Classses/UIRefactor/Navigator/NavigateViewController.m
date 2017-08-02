@@ -695,12 +695,12 @@
 }
 
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data {
-        CategoryResultViewController *vc = [CategoryResultViewController new];
-        vc.isIntermediary = YES;
-        vc.data = [self addDataTypeFromData: [data mapToDictionary]];
-        vc.title = [self getTitleFromData: [data mapToDictionary]];
-        vc.hidesBottomBarWhenPushed = YES;
-        [viewController.navigationController pushViewController:vc animated:YES];
+    CategoryResultViewController *vc = [CategoryResultViewController new];
+    vc.isIntermediary = YES;
+    vc.data = [self addDataTypeFromData: [data mapToDictionary]];
+    vc.title = [self getTitleFromData: [data mapToDictionary]];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {

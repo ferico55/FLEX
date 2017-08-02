@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -188,11 +189,11 @@
                                     <constraint firstAttribute="width" constant="36" id="JgJ-ky-bBg"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiW-zW-pcp">
-                                <rect key="frame" x="130" y="0.0" width="36" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWf-aT-fHe">
+                                <rect key="frame" x="130" y="2" width="35" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="lBu-4e-r99"/>
-                                    <constraint firstAttribute="width" constant="36" id="mch-kZ-6w3"/>
+                                    <constraint firstAttribute="height" constant="36" id="y8M-4X-slJ"/>
+                                    <constraint firstAttribute="width" constant="35" id="ygB-db-H4r"/>
                                 </constraints>
                                 <state key="normal" image="icon_wishlist_outline"/>
                                 <state key="selected" image="icon_wishlist_filled_red"/>
@@ -256,9 +257,10 @@
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="KCY-Kb-pCM"/>
                             <constraint firstItem="Ug2-8n-rO9" firstAttribute="leading" secondItem="Xcs-wg-GLM" secondAttribute="trailing" constant="3" id="LWg-Ly-ibl"/>
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="top" secondItem="eCk-Jy-Tnn" secondAttribute="bottom" constant="7" id="Mpw-uW-Pec"/>
-                            <constraint firstItem="kiW-zW-pcp" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="O8b-9a-BuW"/>
+                            <constraint firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="O8b-9a-BuW"/>
                             <constraint firstAttribute="trailing" secondItem="riz-i3-Xqh" secondAttribute="trailing" constant="8" id="Oym-qM-muL"/>
                             <constraint firstItem="eCk-Jy-Tnn" firstAttribute="leading" secondItem="Fki-cQ-9ac" secondAttribute="leading" id="PNm-9w-Qha"/>
+                            <constraint firstAttribute="trailing" secondItem="AWf-aT-fHe" secondAttribute="trailing" constant="1" id="Rya-SN-MhH"/>
                             <constraint firstAttribute="trailing" secondItem="5yJ-UZ-wYW" secondAttribute="trailing" id="SCb-RW-XrQ"/>
                             <constraint firstItem="riz-i3-Xqh" firstAttribute="leading" secondItem="lNm-w0-TTJ" secondAttribute="leading" constant="9" id="UQ2-l5-C4f"/>
                             <constraint firstItem="wSA-So-qCi" firstAttribute="top" secondItem="Fki-cQ-9ac" secondAttribute="bottom" id="W1R-gg-3zb"/>
@@ -272,9 +274,9 @@
                             <constraint firstItem="riz-i3-Xqh" firstAttribute="top" secondItem="za7-yq-RSZ" secondAttribute="bottom" constant="8" id="gQv-tS-8Ku"/>
                             <constraint firstItem="za7-yq-RSZ" firstAttribute="leading" secondItem="lNm-w0-TTJ" secondAttribute="leading" constant="7" id="gSA-15-Dij"/>
                             <constraint firstItem="YTf-ZV-fyn" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="jC2-Cn-m1d"/>
+                            <constraint firstItem="AWf-aT-fHe" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" constant="2" id="lW7-hI-CwD"/>
                             <constraint firstItem="FLo-Kn-Ink" firstAttribute="centerY" secondItem="Ug2-8n-rO9" secondAttribute="centerY" id="oLy-Ex-u4o"/>
                             <constraint firstItem="eCk-Jy-Tnn" firstAttribute="trailing" secondItem="g44-fl-fUl" secondAttribute="trailing" id="tvl-fv-WLa"/>
-                            <constraint firstAttribute="trailing" secondItem="kiW-zW-pcp" secondAttribute="trailing" id="ufG-hN-dA4"/>
                             <constraint firstItem="5yJ-UZ-wYW" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="v8Z-Ge-dao"/>
                             <constraint firstItem="YTf-ZV-fyn" firstAttribute="trailing" secondItem="g44-fl-fUl" secondAttribute="trailing" id="vdt-IH-BW7"/>
                             <constraint firstAttribute="trailing" secondItem="FLo-Kn-Ink" secondAttribute="trailing" constant="8" id="w5m-7R-GoH"/>
@@ -300,7 +302,7 @@
             <size key="customSize" width="166" height="284"/>
             <connections>
                 <outlet property="badgesView" destination="FLo-Kn-Ink" id="zIb-gW-Epu"/>
-                <outlet property="buttonWishlist" destination="kiW-zW-pcp" id="jex-qS-unz"/>
+                <outlet property="buttonWishlist" destination="AWf-aT-fHe" id="4b1-Vd-EsP"/>
                 <outlet property="buttonWishlistExpander" destination="9ky-Uy-MKz" id="ueD-wi-6a9"/>
                 <outlet property="catalogPriceLabel" destination="wSA-So-qCi" id="5UT-BK-7xH"/>
                 <outlet property="discountLabel" destination="aMV-Pt-yMK" id="d5E-uM-AUJ"/>

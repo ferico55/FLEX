@@ -113,12 +113,17 @@ UICollectionViewDelegate
         ProductThumbCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
         [cell setViewModel:promoResult.viewModel];
+        [cell removeWishlistButton];
         return cell;
         
     } else {
         UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-        if([cell isKindOfClass:[ProductCell class]])
+        if([cell isKindOfClass:[ProductCell class]]) {
             [((ProductCell*) cell) removeWishlistButton];
+        }
+        else if([cell isKindOfClass:[ProductThumbCell class]]) {
+            [((ProductThumbCell*) cell) removeWishlistButton];
+        }
         return cell;
     }
 }

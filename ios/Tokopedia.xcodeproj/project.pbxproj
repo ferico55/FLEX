@@ -44,7 +44,6 @@
 		349451311F306BAB00EEB628 /* DigitalVoucher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445C71F306BA700EEB628 /* DigitalVoucher.swift */; };
 		349451321F306BAB00EEB628 /* DigitalCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445C91F306BA700EEB628 /* DigitalCartViewController.swift */; };
 		349451331F306BAB00EEB628 /* DigitalCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349445CA1F306BA700EEB628 /* DigitalCartViewController.xib */; };
-		349451341F306BAB00EEB628 /* EmptyStateComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445CD1F306BA700EEB628 /* EmptyStateComponentView.swift */; };
 		349451351F306BAB00EEB628 /* FeedComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445CE1F306BA700EEB628 /* FeedComponentView.swift */; };
 		349451361F306BAB00EEB628 /* FeedDetailActionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445CF1F306BA700EEB628 /* FeedDetailActionComponentView.swift */; };
 		349451371F306BAB00EEB628 /* FeedDetailHeaderComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349445D01F306BA700EEB628 /* FeedDetailHeaderComponentView.swift */; };
@@ -12800,7 +12799,6 @@
 				349456271F306BB000EEB628 /* OrderDetailDropshipView.swift in Sources */,
 				349451551F306BAB00EEB628 /* VerifiedStatus.m in Sources */,
 				349458921F306BDB00EEB628 /* HPTextViewInternal.m in Sources */,
-				349451341F306BAB00EEB628 /* EmptyStateComponentView.swift in Sources */,
 				349451311F306BAB00EEB628 /* DigitalVoucher.swift in Sources */,
 				349454F41F306BAE00EEB628 /* ReplacementDetailView.swift in Sources */,
 				3494566E1F306BB000EEB628 /* SpellCheckRequest.m in Sources */,

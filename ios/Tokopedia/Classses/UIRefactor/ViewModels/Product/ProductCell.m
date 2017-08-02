@@ -26,13 +26,8 @@
 
 @implementation ProductCell{
     QueueImageDownloader* imageDownloader;
-    NSDictionary *_auth;
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
-
-UserAuthentificationManager *_userManager;
-NSDictionary *_auth;
-TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 
 - (void)awakeFromNib {
     
@@ -63,18 +58,19 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     self.unsetWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
     [self.contentView addSubview:self.unsetWishlistAnimationView];
     
-    [self.buttonWishlist setHidden:YES];}
+    [self.buttonWishlist setHidden:YES];
+}
 
 - (void) removeWishlistButton {
     [self.setWishlistAnimationView setHidden:YES];
     [self.unsetWishlistAnimationView setHidden:YES];
     [self.buttonWishlistExpander setHidden:YES];
     [self.iconOvalWhite setHidden:YES];
-    [self.buttonWishlist setHidden:YES];
+    [self.buttonWishlist setHidden: YES];
     [self.setWishlistAnimationView removeFromSuperview];
 }
 
-- (void) setWishlistButtonState:(BOOL)isOnWishlist blockUI:(BOOL)block {
+- (void) setWishlistButtonState:(BOOL)isOnWishlist {
     if(isOnWishlist) {
         [self.buttonWishlistExpander setSelected:YES];
         [self.buttonWishlist setSelected:YES];
@@ -86,7 +82,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
         [self.setWishlistAnimationView setHidden:NO];
         [self.unsetWishlistAnimationView setHidden:YES];
     }
-    [self.buttonWishlistExpander setEnabled:!block];
+    [self.buttonWishlistExpander setEnabled:YES];
 }
 
 - (void) resetWishlistButtonAnimation {
@@ -99,7 +95,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];
     }
-
+    
     self.productName.font = [UIFont smallThemeMedium];
     self.productName.text = viewModel.productName?:@"";
     
@@ -109,14 +105,14 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
         [self.shopLocation setHidden:YES];
     }
     [self.shopLocation setText:viewModel.shopLocation];
-
+    
     if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
         [self.productShop setHidden:YES];
     }
     
     self.preorderPosition.constant = !viewModel.isWholesale ? -42 : 3;
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
-
+    
     [self setBadges:viewModel.badges];
     [self setLabels:viewModel.labels];
     
@@ -127,11 +123,11 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     } else {
         _ratingContainerView.hidden = YES;
     }
-
+    
     [self.buttonWishlistExpander setHidden:NO];
     [self.iconOvalWhite setHidden:NO];
     [self resetWishlistButtonAnimation];
-    [self setWishlistButtonState:viewModel.isOnWishlist blockUI:NO];
+    [self setWishlistButtonState:viewModel.isOnWishlist];
     
     [self.originalPriceLabel setHidden:YES];
     [self.discountView setHidden:YES];
@@ -140,7 +136,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 
 - (void) updateLayout {
     if(![self.discountLabel.text isEqualToString:@""]) {
-        UIFont *font = [UIFont largeTheme];
+        UIFont *font = [UIFont largeThemeSemibold];
         NSDictionary *attributes = @{NSFontAttributeName: font,
                                      NSForegroundColorAttributeName: [UIColor blackColor]};
         CGSize size = [self.productPrice.text sizeWithAttributes:attributes];
@@ -168,7 +164,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
         if(!isLoggedIn) return;
         if(self.setWishlistAnimationView == nil) {
             [self setupWishlistButton];
-            [self setWishlistButtonState:self.viewModel.isOnWishlist blockUI:NO];
+            [self setWishlistButtonState:self.viewModel.isOnWishlist];
         }
         else {
             [self resetWishlistButtonAnimation];
@@ -176,17 +172,13 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
         [self.buttonWishlistExpander setEnabled:NO];
         if([self.setWishlistAnimationView isHidden]) {
             [self.unsetWishlistAnimationView playWithCompletion:^(BOOL animationFinished) {
-                if(!animationFinished) return;
-                [self setWishlistButtonState:NO blockUI:NO];
-                [self resetWishlistButtonAnimation];
+                [self setWishlistButtonState:NO];
             }];
             [self setUnWishList];
         }
         else {
             [self.setWishlistAnimationView playWithCompletion:^(BOOL animationFinished) {
-                if(!animationFinished) return;
-                [self setWishlistButtonState:YES blockUI:NO];
-                [self resetWishlistButtonAnimation];
+                [self setWishlistButtonState:YES];
             }];
             [self setWishList];
         }
@@ -236,12 +228,12 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
 
 -(void) didSuccessAddWishlistWithSuccessResult: (RKMappingResult *) successResult withOperation: (RKObjectRequestOperation *) operation {
-    [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:YES];
+    [self.delegate changeWishlistForProductId: _viewModel.productId withStatus:YES];
 }
 
 -(void) didFailedAddWishListWithErrorResult: (NSError *) error {
     [self resetWishlistButtonAnimation];
-    [self setWishlistButtonState:NO blockUI:NO];
+    [self setWishlistButtonState:NO];
     
     NSString *errorMessage = [error localizedRecoverySuggestion];
     NSArray *messageToShow = @[@"Kendala koneksi internet."];
@@ -253,14 +245,16 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageToShow delegate:self.parentViewController];
     [alert show];
+    [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:NO];
 }
 
 -(void) didFailedRemoveWishListWithErrorResult: (NSError *) error {
     [self resetWishlistButtonAnimation];
-    [self setWishlistButtonState:YES blockUI:NO];
+    [self setWishlistButtonState:YES];
     
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menghapus produk dari wishlist"] delegate:self.parentViewController];
     [alert show];
+    [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:YES];
 }
 
 - (NSString *) wishlistUrlPathWithProductId: (NSString *)productId userId:(NSString*) userId {
@@ -274,7 +268,7 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId:self.viewModel.productId userId: [_userManager getUserId]]
+                                                   path:[self wishlistUrlPathWithProductId: _viewModel.productId userId: [_userManager getUserId]]
                                                  method:RKRequestMethodDELETE
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
                                               parameter: nil
@@ -349,15 +343,20 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.productName setText:viewModel.catalogName];
-
+    
     self.productPrice.text = @"Mulai dari";
     self.productPrice.font = [UIFont microTheme];
+    self.productPrice.textColor = [UIColor tpDisabledBlackText];
     
     self.catalogPriceLabel.hidden = NO;
     self.catalogPriceLabel.text = viewModel.catalogPrice;
+    self.catalogPriceLabel.font = [UIFont largeThemeSemibold];
     
-    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada produk" : [NSString stringWithFormat:@"%@ produk", viewModel.catalogSeller]];
-     self.goldShopBadge.hidden = YES;
+    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada produk" : [NSString stringWithFormat:@"%@ Produk", viewModel.catalogSeller]];
+    self.productShop.font = [UIFont microTheme];
+    self.productShop.textColor = [UIColor tpPrimaryBlackText];
+    
+    self.goldShopBadge.hidden = YES;
     
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeCenter];
@@ -370,7 +369,6 @@ TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     [self.setWishlistAnimationView setHidden: YES];
     [self.unsetWishlistAnimationView setHidden: YES];
     [self.iconOvalWhite setHidden:YES];
-    
     [self removeWishlistButton];
 }
 

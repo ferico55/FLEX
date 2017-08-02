@@ -358,6 +358,7 @@ ShopTabChild
         ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
         ((ProductSingleViewCell*)cell).locationIcon.hidden = YES;
         ((ProductSingleViewCell*)cell).productShop.hidden = YES;
+        [((ProductSingleViewCell*)cell) removeWishlistButton];
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -372,6 +373,7 @@ ShopTabChild
         [(ProductThumbCell*)cell setViewModel:list.viewModel];
         ((ProductThumbCell*)cell).locationIcon.hidden = YES;
         ((ProductThumbCell*)cell).shopName.hidden = YES;
+        [((ProductThumbCell*)cell) removeWishlistButton];
     }
     
     //next page if already last cell

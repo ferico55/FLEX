@@ -18,6 +18,7 @@
 @end
 
 @interface ProductCell : UICollectionViewCell
+
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;

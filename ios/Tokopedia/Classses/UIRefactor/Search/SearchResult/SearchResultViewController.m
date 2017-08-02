@@ -494,6 +494,8 @@ ProductCellDelegate
             [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
+        ((ProductCell*) cell).parentViewController = self;
+        ((ProductCell*) cell).delegate = self;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -514,6 +516,8 @@ ProductCellDelegate
         } else {
             [(ProductThumbCell*)cell setViewModel:list.viewModel];
         }
+        ((ProductThumbCell*) cell).parentViewController = self;
+        ((ProductThumbCell*) cell).delegate = self;
     }
     
     //next page if already last cell
