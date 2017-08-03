@@ -9,6 +9,9 @@
 #import "TkpdHMAC.h"
 #import "UserAuthentificationManager.h"
 #import "NSString+MD5.h"
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <DTTJailbreakDetection/DTTJailbreakDetection.h>
 
 #include <CommonCrypto/CommonDigest.h>
 #include <CommonCrypto/CommonHMAC.h>
@@ -326,6 +329,9 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 - (NSDictionary*)authorizedHeaders {
     UserAuthentificationManager* userManager = [UserAuthentificationManager new];
     
+    NSString* fingerprint = [[self deviceFingerprint] toJSONString];
+    NSData* fingerprintData = [fingerprint dataUsingEncoding:NSUTF8StringEncoding];
+    NSString* encodedFingerprint = [fingerprintData base64EncodedStringWithOptions:0];
     NSDictionary* headers = @{
                               @"Request-Method" : [self getRequestMethod],
                               @"Content-MD5" : [self getParameterMD5],
@@ -338,9 +344,54 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                               @"X-Device" : @"ios",
                               @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
                               @"X-Tkpd-Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
+                              @"Fingerprint-Data" : encodedFingerprint,
+                              @"Fingerprint-Hash" : [[NSString stringWithFormat:@"%@+%@", encodedFingerprint,[userManager getUserId]] encryptWithMD5]
                               };
     
     return headers;
+}
+
+- (NSDictionary*)deviceFingerprint {
+    @try {
+        NSString* secretAgent = @"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5";
+        
+        BOOL isEmulator;
+#if !(TARGET_OS_SIMULATOR)
+        isEmulator = NO;
+#else
+        isEmulator = YES;
+#endif
+        
+        CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+        CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+        
+        UserAuthentificationManager* user = [UserAuthentificationManager new];
+        
+        NSDictionary* fingerprint = @{
+                                      @"device_model" : [[UIDevice currentDevice] model],
+                                      @"device_system" : [[UIDevice currentDevice] systemName],
+                                      @"current_os" : [[UIDevice currentDevice] systemVersion],
+                                      @"device_manufacturer" : @"Apple",
+                                      @"device_name" : [[UIDevice currentDevice] name],
+                                      @"is_jailbroken_rooted" : @([DTTJailbreakDetection isJailbroken]),
+                                      @"timezone" : [NSTimeZone localTimeZone].name,
+                                      @"user_agent" : secretAgent,
+                                      @"is_emulator" : @(isEmulator),
+                                      @"is_tablet" : [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? @(YES) : @(NO),
+                                      @"language" : [[NSLocale preferredLanguages] objectAtIndex:0]?:@"",
+                                      @"carrier" : [carrier carrierName] ?: @"NoCarrier",
+                                      @"screen_resolution" : [NSString stringWithFormat:@"%.fx%.f", [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width],
+                                      @"location_latitude" : user.userLatitude,
+                                      @"location_longitude" : user.userLongitude
+                                      };
+        
+        return fingerprint;
+    } @catch (NSException *exception) {
+        return @{};
+    } @finally {
+        
+    }
+    
 }
 
 @end

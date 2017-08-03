@@ -1848,6 +1848,7 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7A88EFA31F15DB1A00C443C3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A88EFA21F15DB1A00C443C3 /* libRNVectorIcons.a */; };
+		7AC027FA1F31B513000D1945 /* ToppersLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC027F91F31B513000D1945 /* ToppersLocation.m */; };
 		7AC251FC1F31A414001D5FA3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7AC251FB1F31A413001D5FA3 /* assets */; };
 		7AC850901F0DE72E0061B19C /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AC8508F1F0DE72D0061B19C /* libCodePush.a */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5114,6 +5115,8 @@
 		7AA498541E9B36320099D9CE /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		7AA4985A1E9B363B0099D9CE /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		7AB27CBB1EAEFB1E00DEA67A /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		7AC027F81F31B512000D1945 /* ToppersLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToppersLocation.h; sourceTree = "<group>"; };
+		7AC027F91F31B513000D1945 /* ToppersLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToppersLocation.m; sourceTree = "<group>"; };
 		7AC251FB1F31A413001D5FA3 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		7AC850671F0DE60E0061B19C /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -5422,6 +5425,8 @@
 		349445E41F306BA700EEB628 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				7AC027F81F31B512000D1945 /* ToppersLocation.h */,
+				7AC027F91F31B513000D1945 /* ToppersLocation.m */,
 				349445E51F306BA700EEB628 /* Activation */,
 				3494461F1F306BA700EEB628 /* Address */,
 				3494462A1F306BA700EEB628 /* AnnouncementTicker */,
@@ -12740,6 +12745,7 @@
 				3494559E1F306BAF00EEB628 /* ReviewRatingComponent.mm in Sources */,
 				3494525D1F306BAC00EEB628 /* ProfileInfo.m in Sources */,
 				349451F81F306BAC00EEB628 /* ResolutionTroubleSolution.swift in Sources */,
+				7AC027FA1F31B513000D1945 /* ToppersLocation.m in Sources */,
 				349453561F306BAD00EEB628 /* TxOrderStatus.m in Sources */,
 				349452081F306BAC00EEB628 /* InboxReviewProductOwner.m in Sources */,
 				52BE20F91F32B5E90052A102 /* DigitalCategoryListViewController.swift in Sources */,
@@ -13743,10 +13749,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Classses/Third",
 					Party,
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

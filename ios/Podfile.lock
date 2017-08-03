@@ -53,6 +53,7 @@ PODS:
   - DKImagePickerController/Camera (3.5.0)
   - DKImagePickerController/ImageManager (3.5.0)
   - DownPicker (0.1.34)
+  - DTTJailbreakDetection (0.4.0)
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
@@ -199,6 +200,7 @@ DEPENDENCIES:
   - ComponentKit (~> 0.14)
   - DKImagePickerController (~> 3.5.0)
   - DownPicker
+  - DTTJailbreakDetection
   - EAIntroView (~> 2.8.0)
   - Eureka (~> 2.0.0-beta.1)
   - EZYGradientView-ObjC (~> 1.3)
@@ -303,6 +305,7 @@ SPEC CHECKSUMS:
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
+  DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
@@ -314,7 +317,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
+  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -371,6 +374,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 67e7f6644fae07123d72e79e49fd6fc8aa16dee5
+PODFILE CHECKSUM: 849e59dbc620e8653fd6d100fc71c54440ad0c98
 
 COCOAPODS: 1.2.1

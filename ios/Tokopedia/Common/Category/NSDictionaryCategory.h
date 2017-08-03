@@ -13,6 +13,7 @@
 - (BOOL)isMutable;
 - (NSDictionary *)encrypt;
 - (NSDictionary<NSString *, id> *)autoParameters;
+- (NSString*)toJSONString;
 + (NSDictionary*)dictionaryFromURLString:(NSString *)URLString;
 
 @end

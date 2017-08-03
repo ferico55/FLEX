@@ -44,8 +44,11 @@
 - (BOOL)isUserPhoneVerified;
 
 + (void)ensureDeviceIdExistence;
++ (void)trackAppLocation;
 - (BOOL)userHasShop;
-- (NSNumber *)userIsGoldMerchant;
+- (nonnull NSString*)userLatitude;
+- (nonnull NSString*)userLongitude;
+- (nonnull NSNumber *)userIsGoldMerchant;
 - (nonnull NSString *)webViewUrlFromUrl:(nonnull NSString *)url;
 
 - (nullable NSString*)getDOB;

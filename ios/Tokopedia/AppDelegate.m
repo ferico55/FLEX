@@ -298,6 +298,8 @@
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
     
+    [UserAuthentificationManager trackAppLocation];
+    
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     
     if ([userManager isLogin]) {

@@ -11,7 +11,12 @@
 #import "NSString+MD5.h"
 #import "activation.h"
 #import "MainViewController.h"
+
+#import "ToppersLocation.h"
 #import "Tokopedia-Swift.h"
+#import "A2DynamicDelegate.h"
+
+@import CoreLocation;
 
 @implementation UserAuthentificationManager {
 
@@ -271,6 +276,36 @@
         
         [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
     }
+}
+
++ (void)trackAppLocation {
+    if([CLLocationManager locationServicesEnabled]) {
+        UserAuthentificationManager* authManager = [UserAuthentificationManager new];
+        BOOL isAuthorized = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse;
+        
+        if(isAuthorized && [authManager isLogin]) {
+            CLLocationManager* locationManager = [CLLocationManager new];
+            
+            A2DynamicDelegate* dd = locationManager.bk_dynamicDelegate;
+            [dd implementMethod:@selector(locationManager:didUpdateLocations:) withBlock:^(CLLocationManager* manager, NSArray* location) {
+                [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:[NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude] withKey:@"user_latitude"];
+                [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:[NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude] withKey:@"user_longitude"];
+                [locationManager stopUpdatingLocation];
+            }];
+            locationManager.delegate = dd;
+            [locationManager startUpdatingLocation];
+            
+            
+        }
+    }
+}
+
+- (NSString*)userLatitude {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_latitude"]];
+}
+
+- (NSString*)userLongitude {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_longitude"]];
 }
 
 - (BOOL)userHasShop {

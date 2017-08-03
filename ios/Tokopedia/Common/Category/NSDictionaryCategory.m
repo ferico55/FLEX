@@ -57,6 +57,13 @@
     return nil;
 }
 
+- (NSString*)toJSONString {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return jsonString;
+}
+
 +(NSDictionary*)dictionaryFromURLString:(NSString *)URLString
 {
     NSURL *url = [NSURL URLWithString:URLString];
