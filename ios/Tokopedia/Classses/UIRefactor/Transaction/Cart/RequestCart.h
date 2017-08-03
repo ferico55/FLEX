@@ -21,7 +21,7 @@
 
 +(void)fetchToppayWithToken:(NSString *)token listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail voucherCode:(NSString *)voucherCode donationAmount:(NSString*)donationAmount success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error;
 
-+(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error;
++(void)fetchVoucherCode:(NSString*)voucherCode isPromoSuggestion:(BOOL)isPromoSuggestion success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error;
 
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error;
 

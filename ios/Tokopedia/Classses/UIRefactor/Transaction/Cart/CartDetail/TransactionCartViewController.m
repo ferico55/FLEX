@@ -50,6 +50,7 @@
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 @import SwiftOverlays;
+@import NSAttributedString_DDHTML;
 
 @interface TransactionCartViewController ()
 <
@@ -131,6 +132,10 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *LPCashbackCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *donasiCell;
+
+@property (strong, nonatomic) IBOutlet UITableViewCell *promoCell;
+@property (strong, nonatomic) IBOutlet UILabel *promoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *promoCTALabel;
 
 - (IBAction)tap:(id)sender;
 @end
@@ -376,7 +381,7 @@
 #pragma mark - Table View Delegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sectionCount = _list.count + 4;
+    NSInteger sectionCount = _list.count + 5;
     return (_list.count==0)?0:sectionCount;
 }
 
@@ -415,6 +420,8 @@
     else if (indexPath.section == shopCount+1)
         cell = [self cellPaymentInformationAtIndexPath:indexPath];
     else if (indexPath.section == shopCount+2){
+        cell = _promoCell;
+    } else if (indexPath.section == shopCount+3) {
         cell = [[TransactionCartDonationCell alloc] initWithDonation: _cart.donation];
         ((TransactionCartDonationCell*)cell).onTapCheckBox = ^(BOOL isOn) {
             _cart.donation.isSelected = isOn;
@@ -434,7 +441,7 @@
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
-    if (indexPath.section != shopCount+2) {
+    if (indexPath.section != shopCount+3 && indexPath.section != shopCount+2) {
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
     }
@@ -495,14 +502,8 @@
             return 0.1f;
         }
     }
-    else if (section == _list.count+2)
-    {
-            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
-                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
-                ([self depositAmountUser] == 0) )
-                return 0.1f;
-            else
-                return 10;
+    else if (section == _list.count+3) {
+        return 10;
     }
 
     return 0;
@@ -542,6 +543,10 @@
         picker.pickerData =ARRAY_IF_STOCK_AVAILABLE_PARTIALLY;
         picker.tag = TAG_ALERT_PARTIAL;
         [picker show];
+    } if (indexPath.section == _list.count+2) { //promo
+        [_dataInput setObject:_cart.promoSuggestion.promoCode forKey:@"voucher_code"];
+        [_dataInput setObject:@(YES) forKey:@"isUsingPromoSuggestion"];
+        [self doRequestVoucher];
     }
 }
 
@@ -582,6 +587,7 @@
             _voucherAmountLabel.hidden = YES;
             _buttonCancelVoucher.hidden = YES;
             _buttonVoucherInfo.hidden = NO;
+            _cart.promoSuggestion.isUsingVoucher = NO;
             
             _voucherData = [TransactionVoucherData new];
             [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
@@ -964,6 +970,7 @@
             if (buttonIndex == 1) {
                 NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
                 [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+                [_dataInput setObject:@(NO) forKey:@"isUsingPromoSuggestion"];
                 if ([CartValidation isValidInputVoucherCode:voucherCode]) {
                     [self doRequestVoucher];
                 } else {
@@ -1345,10 +1352,6 @@
         }
     }
     else if (indexPath.section == _list.count) {
-        if ([self isUseGrandTotalWithoutLP]) {
-            return 0;
-        }
-        
         if ([_cart.cashback integerValue] == 0) {
             return 0;
         }
@@ -1371,10 +1374,20 @@
             return 0;
         }
     } else if (indexPath.section == _list.count+2){
-        return 75;
+        return (_cart.promoSuggestion.isVisible) ? UITableViewAutomaticDimension : 0; //promo
+    } else if (indexPath.section == _list.count+3){
+        return 75; // donasi
     }
 
     return DEFAULT_ROW_HEIGHT;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == _list.count+2) {
+        return 40;
+    } else {
+        return 0;
+    }
 }
 
 -(CGFloat)errorLabelHeight:(TransactionCartList*)list
@@ -1501,10 +1514,12 @@
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
         [_dataInput setObject:_cart.grand_total_without_lp?:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
+        _cart.promoSuggestion.isUsingVoucher = ([_dataInput objectForKey:@"voucher_code"] && ![[_dataInput objectForKey:@"voucher_code"] isEqualToString:@""]);
         
         [self adjustGrandTotal];
         [self isLoading:NO];
         [self reloadNotification];
+        [self setPromoSuggestion];
         
     } error:^(NSError *error) {
         [self doClearAllData];
@@ -1513,6 +1528,16 @@
         [_tableView addSubview:_noInternetConnectionView];
         [self isLoading:NO];
     }];
+}
+
+-(void)setPromoSuggestion{
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML: _cart.promoSuggestion.text?:@"" normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
+    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
+    paragraph.lineSpacing = 0.5;
+    [text addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, text.length)];
+    _promoLabel.attributedText = text;
+    _promoCTALabel.text = _cart.promoSuggestion.cta;
+    _promoCTALabel.textColor = [UIColor fromHexString:_cart.promoSuggestion.ctaColor];
 }
 
 -(NSArray <TransactionCartList*> *)setCartDataFromPreviousCarts:(NSArray <TransactionCartList*> *)previousCarts toNewCarts:(NSArray <TransactionCartList*> *)newCarts{
@@ -1584,8 +1609,10 @@
 -(void)doRequestVoucher{
     [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
-    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *voucher) {
+    BOOL isPromoSuggestion = [[_dataInput objectForKey:@"isUsingPromoSuggestion"]  isEqual: @(YES)];
+    [RequestCart fetchVoucherCode: voucherCode isPromoSuggestion: isPromoSuggestion success: ^(TransactionVoucher *voucher) {
         
+        _cart.promoSuggestion.isUsingVoucher = YES;
         _voucherData = voucher.data.data_voucher;
         
         _voucherCodeButton.hidden = YES;

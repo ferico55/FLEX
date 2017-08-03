@@ -127,9 +127,9 @@
 }
 
 
-+(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
++(void)fetchVoucherCode:(NSString*)voucherCode isPromoSuggestion:(BOOL)isPromoSuggestion success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
     
-    NSDictionary* param = @{@"voucher_code" : voucherCode};
+    NSDictionary* param = @{@"voucher_code": voucherCode, @"suggested": @(isPromoSuggestion)};
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]

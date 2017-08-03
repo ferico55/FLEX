@@ -46,6 +46,9 @@
     RKRelationshipMapping *donationGatewayMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"donation" toKeyPath:@"donation" withMapping:[Donation mapping]];
     [mapping addPropertyMapping:donationGatewayMapping];
     
+    RKRelationshipMapping *promoSuggestionGatewayMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"promo_suggestion" toKeyPath:@"promoSuggestion" withMapping:[PromoSuggestion mapping]];
+    [mapping addPropertyMapping:promoSuggestionGatewayMapping];
+    
     return mapping;
 }
 
