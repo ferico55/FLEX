@@ -11,6 +11,30 @@
 
 @implementation TransactionCartList
 
+-(NSString *)cart_shipping_rate {
+    return _cart_shipping_rate ?: @"0";
+}
+
+-(NSString *)cart_shipping_rate_idr {
+    return _cart_shipping_rate_idr ?: @"Rp 0";
+}
+
+-(NSString *)cart_total_amount {
+    return _cart_total_amount ?: @"0";
+}
+
+-(NSString *)cart_total_amount_idr {
+    return _cart_total_amount_idr ?: @"Rp 0";
+}
+
+-(NSString *)cart_insurance_price {
+    return _cart_insurance_price ?: @"0";
+}
+
+-(NSString *)cart_insurance_price_idr {
+    return _cart_insurance_price_idr ?: @"Rp 0";
+}
+
 - (CartModelView *)viewModel {
     if(_viewModel == nil) {
         CartModelView *tempViewModel = [CartModelView new];
@@ -66,6 +90,10 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{@"cart_cat_id": @"categoryID",
+                                                  @"cart_string": @"cartString",
+                                                  @"cart_rates_string": @"rateString",
+                                                  @"cart_rates_value": @"rateValue"}];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"cart_shipments" toKeyPath:@"cart_shipments" withMapping:[ShippingInfoShipments mapping]]];
     

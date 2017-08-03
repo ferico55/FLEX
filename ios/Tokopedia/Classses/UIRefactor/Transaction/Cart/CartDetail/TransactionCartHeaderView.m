@@ -51,7 +51,12 @@
     if (viewModel.errors.count > 0) {
         Errors *error = viewModel.errors[0];
         if (![error.name isEqualToString:@"product-not-available"]) {
-            NSString *string = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+            NSString *string = @"";
+            if (error.desc == nil) {
+                string = error.title;
+            } else {
+                string = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+            }
             CGSize maximumLabelSize = CGSizeMake(250,9999);
             NSStringDrawingContext *context = [NSStringDrawingContext new];
             CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize

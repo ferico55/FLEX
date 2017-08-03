@@ -48,4 +48,10 @@
 @property (nonatomic, strong) NSString *lucky_merchant;
 @property (nonatomic, getter=isOfficial) BOOL official;
 
+@property (nonatomic, strong) NSString *addressID;
+@property (nonatomic, strong) NSString *postalCode;
+@property (nonatomic, strong) NSString *latitude;
+@property (nonatomic, strong) NSString *longitude;
+
+
 @end

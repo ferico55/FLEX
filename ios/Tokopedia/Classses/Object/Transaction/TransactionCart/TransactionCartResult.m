@@ -36,6 +36,7 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{@"token_kero": @"keroToken", @"ut": @"ut"}];
     
     RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[TransactionCartList mapping]];
     [mapping addPropertyMapping:relMapping];

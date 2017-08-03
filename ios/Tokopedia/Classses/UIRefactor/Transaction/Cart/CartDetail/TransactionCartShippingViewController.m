@@ -78,9 +78,7 @@
 
     [self setTextAddress:_cart.cart_destination];
     
-    if (_indexPage == 0) {
-        [self doRequestCalculateCart];
-    }
+    [self doRequestCalculateCart];
     
     if ([_cart.cart_destination.latitude integerValue]!=0 && [_cart.cart_destination.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
@@ -159,67 +157,36 @@
 }
 
 #pragma mark - Table View Data Source
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if(_indexPage == TYPE_CART_DETAIL)return 2;
-    else return 1;
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if(_indexPage == TYPE_CART_DETAIL){
-        if(section==0)return _tableViewCell.count-2; // 2 is total row at section 2
-        else return 2;
-    }
-    else{
-        return (!_cart.cart_dropship_name||[_cart.cart_dropship_name isEqualToString:@""])?_tableViewSummaryCell.count-1:_tableViewSummaryCell.count;
-    }
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if(section==0)return _tableViewCell.count-2; // 2 is total row at section 2
+    else return 2;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = nil;
-    if (_indexPage == TYPE_CART_DETAIL)
-        cell = [self cellCartDetailAtIndexPage:indexPath];
-    else
-        cell = [self cellCartSummaryAtIndexPage:indexPath];
+    cell = [self cellCartDetailAtIndexPage:indexPath];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 #pragma mark - Table View Delegate
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_indexPage==0) {
-        if(indexPath.section==0 && indexPath.row == 2){
-            //API is not supporting [shipment_is_pickup] condition per 23/09/2016
-            //have to use ugly approach temporary
-            //please update the API!
-            if ([_cart.cart_shipments.shipment_id integerValue] == 10 ||
-                [_cart.cart_shipments.shipment_id integerValue] == 12 ||
-                _cart.cart_shipments.shipment_is_pickup == 1
-                ) {
-                    return 70;
-            }
-            return 0;
-        }
-    }
-    else
-    {
-        if ([_cart.cart_total_product integerValue] == 1 && indexPath.row == 5) {
-            return 0;
-        }
-        if (indexPath.row == 2) {
-            //API is not supporting [shipment_is_pickup] condition per 23/09/2016
-            //have to use ugly approach temporary
-            //please update the API!
-            if ([_cart.cart_shipments.shipment_id integerValue] == 10 ||
-                [_cart.cart_shipments.shipment_id integerValue] == 12 ||
-                _cart.cart_shipments.shipment_is_pickup == 1
-                ) {
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section==0 && indexPath.row == 2){
+        //API is not supporting [shipment_is_pickup] condition per 23/09/2016
+        //have to use ugly approach temporary
+        //please update the API!
+        if ([_cart.cart_shipments.shipment_id integerValue] == 10 ||
+            [_cart.cart_shipments.shipment_id integerValue] == 12 ||
+            _cart.cart_shipments.shipment_is_pickup == 1
+            ) {
                 return 70;
-            }
-            return 0;
         }
+        return 0;
     }
     return UITableViewAutomaticDimension;
 }
@@ -230,9 +197,7 @@
         switch (indexPath.row) {
             case 0:
             {
-                if (_indexPage == 0) {
-                    [self chooseAddress];
-                }
+                [self chooseAddress];
                 break;
             }
             case 2:
@@ -507,12 +472,12 @@
             {
                 NSString *insuranceName;
                 if ([_cart.cart_cannot_insurance integerValue]==1) {
-                   insuranceName = @"Tidak didukung";
+                   insuranceName = _cart.insuranceInfo?:@"Tidak didukung";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
                 else if ([_cart.cart_force_insurance integerValue]==1) {
-                    insuranceName = @"Wajib Asuransi";
+                    insuranceName = _cart.insuranceInfo?:@"Wajib Asuransi";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
@@ -580,64 +545,6 @@
     [cell setUserInteractionEnabled:_isFinishCalculate];
     return cell;
 }
-
--(UITableViewCell*)cellCartSummaryAtIndexPage:(NSIndexPath*)indexPath
-{
-    UITableViewCell *cell;
-    
-    cell = _tableViewSummaryCell[indexPath.row];
-    switch (indexPath.row) {
-        case 0:
-            cell.detailTextLabel.text = _cart.cart_destination.address_name?:@"";
-            break;
-        case 1:
-            break;
-        case 3:
-        {
-            NSString *shipmentPackageName = _cart.cart_shipments.shipment_package_name;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",_cart.cart_shipments.shipment_name?:@"",shipmentPackageName];
-            break;
-        }
-        case 4:
-        {
-            NSString *insuranceName;
-            if ([_cart.cart_cannot_insurance integerValue]==1) {
-                insuranceName = @"Tidak didukung";
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            } else if ([_cart.cart_force_insurance integerValue] == 1) {
-                insuranceName = @"Wajib Asuransi";
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-            else {
-                insuranceName = _cart.cart_insurance_name?:([_cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-            cell.detailTextLabel.text = insuranceName;
-            break;
-        }
-        case 5:
-        {
-            cell.detailTextLabel.text = ([_cart.cart_is_partial integerValue] == 1)?@"Ya":@"Tidak";
-            break;
-        }
-        case 6:
-        {
-            NSString *dropship = (!_cart.cart_dropship_name||[_cart.cart_dropship_name isEqualToString:@""])?@"Tidak":@"Ya";
-            cell.detailTextLabel.text = dropship;
-            break;
-        }
-        case 7:
-        {
-            _senderNameLabel.text = _cart.cart_dropship_name;
-            _senderPhoneLabel.text = _cart.cart_dropship_phone;
-        }
-        default:
-            break;
-    }
-    [cell setUserInteractionEnabled:_isFinishCalculate];
-    return cell;
-}
-
 
 -(BOOL)isValidInput
 {

@@ -10,6 +10,30 @@
 
 @implementation ShippingInfoShipmentPackage
 
+-(instancetype)initWithPrice:(NSString *)price packageID:(NSString *)packageID name:(NSString *)name {
+    self = [super init];
+    
+    if (self) {
+        self.price = price;
+        self.sp_id = packageID;
+        self.name = name;
+    }
+    
+    return self;
+}
+
+-(NSString *)sp_id {
+    return _sp_id ?: @"";
+}
+
+-(NSString *)name {
+    return _name ?: @"";
+}
+
+-(NSString *)price {
+    return _price ?: @"0";
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"price_total",

@@ -109,6 +109,8 @@
     NSMutableArray *_errorMessages;
     NotificationManager *_notifManager;
     
+    NSString *_editedCartId;
+    
     UIView *_lineView;
     UIView *lastNotificationView;
 }
@@ -550,11 +552,9 @@
     }
 }
 
--(void)pushShipmentCart:(TransactionCartList*)cart
-{
+-(void)pushShipmentCart:(TransactionCartList*)cart {
     TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
     shipmentViewController.cart = cart;
-    shipmentViewController.indexPage = 0;
     shipmentViewController.delegate = self;
     [self.navigationController pushViewController:shipmentViewController animated:YES];
 }
@@ -645,14 +645,16 @@
 }
 
 #pragma mark - Delegate
--(void)TransactionCartShipping:(TransactionCartList *)cart
-{
+-(void)TransactionCartShipping:(TransactionCartList *)cart {
+    BOOL isPreorder = (cart.cart_products[0].product_preorder.process_day > 0);
+    NSString *preorderStatus = isPreorder?@"preorder":@"regular";
+    NSString *productId = isPreorder?cart.cart_products[0].product_id:@"0";
+    _editedCartId = [NSString stringWithFormat:@"%@-%@-%@-%@-%@-%@", cart.cart_shop.shop_id,cart.cart_destination.address_id,cart.cart_shipments.shipment_id, cart.cart_shipments.shipment_package_id, preorderStatus, productId];
     [self isLoading:YES];
     [self requestCartData];
 }
 
--(void)shouldEditCartWithUserInfo:(NSDictionary *)userInfo
-{
+-(void)shouldEditCartWithUserInfo:(NSDictionary *)userInfo {
     [_dataInput addEntriesFromDictionary:userInfo];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     [self doRequestEditProduct:product];       
@@ -1390,28 +1392,6 @@
     }
 }
 
--(CGFloat)errorLabelHeight:(TransactionCartList*)list
-{
-    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
-    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
-    if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
-    {
-        return 0;
-    }
-    else
-    {
-        NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-        CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
-        NSStringDrawingContext *context = [NSStringDrawingContext new];
-        CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
-                                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                                     attributes:@{NSFontAttributeName:[UIFont title1Theme]}
-                                                        context:context].size;
-        
-        return expectedLabelSize.height;
-    }
-}
-
 -(CGFloat)productRowHeight:(ProductDetail*)product
 {
     NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
@@ -1434,7 +1414,12 @@
     if (product.errors.count > 0) {
         Errors *error = product.errors[0];
         
-        NSString *errorText = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+        NSString *errorText = @"";
+        if (error.desc == nil) {
+            errorText = error.title;
+        } else {
+            errorText = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+        }
         CGSize maximumLabelSize = CGSizeMake(250,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         expectedErrorLabelSize = [errorText boundingRectWithSize:maximumLabelSize
@@ -1496,11 +1481,12 @@
     
     _checkoutButton.enabled = NO;
 
-    [RequestCart fetchCartData:^(TransactionCartResult *data) {
+    CartRequest * request = [CartRequest new];
+    [request fetchCartData:^(TransactionCartResult * data) {
         NSArray<TransactionCartList*> *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
-        
+
         if(list.count >0){
             [_noResultView removeFromSuperview];
             [_noResultScrollView removeFromSuperview];
@@ -1509,7 +1495,7 @@
             [_tableView addSubview:_noResultScrollView];
             [_noResultScrollView addSubview:_noResultView];
         }
-        
+
         _cart = data;
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
         [_dataInput setObject:_cart.grand_total_without_lp?:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
@@ -1521,7 +1507,7 @@
         [self reloadNotification];
         [self setPromoSuggestion];
         
-    } error:^(NSError *error) {
+    } onFailure:^(NSError *error) {
         [self doClearAllData];
         [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
@@ -1544,11 +1530,12 @@
     for (TransactionCartList *cart in previousCarts) {
         for (TransactionCartList *newCart in newCarts) {
             
-            if ([newCart.cart_shop.shop_id integerValue] == [cart.cart_shop.shop_id integerValue] &&
-                [newCart.cart_destination.address_id integerValue] == [cart.cart_destination.address_id integerValue] &&
-                [newCart.cart_shipments.shipment_id integerValue] == [cart.cart_shipments.shipment_id integerValue] &&
-                [newCart.cart_shipments.shipment_package_id integerValue] == [cart.cart_shipments.shipment_package_id integerValue]
-                ) {
+            if ([newCart.cartString isEqualToString:_editedCartId]){
+                NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:newCart};
+                [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
+            }
+            
+            if ([newCart.cartString isEqualToString:cart.cartString]) {
                 
                 newCart.cart_dropship_name = cart.cart_dropship_name?:@"";
                 newCart.cart_dropship_phone = cart.cart_dropship_phone?:@"";
@@ -1556,9 +1543,6 @@
                 newCart.cart_dropship_param = cart.cart_dropship_param?:@"";
                 newCart.cart_is_partial = cart.cart_is_partial?:@"0";
                 newCart.cart_partial_param = cart.cart_partial_param?:@"";
-                
-                NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:newCart};
-                [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
                 
                 break;
             }
@@ -1657,6 +1641,11 @@
         [partialStrList addObject:cart.cart_partial_param?:@""];
     }
     
+    NSMutableDictionary *cartListRate = [NSMutableDictionary new];
+    for (TransactionCartList *cart in _list) {
+        [cartListRate setValue:cart.rateValue forKey:cart.rateString];
+    }
+    
     [RequestCart fetchToppayWithToken:_cart.token
                          listDropship:[dropshipStrList copy]
                        dropshipDetail:dropshipperDetail
@@ -1664,6 +1653,8 @@
                         partialDetail:partialDetail
                           voucherCode:voucherCode
                        donationAmount:_cart.donation.usedDonationValue
+                         cartListRate:cartListRate
+                         
                               success:^(TransactionActionResult *data) {
                               
                               [TransactionCartWebViewViewController pushToppayFrom:self data:data];

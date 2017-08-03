@@ -10,14 +10,14 @@ import UIKit
 import RestKit
 
 class CartEditShipmentResponse: NSObject {
-    
-    var status:String = ""
-    var message_error : [String] = []
-    var message_status : [String] = []
-    var data:CartShipmentData = CartShipmentData()
-    
+
+    var status: String = ""
+    var message_error: [String] = []
+    var message_status: [String] = []
+    var data: CartShipmentData = CartShipmentData()
+
     class func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping(for: self)
+        let mapping: RKObjectMapping = RKObjectMapping(for: self)
         mapping.addAttributeMappings(from: [
             "status",
             "message_error",
@@ -25,7 +25,7 @@ class CartEditShipmentResponse: NSObject {
             ]
         )
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: CartShipmentData.mapping()))
-        
+
         return mapping
     }
 }

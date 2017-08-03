@@ -22,7 +22,6 @@
 @property (nonatomic, weak) IBOutlet id<TransactionCartShippingViewControllerDelegate> delegate;
 
 
-@property (nonatomic) NSInteger indexPage;
 @property (nonatomic, strong) TransactionCartList *cart;
 
 @end

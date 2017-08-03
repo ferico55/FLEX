@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) NSString *dataID;
 @property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSArray *attributes;
+@property (nonatomic, strong) NSArray<RateAttributes*> *attributes;
 
 @end

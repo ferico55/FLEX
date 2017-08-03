@@ -18,4 +18,6 @@
 @property (nonatomic, strong) NSString *sp_id;
 @property (nonatomic, strong) NSString *package_available;
 
+-(instancetype)initWithPrice:(NSString *)price packageID:(NSString *)packageID name:(NSString *)name;
+
 @end

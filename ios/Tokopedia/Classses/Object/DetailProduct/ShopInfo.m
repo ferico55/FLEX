@@ -58,7 +58,9 @@
                       @"shop_is_official",
                       @"shop_official_top",
                       @"shop_status_title",
-                      @"shop_status_message"
+                      @"shop_status_message",
+                      @"longitude",
+                      @"latitude"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -68,7 +70,9 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addAttributeMappingsFromDictionary:@{
-                                                  @"shop_is_gold_badge": @"hasGoldBadge"
+                                                  @"shop_is_gold_badge": @"hasGoldBadge",
+                                                  @"address_id": @"addressID",
+                                                  @"postal_code": @"postalCode"
                                                   }];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_stats" toKeyPath:@"shop_stats" withMapping:[ShopStats mapping]]];

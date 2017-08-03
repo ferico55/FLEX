@@ -14,7 +14,7 @@ import Unbox
 final class Errors:NSObject, Unboxable {
     var name:String = ""
     var title:String = ""
-    var desc:String = ""
+    var desc:String?
     
     override init() { }
     
@@ -26,7 +26,7 @@ final class Errors:NSObject, Unboxable {
         return mapping
     }
     
-    init(name:String, title:String, desc:String) {
+    init(name:String, title:String, desc:String? = nil) {
         self.name = name
         self.title = title
         self.desc = desc
@@ -36,7 +36,7 @@ final class Errors:NSObject, Unboxable {
         self.init(
             name: try unboxer.unbox(keyPath:"name"),
             title: try unboxer.unbox(keyPath:"title"),
-            desc: try unboxer.unbox(keyPath:"description")
+            desc: try? unboxer.unbox(keyPath:"description")
         )
     }
 }

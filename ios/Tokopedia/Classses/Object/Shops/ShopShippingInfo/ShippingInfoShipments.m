@@ -27,6 +27,7 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{@"shipment_code": @"shipmentCode"}];
 
     RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment_package" toKeyPath:@"shipment_package" withMapping:[ShippingInfoShipmentPackage mapping]];
     [mapping addPropertyMapping:relMapping];

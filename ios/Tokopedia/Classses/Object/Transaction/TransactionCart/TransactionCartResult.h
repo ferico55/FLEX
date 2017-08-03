@@ -15,7 +15,7 @@
 
 @interface TransactionCartResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic,strong) NSArray *list;
+@property (nonatomic,strong) NSArray<TransactionCartList*> *list;
 @property (nonatomic,strong) NSArray *gateway_list;
 
 @property (nonatomic,strong) NSString *gateway;
@@ -34,5 +34,7 @@
 @property (nonatomic,strong) NSString *grand_total_without_lp;
 @property (nonatomic, strong) Donation *donation;
 @property (nonatomic, strong) PromoSuggestion *promoSuggestion;
+@property (nonatomic,strong) NSString *keroToken;
+@property (nonatomic,strong) NSString *ut;
 
 @end

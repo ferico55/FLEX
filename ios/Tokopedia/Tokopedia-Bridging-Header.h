@@ -190,6 +190,8 @@
 #import "UIActivityViewController+Extensions.h"
 #import <MessageUI/MessageUI.h>
 #import "TAGDataLayer.h"
+#import "RequestRates.h"
+#import "NSNumberFormatter+IDRFormater.h"
 #import "ProfileInfo.h"
 #import "ProfileInfoResult.h"
 #import "SmileyAndMedal.h"
