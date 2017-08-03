@@ -9,8 +9,11 @@
 import UIKit
 import WebKit
 import JLRoutes
+import Popover
 
 @objc class ResolutionWebViewController: UIViewController {
+    
+    fileprivate var popover : WebviewPopover?
     
     fileprivate var stringUrl : String?
     fileprivate var route = JLRoutes()
@@ -42,6 +45,7 @@ import JLRoutes
     init(resolutionId:String) {
         super.init(nibName: nil, bundle: nil)
         self.stringUrl = self.urlStringDetailWithResolutionId(resolutionId);
+        popover = WebviewPopover(viewController: self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,6 +56,9 @@ import JLRoutes
         super.viewDidLoad()
         
         self.title = "Pusat Resolusi"
+        
+        //popover
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem.make(controller: self, selector: #selector(WKWebViewController.tapPopover))
         
         let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backButton
@@ -170,5 +177,10 @@ extension ResolutionWebViewController: WKNavigationDelegate {
     fileprivate func hideLoadingIndicators() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         progressView.isHidden = true
+    }
+    
+    //MARK: pop over
+    func tapPopover() {
+        self.popover?.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: 50))
     }
 }
