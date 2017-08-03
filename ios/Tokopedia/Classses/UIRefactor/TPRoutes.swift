@@ -204,6 +204,17 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("/digital") { params in
+            let viewController = DigitalCategoryListViewController()
+            viewController.title = "Pilih Produk"
+            viewController.hidesBottomBarWhenPushed = true
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            return true
+        }
+        
         JLRoutes.global().addRoute("/digital/form") { params in
             let viewController = DigitalCategoryMenuViewController(categoryId: params["category_id"] as! String)
             

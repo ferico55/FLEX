@@ -96,11 +96,11 @@ class HomePageViewController: UIViewController {
         if self.canRequestTicker == true {
             self.requestTicker()
         }
-        if self.pulsaActiveCategories == nil && self.isRequestingPulsaWidget == false {
-            self.requestPulsaWidget()
-        }
         if self.homePageCategoryData == nil && self.isRequestingCategory == false {
             self.requestCategory()
+        }
+        if self.pulsaActiveCategories == nil && self.isRequestingPulsaWidget == false {
+            self.requestPulsaWidget()
         }
         
         if !self.officialStoreRequestSuccess && !self.isRequestingOfficialStore {
@@ -420,7 +420,6 @@ class HomePageViewController: UIViewController {
             self.navigator = PulsaNavigator()
             self.navigator.pulsaView = self.pulsaView
             self.navigator.controller = self
-            
             self.pulsaView.navigator = self.navigator
             
             self.pulsaView.didAskedForLogin = { [unowned self] in
@@ -435,9 +434,14 @@ class HomePageViewController: UIViewController {
                 self.navigator.navigateToPulsaOperator(operators)
             }
             
+            self.pulsaView.didTapSeeAll = { [unowned self] in
+                self.navigator.navigateToDigitalCategories()
+            }
+            
             self.pulsaView.didSuccessPressBuy = { [unowned self] url in
                 self.navigator.navigateToWKWebView(url)
             }
+            
             
             //            self.pulsaView.didSuccessPressBuy = { [unowned self] (category) in
             //                self.navigator.navigateToCart(category)

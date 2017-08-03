@@ -127,6 +127,14 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         self.controller.navigationController?.pushViewController(controller, animated: true)
     }
     
+    func navigateToDigitalCategories() {
+        let controller = DigitalCategoryListViewController()
+        controller.title = "Pilih Produk"
+        controller.hidesBottomBarWhenPushed = true;
+        
+        self.controller.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     fileprivate func didSelectContact(_ contact: String) {
         var phoneNumber = contact
         phoneNumber = phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression, range: nil)

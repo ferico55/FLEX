@@ -138,6 +138,16 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate var operatorButton: UIButton!
     fileprivate var operatorErrorLabel: UILabel!
     
+    fileprivate var seeAllButtonPlaceholder:UIView!
+    lazy fileprivate var seeAllLabel:UILabel = {
+        let seeAllLabel = UILabel(frame: CGRect.zero)
+        seeAllLabel.backgroundColor = UIColor.white
+        seeAllLabel.textColor = UIColor.tpGreen()
+        seeAllLabel.font = UIFont.smallThemeMedium()
+        seeAllLabel.text = "Lihat Semua Produk >"
+        return seeAllLabel
+    }()
+    
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
     var selectedProduct = PulsaProduct() {
@@ -154,6 +164,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     var didTapAddressbook: ((Void) -> Void)?
     var didTapProduct:(([PulsaProduct]) -> Void)?
     var didTapOperator:(([PulsaOperator]) -> Void)?
+    var didTapSeeAll: ((Void) -> Void)?
     var didAskedForLogin: ((Void) -> Void)?
     var didShowAlertPermission: ((Void) -> Void)?
     var didSuccessPressBuy: ((URL) -> Void)?
@@ -519,7 +530,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.buildButtons(category)
         self.buildUseSaldoView()
         self.buildBuyButtonPlaceholder()
-        
+        self.buildSeeAllButton()
     }
     
     
@@ -672,6 +683,36 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.left.mas_equalTo()(self.noHandphoneLabel)
             make?.centerY.mas_equalTo()(self.numberErrorPlaceholder)
         }
+    }
+    
+    fileprivate func buildSeeAllButton() {
+        seeAllButtonPlaceholder = UIView(frame: CGRect.zero)
+        seeAllButtonPlaceholder.backgroundColor = UIColor.white
+        stackView.addArrangedSubview(seeAllButtonPlaceholder)
+        seeAllButtonPlaceholder.mas_makeConstraints { (make) in
+            make?.height.equalTo()(40)
+        }
+        let seeAllUnderline = UIView()
+        seeAllUnderline.backgroundColor = underlineViewColor
+        seeAllButtonPlaceholder.addSubview(seeAllUnderline)
+        seeAllUnderline.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.seeAllButtonPlaceholder.mas_top)
+            make?.left.right().mas_equalTo()(self.seeAllButtonPlaceholder)
+            make?.height.mas_equalTo()(0.5)
+        }
+        
+        seeAllButtonPlaceholder.addSubview(seeAllLabel)
+        seeAllLabel.mas_makeConstraints { (make) in
+            make?.top.equalTo()(seeAllUnderline.mas_bottom)?.offset()(10)
+            make?.right.equalTo()(self.seeAllButtonPlaceholder.mas_right)?.offset()(-15)
+        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(goToDigitalCategory(sender:)))
+        seeAllLabel.isUserInteractionEnabled = true
+        seeAllLabel.addGestureRecognizer(tap)
+    }
+    
+    func goToDigitalCategory(sender:UITapGestureRecognizer) {
+        self.didTapSeeAll?()
     }
     
     fileprivate func getLastOrder(category:String) {

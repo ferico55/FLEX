@@ -1,0 +1,157 @@
+//
+//  DigitalCategoriesComponentView.swift
+//  Tokopedia
+//
+//  Created by Ronald Budianto on 7/10/17.
+//  Copyright © 2017 TOKOPEDIA. All rights reserved.
+//
+
+import Foundation
+import UIKit
+import Render
+import RxSwift
+
+struct DigitalCategoryState: StateType {
+    var categories: [HomePageCategoryLayoutRow]
+}
+
+class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
+    let numberOfColumns = 4.0
+    
+    override init() {
+        super.init()
+    }
+    
+    convenience init(categories: [HomePageCategoryLayoutRow]) {
+        self.init()
+        let theState = DigitalCategoryState(categories:categories)
+        self.state = theState
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
+        guard let state = state, state.categories.count > 0 else {
+            return Node<UIView> {
+                _, _, _ in
+            }
+        }
+        
+        let mainWrapper = Node<UIScrollView> {
+            view, layout, size in
+            view.backgroundColor = .tpBackground()
+            layout.width = size.width
+            layout.height = size.height
+        }
+        
+        func digitalCategoryView(category:HomePageCategoryLayoutRow?) -> NodeType {
+            let digitalCategoryView = Node<UIView>(
+                create: {
+                    let tapGesture = UITapGestureRecognizer()
+                    tapGesture.rx.event
+                        .subscribe(onNext: { _ in
+                            if let stringUrl = category?.url, let url = URL(string: stringUrl) {
+                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: (category?.name)!, action: "Click Icon on All Categories")
+                                TPRoutes.routeURL(url)
+                            }
+                        }).addDisposableTo(self.rx_disposeBag)
+
+                    let view = UIView()
+                    view.addGestureRecognizer(tapGesture)
+                    return view
+            }) {
+                view, layout, size in
+                view.clipsToBounds = true
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0.5
+                view.layer.borderColor = UIColor.tpBackground().cgColor
+                layout.alignItems = .center
+                layout.flexDirection = .column
+                layout.width = size.width / CGFloat(self.numberOfColumns)
+                layout.height = 110
+                
+            }
+            
+            let digitalCategoryLabel = Node<UILabel> {
+                view, layout, size in
+                if let name = category?.name {
+                    view.text = name
+                } else {
+                    view.text = ""
+                }
+                view.font = UIFont.microTheme()
+                view.textColor = UIColor.tpSecondaryBlackText()
+                view.numberOfLines = 0
+                view.lineBreakMode = .byClipping
+                view.textAlignment = .center
+                layout.margin = 10
+            }
+            
+            let digitalCategoryImageView = Node<UIImageView> {
+                view, layout, _ in
+                if let url = category?.image_url {
+                    view.setImageWith(URL(string: url))
+                }
+                view.contentMode = .scaleAspectFill
+                layout.width = 30
+                layout.height = 30
+                layout.marginTop = 20
+                layout.marginBottom = 10
+            }
+            
+            return digitalCategoryView.add(children: [digitalCategoryImageView, digitalCategoryLabel])
+        }
+        
+        func digitalCategoryRow(rowData:[HomePageCategoryLayoutRow]) -> NodeType {
+            let digitalCategoryRow = Node<UIView> {
+                view, layout, size in
+                view.backgroundColor = .clear
+                layout.alignItems = .center
+                layout.flexDirection = .row
+                layout.width = size.width
+            }
+            
+            for index in 0...3 {
+                if rowData.indices.contains(index) {
+                    digitalCategoryRow.add(child: digitalCategoryView(category: rowData[index]))
+                } else {
+                    digitalCategoryRow.add(child: digitalCategoryView(category: nil))
+                }
+            }
+            return digitalCategoryRow
+        }
+        
+        func digitalCategoryContainer(data:[HomePageCategoryLayoutRow]) -> NodeType {
+            let digitalCategoryContainer = Node<UIView> {
+                view, layout, size in
+                view.backgroundColor = .clear
+                layout.alignItems = .center
+                layout.flexDirection = .column
+                layout.width = size.width
+            }
+            
+            let totalRow = Double(data.count) / numberOfColumns
+            var maxRow = 0
+            if totalRow.truncatingRemainder(dividingBy: 1) == 0 {
+                maxRow = Int(floor(totalRow))
+            } else {
+                maxRow = Int(floor(totalRow)) + 1
+            }
+            
+            for rowCount in 1...maxRow {
+                let startIndex = Int(numberOfColumns) * (rowCount - 1)
+                var endIndex = Int(numberOfColumns) * rowCount - 1
+                if endIndex > data.count - 1 {
+                    endIndex = data.count - 1
+                }
+                let selectedData = Array(data[startIndex...endIndex])
+                digitalCategoryContainer.add(child: digitalCategoryRow(rowData: selectedData))
+            }
+            return digitalCategoryContainer
+        }
+        
+        return mainWrapper.add(child: digitalCategoryContainer(data: state.categories))
+    }
+}

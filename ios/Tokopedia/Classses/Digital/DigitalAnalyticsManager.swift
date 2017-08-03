@@ -76,4 +76,11 @@ extension AnalyticsManager {
         
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
     }
+    
+    static func trackRechargeEvent(event:DigitalEventName, category:String, action:String) {
+        let categoryName = "\(GA_EVENT_CATEGORY_RECHARGE) - \(category)"
+        var labelName = category
+        
+        AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
+    }
 }
