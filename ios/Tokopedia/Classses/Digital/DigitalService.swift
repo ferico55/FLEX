@@ -81,7 +81,8 @@ class DigitalService {
                         }
                         .map(to: DigitalCartPayment.self)
                         .map { cartPayment in
-                            if let errorMessage = cartPayment.errorMessage  {                                                                throw errorMessage
+                            if let errorMessage = cartPayment.errorMessage {
+                                throw errorMessage
                             }
                             return cartPayment
                         }
@@ -103,13 +104,10 @@ class DigitalService {
                     viewController.navigationController?.pushViewController(cartViewController, animated: true)
                     
                     return cartViewController.cartPayment
-                        .map { cartPayment in
-                            return cartPayment
-                        }
                 }
             }.map { cartPayment in
                 onNavigateToCart()
-
+                
                 let webView = WebViewController()
                 webView.navigationPivotVisible = false
                 webView.hidesBottomBarWhenPushed = true
@@ -117,7 +115,7 @@ class DigitalService {
                 webView.strQuery = cartPayment.queryString
                 webView.shouldAuthorizeRequest = false
                 webView.strTitle = "Pembayaran"
-
+                
                 guard let navigationController = viewController.navigationController else {
                     return
                 }
@@ -148,7 +146,7 @@ class DigitalService {
                         viewController.navigationController?.setViewControllers(vcs, animated: false)
                     }
                     
-                    if (url?.absoluteString == cartPayment.callbackUrlSuccess) {
+                    if url?.absoluteString == cartPayment.callbackUrlSuccess {
                         viewController.navigationController?.popToRootViewController(animated: true)
                     }
                 }
@@ -159,27 +157,60 @@ class DigitalService {
             }
     }
     
+    func purchase(categoryId: String, operatorId: String, productId: String, textInputs: [String: String], instantCheckout: Bool) -> Observable<String> {
+        return DigitalProvider().request(.deleteCart(categoryId))
+            .mapJSON()
+            .map { response -> Bool in
+                let result = JSON(response)
+                let success = result.dictionaryValue["data"]?.dictionaryValue["success"]?.boolValue ?? false
+                return success
+            }
+            .flatMap { success -> Observable<String> in
+                guard success else { return Observable.empty() }
+                
+                return DigitalProvider().request(.addToCart(
+                    withProductId: productId,
+                    inputFields: textInputs,
+                    instantCheckout: instantCheckout
+                ))
+                    .mapJSON()
+                    .map { response -> String in
+                        let result = JSON(response)
+                        if let categoryId = result.dictionaryValue["data"]?
+                            .dictionaryValue["relationships"]?
+                            .dictionaryValue["category"]?
+                            .dictionaryValue["data"]?
+                            .dictionaryValue["id"]?
+                            .stringValue {
+                            return categoryId
+                        }
+                        throw (result.dictionaryValue["errors"]?[0].dictionaryValue["title"]?.stringValue)!
+                    }
+                
+            }
+    }
+    
     private func cart(categoryId: String) -> Observable<String> {
         return DigitalProvider()
             .request(.getCart(categoryId))
             .map(to: DigitalCart.self)
             .map { $0.cartId }
-
+        
     }
     
-    func lastOrder(categoryId:String) -> Observable<DigitalLastOrder> {
-        return Observable.concat (
+    func lastOrder(categoryId: String) -> Observable<DigitalLastOrder> {
+        return Observable.concat(
             getWSLastOrder(category: categoryId),
             getCacheLastOrder(category: categoryId),
             getDefaultLastOrder(category: categoryId)
-            )
-            .filter { $0 != nil }
-            .take(1)
-            .map{ $0! }
+        )
+        .filter { $0 != nil }
+        .take(1)
+        .map { $0! }
     }
     
-    func getWSLastOrder (category: String) -> Observable<DigitalLastOrder?> {
-        if (!UserAuthentificationManager().isLogin) {
+    func getWSLastOrder(category: String) -> Observable<DigitalLastOrder?> {
+        if !UserAuthentificationManager().isLogin {
             return Observable.empty()
         }
         
@@ -188,18 +219,28 @@ class DigitalService {
             .mapJSON()
             .map { response in
                 let result = JSON(response)
-                if (category == result.dictionaryValue["data"]?.dictionaryValue["attributes"]?.dictionaryValue["category_id"]?.stringValue) {
-                    return DigitalLastOrder.fromJSON((result.dictionaryValue["data"]?.dictionaryValue["attributes"]?.dictionaryObject)!)
+                if category == result
+                    .dictionaryValue["data"]?
+                    .dictionaryValue["attributes"]?
+                    .dictionaryValue["category_id"]?
+                    .stringValue {
+                    if let lastOrder = result
+                        .dictionaryValue["data"]?
+                        .dictionaryValue["attributes"]?
+                        .dictionaryObject {
+                        return DigitalLastOrder.fromJSON(lastOrder)
+                    }
+                    return nil
                 }
                 return nil
-        }
+            }
     }
     
-    func getCacheLastOrder(category:String) -> Observable<DigitalLastOrder?> {
-        return Observable.create{ (observer) -> Disposable in
+    func getCacheLastOrder(category: String) -> Observable<DigitalLastOrder?> {
+        return Observable.create { (observer) -> Disposable in
             let cache = PulsaCache()
             
-            cache.loadLastOrder(categoryId: category, loadLastOrderCallBack: { (lastOrder) in
+            cache.loadLastOrder(categoryId: category, loadLastOrderCallBack: { lastOrder in
                 observer.on(.next(lastOrder))
                 observer.on(.completed)
             })
@@ -208,10 +249,10 @@ class DigitalService {
         }
     }
     
-    func getDefaultLastOrder(category:String) -> Observable<DigitalLastOrder?> {
+    func getDefaultLastOrder(category: String) -> Observable<DigitalLastOrder?> {
         return Observable.create { observer -> Disposable in
-            let order:DigitalLastOrder = { () -> DigitalLastOrder in
-                switch (category) {
+            let order: DigitalLastOrder = { () -> DigitalLastOrder in
+                switch category {
                 case "1", "2" : return DigitalLastOrder(categoryId: category, operatorId: nil, productId: nil, clientNumber: UserAuthentificationManager().getUserPhoneNumber())
                 default:
                     return DigitalLastOrder(categoryId: category)

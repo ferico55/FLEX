@@ -20,7 +20,7 @@ class DigitalProvider: NetworkProvider<DigitalTarget> {
     fileprivate class func endpointClosure(for target: DigitalTarget) -> Endpoint<DigitalTarget> {
         let userId = UserAuthentificationManager().getUserId()!
         
-        let headers = target.method == .get ? [:] : [
+        let headers = target.method == .get || target.method == .delete ? [:] : [
             "X-Tkpd-UserId": userId,
             "Content-Type": "application/json",
             "Idempotency-Key": UUID().uuidString
@@ -41,6 +41,7 @@ enum DigitalTarget {
     case otpSuccess(String)
     case getCart(String)
     case lastOrder(String)
+    case deleteCart(String)
 }
 
 extension DigitalTarget: TargetType {
@@ -58,6 +59,7 @@ extension DigitalTarget: TargetType {
         case .otpSuccess: return "/v1.3/cart/otp-success"
         case .getCart: return "/v1.3/cart"
         case .lastOrder: return "/v1.3/last-order"
+        case .deleteCart: return "/v1.3/cart"
         }
     }
     
@@ -67,6 +69,7 @@ extension DigitalTarget: TargetType {
         case .addToCart, .payment: return .post
         case .category, .voucher, .getCart, .lastOrder: return .get
         case .otpSuccess: return .patch
+        case .deleteCart: return .delete
         }
     }
     
@@ -140,6 +143,8 @@ extension DigitalTarget: TargetType {
         case let .getCart(categoryId) :
             return ["category_id": categoryId]
         case let .lastOrder(categoryId) :
+            return ["category_id": categoryId]
+        case let .deleteCart(categoryId):
             return ["category_id": categoryId]
         default: return [:]
         }

@@ -57,10 +57,15 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     
     let cartPayment = PublishSubject<DigitalCartPayment>()
     
+    lazy fileprivate var mainActivityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleBottomMargin, .flexibleTopMargin]
+        return indicator
+    }()
+    
     lazy fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         indicator.frame.origin = CGPoint(x: 20, y: 16)
-        
         return indicator
     }()
     
@@ -74,16 +79,46 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         super.init(nibName: "DigitalCartViewController", bundle: nil)
     }
     
+    convenience init(cart: Observable<String>) {
+        self.init(nibName: nil, bundle: nil)
+        cart.subscribe(onNext: { [weak self] (categoryId) in
+            guard let `self` = self else { return }
+            if !categoryId.isEmpty {
+                self.categoryId = categoryId
+                self.getCart()
+            } else {
+                self.view.addSubview(self.noResultView)
+                self.content.isHidden = true
+            }
+        }, onError: { [weak self] (error) in
+            guard let `self` = self else { return }
+            let message = error as? String ?? error.localizedDescription
+            
+            StickyAlertView.showErrorMessage([message])
+            self.noResultView = NoResultReusableView(frame: UIScreen.main.bounds)
+            self.noResultView.generateAllElements("no-result.png", title: "Oops, Terjadi Kendala", desc: "Silahkan coba beberapa saat lagi menyelesaikan transaksi anda", btnTitle: nil)
+            self.view.addSubview(self.noResultView)
+            self.content.isHidden = true
+            self.mainActivityIndicator.stopAnimating()
+        }).disposed(by: self.rx_disposeBag)
+        
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.mainActivityIndicator.center = self.view.center
+        self.view.addSubview(self.mainActivityIndicator)
+        self.mainActivityIndicator.startAnimating()
         initView()
-        getCart()
+        if !self.categoryId.isEmpty {
+            getCart()
+        }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
         
@@ -299,9 +334,12 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                         self?.cart = cart
                         self?.transactionId = cart.cartId
                         self?.setData()
+                
+                        self?.mainActivityIndicator.stopAnimating()
                         AnalyticsManager.trackRechargeEvent(event: .homepage, cart: cart, action: "View Checkout Page")
                     },
                        onError: { [unowned self] error in
+                        self.mainActivityIndicator.stopAnimating()
                         self.view.addSubview(self.noResultView)
                         self.content.isHidden = true
                     })
@@ -367,7 +405,11 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                 }
             )
             .subscribe(onNext: { [weak self] cartPayment in
-                self?.cartPayment.onNext(cartPayment)
+                if let error = cartPayment.errorMessage {
+                    StickyAlertView.showErrorMessage([error])
+                } else {
+                    self?.cartPayment.onNext(cartPayment)
+                }
             })
             .disposed(by: self.rx_disposeBag)
     }
