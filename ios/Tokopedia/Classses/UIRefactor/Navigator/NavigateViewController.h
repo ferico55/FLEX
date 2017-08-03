@@ -62,6 +62,8 @@
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+- (void)navigateToPromoDetailFromViewController:(UIViewController*) viewController withName:(NSString*) promoName;
++ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
 
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data;

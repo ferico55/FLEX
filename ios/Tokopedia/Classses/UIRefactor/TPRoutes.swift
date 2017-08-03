@@ -346,11 +346,7 @@ class TPRoutes: NSObject {
         
         //promo name
         JLRoutes.global().addRoute("/promo/:promoName") { (params: [String : Any]!) -> Bool in
-            let promoName = params["promoName"] as! String
-            let utmString = getUTMString(params as [String : AnyObject])
-            let urlString = "https://www.tokopedia.com/promo/" + promoName + utmString
-            openWebView(NSURL(string: urlString)! as URL)
-            
+            navigator.navigateToPromoDetail(from: UIApplication.topViewController(), withName: params?["promoName"] as! String)
             return true
         }
         

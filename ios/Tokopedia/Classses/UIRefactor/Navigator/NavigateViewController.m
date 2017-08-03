@@ -58,6 +58,7 @@
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "MaintenanceViewController.h"
+#import "PromoDetailViewController.h"
 #import "TransactionATCViewController.h"
 
 
@@ -775,6 +776,13 @@
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
     HotlistResultViewController *controller = [HotlistResultViewController new];
     controller.data = data;
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)navigateToPromoDetailFromViewController:(UIViewController*) viewController withName:(NSString*) promoName {
+    PromoDetailViewController *controller = [PromoDetailViewController new];
+    controller.promoName = promoName;
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }

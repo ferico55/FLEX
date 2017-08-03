@@ -920,9 +920,6 @@
 		3494549C1F306BAE00EEB628 /* ProductFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34944C401F306BA900EEB628 /* ProductFeedViewController.m */; };
 		3494549D1F306BAE00EEB628 /* ProductFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34944C411F306BA900EEB628 /* ProductFeedViewController.xib */; };
 		3494549E1F306BAE00EEB628 /* ProductInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34944C431F306BA900EEB628 /* ProductInfoTableViewController.m */; };
-		3494549F1F306BAE00EEB628 /* PromoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34944C441F306BA900EEB628 /* PromoView.swift */; };
-		349454A01F306BAE00EEB628 /* PromoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34944C451F306BA900EEB628 /* PromoViewController.swift */; };
-		349454A11F306BAE00EEB628 /* PromoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34944C461F306BA900EEB628 /* PromoViewController.xib */; };
 		349454A21F306BAE00EEB628 /* IntermediarySlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34944C491F306BA900EEB628 /* IntermediarySlide.swift */; };
 		349454A31F306BAE00EEB628 /* Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = 34944C4B1F306BA900EEB628 /* Slide.m */; };
 		349454A41F306BAE00EEB628 /* SliderData.m in Sources */ = {isa = PBXBuildFile; fileRef = 34944C4D1F306BA900EEB628 /* SliderData.m */; };
@@ -1896,6 +1893,8 @@
 		DA434DC31F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA434DC11F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift */; };
 		DA434DC41F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA434DC21F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		F91E080D1F32079C00E6BF5B /* PromoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F91E080A1F32079C00E6BF5B /* PromoDetailViewController.m */; };
+		F91E080E1F32079C00E6BF5B /* PromoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F91E080C1F32079C00E6BF5B /* PromoViewController.m */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
@@ -3703,9 +3702,6 @@
 		34944C411F306BA900EEB628 /* ProductFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductFeedViewController.xib; sourceTree = "<group>"; };
 		34944C421F306BA900EEB628 /* ProductInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductInfoTableViewController.h; sourceTree = "<group>"; };
 		34944C431F306BA900EEB628 /* ProductInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductInfoTableViewController.m; sourceTree = "<group>"; };
-		34944C441F306BA900EEB628 /* PromoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromoView.swift; sourceTree = "<group>"; };
-		34944C451F306BA900EEB628 /* PromoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromoViewController.swift; sourceTree = "<group>"; };
-		34944C461F306BA900EEB628 /* PromoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromoViewController.xib; sourceTree = "<group>"; };
 		34944C471F306BA900EEB628 /* string_home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_home.h; sourceTree = "<group>"; };
 		34944C491F306BA900EEB628 /* IntermediarySlide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntermediarySlide.swift; sourceTree = "<group>"; };
 		34944C4A1F306BA900EEB628 /* Slide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slide.h; sourceTree = "<group>"; };
@@ -5176,6 +5172,10 @@
 		DA434DC11F31E36C009A9DA8 /* ShopProductPageCampaignInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopProductPageCampaignInfo.swift; sourceTree = "<group>"; };
 		DA434DC21F31E36C009A9DA8 /* ShopProductPageCampaignInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopProductPageCampaignInfoResponse.swift; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		F91E08091F32079C00E6BF5B /* PromoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoDetailViewController.h; sourceTree = "<group>"; };
+		F91E080A1F32079C00E6BF5B /* PromoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoDetailViewController.m; sourceTree = "<group>"; };
+		F91E080B1F32079C00E6BF5B /* PromoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoViewController.h; sourceTree = "<group>"; };
+		F91E080C1F32079C00E6BF5B /* PromoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoViewController.m; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -8132,9 +8132,7 @@
 				34944C2A1F306BA900EEB628 /* HomeTabController */,
 				34944C311F306BA900EEB628 /* MyWishlist */,
 				34944C3E1F306BA900EEB628 /* ProdukFeed */,
-				34944C441F306BA900EEB628 /* PromoView.swift */,
-				34944C451F306BA900EEB628 /* PromoViewController.swift */,
-				34944C461F306BA900EEB628 /* PromoViewController.xib */,
+				F91E08081F32079C00E6BF5B /* Promo */,
 				34944C471F306BA900EEB628 /* string_home.h */,
 			);
 			path = Home;
@@ -10894,6 +10892,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F91E08081F32079C00E6BF5B /* Promo */ = {
+			isa = PBXGroup;
+			children = (
+				F91E08091F32079C00E6BF5B /* PromoDetailViewController.h */,
+				F91E080A1F32079C00E6BF5B /* PromoDetailViewController.m */,
+				F91E080B1F32079C00E6BF5B /* PromoViewController.h */,
+				F91E080C1F32079C00E6BF5B /* PromoViewController.m */,
+			);
+			path = Promo;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -11535,7 +11544,6 @@
 				349453A71F306BAD00EEB628 /* AlertCameraView.xib in Resources */,
 				349458151F306BC700EEB628 /* Entypo.ttf in Resources */,
 				349456821F306BB000EEB628 /* SettingAddressViewController.xib in Resources */,
-				349454A11F306BAE00EEB628 /* PromoViewController.xib in Resources */,
 				349458721F306BDB00EEB628 /* badge_official_small@3x.png in Resources */,
 				349453D91F306BAD00EEB628 /* CameraAlbumListViewController.xib in Resources */,
 				349457581F306BB100EEB628 /* TxOrderStatusViewController.xib in Resources */,
@@ -12460,6 +12468,7 @@
 				349452A21F306BAC00EEB628 /* SearchAWSResult.m in Sources */,
 				349455BE1F306BAF00EEB628 /* PulsaOperatorAttributeRule.swift in Sources */,
 				3494554D1F306BAF00EEB628 /* DetailProductVideoTableViewCell.swift in Sources */,
+				F91E080E1F32079C00E6BF5B /* PromoViewController.m in Sources */,
 				349451671F306BAB00EEB628 /* AddressDistrict.m in Sources */,
 				457B98FC1F0E3125005851E5 /* WalletTarget.swift in Sources */,
 				349453CF1F306BAD00EEB628 /* TKPDAlert.m in Sources */,
@@ -12467,6 +12476,7 @@
 				349457061F306BB100EEB628 /* TKPPlacePickerViewController.swift in Sources */,
 				349451381F306BAB00EEB628 /* FeedDetailProductCellComponentView.swift in Sources */,
 				349452131F306BAC00EEB628 /* InboxTicketList.m in Sources */,
+				F91E080D1F32079C00E6BF5B /* PromoDetailViewController.m in Sources */,
 				349453E91F306BAD00EEB628 /* TKPImagePickerUIDelegate.swift in Sources */,
 				457B98EA1F0E3124005851E5 /* ScreenshotHelper.swift in Sources */,
 				3494531C1F306BAC00EEB628 /* TransactionATCFormDetail.m in Sources */,
@@ -12629,7 +12639,6 @@
 				349452071F306BAC00EEB628 /* InboxReviewList.m in Sources */,
 				349451ED1F306BAB00EEB628 /* InboxResolutionCenterList.m in Sources */,
 				349455DE1F306BAF00EEB628 /* ResolutionCenterCreatePOSTData.m in Sources */,
-				349454A01F306BAE00EEB628 /* PromoViewController.swift in Sources */,
 				349453691F306BAD00EEB628 /* V4Response.m in Sources */,
 				457B98F51F0E3124005851E5 /* GoldMerchantTarget.swift in Sources */,
 				349454931F306BAE00EEB628 /* MyWishlistLabel.swift in Sources */,
@@ -12766,7 +12775,6 @@
 				3494569E1F306BB000EEB628 /* SettingUserProfileRequest.swift in Sources */,
 				349451B11F306BAB00EEB628 /* TheOtherProduct.m in Sources */,
 				3494532D1F306BAC00EEB628 /* TxOrderConfirmationResult.m in Sources */,
-				3494549F1F306BAE00EEB628 /* PromoView.swift in Sources */,
 				349456881F306BB000EEB628 /* SettingBankAccountViewController.m in Sources */,
 				349452931F306BAC00EEB628 /* OrderDetail.m in Sources */,
 				349451AD1F306BAB00EEB628 /* TalkCommentList.m in Sources */,

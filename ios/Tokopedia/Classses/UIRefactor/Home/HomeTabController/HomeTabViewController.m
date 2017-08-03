@@ -33,6 +33,7 @@
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
 #import "SearchViewController.h"
+#import "PromoViewController.h"
 
 @interface HomeTabViewController ()
 <

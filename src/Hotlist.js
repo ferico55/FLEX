@@ -14,10 +14,11 @@ import {
 import DeviceInfo from 'react-native-device-info';
 
 import axios from 'axios';
-import { 
-  TKPReactURLManager, 
+import {
+  TKPReactURLManager,
   ReactNetworkManager,
   TKPReactAnalytics,
+  NativeTab,
   EventManager,
   ReactUserManager 
 } from 'NativeModules';
@@ -43,7 +44,7 @@ class Hotlist extends React.PureComponent {
     this.loadData();
 
     this.subscription = nativeTabEmitter.addListener("HotlistScrollToTop", () => {
-      this.flatList.scrollToIndex({index: 0});
+      this.flatList.scrollToIndex({ index: 0 });
     });
   }
 
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#e1e1e1',
     padding: 5,
-    flex: DeviceInfo.isTablet() ? 1: 0
+    flex: DeviceInfo.isTablet() ? 1 : 0
   },
   photo: {
     resizeMode: 'cover',

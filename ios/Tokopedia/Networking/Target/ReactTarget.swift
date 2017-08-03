@@ -6,8 +6,9 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Moya
+import RxSwift
 
 @objc(ReactNetworkProvider)
 class ReactNetworkProviderObjcBridge: NSObject {
@@ -32,18 +33,26 @@ class ReactNetworkProviderObjcBridge: NSObject {
             .mapJSON(failsOnEmptyData: false)
             .subscribe(
                 onNext: { json in
-                    guard let dictionary = json as? [String: Any] else {
+                    if let dictionary = json as? [String: Any] {
+                        onSuccess(dictionary)
+                    }
+                    else if let array = json as? [Any] {
+                        var dictionary:[String: Any] = [:]
+                        for (index, element) in array.enumerated() {
+                            dictionary["\(index)"] = element
+                        }
+                        onSuccess(dictionary)
+                    }
+                    else {
                         print("Error converting json to dictionary")
                         onSuccess(nil)
                         return
                     }
-                    
-                    onSuccess(dictionary)
                 },
                 onError: { error in
                     onError(error as NSError)
                 }
-        )
+            ).disposed(by: DisposeBag())
     }
 }
 

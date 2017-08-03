@@ -22,6 +22,8 @@ const NotFoundComponent = () => (
 
 const container = HybridContainer({
   Hotlist: require('./src/Hotlist'),
+  Promo: require('./src/Promo'),
+  PromoDetail: require('./src/PromoDetail'),
   'Official Store': require('./src/official-store/setup'),
   NotFoundComponent,
 });

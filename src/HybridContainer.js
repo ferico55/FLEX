@@ -59,14 +59,14 @@ const HybridContainer = (ReactScreens) => {
         const { routes, index } = navState;
         const router = ScreenView.router;
         const routeConfig = router && router.getScreenConfig({
-          state: routes[index], dispatch: () => {}
+          state: routes[index], dispatch: () => { }
         }, index, true);
         title = routeConfig && routeConfig.title;
       }
       this.state = {
         navState: navState || defaultNavState,
         screenKey,
-        list : []
+        list: []
       };
       HybridNavigationManager.setTitle(rootTag, title || name);
     }
@@ -117,7 +117,7 @@ const HybridContainer = (ReactScreens) => {
         const { routes, index } = state.navState;
         const router = ScreenView.router;
         const routeConfig = router && router.getScreenConfig({
-          state: routes[index], dispatch: () => {}
+          state: routes[index], dispatch: () => { }
         }, index, true);
         title = (routeConfig && routeConfig.title) || state.navState.routeName;
       }
