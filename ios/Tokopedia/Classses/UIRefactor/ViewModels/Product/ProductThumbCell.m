@@ -16,6 +16,10 @@
 #import <Lottie/Lottie.h>
 
 @interface ProductThumbCell()
+@property (strong, nonatomic) IBOutlet UILabel *discountLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *discountViewTrailingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *catalogPriceWidthConstraint;
+@property (strong, nonatomic) IBOutlet UIView *discountView;
 @property (strong, nonatomic) IBOutlet UIImageView *iconOvalWhite;
 @property (strong, nonatomic) IBOutlet UIButton *buttonWishlistExpander;
 @property (strong, nonatomic) IBOutlet UILabel *totalReviewLabel;
@@ -282,6 +286,32 @@
     [self resetWishlistButtonAnimation];
     [self setWishlistButtonState:viewModel.isOnWishlist];
     self.productNameTrailingConstraint.constant = 46;
+    
+    if(viewModel.original_price && ![viewModel.original_price isEqualToString:@""]) {
+        NSMutableAttributedString* originalPrice = [[NSMutableAttributedString alloc]initWithString:viewModel.original_price];
+        [originalPrice addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [originalPrice length])];
+        [originalPrice addAttribute:NSStrikethroughColorAttributeName value:[UIColor.blackColor colorWithAlphaComponent:0.6] range:NSMakeRange(0, [originalPrice length])];
+        
+        self.catalogPriceLabel.hidden = NO;
+        self.discountView.hidden = NO;
+        
+        self.productPrice.attributedText = originalPrice;
+        self.productPrice.textColor = [UIColor.blackColor colorWithAlphaComponent:0.6];
+        
+        self.productPrice.font = [UIFont superMicroTheme];
+        self.discountLabel.text = [NSString stringWithFormat:@"%d%%OFF", viewModel.percentage_amount];
+        self.catalogPriceLabel.text = viewModel.productPrice;
+        self.catalogPriceLabel.font = [UIFont largeThemeSemibold];
+        self.shopLocation.hidden = YES;
+        
+        [self updateLayout];
+    }
+    else {
+        self.productPrice.font = [UIFont largeThemeSemibold];
+        self.productPrice.textColor = UIColor.redColor; //#FC5830
+        self.catalogPriceLabel.hidden = YES;
+        self.discountView.hidden = YES;
+    }
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {
@@ -319,6 +349,13 @@
             make.height.mas_equalTo(0);
         }];
     }
+}
+
+- (void) updateLayout {
+    UIFont *font = [UIFont largeThemeSemibold];
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    CGSize size = [self.catalogPriceLabel.text sizeWithAttributes:attributes];
+    self.catalogPriceWidthConstraint.constant = size.width + 8;
 }
 
 - (void)setBadges:(NSArray<ProductBadge*>*)badges {
@@ -374,10 +411,12 @@
     _ratingContainerView.hidden = YES;
     
     self.productPriceWidthConstraint.constant = -50;
+    
     [self.shopName setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada produk" : [NSString stringWithFormat:@"%@ Produk", viewModel.catalogSeller]];
     self.shopName.font = [UIFont microTheme];
     self.shopName.textColor = [UIColor tpPrimaryBlackText];
     [self removeWishlistButton];
+    [self updateLayout];
 }
 
 - (void)prepareForReuse {

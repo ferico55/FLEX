@@ -242,7 +242,6 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Fki-cQ-9ac" firstAttribute="top" secondItem="g44-fl-fUl" secondAttribute="bottom" constant="13.5" id="0h7-DS-RsP"/>
                             <constraint firstAttribute="trailing" secondItem="hsX-F4-Lsj" secondAttribute="trailing" constant="7" id="1EE-5u-FD7"/>
                             <constraint firstItem="k3l-xY-qhr" firstAttribute="top" secondItem="Fki-cQ-9ac" secondAttribute="top" id="50d-br-Ar0"/>
                             <constraint firstAttribute="trailing" secondItem="9ky-Uy-MKz" secondAttribute="trailing" id="9ke-bw-JTh"/>
@@ -252,6 +251,7 @@
                             <constraint firstItem="za7-yq-RSZ" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" constant="7" id="GmC-PB-GbT"/>
                             <constraint firstItem="YTf-ZV-fyn" firstAttribute="top" secondItem="g44-fl-fUl" secondAttribute="bottom" id="HO6-yK-w7H"/>
                             <constraint firstItem="9ky-Uy-MKz" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="HUu-jb-Snq"/>
+                            <constraint firstItem="Fki-cQ-9ac" firstAttribute="top" secondItem="riz-i3-Xqh" secondAttribute="bottom" constant="13.5" id="I1q-a6-nu0"/>
                             <constraint firstAttribute="bottom" secondItem="Xcs-wg-GLM" secondAttribute="bottom" constant="8" id="ICN-do-3w0"/>
                             <constraint firstItem="k3l-xY-qhr" firstAttribute="leading" secondItem="Fki-cQ-9ac" secondAttribute="trailing" id="JtS-IO-Znn"/>
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="KCY-Kb-pCM"/>
@@ -314,7 +314,7 @@
                 <outlet property="productImage" destination="za7-yq-RSZ" id="ZFd-av-Hfx"/>
                 <outlet property="productName" destination="g44-fl-fUl" id="2xg-Fa-KDE"/>
                 <outlet property="productPrice" destination="Fki-cQ-9ac" id="Cxw-y8-aMe"/>
-                <outlet property="productPriceLabelTopConstraint" destination="0h7-DS-RsP" id="nAU-Sr-aJE"/>
+                <outlet property="productPriceLabelTopConstraint" destination="I1q-a6-nu0" id="7hN-WW-6i6"/>
                 <outlet property="productPriceLabelWidthConstraint" destination="Kpi-rM-lEj" id="v1x-qX-qcV"/>
                 <outlet property="productShop" destination="hsX-F4-Lsj" id="o5D-Zf-H7q"/>
                 <outlet property="ratingContainerView" destination="eCk-Jy-Tnn" id="GU9-nZ-YaA"/>

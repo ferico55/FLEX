@@ -46,7 +46,11 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(buttonWishlistTap:)];
     [self.setWishlistAnimationView addGestureRecognizer: tap];
     [self.contentView addSubview:self.setWishlistAnimationView];
-    self.setWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
+    [self.setWishlistAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconOvalWhite.mas_left);
+        make.top.equalTo(self.iconOvalWhite.mas_top);
+        make.size.equalTo(self.iconOvalWhite);
+    }];
     
     self.unsetWishlistAnimationView = [LOTAnimationView animationNamed:@"deactivateWishlist"];
     self.unsetWishlistAnimationView.loopAnimation = NO;
@@ -55,8 +59,12 @@
     self.unsetWishlistAnimationView.animationProgress = 0;
     UITapGestureRecognizer *unsetTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(buttonWishlistTap:)];
     [self.unsetWishlistAnimationView addGestureRecognizer: unsetTap];
-    self.unsetWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
     [self.contentView addSubview:self.unsetWishlistAnimationView];
+    [self.unsetWishlistAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconOvalWhite.mas_left);
+        make.top.equalTo(self.iconOvalWhite.mas_top);
+        make.size.equalTo(self.iconOvalWhite);
+    }];
     
     [self.buttonWishlist setHidden:YES];
 }
@@ -68,17 +76,16 @@
     [self.iconOvalWhite setHidden:YES];
     [self.buttonWishlist setHidden: YES];
     [self.setWishlistAnimationView removeFromSuperview];
+    [self.buttonWishlist setHidden: YES];
 }
 
 - (void) setWishlistButtonState:(BOOL)isOnWishlist {
     if(isOnWishlist) {
-        [self.buttonWishlistExpander setSelected:YES];
-        [self.buttonWishlist setSelected:YES];
-        [self.setWishlistAnimationView setHidden:YES];
-        [self.unsetWishlistAnimationView setHidden:NO];
+       [self.buttonWishlistExpander setSelected:YES];
+       [self.setWishlistAnimationView setHidden:YES];
+       [self.unsetWishlistAnimationView setHidden:NO];
     } else {
         [self.buttonWishlistExpander setSelected:NO];
-        [self.buttonWishlist setSelected:NO];
         [self.setWishlistAnimationView setHidden:NO];
         [self.unsetWishlistAnimationView setHidden:YES];
     }
@@ -129,9 +136,28 @@
     [self resetWishlistButtonAnimation];
     [self setWishlistButtonState:viewModel.isOnWishlist];
     
-    [self.originalPriceLabel setHidden:YES];
-    [self.discountView setHidden:YES];
-    self.productPriceLabelTopConstraint.constant = 0;
+    UIFont *font = [UIFont largeTheme];
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    CGSize size = [viewModel.productPrice sizeWithAttributes:attributes];
+    self.productPriceLabelWidthConstraint.constant = size.width + 8;
+    
+    if(viewModel.original_price && ![viewModel.original_price isEqualToString:@""]) {
+        NSMutableAttributedString* originalPrice = [[NSMutableAttributedString alloc]initWithString:viewModel.original_price];
+        [originalPrice addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [originalPrice length])];
+        [originalPrice addAttribute:NSStrikethroughColorAttributeName value:[UIColor.blackColor colorWithAlphaComponent:0.6] range:NSMakeRange(0, [originalPrice length])];
+        self.originalPriceLabel.attributedText = originalPrice;
+        self.discountLabel.text = [NSString stringWithFormat:@"%d%%OFF", viewModel.percentage_amount];
+        [self.originalPriceLabel setHidden:NO];
+        [self.discountView setHidden:NO];
+        self.productPriceLabelTopConstraint.constant = 12;
+        
+        [self layoutIfNeeded];
+    }
+    else {
+        [self.originalPriceLabel setHidden:YES];
+        [self.discountView setHidden:YES];
+        self.productPriceLabelTopConstraint.constant = 0;
+    }
 }
 
 - (void) updateLayout {
@@ -202,19 +228,19 @@
                                                                                    AFEventParamQuantity : @(1)
                                                                                    }];
     __weak typeof(self) weakSelf = self;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingDefaultError = NO;
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    
+
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId:self.viewModel.productId userId:[_userManager getUserId]]
+                                                   path:[self wishlistUrlPathWithProductId: _viewModel.productId userId: [_userManager getUserId]]
                                                  method:RKRequestMethodPOST
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
                                               parameter: nil
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                  [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
+            [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
                                               } onFailure:^(NSError *errorResult) {
                                                   [weakSelf didFailedAddWishListWithErrorResult:errorResult];
                                               }];
@@ -257,16 +283,16 @@
     [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:YES];
 }
 
-- (NSString *) wishlistUrlPathWithProductId: (NSString *)productId userId:(NSString*) userId {
-    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", userId, productId];
+- (NSString *) wishlistUrlPathWithProductId: (NSString *)productId userId: (NSString*) userID {
+    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", userID, productId];
 }
 
 - (void)setUnWishList
 {
     __weak __typeof(self) weakSelf = self;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
                                                    path:[self wishlistUrlPathWithProductId: _viewModel.productId userId: [_userManager getUserId]]
                                                  method:RKRequestMethodDELETE
@@ -274,10 +300,10 @@
                                               parameter: nil
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                  [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
-                                              } onFailure:^(NSError *errorResult) {
-                                                  [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
-                                              }];
+        [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
+                                            } onFailure:^(NSError *errorResult) {
+        [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
+    }];
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {
@@ -371,7 +397,6 @@
     [self.iconOvalWhite setHidden:YES];
     [self removeWishlistButton];
 }
-
 - (void)prepareForReuse {
     [super prepareForReuse];
     [imageDownloader cancelAllOperations];

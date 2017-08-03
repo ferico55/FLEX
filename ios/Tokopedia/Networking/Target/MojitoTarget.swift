@@ -77,9 +77,8 @@ extension MojitoTarget : TargetType {
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
-        case let .getProductCampaignInfo(productIds): return [
-                    "pid":productIds
-                    ]
+        case .setWishlist, .unsetWishlist: return nil
+        case let .getProductCampaignInfo(productIds): return [ "pid":productIds ]
         case .requestOfficialStore: return nil
         case .requestOfficialStoreHomePage: return ["device":"ios"]
         default: return [:]
@@ -89,7 +88,7 @@ extension MojitoTarget : TargetType {
     /// The method used for parameter encoding.
     var parameterEncoding: ParameterEncoding {
         switch self {
-            case .requestOfficialStore: return JSONEncoding.default
+            case .requestOfficialStore, .setWishlist, .unsetWishlist: return JSONEncoding.default
         default: return URLEncoding.default
         }
     }

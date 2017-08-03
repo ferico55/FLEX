@@ -12,6 +12,7 @@
 #import "AFNetworkingImageDownloader.h"
 #import "ImageStorage.h"
 #import "CMPopTipView.h"
+#import "ClosedInfo.h"
 
 #import <ComponentKit/ComponentKit.h>
 #import <NSAttributedString_DDHTML/NSAttributedString+DDHTML.h>

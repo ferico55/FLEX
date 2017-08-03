@@ -7,11 +7,21 @@
 //
 
 #import "DetailShopResult.h"
+#import "ClosedInfo.h"
+#import "Owner.h"
+#import "Shipment.h"
+#import "Payment.h"
+#import "Address.h"
+#import "ShopInfo.h"
+#import "ShopStats.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
+#import "ShopTransactionStats.h"
 
 @implementation DetailShopResult
 +(RKObjectMapping *)mapping{
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_open":@"is_open"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_open":@"is_open", @"use_ace": @"useAce"}];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"closed_info"
                                                                                   toKeyPath:@"closed_info"
                                                                                 withMapping:[ClosedInfo mapping]]];
@@ -52,6 +62,10 @@
     } else {
         self.activity = ShopActivityOther;
     }
+}
+
+- (BOOL)isGetListProductFromAce {
+    return ([self.useAce integerValue] == 1);
 }
 
 @end

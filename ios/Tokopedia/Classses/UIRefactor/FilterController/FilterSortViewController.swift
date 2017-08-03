@@ -156,10 +156,14 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
             self.tableView.insertRows(at: indexPaths as [IndexPath], with: .automatic)
             self.tableView.endUpdates()
             
+            self.selectedObject = self.items.first
+                                    
             self.tableView.setContentOffset(CGPoint.zero, animated:true)
             self.refreshControl.endRefreshing()
             
             self.completionHandlerResponse(response)
+            self.completionHandler(self.selectedObject!, [(self.selectedObject?.key)!:(self.selectedObject?.value)!])
+                                    
             self.tableView.reloadData()
             
         }, onFailure: {

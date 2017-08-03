@@ -9,7 +9,7 @@
 import UIKit
 
 @objc enum Source :Int {
-    case hotlist, product, catalog, catalogProduct, shop, directory, replacement, `default`
+    case hotlist, product, catalog, catalogProduct, shop, directory, replacement, shopProduct, `default`
     func description() -> String {
         switch self {
         case .hotlist:
@@ -26,6 +26,8 @@ import UIKit
             return "directory"
         case .replacement:
             return "replacement"
+        case .shopProduct:
+            return "shop_product"
         case .default:
             return ""
         }
@@ -70,13 +72,13 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     /*
         The designated initializer for sorting list view controller. sortResponse (optional) is list sort option from previous fetch dynamic attibute.
      */
-    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: @escaping ((_ selectedSort:ListOption, _ paramSort:[String:String]) -> Void), onReceivedFilterDataOption:@escaping ((FilterData) -> Void)){
+    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC: UIViewController, rootCategoryID: String? = "", onCompletion: @escaping ((_ selectedSort:ListOption, _ paramSort:[String:String]) -> Void), onReceivedFilterDataOption:@escaping ((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
         self.presentedController = presentedVC
         self.source = source
-        self.rootCategoryID = rootCategoryID
+        self.rootCategoryID = rootCategoryID ?? ""
         
         if sortResponse != nil { self.filterResponse = sortResponse! }
         completionHandlerResponse = onReceivedFilterDataOption

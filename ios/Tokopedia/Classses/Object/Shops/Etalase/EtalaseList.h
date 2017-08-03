@@ -15,6 +15,10 @@
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSString *etalase_total_product;
 @property (nonatomic, strong) NSString *etalase_url;
+@property (nonatomic, strong) NSString *useAce;
+
+@property (nonatomic) BOOL isGetListProductFromAce;
+
 
 +(RKObjectMapping*)mapping;
 

@@ -34,6 +34,10 @@
 @property (strong, nonatomic) NSArray *badges;
 @property (strong, nonatomic) NSArray *labels;
 
+@property (strong, nonatomic) NSString *original_price;
+@property (strong, nonatomic) NSString *end_date;
+@property (nonatomic) NSInteger percentage_amount;
+
 @property (strong, nonatomic) NSArray<Errors *> *productErrors;
 @property (strong, nonatomic) NSArray<Errors *> *cartErrors;
 @property (strong, nonatomic) NSArray *breadcrumb;

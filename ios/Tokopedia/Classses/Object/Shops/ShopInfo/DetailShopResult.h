@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ClosedInfo.h"
-#import "Owner.h"
-#import "Shipment.h"
-#import "Payment.h"
-#import "Address.h"
-#import "ShopInfo.h"
-#import "ShopStats.h"
-#import "ResponseSpeed.h"
-#import "Rating.h"
-#import "ShopTransactionStats.h"
+@class ClosedInfo;
+@class Owner;
+@class Shipment;
+@class Payment;
+@class Address;
+@class ShopInfo;
+@class ShopStats;
+@class ResponseSpeed;
+@class Rating;
+@class ShopTransactionStats;
 #define CResponseSpeed @"respond_speed"
 #define CRatings @"ratings"
 
@@ -41,7 +41,8 @@ typedef NS_ENUM(NSInteger, ShopActivity) {
 @property (nonatomic, strong) ShopTransactionStats *shop_tx_stats;
 @property (nonatomic, strong) NSNumber *is_open;
 @property (nonatomic) ShopActivity activity;
-
+@property (strong, nonatomic) NSString *useAce;
+@property (nonatomic) BOOL isGetListProductFromAce;
 
 +(RKObjectMapping*)mapping;
 

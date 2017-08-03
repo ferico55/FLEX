@@ -17,7 +17,12 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[EtalaseList class]];
     [mapping addAttributeMappingsFromArray:@[@"etalase_id", @"etalase_name", @"etalase_num_product", @"etalase_total_product", @"etalase_url"]];
+    [mapping addAttributeMappingsFromDictionary:@{@"use_ace": @"useAce"}];
     return mapping;
+}
+
+- (BOOL)isGetListProductFromAce {
+    return ([self.useAce integerValue] == 1);
 }
 
 @end

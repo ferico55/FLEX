@@ -40,10 +40,6 @@
 
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
-
-#import "ShopProductPageResponse.h"
-#import "ShopProductPageResult.h"
-#import "ShopProductPageList.h"
 #import "ShopPageRequest.h"
 
 #import "EtalaseViewController.h"
@@ -71,7 +67,8 @@ SortViewControllerDelegate,
 NoResultDelegate,
 RetryViewDelegate,
 EtalaseViewControllerDelegate,
-ShopTabChild
+ShopTabChild,
+ProductCellDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -152,10 +149,14 @@ ShopTabChild
     
     BOOL _isFailRequest;
     
-    NSIndexPath *_sortIndexPath;
+    FilterData *_filterData;
+    NSDictionary *_paramSort;
     ShopPageRequest* _shopPageRequest;
     
+    ListOption *_selectedSort;
     ShopProductFilter *_productFilter;
+    ProductAndWishlistNetworkManager *moyaNetworkManager;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -167,6 +168,7 @@ ShopTabChild
         _isNoData = YES;
         _searchBar = [[UISearchBar alloc] init];
         _productFilter = [ShopProductFilter new];
+        _selectedSort = [ListOption new];
     }
     
     return self;
@@ -195,6 +197,7 @@ ShopTabChild
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _userManager = [UserAuthentificationManager new];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
     _TKPDNavigator = [NavigateViewController new];
@@ -287,6 +290,7 @@ ShopTabChild
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
+    moyaNetworkManager = [[ProductAndWishlistNetworkManager alloc]init];
     [self requestProduct];
 }
 
@@ -355,7 +359,7 @@ ShopTabChild
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
-        ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
+        ((ProductSingleViewCell*)cell).infoContraint.constant = 15;
         ((ProductSingleViewCell*)cell).locationIcon.hidden = YES;
         ((ProductSingleViewCell*)cell).productShop.hidden = YES;
         [((ProductSingleViewCell*)cell) removeWishlistButton];
@@ -364,6 +368,8 @@ ShopTabChild
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         
         [(ProductCell*)cell setViewModel:list.viewModel];
+        ((ProductCell*)cell).delegate = self;
+        ((ProductCell*)cell).parentViewController = self;
         ((ProductCell*)cell).locationImage.hidden = YES;
         ((ProductCell*)cell).badgesConstraint.constant = 15;
         [((ProductCell*)cell) removeWishlistButton];
@@ -489,7 +495,7 @@ ShopTabChild
 -(void)reloadDataSearch
 {
     _tmpProduct = [NSArray arrayWithArray:_product];
-    [_product removeAllObjects];
+    _product = [NSMutableArray new];
     
     [_collectionView reloadData];
     [self.collectionView.collectionViewLayout invalidateLayout];
@@ -509,39 +515,6 @@ ShopTabChild
 }
 
 #pragma mark - Action
--(IBAction)tapButton:(id)sender {
-    
-    self.hidesBottomBarWhenPushed = YES;
-    
-    [_searchBar resignFirstResponder];
-    
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        switch (button.tag) {
-            case 10: {
-                // sort button action
-                
-                break;
-            }
-                
-            case 11 : {
-                // etalase button action
-                
-                break;
-            }
-                
-            case 13:
-            {
-                
-                
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
-
 - (IBAction)tapToShare:(id)sender {
     if (_shop) {
         NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _shop.result.info.shop_name];
@@ -603,6 +576,9 @@ ShopTabChild
     EtalaseList *etalase = [EtalaseList new];
     etalase.etalase_id = filter.etalaseId;
     
+    _selectedSort.value = filter.orderBy;
+    _selectedSort.key = @"order_by";
+    
     self.initialEtalase = etalase;
     
     [self requestProduct];
@@ -612,6 +588,7 @@ ShopTabChild
     _page = 1;
     _collectionView.contentOffset = CGPointMake(0, 0);
     [_productFilter setEtalaseId:selectedEtalase.etalase_id];
+    _productFilter.isGetListProductToAce = selectedEtalase.isGetListProductFromAce;
     [self requestProduct];
 }
 
@@ -644,15 +621,14 @@ ShopTabChild
 }
 
 - (IBAction)tapToSort:(id)sender {
-    SortViewController *controller = [SortViewController new];
-    controller.sortType = SortProductShopSearch;
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.delegate = self;
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-    self.navigationController.navigationBar.alpha = 0;
-    
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    FiltersController *controller = [[FiltersController alloc] initWithSource:SourceShopProduct sortResponse:_filterData selectedSort:_selectedSort presentedVC:self rootCategoryID:nil onCompletion:^(ListOption *selectedSort, NSDictionary *paramSort) {
+        _selectedSort = selectedSort;
+       
+        _paramSort = paramSort;
+        [self reloadDataSearch];
+    } onReceivedFilterDataOption: ^(FilterData *filterData){
+        _filterData = filterData;
+    }];
 }
 
 #pragma mark - Shop header delegate
@@ -662,13 +638,6 @@ ShopTabChild
 
 - (id)didReceiveNavigationController {
     return self;
-}
-
-#pragma mark - Sort Delegate
-- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
-    [_productFilter setOrderBy:sort];
-    _sortIndexPath = indexPath;
-    [self refreshView:nil];
 }
 
 #pragma mark - Cell Delegate
@@ -698,6 +667,15 @@ ShopTabChild
                                                     andShopName:list.shop_name];
 }
 
+- (void)changeWishlistForProductId:(NSString *)productId withStatus:(bool) isOnWishlist {
+    for(ShopProductPageList* product in _product) {
+        if([product.product_id isEqualToString: productId]) {
+            product.isOnWishlist = isOnWishlist;
+            break;
+        }
+    }
+}
+
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton {
     [self requestProduct];
@@ -706,20 +684,22 @@ ShopTabChild
 }
 
 #pragma mark - ShopPageRequest
+
 -(void)requestProduct{
     NSString *querry = _productFilter.query ?: @"";
-    NSString *sort = _productFilter.orderBy ?: @"";
     NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     EtalaseList *etalase = [EtalaseList new];
     etalase.etalase_id = _productFilter.etalaseId;
     
     BOOL isAllEtalase = (!etalase.etalase_id || [etalase.etalase_id isEqualToString:@""] || [etalase.etalase_id isEqualToString:@"0"]);
+    BOOL isGetListProductFromAce = _shop.result.isGetListProductFromAce;
     
     id etalaseid;
     if (isAllEtalase)
         etalaseid = @"all";
     else{
-        etalaseid = etalase.etalase_id?:@"";
+        etalaseid = etalase.etalase_id;
+        isGetListProductFromAce = (_shop.result.isGetListProductFromAce && _productFilter.isGetListProductToAce);
     }
     
     if([_data objectForKey:@"product_etalase_id"] && !etalase) {
@@ -727,67 +707,70 @@ ShopTabChild
     }
     NSString* shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [_noResultView removeFromSuperview];
-    [_shopPageRequest requestForShopProductPageListingWithShopId:shopID
-                                                       etalaseId:etalaseid
-                                                         keyWord:querry
-                                                            page:_page
-                                                        order_by:sort
-                                                     shop_domain:shopDomain
-                                                       onSuccess:^(ShopProductPageResult *result) {
-                                                           [_noResultView removeFromSuperview];
-                                                           
-                                                           if(_page == 1) {
-                                                               _product = [result.list mutableCopy];
-                                                           } else {
-                                                               [_product addObjectsFromArray:result.list];
-                                                           }
-                                                           
-                                                           [AnalyticsManager trackProductImpressions:result.list];
-                                                           
-                                                           if (_product.count >0) {
-                                                               _isNoData = NO;
-                                                               [_noResultView removeFromSuperview];
-                                                               _nextPageUri =  result.paging.uri_next;
-                                                               _page = [[_shopPageRequest splitUriToPage:_nextPageUri] integerValue];
-                                                               
-                                                               if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-                                                                   //remove loadingview if there is no more item
-                                                                   [_flowLayout setFooterReferenceSize:CGSizeZero];
-                                                               }
-                                                           } else {
-                                                               // no data at all
-                                                               _isNoData = YES;
-                                                               [_flowLayout setFooterReferenceSize:CGSizeZero];
-                                                               if(_productFilter.query == nil || [_productFilter.query isEqualToString:@""]){
-                                                                   [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
-                                                               }else{
-                                                                   [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
-                                                               }
-                                                               [_collectionView addSubview:_noResultView];
-                                                               [_collectionView sendSubviewToBack:_noResultView];
-                                                               [_collectionView sendSubviewToBack:_footer];
-                                                               
-                                                               [_refreshControl endRefreshing];
-                                                               [_refreshControl setHidden:YES];
-                                                               [_refreshControl setEnabled:NO];
-                                                           }
-                                                           
-                                                           if(_refreshControl.isRefreshing) {
-                                                               [_refreshControl endRefreshing];
-                                                               [_collectionView reloadData];
-                                                           } else  {
-                                                               [_collectionView reloadData];
-                                                               [_collectionView.collectionViewLayout invalidateLayout]; 
-                                                           }
-                                                       } onFailure:^(NSError *error) {
-                                                           _isrefreshview = NO;
-                                                           [_refreshControl endRefreshing];
-                                                           
-                                                           _isFailRequest = YES;
-                                                           [_collectionView reloadData];
-                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
-                                                           [alert show];
-                                                       }];
+    
+    [moyaNetworkManager requestProductShopWithShopID:shopID
+                                           etalaseID:etalaseid
+                                             keyword:querry
+                                                page:_page
+                                             orderBy:_selectedSort
+                                          shopDomain:shopDomain
+                                               isAce: isGetListProductFromAce
+                               withCompletionHandler:^(ShopProductPageResult * _Nonnull result) {
+                                             [_noResultView removeFromSuperview];
+                                             
+                                             if(_page == 1) {
+                                                 _product = [result.list mutableCopy];
+                                             } else {
+                                                 [_product addObjectsFromArray:result.list];
+                                             }
+                                             
+                                             [AnalyticsManager trackProductImpressions:result.list];
+                                             
+                                             if (_product.count >0) {
+                                                 _isNoData = NO;
+                                                 [_noResultView removeFromSuperview];
+                                                 _nextPageUri =  result.paging.uri_next;
+                                                 _page = [[_shopPageRequest splitUriToPage:_nextPageUri] integerValue];
+                                                 
+                                                 if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+                                                     //remove loadingview if there is no more item
+                                                     [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                 }
+                                             } else {
+                                                 // no data at all
+                                                 _isNoData = YES;
+                                                 [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                 if(_productFilter.query == nil || [_productFilter.query isEqualToString:@""]){
+                                                     [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
+                                                 }else{
+                                                     [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
+                                                 }
+                                                 [_collectionView addSubview:_noResultView];
+                                                 [_collectionView sendSubviewToBack:_noResultView];
+                                                 [_collectionView sendSubviewToBack:_footer];
+                                                 
+                                                 [_refreshControl endRefreshing];
+                                                 [_refreshControl setHidden:YES];
+                                                 [_refreshControl setEnabled:NO];
+                                             }
+                                             
+                                             if(_refreshControl.isRefreshing) {
+                                                 [_refreshControl endRefreshing];
+                                                 [_collectionView reloadData];
+                                             } else  {
+                                                 [_collectionView reloadData];
+                                                 [_collectionView.collectionViewLayout invalidateLayout];
+                                             }
+                                         }
+                                     andErrorHandler:^(NSError * _Nonnull error) {
+                                                   _isrefreshview = NO;
+                                                   [_refreshControl endRefreshing];
+                                                   
+                                                   _isFailRequest = YES;
+                                                   [_collectionView reloadData];
+                                                   StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                   [alert show];
+                                               }];
 }
 
 @end

@@ -13,6 +13,7 @@ class ShopProductFilter: NSObject {
     var orderBy = ""
     var page = 1
     var etalaseId = ""
+    var isGetListProductToAce = false
     
     class func fromUrlQuery(_ dictionary: [AnyHashable: Any]) -> ShopProductFilter {
         let filter = ShopProductFilter()

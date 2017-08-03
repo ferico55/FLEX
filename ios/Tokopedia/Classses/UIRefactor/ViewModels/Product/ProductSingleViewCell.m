@@ -16,6 +16,8 @@
 #import <Lottie/Lottie.h>
 
 @interface ProductSingleViewCell()
+@property (strong, nonatomic) IBOutlet UILabel *discountLabel;
+@property (strong, nonatomic) IBOutlet UIView *viewDiscount;
 @property (strong, nonatomic) IBOutlet UIButton *buttonWishlistExpander;
 @property (strong, nonatomic) IBOutlet UIImageView *iconOvalWhite;
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
@@ -243,10 +245,44 @@
     [self setBadges:viewModel.badges];
     [self setLabels:viewModel.labels];
     
+    if(viewModel.original_price && ![viewModel.original_price isEqualToString:@""]) {
+        NSMutableAttributedString* originalPrice = [[NSMutableAttributedString alloc]initWithString:viewModel.original_price];
+        [originalPrice addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [originalPrice length])];
+        [originalPrice addAttribute:NSStrikethroughColorAttributeName value:[UIColor.blackColor colorWithAlphaComponent:0.6] range:NSMakeRange(0, [originalPrice length])];
+        
+        self.catalogPriceLabel.hidden = NO;
+        self.viewDiscount.hidden = NO;
+        
+        self.productPrice.attributedText = originalPrice;
+        self.productPrice.textColor = [UIColor.blackColor colorWithAlphaComponent:0.6];
+        
+        self.productPrice.font = [UIFont superMicroTheme];
+        self.discountLabel.text = [NSString stringWithFormat:@"%d%%OFF", viewModel.percentage_amount];
+        self.catalogPriceLabel.text = viewModel.productPrice;
+        self.shopLocation.hidden = YES;
+        
+        [self updateLayout];
+    }
+    else {
+        self.productPrice.font = [UIFont largeThemeSemibold];
+        self.productPrice.textColor = UIColor.redColor; //#FC5830
+        self.catalogPriceLabel.hidden = YES;
+        self.viewDiscount.hidden = YES;
+    }
+    
     [self.buttonWishlistExpander setHidden:NO];
     [self.iconOvalWhite setHidden:NO];
     [self resetWishlistButtonAnimation];
     [self setWishlistButtonState:viewModel.isOnWishlist];
+}
+
+- (void) updateLayout {
+    UIFont *font = [UIFont systemFontOfSize:14];
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    CGSize size = [self.productPrice.text sizeWithAttributes:attributes];
+    [self.catalogPriceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(size.width + 8));
+    }];
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {

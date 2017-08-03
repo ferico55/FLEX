@@ -49,12 +49,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUN-Jt-7ae">
-                                <rect key="frame" x="10" y="319" width="38.5" height="16"/>
+                                <rect key="frame" x="10" y="319" width="37" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Ddb-re-7I6"/>
                                     <constraint firstAttribute="height" constant="16" id="sOE-iX-HRA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -64,12 +64,12 @@
                                 </variation>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4n-03-AzD">
-                                <rect key="frame" x="10" y="335" width="280" height="16"/>
+                                <rect key="frame" x="10" y="335" width="37" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Zfj-65-DbK"/>
                                     <constraint firstAttribute="width" constant="120" id="roN-YZ-kub"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -88,9 +88,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIj-WD-JB3">
-                                <rect key="frame" x="140" y="342" width="150" height="16"/>
+                                <rect key="frame" x="140" y="342" width="200" height="16"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="pMD-Zq-2SH"/>
+                                    <constraint firstAttribute="width" constant="200" id="pMD-Zq-2SH"/>
                                     <constraint firstAttribute="height" constant="16" id="sLs-XY-0Mi"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -126,6 +126,23 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" placeholder="YES" id="gr3-Vh-nKc"/>
                                     <constraint firstAttribute="height" constant="18" id="zsd-4k-UpF"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GTX-Et-LOG">
+                                <rect key="frame" x="49" y="335" width="44" height="16"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50%OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6y0-ou-NsG">
+                                        <rect key="frame" x="3" y="2.5" width="38" height="11"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="9"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.93484240770000004" green="0.11027798799999999" blue="0.075043894350000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="BAa-8n-R25"/>
+                                    <constraint firstItem="6y0-ou-NsG" firstAttribute="centerY" secondItem="GTX-Et-LOG" secondAttribute="centerY" id="PeG-8i-q1a"/>
+                                    <constraint firstItem="6y0-ou-NsG" firstAttribute="centerX" secondItem="GTX-Et-LOG" secondAttribute="centerX" id="VbQ-me-nhQ"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_oval_white" translatesAutoresizingMaskIntoConstraints="NO" id="rVj-uo-TbI">
@@ -173,7 +190,6 @@
                             <constraint firstAttribute="bottom" secondItem="E3W-vA-ubj" secondAttribute="bottom" constant="8" id="7x7-qt-s04"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="8hs-x1-0j2"/>
                             <constraint firstItem="MLU-O7-gkA" firstAttribute="top" secondItem="sy2-3E-5tq" secondAttribute="top" constant="2" id="9HB-Ik-uA0"/>
-                            <constraint firstItem="kIj-WD-JB3" firstAttribute="leading" secondItem="eGy-Mg-oHd" secondAttribute="trailing" id="DJj-PU-Q7t"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="F6E-QS-e04"/>
                             <constraint firstItem="T0n-0t-ya4" firstAttribute="leading" secondItem="E3W-vA-ubj" secondAttribute="trailing" constant="-1" id="FZs-gy-0S2"/>
                             <constraint firstItem="xYp-Qr-lkc" firstAttribute="top" secondItem="sy2-3E-5tq" secondAttribute="top" constant="10" id="KKU-0L-zFG"/>
@@ -182,6 +198,7 @@
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="top" secondItem="L72-VL-NKd" secondAttribute="bottom" constant="5" id="MFg-4i-DWx"/>
                             <constraint firstItem="zUN-Jt-7ae" firstAttribute="top" secondItem="DeI-5m-9NG" secondAttribute="bottom" id="NAs-kN-BRF"/>
                             <constraint firstAttribute="bottom" secondItem="uV9-z2-y1O" secondAttribute="bottom" constant="4" id="Nb2-8G-Cdq"/>
+                            <constraint firstItem="GTX-Et-LOG" firstAttribute="top" secondItem="e4n-03-AzD" secondAttribute="top" id="S6n-Md-4F0"/>
                             <constraint firstItem="T0n-0t-ya4" firstAttribute="centerY" secondItem="E3W-vA-ubj" secondAttribute="centerY" id="Tas-Dw-36x"/>
                             <constraint firstItem="L72-VL-NKd" firstAttribute="top" secondItem="zUN-Jt-7ae" secondAttribute="top" id="U05-gl-mca"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="3" id="VAt-XA-Q1l"/>
@@ -194,15 +211,15 @@
                             <constraint firstAttribute="trailing" secondItem="xYp-Qr-lkc" secondAttribute="trailing" constant="10" id="cXQ-fw-SIh"/>
                             <constraint firstAttribute="bottom" secondItem="E3W-vA-ubj" secondAttribute="bottom" constant="8" id="eFO-gl-cJr"/>
                             <constraint firstAttribute="bottom" secondItem="kIj-WD-JB3" secondAttribute="bottom" constant="23" id="ex8-Ij-cyi"/>
-                            <constraint firstItem="kIj-WD-JB3" firstAttribute="leading" secondItem="eGy-Mg-oHd" secondAttribute="trailing" id="fJf-vA-ain"/>
                             <constraint firstItem="T0n-0t-ya4" firstAttribute="leading" secondItem="E3W-vA-ubj" secondAttribute="trailing" constant="-1" id="mTY-gl-SBT"/>
+                            <constraint firstItem="GTX-Et-LOG" firstAttribute="height" secondItem="zUN-Jt-7ae" secondAttribute="height" id="mbS-yq-vwE"/>
                             <constraint firstAttribute="trailing" secondItem="DeI-5m-9NG" secondAttribute="trailing" constant="10" id="qhc-Xk-w2a"/>
+                            <constraint firstItem="e4n-03-AzD" firstAttribute="trailing" secondItem="GTX-Et-LOG" secondAttribute="leading" id="r4X-4Y-dre"/>
                             <constraint firstAttribute="trailing" secondItem="qrV-Ci-Rhr" secondAttribute="trailing" id="rGq-zf-RpI"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="2" id="tKM-EI-pWe"/>
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="top" relation="lessThanOrEqual" secondItem="DeI-5m-9NG" secondAttribute="bottom" constant="19" id="uqX-fv-TF9"/>
                             <constraint firstItem="qrV-Ci-Rhr" firstAttribute="top" secondItem="sy2-3E-5tq" secondAttribute="top" id="wVq-h2-sat"/>
                             <constraint firstItem="e4n-03-AzD" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="ySV-co-wu7"/>
-                            <constraint firstAttribute="trailing" secondItem="e4n-03-AzD" secondAttribute="trailing" constant="10" id="yc9-Me-Owe"/>
                             <constraint firstAttribute="trailing" secondItem="MLU-O7-gkA" secondAttribute="trailing" constant="1" id="zIZ-Rr-B1H"/>
                             <constraint firstItem="eGy-Mg-oHd" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="zo8-7c-nMd"/>
                         </constraints>
@@ -243,6 +260,7 @@
                 <outlet property="buttonWishlist" destination="MLU-O7-gkA" id="605-Yv-tuF"/>
                 <outlet property="buttonWishlistExpander" destination="qrV-Ci-Rhr" id="bQl-fe-kTj"/>
                 <outlet property="catalogPriceLabel" destination="e4n-03-AzD" id="W4d-zL-JBp"/>
+                <outlet property="discountLabel" destination="6y0-ou-NsG" id="2Yx-Xh-yrD"/>
                 <outlet property="iconOvalWhite" destination="rVj-uo-TbI" id="frq-Cb-6t9"/>
                 <outlet property="infoContraint" destination="uqX-fv-TF9" id="vSr-MU-fXp"/>
                 <outlet property="labelsView" destination="L72-VL-NKd" id="rT0-jL-Aub"/>
@@ -253,6 +271,7 @@
                 <outlet property="productPrice" destination="zUN-Jt-7ae" id="wlM-v2-KCT"/>
                 <outlet property="productShop" destination="eGy-Mg-oHd" id="KxJ-x8-9GN"/>
                 <outlet property="shopLocation" destination="T0n-0t-ya4" id="DcP-NV-pN1"/>
+                <outlet property="viewDiscount" destination="GTX-Et-LOG" id="JW4-sj-HoD"/>
             </connections>
             <point key="canvasLocation" x="202" y="218"/>
         </collectionViewCell>

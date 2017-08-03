@@ -30,5 +30,6 @@
 + (nonnull NSString*)mobileSiteUrl;
 + (nonnull NSString*)feedsMobileSiteUrl;
 + (nonnull NSString*)tokocashUrl;
++ (nonnull NSString*)tomeUrl;
 
 @end

@@ -20,6 +20,16 @@
 #import "ShopFavoritedViewController.h"
 #import "EditShopViewController.h"
 #import "ShopInfoViewController.h"
+#import "ClosedInfo.h"
+#import "Owner.h"
+#import "Shipment.h"
+#import "Payment.h"
+#import "Address.h"
+#import "ShopInfo.h"
+#import "ShopStats.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
+#import "ShopTransactionStats.h"
 
 //profile
 //#import "ProfileBiodataViewController.h"

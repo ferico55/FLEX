@@ -39,7 +39,7 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
         requestClosure: @escaping RequestClosure = MoyaProvider.defaultRequestMapping,
         stubClosure: @escaping StubClosure = MoyaProvider.neverStub,
         manager: Manager = RxMoyaProvider<Target>.defaultAlamofireManager(),
-        plugins: [PluginType] = [],
+        plugins: [PluginType] = [NetworkLoggerPlugin(verbose: true)],
         trackInflights: Bool = false
     ) {
         

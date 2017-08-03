@@ -7,7 +7,6 @@
 //
 
 #import "NavigateViewController.h"
-#import "ShopProductPageList.h"
 #import "UserAuthentificationManager.h"
 
 #import "WebViewInvoiceViewController.h"

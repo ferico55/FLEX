@@ -8,6 +8,17 @@
 #import "DetailShopResult.h"
 #import "DetailStatisticViewController.h"
 #import "SmileyAndMedal.h"
+#import "ClosedInfo.h"
+#import "Owner.h"
+#import "Shipment.h"
+#import "Payment.h"
+#import "Address.h"
+#import "ShopInfo.h"
+#import "ShopStats.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
+#import "ShopTransactionStats.h"
+
 #define CStringTransaksiSuccess @"Transaksi Sukses"
 #define CStringTransaksiGagal @"Transaksi gagal / Ditolak"
 
