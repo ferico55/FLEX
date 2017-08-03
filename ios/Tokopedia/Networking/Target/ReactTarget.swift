@@ -52,7 +52,7 @@ class ReactNetworkProviderObjcBridge: NSObject {
                 onError: { error in
                     onError(error as NSError)
                 }
-            ).disposed(by: DisposeBag())
+            )
     }
 }
 
