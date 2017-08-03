@@ -462,9 +462,7 @@ class TPRoutes: NSObject {
         
         // official store mobile
         JLRoutes.global().addRoute("/official-store/mobile") { (params: [String: Any]!) -> Bool in
-            let utmString = getUTMString(params as [String: AnyObject])
-            let urlString = "https://m.tokopedia.com/official-store/mobile" + utmString
-            openWebView(NSURL(string: urlString)! as URL)
+            navigator.navigateToOfficialBrands(from: UIApplication.topViewController())
             
             return true
         }

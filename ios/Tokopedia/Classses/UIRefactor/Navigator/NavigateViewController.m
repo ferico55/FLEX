@@ -59,6 +59,7 @@
 #import "MaintenanceViewController.h"
 #import "PromoDetailViewController.h"
 #import "TransactionATCViewController.h"
+#import "OfficialStoreBrandsViewController.h"
 
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
@@ -973,6 +974,12 @@
     vc.productID = productID;
     vc.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController {
+    OfficialStoreBrandsViewController* controller = [OfficialStoreBrandsViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma - Common Method 

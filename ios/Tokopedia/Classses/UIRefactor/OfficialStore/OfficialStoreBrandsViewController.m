@@ -9,6 +9,7 @@
 #import "OfficialStoreBrandsViewController.h"
 #import <React/RCTRootView.h>
 #import "UIApplication+React.h"
+#import "Tokopedia-Swift.h"
 
 @interface OfficialStoreBrandsViewController ()
 
@@ -25,6 +26,12 @@
     
     self.view = rootView;
     self.title = @"Official Store";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {
