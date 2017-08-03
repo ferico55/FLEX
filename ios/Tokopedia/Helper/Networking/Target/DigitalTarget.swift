@@ -9,10 +9,7 @@
 import Moya
 import MoyaUnbox
 
-private let userAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
-
 class DigitalProvider: NetworkProvider<DigitalTarget> {
-    
     init() {
         super.init(endpointClosure: DigitalProvider.endpointClosure)
     }
@@ -44,7 +41,6 @@ enum DigitalTarget {
 }
 
 extension DigitalTarget: TargetType {
-    
     /// The target's base `URL`.
     var baseURL: URL { return URL(string: NSString.pulsaApiUrl())! }
     
@@ -72,6 +68,8 @@ extension DigitalTarget: TargetType {
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
+        let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-9801603-10")
+        let clientId = tracker?.get(kGAIClientId) ?? ""
         switch self {
         case let .addToCart(productId, inputFields, instantCheckout):
             let fields = inputFields.map { key, value in
@@ -88,7 +86,7 @@ extension DigitalTarget: TargetType {
                         "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
-                        "user_agent": userAgent,
+                        "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0",
                         "fields": fields
                     ]
                 ]
@@ -101,14 +99,12 @@ extension DigitalTarget: TargetType {
                     "id": cartId,
                     "attributes": [
                         "ip_address": "127.0.0.1",
-                        "user_agent": userAgent
+                        "user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"
                     ]
                 ]
             ]
             
         case let .payment(voucherCode, transactionAmount, transactionId):
-            let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-9801603-10")
-            let clientID = tracker?.get(kGAIClientId) ?? ""
             return [
                 "data": [
                     "type": "checkout",
@@ -117,10 +113,10 @@ extension DigitalTarget: TargetType {
                         "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
-                        "user_agent": userAgent,
+                        "user_agent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5",
                         "voucher_code": voucherCode,
                         "transaction_amount": transactionAmount,
-                        "client_id": clientID
+                        "client_id": clientId
                     ],
                     "relationships": [
                         "cart": [
