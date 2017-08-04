@@ -81,10 +81,12 @@
 
 - (void) setWishlistButtonState:(BOOL)isOnWishlist {
     if(isOnWishlist) {
-       [self.buttonWishlistExpander setSelected:YES];
-       [self.setWishlistAnimationView setHidden:YES];
-       [self.unsetWishlistAnimationView setHidden:NO];
+        [self.buttonWishlist setSelected:YES];
+        [self.buttonWishlistExpander setSelected:YES];
+        [self.setWishlistAnimationView setHidden:YES];
+        [self.unsetWishlistAnimationView setHidden:NO];
     } else {
+        [self.buttonWishlist setSelected:NO];
         [self.buttonWishlistExpander setSelected:NO];
         [self.setWishlistAnimationView setHidden:NO];
         [self.unsetWishlistAnimationView setHidden:YES];
