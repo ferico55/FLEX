@@ -298,7 +298,9 @@
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
     
-    [UserAuthentificationManager trackAppLocation];
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [UserAuthentificationManager trackAppLocation];
+    });
     
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     
