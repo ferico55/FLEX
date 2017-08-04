@@ -39,12 +39,6 @@
     [super viewDidLoad];
     
     [self setDefaultData:_data];
-
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
     
     UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                                       style:UIBarButtonItemStyleDone
@@ -62,12 +56,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
 }
 
 - (void)didReceiveMemoryWarning

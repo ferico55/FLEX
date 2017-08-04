@@ -58,7 +58,7 @@
     };
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
+    [navigationController setWhite];
     
     [_viewController.navigationController presentViewController:navigationController animated:YES completion:nil];
 }

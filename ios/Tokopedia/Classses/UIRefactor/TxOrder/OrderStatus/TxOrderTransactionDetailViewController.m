@@ -14,6 +14,7 @@
 #import "string_tx_order.h"
 
 #import "AlertInfoView.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagAddress 2
 #define CTagPhone 3
@@ -97,6 +98,12 @@
     _detailView.frame = frame;
     
     _tableView.tableFooterView = _detailView;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

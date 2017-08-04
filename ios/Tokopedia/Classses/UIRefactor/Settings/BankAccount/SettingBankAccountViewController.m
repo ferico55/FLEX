@@ -80,13 +80,6 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    barButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = barButtonItem;
-    
     UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                   target:self
                                                                                   action:@selector(tap:)];
@@ -258,9 +251,7 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 10) {
-            [self.navigationController popViewControllerAnimated:YES];
-        } else if (button.tag == 11) {
+        if (button.tag == 11) {
             if (_list.count >= 10) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mohon maaf, maksimal 10 rekening bank yang dapat Anda masukkan.\nSilakan hapus terlebih dahulu rekening bank yang sudah tidak digunakan." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];

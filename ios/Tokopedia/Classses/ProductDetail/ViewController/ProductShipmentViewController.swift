@@ -22,6 +22,12 @@ class ProductShipmentViewController: UIViewController, UITableViewDataSource, UI
         super.init(nibName: nil, bundle: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+    }
+    
     override func loadView() {
         super.loadView()
         
@@ -41,12 +47,6 @@ class ProductShipmentViewController: UIViewController, UITableViewDataSource, UI
         self.title = "Kurir"
         
         AnalyticsManager.trackScreenName("Product Detail - Shipment Page")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationController?.setWhite()
     }
     
     // MARK: - UITableView Data Source

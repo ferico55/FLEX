@@ -26,6 +26,12 @@ class DigitalCategoryListViewController: UIViewController {
         requestCategory()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
+    }
+    
     private func requestCategory() {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
