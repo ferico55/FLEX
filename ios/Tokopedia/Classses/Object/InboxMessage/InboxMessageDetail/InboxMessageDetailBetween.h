@@ -12,8 +12,8 @@
 @interface InboxMessageDetailBetween : NSObject
 
 @property (nonatomic, strong, nonnull) NSString *user_name;
-@property (nonatomic, strong) NSString *user_id;
+@property (nonatomic, strong, nonnull) NSString * user_id;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping* _Nonnull)mapping;
 
 @end

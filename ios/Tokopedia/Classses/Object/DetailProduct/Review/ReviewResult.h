@@ -13,9 +13,6 @@
 @class Paging;
 #import "DetailReputationReview.h"
 
-#define CPaging @"paging"
-#define CAdvanceReview @"advance_review"
-#define CList @"list"
 
 @interface ReviewResult : NSObject
 

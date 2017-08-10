@@ -10,9 +10,9 @@
 
 @interface CatalogMarketPlace : NSObject<TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *min_price;
-@property (nonatomic, strong) NSString *time;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *max_price;
+@property (nonatomic, strong, nonnull) NSString *min_price;
+@property (nonatomic, strong, nonnull) NSString *time;
+@property (nonatomic, strong, nonnull) NSString *name;
+@property (nonatomic, strong, nonnull) NSString *max_price;
 
 @end

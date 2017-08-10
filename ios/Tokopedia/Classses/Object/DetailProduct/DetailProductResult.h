@@ -20,22 +20,22 @@
 
 @interface DetailProductResult : NSObject
 
-@property (nonatomic, strong) NSString *server_id;
+@property (nonatomic, strong, nonnull) NSString *server_id;
 @property (nonatomic) NSInteger shop_is_gold;
-@property (nonatomic, strong) Statistic *statistic;
-@property (nonatomic, strong) ShopInfo *shop_info;
-@property (nonatomic, strong) Rating *rating;
-@property (nonatomic, strong) NSArray *wholesale_price;
-@property (nonatomic, strong) NSArray *breadcrumb;
-@property (nonatomic, strong) NSArray *other_product;
-@property (nonatomic, strong) NSArray *product_images;
-@property (nonatomic, strong) NSString *cashback;
-@property (nonatomic, strong) ProductDetail *info;
-@property (nonatomic, strong) PreorderDetail *preorder;
+@property (nonatomic, strong, nonnull) Statistic *statistic;
+@property (nonatomic, strong, nonnull) ShopInfo *shop_info;
+@property (nonatomic, strong, nonnull) Rating *rating;
+@property (nonatomic, strong, nonnull) NSArray *wholesale_price;
+@property (nonatomic, strong, nonnull) NSArray *breadcrumb;
+@property (nonatomic, strong, nonnull) NSArray *other_product;
+@property (nonatomic, strong, nonnull) NSArray *product_images;
+@property (nonatomic, strong, nonnull) NSString *cashback;
+@property (nonatomic, strong, nonnull) ProductDetail *info;
+@property (nonatomic, strong, nonnull) PreorderDetail *preorder;
 //code tambal sulam
-@property (nonatomic, strong) ProductDetail *product;
+@property (nonatomic, strong, nonnull) ProductDetail *product;
 
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

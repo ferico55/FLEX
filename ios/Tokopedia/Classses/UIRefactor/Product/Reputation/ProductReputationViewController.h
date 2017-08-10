@@ -41,5 +41,5 @@
 - (IBAction)actionFilterAllTime:(id)sender;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc;
 - (IBAction)actionSegmentedValueChange:(id)sender;
-- (void)requestLikeStatusAgain:(NSIndexPath *)indexPath;
+
 @end

@@ -23,14 +23,14 @@
     self.title = @"";
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Kembali"
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
     self.navigationItem.leftBarButtonItem = cancelButton;
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Batalkan order"
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;

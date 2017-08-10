@@ -13,7 +13,7 @@
 
 @interface RateResponse : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) RateData *data;
-@property (nonatomic, strong) NSArray *errors;
+@property (nonatomic, strong, nonnull) RateData *data;
+@property (nonatomic, strong, nonnull) NSArray *errors;
 
 @end

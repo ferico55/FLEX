@@ -38,7 +38,7 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    [_delegate didRemarkTextChange:textView withSelectedCell:self];
+    [_delegate didRemarkTextChange:(RSKPlaceholderTextView *)textView withSelectedCell:self];
 }
 
 @end

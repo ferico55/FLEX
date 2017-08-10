@@ -19,7 +19,7 @@
 - (void)didTapProductAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
-@interface TransactionCartCell : UITableViewCell
+@interface TransactionCartCell : UITableViewCell <UIActionSheetDelegate>
 
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartCellDelegate> delegate;

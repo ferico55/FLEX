@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-
 @interface ProductTalkFormResult : NSObject
 
 @property (nonatomic, strong) NSString *is_success;

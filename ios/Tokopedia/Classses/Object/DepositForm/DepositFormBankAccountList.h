@@ -11,14 +11,14 @@
 @interface DepositFormBankAccountList : NSObject
 
 @property (nonatomic) NSInteger bank_id;
-@property (nonatomic, strong) NSString *bank_account_id;
-@property (nonatomic, strong) NSString *bank_branch;
-@property (nonatomic, strong) NSString *bank_account_name;
-@property (nonatomic, strong) NSString *bank_name;
-@property (nonatomic, strong) NSString *bank_account_number;
+@property (nonatomic, strong, nonnull) NSString *bank_account_id;
+@property (nonatomic, strong, nonnull) NSString *bank_branch;
+@property (nonatomic, strong, nonnull) NSString *bank_account_name;
+@property (nonatomic, strong, nonnull) NSString *bank_name;
+@property (nonatomic, strong, nonnull) NSString *bank_account_number;
 @property (nonatomic) NSInteger is_default_bank;
 @property (nonatomic) NSInteger is_verified_account;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

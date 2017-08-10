@@ -14,14 +14,14 @@
 
 @interface DepositSummaryResult : NSObject
 
-@property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray *list;
-@property (nonatomic, strong) DepositSummaryDetail *summary;
-@property (nonatomic, strong) NSString *start_date;
-@property (nonatomic, strong) NSString *end_date;
-@property (nonatomic, strong) NSString *error_date;
-@property (nonatomic, strong) NSString *user_id;
+@property (nonatomic, strong, nonnull) Paging *paging;
+@property (nonatomic, strong, nonnull) NSArray *list;
+@property (nonatomic, strong, nonnull) DepositSummaryDetail *summary;
+@property (nonatomic, strong, nonnull) NSString *start_date;
+@property (nonatomic, strong, nonnull) NSString *end_date;
+@property (nonatomic, strong, nonnull) NSString *error_date;
+@property (nonatomic, strong, nonnull) NSString *user_id;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

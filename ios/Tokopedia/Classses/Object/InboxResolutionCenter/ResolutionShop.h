@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ShopReputation.h"
 
-#define CShopReputation @"shop_reputation"
-
 @interface ResolutionShop : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shop_image;

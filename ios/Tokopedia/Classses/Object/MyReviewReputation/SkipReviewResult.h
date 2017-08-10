@@ -7,9 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CReputationReviewCounter @"reputation_review_counter"
-#define CIsSuccess @"is_success"
-#define CShowBookmark @"show_bookmark"
 
 @interface SkipReviewResult : NSObject
 @property (nonatomic, strong) NSString *reputation_review_counter;

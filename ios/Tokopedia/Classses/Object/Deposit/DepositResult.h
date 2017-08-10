@@ -10,8 +10,8 @@
 
 @interface DepositResult : NSObject
 
-@property (nonatomic, strong) NSString *deposit_total;
+@property (nonatomic, strong, nonnull) NSString *deposit_total;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

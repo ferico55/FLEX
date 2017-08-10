@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CList @"list"
-#define CPaging @"paging"
+
 @class Paging;
 
 @interface MyReviewReputationResult : NSObject

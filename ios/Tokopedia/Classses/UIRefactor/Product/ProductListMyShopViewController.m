@@ -153,7 +153,7 @@ NoResultDelegate
     [self.tableView addSubview:_refreshControl];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self action:@selector(tap:)];
     barButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = barButtonItem;
@@ -547,7 +547,7 @@ NoResultDelegate
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Delete"];
-    NSString *productId = [NSString stringWithFormat:@"%d", product.product_id];
+    NSString *productId = [NSString stringWithFormat:@"%ld", (long)product.product_id];
     [ProductRequest deleteProductWithId:productId
           setCompletionBlockWithSuccess:^(ShopSettings *response) {
               [self showSuccessMessages:@[@"Anda telah berhasil menghapus produk"]];
@@ -786,7 +786,7 @@ NoResultDelegate
     ManageProductList *selectedProduct = _products[alertView.tag];
     if(self.isMovingToGudang){
         if (buttonIndex == 1) {
-            NSString *productId = [NSString stringWithFormat:@"%d", selectedProduct.product_id];
+            NSString *productId = [NSString stringWithFormat:@"%ld", (long)selectedProduct.product_id];
             [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Stock"];
             [ProductRequest moveProductToWarehouse:productId
                      setCompletionBlockWithSuccess:^(ShopSettings *response) {

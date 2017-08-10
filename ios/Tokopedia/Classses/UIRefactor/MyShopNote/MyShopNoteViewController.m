@@ -83,7 +83,7 @@
     }
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                     action:@selector(tap:)];
     barButtonItem.tag = 10;

@@ -11,19 +11,6 @@
 #import "CountRatingResult.h"
 #import "ShopBadgeLevel.h"
 
-#define CShopLastOneMonth @"shop_last_one_month"
-#define CShopLastSixMonth @"shop_last_six_months"
-#define CShopLastTwelveMonth @"shop_last_twelve_months"
-#define CTxCount @"tx_count"
-#define CRateFailure @"rate_failure"
-#define CShopReputationScore @"shop_reputation_score"
-#define CShopTotalTransactionCancel @"shop_total_transaction_canceled"
-#define CShopSpeedDesc @"shop_speed_description"
-#define CRateSuccess @"rate_success"
-#define CToolTip @"tooltip"
-#define CHideRate @"hide_rate"
-#define CShopBadgeLevel @"shop_badge_level"
-#define CTxCountSuccess @"tx_count_success"
 
 @interface ShopStats : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;

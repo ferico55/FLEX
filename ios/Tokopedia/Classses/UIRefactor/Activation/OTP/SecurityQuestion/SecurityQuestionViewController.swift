@@ -329,7 +329,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func didReceiveAnswerRespond(_ answer : SecurityAnswer) {
-        if answer.message_error != nil {
+        if answer.message_error.count > 0 {
             AnalyticsManager.trackEventName("verifyOTP", category: GA_EVENT_CATEGORY_SECURITY_QUESTION, action: GA_EVENT_ACTION_OTP_VERIFY, label: "OTP Verify Failed")
             StickyAlertView.showErrorMessage(answer.message_error)
             showVerificationButtonIsLoading(false)

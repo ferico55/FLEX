@@ -67,7 +67,7 @@
     
     NSData *result = nil;
     if (returnCode != 0) {
-        NSLog(@"SecKeyEncrypt fail. Error Code: %ld", returnCode);
+        NSLog(@"SecKeyEncrypt fail. Error Code: %d", (int)returnCode);
     }
     else {
         result = [NSData dataWithBytes:cipher

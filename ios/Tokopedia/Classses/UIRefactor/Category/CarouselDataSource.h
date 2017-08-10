@@ -16,9 +16,9 @@
 
 @interface CarouselDataSource : NSObject <iCarouselDataSource, iCarouselDelegate>
 
-- (instancetype)initWithBanner:(NSArray <Slide*>*)banners withPageControl: (StyledPageControl*) pageControl;
+- (instancetype _Nonnull )initWithBanner:(NSArray <Slide*>*_Nonnull)banners withPageControl: (StyledPageControl*_Nonnull) pageControl;
 
-@property(nonatomic, weak) UINavigationController *navigationDelegate;
+@property(nullable, nonatomic, weak) UINavigationController *navigationDelegate;
 @property(nullable, nonatomic, weak) NSTimer *timer;
 
 @property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide);

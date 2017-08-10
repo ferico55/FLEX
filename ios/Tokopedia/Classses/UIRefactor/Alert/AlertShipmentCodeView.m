@@ -44,5 +44,9 @@
     [self dismissindex:-1 silent:YES animated:YES];
 }
 
+- (void)dismissindex:(NSInteger)index silent:(BOOL)silent animated:(BOOL)animated {
+    
+}
+
 @end
 

@@ -11,7 +11,7 @@
 #import "ShopStats.h"
 #import "ResponseSpeed.h"
 #import "TransactionCartGateway.h"
-#define CResponseFast @"respond_speed"
+
 
 @interface ShopInfo : NSObject <TKPObjectMapping>
 

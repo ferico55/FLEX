@@ -27,8 +27,7 @@
 - (void)setText:(NSString *)text
 {
     _text = text?:@"";
-    
-    UIFont *font = [UIFont largeTheme];
+
     _textLabel.text = _text;
     
     self.clipsToBounds = YES;

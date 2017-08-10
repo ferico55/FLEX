@@ -13,7 +13,6 @@
 
 - (IBAction)actionCreateShop:(id)sender;
 - (void)updateShopInformation;
-- (void)updateImageURL;
 - (void)updateSaldoTokopedia;
 - (void)showTooltipView;
 

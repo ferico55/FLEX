@@ -321,7 +321,7 @@ static NSString const *rows = @"12";
 }
 
 -(void)searchWithDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceHotlist
+    __unused FiltersController *controller = [[FiltersController alloc]initWithSource:SourceHotlist
                                                                 sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
@@ -351,7 +351,7 @@ static NSString const *rows = @"12";
 }
 
 -(void)searchWithDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
+    __unused FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
                                                                         filterResponse:_filterResponse?:[FilterData new]
                                                                         rootCategoryID:@""
                                                                        selectedFilters:_selectedFilters
@@ -524,7 +524,11 @@ static NSString const *rows = @"12";
         
         [button addTarget:self action:@selector(didTapOnHashtag:) forControlEvents:UIControlEventTouchUpInside];
         
-        CGSize stringSize = [button.titleLabel.text sizeWithFont:[UIFont smallTheme]];
+        CGRect stringRect = [button.titleLabel.text boundingRectWithSize:CGSizeMake(400, 200)
+                                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                                              attributes:@{NSFontAttributeName:[UIFont smallTheme]}
+                                                                 context:nil];
+        CGSize stringSize = stringRect.size;
         stringSize.width += 30;
         button.frame = CGRectMake(totalWidth, 5, stringSize.width, 30);
         
@@ -542,10 +546,8 @@ static NSString const *rows = @"12";
     }
 
     if(IS_IPAD) {
-        [_iPadHastags setDelegate:self];
         _iPadHastags.contentSize = CGSizeMake(totalWidth, 40);
     } else {
-        [_hashtagsscrollview setDelegate:self];
         _hashtagsscrollview.contentSize = CGSizeMake(totalWidth, 40);
     }
 }
@@ -824,17 +826,6 @@ static NSString const *rows = @"12";
         }
         [TPRoutes routeURL:[NSURL URLWithString:promoResult.applinks]];
     }
-}
-
-#pragma mark - Scroll delegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (self.lastContentOffset > scrollView.contentOffset.y) {
-        self.scrollDirection = ScrollDirectionUp;
-    } else if (self.lastContentOffset < scrollView.contentOffset.y) {
-        self.scrollDirection = ScrollDirectionDown;
-    }
-    self.lastContentOffset = scrollView.contentOffset.y;
 }
 
 #pragma mark - Banner Request Delegate 

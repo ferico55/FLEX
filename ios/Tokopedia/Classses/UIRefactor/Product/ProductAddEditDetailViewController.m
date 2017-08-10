@@ -539,7 +539,7 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)adjustBarButton
 {
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = barButtonItem;

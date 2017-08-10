@@ -61,6 +61,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 @implementation CameraCollectionViewController
 
+@synthesize selectedIndexPath = _selectedIndexPath;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -328,7 +330,6 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
         vc.selectedImages = [_selectedImages copy];
         vc.selectedIndexPaths = arrayIndexPath;
-        vc.delegate = _delegate;
         vc.review = _review;
         vc.imagesCaptions = _attachedImagesCaptions;
         [self.navigationController pushViewController:vc animated:YES];

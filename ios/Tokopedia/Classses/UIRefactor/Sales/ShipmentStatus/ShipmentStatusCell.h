@@ -11,7 +11,7 @@
 @class OrderTransaction;
 
 @protocol ShipmentStatusCellDelegate <NSObject>
-
+@optional
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath;
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath;
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath;

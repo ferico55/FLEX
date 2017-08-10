@@ -9,7 +9,7 @@
 #import "TransactionCartCell.h"
 #import "Tokopedia-Swift.h"
 
-@implementation TransactionCartCell
+@implementation TransactionCartCell 
 {
     CartModelView *_viewModelCart;
     ProductModelView *_viewModelProduct;
@@ -161,8 +161,7 @@
     [self.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    UIImageView *thumb = self.productThumbImageView;
-    
+    __weak UIImageView *thumb = self.productThumbImageView;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         [thumb setImage:image];
         [thumb setContentMode:UIViewContentModeScaleAspectFill];

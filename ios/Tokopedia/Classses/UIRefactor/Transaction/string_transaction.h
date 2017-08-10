@@ -157,7 +157,6 @@ typedef enum
 
 #define API_PRODUCT_INSURANCE @"product_insurance"
 
-#define API_PRODUCT_ID_KEY @"product_id"
 #define API_ADDRESS_ID_KEY @"address_id"
 #define API_OLD_ADDRESS_ID_KEY @"old_address_id"
 #define API_OLD_SHIPMENT_ID_KEY @"old_shipment_id"

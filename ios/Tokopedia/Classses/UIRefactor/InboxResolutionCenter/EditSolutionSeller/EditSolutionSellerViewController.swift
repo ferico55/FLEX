@@ -385,7 +385,7 @@ import UIKit
 
 extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate {
     //MARK: GeneralTableViewDelegate
-    func didSelectObject(_ object: AnyObject!) {
+    @nonobjc func didSelectObject(_ object: AnyObject!) {
         for solution in resolutionData.form.resolution_solution_list where solution.solution_text == object as! String {
             postObject.selectedSolution = solution
             self.adjustUISolution(postObject.selectedSolution)

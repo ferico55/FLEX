@@ -10,17 +10,16 @@
 
 #import "CatalogPrice.h"
 #import "CatalogImages.h"
-#define CCatalogID @"catalog_id"
-#define CCatalogPriceAlertPrice @"catalog_pricealert_price"
+
 @interface CatalogInfo : NSObject<TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *catalog_description;
-@property (nonatomic, strong) NSString *catalog_key;
-@property (nonatomic, strong) NSString *catalog_department_id;
-@property (nonatomic, strong) NSString *catalog_id;
-@property (nonatomic, strong) NSString *catalog_name;
-@property (nonatomic, strong) CatalogPrice *catalog_price;
-@property (nonatomic, strong) NSArray *catalog_images;
-@property (nonatomic, strong) NSString *catalog_url;
-@property (nonatomic, strong) NSString *catalog_pricealert_price;
+@property (nonatomic, strong, nonnull) NSString *catalog_description;
+@property (nonatomic, strong, nonnull) NSString *catalog_key;
+@property (nonatomic, strong, nonnull) NSString *catalog_department_id;
+@property (nonatomic, strong, nonnull) NSString *catalog_id;
+@property (nonatomic, strong, nonnull) NSString *catalog_name;
+@property (nonatomic, strong, nonnull) CatalogPrice *catalog_price;
+@property (nonatomic, strong, nonnull) NSArray *catalog_images;
+@property (nonatomic, strong, nonnull) NSString *catalog_url;
+@property (nonatomic, strong, nonnull) NSString *catalog_pricealert_price;
 @end

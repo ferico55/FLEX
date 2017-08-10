@@ -32,6 +32,7 @@
 
 -(void)awakeFromNib
 {
+    [super awakeFromNib];
     _imageviewnonactive = [UIImageView new];
     _imageviewactive = [UIImageView new];
 }

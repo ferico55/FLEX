@@ -351,7 +351,6 @@ typedef enum
 #define kTKPDDETAILSHOP_APISHOPID @"shop_id"
 #define kTKPDDETAILSHOP_APISHOPNAME @"shop_name"
 #define kTKPDDETAILSHOP_APISHOPISGOLD @"shop_is_gold"
-#define API_IS_GOLD_SHOP_KEY @"shop_is_gold"
 #define API_IS_OWNER_SHOP_KEY @"shop_is_owner"
 
 #define kTKPDDETAILSHOP_APISHOPURLKEY @"shop_url"

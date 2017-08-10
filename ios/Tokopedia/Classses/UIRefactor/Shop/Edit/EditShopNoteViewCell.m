@@ -11,6 +11,8 @@
 @implementation EditShopNoteViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     [self updateTextViewPlaceholder];
 }
 

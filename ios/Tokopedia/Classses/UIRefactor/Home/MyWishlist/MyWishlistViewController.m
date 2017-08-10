@@ -45,7 +45,8 @@ UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 NoResultDelegate,
-RetryViewDelegate
+RetryViewDelegate,
+NotificationManagerDelegate
 >
 
 

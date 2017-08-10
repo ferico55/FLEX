@@ -10,10 +10,10 @@
 
 @interface CategoryList : NSObject
 
-@property (nonatomic, strong) NSString *department_name;
-@property (nonatomic, strong) NSString *department_identifier;
-@property (nonatomic, strong) NSString *department_dir_view;
-@property (nonatomic, strong) NSString *department_id;
-@property (nonatomic, strong) NSString *department_tree;
+@property (nonatomic, strong, nonnull) NSString *department_name;
+@property (nonatomic, strong, nonnull) NSString *department_identifier;
+@property (nonatomic, strong, nonnull) NSString *department_dir_view;
+@property (nonatomic, strong, nonnull) NSString *department_id;
+@property (nonatomic, strong, nonnull) NSString *department_tree;
 
 @end

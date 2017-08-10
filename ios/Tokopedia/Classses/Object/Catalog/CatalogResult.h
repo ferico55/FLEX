@@ -11,6 +11,6 @@
 
 @interface CatalogResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray<CatalogList*> *list;
+@property (nonatomic, strong, nonnull) NSArray<CatalogList*> *list;
 
 @end

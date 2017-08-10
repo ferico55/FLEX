@@ -8,7 +8,7 @@
 
 #import "TransactionSummary.h"
 
-#import "TransactionObjectMapping.h"
+#import "string_transaction.h"
 
 @implementation TransactionSummary
 

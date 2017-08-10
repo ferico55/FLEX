@@ -66,7 +66,7 @@
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
-@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate, MFMailComposeViewControllerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -372,11 +372,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 - (BOOL)isBadgeNotificationTurnedOn {
     UIApplication *application = [UIApplication sharedApplication];
-    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
-        return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
-    } else {
-        return application.enabledRemoteNotificationTypes & UIRemoteNotificationTypeBadge;
-    }
+    return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
 }
 
 - (void)togglePushNotificationCellVisibility {
@@ -459,8 +455,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                   };
         
         ShopType shopType = authManager.shopType;
-        _shopIsGoldLabel.text = (NSString *)display[@(shopType)][@"label"];
-        imageView.image = (UIImage *)display[@(shopType)][@"image"];
+        _shopIsGoldLabel.text = (NSString *)display[(NSString *)@(ShopTypeRegular)][@"label"];
+        imageView.image = (UIImage *)display[(NSString *)@(shopType)][@"image"];
     }
     [self.tableView reloadData];
 }

@@ -33,6 +33,5 @@ typedef enum {
 } TypeComplaint;
 
 -(void)refreshRequest;
--(void)removeAllSelected;
 
 @end

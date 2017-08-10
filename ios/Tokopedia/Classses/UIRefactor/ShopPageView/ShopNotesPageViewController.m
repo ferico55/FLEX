@@ -36,7 +36,6 @@
     TKPDTabInboxTalkNavigationControllerDelegate,
     MGSwipeTableCellDelegate,
     MyShopNoteDetailDelegate,
-    NoResultDelegate,
     ShopTabChild
 >
 
@@ -98,7 +97,6 @@
 }
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai catatan"
                                   desc:@""

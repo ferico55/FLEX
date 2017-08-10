@@ -1,4 +1,3 @@
-//
 //  LoginResult.h
 //  Tokopedia
 //
@@ -8,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "LoginSecurity.h"
-#define CUserReputation @"user_reputation"
 
 @class ReputationDetail;
 
@@ -30,7 +28,7 @@
 @property (nonatomic, strong) NSString *msisdn_is_verified;
 @property (nonatomic, strong) NSString *msisdn_show_dialog;
 
-//even though the web service don't return email, I think it makes sense to group email to this data
+//even though the web service don’t return email, I think it makes sense to group email to this data
 @property (nonatomic, strong) NSString *email;
 
 @property (nonatomic, strong) LoginSecurity* security;

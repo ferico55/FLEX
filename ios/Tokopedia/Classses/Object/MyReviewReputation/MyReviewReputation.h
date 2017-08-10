@@ -9,12 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "MyReviewReputationResult.h"
 
-#define CStatus @"status"
-#define CMessageStatus @"message_status"
-#define CMessageError @"message_error"
-#define CServerProcessTime @"server_process_time"
-#define CResult @"result"
-
 @interface MyReviewReputation : NSObject
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSArray *message_status;

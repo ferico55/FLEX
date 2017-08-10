@@ -11,9 +11,9 @@
 
 @interface SecurityRequestOTP : NSObject <TKPObjectMapping>
 
-@property(nonatomic, strong) NSString* status;
-@property(nonatomic, strong) NSArray* message_error;
-@property(nonatomic, strong) NSArray* message_status;
-@property(nonatomic, strong) SecurityRequestOTPResult* data;
+@property(nonatomic, strong, nonnull) NSString* status;
+@property(nonatomic, strong, nonnull) NSArray* message_error;
+@property(nonatomic, strong, nonnull) NSArray* message_status;
+@property(nonatomic, strong, nonnull) SecurityRequestOTPResult* data;
 
 @end

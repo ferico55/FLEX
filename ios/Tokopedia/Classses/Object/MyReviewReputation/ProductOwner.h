@@ -7,19 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CShopID @"shop_id"
-#define CUserLabelID @"user_label_id"
-#define CUserURL @"user_url"
-#define CShopImg @"shop_img"
-#define CShopUrl @"shop_url"
-#define CShopName @"shop_name"
-#define CFullName @"full_name"
-#define CShopReputation @"shop_reputation_score"
-#define CUserImg @"user_img"
-#define CUserLabel @"user_label"
-#define CuserID @"user_id"
-#define CUserName @"user_name"
-#define CShopReputationBadge @"shop_reputation_badge"
+
 #define CUserShopReputation @"user_shop_reputation"
 @class ShopReputation;
 

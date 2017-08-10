@@ -20,6 +20,8 @@
 @implementation ProductReputationSimpleCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     _starInactiveImage = [UIImage imageNamed:@"icon_star_med.png"];
     _starActiveImage = [UIImage imageNamed:@"icon_star_active_med.png"];
 }

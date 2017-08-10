@@ -31,6 +31,4 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @property FilterCategoryType filterType;
 @property (strong, nonatomic) NSString *rootCategoryID;
 
--(void)resetSelectedFilter;
-
 @end

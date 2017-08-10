@@ -35,6 +35,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     //Set image and title kecepatan
     CGFloat spacing = 6.0;
     CGSize imageSize = btnKecepatan.imageView.frame.size;

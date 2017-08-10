@@ -74,14 +74,14 @@
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
         barButtonItem.tag = 10;
         self.navigationItem.leftBarButtonItem = barButtonItem;
     } else {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
         self.navigationItem.backBarButtonItem = barButtonItem;
@@ -215,14 +215,16 @@
                                                                                                       path:kTKPDDETAILSHOPETALASEACTION_APIPATH
                                                                                                 parameters:[param encrypt]];
     
+    __weak typeof(self) weakSelf = self;
+    __weak UIBarButtonItem *weakBarbuttonsave = _barbuttonsave;
     [_requestActionAddEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddEtalase:mappingResult withOperation:operation];
+        [weakSelf requestSuccessActionAddEtalase:mappingResult withOperation:operation];
         [timer invalidate];
-        _barbuttonsave.enabled = YES;
+        weakBarbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddEtalase:error];
+        [weakSelf requestFailureActionAddEtalase:error];
         [timer invalidate];
-        _barbuttonsave.enabled = YES;
+        weakBarbuttonsave.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionAddEtalase];

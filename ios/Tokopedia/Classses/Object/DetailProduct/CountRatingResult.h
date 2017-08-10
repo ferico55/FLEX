@@ -7,14 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CCountScoreGood @"count_score_good"
-#define CCountScoreBad @"count_score_bad"
-#define CCountScoreNeutral @"count_score_neutral"
+
 
 @interface CountRatingResult : NSObject <TKPObjectMapping>
-@property (nonatomic, strong) NSString *count_score_good;
-@property (nonatomic, strong) NSString *count_score_bad;
-@property (nonatomic, strong) NSString *count_score_neutral;
+@property (nonatomic, strong, nonnull) NSString *count_score_good;
+@property (nonatomic, strong, nonnull) NSString *count_score_bad;
+@property (nonatomic, strong, nonnull) NSString *count_score_neutral;
 
-+(RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
+
 @end

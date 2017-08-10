@@ -10,9 +10,9 @@
 
 @interface SendOTPResult : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSString *is_success;
+@property (strong, nonatomic, nonnull) NSString *is_success;
 
-+(NSDictionary *) attributeMappingDictionary;
-+(RKObjectMapping *) mapping;
++ (NSDictionary *_Nonnull) attributeMappingDictionary;
++ (RKObjectMapping *_Nonnull) mapping;
 
 @end

@@ -254,7 +254,7 @@
                 NSInteger priceMin = [[_detailfilter objectForKey:@"pmin"] integerValue];
                 NSInteger priceMax = [[_detailfilter objectForKey:@"pmax"] integerValue];
  
-                if (priceMax != nil && priceMax < priceMin) {
+                if (priceMax != 0 && priceMax < priceMin) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Harga minimum harus lebih kecil dari harga maksimum."] delegate:self];
                     [alert show];
                 } else {

@@ -10,7 +10,7 @@
 
 @interface AddressDistrict : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *district_id;
-@property (nonatomic, strong) NSString *district_name;
+@property (nonatomic, strong, nonnull) NSString *district_id;
+@property (nonatomic, strong, nonnull) NSString *district_name;
 
 @end

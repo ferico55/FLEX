@@ -19,11 +19,11 @@ import UIKit
         super.viewDidLoad()
         self.title = isEdit ? "Ubah Gambar" : "Tambah Gambar"
         
-        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .bordered, target: self, action: nil)
+        let cancelBarButton = UIBarButtonItem(title: "Batal", style: .plain, target: self, action: nil)
         cancelBarButton.tag = 10
         self.navigationItem.rightBarButtonItem = cancelBarButton
         
-        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .bordered, target: self, action: nil)
+        let doneBarButton = UIBarButtonItem(title: "Simpan", style: .plain, target: self, action: nil)
         doneBarButton.tag = 11
         self.navigationItem.rightBarButtonItem = doneBarButton
         
@@ -35,11 +35,6 @@ import UIKit
         collectionView.delegate = self
         
         self.view.addSubview(collectionView)
-        
-        // Keyboard Notification
-        let notification = NotificationCenter.default
-//        notification.addObserver(self, selector: Selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-//        notification.addObserver(self, selector: Selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
         
         
     }

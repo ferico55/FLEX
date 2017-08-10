@@ -14,4 +14,10 @@
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context;
 
+- (void)getMyScore;
+- (void)didTapLockedSmiley;
+- (void)didTapNotSatisfiedSmiley;
+- (void)didTapSatisfiedSmiley;
+- (void)didTapNeutralSmiley;
+
 @end

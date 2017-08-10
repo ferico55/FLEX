@@ -45,7 +45,7 @@
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     backButton.tag = 2;
     self.navigationItem.backBarButtonItem = backButton;
 

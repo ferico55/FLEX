@@ -46,7 +46,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
+@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, RetryViewDelegate>
 {
     NSString *_URINext;
     
@@ -109,7 +109,6 @@
                               btnTitle:@""];
     
     [_noResultView hideButton:YES];
-    _noResultView.delegate = self;
 }
 
 - (void)viewDidLoad {

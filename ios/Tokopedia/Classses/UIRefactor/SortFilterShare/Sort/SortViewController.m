@@ -46,7 +46,7 @@
 
 - (void)createCancelButton {
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:@selector(tap:)];
     barButtonItem.tag = 10;
@@ -66,7 +66,7 @@
 - (void)setSortValues {
     [AnalyticsManager trackUserInformation];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *container = appDelegate.container;
     
     NSString *arrayString = @"";

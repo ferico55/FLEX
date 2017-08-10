@@ -10,12 +10,12 @@
 
 @interface CatalogReview : NSObject<TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *review_from_image;
-@property (nonatomic, strong) NSString *review_rating;
-@property (nonatomic, strong) NSString *review_url;
-@property (nonatomic, strong) NSString *review_from_url;
-@property (nonatomic, strong) NSString *review_from;
-@property (nonatomic, strong) NSString *catalog_id;
-@property (nonatomic, strong) NSString *review_description;
+@property (nonatomic, strong, nonnull) NSString *review_from_image;
+@property (nonatomic, strong, nonnull) NSString *review_rating;
+@property (nonatomic, strong, nonnull) NSString *review_url;
+@property (nonatomic, strong, nonnull) NSString *review_from_url;
+@property (nonatomic, strong, nonnull) NSString *review_from;
+@property (nonatomic, strong, nonnull) NSString *catalog_id;
+@property (nonatomic, strong, nonnull) NSString *review_description;
 
 @end

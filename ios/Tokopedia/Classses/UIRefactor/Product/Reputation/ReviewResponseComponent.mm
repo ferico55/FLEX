@@ -47,7 +47,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
     return [super newWithComponent:
             [CKInsetComponent
              newWithInsets:{8,8,8,8}
-             component:{
+             component:
                  [CKStackLayoutComponent
                   newWithView:{}
                   size:{}
@@ -101,7 +101,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                  }
                                              }
                                              insets:{5,4,5,4}
-                                             component:{
+                                             component:
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
                                                       .string = @"Penjual",
@@ -114,12 +114,12 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                       {@selector(setBackgroundColor:), [UIColor colorWithRed:185/255.0f green:74/255.0f blue:72/255.0f alpha:1.0f]}
                                                   }
                                                   size:{}]
-                                             }]
+                                             ]
                                         },
                                         {
                                             [CKInsetComponent
                                              newWithInsets:{3,0,3,0}
-                                             component:{
+                                             component:
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
                                                       .string = review.product_owner.shop_name,
@@ -129,7 +129,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                   }
                                                   viewAttributes:{}
                                                   size:{}]
-                                             }]
+                                             ]
                                             
                                         }
                                     }]
@@ -169,7 +169,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                       {
                           deleteButton(role, action, imageCache)
                       }
-                  }]}]];
+                  }]]];
 }
 
 @end

@@ -10,9 +10,9 @@
 
 @interface RegisterResult : NSObject
 
-@property (nonatomic, strong) NSString *is_active;
-@property (nonatomic, strong) NSString *u_id;
+@property (nonatomic, strong, nonnull) NSString *is_active;
+@property (nonatomic, strong, nonnull) NSString *u_id;
 @property NSInteger action;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 @end

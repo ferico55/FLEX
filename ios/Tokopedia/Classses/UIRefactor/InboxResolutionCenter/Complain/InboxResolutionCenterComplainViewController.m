@@ -47,8 +47,7 @@
     GeneralTableViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
-    CMPopTipViewDelegate,
-    NoResultDelegate
+    CMPopTipViewDelegate
 >
 {
     NavigateViewController *_navigate;
@@ -103,7 +102,6 @@
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Tidak Ada Komplain"
                                   desc:@""

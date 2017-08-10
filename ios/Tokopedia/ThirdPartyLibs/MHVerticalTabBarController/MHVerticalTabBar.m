@@ -92,8 +92,6 @@
 - (void)setItems:(NSArray *)items {
     _items = items;
     
-    CGFloat width = CGRectGetWidth(self.bounds);
-    
     [self.tabBarButtons makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     self.contentSize = CGSizeMake(0, _tabBarItemHeight * [items count]);

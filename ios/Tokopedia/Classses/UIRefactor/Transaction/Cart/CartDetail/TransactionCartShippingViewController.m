@@ -13,7 +13,6 @@
 #import "string_alert.h"
 #import "profile.h"
 
-#import "TransactionObjectMapping.h"
 #import "TransactionCartList.h"
 #import "AddressFormList.h"
 #import "TransactionAction.h"

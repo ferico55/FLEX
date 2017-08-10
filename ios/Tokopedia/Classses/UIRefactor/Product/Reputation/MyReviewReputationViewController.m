@@ -43,7 +43,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
+@interface MyReviewReputationViewController ()<LoadingViewDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -80,7 +80,6 @@
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Belum ada ulasan"
                                   desc:@""
@@ -579,8 +578,6 @@
         
         if([tempObj.role isEqualToString:@"2"]) {//2 is seller
             container = [UserContainerViewController new];
-            UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-            NSDictionary *auth = [_userManager getUserLoginData];
             
             if(tempObj.reviewee_uri!=nil && tempObj.reviewee_uri.length>0) {
                 NSArray *arrUri = [tempObj.reviewee_uri componentsSeparatedByString:@"/"];

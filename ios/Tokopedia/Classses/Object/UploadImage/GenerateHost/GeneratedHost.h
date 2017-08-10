@@ -14,6 +14,6 @@
 @property (nonatomic, strong, nonnull) NSString *upload_host;
 @property (nonatomic) NSInteger user_id;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping* _Nonnull)mapping;
 
 @end

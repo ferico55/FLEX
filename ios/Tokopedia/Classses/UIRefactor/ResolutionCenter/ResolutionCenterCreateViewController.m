@@ -238,7 +238,7 @@ ResolutionCenterCreateStepThreeDelegate
     if (self.didCreateComplaint) {
         self.didCreateComplaint(_order);
     }
-    if([self respondsToSelector:@selector(didFinishCreateComplaint)]){
+    if([_delegate respondsToSelector:@selector(didFinishCreateComplain)]){
         [_delegate didFinishCreateComplain];
     }
 }

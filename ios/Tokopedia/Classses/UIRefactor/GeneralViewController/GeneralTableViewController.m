@@ -14,8 +14,7 @@
 
 @interface GeneralTableViewController ()
 <
-    UISearchBarDelegate,
-    NoResultDelegate
+    UISearchBarDelegate
 >
 {
     NSIndexPath *_selectedIndexPath;
@@ -82,14 +81,14 @@
 
     if (_isPresentedViewController) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                         style:UIBarButtonItemStyleBordered
+                                                                         style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(tap:)];
         cancelButton.tag = 2;
         self.navigationItem.leftBarButtonItem = cancelButton;
     } else {
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:self
                                                                       action:@selector(tap:)];
         backButton.tag = 2;
@@ -102,7 +101,6 @@
 - (void)initNoResultView{
     if (_objects.count == 0){
         _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-        _noResultView.delegate = self;
         [_noResultView generateAllElements:@"no-result.png"
                                      title:_noResultTitle?:@"Tidak Ada Data"
                                       desc:_noResultDescription?:@""

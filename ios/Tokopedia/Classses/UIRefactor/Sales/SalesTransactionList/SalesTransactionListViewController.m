@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_order.h"
 
 #import "Order.h"
 #import "OrderTransaction.h"
@@ -32,8 +31,7 @@
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
     FilterSalesTransactionListDelegate,
-    TrackOrderViewControllerDelegate,
-    NoResultDelegate
+    TrackOrderViewControllerDelegate
 >
 
 @property (strong, nonatomic) NSString *invoice;
@@ -74,7 +72,6 @@
                                   btnTitle:@""];
     
     [self.noResultView hideButton:YES];
-    self.noResultView.delegate = self;
 }
 
     

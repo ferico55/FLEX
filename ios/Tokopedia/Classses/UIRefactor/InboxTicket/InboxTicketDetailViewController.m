@@ -228,9 +228,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.invoiceNumberLabel.hidden = NO;
         [self.invoiceNumberLabel sizeToFit];
         
-        CGSize invoiceLabelSize = [invoice sizeWithFont:[UIFont largeTheme]
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:NSLineBreakByWordWrapping];
+        CGRect invoiceLabelFrame = [invoice boundingRectWithSize:maximumLabelSize
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes:@{NSFontAttributeName:[UIFont largeTheme]}
+                                                         context:nil];
+        CGSize invoiceLabelSize = invoiceLabelFrame.size;
         
         CGRect frame = self.tableHeaderView.frame;
         // 20 magin top and bottom
@@ -417,9 +419,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath {
     _selectedIndexPath = indexPath;
     
-    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:index usingNetwork:YES];
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)index usingNetwork:YES];
     gallery.canDownload = YES;
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
+}
+
+- (void)goToImageViewerImages:(NSArray*)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath*)indexPath {
+    
 }
 
 - (void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath {
@@ -459,9 +465,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if (self.inboxTicket.ticket_show_more_messages) {
         ticket = [[_messages objectAtIndex:_selectedIndexPath.section] objectAtIndex:_selectedIndexPath.row];
     } else {
-        ticket = _messages[_selectedIndexPath.row];
+        ticket = (InboxTicketDetail *) _messages[_selectedIndexPath.row];
     }
-    return ticket.ticket_detail_attachment.count;
+    return (int)ticket.ticket_detail_attachment.count;
 }
 
 - (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
@@ -469,7 +475,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if (self.inboxTicket.ticket_show_more_messages) {
         ticket = [[_messages objectAtIndex:_selectedIndexPath.section] objectAtIndex:_selectedIndexPath.row];
     } else {
-        ticket = _messages[_selectedIndexPath.row];
+        ticket = (InboxTicketDetail *) _messages[_selectedIndexPath.row];
     }
     InboxTicketDetailAttachment *attachment = [ticket.ticket_detail_attachment objectAtIndex:index];
     return attachment.img_link;

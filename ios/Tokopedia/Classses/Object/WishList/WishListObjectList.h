@@ -12,16 +12,16 @@
 
 @interface WishListObjectList : NSObject
 
-@property (nonatomic, strong) NSString *product_price;
-@property (nonatomic, strong) NSString *product_id;
-@property (nonatomic, strong) NSString *shop_gold_status;
-@property (nonatomic, strong) NSString *shop_location;
-@property (nonatomic, strong) NSString *shop_name;
-@property (nonatomic, strong) NSString *product_image;
-@property (nonatomic, strong) NSString *product_name;
-@property (nonatomic, strong) NSString *shop_lucky;
-@property (nonatomic, strong) NSString *product_available;
-@property (nonatomic, strong) NSArray<NSString*>* badges;
+@property (nonatomic, strong, nonnull) NSString *product_price;
+@property (nonatomic, strong, nonnull) NSString *product_id;
+@property (nonatomic, strong, nonnull) NSString *shop_gold_status;
+@property (nonatomic, strong, nonnull) NSString *shop_location;
+@property (nonatomic, strong, nonnull) NSString *shop_name;
+@property (nonatomic, strong, nonnull) NSString *product_image;
+@property (nonatomic, strong, nonnull) NSString *product_name;
+@property (nonatomic, strong, nonnull) NSString *shop_lucky;
+@property (nonatomic, strong, nonnull) NSString *product_available;
+@property (nonatomic, strong, nonnull) NSArray<NSString*>* badges;
 
 @property NSInteger product_wholesale;
 @property NSInteger product_preorder;
@@ -29,8 +29,8 @@
 @property (nonatomic, assign) BOOL is_product_preorder;
 @property (nonatomic, assign) BOOL is_product_wholesale;
 
-@property (nonatomic, strong) ProductModelView *viewModel;
+@property (nonatomic, strong, nonnull) ProductModelView *viewModel;
 
-- (NSDictionary *)productFieldObjects;
+- (NSDictionary *_Nonnull)productFieldObjects;
 
 @end

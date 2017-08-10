@@ -24,11 +24,11 @@
 - (void)requestMaintenance;
 - (void)requestRetryWithButton;
 - (void)resetRequestCount;
-- (NSString*)splitUriToPage:(NSString*)uri;
-- (RKManagedObjectRequestOperation *)getObjectRequest;
+- (NSString*_Nullable)splitUriToPage:(NSString*_Nullable)uri;
+- (RKManagedObjectRequestOperation *_Nullable)getObjectRequest;
 - (void)requestCancel;
-- (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
-+ (NSString *)getPageFromUri:(NSString *)uri;
+- (NSString*_Nullable)explodeURL:(NSString*_Nullable)URL withKey:(NSString*_Nullable)key;
++ (NSString *_Nullable)getPageFromUri:(NSString *_Nullable)uri;
 
 - (void) requestWithBaseUrl:(nonnull NSString*)baseUrl
                        path:(nonnull NSString*)path

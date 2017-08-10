@@ -11,10 +11,10 @@
 
 @interface CatalogList : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *catalog_description;
-@property (nonatomic, strong) NSString *catalog_id;
-@property (nonatomic, strong) NSString *catalog_name;
-@property (nonatomic, strong) NSString *catalog_price;
-@property (nonatomic, strong) NSString *catalog_image;
+@property (nonatomic, strong, nonnull) NSString *catalog_description;
+@property (nonatomic, strong, nonnull) NSString *catalog_id;
+@property (nonatomic, strong, nonnull) NSString *catalog_name;
+@property (nonatomic, strong, nonnull) NSString *catalog_price;
+@property (nonatomic, strong, nonnull) NSString *catalog_image;
 
 @end

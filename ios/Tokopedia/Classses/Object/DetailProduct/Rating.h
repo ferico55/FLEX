@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "Quality.h"
 
-#define CQuality @"quality"
-#define CAccuracy @"accuracy"
-
-
 @interface Rating : NSObject
 
 @property (nonatomic, strong) NSString *product_rate_accuracy_point;

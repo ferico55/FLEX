@@ -10,7 +10,7 @@
 
 @interface AddressCity : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *city_id;
-@property (nonatomic, strong) NSString *city_name;
+@property (nonatomic, strong, nonnull) NSString *city_id;
+@property (nonatomic, strong, nonnull) NSString *city_name;
 
 @end

@@ -13,9 +13,9 @@
 
 @interface TransactionATCFormResult : NSObject <TKPObjectMapping>
 
-@property(nonatomic,strong) TransactionATCFormDetail *form;
-@property(nonatomic,strong) RPX *rpx;
-@property(nonatomic,strong) ATCShopOrigin *shop;
-@property(nonatomic,strong) NSArray *auto_resi;
+@property(nonatomic, strong, nonnull) TransactionATCFormDetail *form;
+@property(nonatomic, strong, nonnull) RPX *rpx;
+@property(nonatomic, strong, nonnull) ATCShopOrigin *shop;
+@property(nonatomic, strong, nonnull) NSArray *auto_resi;
 
 @end

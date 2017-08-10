@@ -140,7 +140,7 @@ typedef enum
     requestPriceDelayedActionManager = [DelayedActionManager new];
     quantityDelayedActionManager = [DelayedActionManager new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
     
     /** adjust refresh control **/

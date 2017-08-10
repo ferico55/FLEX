@@ -58,10 +58,6 @@
     if (self) {
         _selectedIndex = -1;
         _unloadSelectedIndex = -1;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-value"
-        self.view;
-#pragma clang diagnostic pop
     }
     return self;
 }

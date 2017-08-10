@@ -14,9 +14,9 @@
 
 @interface AddressResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray *cities;
-@property (nonatomic, strong) NSArray *districts;
-@property (nonatomic, strong) NSArray *provinces;
-@property (nonatomic, strong) NSArray<AddressDistrict*> *shipping_city;
+@property (nonatomic, strong, nonnull) NSArray *cities;
+@property (nonatomic, strong, nonnull) NSArray *districts;
+@property (nonatomic, strong, nonnull) NSArray *provinces;
+@property (nonatomic, strong, nonnull) NSArray<AddressDistrict*> *shipping_city;
 
 @end

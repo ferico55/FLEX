@@ -11,7 +11,7 @@
 
 @interface CatalogSpecs : NSObject<TKPObjectMapping>
 
-@property (strong, nonatomic) NSArray *spec_childs;
-@property (strong, nonatomic) NSString *spec_header;
+@property (strong, nonatomic, nonnull) NSArray *spec_childs;
+@property (strong, nonatomic, nonnull) NSString *spec_header;
 
 @end

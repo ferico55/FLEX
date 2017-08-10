@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define COwnerReputation @"owner_reputation"
+
 @class ReputationDetail;
 @interface Owner : NSObject
 

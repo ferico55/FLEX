@@ -252,6 +252,7 @@
             break;
         }
         default:
+            isHiddenCeckmark = YES;
             break;
     }
     ((AddressCell*)cell).data = dataCell;

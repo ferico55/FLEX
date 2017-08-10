@@ -4,72 +4,80 @@
 use_frameworks!
 
 def react_pods
-pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'Core',
     'RCTText',
     'RCTWebSocket',
     'RCTNetwork'
-
+    
     # needed for localhost testing of your app
     # Add any other subspecs you want to use in your project
-  ]
-
-
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-  pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
+    ]
+    
+    pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+    pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 end
 
 def common_pods
     # Tweaks is installed manually, the use_frameworks! makes the Tweaks options not showing.
     
-    pod 'RestKit',  '~> 0.27.0'
-    pod 'NJKWebViewProgress'
-    pod 'TTTAttributedLabel'
-    pod 'GoogleAppIndexing'
-    pod 'GoogleTagManager'
-    pod 'GoogleMaps'
-    pod 'AppsFlyerFramework'
+    pod 'APAddressBook/Swift', '~> 0.2.3'
     pod 'BlocksKit', '~> 2.2.5'
-    pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
-    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
     pod 'ComponentKit', '~> 0.14'
-    pod 'EAIntroView', '~> 2.8.0'
-    pod 'JLPermissions/Notification'
-    pod "JLPermissions/Contacts"
-    pod 'GoogleSignIn', '~> 2.4.0'
+    pod 'DTTJailbreakDetection', '~> 0.4.0'
+    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
+    pod 'JLPermissions/Notification', '2.2.8'
+    pod 'JLPermissions/Contacts', '2.2.8'
+    pod 'JLRoutes', '~> 1.6.2'
+    pod 'JSQMessagesViewController', :git => 'https://github.com/ferico55/JSQMessagesViewController', :branch => 'master'
+    pod 'Masonry', '~> 1.0.1'
+    pod 'RestKit',  '~> 0.27.0'
     pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
+    pod 'youtube-ios-player-helper', '~> 0.1.6'
+    
+    #Custom View Component
+    pod 'AHKActionSheet', '~>0.5.4'
+    pod 'BEMCheckBox' , '~>1.2.0'
+    pod 'DownPicker', '~> 0.1.34'
+    pod 'EAIntroView', '~> 2.8.0'
+    pod 'EZYGradientView-ObjC', '~> 1.3'
+    pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
+    pod 'JDStatusBarNotification', '~> 1.5.5'
+    pod 'KMNavigationBarTransition', '~> 1.0.0'
+    pod 'MMNumberKeyboard', '~> 0.1.5'
+    pod 'MXSegmentedPager', '~> 3.2.0'
+    pod 'NJKWebViewProgress',  '~> 0.2.3'
+    pod 'NSAttributedString-DDHTML', '1.2.0'
+    pod 'OAStackView', '~> 1.0.1'
+    pod 'Popover', :git => 'https://github.com/corin8823/Popover.git', :branch => 'master'
+    pod 'RATreeView', '~> 2.1.2'
+    pod 'RichEditorView', '~> 4.0.0'
+    pod 'TPKeyboardAvoiding', '~> 1.3.1'
+    pod 'TTTAttributedLabel',  '~> 1.13.4'
+    pod 'UIAlertController+Blocks', '~> 0.9'
+    pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
+    pod 'VMaskTextField', '~>1.0.8'
+    
+    #Analytics
+    pod 'AppsFlyerFramework',  '~> 4.5.1'
+    pod 'Appsee', '~> 2.2'
+    pod 'MoEngage-iOS-SDK', '~> 3.3.0'
+    
+    #Facebook Pod
     pod 'FBSDKCoreKit', '~>4.19.0'
     pod 'FBSDKLoginKit', '~>4.19.0'
-    pod 'DownPicker'
-    pod 'APAddressBook/Swift'
-    pod 'Masonry'
-    pod 'TPKeyboardAvoiding'
-    pod 'OAStackView', '~> 1.0.1'
-    pod 'Appsee'
-    pod 'JSQMessagesViewController', :git => 'https://github.com/ferico55/JSQMessagesViewController', :branch => 'master'
-    pod 'MXSegmentedPager', '~> 3.2.0'    
-    pod 'MMNumberKeyboard'
-    pod 'JLRoutes', '~> 1.6.2'
-    pod 'youtube-ios-player-helper', '~> 0.1.6'
-    pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
-    pod 'BEMCheckBox' , '~>1.2.0'
-    pod 'VMaskTextField'
     pod 'FBSDKShareKit', '~>4.19.0'
-    pod 'AHKActionSheet', '~>0.5.4'
-    pod 'NSAttributedString-DDHTML', '1.2.0'
-    pod 'UIAlertController+Blocks', '~> 0.9'
-    pod 'RichEditorView'
-    pod 'JDStatusBarNotification'
-    pod 'EZYGradientView-ObjC', '~> 1.3'
-    pod 'RATreeView', '~> 2.1.2'
-    pod 'DTTJailbreakDetection'
-    pod 'Popover', :git => 'https://github.com/corin8823/Popover.git', :branch => 'master'
-    pod 'KMNavigationBarTransition'
-
+    
+    #Google Pod
+    pod 'GoogleSignIn', '~> 2.4.0'
+    pod 'GoogleAppIndexing',  '~> 2.0.1'
+    pod 'GoogleTagManager',  '~> 3.12.1'
+    pod 'GoogleMaps',  '~> 1.10.5'
+    
     #Swift 3.0 pods
-    pod 'RSKGrowingTextView'
-    pod 'RSKPlaceholderTextView'
-    pod 'SwiftOverlays' 
+    pod 'RSKGrowingTextView', '~> 2.0'
+    pod 'RSKPlaceholderTextView', '~> 2.0'
+    pod 'SwiftOverlays', '~> 3.0.0'
     pod 'Eureka' , '~>2.0.0-beta.1'
     pod 'RxSwift', '~> 3.3.1'
     pod 'RxCocoa', '~> 3.3.1'
@@ -78,21 +86,21 @@ def common_pods
     pod 'RestKit/Testing', '~> 0.27.0'
     pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
-    pod 'MoEngage-iOS-SDK', '~> 3.3.0'
+    
     pod 'lottie-ios', '~> 1.5.2'
-    pod 'Apollo'
+    pod 'Apollo', '~> 0.5.6'
     pod 'CFAlertViewController', '~> 2.3.1'
-
+    
     #will be changed to proper version later
     pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'
     pod 'ReSwift', '~> 3.0.0'
-
+    
     # networking and object mapping
     pod 'Moya/RxSwift', '~> 8.0.3'
     pod 'Unbox', '~> 2.4'
     pod 'MoyaUnbox/RxSwift', '~> 1.0.0'
     pod 'SwiftyJSON', '~> 3.1.4'
-
+    
     # This is used only to support UIImageView+AFNetworking.
     # If we can replace this with SDWebImage for example, this library won't be needed anymore.
     pod 'AFNetworking', '~> 3.1.0'
@@ -100,7 +108,7 @@ end
 
 target "Tokopedia" do
     common_pods
-#    react_pods
+    #    react_pods
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
@@ -118,7 +126,7 @@ post_install do |installer|
     installer.pods_project.targets.each do |target|
         installer.pods_project.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
-        end   
+        end
         
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
@@ -127,7 +135,7 @@ post_install do |installer|
             end
         end
     end
-
+    
     # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
     clear_component_kit_umbrella_header
 end

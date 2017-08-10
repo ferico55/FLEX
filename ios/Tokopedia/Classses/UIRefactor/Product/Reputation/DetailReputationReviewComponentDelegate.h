@@ -9,6 +9,7 @@
 #import "DetailReputationReview.h"
 
 @protocol DetailReputationReviewComponentDelegate <NSObject>
+@optional
 - (void)didTapToGiveReview:(DetailReputationReview*)review;
 - (void)didTapToGiveResponse:(DetailReputationReview*)review;
 - (void)didTapToSkipReview:(DetailReputationReview*)review;
@@ -18,7 +19,5 @@
 - (void)didTapAttachedImages:(DetailReputationReview*)review withIndex:(NSInteger)index;
 - (void)didTapRevieweeReputation:(id)sender onReview:(DetailReputationReview*)review atView:(UIView*)view;
 - (void)didTapShareReviewToOtherSource:(DetailReputationReview*)review atView:(UIView*)view;
-
-@optional
 - (void)didTapProductWithReview:(DetailReputationReview*)review;
 @end

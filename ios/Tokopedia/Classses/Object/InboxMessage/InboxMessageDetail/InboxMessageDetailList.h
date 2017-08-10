@@ -32,6 +32,6 @@
 
 @property (nonatomic) BOOL is_just_sent;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping* _Nonnull)mapping;
 
 @end

@@ -10,8 +10,10 @@
 #import "VerifiedStatusResult.h"
 
 @interface VerifiedStatus : NSObject
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) VerifiedStatusResult *result;
-+(RKObjectMapping*)mapping;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) VerifiedStatusResult *result;
+
++ (RKObjectMapping *_Nonnull)mapping;
+
 @end

@@ -39,7 +39,7 @@ static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
                 }
             }
             insets:{5,4,5,4}
-            component:{
+            component:
                 [CKLabelComponent
                  newWithLabelAttributes:{
                      .string = role,
@@ -52,7 +52,7 @@ static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
                      {@selector(setBackgroundColor:), color}
                  }
                  size:{}]
-            }];
+            ];
 }
 
 static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
@@ -76,9 +76,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewD
                     {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconSmileSmall"]}
                 }
                 backgroundImages:{}
-                titleFont:{
-                    [UIFont microTheme]
-                }
+                titleFont:[UIFont microTheme]
                 selected:NO
                 enabled:YES
                 action:@selector(didTapBuyerReputation:)
@@ -180,7 +178,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                   }
                                                                               }
                                                                               insets:{8,8,8,8}
-                                                                              component:{
+                                                                              component:
                                                                                   [CKNetworkImageComponent
                                                                                    newWithURL:[NSURL URLWithString:inbox.reviewee_picture]
                                                                                    imageDownloader:context.imageDownloader
@@ -193,7 +191,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                        {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},
                                                                                        {@selector(setClipsToBounds:), YES}
                                                                                    }]
-                                                                              }]
+                                                                              ]
                                                                          },
                                                                          {   // Label nama
                                                                              [CKStackLayoutComponent
@@ -216,7 +214,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                   {
                                                                                       [CKInsetComponent
                                                                                        newWithInsets:{3,0,3,0}
-                                                                                       component:{
+                                                                                       component:
                                                                                            [CKLabelComponent
                                                                                             newWithLabelAttributes:{
                                                                                                 .string = inbox.reviewee_name,
@@ -226,7 +224,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                             }
                                                                                             viewAttributes:{}
                                                                                             size:{}]
-                                                                                       }]
+                                                                                       ]
                                                                                       
                                                                                   }
                                                                               }]

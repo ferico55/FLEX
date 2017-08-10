@@ -22,7 +22,6 @@
 
 static CGFloat textMarginHorizontal = 13.0f;
 static CGFloat textMarginVertical = 5.0f;
-static CGFloat messageTextSize = 17.0;
 
 @synthesize sent, messageLabel, messageView, timeLabel, avatarImageView, balloonView;
 
@@ -56,7 +55,11 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect frame = [message boundingRectWithSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX)
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]}
+                                         context:nil];
+    return frame.size;
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
@@ -149,7 +152,11 @@ static CGFloat messageTextSize = 17.0;
     CGSize textSize = [InboxMessageDetailCell messageSize:self.messageLabel.text];
     
     /*Calculates the size of the timestamp.*/
-    CGSize dateSize = [self.timeLabel.text sizeWithFont:self.timeLabel.font forWidth:[InboxMessageDetailCell maxTextWidth] lineBreakMode:NSLineBreakByClipping];
+    CGRect dateFrame = [self.timeLabel.text boundingRectWithSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX)
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes:@{NSFontAttributeName:self.timeLabel.font}
+                                                         context:nil];
+    CGSize dateSize = dateFrame.size;
     
     /*Initializes the different frames , that need to be calculated.*/
     CGRect ballonViewFrame = CGRectZero;
@@ -325,11 +332,14 @@ static CGFloat messageTextSize = 17.0;
             NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            __weak InboxMessageDetailCell *weakCell = cell;
             [cell.avatarImageView setImageWithURLRequest:request
                                         placeholderImage:[UIImage imageNamed:@"default-boy.png"]
                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                     [cell.avatarImageView setImage:image];
-                                                 } failure:nil];
+                                                            [weakCell.avatarImageView setImage:image];
+                                                        }
+                                                 failure:nil];
         }
     }
     

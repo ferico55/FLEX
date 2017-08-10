@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ReputationDetail.h"
 
-#define CCustomerReputation @"customer_reputation"
 
 @interface ResolutionCustomer : NSObject <TKPObjectMapping>
 

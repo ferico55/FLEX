@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_order.h"
+
+#import "DetailShipmentStatusViewController.h"
 
 #import "ActionOrder.h"
-#import "DetailShipmentStatusViewController.h"
 #import "DetailShipmentStatusCell.h"
 #import "OrderDetailViewController.h"
 #import "ChangeReceiptNumberViewController.h"
@@ -232,7 +232,7 @@
     
     RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                         method:RKRequestMethodPOST
-                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
+                                                                                                   pathPattern:@"action/myshop-order.pl"
                                                                                                        keyPath:@""
                                                                                                    statusCodes:kTkpdIndexSetStatusCodeOK];
     

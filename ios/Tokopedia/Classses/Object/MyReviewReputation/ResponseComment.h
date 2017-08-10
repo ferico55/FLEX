@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "ResponseCommentResult.h"
-#define CMessageError @"message_error"
-#define CMessageStatus @"message_status"
-#define CStatus @"status"
-#define CServerProcessTime @"server_process_time"
-#define CResult @"result"
 
 @class ResponseCommentResult;
 

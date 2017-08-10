@@ -10,8 +10,5 @@
 
 @implementation HeaderCollectionReusableView
 
-- (void)awakeFromNib {
-    // Initialization code
-}
 
 @end

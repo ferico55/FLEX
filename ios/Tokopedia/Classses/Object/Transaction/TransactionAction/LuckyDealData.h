@@ -13,6 +13,6 @@
 
 @property NSInteger ld_id;
 @property NSInteger type;
-@property (strong, nonatomic) LuckyDealAttributes *attributes;
+@property (strong, nonatomic, nonnull) LuckyDealAttributes *attributes;
 
 @end

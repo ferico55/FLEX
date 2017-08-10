@@ -22,6 +22,7 @@
 #import "SimpleFavoritedShop.h"
 
 @protocol FavoriteShopRequestDelegate <NSObject>
+@optional
 - (void) didReceiveFavoriteShopListing:(FavoritedShopResult*)favoriteShops;
 - (void) didReceiveProductFeed:(SearchAWS*)feed;
 - (void) didReceiveAllFavoriteShopString:(NSString*)favoriteShops;

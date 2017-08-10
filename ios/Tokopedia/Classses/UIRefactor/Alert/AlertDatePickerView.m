@@ -40,6 +40,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     _doneButton.layer.cornerRadius = 2;
 }
 

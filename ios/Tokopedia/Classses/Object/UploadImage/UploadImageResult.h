@@ -12,17 +12,17 @@
 
 @interface UploadImageResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *pic_id;
-@property (nonatomic, strong) NSString *src;
-@property (nonatomic, strong) NSString *file_path;
-@property (nonatomic, strong) NSString *file_th;
-@property (nonatomic, strong) NSString *pic_obj;
-@property (nonatomic, strong) NSString *pic_src;
-@property (nonatomic, strong) NSString *file_name;
-@property (nonatomic, strong) Upload *upload;
-@property (nonatomic, strong) NSString *file_uploaded;
-@property (nonatomic, strong) UploadImageImage *image;
+@property (nonatomic, strong, nonnull) NSString *pic_id;
+@property (nonatomic, strong, nonnull) NSString *src;
+@property (nonatomic, strong, nonnull) NSString *file_path;
+@property (nonatomic, strong, nonnull) NSString *file_th;
+@property (nonatomic, strong, nonnull) NSString *pic_obj;
+@property (nonatomic, strong, nonnull) NSString *pic_src;
+@property (nonatomic, strong, nonnull) NSString *file_name;
+@property (nonatomic, strong, nonnull) Upload *upload;
+@property (nonatomic, strong, nonnull) NSString *file_uploaded;
+@property (nonatomic, strong, nonnull) UploadImageImage *image;
 
-@property (nonatomic, strong) NSString *is_success;
+@property (nonatomic, strong, nonnull) NSString *is_success;
 
 @end

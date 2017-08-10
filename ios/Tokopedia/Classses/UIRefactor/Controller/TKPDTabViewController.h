@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, InboxType) {
 
 @end
 
-@interface TKPDTabViewController : UIViewController
+@interface TKPDTabViewController : UIViewController <TKPDTabViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *containerView;

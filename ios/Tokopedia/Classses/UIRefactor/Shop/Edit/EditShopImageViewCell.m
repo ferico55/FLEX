@@ -11,6 +11,8 @@
 @implementation EditShopImageViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width / 2;
     self.shopImageView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
     self.shopImageView.layer.borderWidth = 1;

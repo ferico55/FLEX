@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VerifiedStatusMSISDN.h"
 @interface VerifiedStatusResult : NSObject
-@property (strong, nonatomic) VerifiedStatusMSISDN* msisdn;
-+(RKObjectMapping*)mapping;
+
+@property (strong, nonatomic, nonnull) VerifiedStatusMSISDN* msisdn;
+
++ (RKObjectMapping *_Nonnull)mapping;
+
 @end

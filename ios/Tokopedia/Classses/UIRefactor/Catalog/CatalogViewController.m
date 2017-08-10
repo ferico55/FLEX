@@ -8,7 +8,6 @@
 
 #import "DetailPriceAlert.h"
 #import "string_catalog.h"
-#import "string_price_alert.h"
 
 #import "Catalog.h"
 #import "UserAuthentificationManager.h"
@@ -89,7 +88,7 @@ static CGFloat rowHeight = 40;
     self.title = @"Detil Katalog";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(tap:)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
@@ -249,15 +248,19 @@ static CGFloat rowHeight = 40;
     if (text.length < 20) {
         text = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         CGSize maximumLabelSize = CGSizeMake(115, CGFLOAT_MAX);
-        CGSize expectedLabelSize = [text sizeWithFont:[UIFont largeTheme]
-                                    constrainedToSize:maximumLabelSize
-                                        lineBreakMode:NSLineBreakByWordWrapping];
+        CGRect expectedLabelFrame = [text boundingRectWithSize:maximumLabelSize
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                    attributes:@{ NSFontAttributeName:[UIFont largeTheme] }
+                                                       context:nil];
+        CGSize expectedLabelSize = expectedLabelFrame.size;
         return rowHeight + expectedLabelSize.height;
     } else {
         CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
-        CGSize expectedLabelSize = [text sizeWithFont:[UIFont largeTheme]
-                                    constrainedToSize:maximumLabelSize
-                                        lineBreakMode:NSLineBreakByWordWrapping];
+        CGRect expectedLabelFrame = [text boundingRectWithSize:maximumLabelSize
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                    attributes:@{ NSFontAttributeName:[UIFont largeTheme] }
+                                                       context:nil];
+        CGSize expectedLabelSize = expectedLabelFrame.size;
         CGFloat height = rowHeight + (3 * expectedLabelSize.height); // add margin
         return height;
     }
@@ -494,9 +497,8 @@ static CGFloat rowHeight = 40;
         }
         else {
             NSInteger startingIndex = _productPhotoPageControl.currentPage;
-            GalleryViewController *gallery = [GalleryViewController new];
+            GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)startingIndex];
             gallery.canDownload = YES;
-            [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
             gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self.navigationController presentViewController:gallery animated:YES completion:nil];
         }

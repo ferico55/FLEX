@@ -10,8 +10,8 @@
 
 @interface SecurityQuestionResult : NSObject <TKPObjectMapping>
 
-@property(nonatomic, strong) NSString* question;
-@property(nonatomic, strong) NSString* title;
-@property(nonatomic, strong) NSString* example;
+@property(nonatomic, strong, nonnull) NSString* question;
+@property(nonatomic, strong, nonnull) NSString* title;
+@property(nonatomic, strong, nonnull) NSString* example;
 
 @end

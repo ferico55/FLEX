@@ -11,10 +11,10 @@
 
 @interface ContactUsActionResult : NSObject
 
-@property (nonatomic, strong) NSArray *list;
-@property (nonatomic, strong) ContactUsActionResultError *error_message_inline;
-@property (nonatomic, strong) NSString *is_success;
-@property (nonatomic, strong) NSString *ticket_inbox_id;
-@property (nonatomic, strong) NSString *post_key;
+@property (nonatomic, strong, nonnull) NSArray *list;
+@property (nonatomic, strong, nonnull) ContactUsActionResultError *error_message_inline;
+@property (nonatomic, strong, nonnull) NSString *is_success;
+@property (nonatomic, strong, nonnull) NSString *ticket_inbox_id;
+@property (nonatomic, strong, nonnull) NSString *post_key;
 
 @end

@@ -97,7 +97,7 @@
 #pragma mark - Bar button items
 
 - (UIBarButtonItem *)backButton {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     return button;
 }
 
@@ -168,7 +168,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    BOOL isDefault;
+    BOOL isDefault = NO;
     if (_isManualSetDefault) {
         isDefault = (indexPath.row == 0)? YES: NO;
     }
@@ -304,7 +304,7 @@
 #pragma mark - Cell Delegate
 
 -(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    BOOL isdefault;
+    BOOL isdefault = NO;
     MyShopAddressDetailViewController *controller = [MyShopAddressDetailViewController new];
     controller.data = [NSMutableDictionary dictionaryWithDictionary:@{
         kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],

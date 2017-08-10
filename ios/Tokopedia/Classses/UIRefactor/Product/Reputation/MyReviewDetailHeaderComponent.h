@@ -15,4 +15,7 @@
 + (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox
                      context:(MyReviewDetailContext*)context;
 
+- (void)didTapBuyerReputation:(id)sender;
+- (void)didTapSellerReputation:(id)sender;
+
 @end

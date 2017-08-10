@@ -7,11 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CPositivePercentage @"positive_percentage"
-#define CNegative @"negative"
-#define CPositif @"positive"
-#define CNeutral @"neutral"
-#define CNoReputation @"no_reputation"
 
 @interface ReputationDetail : NSObject
 @property (nonatomic, strong) NSString *positive_percentage;

@@ -7,14 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CRatingStar @"rating_star"
-#define CAverage @"average"
-#define COneStarRank @"one_star_rank"
-#define CCountTotal @"count_total"
-#define CFourStarRank @"four_star_rank"
-#define CFiveStarRank @"five_star_rank"
-#define CTwoStarRank @"two_star_rank"
-#define CThreeStarRank @"three_star_rank"
+
 
 @interface Quality : NSObject
 @property (nonatomic, strong) NSString *rating_star;

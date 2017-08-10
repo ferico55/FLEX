@@ -296,7 +296,7 @@
 //    [self.view addSubview:greenArrowImageView];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -315,7 +315,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
-    NSInteger page = lround(fractionalPage);
+    int page = (int) lround(fractionalPage);
     if (page >= 0 && page < _viewControllers.count) {
         [self setIndexPage:page];
         [self goToPage:_page];

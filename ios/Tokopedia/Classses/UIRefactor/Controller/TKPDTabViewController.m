@@ -9,7 +9,7 @@
 #import "TKPDTabViewController.h"
 #import "Tokopedia-Swift.h"
 
-@interface TKPDTabViewController () <TKPDTabViewDelegate>
+@interface TKPDTabViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UIView *menuContainerView;
@@ -39,7 +39,7 @@
         self.navigationItem.leftBarButtonItem = backBarButton;
     } else {
         UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
         self.navigationItem.backBarButtonItem = backBarButton;
@@ -155,7 +155,8 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor tpPrimaryBlackText] forState:UIControlStateNormal];
     
-    CGSize calculateSize = [title sizeWithFont:button.titleLabel.font constrainedToSize:CGSizeMake(320, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect calculateFrame = [title boundingRectWithSize:CGSizeMake(320, 9999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:button.titleLabel.font} context:nil];
+    CGSize calculateSize = calculateFrame.size;
     CGRect tempButtonRect = button.frame;
     tempButtonRect.size.width = calculateSize.width;
     tempButtonRect.origin.y += 3;

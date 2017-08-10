@@ -13,12 +13,12 @@
 @interface TransactionActionResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger is_success;
-@property (strong, nonatomic) NSString *cc_agent;
-@property (strong, nonatomic) LuckyDeal *ld;
-@property (nonatomic, strong) TxEMoneyData *emoney_data;
-@property (strong, nonatomic) NSDictionary *parameter;
-@property (strong, nonatomic) NSString *query_string;
-@property (strong, nonatomic) NSString *redirect_url;
-@property (strong, nonatomic) NSString *callback_url;
+@property (strong, nonatomic, nonnull) NSString *cc_agent;
+@property (strong, nonatomic, nonnull) LuckyDeal *ld;
+@property (strong, nonatomic, nonnull) TxEMoneyData *emoney_data;
+@property (strong, nonatomic, nonnull) NSDictionary *parameter;
+@property (strong, nonatomic, nonnull) NSString *query_string;
+@property (strong, nonatomic, nonnull) NSString *redirect_url;
+@property (strong, nonatomic, nonnull) NSString *callback_url;
 
 @end

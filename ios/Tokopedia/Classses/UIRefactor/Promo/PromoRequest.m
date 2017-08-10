@@ -40,6 +40,10 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
 
 @implementation PromoRequest
 
+- (void)requestForProductQuery:(NSString *)query department:(NSString *)department {
+    
+}
+
 -(void)requestForFavoriteShop:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;

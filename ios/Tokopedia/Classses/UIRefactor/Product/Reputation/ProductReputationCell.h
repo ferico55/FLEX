@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TTTattributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "DetailReputationReview.h"
 
 #define CPaddingTopBottom 8
@@ -18,6 +18,7 @@
 
 @class ViewLabelUser;
 @protocol productReputationDelegate <NSObject>
+@optional
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
 - (void)actionRate:(id)sender;
 - (void)actionLike:(id)sender;

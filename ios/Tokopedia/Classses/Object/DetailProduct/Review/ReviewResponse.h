@@ -7,11 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CResponseTimeAgo @"response_time_ago"
-#define CResponseMsg @"response_msg"
-#define CResponseMessage @"response_message"
-#define CResponseTimeFmt @"response_time_fmt"
-#define CResponseCreateTime @"response_create_time"
 
 @interface ReviewResponse : NSObject
 

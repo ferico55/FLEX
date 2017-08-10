@@ -10,11 +10,6 @@
 
 @implementation GeneralProductCollectionViewCell
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-
 - (void)setViewModel:(ProductModelView *)productModelView
 {
     self.productPrice.text = productModelView.productPrice;

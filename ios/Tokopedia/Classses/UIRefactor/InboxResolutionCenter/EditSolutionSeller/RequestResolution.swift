@@ -279,7 +279,8 @@ class RequestResolution: NSObject {
                     }
                     
             }) { (error) in
-                observer.onError((RequestError.networkError as? Error)!)
+                observer.onError(RequestError.networkError
+                )
                 StickyAlertView.showErrorMessage(["Gagal membalas resolusi"])
             }
             

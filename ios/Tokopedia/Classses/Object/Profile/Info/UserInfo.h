@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ReputationDetail.h"
 
-#define CUserReputation @"user_reputation"
 
 @interface UserInfo : NSObject
 

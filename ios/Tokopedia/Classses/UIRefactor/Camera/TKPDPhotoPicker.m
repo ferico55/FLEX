@@ -88,7 +88,6 @@
         [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         imagePicker.title = @"Select Photo";
         imagePicker.mediaTypes = @[(NSString*)kUTTypeImage];
-        imagePicker.wantsFullScreenLayout = NO;
         imagePicker.navigationBar.tintColor = [UIColor whiteColor];
         imagePicker.navigationBar.translucent = NO;
     }

@@ -47,7 +47,7 @@ class CategoryIntermediarySubCategoryView: UIView {
             }
         } else {
             let seeMoreView = (UINib(nibName: "CategoryIntermediarySeeAllView", bundle: nil).instantiate(withOwner: nil, options: [:])[0]) as! CategoryIntermediarySeeAllView
-            var isExpanded = categoryChildren.count > (isRevamp ? 9 : 6) ? true : false
+            let isExpanded = categoryChildren.count > (isRevamp ? 9 : 6) ? true : false
 
             seeMoreView.setExpanded(isExpanded: isExpanded)
             seeMoreView.didTapSeeAllButton = { [unowned self] in

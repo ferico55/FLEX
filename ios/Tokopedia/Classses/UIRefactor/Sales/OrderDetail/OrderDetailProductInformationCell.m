@@ -12,9 +12,6 @@
 
 static CGFloat textMarginVertical = 40.0f;
 
-- (void)awakeFromNib {
-}
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
@@ -29,9 +26,12 @@ static CGFloat textMarginVertical = 40.0f;
 
 + (CGSize)messageSize:(NSString*)message {
     message = [message stringByAppendingString:@"\n"];
-    return [message sizeWithFont:[UIFont largeTheme]
-               constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
-                   lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect messageRect = [message boundingRectWithSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                            attributes:@{ NSFontAttributeName:[UIFont largeTheme] }
+                                               context:nil];
+    
+    return messageRect.size;
 }
 
 + (CGFloat)textMarginVertical {

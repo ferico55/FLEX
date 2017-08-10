@@ -11,9 +11,6 @@
 #import "Breadcrumb.h"
 #import "DetailPriceAlert.h"
 
-#define CPriceAlertDetail @"price_alert_detail"
-#define CCatalogID @"catalog_id"
-#define CTotalProduct @"total_product"
 
 @interface PriceAlertResult : NSObject
 @property (nonatomic, strong) NSArray *department;

@@ -38,6 +38,8 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     [self disableTouchesOnIpad];
     
     [_warningLabel setCustomAttributedText:@"Komplain lebih dari 30 hari"];

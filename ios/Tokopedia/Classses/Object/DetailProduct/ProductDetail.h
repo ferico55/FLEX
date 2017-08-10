@@ -12,12 +12,6 @@
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
 
-#define CProductID @"product_id"
-#define CProductPrice @"product_price"
-#define CProductCondition @"product_condition"
-#define CProductName @"product_name"
-#define CProductUri @"product_uri"
-#define CProductPriceFmt @"product_price_fmt"
 
 @interface ProductDetail : NSObject <TKPObjectMapping>
 

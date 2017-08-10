@@ -12,12 +12,12 @@
 
 @interface AddressObj : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray *message_error;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) AddressResult *data;
+@property (nonatomic, strong, nonnull) NSArray *message_error;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) AddressResult *data;
 
-+(NSDictionary *)attributeMappingDictionary;
-+(RKObjectMapping *) mapping;
++(NSDictionary *_Nonnull)attributeMappingDictionary;
++(RKObjectMapping *_Nonnull) mapping;
 
 @end

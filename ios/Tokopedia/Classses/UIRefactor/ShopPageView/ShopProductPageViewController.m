@@ -64,7 +64,6 @@ UISearchBarDelegate,
 LoadingViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 SortViewControllerDelegate,
-NoResultDelegate,
 RetryViewDelegate,
 EtalaseViewControllerDelegate,
 ShopTabChild,
@@ -176,7 +175,6 @@ ProductCellDelegate
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai produk."
                                   desc:@""

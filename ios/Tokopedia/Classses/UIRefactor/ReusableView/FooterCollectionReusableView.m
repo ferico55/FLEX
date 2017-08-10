@@ -10,8 +10,4 @@
 
 @implementation FooterCollectionReusableView
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
 @end

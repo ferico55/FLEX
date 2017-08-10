@@ -13,7 +13,7 @@
 #import "profile.h"
 #import "MMNumberKeyboard.h"
 
-@interface DepositFormAccountBankViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankNameViewControllerDelegate> {
+@interface DepositFormAccountBankViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankNameViewControllerDelegate, MMNumberKeyboardDelegate> {
     NSMutableDictionary *_datainput;
 }
 

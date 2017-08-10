@@ -10,8 +10,8 @@
 
 @interface CatalogLocation : NSObject<TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *location_name;
-@property (nonatomic, strong) NSString *location_id;
-@property (nonatomic, strong) NSString *total_shop;
+@property (nonatomic, strong, nonnull) NSString *location_name;
+@property (nonatomic, strong, nonnull) NSString *location_id;
+@property (nonatomic, strong, nonnull) NSString *total_shop;
 
 @end

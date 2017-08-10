@@ -18,6 +18,7 @@
 @implementation CatalogSpecificationCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     [self.valueLabel sizeToFit];
 }
 

@@ -25,7 +25,7 @@ class CategoryIntermediarySeeAllView: UIView {
     func setExpanded(isExpanded: Bool) {
         if isExpanded {
             seeMoreButton.setTitle("Sembunyikan Lainnya", for: .normal)
-            self.arrowDownImageView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+            self.arrowDownImageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi);
         }
         else {
             seeMoreButton.setTitle("Lihat Lainnya", for: .normal)

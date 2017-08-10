@@ -9,14 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "DetailCatalogResult.h"
-#define CMessageError @"message_error"
-#define CStatus @"status"
-#define CServerProcessTime @"server_process_time"
 
 @interface Catalog : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) DetailCatalogResult *result;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) DetailCatalogResult *result;
 
 @end

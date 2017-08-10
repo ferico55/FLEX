@@ -14,7 +14,7 @@
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", CFieldCommentID:CFieldCommentID}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", @"comment_id":@"comment_id"}];
     return resultMapping;
 }
 @end

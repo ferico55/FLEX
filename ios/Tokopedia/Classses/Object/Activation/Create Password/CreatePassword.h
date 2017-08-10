@@ -11,11 +11,11 @@
 
 @interface CreatePassword : NSObject
 
-@property (nonatomic, strong) NSArray *message_error;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) CreatePasswordResult *result;
+@property (nonatomic, strong, nonnull) NSArray *message_error;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) CreatePasswordResult *result;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

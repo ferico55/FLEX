@@ -12,11 +12,11 @@
 
 @interface TransactionSystemBank : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *sb_bank_cabang;
-@property (nonatomic, strong) NSString *sb_picture;
-@property (nonatomic, strong) NSString *sb_info;
-@property (nonatomic, strong) NSString *sb_bank_name;
-@property (nonatomic, strong) NSString *sb_account_no;
-@property (nonatomic, strong) NSString *sb_account_name;
+@property (nonatomic, strong, nonnull) NSString *sb_bank_cabang;
+@property (nonatomic, strong, nonnull) NSString *sb_picture;
+@property (nonatomic, strong, nonnull) NSString *sb_info;
+@property (nonatomic, strong, nonnull) NSString *sb_bank_name;
+@property (nonatomic, strong, nonnull) NSString *sb_account_no;
+@property (nonatomic, strong, nonnull) NSString *sb_account_name;
 
 @end

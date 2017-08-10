@@ -94,6 +94,10 @@
                                                  name:@"updateInfoProfileScroll" object:nil];
 }
 
+- (void)updateInfoProfileScroll:(id)sender {
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

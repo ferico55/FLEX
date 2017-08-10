@@ -27,10 +27,6 @@
 -(void)setIsMark:(BOOL)isMark {
 }
 
-- (void)awakeFromNib {
-
-}
-
 - (IBAction)tap:(id)sender {
     if ([self.delegate respondsToSelector:@selector(tapCellButton:atIndexPath:)]) {
         [_delegate tapCellButton:(UIButton*)sender atIndexPath:_indexPath];

@@ -10,8 +10,8 @@
 
 @interface CreatePasswordResult : NSObject
 
-@property (strong, nonatomic) NSString *is_success;
+@property (strong, nonatomic, nonnull) NSString *is_success;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

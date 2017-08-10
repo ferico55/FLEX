@@ -7,9 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CFieldCommentID @"comment_id"
-
-
 
 @interface ProductTalkCommentActionResult : NSObject
 

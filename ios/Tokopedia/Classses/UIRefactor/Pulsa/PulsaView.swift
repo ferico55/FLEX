@@ -737,22 +737,22 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     //MARK: Show or Hide View
     
     func hideErrors() {
-        self.numberErrorPlaceholder?.mas_updateConstraints { make in
+        _ = self.numberErrorPlaceholder?.mas_updateConstraints { make in
             make?.height.equalTo()(0)
         }
         
-        self.buttonErrorPlaceholder?.mas_updateConstraints { make in
+        _ = self.buttonErrorPlaceholder?.mas_updateConstraints { make in
             make?.height.equalTo()(0)
         }
         
-        self.operatorErrorLabel?.mas_updateConstraints { make in
+        _ = self.operatorErrorLabel?.mas_updateConstraints { make in
             make?.height.equalTo()(0)
         }
     }
     
     fileprivate func showProductButton(_ products: [PulsaProduct]) {
         UIView.animate(withDuration: 0.25) {
-            self.saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
+            _ = self.saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
                 make?.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 41 : 0)
             })
             self.buttonsPlaceholder.mas_updateConstraints { make in
@@ -782,7 +782,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.saldoCheckBox.isHidden = true
         self.saldoLabel.isHidden = true
         
-        saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
+        _ = saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
             make?.height.equalTo()(0)
         })
     }
@@ -829,7 +829,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate func didPressBuyButton() {
         let isValidNumber = (!self.selectedCategory.attributes.client_number.is_shown || self.isValidNumber(self.numberField.text!))
         
-        self.numberErrorPlaceholder?.mas_updateConstraints { make in
+        _ = self.numberErrorPlaceholder?.mas_updateConstraints { make in
             make?.height.equalTo()(!isValidNumber ? 22 : 0)
         }
         
@@ -837,7 +837,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.height.equalTo()((!self.isValidProduct()) ? 22 : 0)
         }
         
-        self.operatorErrorLabel?.mas_updateConstraints { make in
+        _ = self.operatorErrorLabel?.mas_updateConstraints { make in
             make?.height.equalTo()((!self.operatorButton.isHidden && !self.isValidOperator()) ? 22 : 0)
         }
         

@@ -10,8 +10,8 @@
 
 @interface ResponseError : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *errorID;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong, nonnull) NSString *errorID;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *title;
 
 @end

@@ -23,7 +23,6 @@
 #define API_SHOP_URL_KEY                @"shop_url"
 #define API_PRODUCT_IMAGE_200_KEY       @"product_image_200"
 #define API_PRODUCT_IMAGE_100_KEY       @"product_image_100"
-#define API_PRODUCT_ID_KEY              @"product_id"
 #define API_SHOP_URL_TOPADS_KEY         @"shop_url_topads"
 #define API_AD_KEY                      @"ad_key"
 #define API_SHOP_RATE_SPEED_DESC_KEY    @"shop_rate_speed_desc_key"
@@ -41,7 +40,6 @@
 #define API_SHOP_RATE_ACCURACY_DESC_KEY @"shop_rate_accuracy_desc_key"
 #define API_SHOP_IS_OWNER_KEY           @"shop_is_owner"
 #define API_PRODUCT_URL_KEY             @"product_url"
-#define API_PRODUCT_NAME_KEY            @"product_name"
 #define API_PRODUCT_SHOP_LUCKY_KEY      @"shop_lucky"
 
 #define API_SHOP_URI_AD_KEY             @"shop_uri_ad"

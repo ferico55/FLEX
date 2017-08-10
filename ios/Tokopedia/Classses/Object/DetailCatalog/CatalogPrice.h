@@ -10,7 +10,7 @@
 
 @interface CatalogPrice : NSObject<TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *price_min;
-@property (nonatomic, strong) NSString *price_max;
+@property (nonatomic, strong, nonnull) NSString *price_min;
+@property (nonatomic, strong, nonnull) NSString *price_max;
 
 @end

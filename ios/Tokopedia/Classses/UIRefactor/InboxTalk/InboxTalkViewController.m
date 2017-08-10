@@ -275,8 +275,6 @@
 }
 
 - (void)reloadDataSource:(NSNotification *)notification {
-    NSInteger currentSegmentedIndex = [[[notification object] objectForKey:TKPDTabViewSegmentedIndex] integerValue];
-
     NSInteger currentMenuIndex = [[[notification object] objectForKey:TKPDTabViewNavigationMenuIndex] integerValue];
     if (_currentTabMenuIndex != currentMenuIndex) {
         _currentTabMenuIndex = currentMenuIndex;

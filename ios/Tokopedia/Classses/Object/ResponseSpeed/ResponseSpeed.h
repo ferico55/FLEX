@@ -7,13 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define COneDay @"one_day"
-#define CTwoDay @"two_day"
-#define CThreeDay @"three_day"
-#define CSpeedLevel @"speed_level"
-#define CBadge @"badge"
-#define CCountTotal @"count_total"
-#define CCount @"count"
 
 
 @interface ResponseSpeed : NSObject <TKPObjectMapping>

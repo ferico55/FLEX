@@ -102,7 +102,7 @@
     [style setLineSpacing:6.0];
     
     NSDictionary *dict1 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
-                            NSFontAttributeName:self.font,
+                            NSFontAttributeName:self.titleLabel.font,
                             NSParagraphStyleAttributeName:style};
     
     

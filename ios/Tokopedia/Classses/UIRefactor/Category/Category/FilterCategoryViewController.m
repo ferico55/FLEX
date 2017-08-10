@@ -66,7 +66,7 @@
 }
 
 - (void)setCancelButton {
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStyleBordered target:self action:@selector(didTapCancelButton)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:self action:@selector(didTapCancelButton)];
     self.navigationItem.leftBarButtonItem = cancelButton;
 }
 

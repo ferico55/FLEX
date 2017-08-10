@@ -10,11 +10,11 @@
 
 @interface OtherProduct : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *product_price;
-@property (nonatomic) NSNumber *product_id;
-@property (nonatomic, strong) NSString *product_image;
-@property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong, nonnull) NSString *product_price;
+@property (nonatomic, strong, nonnull) NSNumber *product_id;
+@property (nonatomic, strong, nonnull) NSString *product_image;
+@property (nonatomic, strong, nonnull) NSString *product_name;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

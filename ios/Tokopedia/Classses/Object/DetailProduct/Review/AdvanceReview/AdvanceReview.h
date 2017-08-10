@@ -9,24 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "RatingList.h"
 
-#define CProductRatingPoint @"product_rating_point"
-#define CProductRateAccuracyPoint @"product_rate_accuracy_point"
-#define CProductPositiveReviewRating @"product_positive_review_rating"
-#define CProductNetralReviewRating @"product_netral_review_rating"
-#define CProductRatingStarPoint @"product_rating_star_point"
-#define CProductRatingStarDesc @"product_rating_star_desc"
-#define CProductNegativeReviewRating @"product_negative_review_rating"
-#define CProductReview @"product_review"
-#define CProductRateAccuracy @"product_rate_accuracy"
-#define CProductAccuracyStarDesc @"product_accuracy_star_desc"
-#define CProductRating @"product_rating"
-#define CRating_List @"rating_list"
-#define CProductRatingList @"product_rating_list"
-#define CProductNetralReviewRateAccuray @"product_netral_review_rate_accuracy"
-#define CProductAccuacyStarRate @"product_accuracy_star_rate"
-#define CProductPositiveReviewRateAccuracy @"product_positive_review_rate_accuracy"
-#define CProductNegativeReviewRateAccuracy @"product_negative_review_rate_accuracy"
-
 @interface AdvanceReview : NSObject
 
 @property (nonatomic, strong) NSArray *rating_list;

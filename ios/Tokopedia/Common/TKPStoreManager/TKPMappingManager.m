@@ -58,7 +58,6 @@ static RKObjectManager *_objectManager;
 + (RKObjectManager *)objectManagerUploadImageWithBaseURL:(NSString*)baseURL
                                              pathPattern:(NSString*)pathPattern {
     _objectManager = [RKObjectManager sharedClient:baseURL];
-    static dispatch_once_t oncePredicate;
     //TODO: pake oncePredicate
 //    dispatch_once(&oncePredicate, ^{
         RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectUploadImage mapping] inverseMapping]

@@ -10,6 +10,6 @@
 
 @interface ContactUsResult : NSObject
 
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong, nonnull) NSArray *list;
 
 @end

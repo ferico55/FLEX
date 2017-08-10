@@ -13,9 +13,9 @@
 
 @interface TransactionATCFormDetail : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *available_count;
-@property (nonatomic, strong) ProductDetail *product_detail;
-@property (nonatomic, strong) AddressFormList *destination;
-@property (nonatomic, strong) NSArray *shipment;
+@property (nonatomic, strong, nonnull) NSString *available_count;
+@property (nonatomic, strong, nonnull) ProductDetail *product_detail;
+@property (nonatomic, strong, nonnull) AddressFormList *destination;
+@property (nonatomic, strong, nonnull) NSArray *shipment;
 
 @end

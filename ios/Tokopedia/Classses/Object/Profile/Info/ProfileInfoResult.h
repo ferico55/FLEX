@@ -12,7 +12,6 @@
 #import "ShopStats.h"
 #import "ShopInfo.h"
 #import "ResponseSpeed.h"
-#define CRespondSpeed @"respond_speed"
 
 @interface ProfileInfoResult : NSObject
 

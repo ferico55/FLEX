@@ -189,8 +189,6 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     [self.textView resignFirstResponder];
     self.attachmentButtonBottomConstraint.constant = 0;
     
-    int maxCountSelectImage = 5;
-    
     __weak typeof(self) wself = self;
     [TKPImagePickerController
      showImagePicker:self

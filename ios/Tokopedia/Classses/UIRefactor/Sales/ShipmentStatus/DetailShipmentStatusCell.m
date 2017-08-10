@@ -20,6 +20,8 @@
 @implementation DetailShipmentStatusCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     _circle.layer.cornerRadius = _circle.frame.size.width / 2;
 }
 

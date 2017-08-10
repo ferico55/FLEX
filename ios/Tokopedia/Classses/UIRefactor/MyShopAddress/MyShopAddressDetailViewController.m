@@ -55,7 +55,7 @@
     self.title = list.location_address_name;
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = barButtonItem;

@@ -51,8 +51,8 @@
                                                               @"user_shop_name"         : @"shop_name",
                                                               @"user_shop_image"        : @"shop_img",
                                                               @"user_image"             : @"user_img",
-                                                              CUserName                 : CFullName,
-                                                              CFullName                 : CUserName,
+                                                              @"user_name"              : @"user_name",
+                                                              @"full_name"              : @"full_name",
                                                               @"user_image"             : @"user_img",
                                                               
                                                               @"shop_id"                : @"shop_id",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

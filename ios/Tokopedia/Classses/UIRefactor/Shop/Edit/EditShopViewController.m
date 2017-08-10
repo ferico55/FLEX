@@ -135,7 +135,7 @@
 
 - (UIBarButtonItem *)backButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:nil];
     return button;
@@ -286,10 +286,6 @@
 #pragma mark - Photo picker delegate
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    NSIndexPath *shopImageIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-    
-    EditShopImageViewCell *imageViewCell = [self.tableView cellForRowAtIndexPath:shopImageIndexPath];
-
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
     UIImage* image = photo[kTKPDCAMERA_DATAPHOTOKEY];

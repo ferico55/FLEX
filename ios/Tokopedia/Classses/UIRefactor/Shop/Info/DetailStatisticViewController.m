@@ -96,13 +96,13 @@
     lblTransaksiCepat.text = _detailShopResult.respond_speed.speed_level;
     [SmileyAndMedal setIconResponseSpeed:_detailShopResult.respond_speed.badge withImage:imgSpeed largeImage:YES];
     
-    progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
-    progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
-    progressFooter3.progress = _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0? 0:([[_detailShopResult.respond_speed.three_days objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:@"count"] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:@"count"] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter3.progress = _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0? 0:([[_detailShopResult.respond_speed.three_days objectForKey:@"count"] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
     
-    lblRespon1Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0?0:[[_detailShopResult.respond_speed.one_day objectForKey:CCount] floatValue]];
-    lblRespon2Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0?0:[[_detailShopResult.respond_speed.two_days objectForKey:CCount] floatValue]];
-    lblRespon3Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0?0:[[_detailShopResult.respond_speed.three_days objectForKey:CCount] floatValue]];
+    lblRespon1Hari.text = [NSString stringWithFormat:@"(%f)", _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0?0:[[_detailShopResult.respond_speed.one_day objectForKey:@"count"] floatValue]];
+    lblRespon2Hari.text = [NSString stringWithFormat:@"(%f)", _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0?0:[[_detailShopResult.respond_speed.two_days objectForKey:@"count"] floatValue]];
+    lblRespon3Hari.text = [NSString stringWithFormat:@"(%f)", _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0?0:[[_detailShopResult.respond_speed.three_days objectForKey:@"count"] floatValue]];
     
     
     float width1 = [lblRespon1Hari sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;

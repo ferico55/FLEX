@@ -11,18 +11,6 @@
 #import "ReviewResponse.h"
 #import "ShopReputation.h"
 
-#define CIsOwner @"is_owner"
-#define CProductOwner @"product_owner"
-#define CReviewResponse @"review_response"
-#define CReputationReviewCounter @"reputation_review_counter"
-#define CIsSuccess @"is_success"
-#define CShowBookmark @"show_bookmark"
-#define CReviewID @"review_id"
-
-#define CShopID @"shop_id"
-#define CShopName @"shop_name"
-#define CShopImgUri @"shop_img_uri"
-#define CShopReputation @"shop_reputation"
 
 @interface ResponseCommentResult : NSObject
 @property (nonatomic, strong) NSString *is_owner;

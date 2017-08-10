@@ -11,21 +11,21 @@
 
 @interface ContactUsQuery : NSObject
 
-@property (nonatomic, strong) NSString *action;
-@property (nonatomic, strong) TicketCategory *ticketCategory;
-@property (nonatomic, strong) NSString *messageCategory;
-@property (nonatomic, strong) NSString *messageBody;
-@property (nonatomic, strong) NSArray *attachments;
-@property (nonatomic, strong) NSString *attachmentString;
-@property (nonatomic, strong) NSString *invNumber;
-@property (nonatomic, strong) NSString *fullName;
-@property (nonatomic, strong) NSString *userEmail;
-@property (nonatomic, strong) NSString *serverId;
-@property (nonatomic, strong) NSString *postKey;
-@property (nonatomic, strong) NSString *fileUploaded;
-@property (nonatomic, strong) NSString *isHelp;
-@property (nonatomic, strong) NSString *ticketCategoryId;
+@property (nonatomic, strong, nonnull) NSString *action;
+@property (nonatomic, strong, nonnull) TicketCategory *ticketCategory;
+@property (nonatomic, strong, nonnull) NSString *messageCategory;
+@property (nonatomic, strong, nonnull) NSString *messageBody;
+@property (nonatomic, strong, nonnull) NSArray *attachments;
+@property (nonatomic, strong, nonnull) NSString *attachmentString;
+@property (nonatomic, strong, nonnull) NSString *invNumber;
+@property (nonatomic, strong, nonnull) NSString *fullName;
+@property (nonatomic, strong, nonnull) NSString *userEmail;
+@property (nonatomic, strong, nonnull) NSString *serverId;
+@property (nonatomic, strong, nonnull) NSString *postKey;
+@property (nonatomic, strong, nonnull) NSString *fileUploaded;
+@property (nonatomic, strong, nonnull) NSString *isHelp;
+@property (nonatomic, strong, nonnull) NSString *ticketCategoryId;
 
-@property (nonatomic, strong, readonly) NSMutableDictionary *parameters;
+@property (nonatomic, strong, readonly, nullable) NSMutableDictionary *parameters;
 
 @end

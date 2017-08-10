@@ -152,7 +152,6 @@ typedef enum
 #define API_PRODUCT_ETALASE_KEY @"product_etalase"
 #define API_PRODUCT_DESTINATION_KEY @"product_dest"
 #define API_PRODUCT_URL_KEY @"product_url"
-#define API_PRODUCT_NAME_KEY @"product_name"
 #define API_PRODUCT_QUANTITY_KEY @"product_quantity"
 #define API_PRODUCT_CART_ID_KEY @"product_cart_id"
 #define API_PRODUCT_CURRENCY_SYMBOL @"product_currency_symbol"

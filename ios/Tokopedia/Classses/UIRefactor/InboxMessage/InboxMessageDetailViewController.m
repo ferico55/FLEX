@@ -73,11 +73,6 @@
     [super viewDidLoad];
     
     self.title = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
 
     _fetchConversationNetworkManager = [TokopediaNetworkManager new];
     _fetchConversationNetworkManager.isUsingHmac = YES;

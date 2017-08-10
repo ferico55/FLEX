@@ -10,6 +10,6 @@
 
 @interface SecurityRequestOTPResult : NSObject <TKPObjectMapping>
 
-@property(nonatomic, strong) NSString* is_success;
+@property(nonatomic, strong, nonnull) NSString* is_success;
 
 @end

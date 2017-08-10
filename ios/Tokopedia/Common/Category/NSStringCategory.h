@@ -23,8 +23,6 @@
 
 + (nonnull NSString*) encodeString:(nonnull NSString*)string;
 
-- (BOOL) isNotAllBaseCharacter;
-
 - (null_unspecified NSString *)priceFromStringIDR;
 
 + (null_unspecified NSArray *)getStringsBetweenAhrefTagWithString:(nonnull NSString *)string;

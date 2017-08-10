@@ -18,7 +18,6 @@
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @property BOOL product_is_received;
 -(void)submitCreateResolution;
--(void)submitEditResolution;
 @property (weak, nonatomic) id<ResolutionCenterCreateStepThreeDelegate> delegate;
 
 @end

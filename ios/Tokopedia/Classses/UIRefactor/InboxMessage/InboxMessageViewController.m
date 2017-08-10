@@ -27,8 +27,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UISearchBarDelegate,
-    SmileyDelegate,
-    InboxMessageDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
     TKPDTabInboxMessageNavigationControllerDelegate,
@@ -287,7 +285,7 @@
     [self postAction:action withMessageJson:messagesJson];
 }
 
-- (void)postAction:(NSString *)action withMessageJson:(NSMutableArray<NSString*> *)messagesJson {
+- (void)postAction:(NSString *)action withMessageJson:(NSArray *)messagesJson {
     NSString *joinedArr = [messagesJson componentsJoinedByString:@"and"];
     NSDictionary* param = @{
             kTKPDHOME_APIACTIONKEY: action,

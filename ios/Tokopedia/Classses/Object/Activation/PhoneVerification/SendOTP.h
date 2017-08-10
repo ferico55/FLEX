@@ -11,11 +11,11 @@
 
 @interface SendOTP : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) SendOTPResult *data;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) SendOTPResult *data;
 
-+(NSDictionary *) attributeMappingDictionary;
-+(RKObjectMapping *) mapping;
++ (NSDictionary *_Nonnull) attributeMappingDictionary;
++ (RKObjectMapping *_Nonnull) mapping;
 
 @end

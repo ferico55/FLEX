@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface VerifiedStatusMSISDN : NSObject
-@property(strong, nonatomic) NSString* show_dialog;
-@property(strong, nonatomic) NSString* user_phone;
-@property(strong, nonatomic) NSString* is_verified;
+@property(strong, nonatomic, nonnull) NSString* show_dialog;
+@property(strong, nonatomic, nonnull) NSString* user_phone;
+@property(strong, nonatomic, nonnull) NSString* is_verified;
 
-+(RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
+
 @end

@@ -7,11 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CLMessageError @"message_error"
-#define CLStatus @"status"
-#define CLServerProcessTime @"server_process_time"
-#define CLResult @"result"
 #import "LikeDislikePostResult.h"
+
 @class LikeDislikePostResult;
 
 @interface LikeDislikePost : NSObject

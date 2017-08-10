@@ -10,12 +10,12 @@
 
 @interface ProductList : NSObject
 
-@property (nonatomic, strong) NSString *product_price;
-@property (nonatomic, strong) NSString *product_id;
-@property (nonatomic, strong) NSString *product_condition;
-@property (nonatomic, strong) NSString *product_name;
-@property (nonatomic, strong) NSString *shop_name;
-@property (nonatomic, strong) NSString *shop_gold_status;
-@property (nonatomic, strong) NSString *shop_lucky;
+@property (nonatomic, strong, nonnull) NSString *product_price;
+@property (nonatomic, strong, nonnull) NSString *product_id;
+@property (nonatomic, strong, nonnull) NSString *product_condition;
+@property (nonatomic, strong, nonnull) NSString *product_name;
+@property (nonatomic, strong, nonnull) NSString *shop_name;
+@property (nonatomic, strong, nonnull) NSString *shop_gold_status;
+@property (nonatomic, strong, nonnull) NSString *shop_lucky;
 
 @end

@@ -79,11 +79,7 @@
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 
 
-- (void)cancelCurrentAction;
 - (void)loadData;
-- (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
-- (void)requestFail:(id)object;
-- (void)requestTimeout;
 
 @end
 

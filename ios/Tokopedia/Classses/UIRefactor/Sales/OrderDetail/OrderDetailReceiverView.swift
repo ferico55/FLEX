@@ -21,15 +21,15 @@ class OrderDetailReceiverView: UIView {
         didSet{
             let orderReceiver = order.order_destination
             
-            receiverName.text = orderReceiver!.receiver_name
+            receiverName.text = orderReceiver.receiver_name
             receiverName.onCopy = { text in
                 UIPasteboard.general.string = text
             }
-            receiverAddress.text = "\(orderReceiver!.address_street)\n\(orderReceiver!.address_district)\n\(orderReceiver!.address_city)\n\(orderReceiver!.address_province), \(orderReceiver!.address_country), \(orderReceiver!.address_postal)"
+            receiverAddress.text = "\(orderReceiver.address_street)\n\(orderReceiver.address_district)\n\(orderReceiver.address_city)\n\(orderReceiver.address_province), \(orderReceiver.address_country), \(orderReceiver.address_postal)"
             receiverAddress.onCopy = { text in
                 UIPasteboard.general.string = text
             }
-            receiverPhone.text = orderReceiver?.receiver_phone
+            receiverPhone.text = orderReceiver.receiver_phone
             receiverPhone.onCopy = { text in
                 UIPasteboard.general.string = text
             }

@@ -13,7 +13,6 @@
 #pragma mark - Factory methods
 + (id)newcell
 {
-    NSLog( @"Cell loading" );
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralCheckmarkCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
@@ -21,11 +20,6 @@
         }
     }
     return nil;
-}
-
-
-- (void)awakeFromNib {
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

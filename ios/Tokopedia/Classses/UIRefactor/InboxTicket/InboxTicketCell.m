@@ -24,9 +24,6 @@
     return nil;
 }
 
-- (void)awakeFromNib {
-}
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     _viewContainer.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
 }

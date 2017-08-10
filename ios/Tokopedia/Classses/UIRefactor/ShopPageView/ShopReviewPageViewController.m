@@ -59,7 +59,6 @@
     SmileyDelegate,
     UIScrollViewDelegate,
     UIAlertViewDelegate,
-    NoResultDelegate,
     ProductReputationSimpleDelegate,
     ShopTabChild
 >
@@ -139,7 +138,6 @@
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai ulasan"
                                   desc:@""
@@ -952,8 +950,8 @@
 
 #pragma mark - LoginView Delegate
 - (void)userDidLogin:(NSNotification*)notification {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    _auth = [_userManager getUserLoginData];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    _auth = [userManager getUserLoginData];
     
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
     if([viewController isMemberOfClass:[ProductDetailReputationViewController class]]) {

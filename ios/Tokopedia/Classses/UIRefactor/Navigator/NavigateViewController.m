@@ -69,7 +69,7 @@
 @implementation NavigateViewController {
     UISplitViewController *splitViewController;
     NSArray *_images;
-    NSUInteger *_indexImage;
+    NSUInteger _indexImage;
     NSArray *_imageDescriptions;
 }
 +(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL {
@@ -248,11 +248,10 @@
 {
     _images = images;
     _imageDescriptions = imageDesc;
-    _indexImage = index;
+    _indexImage = (NSUInteger)index;
     
-    GalleryViewController *gallery = [GalleryViewController new];
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)index];
     gallery.canDownload = YES;
-    [gallery initWithPhotoSource:self withStartingIndex:(int)index];
     [viewController.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
@@ -593,7 +592,7 @@
     } else {
         SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-        segmentedReputationViewController.selectedIndex = CTagSemuaReview;
+        segmentedReputationViewController.selectedIndex = CTagSemua;
         segmentedReputationViewController.userHasShop = [auth userHasShop];
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
     }
@@ -702,27 +701,6 @@
     vc.title = [self getTitleFromData: [data mapToDictionary]];
     vc.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
-    if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
-        SearchResultViewController *vc = [SearchResultViewController new];
-        vc.isFromDirectory = YES;
-        vc.delegate = viewController;
-        vc.data = [self addDataTypeFromData: data];
-        vc.title = [self getTitleFromData: data];
-        vc.hidesBottomBarWhenPushed = YES;
-        [viewController.navigationController pushViewController:vc animated:YES];
-    } else {
-        SearchResultShopViewController *vc = [SearchResultShopViewController new];
-        NSMutableDictionary *datas = [NSMutableDictionary new];
-        [datas addEntriesFromDictionary:data];
-        [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
-        vc.data =[datas copy];
-        vc.title = [data objectForKey:@"q"];
-        vc.hidesBottomBarWhenPushed = YES;
-        [viewController.navigationController pushViewController:vc animated:YES];
-    }
 }
 
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url {

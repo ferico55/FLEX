@@ -10,7 +10,6 @@
 #import "SalesOrderCell.h"
 #import "Order.h"
 #import "OrderTransaction.h"
-#import "string_order.h"
 #import "TKPDSecureStorage.h"
 #import "OrderDetailViewController.h"
 #import "FilterShipmentConfirmationViewController.h"

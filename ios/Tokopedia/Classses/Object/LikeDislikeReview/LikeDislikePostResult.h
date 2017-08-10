@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CContent @"content"
-#define CIsSuccess @"is_success"
 #import "TotalLikeDislikePost.h"
+
 @class TotalLikeDislikePost;
 
 @interface LikeDislikePostResult : NSObject

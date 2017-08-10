@@ -12,7 +12,6 @@
 #import "ProfileSettings.h"
 #import "SettingPrivacyViewController.h"
 #import "SettingPrivacyCell.h"
-#import "StickyAlert.h"
 
 @interface SettingPrivacyViewController ()<UITableViewDataSource,UITableViewDelegate,SettingPrivacyCellDelegate>
 {
@@ -87,7 +86,7 @@
     
     [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGPRIVACY_TITLE];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
@@ -268,15 +267,17 @@
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_SETTINGAPIPATH parameters:[param encrypt]];
     
     NSTimer *timer;
+    __weak typeof(self) weakSelf = self;
+    __weak UIBarButtonItem *weakBarButtonItem = _saveBarButtonItem;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        _saveBarButtonItem.enabled = YES;
+        [weakSelf requestSuccess:mappingResult withOperation:operation];
+        weakBarButtonItem.enabled = YES;
         [timer invalidate];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-        [self requestFailure:error];
-        _saveBarButtonItem.enabled = YES;
+        [weakSelf requestFailure:error];
+        weakBarButtonItem.enabled = YES;
         [timer invalidate];
     }];
     
@@ -399,15 +400,17 @@
     
     _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
     NSTimer *timer;
+    __weak typeof(self) weakSelf = self;
+    __weak UIBarButtonItem *weakBarButtonItem = _saveBarButtonItem;
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessAction:mappingResult withOperation:operation];
-        _saveBarButtonItem.enabled = YES;
+        [weakSelf requestSuccessAction:mappingResult withOperation:operation];
+        weakBarButtonItem.enabled = YES;
         [timer invalidate];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-        [self requestFailureAction:error];
-        _saveBarButtonItem.enabled = YES;
+        [weakSelf requestFailureAction:error];
+        weakBarButtonItem.enabled = YES;
         [timer invalidate];
     }];
     

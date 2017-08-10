@@ -45,13 +45,13 @@ EtalaseViewControllerDelegate,
     _conditionValue = @"Semua Kondisi";
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
     
     UIBarButtonItem *canceBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:self
                                                                       action:@selector(tap:)];
     canceBarButton.tag = 10;

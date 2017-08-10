@@ -34,7 +34,6 @@ UITableViewDelegate,
 UIScrollViewDelegate,
 TalkCellDelegate,
 UIAlertViewDelegate,
-NoResultDelegate,
 ShopTabChild>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -108,7 +107,6 @@ ShopTabChild>
 }
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai diskusi produk"
                                   desc:@""

@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <ComponentKit/CKNetworkImageDownloading.h>
 
+
 @class TxOrderStatusList;
 
-@interface OrderCellContext : NSObject
+@interface OrderCellContext : NSObject <CKNetworkImageDownloading>
 
 @property id<CKNetworkImageDownloading> imageDownloader;
 @property (nonatomic, strong) NSDictionary *images;

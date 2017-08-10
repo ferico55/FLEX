@@ -10,7 +10,7 @@
 
 @interface Info : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *product_returnable;
-@property (nonatomic, strong) NSString *shop_has_terms;
+@property (nonatomic, strong, nonnull) NSString *product_returnable;
+@property (nonatomic, strong, nonnull) NSString *shop_has_terms;
 
 @end

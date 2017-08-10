@@ -78,12 +78,13 @@
                             };
     _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
+    __weak typeof(self) weakSelf = self;
     [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
+        [weakSelf requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-        [self requestFailureActionMoveToWarehouse:error];
+        [weakSelf requestFailureActionMoveToWarehouse:error];
         [timer invalidate];
     }];
     
@@ -208,12 +209,13 @@
                             };
     _requestActionMoveToEtalase = [_objectmanagerActionMoveToEtalase appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
+    __weak typeof(self) weakSelf = self;
     [_requestActionMoveToEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionMoveToEtalase:mappingResult withOperation:operation];
+        [weakSelf requestSuccessActionMoveToEtalase:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-        [self requestFailureActionMoveToEtalase:error];
+        [weakSelf requestFailureActionMoveToEtalase:error];
         [timer invalidate];
     }];
     
@@ -336,11 +338,12 @@
                                                                                                       path:kTKPDDETAILSHOPETALASEACTION_APIPATH
                                                                                                 parameters:[param encrypt]];
     
+    __weak typeof(self) weakSelf = self;
     [_requestActionAddEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddEtalase:mappingResult withOperation:operation];
+        [weakSelf requestSuccessActionAddEtalase:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddEtalase:error];
+        [weakSelf requestFailureActionAddEtalase:error];
         [timer invalidate];
     }];
     

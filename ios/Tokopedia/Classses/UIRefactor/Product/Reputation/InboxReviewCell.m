@@ -12,6 +12,8 @@
 @implementation InboxReviewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     // Initialization code
     [_theirUserName setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
     [_theirUserImage setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];

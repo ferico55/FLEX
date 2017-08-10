@@ -14,8 +14,6 @@
 
 - (instancetype)initWithStoreManager:(TKPStoreManager *)storeManager;
 
-- (void)fetchHotlistAtPage:(NSInteger)pageNumber completion:(void (^) (Hotlist *hotlist, NSError *error))completion;
-
 - (void)archiveHotListProducts:(NSArray *)hotlistProducts nextPage:(NSInteger)page completion:(void (^)(BOOL))completion;
 - (void)loadCachedHotListProducts:(void (^) (NSArray *products, NSInteger lastPage))completion;
 

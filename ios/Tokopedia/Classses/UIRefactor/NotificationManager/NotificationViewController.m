@@ -212,10 +212,6 @@
     // Background color
     view.tintColor = [UIColor clearColor];
     
-    // Text Color
-    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    //    [header.textLabel setTextColor:[UIColor whiteColor]];
-    
     // Another way to set the background color
     // Note: does not preserve gradient effect of original header
     // header.contentView.backgroundColor = [UIColor blackColor];
@@ -422,7 +418,6 @@
                     TKPDTabViewController *controller = [TKPDTabViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
                     controller.inboxType = InboxTypeTicket;
-                    __weak typeof(self) weakSelf = self;
                     
                     InboxTicketViewController *allInbox = [InboxTicketViewController new];
                     allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;

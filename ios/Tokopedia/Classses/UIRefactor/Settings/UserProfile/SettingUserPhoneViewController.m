@@ -107,21 +107,21 @@
                                                                                   path:kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH
                                                                             parameters:[param encrypt]];
     
+    __weak typeof(self) weakSelf = self;
+    __weak NSTimer *weakTimer = _timer;
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
     
-        [self requestSuccessAction:mappingResult withOperation:operation];
-        [self.view setUserInteractionEnabled:YES];
+        [weakSelf requestSuccessAction:mappingResult withOperation:operation];
+        [weakSelf.view setUserInteractionEnabled:YES];
         
-        [_timer invalidate];
-        _timer = nil;
+        [weakTimer invalidate];
 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         
-        [self requestFailureAction:error];
-        [self.view setUserInteractionEnabled:YES];
+        [weakSelf requestFailureAction:error];
+        [weakSelf.view setUserInteractionEnabled:YES];
     
-        [_timer invalidate];
-        _timer = nil;
+        [weakTimer invalidate];
         
     }];
     

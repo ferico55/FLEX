@@ -10,6 +10,6 @@
 
 @interface VerifyOTPResult : NSObject
 
-@property (strong, nonatomic) NSString *is_success;
+@property (strong, nonatomic, nonnull) NSString *is_success;
 
 @end

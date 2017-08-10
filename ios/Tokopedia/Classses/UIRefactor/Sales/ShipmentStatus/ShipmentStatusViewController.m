@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_order.h"
 
 #import "Order.h"
 #import "OrderTransaction.h"

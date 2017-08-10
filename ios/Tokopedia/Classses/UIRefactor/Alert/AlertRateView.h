@@ -14,6 +14,7 @@
 
 
 @protocol AlertRateDelegate
+@optional
 - (void)closeWindow;
 - (void)submitWithSelected:(int)tag;
 @end

@@ -12,7 +12,6 @@
 #import "ReviewSummaryViewController.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
-#import "CameraController.h"
 #import "ProductAddCaptionViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "ReviewImageAttachment.h"
@@ -22,7 +21,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, CameraControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
+@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
     BOOL _hasImages;
     
     NSMutableArray *_uploadedPictures;

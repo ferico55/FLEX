@@ -351,7 +351,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     if (alertView.tag == PickerViewDate) {
         // alert date picker date of birth
         NSDate *date = [alertView.data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
-        NSCalendarUnit calendarUnit = NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
+        NSCalendarUnit calendarUnit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
         NSDateComponents *components = [[NSCalendar currentCalendar] components:calendarUnit fromDate:date];
         
         self.userData.birth_day = [NSString stringWithFormat:@"%zd", [components day]];

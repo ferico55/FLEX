@@ -11,11 +11,11 @@
 
 @interface CatalogShopAWS : NSObject
 
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *message_error;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) CatalogShopAWSResult *result;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *message_error;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) CatalogShopAWSResult *result;
 
-+ (RKObjectMapping *)objectMapping;
++ (RKObjectMapping *_Nonnull)objectMapping;
 
 @end

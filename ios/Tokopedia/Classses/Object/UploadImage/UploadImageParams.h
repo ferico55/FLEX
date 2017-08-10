@@ -11,8 +11,8 @@
 
 @interface UploadImageParams : NSObject
 
-@property (nonatomic, strong) NSString *action;
-@property (nonatomic, strong) NSNumber *user_id;
-@property (nonatomic, strong) NSNumber *server_id;
+@property (nonatomic, strong, nonnull) NSString *action;
+@property (nonatomic, strong, nonnull) NSNumber *user_id;
+@property (nonatomic, strong, nonnull) NSNumber *server_id;
 
 @end

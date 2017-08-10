@@ -36,7 +36,7 @@
     
     _section0Cells = [NSArray sortViewsWithTagInArray:_section0Cells];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     self.navigationItem.backBarButtonItem = barButtonItem;
     
     /** keyboard notification **/

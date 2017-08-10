@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CUserReputation @"user_reputation"
+
 @class ReputationDetail;
 
 @interface InboxMessageList : NSObject

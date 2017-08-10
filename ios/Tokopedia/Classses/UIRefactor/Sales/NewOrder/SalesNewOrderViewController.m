@@ -21,11 +21,9 @@
 
 #import "Order.h"
 #import "OrderTransaction.h"
-#import "string_order.h"
 #import "detail.h"
 #import "WarehouseResponse.h"
 
-#import "StickyAlert.h"
 #import "StickyAlertView.h"
 
 #import "ActionOrder.h"

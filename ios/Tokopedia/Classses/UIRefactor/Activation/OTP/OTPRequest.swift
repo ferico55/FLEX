@@ -83,7 +83,7 @@ class OTPRequest: NSObject {
                 let result = mappingResult.dictionary()[""] as! VerifiedStatus
                 let isVerified = result.result.msisdn.is_verified
                 
-                onSuccess(isVerified!)
+                onSuccess(isVerified)
         },
             onFailure: { (error) in
                 onFailure()

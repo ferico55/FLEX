@@ -69,7 +69,8 @@
     TransactionCartWebViewViewControllerDelegate,
     LoadingViewDelegate,
     GeneralTableViewControllerDelegate,
-    NoResultDelegate
+    NoResultDelegate,
+    NotificationManagerDelegate
 >
 {
     NSMutableArray<TransactionCartList *> *_list;
@@ -1399,11 +1400,11 @@
     
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
-                                  constrainedToSize:maximumLabelSize
-                                      lineBreakMode:NSLineBreakByWordWrapping];
-    
-    
+    CGRect expectedLabelFrame = [string boundingRectWithSize:maximumLabelSize
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:@{NSFontAttributeName:[UIFont title1Theme]}
+                                                     context:nil];
+    CGSize expectedLabelSize = expectedLabelFrame.size;
     
     if ([productNotes isEqualToString:@""]) {
         expectedLabelSize.height = 0;

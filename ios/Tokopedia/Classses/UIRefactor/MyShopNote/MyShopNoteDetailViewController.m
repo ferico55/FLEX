@@ -103,7 +103,7 @@
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
         barButtonItem.tag = 10;
@@ -345,7 +345,7 @@
         _barbuttonedit.enabled = YES;
         
         NSDate *date = [NSDate date];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
         NSInteger year = [components year];
         NSInteger day = [components day];
         
@@ -620,7 +620,7 @@
 -(void)setTimeLabelBecomeCurrentDate
 {
     NSDate *date = [NSDate date];
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
     NSInteger year = [components year];
     NSInteger day = [components day];
     

@@ -38,9 +38,7 @@
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-static NSInteger userViewHeight = 70;
-
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate, CMPopTipViewDelegate, SmileyDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -54,7 +52,6 @@ static NSInteger userViewHeight = 70;
 
     int page, filterStar;
     NSString *strUri;
-    Review *review;
     NSMutableArray *arrList;
     NSMutableArray<DetailReputationReview*> *helpfulReviews;
     NSDictionary *auth;
@@ -872,8 +869,8 @@ static NSInteger userViewHeight = 70;
         [((ProductDetailReputationViewController *) viewController) userHasLogin];
     }
     
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    auth = [_userManager getUserLoginData];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    auth = [userManager getUserLoginData];
     [tableContent reloadData];
 }
 

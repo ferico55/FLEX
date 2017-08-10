@@ -11,12 +11,12 @@
 
 @interface Deposit : NSObject
 
-@property (nonatomic, strong) NSArray *message_error;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) DepositResult *result;
-@property (nonatomic, strong) DepositResult *data;
+@property (nonatomic, strong, nonnull) NSArray *message_error;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) DepositResult *result;
+@property (nonatomic, strong, nonnull) DepositResult *data;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

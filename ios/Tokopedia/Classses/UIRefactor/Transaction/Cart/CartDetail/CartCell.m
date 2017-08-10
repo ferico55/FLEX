@@ -55,7 +55,6 @@
     BOOL isSaldoTokopediaTextField = (indexPath.section==list.count);
     NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section);
     TransactionCartList *cart = list[indexList];
-    NSArray *products = cart.cart_products;
     
     GeneralTextFieldCell *cell = (GeneralTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -123,8 +122,6 @@
 
 +(UITableViewCell *)cellErrorList:(NSArray<TransactionCartList*>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
 {
-    TransactionCartList *cart = list[indexPath.section];
-    
     static NSString *CellIdentifier = @"ErrorIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     

@@ -9,7 +9,7 @@
 #import "FilterNewOrderViewController.h"
 #import "DueDateViewController.h"
 
-@interface FilterNewOrderViewController ()
+@interface FilterNewOrderViewController () <DueDateDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *invoiceTextField;
 @property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;

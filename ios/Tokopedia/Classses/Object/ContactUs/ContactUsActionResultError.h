@@ -10,7 +10,7 @@
 
 @interface ContactUsActionResultError : NSObject
 
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *message_body_error;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *message_body_error;
 
 @end

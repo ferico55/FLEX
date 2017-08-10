@@ -12,8 +12,8 @@
 
 @interface LuckyDeal : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *url;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) LuckyDealData *data;
+@property (nonatomic, strong, nonnull) NSString *url;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) LuckyDealData *data;
 
 @end

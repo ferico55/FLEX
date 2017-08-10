@@ -11,7 +11,9 @@
 #import "WishListObjectList.h"
 
 @interface WishListObjectResult : NSObject
-@property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray *list;
-@property (nonatomic, strong) NSString *is_success;
+
+@property (nonatomic, strong, nonnull) Paging *paging;
+@property (nonatomic, strong, nonnull) NSArray *list;
+@property (nonatomic, strong, nonnull) NSString *is_success;
+
 @end

@@ -12,12 +12,12 @@
 #import "Tokopedia-Swift.h"
 
 @interface SearchAutoCompleteCell : UICollectionViewCell
-@property (strong, nonatomic) IBOutlet UILabel *searchTitle;
-@property (strong, nonatomic) IBOutlet UIButton *closeButton;
-@property (strong, nonatomic) IBOutlet UIImageView *searchLoopImageView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchTitleLeadingToSuperViewConstraint;
-@property (nonatomic, copy, nullable) void (^didTapAutoFillButton)(NSString* text);
+@property (strong, nonatomic, nonnull) IBOutlet UILabel *searchTitle;
+@property (strong, nonatomic, nonnull) IBOutlet UIButton *closeButton;
+@property (strong, nonatomic, nonnull) IBOutlet UIImageView *searchLoopImageView;
+@property (strong, nonatomic, nonnull) IBOutlet NSLayoutConstraint *searchTitleLeadingToSuperViewConstraint;
+@property (nonatomic, copy, nullable) void (^didTapAutoFillButton)(NSString* _Nonnull text);
 
-- (void)setSearchCell:(SearchSuggestionItem*) item section:(SearchSuggestionData*) data;
+- (void)setSearchCell:(SearchSuggestionItem* _Nonnull) item section:(SearchSuggestionData* _Nonnull) data;
 
 @end

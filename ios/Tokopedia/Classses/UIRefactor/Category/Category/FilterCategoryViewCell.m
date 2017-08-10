@@ -21,10 +21,6 @@
     return self;
 }
 
-- (void)awakeFromNib {
-
-}
-
 - (void)showCheckmark {
     UIImage *image = [UIImage imageNamed:@"icon-checkmark-filled.png"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

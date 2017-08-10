@@ -25,7 +25,6 @@
 @interface CreatePasswordViewController ()
 <
     UIScrollViewDelegate,
-    FBSDKLoginButtonDelegate,
     UITextFieldDelegate,
     TKPDAlertViewDelegate,
     MMNumberKeyboardDelegate
@@ -63,13 +62,13 @@
     self.title = @"Membuat Password Baru";
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(tap:)];
     self.navigationItem.leftBarButtonItem = button;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStylePlain
                                                                   target:nil
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -155,10 +154,6 @@
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
     _userProfile = [CreatePasswordUserProfile fromFacebookWithUserData:facebookUserData];
-}
-
-- (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
-    _userProfile = [CreatePasswordUserProfile fromFacebookWithUserData:gidGoogleUser];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -484,7 +479,7 @@
         // alert date picker date of birth
         NSDictionary *data = alertView.data;
         NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear
                                                                        fromDate:date];
         NSInteger year = [components year];
         NSInteger month = [components month];

@@ -205,7 +205,7 @@ static failedCompletionBlock onFailure;
     
     NSString *methodID = method.method_id?:@"";
     NSString *paymentAmount = totalPayment?:@"";
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:paymentDate];
     NSNumber *year = @([components year])?:@(0);
     NSNumber *month = @([components month])?:@(0);
     NSNumber *day = @([components day])?:@(0);

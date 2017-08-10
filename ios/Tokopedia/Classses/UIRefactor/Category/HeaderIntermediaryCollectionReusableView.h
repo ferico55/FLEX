@@ -16,7 +16,7 @@
 @protocol HeaderIntermediaryCollectionViewDelegate <NSObject>
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath;
-- (void)didSelectPromoProduct:(PromoProduct *)product;
+- (void)didSelectPromoProduct:(PromoResult *)product;
 - (TopadsSource)topadsSource;
 
 @end
@@ -37,7 +37,6 @@
 
 - (void)scrollToCenter;
 - (void)scrollToCenterWithoutAnimation;
-- (void) setTotalProduct: (NSString*)totalProduct;
 - (void) setHeaderTitle: (NSString*) title;
 - (void) setPromotionEmpty;
 - (void) setPromotionNotEmpty;

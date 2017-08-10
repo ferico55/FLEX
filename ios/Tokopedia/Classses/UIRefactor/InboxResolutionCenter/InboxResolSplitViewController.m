@@ -37,7 +37,7 @@
     UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
     masterVC.splitVC = self;
     
-    UIViewController *detailVC = [UIViewController new];
+    ResolutionWebViewController *detailVC = [ResolutionWebViewController new];
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
     
     masterVC.detailViewController = detailVC;

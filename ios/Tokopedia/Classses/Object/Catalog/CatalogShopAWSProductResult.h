@@ -12,9 +12,9 @@
 
 @interface CatalogShopAWSProductResult : NSObject
 
-@property (nonatomic, strong) SearchAWSShop* shop;
-@property (nonatomic, strong) NSArray* products;
+@property (nonatomic, strong, nonnull) SearchAWSShop* shop;
+@property (nonatomic, strong, nonnull) NSArray* products;
 
-+ (RKObjectMapping*)objectMapping;
++ (RKObjectMapping*_Nonnull)objectMapping;
 
 @end

@@ -36,6 +36,8 @@
 
 -(void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     _list = [NSMutableArray new];
     _table.delegate = self;
     _table.dataSource = self;

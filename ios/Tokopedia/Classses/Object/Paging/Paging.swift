@@ -45,7 +45,7 @@ final class Paging:NSObject, Unboxable {
     var nextPage: Int? {
         get {
             guard let uri = uri_next else { return nil }
-            return Int(TokopediaNetworkManager.getPageFromUri(uri))
+            return Int(TokopediaNetworkManager.getPageFromUri(uri)!)
         }
     }
     

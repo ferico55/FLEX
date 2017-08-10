@@ -11,11 +11,11 @@
 
 @interface DepositFormResult : NSObject
 
-@property (nonatomic, strong) NSString *msisdn_verified;
-@property (nonatomic, strong) NSString *useable_deposit;
-@property (nonatomic, strong) NSString *useable_deposit_idr;
-@property (nonatomic, strong) NSArray *bank_account;
+@property (nonatomic, strong, nonnull) NSString *msisdn_verified;
+@property (nonatomic, strong, nonnull) NSString *useable_deposit;
+@property (nonatomic, strong, nonnull) NSString *useable_deposit_idr;
+@property (nonatomic, strong, nonnull) NSArray *bank_account;
 
-+ (RKObjectMapping*)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 
 @end

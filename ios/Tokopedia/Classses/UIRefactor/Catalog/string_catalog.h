@@ -76,9 +76,7 @@
 #define API_SHOP_RATE_SERVICE_KEY       @"shop_rate_service"
 #define API_SHOP_TOTAL_PRODUCT_KEY      @"shop_total_product"
 
-#define API_PRODUCT_ID_KEY              @"product_id"
 #define API_PRODUCT_PRICE_KEY           @"product_price"
 #define API_PRODUCT_CONDITION_KEY       @"product_condition"
-#define API_PRODUCT_NAME_KEY            @"product_name"
 
 #define API_CATALOG_IMAGE_KEY           @"catalog_images"

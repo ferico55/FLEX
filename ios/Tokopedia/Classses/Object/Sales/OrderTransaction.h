@@ -21,23 +21,23 @@
 
 @interface OrderTransaction : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSString *order_JOB_status;
-@property (strong, nonatomic) OrderCustomer *order_customer;
-@property (strong, nonatomic) OrderPayment *order_payment;
-@property (strong, nonatomic) OrderDetail *order_detail;
-@property (strong, nonatomic) NSString *order_auto_resi;
-@property (strong, nonatomic) OrderDeadline *order_deadline;
-@property (strong, nonatomic) NSString *order_auto_awb;
-@property (strong, nonatomic) NSMutableArray *order_products;
+@property (strong, nonatomic, nonnull) NSString *order_JOB_status;
+@property (strong, nonatomic, nonnull) OrderCustomer *order_customer;
+@property (strong, nonatomic, nonnull) OrderPayment *order_payment;
+@property (strong, nonatomic, nonnull) OrderDetail *order_detail;
+@property (strong, nonatomic, nonnull) NSString *order_auto_resi;
+@property (strong, nonatomic, nonnull) OrderDeadline *order_deadline;
+@property (strong, nonatomic, nonnull) NSString *order_auto_awb;
+@property (strong, nonatomic, nonnull) NSMutableArray *order_products;
 @property (strong, nonatomic, nonnull) OrderShipment *order_shipment;
-@property (strong, nonatomic) OrderLast *order_last;
-@property (strong, nonatomic) NSMutableArray *order_history;
-@property (strong, nonatomic) OrderDestination *order_destination;
-@property (strong, nonatomic) OrderSellerShop *order_shop;
+@property (strong, nonatomic, nonnull) OrderLast *order_last;
+@property (strong, nonatomic, nonnull) NSMutableArray *order_history;
+@property (strong, nonatomic, nonnull) OrderDestination *order_destination;
+@property (strong, nonatomic, nonnull) OrderSellerShop *order_shop;
 @property NSInteger order_is_pickup;
 @property NSInteger order_shipping_retry;
 
-@property (strong, nonatomic) NSString *deadline_string;
-@property (strong, nonatomic) NSString *deadline_label;
+@property (strong, nonatomic, nonnull) NSString *deadline_string;
+@property (strong, nonatomic, nonnull) NSString *deadline_label;
 @property (nonatomic) BOOL deadline_hidden;
 @end

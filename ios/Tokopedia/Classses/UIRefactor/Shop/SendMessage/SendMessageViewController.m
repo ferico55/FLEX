@@ -9,7 +9,6 @@
 #import "SendMessageViewController.h"
 #import "detail.h"
 #import "SendMessage.h"
-#import "StickyAlert.h"
 #import "InboxMessageAction.h"
 #import "GeneralAction.h"
 #import "Shop.h"
@@ -60,7 +59,7 @@
 
 - (void)setText:(NSString *)text {
     [super setText:text];
-    [self textChanged:nil];
+    [self performSelector:@selector(textChanged:)];
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView

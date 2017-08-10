@@ -11,8 +11,9 @@
 #import "TransactionAction.h"
 #import "TransactionSummary.h"
 #import "TransactionVoucher.h"
+#import "TransactionCart.h"
+#import "TxEmoney.h"
 
-#import "TransactionObjectManager.h"
 #import "string_transaction.h"
 
 @interface RequestCart : NSObject

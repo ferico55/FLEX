@@ -11,6 +11,6 @@
 
 @interface TransactionAddressShippingResult : NSObject
 
-@property (nonatomic, strong) TransactionAddressShippingForm *form;
+@property (nonatomic, strong, nonnull) TransactionAddressShippingForm *form;
 
 @end

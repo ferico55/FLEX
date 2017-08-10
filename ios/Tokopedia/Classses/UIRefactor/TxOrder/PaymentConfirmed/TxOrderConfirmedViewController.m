@@ -233,9 +233,8 @@
 
 -(void)pushToGallery
 {
-    GalleryViewController *gallery = [GalleryViewController new];
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:0 usingNetwork:YES];
     gallery.canDownload = NO;
-    [gallery initWithPhotoSource:self withStartingIndex:0 usingNetwork:YES];
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 

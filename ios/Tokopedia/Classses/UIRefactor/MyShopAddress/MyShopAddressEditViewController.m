@@ -128,11 +128,11 @@
 #pragma mark - Bar button item
 
 - (UIBarButtonItem *)backButton {
-    return [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];;
+    return [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];;
 }
 
 - (UIBarButtonItem *)cancelButton {
-    return [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStyleBordered target:self action:@selector(didTapCancelButton:)];
+    return [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:self action:@selector(didTapCancelButton:)];
 }
 
 - (UIBarButtonItem *)saveButton {

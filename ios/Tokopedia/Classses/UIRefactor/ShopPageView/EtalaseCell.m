@@ -22,6 +22,8 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     [_checkImageView setHidden:YES];
     if(_isEditable){
         [_deleteImageView setHidden:NO];

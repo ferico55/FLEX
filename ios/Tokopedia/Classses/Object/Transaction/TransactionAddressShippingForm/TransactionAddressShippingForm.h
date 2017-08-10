@@ -11,6 +11,6 @@
 
 @interface TransactionAddressShippingForm : NSObject
 
-@property(nonatomic,strong) NSArray *shipment;
+@property(nonatomic, strong, nonnull) NSArray *shipment;
 
 @end

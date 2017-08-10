@@ -12,12 +12,12 @@
 
 @interface CatalogShopAWSResult : NSObject
 
-@property (nonatomic, strong) NSString* search_url;
-@property (nonatomic, strong) NSString* share_url;
-@property (nonatomic, strong) NSString* total_record;
-@property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray<CatalogShopAWSProductResult*>* catalog_products;
+@property (nonatomic, strong, nonnull) NSString* search_url;
+@property (nonatomic, strong, nonnull) NSString* share_url;
+@property (nonatomic, strong, nonnull) NSString* total_record;
+@property (nonatomic, strong, nonnull) Paging *paging;
+@property (nonatomic, strong, nonnull) NSArray<CatalogShopAWSProductResult*>* catalog_products;
 
-+ (RKObjectMapping*)objectMapping;
++ (RKObjectMapping *_Nonnull)objectMapping;
 
 @end

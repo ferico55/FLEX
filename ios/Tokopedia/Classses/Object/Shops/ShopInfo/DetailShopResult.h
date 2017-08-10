@@ -21,6 +21,7 @@
 #define CResponseSpeed @"respond_speed"
 #define CRatings @"ratings"
 
+
 typedef NS_ENUM(NSInteger, ShopActivity) {
     ShopActivityOpen,
     ShopActivityClosed,

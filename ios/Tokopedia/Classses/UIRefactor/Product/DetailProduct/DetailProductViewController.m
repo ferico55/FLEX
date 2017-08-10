@@ -18,7 +18,6 @@
 #import "string_product.h"
 #import "string_transaction.h"
 #import "string_more.h"
-#import "string_price_alert.h"
 #import "string_home.h"
 #import "SmileyAndMedal.h"
 #import "Product.h"
@@ -274,7 +273,7 @@ TTTAttributedLabelDelegate
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -1484,7 +1483,11 @@ TTTAttributedLabelDelegate
             desclabel.text = productdesc;
             CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
             
-            CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+            CGRect expectedLabelFrame = [productdesc boundingRectWithSize:maximumLabelSize
+                                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                                               attributes:@{NSFontAttributeName:desclabel.font}
+                                                                  context:nil];
+            CGSize expectedLabelSize = expectedLabelFrame.size;
             _heightDescSection = lroundf(expectedLabelSize.height);
             
             [self setHeaderviewData];
@@ -2199,9 +2202,8 @@ TTTAttributedLabelDelegate
     
     //    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
     if(_headerimages.count > 0) {
-        GalleryViewController *gallery = [GalleryViewController new];
+        GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
         gallery.canDownload = YES;
-        [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
         [self.navigationController presentViewController:gallery animated:YES completion:nil];
     }
 }

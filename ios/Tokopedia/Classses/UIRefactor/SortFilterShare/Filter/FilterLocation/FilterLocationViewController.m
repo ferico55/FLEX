@@ -66,10 +66,6 @@
     _selectedlocation = [NSMutableDictionary new];
     
     UIBarButtonItem *barbutton1;
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
 //    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
 //    barButtonItem.tag = 10;
 //    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];

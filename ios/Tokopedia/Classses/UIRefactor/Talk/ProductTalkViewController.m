@@ -131,7 +131,6 @@
     NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     BOOL isLogin = [_userManager isLogin];
     if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
-        NSBundle *bundle = [NSBundle mainBundle];
         UIBarButtonItem *addButton;
         UIImage *imgadd = [UIImage imageNamed:@"icon_shop_addproduct"];
 

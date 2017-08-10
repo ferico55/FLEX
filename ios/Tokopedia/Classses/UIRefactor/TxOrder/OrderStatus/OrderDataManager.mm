@@ -71,7 +71,7 @@
     
     CKArrayControllerInputItems items;
     
-    for(int index = _orders.count, counter = 0; counter < orders.count; index++, counter++) {
+    for(NSInteger index = _orders.count, counter = 0; counter < orders.count; index++, counter++) {
         items.insert({0, index}, orders[counter]);
     }
     

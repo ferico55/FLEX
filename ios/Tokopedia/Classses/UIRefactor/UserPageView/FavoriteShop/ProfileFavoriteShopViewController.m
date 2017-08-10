@@ -20,7 +20,7 @@
 #import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Favorite Shop View Controller
-@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate, NoResultDelegate>
+@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate>
 {
     NSInteger _page;
     NSString *_urinext;
@@ -62,7 +62,6 @@
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
-    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Belum ada toko favorit"
                                   desc:@""

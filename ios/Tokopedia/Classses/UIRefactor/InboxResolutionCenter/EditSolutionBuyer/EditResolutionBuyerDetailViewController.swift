@@ -379,7 +379,7 @@ extension NumberFormatter {
             formatter.groupingSeparator = "."
             formatter.groupingSize = 4
             let numString = textField.text!.replacingOccurrences(of: ".", with: "")
-            let numDouble = Double(numString ?? "") ?? 0.0
+            let numDouble = Double(numString) ?? 0.0
             let str = formatter.string(from: NSNumber(value: numDouble as Double))
             textField.text = str
         } else {
@@ -388,7 +388,7 @@ extension NumberFormatter {
             formatter.usesGroupingSeparator = true
             if textField.text != "" {
                 let numString = textField.text!.replacingOccurrences(of: ".", with: "")
-                let numDouble = Double(numString ?? "") ?? 0.0
+                let numDouble = Double(numString) ?? 0.0
                 let str = formatter.string(from: NSNumber(value: numDouble as Double))
                 textField.text = str
             }
@@ -398,7 +398,7 @@ extension NumberFormatter {
 
 extension EditResolutionBuyerDetailViewController : GeneralTableViewControllerDelegate {
     //MARK: GeneralTableViewDelegate
-    func didSelectObject(_ object: AnyObject!) {
+    @nonobjc func didSelectObject(_ object: AnyObject!) {
         for solution in resolutionData.form.resolution_solution_list where solution.solution_text == object as! String {
             postObject.selectedSolution = solution
             self.adjustUISolution(solution)

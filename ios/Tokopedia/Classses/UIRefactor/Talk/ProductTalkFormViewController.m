@@ -8,7 +8,6 @@
 
 #import "ProductTalkFormViewController.h"
 #import "detail.h"
-#import "StickyAlert.h"
 #import "ProductTalkForm.h"
 #import "inbox.h"
 #import "stringrestkit.h"

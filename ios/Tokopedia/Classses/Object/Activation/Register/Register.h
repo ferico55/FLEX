@@ -12,10 +12,10 @@
 
 @interface Register : NSObject
 
-@property (nonatomic, strong) NSArray *message_error;
-@property (nonatomic, strong) NSString *status;
-@property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) RegisterResult *result;
+@property (nonatomic, strong, nonnull) NSArray *message_error;
+@property (nonatomic, strong, nonnull) NSString *status;
+@property (nonatomic, strong, nonnull) NSString *server_process_time;
+@property (nonatomic, strong, nonnull) RegisterResult *result;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping *_Nonnull)mapping;
 @end

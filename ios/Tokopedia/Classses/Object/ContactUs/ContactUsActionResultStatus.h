@@ -10,10 +10,10 @@
 
 @interface ContactUsActionResultStatus : NSObject
 
-@property (nonatomic, strong) NSString *ticket_category_attachment_status;
-@property (nonatomic, strong) NSString *ticket_category_back_url;
-@property (nonatomic, strong) NSString *ticket_category_breadcrumb;
-@property (nonatomic, strong) NSString *ticket_category_login_status;
-@property (nonatomic, strong) NSString *ticket_category_invoice_status;
+@property (nonatomic, strong, nonnull) NSString *ticket_category_attachment_status;
+@property (nonatomic, strong, nonnull) NSString *ticket_category_back_url;
+@property (nonatomic, strong, nonnull) NSString *ticket_category_breadcrumb;
+@property (nonatomic, strong, nonnull) NSString *ticket_category_login_status;
+@property (nonatomic, strong, nonnull) NSString *ticket_category_invoice_status;
 
 @end

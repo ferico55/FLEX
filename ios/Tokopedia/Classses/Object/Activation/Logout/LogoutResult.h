@@ -10,7 +10,7 @@
 
 @interface LogoutResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *is_delete_device;
-@property (nonatomic, strong) NSString *is_logout;
+@property (nonatomic, strong, nonnull) NSString *is_delete_device;
+@property (nonatomic, strong, nonnull) NSString *is_logout;
 
 @end

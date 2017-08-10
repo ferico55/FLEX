@@ -28,7 +28,6 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
-#import "AlertBaseUrl.h"
 
 #import "InboxRootViewController.h"
 
@@ -217,9 +216,9 @@ typedef enum TagRequest {
     _tabBarController = [UITabBarController new];
     _tabBarController.delegate = self;
     
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
                                              forState:UIControlStateSelected];
 
     _swipevc = [[HomeTabViewController alloc] init];
@@ -352,7 +351,7 @@ typedef enum TagRequest {
 - (void)applicationLogin:(NSNotification*)notification
 {
     _userManager = [UserAuthentificationManager new];
-    _auth = [_userManager getUserLoginData];
+    _auth = [NSMutableDictionary dictionaryWithDictionary:[_userManager getUserLoginData]];
     
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     
@@ -440,10 +439,6 @@ typedef enum TagRequest {
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [cookieStorage cookies]) {
-        NSString* domainName = [cookie domain];
-        NSRange domainToko = [domainName rangeOfString:@"toko"];
-        
-
         [cookieStorage deleteCookie:cookie];
     }
     

@@ -93,7 +93,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                     let page = EAIntroPage(customView: page1View)
                     page?.onPageDidAppear = topedImageView.startAnimating
                     page?.onPageDidDisappear = topedImageView.stopAnimating
-                    return page
+                    return page as Any
                 }(),
                 {
                     let page = EAIntroPage(customView: page2View)
@@ -104,7 +104,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                     page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage2Animations()
                     }
-                    return page
+                    return page as Any
                 }(),
                 {
                     let page = EAIntroPage(customView: page3View)
@@ -114,7 +114,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                     page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage3Animations()
                     }
-                    return page
+                    return page as Any
                 }(),
                 {
                     let page = EAIntroPage(customView: page4View)
@@ -124,14 +124,14 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                     page?.onPageDidDisappear = {[unowned self] in
                         self.stopPage4Animations()
                     }
-                    return page
+                    return page as Any
                 }(),
                 {
                     let page = EAIntroPage(customView: page5View)
                     page?.onPageDidAppear = {[unowned self] in
                         self.animatePage5()
                     }
-                    return page
+                    return page as Any
                 }(),
                 EAIntroPage(customView: page6View)])
             

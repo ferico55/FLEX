@@ -83,9 +83,11 @@
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(200,9999);
     
-    CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:_addressStreetLabel.lineBreakMode];
+    CGRect expectedLabelFrame = [textString boundingRectWithSize:maximumLabelSize
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes:@{ NSFontAttributeName:_addressStreetLabel.font }
+                                                         context:nil];
+    CGSize expectedLabelSize = expectedLabelFrame.size;
     
     //adjust the label the the new height.
     CGRect newFrame = _addressStreetLabel.frame;
@@ -156,9 +158,12 @@
     CGSize maximumLabelSize = CGSizeMake(190,9999);
     NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
     NSString *string = productNotes;
-    CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
-                                  constrainedToSize:maximumLabelSize
-                                      lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    CGRect expectedLabelFrame = [string boundingRectWithSize:maximumLabelSize
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:@{ NSFontAttributeName:[UIFont title1Theme] }
+                                                     context:nil];
+    CGSize expectedLabelSize = expectedLabelFrame.size;
     
     return 126+expectedLabelSize.height;
 }

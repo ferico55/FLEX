@@ -702,13 +702,14 @@ MGSwipeTableCellDelegate
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageAttachment.uri_large]];
         [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
         UIImageView *imageView = [UIImageView new];
+        __weak UIImageView *weakImageView = imageView;
         [imageView setImageWithURLRequest:request
                          placeholderImage:[UIImage imageNamed:@"attached_image_placeholder.png"]
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                       _count++;
-                                      [imageView setImage:image];
+                                      [weakImageView setImage:image];
                                       [descriptionArray addObject:imageAttachment.desc?:@""];
-                                      [imageArray addObject:imageView];
+                                      [imageArray addObject:weakImageView];
                                       if (_count == _detailReputationReview.review_image_attachment.count) {
                                           [_TKPDNavigator navigateToShowImageFromViewController:self withImageDictionaries:imageArray imageDescriptions:descriptionArray indexImage:sender.view.tag];
                                       }

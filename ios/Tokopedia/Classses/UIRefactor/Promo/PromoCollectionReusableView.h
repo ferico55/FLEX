@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, TopadsSource) {
 @protocol PromoCollectionViewDelegate <NSObject>
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath;
-- (void)didSelectPromoProduct:(PromoProduct *)product;
+- (void)didSelectPromoProduct:(PromoResult *)product;
 - (TopadsSource)topadsSource;
 
 @end

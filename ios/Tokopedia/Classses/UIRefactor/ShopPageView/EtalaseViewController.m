@@ -13,7 +13,7 @@
 #import "EtalaseRequest.h"
 #import "Tokopedia-Swift.h"
 
-@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
+@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
 @property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
@@ -52,7 +52,7 @@
     
     if (self.navigationController.isBeingPresented) {
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                            style:UIBarButtonItemStyleBordered
+                                                                            style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(cancelButtonTapped:)];
         cancelBarButton.tag = 10;
@@ -384,8 +384,8 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    int maxLength = 128;
-    int textLength = [textField.text length] + [string length] - range.length;
+    NSInteger maxLength = 128;
+    NSInteger textLength = [textField.text length] + [string length] - range.length;
     
     if(textLength > maxLength){
         return NO;
@@ -442,7 +442,7 @@
         if(selectedIndexPath.section == 1){
             _isLoading = YES;
             UserAuthentificationManager *auth = [UserAuthentificationManager new];
-            NSDictionary *loginData = [auth getUserLoginData];
+        
             NSString *userId = [auth getUserId]?:@"";
             EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
             [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
@@ -489,7 +489,7 @@
         _isLoading = YES;
         EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        NSDictionary *loginData = [auth getUserLoginData];
+        
         NSString *userId = [auth getUserId]?:@"";
         [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
                                                   userId:userId
@@ -518,13 +518,13 @@
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(UIAlertView *)_alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0){
         //batal
     }else if(buttonIndex == 1){
         //OK
         [AnalyticsManager trackEventName:@"clickEtalase" category:GA_EVENT_CATEGORY_ETALASE action:GA_EVENT_ACTION_EDIT label:@"Etalase"];
-        [self requestEditEtalase:[alertView textFieldAtIndex:0].text];
+        [self requestEditEtalase:[_alertView textFieldAtIndex:0].text];
     }
 }
 

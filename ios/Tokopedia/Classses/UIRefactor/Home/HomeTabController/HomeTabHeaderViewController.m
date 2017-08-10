@@ -186,7 +186,7 @@
     [self setActiveButton];
 }
 
-- (void)tap:(int)page {
+- (void)tap:(NSInteger)page {
     [self.view layoutIfNeeded];
     if (_userAuthManager.isLogin){
         NSInteger xInScrollView = [self xInScrollViewFormula: page];

@@ -47,6 +47,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     _isnodata = YES;
     _wholesales = [NSMutableArray new];
     

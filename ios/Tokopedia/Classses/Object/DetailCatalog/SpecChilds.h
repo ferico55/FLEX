@@ -10,7 +10,7 @@
 
 @interface SpecChilds : NSObject<TKPObjectMapping>
 
-@property (strong, nonatomic) NSArray *spec_val;
-@property (strong, nonatomic) NSString *spec_key;
+@property (strong, nonatomic, nonnull) NSArray *spec_val;
+@property (strong, nonatomic, nonnull) NSString *spec_key;
 
 @end

@@ -130,11 +130,11 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate func setExpandButton() {
         if (isOpen) {
             self.expandLabel.text = "Tutup"
-            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi);
             container.isHidden = false
         } else {
             self.expandLabel.text = "Lihat Detail"
-            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2));
+            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2);
             container.isHidden = true
         }
     }

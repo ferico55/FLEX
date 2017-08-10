@@ -12,6 +12,8 @@
 @implementation ProductDetailReputationCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     if([tvDesc respondsToSelector:@selector(textContainerInset)]) {
         tvDesc.textContainerInset = UIEdgeInsetsZero;
         tvDesc.textContainer.lineFragmentPadding = 0;
