@@ -5,7 +5,6 @@
 //  Created by IT Tkpd on 8/19/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "AFNetworking.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Fabric/Fabric.h>

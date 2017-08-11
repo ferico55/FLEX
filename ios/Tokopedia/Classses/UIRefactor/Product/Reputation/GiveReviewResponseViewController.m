@@ -11,7 +11,6 @@
 #import "ViewLabelUser.h"
 #import "MyReviewDetailDataManager.h"
 #import "CMPopTipView.h"
-#import "UIImageView+AFNetworking.h"
 #import "SmileyAndMedal.h"
 #import "ShopBadgeLevel.h"
 #import "Tokopedia-Swift.h"

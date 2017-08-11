@@ -13,7 +13,6 @@
 #import "GeneralActionResult.h"
 #import "GenerateHostRequest.h"
 #import "GiveReviewRatingViewController.h"
-#import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
 #import "AttachedPicture.h"

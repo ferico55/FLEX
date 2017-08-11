@@ -10,7 +10,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Render
-import AFNetworking
 
 @objc(ReplacementDetailViewController) class ReplacementDetailViewController: UIViewController {
     

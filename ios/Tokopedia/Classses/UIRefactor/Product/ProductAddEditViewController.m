@@ -18,7 +18,6 @@
 #import "FilterCategoryViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
-#import "UIButton+AFNetworking.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -672,21 +671,20 @@ FilterCategoryViewDelegate
     for (int i = 0; i< selectedImagesEditProduct.count ; i++) {
         if (i < _addImageButtons.count) {
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:selectedImagesEditProduct[i].image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:selectedImagesEditProduct[i].image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15];
+
+            UIImageView* imageView = [UIImageView new];
+            [imageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [_addImageButtons[i] setBackgroundImage:image forState:UIControlStateNormal];
+                selectedImagesEditProduct[i].image = image;
+                [self setImageButtons];
+                
+                if (i == selectedImagesEditProduct.count-1){
+                    [self enableButtonBeforeSuccessRequest:YES];
+                    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+                }
+            } failure:nil];
             
-            [_addImageButtons[i] setBackgroundImageForState:UIControlStateNormal
-                                             withURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
-                                                    success:^(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
-                                                        
-                                                        selectedImagesEditProduct[i].image = image;
-                                                        [self setImageButtons];
-                                                        
-                                                        if (i == selectedImagesEditProduct.count-1){
-                                                            [self enableButtonBeforeSuccessRequest:YES];
-                                                            [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
-                                                        }
-                                                        
-                                                    } failure:nil];
         }
     }
 }

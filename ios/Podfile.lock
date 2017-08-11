@@ -1,19 +1,4 @@
 PODS:
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
-    - AFNetworking/NSURLSession
   - AHKActionSheet (0.5.4)
   - Alamofire (4.4.0)
   - APAddressBook/Core (0.2.3)
@@ -47,17 +32,17 @@ PODS:
   - CFAlertViewController (2.3.1)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
-  - DKImagePickerController (3.5.7):
-    - DKImagePickerController/Camera (= 3.5.7)
-    - DKImagePickerController/ImageManager (= 3.5.7)
-  - DKImagePickerController/Camera (3.5.7)
-  - DKImagePickerController/ImageManager (3.5.7)
+  - DKImagePickerController (3.5.0):
+    - DKImagePickerController/Camera (= 3.5.0)
+    - DKImagePickerController/ImageManager (= 3.5.0)
+  - DKImagePickerController/Camera (3.5.0)
+  - DKImagePickerController/ImageManager (3.5.0)
   - DownPicker (0.1.34)
   - DTTJailbreakDetection (0.4.0)
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
-  - Eureka (2.0.1)
+  - Eureka (2.0.0-beta.1)
   - EZYGradientView-ObjC (1.3)
   - FBSDKCoreKit (4.19.0):
     - Bolts (~> 1.7)
@@ -67,7 +52,7 @@ PODS:
     - FBSDKCoreKit
   - FLEX (2.1.1)
   - GoogleAnalytics (3.13.0)
-  - GoogleAppIndexing (2.0.3)
+  - GoogleAppIndexing (2.0.1)
   - GoogleAppUtilities (1.1.2):
     - GoogleSymbolUtilities (~> 1.1)
   - GoogleAuthUtilities (1.0.1):
@@ -105,8 +90,8 @@ PODS:
   - KeychainAccess (3.0.1)
   - KMNavigationBarTransition (1.0.0)
   - lottie-ios (1.5.2)
-  - Masonry (1.0.2)
-  - MMNumberKeyboard (0.1.6)
+  - Masonry (1.0.1)
+  - MMNumberKeyboard (0.1.5)
   - MoEngage-iOS-SDK (3.3.0)
   - MORichNotification (1.1.1)
   - Moya (8.0.3):
@@ -188,7 +173,6 @@ PODS:
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
-  - AFNetworking (~> 3.1.0)
   - AHKActionSheet (~> 0.5.4)
   - APAddressBook/Swift (~> 0.2.3)
   - Apollo (~> 0.5.6)
@@ -290,7 +274,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/spotify/SPTPersistentCache.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
@@ -303,21 +286,21 @@ SPEC CHECKSUMS:
   CFAlertViewController: 13291a32ee1ca1c1401e6a0600afea1e864604e0
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
-  DKImagePickerController: da5111f475c2fda9f932bab55519a43275bd4cf0
+  DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
-  Eureka: ae837bb1dfae0c07bc1bda7aeef87876eeb537c2
+  Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
   EZYGradientView-ObjC: 42e23b6e36bd75b7f7288198a328cbf7bc1b5aee
   FBSDKCoreKit: 894b2b6eda6a4c8c4204e92e59cc355709ef045c
   FBSDKLoginKit: 83ca4d8f12a2022570af9fd6aacf27f6b425b99f
   FBSDKShareKit: 5953758366278430dc322d5cdc906db361ed7f81
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
-  GoogleAppIndexing: 176146164d14b30a403f5ba394fc2b51855025da
+  GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
+  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -334,8 +317,8 @@ SPEC CHECKSUMS:
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   KMNavigationBarTransition: b3fb8337f7a1e4542add07fd6c45fb9980794d59
   lottie-ios: 255a0e95973a5c4424e809d7a5c19f7384c73e84
-  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
-  MMNumberKeyboard: 4bac4f0402ef73c92bb6594d9c7469a9add63589
+  Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
+  MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
   MoEngage-iOS-SDK: 7862a1933fb5fd181309955b3a7dbe18dcaa717f
   MORichNotification: 1dbb16cfcda6d51a12c161594137e8217220f42b
   Moya: d3721622e3cc0cc2f038d69a258686f0b66e7252
@@ -374,6 +357,6 @@ SPEC CHECKSUMS:
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 6a604e48bcb398e5c305370513c8ed69e9317d13
+PODFILE CHECKSUM: bddae5431a786ef25e716ddcc60287e6ce073b87
 
 COCOAPODS: 1.2.1

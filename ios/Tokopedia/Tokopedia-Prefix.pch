@@ -43,7 +43,6 @@
     #import "RKObjectManagerCategory.h"
     #import "NSStringCategory.h"
     #import "NSArrayCategory.h"
-    #import "UIImageView+AFNetworking.h"
     #import "NSDictionaryCategory.h"
     #import "UIKitCategory.h"
     #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"

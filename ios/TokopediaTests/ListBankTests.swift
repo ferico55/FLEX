@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import AFNetworking
 import UIKit
 import RestKit
 

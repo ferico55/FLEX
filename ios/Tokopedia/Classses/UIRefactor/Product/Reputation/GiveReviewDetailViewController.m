@@ -13,7 +13,6 @@
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
 #import "ProductAddCaptionViewController.h"
-#import "UIImageView+AFNetworking.h"
 #import "ReviewImageAttachment.h"
 #import "Tokopedia-Swift.h"
 #import "AttachedPicture.h"

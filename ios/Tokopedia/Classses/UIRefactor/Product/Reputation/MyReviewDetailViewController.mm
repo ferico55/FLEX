@@ -11,7 +11,6 @@
 #import "MyReviewReputationViewModel.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
-#import "UIImageView+AFNetworking.h"
 #import "ViewLabelUser.h"
 #import "MyReviewDetailDataManager.h"
 #import "DetailReputationReviewComponentDelegate.h"
@@ -25,7 +24,6 @@
 #import "ReportViewController.h"
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
-#import "UIImageView+AFNetworking.h"
 #import "ImageStorage.h"
 #import "LoadingView.h"
 #import <QuartzCore/QuartzCore.h>

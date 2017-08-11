@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 import Masonry
 import RxSwift
 import RxCocoa
