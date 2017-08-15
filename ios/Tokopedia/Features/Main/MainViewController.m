@@ -363,12 +363,6 @@ typedef enum TagRequest {
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
-
-    UINavigationController *searchNavBar = newControllers[2];
-    id search = searchNavBar.viewControllers[0];
-    if (_auth) {
-        ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:@{}};
-    }
     
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
