@@ -29,7 +29,7 @@ class DigitalProvider: NetworkProvider<DigitalTarget> {
         return NetworkProvider.defaultEndpointCreator(for: target)
             .adding(
                 httpHeaderFields: headers
-            )
+        )
     }
 }
 
@@ -46,20 +46,21 @@ enum DigitalTarget {
 
 extension DigitalTarget: TargetType {
     
+    
     /// The target's base `URL`.
     var baseURL: URL { return URL(string: NSString.pulsaApiUrl())! }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
     var path: String {
         switch self {
-        case .addToCart: return "/v1.3/cart"
-        case .payment: return "/v1.3/checkout"
+        case .addToCart: return "/v1.4/cart"
+        case .payment: return "/v1.4/checkout"
         case let .category(categoryId): return "/v1.3/category/\(categoryId)"
-        case .voucher: return "/v1.3/voucher/check"
-        case .otpSuccess: return "/v1.3/cart/otp-success"
-        case .getCart: return "/v1.3/cart"
-        case .lastOrder: return "/v1.3/last-order"
-        case .deleteCart: return "/v1.3/cart"
+        case .voucher: return "/v1.4/voucher/check"
+        case .otpSuccess: return "/v1.4/cart/otp-success"
+        case .getCart: return "/v1.4/cart"
+        case .lastOrder: return "/v1.4/last-order"
+        case .deleteCart: return "/v1.4/cart"
         }
     }
     
@@ -75,6 +76,8 @@ extension DigitalTarget: TargetType {
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
+        let userManager = UserAuthentificationManager()
+        
         switch self {
         case let .addToCart(productId, inputFields, instantCheckout):
             let fields = inputFields.map { key, value in
@@ -92,7 +95,12 @@ extension DigitalTarget: TargetType {
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": userAgent,
-                        "fields": fields
+                        "fields": fields,
+                        "identifier" : [
+                            "user_id" : userManager.getUserId(),
+                            "device_token" : userManager.getMyDeviceToken(),
+                            "os_type" : "2"
+                        ]
                     ]
                 ]
             ]
@@ -104,7 +112,12 @@ extension DigitalTarget: TargetType {
                     "id": cartId,
                     "attributes": [
                         "ip_address": "127.0.0.1",
-                        "user_agent": userAgent
+                        "user_agent": userAgent,
+                        "identifier" : [
+                            "user_id" : userManager.getUserId(),
+                            "device_token" : userManager.getMyDeviceToken(),
+                            "os_type" : "2"
+                        ]
                     ]
                 ]
             ]
@@ -123,7 +136,12 @@ extension DigitalTarget: TargetType {
                         "user_agent": userAgent,
                         "voucher_code": voucherCode,
                         "transaction_amount": transactionAmount,
-                        "client_id": clientID
+                        "client_id": clientID,
+                        "identifier" : [
+                            "user_id" : userManager.getUserId(),
+                            "device_token" : userManager.getMyDeviceToken(),
+                            "os_type" : "2"
+                        ]
                     ],
                     "relationships": [
                         "cart": [
@@ -194,7 +212,7 @@ func getIFAddresses() -> String {
                     nil,
                     socklen_t(0),
                     NI_NUMERICHOST
-                ) == 0 {
+                    ) == 0 {
                     let address = String(cString: hostname)
                     addresses.append(address)
                 }
