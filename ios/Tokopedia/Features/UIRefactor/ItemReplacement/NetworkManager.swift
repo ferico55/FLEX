@@ -28,7 +28,7 @@ final class NetworkPlugin: PluginType {
         switch result {
         case .success(let response):
             if response.statusCode != 200 {
-                StickyAlertView.showErrorMessage(["Mohon maaf, terjadi kendala pada server kami. Mohon kirimkan screenshot halaman ini ke ios[dot]feedback@tokopedia[dot]com untuk kami investigasi lebih lanjut."])
+                StickyAlertView.showErrorMessage(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])
             }
         case .failure( _):
             StickyAlertView.showErrorMessage(["Tidak ada koneksi internet"])

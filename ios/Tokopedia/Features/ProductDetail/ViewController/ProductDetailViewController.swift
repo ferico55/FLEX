@@ -169,12 +169,10 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                 
                 var errorMessages: [String]
                 switch (error as NSError).code {
-                case NSURLErrorBadServerResponse:
-                    errorMessages = ["Mohon maaf, terjadi kendala pada server kami. Mohon kirimkan screenshot halaman ini ke ios[dot]feedback@tokopedia[dot]com untuk kami investigasi lebih lanjut."]
+                case NSURLErrorBadServerResponse, NSURLErrorCancelled:
+                    errorMessages = ["Terjadi kendala pada server. Mohon coba beberapa saat lagi."]
                 case NSURLErrorNotConnectedToInternet:
                     errorMessages = ["Tidak ada koneksi internet"]
-                case NSURLErrorCancelled:
-                    errorMessages = ["Terjadi kendala pada koneksi internet"]
                 default:
                     errorMessages = [error.localizedDescription]
                 }

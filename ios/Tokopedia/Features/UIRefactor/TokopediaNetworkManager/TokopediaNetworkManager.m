@@ -157,12 +157,10 @@
 
 - (void)showErrorAlert:(NSError*)error {
     NSArray *errors;
-    if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server kami. Mohon kirimkan screenshot halaman ini ke ios[dot]feedback@tokopedia[dot]com untuk kami investigasi lebih lanjut."];
+    if(error.code == -1011 || error.code == -999) {
+        errors = @[@"Terjadi kendala pada server. Mohon coba beberapa saat lagi."];
     } else if (error.code == -1009) {
         errors = @[@"Tidak ada koneksi internet"];
-    } else if (error.code == -999) {
-        errors = @[@"Terjadi kendala pada koneksi internet"];
     } else {
         errors = @[error.localizedDescription];
         return;
