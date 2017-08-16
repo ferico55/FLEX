@@ -5,17 +5,28 @@ use_frameworks!
 
 def react_pods
     pod 'React', :path => '../node_modules/react-native', :subspecs => [
-    'Core',
-    'RCTText',
-    'RCTWebSocket',
-    'RCTNetwork'
-    
-    # needed for localhost testing of your app
-    # Add any other subspecs you want to use in your project
+        'Core',
+        'RCTText',
+        'RCTWebSocket',
+        'RCTNetwork',
+        'DevSupport',
+        'RCTAdSupport',
+        'RCTVibration',
+        'RCTImage',
+        'RCTGeolocation',
+        'RCTAnimation',
+        'RCTActionSheet',
+        'RCTSettings',
+        'RCTLinkingIOS',
+        'BatchedBridge'
     ]
     
-    pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
     pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+    
+    pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+    
+    pod 'CodePush', :path => '../node_modules/react-native-code-push'
+    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 end
 
 def common_pods
@@ -105,12 +116,13 @@ end
 
 target "Tokopedia" do
     common_pods
-    #    react_pods
+    react_pods
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do
     common_pods
+    react_pods
 end
 
 target "ServiceExtension" do

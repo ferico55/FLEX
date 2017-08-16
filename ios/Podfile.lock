@@ -30,6 +30,14 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - CFAlertViewController (2.3.1)
+  - CodePush (3.0.1):
+    - CodePush/Core (= 3.0.1)
+    - CodePush/SSZipArchive (= 3.0.1)
+    - React
+  - CodePush/Core (3.0.1):
+    - React
+  - CodePush/SSZipArchive (3.0.1):
+    - React
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - DKImagePickerController (3.5.0):
@@ -126,6 +134,42 @@ PODS:
   - OAStackView (1.0.1)
   - Popover (1.0.6)
   - RATreeView (2.1.2)
+  - React (0.46.4):
+    - React/Core (= 0.46.4)
+  - React/BatchedBridge (0.46.4):
+    - React/Core
+    - React/cxxreact_legacy
+  - React/Core (0.46.4):
+    - Yoga (= 0.46.4.React)
+  - React/cxxreact_legacy (0.46.4):
+    - React/jschelpers_legacy
+  - React/DevSupport (0.46.4):
+    - React/Core
+    - React/RCTWebSocket
+  - React/jschelpers_legacy (0.46.4)
+  - React/RCTActionSheet (0.46.4):
+    - React/Core
+  - React/RCTAdSupport (0.46.4):
+    - React/Core
+  - React/RCTAnimation (0.46.4):
+    - React/Core
+  - React/RCTGeolocation (0.46.4):
+    - React/Core
+  - React/RCTImage (0.46.4):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.46.4):
+    - React/Core
+  - React/RCTNetwork (0.46.4):
+    - React/Core
+  - React/RCTSettings (0.46.4):
+    - React/Core
+  - React/RCTText (0.46.4):
+    - React/Core
+  - React/RCTVibration (0.46.4):
+    - React/Core
+  - React/RCTWebSocket (0.46.4):
+    - React/Core
   - Render (2.1.1)
   - RestKit (0.27.0):
     - RestKit/Core (= 0.27.0)
@@ -152,6 +196,10 @@ PODS:
   - Reveal-iOS-SDK (1.6.2)
   - RichEditorView (4.0.0)
   - RKValueTransformers (1.1.3)
+  - RNDeviceInfo (0.9.3):
+    - React
+  - RNVectorIcons (4.3.0):
+    - React
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
   - RSKPlaceholderTextView (2.0.0)
@@ -170,6 +218,7 @@ PODS:
   - UITableView+FDTemplateLayoutCell (1.4)
   - Unbox (2.4.0)
   - VMaskTextField (1.0.8)
+  - Yoga (0.46.4.React)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -181,6 +230,7 @@ DEPENDENCIES:
   - BEMCheckBox (~> 1.2.0)
   - BlocksKit (~> 2.2.5)
   - CFAlertViewController (~> 2.3.1)
+  - CodePush (from `../node_modules/react-native-code-push`)
   - ComponentKit (~> 0.14)
   - DKImagePickerController (~> 3.5.0)
   - DownPicker (~> 0.1.34)
@@ -218,12 +268,28 @@ DEPENDENCIES:
   - OAStackView (~> 1.0.1)
   - Popover (from `https://github.com/corin8823/Popover.git`, branch `master`)
   - RATreeView (~> 2.1.2)
+  - React/BatchedBridge (from `../node_modules/react-native`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAdSupport (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
   - Render (from `https://github.com/esam091/Render.git`, branch `temporary-fix`)
   - RestKit (~> 0.27.0)
   - RestKit/Testing (~> 0.27.0)
   - ReSwift (~> 3.0.0)
   - Reveal-iOS-SDK
   - RichEditorView (~> 4.0.0)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RSKGrowingTextView (~> 2.0)
   - RSKPlaceholderTextView (~> 2.0)
   - RxCocoa (~> 3.3.1)
@@ -238,9 +304,12 @@ DEPENDENCIES:
   - UITableView+FDTemplateLayoutCell (~> 1.4)
   - Unbox (~> 2.4)
   - VMaskTextField (~> 1.0.8)
+  - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
+  CodePush:
+    :path: ../node_modules/react-native-code-push
   HMSegmentedControl:
     :git: https://github.com/billionssg/HMSegmentedControl
   JSQMessagesViewController:
@@ -249,12 +318,20 @@ EXTERNAL SOURCES:
   Popover:
     :branch: master
     :git: https://github.com/corin8823/Popover.git
+  React:
+    :path: ../node_modules/react-native
   Render:
     :branch: temporary-fix
     :git: https://github.com/esam091/Render.git
+  RNDeviceInfo:
+    :path: ../node_modules/react-native-device-info
+  RNVectorIcons:
+    :path: ../node_modules/react-native-vector-icons
   SPTPersistentCache:
     :branch: master
     :git: https://github.com/spotify/SPTPersistentCache.git
+  Yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
   HMSegmentedControl:
@@ -284,6 +361,7 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   CFAlertViewController: 13291a32ee1ca1c1401e6a0600afea1e864604e0
+  CodePush: 376d00239fd36aeef445b3ec92a43d091ba070ff
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
@@ -300,7 +378,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
+  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -332,6 +410,7 @@ SPEC CHECKSUMS:
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   Popover: f811ed4eb4c4843d7bfff357816ed0d97c4ba69e
   RATreeView: 380cde0090cfde21dc6ac29137f49d3b768fdd28
+  React: 596d8774642d10fea20b1f24cc591fcf633f73ad
   Render: bb3ec7d0956ea409263fbfda5ff60b8ba16c9579
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
@@ -339,6 +418,8 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   RichEditorView: e5990b1a092539559def9df135e064b29ab97e68
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
+  RNDeviceInfo: dc3cbee96cd2392cf03d6ff6191dc15f1606a166
+  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
@@ -355,8 +436,9 @@ SPEC CHECKSUMS:
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   Unbox: c8b2ab69d3337597b4a3f47a0538807dc12db670
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
+  Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: bddae5431a786ef25e716ddcc60287e6ce073b87
+PODFILE CHECKSUM: ad91b46e61456c0c7156897ef811d7128b0affd3
 
 COCOAPODS: 1.2.1
