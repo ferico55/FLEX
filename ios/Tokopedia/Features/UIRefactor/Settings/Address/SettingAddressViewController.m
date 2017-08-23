@@ -98,7 +98,6 @@
 
         [self.view addSubview:_addNewAddressView];
         _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
-        //_table.tableHeaderView = _addNewAddressView;
         
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
@@ -126,7 +125,8 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [_table setTableHeaderView:_refreshControl];
+    _table.scrollIndicatorInsets = UIEdgeInsetsMake(_refreshControl.frame.size.height - 15, 0, 0, 0);
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
@@ -349,20 +349,22 @@
 
 #pragma mark - Memory Management
 - (void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Request
 -(void)request
 {
+    NSInteger nextPage = [[TokopediaNetworkManager getPageFromUri:_urinext] integerValue];
+    if(nextPage == _page) return;
+    
+    _page = nextPage;
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    if (_page==1)_doneBarButtonItem.enabled = NO;
-    [AddressRequest fetchListAddressPage:_page query:_searchKeyword onSuccess:^(AddressFormResult * data) {
+    if (_page <= 1) _doneBarButtonItem.enabled = NO;
+    [AddressRequest fetchListAddressPage: nextPage query:_searchKeyword onSuccess:^(AddressFormResult * data) {
         [self successRequestListAddress:data.list];
-        _page = [[TokopediaNetworkManager getPageFromUri:data.paging.uri_next] integerValue];
         _urinext =  data.paging.uri_next;
         
         [_act stopAnimating];
@@ -375,7 +377,7 @@
 }
 
 -(void)successRequestListAddress:(NSArray<AddressFormList*> *)listAddress{
-    if (_page == 1) {
+    if (_page <= 1) {
         [_list removeAllObjects];
     }
     
@@ -488,8 +490,8 @@
 }
 
 -(void)refreshView {
-    
     _page = 1;
+    _urinext = nil;
     [self request];
 }
 
