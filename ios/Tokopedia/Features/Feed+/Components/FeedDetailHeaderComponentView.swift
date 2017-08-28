@@ -29,7 +29,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 layout.height = 52
                 
                 imageView.borderWidth = 1.0
-                imageView.borderColor = .tpLine()
+                imageView.borderColor = UIColor.fromHexString("#e0e0e0")
                 imageView.cornerRadius = 3.0
                 imageView.setImageWith(URL(string: state.source.shopState.shopImage), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                 
@@ -67,7 +67,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
             button.titleLabel?.font = .smallThemeSemibold()
             button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
             button.borderWidth = 1
-            button.borderColor = .tpLine()
+            button.borderColor = UIColor.fromHexString("#e0e0e0")
             
             button.rx.tap
                 .subscribe(onNext: {

@@ -22,7 +22,7 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
             layout.width = size.width
         }.add(child: Node<UILabel>(identifier: "title") { label, layout, _ in
             label.text = state?.title
-            label.font = UIFont.semiboldSystemFont(ofSize: 16.0)
+            label.font = .largeThemeSemibold()
             label.textColor = UIColor.tpPrimaryBlackText()
             
             layout.marginLeft = 10
@@ -39,7 +39,7 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
         }.add(children: [
             Node<UIView>() { view, layout, _ in
                 view.borderWidth = 1
-                view.borderColor = .tpLine()
+                view.borderColor = UIColor.fromHexString("#e0e0e0")
                 
                 layout.flexDirection = .column
                 layout.alignItems = .stretch

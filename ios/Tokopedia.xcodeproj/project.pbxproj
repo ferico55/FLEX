@@ -66,6 +66,7 @@
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		62E827F81F3DBC88002C1FB0 /* FeedToppicksComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E827F71F3DBC88002C1FB0 /* FeedToppicksComponentView.swift */; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FD3121F2843A100ADF80D /* main.jsbundle */; };
@@ -1972,6 +1973,7 @@
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		62E827F71F3DBC88002C1FB0 /* FeedToppicksComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedToppicksComponentView.swift; sourceTree = "<group>"; };
 		7A3FD3121F2843A100ADF80D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
 		7A465FC81EB2FEA900A72105 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -5666,6 +5668,7 @@
 		DADBA08E1F3C5E25002B1FAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				62E827F71F3DBC88002C1FB0 /* FeedToppicksComponentView.swift */,
 				DADBA08F1F3C5E25002B1FAE /* FeedComponentView.swift */,
 				DADBA0901F3C5E25002B1FAE /* FeedDetailActionComponentView.swift */,
 				DADBA0911F3C5E25002B1FAE /* FeedDetailHeaderComponentView.swift */,
@@ -12057,6 +12060,7 @@
 				DADBAC8F1F3C5E2A002B1FAE /* InboxMessageDetailBetween.m in Sources */,
 				DADBAC9F1F3C5E2A002B1FAE /* EditResolutionForm.swift in Sources */,
 				DADBAE061F3C5E2C002B1FAE /* TxOrderStatus.m in Sources */,
+				62E827F81F3DBC88002C1FB0 /* FeedToppicksComponentView.swift in Sources */,
 				DADBAD951F3C5E2B002B1FAE /* AddProductSubmitResult.m in Sources */,
 				DADBAD901F3C5E2B002B1FAE /* ShopProductPageList.swift in Sources */,
 				DADBAE101F3C5E2C002B1FAE /* UploadImageHelper.m in Sources */,

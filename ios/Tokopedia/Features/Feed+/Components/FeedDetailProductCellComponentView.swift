@@ -38,7 +38,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                         
                         imageView.setImageWith(URL(string: (state?.productImage)!), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                         imageView.borderWidth = 1.0
-                        imageView.borderColor = .tpLine()
+                        imageView.borderColor = UIColor.fromHexString("#e0e0e0")
                     }),
                     Node<UIView>(identifier: "product-info") { _, layout, _ in
                         layout.flexDirection = .column

@@ -43,7 +43,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             layout.height = 52
             
             imageView.borderWidth = 1.0
-            imageView.borderColor = .tpLine()
+            imageView.borderColor = UIColor.fromHexString("#e0e0e0")
             imageView.cornerRadius = 3.0
             
             if state.source.fromTokopedia {
@@ -107,7 +107,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             button.titleLabel?.font = .smallThemeSemibold()
             button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
             button.borderWidth = 1
-            button.borderColor = .tpLine()
+            button.borderColor = UIColor.fromHexString("#e0e0e0")
             
             button.rx.tap
                 .subscribe(onNext: {
@@ -150,7 +150,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
         let horizontalLine = Node<UIView>(identifier: "line") { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = .tpLine()
+            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
         }
         
         let header = Node<UIView>() { view, layout, size in

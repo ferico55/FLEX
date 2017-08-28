@@ -90,7 +90,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
                     
                     label.text = "\(state.discountPercentage)% Off"
                     label.textColor = .white
-                    label.backgroundColor = .tpOrange()
+                    label.backgroundColor = .tpRed()
                     label.font = .semiboldSystemFont(ofSize: 10)
                     label.layer.borderColor = UIColor.white.cgColor
                     label.layer.borderWidth = 1
@@ -138,7 +138,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
     private func officialStoreInfo(state: FeedCardProductState) -> NodeType {
         let shopImage = Node<UIImageView>() { imageView, layout, _ in
             imageView.setImageWith(URL(string: state.shopImageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
-            imageView.borderColor = .tpLine()
+            imageView.borderColor = UIColor.fromHexString("#e0e0e0")
             imageView.borderWidth = 1
             imageView.cornerRadius = 2
             imageView.contentMode = .scaleAspectFit

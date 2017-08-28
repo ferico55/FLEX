@@ -263,7 +263,7 @@ class FeedViewController: UIViewController {
             }
         }
         
-        if total > 1 {
+        if total > 2 {
             self.feedCards += self.feedState.feedCards
             self.feedCardSource.onNext(self.feedCards)
             self.loadTopAdsContent(onPage: page, totalData: total)

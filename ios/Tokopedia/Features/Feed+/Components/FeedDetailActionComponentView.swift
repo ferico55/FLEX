@@ -53,7 +53,7 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
             Node<UIView>() { view, layout, _ in
                 layout.width = 1
                 
-                view.backgroundColor = .tpLine()
+                view.backgroundColor = UIColor.fromHexString("#e0e0e0")
             },
             Node<UIButton>(identifier: "visit-shop") { button, layout, _ in
                 button.setTitle("Kunjungi Toko", for: .normal)

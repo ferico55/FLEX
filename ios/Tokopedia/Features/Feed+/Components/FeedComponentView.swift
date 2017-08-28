@@ -55,6 +55,10 @@ class FeedComponentView: ComponentView<FeedCardState> {
             return FeedOfficialStoreComponentView().construct(state: state.content, size: size)
         }
         
+        if state.content.toppicks != nil {
+            return FeedToppicksComponentView().construct(state: state.content, size: size)
+        }
+        
         return (state.topads != nil) ? topAdsComponent.construct(state: state.topads, size: size) : self.feedCard(state: state, size: size)
     }
     
@@ -343,7 +347,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
             layout.flexShrink = 1
             layout.flexGrow = 1
             
-            view.borderColor = .tpLine()
+            view.borderColor = UIColor.fromHexString("#e0e0e0")
             view.borderWidth = 1
         }.add(children: [
             FeedHeaderComponentView(viewController: self.viewController!).construct(state: state, size: size),
@@ -379,7 +383,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = .tpLine()
+            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
         }
     }
     
@@ -387,7 +391,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.width = 1
             
-            view.backgroundColor = .tpLine()
+            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
         }
     }
     
@@ -560,8 +564,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
                     .disposed(by: self.rx_disposeBag)
                 
                 layout.height = 52.0
-            },
-            self.horizontalLine(withSize: size)
+            }
         ])
     }
 }

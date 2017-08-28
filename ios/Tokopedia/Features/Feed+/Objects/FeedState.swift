@@ -13,12 +13,14 @@ import ReSwift
 import Apollo
 
 enum FeedContentType {
+    case invalid
     case notHandled
     case newProduct
     case editProduct
     case promotion
     case officialStoreBrand
     case officialStoreCampaign
+    case toppicks
 }
 
 enum FeedErrorType {
@@ -64,13 +66,11 @@ struct FeedInspirationState: Render.StateType {
     init(data: FeedsQuery.Data.Inspiration.Datum) {
         self.title = data.title!
         
-        var productArray: [FeedCardProductState] = []
-        
-        data.recommendation!.map { product in
+        let productArray: [FeedCardProductState] = data.recommendation!.map { product in
             var productState = FeedCardProductState(recommendationProduct: product!)
             productState.recommendationProductSource = data.source!
             
-            productArray += [productState]
+            return productState
         }
         
         self.products = productArray
@@ -93,6 +93,7 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var activity = FeedCardActivityState()
     var officialStore: [FeedCardOfficialStoreState]?
     var redirectURL = ""
+    var toppicks: [FeedCardToppicksState]?
 }
 
 struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
@@ -106,6 +107,23 @@ struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
         self.source = NSString.convertHTML(statusActivity.source!)
         self.activity = statusActivity.activity!
         self.amount = statusActivity.amount!
+    }
+}
+
+struct FeedCardToppicksState: Render.StateType, ReSwift.StateType {
+    let onPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    var name = ""
+    var isParent = false
+    var imageURL = ""
+    var redirectURL = ""
+    
+    init() { }
+    
+    init(toppick: FeedsQuery.Data.Feed.Datum.Content.TopPick) {
+        self.name = toppick.name ?? ""
+        self.isParent = toppick.isParent ?? false
+        self.imageURL = toppick.imageUrl ?? ""
+        self.redirectURL = toppick.url ?? ""
     }
 }
 
@@ -301,7 +319,7 @@ class FeedStateManager: NSObject {
         feedData.forEach({ card in
             let feedCard = self.initFeedCard(feedData: card!)
             
-            if feedCard.content.type == .notHandled {
+            if feedCard.content.type == .notHandled || feedCard.content.type == .invalid {
                 return
             }
             
@@ -408,6 +426,18 @@ class FeedStateManager: NSObject {
             content.product = productArray
             content.totalProduct = feedContent.totalProduct!
             content.activity = FeedCardActivityState(statusActivity: feedContent.newStatusActivity!)
+        } else if feedContent.type == "toppick" {
+            content.type = .toppicks
+            
+            guard let toppicks = feedContent.topPicks else { return FeedCardContentState() }
+            
+            content.toppicks = toppicks.map { item in
+                return FeedCardToppicksState(toppick: item!)
+            }
+            
+            if (content.oniPad && content.toppicks?.count != 5) || (!content.oniPad && content.toppicks?.count != 4) {
+                content.type = .invalid
+            }            
         } else if feedContent.type == "official_store_brand" || feedContent.type == "official_store_campaign" {
             content.type = (feedContent.type == "official_store_brand") ? .officialStoreBrand : .officialStoreCampaign
             content.redirectURL = feedContent.redirectUrlApp ?? "tokopedia://official-store/mobile"
@@ -417,7 +447,7 @@ class FeedStateManager: NSObject {
                     let store = FeedCardOfficialStoreState(data: officialStore!, redirectURL: officialStore?.redirectUrlApp ?? "tokopedia://official-store/mobile")
                     
                     if store.incomplete {
-                        content.type = .notHandled
+                        content.type = .invalid
                     }
                     
                     return store

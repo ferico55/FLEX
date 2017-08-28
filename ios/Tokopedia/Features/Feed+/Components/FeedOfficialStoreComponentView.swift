@@ -215,7 +215,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
             layout.width = size.width
         }.add(child: Node<UILabel>(identifier: "title-label") { label, layout, _ in
             label.text = title
-            label.font = UIFont.semiboldSystemFont(ofSize: 16.0)
+            label.font = .largeThemeSemibold()
             label.textColor = UIColor.tpPrimaryBlackText()
             
             layout.marginLeft = 10

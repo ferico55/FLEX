@@ -26,7 +26,7 @@ class FeedPromotionComponentView: ComponentView<FeedCardPromotionState> {
             
             view.cornerRadius = 2.0
             view.shadowRadius = 1.0
-            view.borderColor = .tpLine()
+            view.borderColor = UIColor.fromHexString("#e0e0e0")
             view.borderWidth = 0.5
             view.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
             view.layer.shadowOpacity = 0.1
@@ -176,7 +176,7 @@ class FeedPromotionComponentView: ComponentView<FeedCardPromotionState> {
                 layout.height = 40
                 
                 view.borderWidth = 1.0
-                view.borderColor = .tpLine()
+                view.borderColor = UIColor.fromHexString("#e0e0e0")
                 
             }.add(child: Node<UILabel>(identifier: "code-label") { label, layout, _ in
                 label.text = state?.voucherCode

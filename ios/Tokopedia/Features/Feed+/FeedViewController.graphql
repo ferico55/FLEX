@@ -57,6 +57,13 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 					activity
 					amount
 				}
+				top_picks {
+					name
+					url
+					image_url
+					image_landscape_url
+					is_parent
+				}
 				seller_story {
 					id
 					title

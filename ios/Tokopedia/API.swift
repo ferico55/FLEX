@@ -314,6 +314,14 @@ public final class FeedsQuery: GraphQLQuery {
     "          activity" +
     "          amount" +
     "        }" +
+    "        top_picks {" +
+    "          __typename" +
+    "          name" +
+    "          url" +
+    "          image_url" +
+    "          image_landscape_url" +
+    "          is_parent" +
+    "        }" +
     "        seller_story {" +
     "          __typename" +
     "          id" +
@@ -516,6 +524,7 @@ public final class FeedsQuery: GraphQLQuery {
           public let promotions: [Promotion?]?
           public let statusActivity: String?
           public let newStatusActivity: NewStatusActivity?
+          public let topPicks: [TopPick?]?
           public let sellerStory: SellerStory?
           public let redirectUrlApp: String?
           public let officialStore: [OfficialStore?]?
@@ -528,6 +537,7 @@ public final class FeedsQuery: GraphQLQuery {
             promotions = try reader.optionalList(for: Field(responseName: "promotions"))
             statusActivity = try reader.optionalValue(for: Field(responseName: "status_activity"))
             newStatusActivity = try reader.optionalValue(for: Field(responseName: "new_status_activity"))
+            topPicks = try reader.optionalList(for: Field(responseName: "top_picks"))
             sellerStory = try reader.optionalValue(for: Field(responseName: "seller_story"))
             redirectUrlApp = try reader.optionalValue(for: Field(responseName: "redirect_url_app"))
             officialStore = try reader.optionalList(for: Field(responseName: "official_store"))
@@ -616,6 +626,24 @@ public final class FeedsQuery: GraphQLQuery {
               source = try reader.optionalValue(for: Field(responseName: "source"))
               activity = try reader.optionalValue(for: Field(responseName: "activity"))
               amount = try reader.optionalValue(for: Field(responseName: "amount"))
+            }
+          }
+
+          public struct TopPick: GraphQLMappable {
+            public let __typename: String
+            public let name: String?
+            public let url: String?
+            public let imageUrl: String?
+            public let imageLandscapeUrl: String?
+            public let isParent: Bool?
+
+            public init(reader: GraphQLResultReader) throws {
+              __typename = try reader.value(for: Field(responseName: "__typename"))
+              name = try reader.optionalValue(for: Field(responseName: "name"))
+              url = try reader.optionalValue(for: Field(responseName: "url"))
+              imageUrl = try reader.optionalValue(for: Field(responseName: "image_url"))
+              imageLandscapeUrl = try reader.optionalValue(for: Field(responseName: "image_landscape_url"))
+              isParent = try reader.optionalValue(for: Field(responseName: "is_parent"))
             }
           }
 
