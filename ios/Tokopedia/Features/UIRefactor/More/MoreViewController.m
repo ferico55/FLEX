@@ -439,7 +439,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         
         [_shopCell addSubview:imageView];
         
-        NSDictionary<NSString *, NSDictionary *> *display = @{
+        NSDictionary<id, NSDictionary *> *display = @{
                                     @(ShopTypeRegular): @{
                                             @"label": @"Regular Merchant",
                                             @"image": [UIImage new]
@@ -455,8 +455,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                   };
         
         ShopType shopType = authManager.shopType;
-        _shopIsGoldLabel.text = (NSString *)display[(NSString *)@(ShopTypeRegular)][@"label"];
-        imageView.image = (UIImage *)display[(NSString *)@(shopType)][@"image"];
+        _shopIsGoldLabel.text = (NSString *)display[@(shopType)][@"label"];
+        imageView.image = (UIImage *)display[@(shopType)][@"image"];
     }
     [self.tableView reloadData];
 }
