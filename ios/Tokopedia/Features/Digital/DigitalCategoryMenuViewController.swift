@@ -718,8 +718,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             let userName = dict["full_name"] as! String
             
             let oAuthToken = OAuthToken()
-            oAuthToken.tokenType = dict["oAuthToken.tokenType"] as! String
-            oAuthToken.accessToken = dict["oAuthToken.accessToken"] as! String
+            oAuthToken.tokenType = dict["oAuthToken.tokenType"] as? String ?? ""
+            oAuthToken.accessToken = dict["oAuthToken.accessToken"] as? String ?? ""
             
             let sqObject = SecurityQuestionObjects()
             sqObject.userID = userId

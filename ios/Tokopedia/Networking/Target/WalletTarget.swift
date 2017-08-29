@@ -18,9 +18,9 @@ class WalletProvider: NetworkProvider<WalletTarget> {
         let userManager = UserAuthentificationManager()
         let userInformation = userManager.getUserLoginData()
         
-        let type = userInformation?["oAuthToken.tokenType"] as! String
+        let type = userInformation?["oAuthToken.tokenType"] as? String ?? ""
         
-        let token = userInformation?["oAuthToken.accessToken"] as! String
+        let token = userInformation?["oAuthToken.accessToken"] as? String ?? ""
         
         let headers = [
             "Authorization" : "\(type) \(token)"
