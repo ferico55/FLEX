@@ -45,13 +45,14 @@
 @property (nonatomic) BOOL trackable;
 @property (nonatomic) BOOL canReorder;
 @property (nonatomic) BOOL canComplaintNotReceived;
-@property (nonatomic) BOOL canAccept;
+@property (nonatomic) BOOL canBeDone;
 @property (nonatomic) BOOL canSeeComplaint;
 @property (nonatomic) BOOL canAskSeller;
 @property (nonatomic) BOOL canRequestCancel;
 @property (nonatomic) BOOL canCancelReplacement;
 @property (nonatomic) BOOL hasDueDate;
 @property (nonatomic) BOOL fromShippingStatus;
+@property (nonatomic) BOOL canComplaint;
 
 - (void)accept;
 

@@ -5,7 +5,7 @@
 //  Created by IT Tkpd on 2/17/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-    
+
 #import "UserAuthentificationManager.h"
 #import "NavigateViewController.h"
 
@@ -40,13 +40,14 @@
 #import "RetryCollectionReusableView.h"
 
 @import SwiftOverlays;
+@import NSAttributedString_DDHTML;
 
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define DATA_ORDER_DELIVERY_CONFIRMATION @"data_delivery_confirmation"
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, RetryViewDelegate>
+@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
 {
     NSString *_URINext;
     
@@ -109,6 +110,7 @@
                               btnTitle:@""];
     
     [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
 }
 
 - (void)viewDidLoad {
@@ -138,7 +140,7 @@
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
     
     [self initNoResultView];
-
+    
     if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
         self.navigationItem.rightBarButtonItem = barButton;
@@ -193,7 +195,7 @@
 
 -(IBAction)tap:(id)sender
 {
-
+    
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
         NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
@@ -231,9 +233,9 @@
     [_dataInput setObject:transactionStatus?:@"" forKey:API_TRANSACTION_STATUS_KEY];
     [_dataInput setObject:startDate?:@"" forKey:API_TRANSACTION_START_DATE_KEY];
     [_dataInput setObject:endDate?:@"" forKey:API_TRANSACTION_END_DATE_KEY];
-
+    
     [self refreshRequest];
-
+    
 }
 
 #pragma mark - Track Order delegate
@@ -273,7 +275,7 @@
         };
         
         [_dataManager context].onTapReceivedOrder = ^(TxOrderStatusList *order){
-            [weakSelf tapConfirmDeliveryOrder:order];
+            [weakSelf tapDone:order];
         };
         
         [_dataManager context].onTapReorder = ^(TxOrderStatusList *order){
@@ -293,6 +295,10 @@
             [weakSelf tapCancelReplacement:order];
         };
         
+        [_dataManager context].onTapComplaint = ^(TxOrderStatusList *order) {
+            [weakSelf tapComplaint:order];
+        };
+        
     }
     return _dataManager;
 }
@@ -301,7 +307,7 @@
     
     UIAlertController * alert=   [UIAlertController
                                   alertControllerWithTitle:@"Batalkan Pesanan"
-                                  message:@"Apakah Anda ingin melakukan pembatalan pesanan ?"
+                                  message:@"Apakah Anda ingin melakukan pembatalan pesanan?"
                                   preferredStyle:UIAlertControllerStyleAlert];
     
     __weak typeof(self) wself = self;
@@ -497,7 +503,7 @@
     if (![self hasMoreItems]) {
         _layout.footerReferenceSize = CGSizeMake(0, 0.0001);
     }
-
+    
     
     [_act stopAnimating];
     [_refreshControll endRefreshing];
@@ -520,7 +526,7 @@
 
 
 -(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
-     __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         [weakSelf refreshRequest];
         UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -579,10 +585,10 @@
 
 -(void)tapSeeComplaintDetailOrder:(TxOrderStatusList *)order{
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
-
+    
     NSString *resolutionID = [queries objectForKey:@"id"];
     ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
-
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -627,6 +633,72 @@
 {
     _page = 1;
     [self doRequestList];
+}
+
+- (void)tapDone:(TxOrderStatusList *)order {
+    __weak typeof(self) weakSelf = self;
+    
+    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML:order.order_detail.detail_finish_popup_msg normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:order.order_detail.detail_finish_popup_title
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Selesai"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+                                                               [weakSelf confirmDelivery:order];
+                                                           }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Kembali"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alertController addAction:receivedAction];
+    [alertController addAction:cancelAction];
+    [alertController setValue:messageString forKey:@"attributedMessage"];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)tapComplaint:(TxOrderStatusList *)order {
+    __weak typeof(self) weakSelf = self;
+    
+    BOOL isNotReceived = (order.order_button.button_open_complaint_not_received == 1);
+    
+    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML:order.order_detail.detail_complaint_popup_msg normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:order.order_detail.detail_complaint_popup_title
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Sudah Sampai"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               [weakSelf createComplainOrder:order isReceived:YES];
+                                                           }];
+    
+    UIAlertAction *notReceivedAction = [UIAlertAction actionWithTitle:@"Belum Sampai"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                                  [weakSelf createComplainOrder:order isReceived:NO];
+                                                              }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Kembali"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alertController addAction:receivedAction];
+    
+    if (isNotReceived) {
+        [alertController addAction:notReceivedAction];
+    }
+    
+    [alertController addAction:cancelAction];
+    [alertController setValue:messageString forKey:@"attributedMessage"];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void)tapDetailOrder:(TxOrderStatusList *)order
@@ -683,7 +755,7 @@
     }
     __weak typeof(self) weakSelf = self;
     confirmationAlert.didComplain = ^{
-        [weakSelf createComplainOrder:order isReceived:YES];
+        [weakSelf tapComplaint:order];
     };
     
     confirmationAlert.didOK = ^{
@@ -703,7 +775,7 @@
         
         TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
         [self doRequestReorder:order];
-
+        
     }];
     
     UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];

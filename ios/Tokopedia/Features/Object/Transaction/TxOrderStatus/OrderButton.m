@@ -21,7 +21,9 @@
                       @"button_ask_seller",
                       @"button_cancel_request",
                       @"show_reorder",
-                      @"button_cancel_replacement"
+                      @"button_cancel_replacement",
+                      @"button_open_complaint_received",
+                      @"button_open_complaint_not_received"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

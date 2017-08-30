@@ -1,14 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxOrderStatusDetailViewController">
             <connections>
+                <outlet property="askSellerButton" destination="4yQ-ju-fGU" id="59Y-JC-asD"/>
+                <outlet property="askSellerButtonHeightConstraint" destination="y65-z7-Gez" id="ccr-MA-yNn"/>
+                <outlet property="askSellerButtonTopConstraint" destination="bN8-o6-2hF" id="eUg-Uu-Fkc"/>
                 <outlet property="tableView" destination="hJ3-x5-b5j" id="HJw-LU-Mb8"/>
+                <outlet property="toolbarHeightConstraint" destination="q6n-FN-SLu" id="wMX-xP-sgK"/>
                 <outlet property="view" destination="FBf-uv-uKQ" id="ecN-Nj-EE1"/>
             </connections>
         </placeholder>
@@ -18,6 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="70" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="hJ3-x5-b5j">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="571"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="QAX-W3-ne8"/>
@@ -25,36 +33,75 @@
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JHV-TA-UWd" userLabel="Toolbar View">
+                    <rect key="frame" x="0.0" y="571" width="375" height="96"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j1T-bx-bCp" userLabel="Top Border">
-                            <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="zTP-kU-HXx"/>
                             </constraints>
                         </view>
                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0aZ-z6-Nd3">
+                            <rect key="frame" x="20" y="51" width="335" height="40"/>
                             <color key="backgroundColor" red="0.11844268441200256" green="0.75428462028503418" blue="0.014394762925803661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="GYz-Ut-5lE"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Detail Transaksi">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="tapDetailTransaction:" destination="-1" eventType="touchUpInside" id="VBE-74-auu"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yQ-ju-fGU">
+                            <rect key="frame" x="20" y="6" width="335" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="y65-z7-Gez"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="Tanya Penjual">
+                                <color key="titleColor" white="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="tapAskSellerOrder:" destination="-1" eventType="touchUpInside" id="RfA-Ox-1ww"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="0aZ-z6-Nd3" firstAttribute="top" secondItem="4yQ-ju-fGU" secondAttribute="bottom" constant="5" id="Dew-ib-tQS"/>
                         <constraint firstItem="0aZ-z6-Nd3" firstAttribute="leading" secondItem="JHV-TA-UWd" secondAttribute="leading" constant="20" id="JAB-aM-mC7"/>
                         <constraint firstAttribute="trailing" secondItem="0aZ-z6-Nd3" secondAttribute="trailing" constant="20" id="Kpn-up-U0W"/>
                         <constraint firstItem="j1T-bx-bCp" firstAttribute="leading" secondItem="JHV-TA-UWd" secondAttribute="leading" id="KtJ-zQ-EOI"/>
                         <constraint firstAttribute="trailing" secondItem="j1T-bx-bCp" secondAttribute="trailing" id="PUo-Qj-lHQ"/>
+                        <constraint firstAttribute="trailing" secondItem="4yQ-ju-fGU" secondAttribute="trailing" constant="20" id="QoI-Rp-QiJ"/>
                         <constraint firstAttribute="bottom" secondItem="0aZ-z6-Nd3" secondAttribute="bottom" constant="5" id="UTD-li-nAh"/>
+                        <constraint firstItem="4yQ-ju-fGU" firstAttribute="top" secondItem="j1T-bx-bCp" secondAttribute="bottom" constant="5" id="bN8-o6-2hF"/>
+                        <constraint firstItem="4yQ-ju-fGU" firstAttribute="leading" secondItem="JHV-TA-UWd" secondAttribute="leading" constant="20" id="cbS-m0-Ehc"/>
                         <constraint firstItem="j1T-bx-bCp" firstAttribute="top" secondItem="JHV-TA-UWd" secondAttribute="top" id="mde-dG-Cy5"/>
-                        <constraint firstAttribute="height" constant="50" id="q6n-FN-SLu"/>
-                        <constraint firstItem="0aZ-z6-Nd3" firstAttribute="top" secondItem="j1T-bx-bCp" secondAttribute="bottom" constant="5" id="wCD-Hm-E3S"/>
+                        <constraint firstAttribute="height" constant="96" id="q6n-FN-SLu"/>
                     </constraints>
                 </view>
             </subviews>

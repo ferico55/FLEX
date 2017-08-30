@@ -19,6 +19,8 @@
 @property (nonatomic) NSInteger button_ask_seller;
 @property (nonatomic) NSInteger button_cancel_request;
 @property (nonatomic) NSInteger button_cancel_replacement;
+@property (nonatomic) NSInteger button_open_complaint_not_received;
+@property (nonatomic) NSInteger button_open_complaint_received;
 @property (nonatomic) NSInteger show_reorder;
 
 

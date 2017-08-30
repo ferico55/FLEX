@@ -28,7 +28,10 @@
 #import "TrackOrderViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"
+#import "UIAlertController+Blocks.h"
+
 @import SwiftOverlays;
+@import NSAttributedString_DDHTML;
 
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
 {
@@ -36,6 +39,11 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIButton *askSellerButton;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *askSellerButtonHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *askSellerButtonTopConstraint;
+
 
 @end
 
@@ -57,6 +65,13 @@
     _tableView.estimatedRowHeight = 125.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
+    if (!_order.canAskSeller) {
+        _askSellerButton.enabled = NO;
+        _askSellerButton.hidden = YES;
+        _askSellerButtonHeightConstraint.constant = 0;
+        _askSellerButtonTopConstraint.constant = 0;
+        _toolbarHeightConstraint.constant = 51;
+    }
 }
 
 - (void)adjustButtonsView{
@@ -76,16 +91,12 @@
         [weakSelf tapSeeComplaintOrder:order fromView:headerView];
     };
     
-    [headerView context].onTapComplaintNotReceived = ^(TxOrderStatusList *order){
-        [weakSelf tapComplaintNotReceivedOrder:order fromView:headerView];
-    };
-    
     [headerView context].onTapTracking = ^(TxOrderStatusList *order){
         [weakSelf tapTrackOrder:order];
     };
     
     [headerView context].onTapReceivedOrder = ^(TxOrderStatusList *order){
-        [weakSelf tapConfirmDeliveryOrder:order fromView:headerView];
+        [weakSelf tapDone:order fromView:headerView];
     };
     
     [headerView context].onTapReorder = ^(TxOrderStatusList *order){
@@ -96,13 +107,14 @@
         [weakSelf tapRequestCancelOrder:order fromView:headerView];
     };
     
-    [headerView context].onTapAskSeller = ^(TxOrderStatusList *order){
-        [weakSelf tapAskSellerOrder:order];
-    };
-    
     [headerView context].onTapCancelReplacement = ^(TxOrderStatusList *order){
         [weakSelf tapCancelReplacement:order view:headerView];
     };
+    
+    [headerView context].onTapComplaint = ^(TxOrderStatusList *order) {
+        [weakSelf tapComplaint:order fromView:headerView];
+    };
+    
     
     _tableView.tableHeaderView = headerView;
 
@@ -184,6 +196,71 @@
     [confirmationAlert show];
 }
 
+- (void)tapDone:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView *)view {
+    __weak typeof(self) weakSelf = self;
+    
+    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML:order.order_detail.detail_finish_popup_msg normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:order.order_detail.detail_finish_popup_title
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Selesai"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
+                                                               [weakSelf doRequestFinishOrder:order fromView:view];
+                                                           }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Kembali"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alertController addAction:receivedAction];
+    [alertController addAction:cancelAction];
+    [alertController setValue:messageString forKey:@"attributedMessage"];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)tapComplaint:(TxOrderStatusList *)order fromView:(DetailOrderButtonsView *)view {
+    __weak typeof(self) weakSelf = self;
+    
+    BOOL isNotReceived = (order.order_button.button_open_complaint_not_received == 1);
+    
+    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML:order.order_detail.detail_complaint_popup_msg normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:order.order_detail.detail_complaint_popup_title
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Sudah Sampai"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               [weakSelf createComplainOrder:order isReceived:YES fromView:view];
+                                                           }];
+    
+    UIAlertAction *notReceivedAction = [UIAlertAction actionWithTitle:@"Belum Sampai"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                                  [weakSelf createComplainOrder:order isReceived:NO fromView:view];
+                                                              }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Kembali"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    if (isNotReceived) {
+        [alertController addAction:notReceivedAction];
+    }
+    
+    [alertController addAction:receivedAction];
+    [alertController addAction:cancelAction];
+    [alertController setValue:messageString forKey:@"attributedMessage"];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - Request Delivery Finish Order
 -(void)doRequestFinishOrder:(TxOrderStatusList*)order fromView:(DetailOrderButtonsView*)view{
     if ([order.type isEqualToString:ACTION_GET_TX_ORDER_DELIVER]) {
@@ -257,8 +334,7 @@
 }
 
 
--(void)tapTrackOrder:(TxOrderStatusList*)order
-{
+-(void)tapTrackOrder:(TxOrderStatusList *)order {
     TrackOrderViewController *vc = [TrackOrderViewController new];
     vc.hidesBottomBarWhenPushed = YES;
     vc.orderID = [order.order_detail.detail_order_id integerValue];
@@ -279,17 +355,17 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)tapAskSellerOrder:(TxOrderStatusList *)order{
+-(IBAction)tapAskSellerOrder:(id)sender {
     
     SendMessageViewController *messageController = [SendMessageViewController new];
     messageController.data = @{
-                               @"shop_id":order.order_shop.shop_id?:@"",
-                               @"shop_name":order.order_shop.shop_name?:@""
+                               @"shop_id":_order.order_shop.shop_id?:@"",
+                               @"shop_name":_order.order_shop.shop_name?:@""
                                };
-    messageController.subject = order.order_detail.detail_invoice?:@"";
-    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
-    [self.navigationController pushViewController:messageController animated:YES];
+    messageController.subject = _order.order_detail.detail_invoice?:@"";
+    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",_order.order_detail.detail_pdf_uri];
     
+    [self.navigationController pushViewController:messageController animated:YES];    
 }
 
 -(void)tapReorderOrder:(TxOrderStatusList*)order{

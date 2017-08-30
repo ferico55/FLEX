@@ -21,52 +21,48 @@
     
     ListOrderButtonsComponent *component =
     [super newWithComponent:
-      [CKStackLayoutComponent
-       newWithView:{
-           [UIView class],
-           {
-               {@selector(setBackgroundColor:), [UIColor clearColor]},
-           }
-       }
-       size:{}
-       style:{
-           .direction = CKStackLayoutDirectionHorizontal,
-           .alignItems = CKStackLayoutAlignItemsStretch,
-       }
-       children:{
-           { (order.canAskSeller)?[self buttonAskSeller]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           {(order.canRequestCancel)?[self buttonRequestCancelOrder]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           {(order.canComplaintNotReceived)?[self buttonNotReceived]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           { (order.canReorder)?[self buttonReorder]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           { (order.trackable)?[self buttonTrack]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           {(order.canAccept)?[self buttonAccept]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           {(order.canSeeComplaint)?[self buttonSeeComplaint]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-           {(order.canCancelReplacement)?[self buttonCancelReplacement]:nil,
-               .alignSelf = CKStackLayoutAlignSelfStretch,
-               .flexGrow = YES
-           },
-       }]
+     [CKStackLayoutComponent
+      newWithView:{
+          [UIView class],
+          {
+              {@selector(setBackgroundColor:), [UIColor clearColor]},
+          }
+      }
+      size:{}
+      style:{
+          .direction = CKStackLayoutDirectionHorizontal,
+          .alignItems = CKStackLayoutAlignItemsStretch,
+      }
+      children:{
+          {(order.canRequestCancel)?[self buttonRequestCancelOrder]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          { (order.canReorder)?[self buttonReorder]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          { (order.trackable)?[self buttonTrack]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          {(order.canComplaint)?[self buttonComplaint]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          {(order.canBeDone)?[self buttonDone]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          {(order.canSeeComplaint)?[self buttonSeeComplaint]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+          {(order.canCancelReplacement)?[self buttonCancelReplacement]:nil,
+              .alignSelf = CKStackLayoutAlignSelfStretch,
+              .flexGrow = YES
+          },
+      }]
      ];
     component -> _order = order;
     component ->_context = context;
@@ -74,66 +70,66 @@
 }
 
 +(CKButtonComponent*)buttonAskSeller{
-    return [self buttonWithTitle:@"Tanya Penjual" imageName:@"icon_order_message_grey" action:@selector(tapAskSeller)];
+    return [self buttonWithTitle:@"Tanya Penjual" action:@selector(tapAskSeller)];
 }
 
 +(CKButtonComponent*)buttonRequestCancelOrder{
-    return [self buttonWithTitle:@"Ajukan Pembatalan" imageName:@"icon_order_cancel" action:@selector(tapCancel)];
+    return [self buttonWithTitle:@"Ajukan Pembatalan" action:@selector(tapCancel)];
 }
 
 +(CKButtonComponent*)buttonTrack{
-    return [self buttonWithTitle:@"Lacak" imageName:@"icon_track_grey" action:@selector(tapTracking)];
+    return [self buttonWithTitle:@"Lacak" action:@selector(tapTracking)];
 }
 
 +(CKButtonComponent*)buttonNotReceived{
-    return [self buttonWithTitle:@"Belum Terima" imageName:@"icon_order_cancel" action:@selector(tapComplaintNotReceived)];
+    return [self buttonWithTitle:@"Belum Terima" action:@selector(tapComplaintNotReceived)];
 }
 
-+(CKButtonComponent*)buttonAccept{
-    return [self buttonWithTitle:@"Sudah Terima" imageName:@"icon_order_check" action:@selector(tapReceivedOrder)];
++(CKButtonComponent*)buttonDone{
+    return [self buttonWithTitle:@"Selesai" action:@selector(tapReceivedOrder)];
 }
 
 +(CKButtonComponent*)buttonSeeComplaint{
-    return [self buttonWithTitle:@"Lihat Komplain" imageName:@"icon_lihat_komplain" action:@selector(tapSeeComplaint)];
+    return [self buttonWithTitle:@"Lihat Komplain" action:@selector(tapSeeComplaint)];
 }
 
 +(CKButtonComponent*)buttonReorder{
-    return [self buttonWithTitle:@"Pesan Ulang" imageName:@"icon_pesan_ulang" action:@selector(tapReorder)];
+    return [self buttonWithTitle:@"Pesan Ulang" action:@selector(tapReorder)];
+}
+
++(CKButtonComponent*)buttonComplaint{
+    return [self buttonWithTitle:@"Komplain" action:@selector(tapComplaint)];
 }
 
 +(CKButtonComponent*)buttonCancelReplacement{
-    return [self buttonWithTitle:@"Batalkan Pesanan" imageName:@"icon_order_cancel" action:@selector(tapCancelReplacement)];
+    return [self buttonWithTitle:@"Batalkan Pesanan" action:@selector(tapCancelReplacement)];
 }
 
-+(CKButtonComponent *)buttonWithTitle:(NSString*)title imageName:(NSString*)imageName action:(SEL)action{
-    
-    return
-    [CKButtonComponent
-     newWithTitles:{
-         {UIControlStateNormal, title}
-     }
-     titleColors:{
-         {UIControlStateNormal, [UIColor textDarkGrayTheme]}
-     }
-     images:{
-         {UIControlStateNormal, [UIImage imageNamed:imageName]}
-     }
-     backgroundImages:{}
-     titleFont:[UIFont systemFontOfSize:10]
-     selected:NO
-     enabled:YES
-     action:nil
-     size:{
-         .height = 40
-     }
-     attributes:{
-         {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 0.5},
-         {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:231.0f/255.0f green:231.0f/255.0f blue:231.0f/255.0f alpha:1] CGColor]},
-         {@selector(setTitleEdgeInsets:), UIEdgeInsetsMake(0, 10, 0, 0)},
-         {CKComponentActionAttribute(action)}
-     }
-     accessibilityConfiguration:{}];
++ (CKButtonComponent *)buttonWithTitle:(NSString *)title action:(SEL)action {
+    return [CKButtonComponent
+            newWithTitles:{
+                {UIControlStateNormal, title}
+            }
+            titleColors:{
+                {UIControlStateNormal, [UIColor textDarkGrayTheme]}
+            }
+            images: {}
+            backgroundImages:{}
+            titleFont:[UIFont microTheme]
+            selected:NO
+            enabled:YES
+            action:nil
+            size:{
+                .height = 40
+            }
+            attributes:{
+                {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 0.5},
+                {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:231.0f/255.0f green:231.0f/255.0f blue:231.0f/255.0f alpha:1] CGColor]},
+                {CKComponentActionAttribute(action)}
+            }
+            accessibilityConfiguration:{}];
 }
+
 
 -(void)tapCancel{
     if(_context.onTapCancel){
@@ -180,6 +176,12 @@
 -(void)tapCancelReplacement{
     if (_context.onTapCancelReplacement){
         _context.onTapCancelReplacement(_order);
+    }
+}
+
+- (void)tapComplaint {
+    if (_context.onTapComplaint) {
+        _context.onTapComplaint(_order);
     }
 }
 

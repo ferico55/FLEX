@@ -37,8 +37,8 @@
     return invoiceURLforWS;
 }
 
-+(NSDictionary *)attributeMappingDictionary
-{
++(NSDictionary *)attributeMappingDictionary {
+
     NSArray *keys = @[
                       @"detail_insurance_price",
                       @"detail_open_amount",
@@ -70,7 +70,13 @@
                       @"detail_dropship_name",
                       @"detail_dropship_telp",
                       @"detail_free_return",
-                      @"detail_free_return_msg"
+                      @"detail_free_return_msg",
+                      @"detail_complaint_popup_title",
+                      @"detail_complaint_popup_msg",
+                      @"detail_finish_popup_title",
+                      @"detail_finish_popup_msg",
+                      @"detail_complaint_not_received_title",
+                      @"detail_complaint_not_received_msg"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

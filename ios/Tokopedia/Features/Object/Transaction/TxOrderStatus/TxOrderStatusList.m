@@ -28,7 +28,7 @@
         !self.canReorder&&
         !self.canComplaintNotReceived&&
         !self.trackable&&
-        !self.canAccept) {
+        !self.canBeDone) {
         return YES;
     }
     return NO;
@@ -44,6 +44,14 @@
     } else {
         self.order_button.button_open_dispute = 0;
     }
+}
+
+- (BOOL)canComplaint {
+    if (self.order_button.button_res_center_go_to == 1 || self.order_button.show_reorder == 1) {
+        return NO;
+    }
+    
+    return (self.order_button.button_open_complaint_received == 1 || self.order_button.button_open_complaint_not_received == 1);
 }
 
 -(BOOL)canComplaintNotReceived{
@@ -105,7 +113,7 @@
     self.order_detail.detail_order_status = ORDER_FINISHED;
 }
 
--(BOOL)canAccept{
+-(BOOL)canBeDone {
     NSInteger orderStatus = self.order_detail.detail_order_status;
     NSString *shipRef = self.order_detail.detail_ship_ref_num?:@"";
     if(orderStatus == ORDER_SHIPPING ||

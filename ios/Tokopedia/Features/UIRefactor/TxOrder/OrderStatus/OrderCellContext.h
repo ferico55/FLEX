@@ -28,5 +28,6 @@
 @property (nonatomic, copy) void(^onTapInvoice)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^onTapDetail)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^onTapCancelReplacement)(TxOrderStatusList *);
+@property (nonatomic, copy) void(^onTapComplaint)(TxOrderStatusList *);
 
 @end

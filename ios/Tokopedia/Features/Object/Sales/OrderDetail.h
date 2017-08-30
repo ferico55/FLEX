@@ -51,6 +51,13 @@
 @property (strong, nonatomic) NSString *additionalFeeTitle;
 @property (strong, nonatomic) NSString *additionalFee;
 
+@property (strong, nonatomic) NSString *detail_complaint_popup_title;
+@property (strong, nonatomic) NSString *detail_complaint_popup_msg;
+@property (strong, nonatomic) NSString *detail_finish_popup_title;
+@property (strong, nonatomic) NSString *detail_finish_popup_msg;
+@property (strong, nonatomic) NSString *detail_complaint_not_received_title;
+@property (strong, nonatomic) NSString *detail_complaint_not_received_msg;
+
 +(RKObjectMapping*)mapping;
 
 @end
