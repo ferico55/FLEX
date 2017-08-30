@@ -19,6 +19,7 @@ import DeviceInfo from "react-native-device-info";
 
 import axios from "axios";
 import PreAnimatedImage from "./PreAnimatedImage";
+import NoResultView from "./NoResultView";
 import {
   TKPReactURLManager,
   ReactNetworkManager,
@@ -276,25 +277,33 @@ class Promo extends React.PureComponent {
   render() {
     return (
       <View style={{ backgroundColor: "#F1F1F1", flex: 1 }}>
-        <FlatList
-          ref={ref => {
-            this.flatList = ref;
-          }}
-          style={styles.wrapper}
-          onEndReached={distanceFromEnd => {
-            if (!this.state.isLoading) {
-              this.loadData(this.state.page);
-            }
-          }}
-          ListHeaderComponent={this._listHeader}
-          ListFooterComponent={this._loadingIndicator}
-          keyExtractor={(item, index) => item.id}
-          data={this.state.dataSource}
-          onRefresh={this._onRefresh}
-          numColumns={DeviceInfo.isTablet() ? 2 : 1}
-          refreshing={false}
-          renderItem={this._renderItem}
-        />
+        {this.state.dataSource.length == 0 &&
+          !this.state.isLoading &&
+          <NoResultView
+            onRefresh={() => {
+              this.loadData();
+            }}
+          />}
+        {(this.state.dataSource.length > 0 || this.state.isLoading) &&
+          <FlatList
+            ref={ref => {
+              this.flatList = ref;
+            }}
+            style={styles.wrapper}
+            onEndReached={distanceFromEnd => {
+              if (!this.state.isLoading) {
+                this.loadData(this.state.page);
+              }
+            }}
+            ListHeaderComponent={this._listHeader}
+            ListFooterComponent={this._loadingIndicator}
+            keyExtractor={(item, index) => item.id}
+            data={this.state.dataSource}
+            onRefresh={this._onRefresh}
+            numColumns={DeviceInfo.isTablet() ? 2 : 1}
+            refreshing={false}
+            renderItem={this._renderItem}
+          />}
       </View>
     );
   }
@@ -315,7 +324,7 @@ class Promo extends React.PureComponent {
       );
     }
 
-    var promoRequest = Rx.Observable.fromPromise(
+    let promoRequest = Rx.Observable.fromPromise(
       ReactNetworkManager.request({
         method: "GET",
         baseUrl: TKPReactURLManager.tokopediaUrl,
@@ -328,6 +337,7 @@ class Promo extends React.PureComponent {
       promoRequest.catch(err => {
         this.setState({
           isLoading: false,
+          dataSource: [],
         });
         return Rx.Observable.empty();
       });
@@ -346,7 +356,7 @@ class Promo extends React.PureComponent {
           return;
         }
 
-        var keys = Object.keys(response);
+        let keys = Object.keys(response);
         for (let i = 0; i < keys.length; i++) {
           if (this.stickyIds.includes(response[keys[i]].id)) {
             continue;
@@ -361,7 +371,7 @@ class Promo extends React.PureComponent {
         });
       });
     } else {
-      var featuredPromoRequest = Rx.Observable.fromPromise(
+      let featuredPromoRequest = Rx.Observable.fromPromise(
         ReactNetworkManager.request({
           method: "GET",
           baseUrl: TKPReactURLManager.tokopediaUrl,
@@ -369,11 +379,12 @@ class Promo extends React.PureComponent {
           params: featuredParams,
         })
       );
-      var request = Rx.Observable
+      let request = Rx.Observable
         .zip(featuredPromoRequest, promoRequest)
         .catch(err => {
           this.setState({
             isLoading: false,
+            dataSource: [],
           });
           return Rx.Observable.empty();
         });

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -8,57 +8,63 @@ import {
   ActivityIndicator,
   Clipboard,
   Button,
-  TouchableOpacity
-} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import HTMLView from 'react-native-htmlview';
-import PreAnimatedImage from './PreAnimatedImage';
-import entities from 'entities';
+  TouchableOpacity,
+} from "react-native";
+import DeviceInfo from "react-native-device-info";
+import HTMLView from "react-native-htmlview";
+import PreAnimatedImage from "./PreAnimatedImage";
+import NoResultView from "./NoResultView";
+import entities from "entities";
 
-import axios from 'axios';
+import axios from "axios";
 import {
   TKPReactURLManager,
   ReactNetworkManager,
   TKPReactAnalytics,
   ReactInteractionHelper,
-  HybridNavigationManager
-} from 'NativeModules';
+  HybridNavigationManager,
+} from "NativeModules";
 
 class PromoDetail extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       promoName: props.navigation.state.params,
-      isDetailExpanded: false
+      isDetailExpanded: false,
     };
-    var tag = props.navigation.state.key
-    tag = tag.substring(tag.indexOf("-") + 1, tag.length)
-    HybridNavigationManager.setTitle(parseInt(tag), "Promo Detail")
+    var tag = props.navigation.state.key;
+    tag = tag.substring(tag.indexOf("-") + 1, tag.length);
+    HybridNavigationManager.setTitle(parseInt(tag), "Promo Detail");
   }
 
   componentDidMount() {
     this.loadData();
   }
 
-  _copyPromoCode = (promoCode) => {
-    Clipboard.setString(promoCode)
-    ReactInteractionHelper.showStickyAlert("Kode Promo berhasil disalin")
-  }
+  _copyPromoCode = promoCode => {
+    Clipboard.setString(promoCode);
+    ReactInteractionHelper.showStickyAlert("Kode Promo berhasil disalin");
+  };
 
   _getPromoPeriod = (startDate, endDate) => {
-    startDate = new Date(startDate)
-    endDate = new Date(endDate)
-    var period = startDate.getDate()
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    var period = startDate.getDate();
     if (startDate.getMonth() != endDate.getMonth())
-      period += " " + monthNames[startDate.getMonth()]
+      period += " " + monthNames[startDate.getMonth()];
     if (startDate.getFullYear() != endDate.getFullYear())
-      period += " " + startDate.getFullYear()
+      period += " " + startDate.getFullYear();
 
-    period += " - " + endDate.getDate() + " " + monthNames[endDate.getMonth()] + " " + endDate.getFullYear()
-    return period
-  }
+    period +=
+      " - " +
+      endDate.getDate() +
+      " " +
+      monthNames[endDate.getMonth()] +
+      " " +
+      endDate.getFullYear();
+    return period;
+  };
 
   _htmlView = () => {
     if (this.state.isDetailExpanded) {
@@ -66,59 +72,96 @@ class PromoDetail extends React.PureComponent {
         <View>
           <View style={styles.detail}>
             <Text>
-              <HTMLView value={this.state.data.content.rendered}
+              <HTMLView
+                value={this.state.data.content.rendered}
                 RootComponent={Text}
-                renderNode={this.renderNode} />
+                renderNode={this.renderNode}
+              />
             </Text>
           </View>
         </View>
-      )
+      );
     }
-    return <View>
-      <View style={styles.detail}>
-        <Text numberOfLines={15}>
-          <HTMLView value={this.state.data.content.rendered}
-            RootComponent={Text}
-            ellipsizeMode='tail'
-            renderNode={this.renderNode} />
-        </Text>
+    return (
+      <View>
+        <View style={styles.detail}>
+          <Text numberOfLines={15}>
+            <HTMLView
+              value={this.state.data.content.rendered}
+              RootComponent={Text}
+              ellipsizeMode="tail"
+              renderNode={this.renderNode}
+            />
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({
+              isDetailExpanded: !this.state.isDetailExpanded,
+            });
+          }}
+        >
+          <Text style={styles.readMore}>
+            {"Baca Selengkapnya"}
+          </Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          this.setState({
-            isDetailExpanded: !this.state.isDetailExpanded
-          });
-        }}>
-        <Text style={styles.readMore}>
-          {"Baca Selengkapnya"}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  }
+    );
+  };
 
   render() {
     return (
-      <View style={{ backgroundColor: 'rgb(241,241,241)', flex: 1 }}>
-        <ScrollView style={this.state.data && this.state.data.meta.app_link != "" ? { marginBottom: 52 } : {}}>
-          {
-            this.state.isLoading &&
-            <ActivityIndicator animating={this.state.isLoading} style={[styles.centering, { height: 44 }]} size="small" />
+      <View style={{ backgroundColor: "rgb(241,241,241)", flex: 1 }}>
+        {!this.state.data &&
+          !this.state.isLoading &&
+          <NoResultView
+            onRefresh={() => {
+              this.loadData();
+            }}
+          />}
+        <ScrollView
+          style={
+            this.state.data && this.state.data.meta.app_link != ""
+              ? { marginBottom: 52 }
+              : {}
           }
-          {
-            this.state.data != null &&
+        >
+          {this.state.isLoading &&
+            <ActivityIndicator
+              animating={this.state.isLoading}
+              style={[styles.centering, { height: 44 }]}
+              size="small"
+            />}
+          {this.state.data != null &&
             <View>
-              <PreAnimatedImage source={this.state.data.meta.thumbnail_image} style={styles.headerImage} onLoadEnd={() => { this.setNativeProps() }} />
+              <PreAnimatedImage
+                source={this.state.data.meta.thumbnail_image}
+                style={styles.headerImage}
+                onLoadEnd={() => {
+                  this.setNativeProps();
+                }}
+              />
               <TouchableOpacity
                 style={{ zIndex: 10 }}
-                onPress={(e) => ReactInteractionHelper.share(this.state.data.link,
-                  entities.decodeHTML(this.state.data.title.rendered) + " | Tokopedia",
-                  e.target)}>
-                <View style={styles.shareButton}
+                onPress={e =>
+                  ReactInteractionHelper.share(
+                    this.state.data.link,
+                    entities.decodeHTML(this.state.data.title.rendered) +
+                      " | Tokopedia",
+                    e.target
+                  )}
+              >
+                <View
+                  style={styles.shareButton}
                   shadowColor="black"
                   shadowRadius={2}
                   shadowOpacity={0.15}
-                  shadowOffset={{ height: 2 }} >
-                  <Image style={styles.shareImage} source={{ uri: 'icon_share_gradient' }} />
+                  shadowOffset={{ height: 2 }}
+                >
+                  <Image
+                    style={styles.shareImage}
+                    source={{ uri: "icon_share_gradient" }}
+                  />
                 </View>
               </TouchableOpacity>
               <View style={styles.titleHolder}>
@@ -128,267 +171,362 @@ class PromoDetail extends React.PureComponent {
               </View>
 
               <View style={styles.descriptionHolder}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: "row" }}>
                   <View style={styles.innerDescriptionHolder}>
-                    <Image source={{ uri: 'icon_stopwatch' }}
-                      style={[styles.descriptionIcon, { alignSelf: 'center' }]} />
+                    <Image
+                      source={{ uri: "icon_stopwatch" }}
+                      style={[styles.descriptionIcon, { alignSelf: "center" }]}
+                    />
                     <Text style={[styles.greyText, styles.subtitle]}>
                       Periode Promo
-                      </Text>
-                    <Text style={[styles.headerText, { marginTop: 4 }]} numberOfLines={2}>
-                      {this._getPromoPeriod(this.state.data.meta.start_date, this.state.data.meta.end_date)}
+                    </Text>
+                    <Text
+                      style={[styles.headerText, { marginTop: 4 }]}
+                      numberOfLines={2}
+                    >
+                      {this._getPromoPeriod(
+                        this.state.data.meta.start_date,
+                        this.state.data.meta.end_date
+                      )}
                     </Text>
                   </View>
-                  <View style={{ borderLeftWidth: 0.5, borderColor: 'rgba(0,0,0,0.12)' }} />
+                  <View
+                    style={{
+                      borderLeftWidth: 0.5,
+                      borderColor: "rgba(0,0,0,0.12)",
+                    }}
+                  />
                   <View style={styles.innerDescriptionHolder}>
-                    <Image source={{ uri: 'icon_money' }}
-                      resizeMode='contain'
-                      style={[styles.descriptionIcon, { alignSelf: 'center' }]} />
+                    <Image
+                      source={{ uri: "icon_money" }}
+                      resizeMode="contain"
+                      style={[styles.descriptionIcon, { alignSelf: "center" }]}
+                    />
                     <Text style={[styles.greyText, styles.subtitle]}>
-                      {this.state.data.meta.min_transaction == "" ? "Tanpa Minimum Transaksi" : "Minimum Transaksi"}
+                      {this.state.data.meta.min_transaction == ""
+                        ? "Tanpa Minimum Transaksi"
+                        : "Minimum Transaksi"}
                     </Text>
-                    <Text style={[styles.headerText, { marginTop: 4 }]} >
+                    <Text style={[styles.headerText, { marginTop: 4 }]}>
                       {this.state.data.meta.min_transaction}
                     </Text>
                   </View>
                 </View>
-                <View style={{ borderTopWidth: 0.5, borderColor: 'rgba(0,0,0,0.12)' }} />
-                <View style={[styles.innerDescriptionHolder, { alignItems: 'center' }]}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image source={{ uri: 'icon_coupon' }} style={{ width: 25, height: 14, marginTop: 2 }} />
-                    <Text style={[styles.greyText, styles.subtitle, { marginTop: 1, marginLeft: 10, marginRight: 3 }]}>
-                      {this.state.data.meta.promo_code == "" ? "Tanpa Kode Promo" : "Kode Promo"}
+                <View
+                  style={{
+                    borderTopWidth: 0.5,
+                    borderColor: "rgba(0,0,0,0.12)",
+                  }}
+                />
+                <View
+                  style={[
+                    styles.innerDescriptionHolder,
+                    { alignItems: "center" },
+                  ]}
+                >
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      source={{ uri: "icon_coupon" }}
+                      style={{ width: 25, height: 14, marginTop: 2 }}
+                    />
+                    <Text
+                      style={[
+                        styles.greyText,
+                        styles.subtitle,
+                        { marginTop: 1, marginLeft: 10, marginRight: 3 },
+                      ]}
+                    >
+                      {this.state.data.meta.promo_code == ""
+                        ? "Tanpa Kode Promo"
+                        : "Kode Promo"}
                     </Text>
                     {this.state.data.meta.promo_code != "" &&
                       <TouchableOpacity
-                        onPress={() => ReactInteractionHelper.showTooltip("Kode Promo",
-                          "Masukan Kode Promo di halaman pembayaran",
-                          "icon_promo",
-                          "Tutup")} >
-                        <Image source={{ uri: 'icon_information' }} style={{ width: 14, height: 14, marginTop: 1 }} />
-                      </TouchableOpacity>
-                    }
+                        onPress={() =>
+                          ReactInteractionHelper.showTooltip(
+                            "Kode Promo",
+                            "Masukan Kode Promo di halaman pembayaran",
+                            "icon_promo",
+                            "Tutup"
+                          )}
+                      >
+                        <Image
+                          source={{ uri: "icon_information" }}
+                          style={{ width: 14, height: 14, marginTop: 1 }}
+                        />
+                      </TouchableOpacity>}
                   </View>
 
                   {this.state.data.meta.promo_code != "" &&
                     <View style={styles.codeHolder}>
-                      <View style={[styles.innerCodeHolder, { backgroundColor: 'rgb(248,248,248)' }]}>
-                        <Text style={{ color: 'rgb(255, 87, 34)' }}>
+                      <View
+                        style={[
+                          styles.innerCodeHolder,
+                          { backgroundColor: "rgb(248,248,248)" },
+                        ]}
+                      >
+                        <Text style={{ color: "rgb(255, 87, 34)" }}>
                           {this.state.data.meta.promo_code}
                         </Text>
                       </View>
-                      <View style={{ borderLeftWidth: 1, borderColor: 'rgb(224,224,224)' }} />
+                      <View
+                        style={{
+                          borderLeftWidth: 1,
+                          borderColor: "rgb(224,224,224)",
+                        }}
+                      />
                       <TouchableOpacity
                         style={styles.innerCodeHolder}
-                        onPress={() => this._copyPromoCode(this.state.data.meta.promo_code)} >
+                        onPress={() =>
+                          this._copyPromoCode(this.state.data.meta.promo_code)}
+                      >
                         <Text style={[styles.greyText, { fontSize: 14 }]}>
                           Salin Kode
-                          </Text>
+                        </Text>
                       </TouchableOpacity>
-                    </View>
-                  }
+                    </View>}
                 </View>
               </View>
 
               <View style={styles.detailHolder}>
                 <Text style={[styles.title, { fontSize: 14, marginTop: 5 }]}>
                   Syarat & Ketentuan
-                  </Text>
+                </Text>
                 <View style={styles.boldHorizontalSeparator} />
                 {this._htmlView()}
               </View>
-            </View>
-          }
+            </View>}
         </ScrollView>
-        {(!this.state.isLoading && this.state.data.meta.app_link != "") &&
-          <TouchableOpacity style={[styles.shopButton]}
-            onPress={() => this.props.navigation.navigate('tproutes', { url: this.state.data.meta.app_link })}>
-            <Text style={styles.shopText}>
-              Belanja Sekarang
-              </Text>
-          </TouchableOpacity>
-        }
+        {!this.state.isLoading &&
+          this.state.data &&
+          this.state.data.meta.app_link != "" &&
+          <TouchableOpacity
+            style={[styles.shopButton]}
+            onPress={() =>
+              this.props.navigation.navigate("tproutes", {
+                url: this.state.data.meta.app_link,
+              })}
+          >
+            <Text style={styles.shopText}>Belanja Sekarang</Text>
+          </TouchableOpacity>}
       </View>
     );
   }
 
   loadData() {
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
 
     ReactNetworkManager.request({
-      method: 'GET',
+      method: "GET",
       baseUrl: TKPReactURLManager.tokopediaUrl,
-      path: '/promo/wp-json/wp/v2/posts/',
+      path: "/promo/wp-json/wp/v2/posts/",
       params: {
         slug: this.state.promoName,
-      }
-    }).then((response) => {
-      response = response[0]
-      response.content.rendered = response.content.rendered.replace(/\n/g, '')
-      this.setState({
-        data: response,
-        isLoading: false
+      },
+    })
+      .then(response => {
+        response = response[0];
+        response.content.rendered = response.content.rendered.replace(
+          /\n/g,
+          ""
+        );
+        this.setState({
+          data: response,
+          isLoading: false,
+        });
+      })
+      .catch(err => {
+        this.setState({
+          isLoading: false,
+          data: null,
+        });
       });
-    });
   }
 
   renderNode = (node, index, siblings, parent, defaultRenderer) => {
-    if (node.name == 'li') {
-      if (siblings[0]['parent']['parent'] && siblings[0]['parent']['parent']['name'] == "li") {
+    if (node.name == "li") {
+      if (
+        siblings[0]["parent"]["parent"] &&
+        siblings[0]["parent"]["parent"]["name"] == "li"
+      ) {
         return (
-          <Text key={index} >
+          <Text key={index}>
             {index == 0 ? "\n\n\n" : ""}
-            {entities.decodeHTML("&#8226;")} {defaultRenderer(node.children, parent)}
+            {entities.decodeHTML("&#8226;")}{" "}
+            {defaultRenderer(node.children, parent)}
             {"\n\n"}
           </Text>
-        )
+        );
       }
       return (
         <Text key={index}>
-          {(index + 1)}. {defaultRenderer(node.children, parent)}
+          {index + 1}. {defaultRenderer(node.children, parent)}
           {index + 1 == siblings.length ? "" : "\n\n"}
         </Text>
-      )
-    }
-    else if (node.name == 'ol' || node.name == "ul") {
+      );
+    } else if (node.name == "ol" || node.name == "ul") {
       return (
-        <Text key={index}
-          style={{ textAlign: 'justify', color: 'rgba(0,0,0,0.54)' }}
-          ellipsizeMode='tail'>
+        <Text
+          key={index}
+          style={{ textAlign: "justify", color: "rgba(0,0,0,0.54)" }}
+          ellipsizeMode="tail"
+        >
           {index == 0 ? "" : "\n\n"}
           {defaultRenderer(node.children, parent)}
           {index + 1 == siblings.length ? "" : "\n"}
         </Text>
-      )
-    }
-    else if (node.name == "a") {
+      );
+    } else if (node.name == "a") {
       return (
-        <Text key={index} style={{ color: '#42b549' }}
-          onPress={() => { this.props.navigation.navigate('tproutes', { url: node.attribs.href }) }}>
+        <Text
+          key={index}
+          style={{ color: "#42b549" }}
+          onPress={() => {
+            this.props.navigation.navigate("tproutes", {
+              url: node.attribs.href,
+            });
+          }}
+        >
           {defaultRenderer(node.children, parent)}
         </Text>
-      )
-    }
-    else if (node.name == 'p') {
+      );
+    } else if (node.name == "p") {
       return (
-        <Text key={index}
-          style={{ textAlign: 'justify', color: 'rgba(0,0,0,0.54)' }}>
-          {index == 0 ? "" : "\n"}{defaultRenderer(node.children, parent)}{"\n\n"}
+        <Text
+          key={index}
+          style={{ textAlign: "justify", color: "rgba(0,0,0,0.54)" }}
+        >
+          {index == 0 ? "" : "\n"}
+          {defaultRenderer(node.children, parent)}
+          {"\n\n"}
         </Text>
-      )
+      );
     }
-  }
+  };
 }
 
-const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+const monthNames = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
 
 const styles = StyleSheet.create({
   headerImage: {
-    resizeMode: 'cover',
-    aspectRatio: 1.91
+    resizeMode: "cover",
+    aspectRatio: 1.91,
   },
   shareButton: {
     borderRadius: 52,
     height: 52,
     width: 52,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: -26,
-    alignSelf: 'flex-end',
-    marginRight: 15
+    alignSelf: "flex-end",
+    marginRight: 15,
   },
   shareImage: {
     height: 23,
-    width: 20
+    width: 20,
   },
   titleHolder: {
     marginTop: -26,
     paddingHorizontal: 18,
     paddingTop: 32,
     paddingBottom: 22,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   title: {
-    textAlign: 'center',
-    fontWeight: '600',
+    textAlign: "center",
+    fontWeight: "600",
     fontSize: 16,
-    color: 'rgba(0,0,0,0.7)'
+    color: "rgba(0,0,0,0.7)",
   },
   descriptionHolder: {
     marginTop: 15,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   greyText: {
-    color: 'rgba(0,0,0,0.38)'
+    color: "rgba(0,0,0,0.38)",
   },
   descriptionIcon: {
     width: 24,
-    height: 27
+    height: 27,
   },
   innerDescriptionHolder: {
     flex: 1,
-    paddingVertical: 16
+    paddingVertical: 16,
   },
   headerText: {
     fontSize: 14,
-    color: 'rgba(0,0,0,0.7)',
-    textAlign: 'center'
+    color: "rgba(0,0,0,0.7)",
+    textAlign: "center",
   },
   codeHolder: {
     borderRadius: 3,
-    borderColor: 'rgb(224,224,224)',
+    borderColor: "rgb(224,224,224)",
     borderWidth: 1,
     marginTop: 18,
     marginBottom: 8,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   innerCodeHolder: {
-    padding: 9
+    padding: 9,
   },
   detailHolder: {
     marginTop: 16,
     paddingVertical: 16,
-    backgroundColor: 'white',
-    marginBottom: 16
+    backgroundColor: "white",
+    marginBottom: 16,
   },
   detail: {
     padding: 16,
     paddingBottom: 0,
-    flex: 1
+    flex: 1,
   },
   shopButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: '100%',
-    backgroundColor: 'rgb(66,181,73)',
+    width: "100%",
+    backgroundColor: "rgb(66,181,73)",
     paddingVertical: 18,
-    alignItems: 'center',
-    zIndex: 10
+    alignItems: "center",
+    zIndex: 10,
   },
   shopText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '600'
+    fontWeight: "600",
   },
   boldHorizontalSeparator: {
     borderTopWidth: 1.5,
-    borderColor: 'rgba(0,0,0,0.12)',
-    marginTop: 19
+    borderColor: "rgba(0,0,0,0.12)",
+    marginTop: 19,
   },
   readMore: {
     paddingHorizontal: 16,
-    color: 'rgb(66,181,73)',
-    alignSelf: 'center',
-    paddingTop: 8
+    color: "rgb(66,181,73)",
+    alignSelf: "center",
+    paddingTop: 8,
   },
   subtitle: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 12,
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
 
 module.exports = PromoDetail;
