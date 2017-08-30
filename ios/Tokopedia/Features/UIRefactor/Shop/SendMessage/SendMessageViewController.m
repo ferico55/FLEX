@@ -57,10 +57,6 @@
         [[self viewWithTag:999] setAlpha:0];
 }
 
-- (void)setText:(NSString *)text {
-    [super setText:text];
-    [self performSelector:@selector(textChanged:)];
-}
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
