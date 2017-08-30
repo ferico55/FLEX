@@ -13,7 +13,6 @@ class ScreenshotAlertView: TKPDAlertView {
     @IBOutlet private var screenshotImage: UIImageView!
     
     @IBOutlet private var shareButton: UIButton!
-    @IBOutlet private var reportButton: UIButton!
     
     @IBOutlet private var closeButton: UIButton!
     
@@ -42,11 +41,6 @@ class ScreenshotAlertView: TKPDAlertView {
     @IBAction func didTapShareButton(_ sender: Any) {
         self.dismiss()
         self.onTapShare?(sender)
-    }
-    
-    @IBAction func didTapReportButton(_ sender: Any) {
-        self.dismiss()
-        self.onTapReport?()
     }
     
     @IBAction func didTapCloseButton(_ sender: Any) {

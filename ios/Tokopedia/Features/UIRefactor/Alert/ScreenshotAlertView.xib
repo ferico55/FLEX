@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,21 +22,6 @@
                         <constraint firstAttribute="width" constant="190" id="tav-dE-f0u"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gve-yM-Jfi">
-                    <rect key="frame" x="156" y="301" width="127.5" height="44"/>
-                    <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <state key="normal" title="Lapor">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="3"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didTapReportButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="D3I-BB-B37"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F9k-qe-Z2V">
                     <rect key="frame" x="255" y="0.0" width="45" height="45"/>
                     <constraints>
@@ -49,7 +34,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Rr-4N-UUR">
-                    <rect key="frame" x="16" y="301" width="128" height="44"/>
+                    <rect key="frame" x="16" y="301" width="268" height="44"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="iEQ-Xn-vmP"/>
@@ -84,18 +69,13 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="F9k-qe-Z2V" secondAttribute="trailing" id="0TJ-dr-b0o"/>
                 <constraint firstItem="Fgg-8M-F0s" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="45" id="2bl-V7-tXb"/>
+                <constraint firstAttribute="trailing" secondItem="3Rr-4N-UUR" secondAttribute="trailing" constant="16" id="49d-CQ-tpN"/>
                 <constraint firstItem="Xtu-vc-ffa" firstAttribute="top" secondItem="Fgg-8M-F0s" secondAttribute="bottom" constant="15" id="8g2-YO-n1g"/>
-                <constraint firstItem="Gve-yM-Jfi" firstAttribute="top" secondItem="3Rr-4N-UUR" secondAttribute="top" id="9Ia-oc-RY5"/>
                 <constraint firstItem="Fgg-8M-F0s" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="9lO-T6-m69"/>
                 <constraint firstItem="F9k-qe-Z2V" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DZ8-Jl-x03"/>
                 <constraint firstItem="3Rr-4N-UUR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="I8E-6h-2d2"/>
                 <constraint firstAttribute="bottom" secondItem="3Rr-4N-UUR" secondAttribute="bottom" constant="20" id="Iai-SV-D23"/>
-                <constraint firstItem="Gve-yM-Jfi" firstAttribute="centerY" secondItem="3Rr-4N-UUR" secondAttribute="centerY" id="MMS-eM-ztf"/>
-                <constraint firstItem="Gve-yM-Jfi" firstAttribute="bottom" secondItem="3Rr-4N-UUR" secondAttribute="bottom" id="ZNY-i5-Cby"/>
-                <constraint firstItem="Gve-yM-Jfi" firstAttribute="width" secondItem="3Rr-4N-UUR" secondAttribute="width" id="bis-6j-JWS"/>
-                <constraint firstAttribute="trailing" secondItem="Gve-yM-Jfi" secondAttribute="trailing" constant="16.5" id="hwT-GB-h2Q"/>
                 <constraint firstItem="3Rr-4N-UUR" firstAttribute="top" secondItem="Xtu-vc-ffa" secondAttribute="bottom" constant="27" id="ntU-It-09K"/>
-                <constraint firstItem="Gve-yM-Jfi" firstAttribute="leading" secondItem="3Rr-4N-UUR" secondAttribute="trailing" constant="12" id="nvy-t1-vDI"/>
                 <constraint firstItem="Xtu-vc-ffa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="q2T-KQ-YHA"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -106,10 +86,8 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="closeButton" destination="F9k-qe-Z2V" id="sIt-N3-xVg"/>
-                <outlet property="reportButton" destination="Gve-yM-Jfi" id="ck7-up-ATa"/>
                 <outlet property="screenshotImage" destination="Xtu-vc-ffa" id="NlY-hB-EKk"/>
                 <outlet property="shareButton" destination="3Rr-4N-UUR" id="JHF-64-GGF"/>
-                <outletCollection property="buttons" destination="Gve-yM-Jfi" id="Fux-bn-Yot"/>
                 <outletCollection property="buttons" destination="3Rr-4N-UUR" id="5Uu-NV-uEl"/>
                 <outletCollection property="buttons" destination="F9k-qe-Z2V" id="FWd-zy-plp"/>
             </connections>

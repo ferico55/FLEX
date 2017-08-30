@@ -508,7 +508,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
             
         case 6:
-            return 4;
+            return 3;
             break;
             
         case 7:
@@ -608,7 +608,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Sales"];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [SalesViewController new];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
@@ -717,10 +716,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [AnalyticsManager trackClickNavigateFromMore:@"Contact Us"];
             [NavigateViewController navigateToContactUsFromViewController:wrapperController];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"App Suggestion"];
-            [self pushIOSFeedback];
-            
-        } else if(indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Privacy"];
             [AnalyticsManager trackScreenName:@"Privacy Policy"];
 
@@ -728,7 +723,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [wrapperController.navigationController pushViewController:webViewController animated:YES];
-        } else if(indexPath.row == 3) {
+        } else if(indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Share Application"];
             [AnalyticsManager trackScreenName:@"Share App"];
             
@@ -781,39 +776,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
         };
         [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
-    }
-}
-
--(void)pushIOSFeedback {
-    [AnalyticsManager trackScreenName:@"iOS Feedback"];
-    
-    //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-    //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-    //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
-    if([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
-        emailController.mailComposeDelegate = self;
-        
-        NSString *messageBody = [NSString stringWithFormat:@"<b>Device:</b> %@ <br/> <b>iOS Version:</b> %@ <br/> <b>Email Tokopedia:</b> %@ <br/> <b>App Version:</b> %@ <br/><br/> <b>Tulis laporan kamu di sini:</b>", [[UIDevice currentDevice] modelName], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
-        
-        [emailController setSubject:@"Feedback"];
-        [emailController setMessageBody:messageBody isHTML:YES];
-        [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
-        [emailController.navigationBar setTintColor:[UIColor tpPrimaryBlackText]];
-        
-        //prevent changing table frame from setStatusBarHidden
-        _defaultTableFrame = self.tableView.frame;
-        [self.wrapperViewController.navigationController presentViewController:emailController animated:YES completion:^{
-            //pakai dispatch async, sebab di iOS7 dengan device model lama, terkadang status bar nya tidak segera hide
-            dispatch_async(dispatch_get_main_queue(), ^{
-                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-            });
-        }];
-    } else {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
-                                                                       delegate:self];
-        [alert show];
     }
 }
 
