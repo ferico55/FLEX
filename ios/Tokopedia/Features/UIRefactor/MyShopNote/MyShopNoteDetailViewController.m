@@ -373,8 +373,7 @@
         
         
     }
-    
-    if (_titleNoteTextField.text.length > 0 && _noteTextEditor.html.length > 0) {
+    if (_titleNoteTextField.text.length > 0 && contentNote.length > 0) {
         _barbuttonedit.enabled = YES;
         _barbuttonedit.tintColor = [UIColor whiteColor];
     }
@@ -679,7 +678,7 @@
 #pragma mark - Rich editor delegate
 
 - (void)richEditor:(RichEditorView *)editor contentDidChange:(NSString *)content {
-    [self updateSaveTabbarTitle:_titleNoteTextField.text content:_noteTextEditor.text];
+    [self updateSaveTabbarTitle:_titleNoteTextField.text content:content];
 }
 
 @end
