@@ -26,8 +26,12 @@ class DetailProductRequest: NSObject {
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : V4Response<AnyObject> = result[""] as! V4Response<AnyObject>
-                                            let data = response.data as! PromoteResult
+                                            guard let response : V4Response<AnyObject> = result[""] as? V4Response<AnyObject> else {
+                                                return
+                                            }
+                                            guard let data = response.data as? PromoteResult else {
+                                                return
+                                            }
                                             
                                             if data.is_dink == "1" {
                                                 onSuccess(data)

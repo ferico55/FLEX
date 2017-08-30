@@ -348,7 +348,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 view.setImage(cartButtonImage, for: .normal)
                 view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
                 view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
-                view.imageView?.tintColor = isFullNavigation ? .black : .white 
+                view.imageView?.tintColor = isFullNavigation ? .black : .white
             }.add(child: badgeView())
         }
         
@@ -568,14 +568,16 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             ])
         }
         
-        func moengageAttributes(product: ProductUnbox) -> [String : Any] {
-            var attributes = ["product_name" : product.name,
-                              "product_url" : product.url,
-                              "product_id" : product.id,
-                              "product_price" : product.info.priceUnformatted,
-                              "shop_id" : product.shop.id,
-                              "is_official_store" : product.shop.isOfficial,
-                              "shop_name" : product.shop.name] as [String : Any]
+        func moengageAttributes(product: ProductUnbox) -> [String: Any] {
+            var attributes = [
+                "product_name": product.name,
+                "product_url": product.url,
+                "product_id": product.id,
+                "product_price": product.info.priceUnformatted,
+                "shop_id": product.shop.id,
+                "is_official_store": product.shop.isOfficial,
+                "shop_name": product.shop.name
+            ] as [String: Any]
             
             if product.images.count > 0 {
                 attributes["product_image_url"] = product.images[0].normalURL
@@ -690,42 +692,6 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                      let vc = ProductWholesaleViewController(wholesales: wholesales)
                                      self.viewController.navigationController?.pushViewController(vc, animated: true)
                 }),
-                ProductSellerInfoNode(identifier: "seller",
-                                      state: state,
-                                      didTapShop: { [unowned self] shop in
-                                          let vc = ShopViewController()
-                                          var data: [AnyHashable: Any] = [
-                                              kTKPDDETAIL_APISHOPIDKEY: shop.id,
-                                              kTKPDDETAIL_APISHOPNAMEKEY: shop.name
-                                          ]
-                                          if let authData = UserAuthentificationManager().getUserLoginData() {
-                                              data = [
-                                                  kTKPDDETAIL_APISHOPIDKEY: shop.id,
-                                                  kTKPDDETAIL_APISHOPNAMEKEY: shop.name,
-                                                  kTKPD_AUTHKEY: authData
-                                              ]
-                                          }
-                                          vc.data = data
-                                          self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                          
-                                      },
-                                      didTapFavorite: { [unowned self] isFavorite in
-                                          self.updateFavorite(isFavorite)
-                                      },
-                                      didTapMessage: { [unowned self] in
-                                          self.sendMessage()
-                                      },
-                                      didTapReputation: { [unowned self] view, reputationScore in
-                                          
-                                          let popView = CMPopTipView(message: "\(reputationScore) Poin")
-                                          popView?.backgroundColor = .black
-                                          popView?.textColor = .white
-                                          popView?.textFont = UIFont.smallTheme()
-                                          popView?.dismissTapAnywhere = true
-                                          popView?.leftPopUp = true
-                                          popView?.preferredPointDirection = .up
-                                          popView?.presentPointing(at: view, in: self.viewController.view, animated: true)
-                }),
                 ProductInfoNode(identifier: "info",
                                 state: state,
                                 didTapCategory: { [unowned self] category in
@@ -787,6 +753,82 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                            let menuController = UIMenuController.shared
                                            menuController.setTargetRect(view.frame, in: view)
                                            menuController.setMenuVisible(true, animated: true)
+                }),
+                ProductSellerInfoNode(identifier: "seller",
+                                      state: state,
+                                      didTapShop: { [unowned self] shop in
+                                          let vc = ShopViewController()
+                                          var data: [AnyHashable: Any] = [
+                                              kTKPDDETAIL_APISHOPIDKEY: shop.id,
+                                              kTKPDDETAIL_APISHOPNAMEKEY: shop.name
+                                          ]
+                                          if let authData = UserAuthentificationManager().getUserLoginData() {
+                                              data = [
+                                                  kTKPDDETAIL_APISHOPIDKEY: shop.id,
+                                                  kTKPDDETAIL_APISHOPNAMEKEY: shop.name,
+                                                  kTKPD_AUTHKEY: authData
+                                              ]
+                                          }
+                                          vc.data = data
+                                          self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                          
+                                      },
+                                      didTapFavorite: { [unowned self] isFavorite in
+                                          self.updateFavorite(isFavorite)
+                                      },
+                                      didTapMessage: { [unowned self] in
+                                          self.sendMessage()
+                                      },
+                                      didTapReputation: { [unowned self] view, reputationScore in
+                                          
+                                          let popView = CMPopTipView(message: "\(reputationScore) Poin")
+                                          popView?.backgroundColor = .black
+                                          popView?.textColor = .white
+                                          popView?.textFont = UIFont.smallTheme()
+                                          popView?.dismissTapAnywhere = true
+                                          popView?.leftPopUp = true
+                                          popView?.preferredPointDirection = .up
+                                          popView?.presentPointing(at: view, in: self.viewController.view, animated: true)
+                }),
+                ProductDetailReviewNode(identifier: "review",
+                                        state: state,
+                                        didTapAllReview: { [unowned self] productDetail in
+                                            AnalyticsManager.trackEventName("Click", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "All Reviews")
+                                            
+                                            AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
+
+                                            let vc = ProductReputationViewController()
+                                            vc.strShopDomain = productDetail.shop.domain
+                                            vc.strProductID = productDetail.id
+                                            
+                                            self.viewController.navigationController?.pushViewController(vc, animated: true)
+                }),
+                ProductDetailDiscussionNode(identifier: "discussion",
+                                            state: state,
+                                            didTapAllDiscussion: { [unowned self] productDetail in
+                                                AnalyticsManager.trackEventName("Click", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "All Discussions")
+
+                                                AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Diskusi_Pdp", attributes: moengageAttributes(product: productDetail))
+
+                                                let vc = ProductTalkViewController()
+                                                let images = productDetail.images
+                                                let dataTalk: [AnyHashable: Any] =
+                                                    [
+                                                        kTKPDDETAILPRODUCT_APIIMAGESRCKEY: (images.count > 0) ? images[0].normalURL : "",
+                                                        kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY: productDetail.soldCount,
+                                                        kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY: productDetail.viewCount,
+                                                        API_PRODUCT_NAME_KEY: productDetail.name,
+                                                        API_PRODUCT_PRICE_KEY: productDetail.info.price,
+                                                        "talk_shop_id": productDetail.shop.id,
+                                                        "talk_product_status": productDetail.info.status.rawValue,
+                                                        "product_id": productDetail.id,
+                                                        "auth_key": UserAuthentificationManager().getUserLoginData() ?? NSNull(),
+                                                        "talk_product_image": (images.count > 0) ? images[0].normalURL : ""
+                                                    ]
+                                                
+                                                vc.data = dataTalk
+                                                self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                                
                 }),
                 ProductRecommendationNode(identifier: "recommendation",
                                           state: state,
@@ -1032,7 +1074,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         if isWishlist {
             if let category = productDetail.categories.first {
                 let attributes = [
-                    "subcategory" : productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
+                    "subcategory": productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
                     "subcategory_id": productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
                     "category": category.name,
                     "category_id": category.id,
@@ -1040,7 +1082,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     "product_id": productDetail.id,
                     "product_url": productDetail.url,
                     "product_price": productDetail.info.priceUnformatted
-                ] as [String : Any]
+                ] as [String: Any]
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Added_To_Wishlist_Marketplace", attributes: attributes)
             }
             
@@ -1071,7 +1113,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         } else {
             if let category = productDetail.categories.first {
                 let attributes = [
-                    "subcategory" : productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
+                    "subcategory": productDetail.categories.count > 1 ? productDetail.categories[1].name : "",
                     "subcategory_id": productDetail.categories.count > 1 ? productDetail.categories[1].id : "",
                     "category": category.name,
                     "category_id": category.id,
@@ -1079,7 +1121,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     "product_id": productDetail.id,
                     "product_url": productDetail.url,
                     "product_price": productDetail.info.priceUnformatted
-                    ] as [String : Any]
+                ] as [String: Any]
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Removed_From_Wishlist_Marketplace", attributes: attributes)
             }
             

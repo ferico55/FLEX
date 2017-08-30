@@ -31,7 +31,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.default
     }
-
+    
     // MARK: - Lifecycle
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -58,10 +58,8 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         super.viewDidLoad()
         let state = ProductDetailState()
         
-        store = Store<ProductDetailState>(
-            reducer: ProductDetailReducer(),
-            state: state
-        )
+        store = Store<ProductDetailState>(reducer: ProductDetailReducer(),
+                                          state: state)
         
         guard let initialData = self.initialData else {
             return
@@ -117,7 +115,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Analytic    
+    // MARK: - Analytic
     private func trackScreenWithProduct(product: ProductUnbox) {
         guard product.categories.count > 0 else { return }
         
@@ -141,17 +139,17 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                                             attributes: self.moengageAttributes(product: product))
     }
     
-    private func moengageAttributes(product: ProductUnbox) -> [String : Any] {
-        var attributes = ["product_name" : product.name,
-                          "product_url" : product.url,
-                          "product_id" : product.id,
-                          "product_image_url" : product.images.first?.normalURL ?? "",
-                          "product_price" : product.info.priceUnformatted,
-                          "shop_id" : product.shop.id,
-                          "is_official_store" : product.shop.isOfficial,
-                          "shop_name" : product.shop.name,
-                          "category" : product.categories.first?.name ?? "",
-                          "category_id" : product.categories.first?.id ?? ""] as [String : Any]
+    private func moengageAttributes(product: ProductUnbox) -> [String: Any] {
+        var attributes = ["product_name": product.name,
+                          "product_url": product.url,
+                          "product_id": product.id,
+                          "product_image_url": product.images.first?.normalURL ?? "",
+                          "product_price": product.info.priceUnformatted,
+                          "shop_id": product.shop.id,
+                          "is_official_store": product.shop.isOfficial,
+                          "shop_name": product.shop.name,
+                          "category": product.categories.first?.name ?? "",
+                          "category_id": product.categories.first?.id ?? ""] as [String: Any]
         
         if product.categories.count > 1 {
             attributes["subcategory"] = product.categories[1].name
@@ -191,6 +189,8 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                     if product.shop.isGoldMerchant {
                         self.loadProductVideos(product: product)
                     }
+                    self.loadProductMostHelpfulReview(product: product)
+                    self.loadProductLatestDiscussion(product: product)
                     self.checkProductAndDispatch(product: product)
                 case let .error(error) :
                     if let moyaError = error as? MoyaError,
@@ -310,6 +310,70 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
             .disposed(by: self.rx_disposeBag)
     }
     
+    private func loadProductMostHelpfulReview(product: ProductUnbox) {
+        let provider = NetworkProvider<ReputationTarget>()
+        provider.request(.getMostHelpfulReview(withProductID: product.id))
+            .map(to: ProductReviews.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(productReviews) :
+                    self.product?.mostHelpfulReviews = productReviews.reviews
+                    self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
+                    
+                case let .error(error) :
+                    print("\(error.localizedDescription)")
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
+    private func loadProductLatestDiscussion(product: ProductUnbox) {
+        let provider = NetworkProvider<TalkTarget>()
+        provider.request(.getLatestTalk(withProductID: product.id))
+            .map(to: ProductTalks.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(productTalks) :
+                    if productTalks.talks.count > 0 {
+                        self.product?.latestDiscussion = productTalks.talks[0]
+                        if let talkID = self.product?.latestDiscussion?.talkID {
+                            self.loadProductDiscussionComment(talkID: talkID)
+                        } else {
+                            self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
+                        }
+                    }
+                case let .error(error) :
+                    print("\(error.localizedDescription)")
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
+    private func loadProductDiscussionComment(talkID: String) {
+        let provider = NetworkProvider<TalkTarget>()
+        provider.request(.getTalkComment(withTalkID: talkID))
+            .map(to: ProductTalkComments.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(productTalkComments) :
+                    if productTalkComments.comments.count > 0 {
+                        self.product?.latestDiscussion?.comments = productTalkComments.comments
+                    }
+                    self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
+                case let .error(error) :
+                    self.store.dispatch(ProductDetailAction.receive(self.product!, nil))
+                    print("\(error.localizedDescription)")
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
     @objc
     private func campaignScheduledProcess() {
         if let campaignEndDate = campaignEndDate,
@@ -342,7 +406,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                 }
                 
             },
-            onError: { _ in
+                       onError: { _ in
                 print("error")
             })
             .disposed(by: self.rx_disposeBag)
@@ -364,7 +428,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     func photoGallery(_ gallery: GalleryViewController!, captionForPhotoAt index: UInt) -> String! {
         guard let images = store.state.productDetail?.images,
             images.count > Int(index) else {
-                return ""
+            return ""
         }
         
         return images[Int(index)].imageDescription
@@ -373,7 +437,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     func photoGallery(_ gallery: GalleryViewController!, urlFor size: GalleryPhotoSize, at index: UInt) -> String! {
         guard let images = store.state.productDetail?.images,
             images.count > Int(index) else {
-                return ""
+            return ""
         }
         
         return images[Int(index)].normalURL

@@ -35,6 +35,8 @@ struct ProductUnbox {
     var videos: [ProductVideo]
     var otherProducts: [OtherProduct]
     var campaign: ShopProductPageCampaignInfo?
+    var mostHelpfulReviews: [ProductReview]
+    var latestDiscussion: ProductTalk?
 }
 
 extension ProductUnbox: Unboxable {
@@ -65,6 +67,8 @@ extension ProductUnbox: Unboxable {
         self.videos = [ProductVideo]()
         self.otherProducts = [OtherProduct]()
         self.campaign = nil
+        self.mostHelpfulReviews = [ProductReview]()
+        self.latestDiscussion = nil
     }
 
     func lastLevelCategory() -> ProductCategory {
@@ -348,4 +352,105 @@ extension ProductInstallmentTerm: Unboxable {
         self.percentage = try unboxer.unbox(key: "percentage")
     }
 }
+
+struct ProductReviews {
+    let reviews: [ProductReview]
+}
+
+extension ProductReviews: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.reviews = try unboxer.unbox(keyPath: "data.list")
+    }
+}
+
+struct ProductReview {
+    let reputationID: String
+    let reviewID: String
+    let rating: Int
+    let message: String
+    let publishTime: String
+    let reviewerID: String
+    let reviewerName: String
+    let reviewerImage: String
+}
+
+extension ProductReview: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.reputationID = try unboxer.unbox(key: "reputation_id")
+        self.reviewID = try unboxer.unbox(key: "review_id")
+        self.rating = try unboxer.unbox(key: "product_rating")
+        self.message = try unboxer.unbox(key: "review_message")
+        self.publishTime = try unboxer.unbox(keyPath: "review_create_time.date_time_fmt1")
+        self.reviewerID = try unboxer.unbox(keyPath: "user.user_id")
+        self.reviewerName = try unboxer.unbox(keyPath: "user.full_name")
+        self.reviewerImage = try unboxer.unbox(keyPath: "user.user_image")
+    }
+}
+
+struct ProductTalks {
+    let talks: [ProductTalk]
+}
+
+extension ProductTalks: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.talks = try unboxer.unbox(keyPath: "data.list")
+    }
+}
+
+struct ProductTalk {
+    let talkID: String
+    let userName: String
+    let userImage: String
+    let message: String
+    let publishTime: String
+    let userLabel: String
+    var comments: [ProductTalkComment]
+}
+
+extension ProductTalk: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.talkID = try unboxer.unbox(key: "talk_id")
+        self.userName = try unboxer.unbox(key: "talk_user_name")
+        self.userImage = try unboxer.unbox(key: "talk_user_image")
+        self.message = try unboxer.unbox(key: "talk_message")
+        self.publishTime = try unboxer.unbox(keyPath: "talk_create_time_list.date_time_ios")
+        self.userLabel = try unboxer.unbox(key: "talk_user_label")
+        self.comments = [ProductTalkComment]()
+    }
+}
+
+struct ProductTalkComments {
+    let comments: [ProductTalkComment]
+}
+
+extension ProductTalkComments: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.comments = try unboxer.unbox(keyPath: "data.list")
+    }
+}
+
+struct ProductTalkComment {
+    let commentID: String
+    let userName: String
+    let userImage: String
+    let message: String
+    let publishTime: String
+    let isSeller: Bool
+    let userLabel: String
+    let shopName: String
+}
+
+extension ProductTalkComment: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.commentID = try unboxer.unbox(key: "comment_id")
+        self.userName = try unboxer.unbox(key: "comment_user_name")
+        self.userImage = try unboxer.unbox(key: "comment_user_image")
+        self.message = try unboxer.unbox(key: "comment_message")
+        self.publishTime = try unboxer.unbox(keyPath: "comment_create_time_list.date_time_ios")
+        self.isSeller = try unboxer.unbox(key: "comment_is_seller")
+        self.userLabel = try unboxer.unbox(key: "comment_user_label")
+        self.shopName = try unboxer.unbox(key: "comment_shop_name")
+    }
+}
+
 

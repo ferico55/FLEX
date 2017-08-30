@@ -30,6 +30,10 @@
         return [UIColor fromHexString:@"#f02222"];
     }
 
+    +(UIColor *)tpDarkRed{
+        return [UIColor fromHexString:@"#B94A48"];
+    }
+
     +(UIColor *)tpPrimaryBlackText{
         return [[UIColor fromHexString:@"#000000"] colorWithAlphaComponent:0.7];
     }
@@ -60,6 +64,10 @@
 
     +(UIColor *)tpLine{
         return [[UIColor fromHexString:@"#000000"] colorWithAlphaComponent:0.12];
+    }
+
+    +(UIColor *)tpBorder{
+        return [UIColor fromHexString:@"#e0e0e0"];
     }
 
     +(UIColor *)tpGray{

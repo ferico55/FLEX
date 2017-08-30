@@ -32,10 +32,10 @@ class ProductDescriptionNode: ContainerNode {
                 titleLabel(),
                 videoListView(),
                 productDescriptionView(),
-                productDescriptionButton(),
+                productBottomView(),
                 GlobalRenderComponent.horizontalLine(identifier: "Description-Line-2", marginLeft: 0)
-                ])
             ])
+        ])
     }
     
     private func container() -> NodeType {
@@ -113,9 +113,9 @@ class ProductDescriptionNode: ContainerNode {
             })
             view.addGestureRecognizer(tapGestureRecognizer)
             
-            }.add(children: [
-                self.videoPlaceholderView(videoUrl: video.url)
-                ])
+        }.add(children: [
+            self.videoPlaceholderView(videoUrl: video.url)
+        ])
     }
     
     private func videoListView() -> NodeType {
@@ -140,35 +140,7 @@ class ProductDescriptionNode: ContainerNode {
             view.bounces = true
             view.contentSize.width = 160.0 * CGFloat(videos.count)
             view.backgroundColor = .clear
-            }.add(children: videos)
-    }
-    
-    private func productDescriptionButton() -> NodeType {
-        guard let productInfo = state.productDetail?.info else { return NilNode() }
-        
-        var fullString = NSString.extracTKPMEUrl(productInfo.descriptionHtml()) as String
-        if fullString.characters.count > 300 {
-            return Node<UILabel>() { view, layout, size in
-                layout.width = size.width
-                layout.height = 40
-                layout.marginBottom = 12
-                view.textAlignment = .center
-                view.font = .title2Theme()
-                view.textColor = UIColor.tpGreen()
-                view.text = "Selengkapnya" 
-                view.isUserInteractionEnabled = true
-                
-                let tapGestureRecognizer = UITapGestureRecognizer()
-                _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
-                    self.didTapDescription(productInfo)
-                })
-                view.addGestureRecognizer(tapGestureRecognizer)
-            }
-        }
-        
-        return Node { _, layout, _ in
-            layout.height = 12
-        }
+        }.add(children: videos)
     }
     
     private func productDescriptionView() -> NodeType {
@@ -190,9 +162,9 @@ class ProductDescriptionNode: ContainerNode {
             var fullString = NSString.extracTKPMEUrl(description) as String
             var fullAttributedString = NSMutableAttributedString(string: fullString,
                                                                  attributes: [
-                                                                    NSFontAttributeName: UIFont.title1Theme(),
-                                                                    NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()
-                ])
+                                                                     NSFontAttributeName: UIFont.title1Theme(),
+                                                                     NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()
+            ])
             if fullString.characters.count > 300 {
                 let range = fullString.startIndex..<fullString.index(description.startIndex, offsetBy: 300)
                 let subtringDesc = fullString[range]
@@ -200,9 +172,9 @@ class ProductDescriptionNode: ContainerNode {
                 fullString = "\(subtringDesc)..."
                 fullAttributedString = NSMutableAttributedString(string: fullString,
                                                                  attributes: [
-                                                                    NSFontAttributeName: UIFont.title1Theme(),
-                                                                    NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()
-                    ])
+                                                                     NSFontAttributeName: UIFont.title1Theme(),
+                                                                     NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()
+                ])
             }
             
             view.attributedText = fullAttributedString
@@ -229,5 +201,58 @@ class ProductDescriptionNode: ContainerNode {
                 })
             view.addGestureRecognizer(longPressGestureRecognizer)
         }
+    }
+    
+    private func productBottomView() -> NodeType {
+        guard let productInfo = state.productDetail?.info else { return NilNode() }
+        
+        var fullString = NSString.extracTKPMEUrl(productInfo.descriptionHtml()) as String
+        if fullString.characters.count > 300 {
+            return Node<UIView>(identifier: "Bottom-View") { _, layout, _ in
+                layout.flexDirection = .column
+            }.add(children: [
+                GlobalRenderComponent.horizontalLine(identifier: "Description-Line-1", marginLeft: 0),
+                productMoreView()
+            ])
+        }
+        
+        return Node { _, layout, _ in
+            layout.height = 12
+        }
+    }
+    
+    private func productMoreView() -> NodeType {
+        guard let productInfo = state.productDetail?.info else { return NilNode() }
+        
+        return Node<UIView>(identifier: "Product-More") { view, layout, _ in
+            layout.height = 64
+            layout.flexDirection = .row
+            layout.alignContent = .center
+            layout.justifyContent = .flexEnd
+            
+            let tapGestureRecognizer = UITapGestureRecognizer()
+            _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                self.didTapDescription(productInfo)
+            })
+            view.addGestureRecognizer(tapGestureRecognizer)
+        }.add(children: [
+            Node<UILabel>() { view, _, _ in
+                view.font = .title1Theme()
+                view.textColor = .tpGreen()
+                view.text = "Baca Selengkapnya"
+                view.numberOfLines = 4
+            },
+            Node<UIImageView>(identifier: "more-icon", create: {
+                let view = UIImageView(image: UIImage(named: "icon_carret_green"))
+                view.transform = view.transform.rotated(by: CGFloat(Double.pi))
+                return view
+                
+            }, configure: { _, layout, _ in
+                layout.height = 18
+                layout.width = 18
+                layout.marginRight = 15
+                layout.alignSelf = .center
+            })
+        ])
     }
 }

@@ -99,6 +99,10 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		DA0C42051F43F6AA0067869F /* ProductDetailDiscussionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42031F43F6AA0067869F /* ProductDetailDiscussionNode.swift */; };
+		DA0C42061F43F6AA0067869F /* ProductDetailReviewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42041F43F6AA0067869F /* ProductDetailReviewNode.swift */; };
+		DA0C42091F43FCBC0067869F /* ReputationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42071F43FCBC0067869F /* ReputationTarget.swift */; };
+		DA0C420A1F43FCBC0067869F /* TalkTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42081F43FCBC0067869F /* TalkTarget.swift */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -2013,6 +2017,10 @@
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA0C42031F43F6AA0067869F /* ProductDetailDiscussionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailDiscussionNode.swift; sourceTree = "<group>"; };
+		DA0C42041F43F6AA0067869F /* ProductDetailReviewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailReviewNode.swift; sourceTree = "<group>"; };
+		DA0C42071F43FCBC0067869F /* ReputationTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReputationTarget.swift; sourceTree = "<group>"; };
+		DA0C42081F43FCBC0067869F /* TalkTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkTarget.swift; sourceTree = "<group>"; };
 		DADB9ED91F3C46CE002B1FAE /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		DADB9EE21F3C46CE002B1FAE /* _FBTweakArrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FBTweakArrayViewController.h; sourceTree = "<group>"; };
@@ -5059,6 +5067,8 @@
 				457B92351F0E311D005851E5 /* TokocashTarget.swift */,
 				457B92361F0E311D005851E5 /* V4Target.swift */,
 				457B92371F0E311D005851E5 /* WalletTarget.swift */,
+				DA0C42071F43FCBC0067869F /* ReputationTarget.swift */,
+				DA0C42081F43FCBC0067869F /* TalkTarget.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -7748,6 +7758,8 @@
 				DADBA5431F3C5E27002B1FAE /* ProductPriceNode.swift */,
 				DADBA5441F3C5E27002B1FAE /* ProductRecommendationNode.swift */,
 				DADBA5451F3C5E27002B1FAE /* ProductSellerNode.swift */,
+				DA0C42031F43F6AA0067869F /* ProductDetailDiscussionNode.swift */,
+				DA0C42041F43F6AA0067869F /* ProductDetailReviewNode.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -11543,6 +11555,7 @@
 				DADBB0AE1F3C5E2F002B1FAE /* RejectReasonEditPriceViewController.m in Sources */,
 				DADBAFD01F3C5E2E002B1FAE /* CourierViewCell.m in Sources */,
 				6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */,
+				DA0C42061F43F6AA0067869F /* ProductDetailReviewNode.swift in Sources */,
 				DADBACB01F3C5E2A002B1FAE /* InboxReviewAction.m in Sources */,
 				DADBB1541F3C5E30002B1FAE /* CloseShopResult.m in Sources */,
 				DADBAFA61F3C5E2D002B1FAE /* ActivatePushInstructionViewController.swift in Sources */,
@@ -11892,6 +11905,7 @@
 				DADBA00C1F3C5BA3002B1FAE /* ALAsset+Date.m in Sources */,
 				DADB9F461F3C46CE002B1FAE /* _FBTweakCategoryViewController.m in Sources */,
 				DADBAC6D1F3C5E2A002B1FAE /* GeneralAction.m in Sources */,
+				DA0C42091F43FCBC0067869F /* ReputationTarget.swift in Sources */,
 				DADBADDE1F3C5E2B002B1FAE /* DataCredit.m in Sources */,
 				DADBAFD81F3C5E2E002B1FAE /* ShipmentViewController.m in Sources */,
 				DADBACAC1F3C5E2A002B1FAE /* ResolutionOrder.m in Sources */,
@@ -12066,6 +12080,7 @@
 				DADBAE101F3C5E2C002B1FAE /* UploadImageHelper.m in Sources */,
 				DADBAE9D1F3C5E2C002B1FAE /* CatalogShopCell.m in Sources */,
 				DADBADC81F3C5E2B002B1FAE /* TransactionATCFormDetail.m in Sources */,
+				DA0C420A1F43FCBC0067869F /* TalkTarget.swift in Sources */,
 				DADBACE81F3C5E2B002B1FAE /* NotificationInbox.m in Sources */,
 				DADBAD501F3C5E2B002B1FAE /* SearchProductResult.swift in Sources */,
 				DADBACD91F3C5E2B002B1FAE /* InboxReputation.m in Sources */,
@@ -12386,6 +12401,7 @@
 				DADBACF31F3C5E2B002B1FAE /* ProductEditDetail.swift in Sources */,
 				DADBB0691F3C5E2F002B1FAE /* PulsaProductPromo.swift in Sources */,
 				DADBADCC1F3C5E2B002B1FAE /* TransactionCalculatePriceResult.m in Sources */,
+				DA0C42051F43F6AA0067869F /* ProductDetailDiscussionNode.swift in Sources */,
 				DADBB1221F3C5E30002B1FAE /* SettingAddressViewController.m in Sources */,
 				DADBA00F1F3C5BA3002B1FAE /* NSData+Encryption.m in Sources */,
 				DADBB1E81F3C5E31002B1FAE /* SystemBank.swift in Sources */,

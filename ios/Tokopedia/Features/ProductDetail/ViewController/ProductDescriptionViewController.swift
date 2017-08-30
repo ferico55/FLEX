@@ -10,7 +10,7 @@ import UIKit
 import Render
 
 class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDelegate, TTTAttributedLabelDelegate {
-
+    
     private var productInfo: ProductInfo
     private var productDescriptionComponent: ProductDescriptionComponentView!
     
@@ -20,7 +20,7 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     init(productInfo: ProductInfo) {
         self.productInfo = productInfo
         super.init(nibName: nil, bundle: nil)
@@ -28,17 +28,17 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = "Deskripsi Produk"
+        
+        title = "Deskripsi Produk"
         productDescriptionComponent = ProductDescriptionComponentView(viewController: self)
-        self.view.addSubview(productDescriptionComponent)
+        view.addSubview(productDescriptionComponent)
         productDescriptionComponent.state = ProductDescriptionState(productInfo: productInfo)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setWhite()
+        navigationController?.setWhite()
         AnalyticsManager.trackScreenName("Product Detail - Description Page")
     }
     
@@ -83,7 +83,7 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
                 self?.navigationController?.popViewController(animated: true)
             }
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -111,7 +111,7 @@ class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
     }
     
     override func construct(state: ProductDescriptionState?, size: CGSize = CGSize.undefined) -> NodeType {
-
+        
         func descriptionView() -> NodeType {
             guard let productInfo = state?.productInfo else {
                 return NilNode()
@@ -133,7 +133,7 @@ class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
                 let fullString = NSString.extracTKPMEUrl(description) as String
                 
                 let descriptionSize = view.font.sizeOfString(string: fullString, constrainedToWidth: Double(size.width - 48))
-                layout.height = descriptionSize.height + 12
+                layout.height = descriptionSize.height + 50
                 
                 view.enabledTextCheckingTypes = NSTextCheckingResult.CheckingType.link.rawValue
                 let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
@@ -162,17 +162,16 @@ class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
             layout.width = size.width
             layout.height = size.height
             view.backgroundColor = .white
-            }.add(children: [
-                descriptionView(),
-                ])
+        }.add(children: [
+            descriptionView(),
+        ])
     }
     
     private func didLongPressDescription(_ view: UILabel) {
         view.becomeFirstResponder()
         let menuController = UIMenuController.shared
-        let centerRect = CGRect(x: 0, y: view.frame.height * 1/3, width: view.frame.width, height: view.frame.height)
+        let centerRect = CGRect(x: 0, y: view.frame.height * 1 / 3, width: view.frame.width, height: view.frame.height)
         menuController.setTargetRect(centerRect, in: view)
         menuController.setMenuVisible(true, animated: true)
     }
 }
-
