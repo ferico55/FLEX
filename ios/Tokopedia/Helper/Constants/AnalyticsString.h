@@ -103,6 +103,7 @@
 #define GA_EVENT_ACTION_NAVIGATION_SORT @"Bottom Navigation - Sort"
 #define GA_EVENT_ACTION_NAVIGATION_FILTER @"Bottom Navigation - Filter"
 #define GA_EVENT_ACTION_NAVIGATION_DISPLAY @"Bottom Navigation - Display"
+#define GA_EVENT_ACTION_NAVIGATION_CATEGORY @"Bottom Navigation - Category"
 #define GA_EVENT_ACTION_NAVIGATION_SHARE @"Bottom Navigation - Share"
 #define GA_EVENT_ACTION_REQUEST_SUCCESS @"Request Success"
 #define GA_EVENT_ACTION_REQUEST_FAILED @"Request Failed"

@@ -545,7 +545,10 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
             if ([self isHasBanner])
             {
                 [headerIntermediaryCollectionReusableView setBanner:_categoryIntermediaryResult.banner didSelectBanner:^(Slide *slide) {
-                    [AnalyticsManager trackEventName:GA_EVENT_CLICK_INTERMEDIARY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_INTERMEDIARY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:@"Banner Click" label: slide.title];
+                    [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY
+                                            category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId]
+                                              action:@"Banner Click"
+                                               label: slide.title];
                 }];
                 [headerIntermediaryCollectionReusableView hideHeader];
             } else if ([self isHasHeader]){
@@ -702,6 +705,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         case 12:
         {
+            [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY
+                                    category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId]
+                                      action:GA_EVENT_ACTION_NAVIGATION_CATEGORY
+                                       label:[NSString stringWithFormat:@"%@", [_data objectForKey:@"sc"] ?: [NSString stringWithFormat:@"%@", _searchObject.data.departmentId]]];
+
             CategoryNavigationViewController *categoryNavigationVC = [[CategoryNavigationViewController alloc] initWithCategoryId:_rootCategoryID];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:categoryNavigationVC];

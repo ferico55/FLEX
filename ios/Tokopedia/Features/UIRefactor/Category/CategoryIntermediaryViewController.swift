@@ -121,6 +121,10 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             }
             
             view.didTapSeeAllButton = { [unowned self] in
+                AnalyticsManager .trackEventName(GA_EVENT_CLICK_INTERMEDIARY,
+                    category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryNonHiddenChildren.first?.rootCategoryId)",
+                    action: "Navigation",
+                    label: "Expand Subcategory")
                 self.state?.isCategorySubviewExpanded = !(state?.isCategorySubviewExpanded)!
                 self.render(in: CGSize(width: UIScreen.main.bounds.size.width, height: size.height))
             }

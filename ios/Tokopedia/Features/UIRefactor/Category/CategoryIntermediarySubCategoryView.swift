@@ -51,8 +51,6 @@ class CategoryIntermediarySubCategoryView: UIView {
 
             seeMoreView.setExpanded(isExpanded: isExpanded)
             seeMoreView.didTapSeeAllButton = { [unowned self] in
-                AnalyticsManager .trackEventName(GA_EVENT_CLICK_CATEGORY, category: "\(GA_EVENT_CATEGORY_PAGE) -  \(categoryChildren.first?.rootCategoryId)"
-                    , action: "Navigation", label: "Expand Subcategory")
                 self.didTapSeeAllButton?()
             }
             self.addSubview(seeMoreView)
