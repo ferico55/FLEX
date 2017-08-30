@@ -316,6 +316,7 @@
         
         if (_list.count >0) {
             _isNodata = NO;
+            _tableView.tableFooterView = nil;
         }
         else
         {
