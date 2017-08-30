@@ -53,7 +53,7 @@ class EditProductTroubleCell: UITableViewCell, UITextViewDelegate, UITextFieldDe
         }
         
         if viewModel.isSelected {
-            selectedImageView.image = UIImage(named: "icon_checkmark_green-01.png")
+            selectedImageView.image = UIImage(named: "icon_check_green")
         } else {
             selectedImageView.image = UIImage(named: "icon_circle.png")
         }
