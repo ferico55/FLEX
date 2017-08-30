@@ -56,6 +56,24 @@ class ShopHomeViewController: UIViewController {
             self.onFilterSelected?(ShopProductFilter.fromUrlQuery(dictionary))
             return true
         }
+
+        // shops like samsung and samsung electronic's page have links that goes to each other's page
+        // cannot use /shop/shopDomain since it's used to open product tab
+        // changing to applinks is much preferrable
+        router.addRoute("/openshop/*") { dictionary in
+            guard let paths = dictionary[kJLRouteWildcardComponentsKey] as? [String] else {
+                return true
+            }
+            
+            let path = paths.joined(separator: "/")
+            guard let url = URL(string: "tokopedia://shop/\(path)") else {
+                return true
+            }
+            
+            
+            TPRoutes.routeURL(url)
+            return true
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
