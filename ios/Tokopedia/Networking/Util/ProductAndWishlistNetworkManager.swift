@@ -214,4 +214,18 @@ class ProductAndWishlistNetworkManager: NSObject {
             })
             .disposed(by: self.rx_disposeBag)
     }
+    
+    func requestFeaturedProduct(shopID: String,
+                                withCompletionHandler completionHandler: @escaping([FeaturedProduct]) -> Void,
+                                andErrorHandler errorHandler: @escaping(Error) -> Void) {
+        NetworkProvider<GoldMerchantTarget>()
+            .request(.getFeaturedProduct(withShopID: shopID))
+            .map(to: [FeaturedProduct.self], fromKey: "data")
+            .subscribe(onNext: { result in
+                completionHandler(result)
+            }, onError: { [] error in
+                errorHandler(error);
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
 }

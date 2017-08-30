@@ -18,6 +18,7 @@
 #import "ProductAddEditViewController.h"
 #import "GAIDictionaryBuilder.h"
 #import "search.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -117,6 +118,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         list = @"Wish List";
     } else if ([product isKindOfClass:[List class]]) {
         list = @"Shop Product";
+    } else if ([product isKindOfClass:[FeaturedProduct class]]) {
+        list = @"Featured Product";
     }
     return list;
     

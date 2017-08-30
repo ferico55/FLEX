@@ -54,6 +54,8 @@ final class ShopProductPageList: NSObject, Unboxable {
         vm.productLargeUrl = product_image_700
         vm.isOnWishlist = isOnWishlist
         vm.productId = product_id
+        vm.badges = badges
+        vm.labels = labels
         if let amount = self.percentage_amount {
             vm.percentage_amount = amount
         } else {

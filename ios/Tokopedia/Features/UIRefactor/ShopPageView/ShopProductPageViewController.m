@@ -1,31 +1,14 @@
 //
-//  InboxTalkViewController.m
+//  ShopProductPageViewController
 //  Tokopedia
 //
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "LoadingView.h"
-#import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopProductPageViewController.h"
 #import "MyShopNoteDetailViewController.h"
 
-#import "GeneralAction.h"
-#import "EtalaseList.h"
-#import "SearchItem.h"
-
-#import "inbox.h"
-#import "string_home.h"
-#import "string_product.h"
-#import "search.h"
-#import "sortfiltershare.h"
-#import "stringrestkit.h"
-#import "string_inbox_talk.h"
-#import "detail.h"
-#import "generalcell.h"
-#import "GeneralAlertCell.h"
-
-#import "URLCacheController.h"
 #import "SortViewController.h"
 
 #import "DetailProductViewController.h"
@@ -34,16 +17,12 @@
 #import "ProductSingleViewCell.h"
 #import "ProductThumbCell.h"
 
-#import "NavigateViewController.h"
-#import "RetryCollectionReusableView.h"
 #import "NoResultReusableView.h"
 
-#import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "ShopPageRequest.h"
 
 #import "EtalaseViewController.h"
-
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -51,23 +30,17 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeThreeColumn,
 };
 
-typedef enum TagRequest {
-    ProductTag
-} TagRequest;
-
 @interface ShopProductPageViewController ()
 <
 UICollectionViewDataSource,
 UICollectionViewDelegate,
-UIAlertViewDelegate,
 UISearchBarDelegate,
 LoadingViewDelegate,
-TKPDTabInboxTalkNavigationControllerDelegate,
 SortViewControllerDelegate,
-RetryViewDelegate,
 EtalaseViewControllerDelegate,
 ShopTabChild,
-ProductCellDelegate
+ProductCellDelegate,
+NoResultDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -91,71 +64,24 @@ ProductCellDelegate
 @implementation ShopProductPageViewController {
     BOOL _isNoData;
     BOOL _isrefreshview;
-    BOOL _iseditmode;
-    
-    NSInteger _page;
-    NSInteger _tmpPage;
-    NSInteger _limit;
-    NSInteger _viewposition;
-    
-    NSMutableDictionary *_paging;
-    NSMutableArray *_departmenttree;
-    
-    NSString *_talkNavigationFlag;
-    
-    UIRefreshControl *_refreshControl;
-    NSInteger _requestUnfollowCount;
-    NSInteger _requestDeleteCount;
-    
-    NSTimer *_timer;
-    NSString *_readstatus;
-    NSString *_navthatwillrefresh;
-    SearchItem *_searchitem;
-    
-    BOOL _isrefreshnav;
-    BOOL _isNeedToInsertCache;
-    BOOL _isLoadFromCache;
-    
-    
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectUnfollowmanager;
-    __weak RKObjectManager *_objectDeletemanager;
-    
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestUnfollow;
-    __weak RKManagedObjectRequestOperation *_requestDelete;
-    NavigateViewController *_TKPDNavigator;
-    
-    NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationUnfollowQueue;
-    NSOperationQueue *_operationDeleteQueue;
-    
-    LoadingView *loadingView;
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
-    NSMutableArray<ShopProductPageList*> *_product;
-    NSArray *_tmpProduct;
-    NoResultReusableView *_noResultView;
-    NSString *_nextPageUri;
-    NSString *_tmpNextPageUri;
-    
-    BOOL _navigationBarIsAnimating;
-    
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
+    BOOL _isRequestingProduct;
     BOOL _isFailRequest;
     
-    FilterData *_filterData;
-    NSDictionary *_paramSort;
+    NSInteger _page;
+    NSString *_nextPageUri;
+    
+    UIRefreshControl *_refreshControl;
+    NoResultReusableView *_noResultView;
+    LoadingView *loadingView;
+    
     ShopPageRequest* _shopPageRequest;
+    ProductAndWishlistNetworkManager *moyaNetworkManager;
+    NSMutableArray<ShopProductPageList*> *_product;
+    NSArray<FeaturedProduct*> *_featuredProducts;
     
     ListOption *_selectedSort;
+    FilterData *_filterData;
     ShopProductFilter *_productFilter;
-    ProductAndWishlistNetworkManager *moyaNetworkManager;
-    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -163,9 +89,10 @@ ProductCellDelegate
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     self.hidesBottomBarWhenPushed = YES;
     if (self) {
-        _isrefreshview = NO;
+        _isrefreshview = YES;
         _isNoData = YES;
         _searchBar = [[UISearchBar alloc] init];
+        _searchBar.placeholder = @"Cari Produk";
         _productFilter = [ShopProductFilter new];
         _selectedSort = [ListOption new];
     }
@@ -174,11 +101,12 @@ ProductCellDelegate
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300)];
     [_noResultView generateAllElements:nil
                                  title:@"Toko ini belum mempunyai produk."
                                   desc:@""
-                              btnTitle:nil];
+                              btnTitle:@""];
+    _noResultView.delegate = self;
 }
 
 #pragma mark - Shop tab child
@@ -195,31 +123,16 @@ ProductCellDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _userManager = [UserAuthentificationManager new];
-    _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _TKPDNavigator = [NavigateViewController new];
-    
-    _operationQueue = [NSOperationQueue new];
-    _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
-    
     _product = [NSMutableArray new];
-    
-    
-    _isrefreshview = NO;
+    _featuredProducts = [NSArray new];
     
     // create initialitation
-    _paging = [NSMutableDictionary new];
-    _departmenttree = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    
     
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
-    
     _searchBar.delegate = self;
-    
-    _navigationBarIsAnimating = NO;
     
     [self initNoResultView];
     
@@ -282,14 +195,12 @@ ProductCellDelegate
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
     
-    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
-    
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
     
     moyaNetworkManager = [[ProductAndWishlistNetworkManager alloc]init];
     [self requestProduct];
+    [self requestFeaturedProduct];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -304,40 +215,71 @@ ProductCellDelegate
 
 #pragma mark - Collection Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(collectionView.bounds.size.width, 40);
+    if(section == 0) return CGSizeMake(collectionView.bounds.size.width, 96);
+    else if(section == 1 && _product.count == 0) return CGSizeZero;
+    return CGSizeMake(collectionView.bounds.size.width, 69);
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return _featuredProducts.count == 0 ? 1 : 2;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
-    
-    if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
-        size = CGSizeMake(self.view.frame.size.width, 50);
+    if (_isFailRequest) return CGSizeZero;
+    else if (section == 0 && _featuredProducts.count > 0) {
+        return CGSizeZero;
+    } else if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+        return CGSizeMake(self.view.frame.size.width, 50);
+    } else if(_isrefreshview) {
+        return CGSizeMake(self.view.frame.size.width, 50);
     }
-    if(_isNoData){
-        size = CGSizeZero;
-    }
-    return size;
+    return CGSizeZero;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     
     if(kind == UICollectionElementKindSectionFooter) {
-        if(_isFailRequest) {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
-            ((RetryCollectionReusableView*)reusableView).delegate = self;
-        } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
-        }
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
     }
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
+        [reusableView removeAllSubviews];
+        if(indexPath.section == 0) {
+            
+            [_searchBar removeFromSuperview];
+            [reusableView addSubview:_searchBar];
+            
+            [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.equalTo(reusableView);
+                make.height.equalTo(@(40));
+                make.left.top.equalTo(reusableView);
+            }];
+        }
         
-        [_searchBar removeFromSuperview];
-        [reusableView addSubview:_searchBar];
+        if(_isNoData || _product.count == 0) return reusableView;
         
-        [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(reusableView);
+        UIView *view = [[UIView alloc] init];
+        view.backgroundColor = [UIColor whiteColor];
+        
+        UILabel *textView = [[UILabel alloc] init];
+        textView.text = (indexPath.section == 0 && _featuredProducts.count > 0) ? @"Produk Unggulan" : @"Produk";
+        textView.font = [UIFont title1Theme];
+        textView.textColor = [UIColor tpPrimaryBlackText];
+        textView.backgroundColor = [UIColor whiteColor];
+        
+        [view addSubview:textView];
+        [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(view.mas_left).offset(12);
+            make.centerY.equalTo(view);
+        }];
+        
+        [reusableView addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(reusableView);
+            if(indexPath.section == 0 || _featuredProducts.count == 0) make.top.equalTo(_searchBar.mas_bottom);
+            else make.top.equalTo(reusableView).offset(16);
+            make.bottom.equalTo(reusableView);
         }];
     }
     
@@ -345,6 +287,7 @@ ProductCellDelegate
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if(section == 0 && _featuredProducts.count > 0 && _product.count > 0) return _featuredProducts.count;
     return _product.count;
 }
 
@@ -352,6 +295,17 @@ ProductCellDelegate
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
+    if(indexPath.section == 0 && _featuredProducts.count > 0) {
+        FeaturedProduct *product = [_featuredProducts objectAtIndex:indexPath.row];
+        cellid = @"ProductThumbCellIdentifier";
+        cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"ProductThumbCellIdentifier" forIndexPath:indexPath];
+        [(ProductThumbCell*)cell setViewModel:product.viewModel];
+        ((ProductThumbCell*)cell).locationIcon.hidden = YES;
+        ((ProductThumbCell*)cell).shopName.hidden = YES;
+        [((ProductThumbCell*)cell) removeWishlistButton];
+        return cell;
+    }
+
     ShopProductPageList *list = [_product objectAtIndex:indexPath.row];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
@@ -393,6 +347,18 @@ ProductCellDelegate
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 0 && _featuredProducts.count > 0) {
+        FeaturedProduct *product = [_featuredProducts objectAtIndex:indexPath.row];
+        
+        [AnalyticsManager trackProductClick:product];
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.productID
+                                                            andName:product.name
+                                                           andPrice:product.price
+                                                        andImageURL:product.imageUri
+                                                        andShopName:nil];
+        return;
+    }
     ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
     
     [AnalyticsManager trackProductClick:product];
@@ -411,19 +377,16 @@ ProductCellDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if(_cellType == UITableViewCellTypeTwoColumn) {
+    if(indexPath.section == 0 && _featuredProducts.count > 0) {
+        CGSize normalSize = [ProductCellSize sizeWithType: UITableViewCellTypeThreeColumn];
+        return CGSizeMake(normalSize.width, normalSize.height - 20);
+    } else if(_cellType == UITableViewCellTypeTwoColumn) {
         CGSize normalSize = [ProductCellSize sizeWithType:self.cellType];
         return CGSizeMake(normalSize.width, normalSize.height - 20);
     } else {
         return [ProductCellSize sizeWithType:self.cellType];
     }
 }
-
-//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-//
-//    return UIEdgeInsetsMake(10, 10, 10, 10);
-//}
-
 
 #pragma mark - Refresh View
 -(void)refreshView:(UIRefreshControl*)refresh {
@@ -470,6 +433,7 @@ ProductCellDelegate
     NSString *searchBarBefore = _productFilter.query ?: @"";
     
     if (![searchBarBefore isEqualToString:searchBar.text]) {
+        _featuredProducts = [NSArray new];
         [_productFilter setQuery:searchBar.text];
         [self reloadDataSearch];
     }
@@ -487,24 +451,21 @@ ProductCellDelegate
     if (![searchBarBefore isEqualToString:searchBar.text]) {
         [_productFilter setQuery:searchBar.text];
         [self reloadDataSearch];
+        [self requestFeaturedProduct];
     }
 }
 
 -(void)reloadDataSearch
 {
-    _tmpProduct = [NSArray arrayWithArray:_product];
     _product = [NSMutableArray new];
     
     [_collectionView reloadData];
     [self.collectionView.collectionViewLayout invalidateLayout];
     
-    _tmpNextPageUri = _nextPageUri;
-    _tmpPage = _page;
-    
     _page = 1;
-    
     _isrefreshview = YES;
     [self requestProduct];
+    [self requestFeaturedProduct];
 }
 
 
@@ -570,6 +531,7 @@ ProductCellDelegate
     _searchBar.text = filter.query;
     _productFilter = filter;
     _page = filter.page; //>>ini buat apa?
+    _isrefreshview = YES;
     
     EtalaseList *etalase = [EtalaseList new];
     etalase.etalase_id = filter.etalaseId;
@@ -579,15 +541,23 @@ ProductCellDelegate
     
     self.initialEtalase = etalase;
     
+    [_product removeAllObjects];
+    [_collectionView reloadData];
+    [_collectionView.collectionViewLayout invalidateLayout];
     [self requestProduct];
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
     _page = 1;
+    _isrefreshview = YES;
     _collectionView.contentOffset = CGPointMake(0, 0);
     [_productFilter setEtalaseId:selectedEtalase.etalase_id];
     _productFilter.isGetListProductToAce = selectedEtalase.isGetListProductFromAce;
+    [_product removeAllObjects];
+    [_collectionView reloadData];
+    [_collectionView.collectionViewLayout invalidateLayout];
     [self requestProduct];
+    [self requestFeaturedProduct];
 }
 
 - (IBAction)tapToGrid:(id)sender {
@@ -619,10 +589,9 @@ ProductCellDelegate
 }
 
 - (IBAction)tapToSort:(id)sender {
-    FiltersController *controller = [[FiltersController alloc] initWithSource:SourceShopProduct sortResponse:_filterData selectedSort:_selectedSort presentedVC:self rootCategoryID:nil onCompletion:^(ListOption *selectedSort, NSDictionary *paramSort) {
+    __unused FiltersController *controller = [[FiltersController alloc] initWithSource:SourceShopProduct sortResponse:_filterData selectedSort:_selectedSort presentedVC:self rootCategoryID:nil onCompletion:^(ListOption *selectedSort, NSDictionary *paramSort) {
         _selectedSort = selectedSort;
        
-        _paramSort = paramSort;
         [self reloadDataSearch];
     } onReceivedFilterDataOption: ^(FilterData *filterData){
         _filterData = filterData;
@@ -640,6 +609,17 @@ ProductCellDelegate
 
 #pragma mark - Cell Delegate
 -(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 0 && _featuredProducts.count > 0) {
+        FeaturedProduct *product = [_featuredProducts objectAtIndex:indexPath.row];
+        
+        [NavigateViewController navigateToProductFromViewController:self
+                                                      withProductID:product.productID
+                                                            andName:product.name
+                                                           andPrice:product.price
+                                                        andImageURL:product.imageUri
+                                                        andShopName:nil];
+        return;
+    }
     NSInteger index = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         index = indexPath.row;
@@ -674,16 +654,40 @@ ProductCellDelegate
     }
 }
 
-#pragma mark - LoadingView Delegate
-- (void)pressRetryButton {
+#pragma mark - No Result View Delegate
+-(void)buttonDidTapped:(id)sender {
     [self requestProduct];
     _isFailRequest = NO;
     [_collectionView reloadData];
 }
 
 #pragma mark - ShopPageRequest
+- (void) requestFeaturedProduct {
+    _featuredProducts = [NSArray new];
+    [_collectionView reloadData];
+    [_collectionView.collectionViewLayout invalidateLayout];
+    
+    EtalaseList *etalase = [EtalaseList new];
+    etalase.etalase_id = _productFilter.etalaseId;
+    BOOL isAllEtalase = (!etalase.etalase_id || [etalase.etalase_id isEqualToString:@""] || [etalase.etalase_id isEqualToString:@"0"]);
+    if(![_productFilter.query isEqualToString:@""] || !isAllEtalase || _selectedSort.value) return;
+    
+    NSString *shopID = self.shop.result.info.shop_id;
+    [moyaNetworkManager requestFeaturedProductWithShopID:shopID
+                                   withCompletionHandler:^(NSArray<FeaturedProduct *> * _Nonnull result) {
+                                       _featuredProducts = result;
+                                       [_noResultView removeFromSuperview];
+                                       [_collectionView reloadData];
+                                       [_collectionView.collectionViewLayout invalidateLayout];
+                                   } andErrorHandler:^(NSError * _Nonnull error) {
+                                       [_collectionView reloadData];
+                                   }];
+}
 
 -(void)requestProduct{
+    if(_isRequestingProduct) return;
+    _isRequestingProduct = YES;
+    _isFailRequest = NO;
     NSString *querry = _productFilter.query ?: @"";
     NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     EtalaseList *etalase = [EtalaseList new];
@@ -714,6 +718,7 @@ ProductCellDelegate
                                           shopDomain:shopDomain
                                                isAce: isGetListProductFromAce
                                withCompletionHandler:^(ShopProductPageResult * _Nonnull result) {
+                                             _isRequestingProduct = NO;
                                              [_noResultView removeFromSuperview];
                                              
                                              if(_page == 1) {
@@ -727,22 +732,26 @@ ProductCellDelegate
                                              if (_product.count >0) {
                                                  _isNoData = NO;
                                                  [_noResultView removeFromSuperview];
-                                                 _nextPageUri =  result.paging.uri_next;
+                                                 _nextPageUri = result.paging.uri_next;
+                                                 
                                                  _page = [[_shopPageRequest splitUriToPage:_nextPageUri] integerValue];
                                                  
-                                                 if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-                                                     //remove loadingview if there is no more item
-                                                     [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                 if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"] || [_nextPageUri isEqualToString:@""]) {
+                                                     _isrefreshview = NO;
                                                  }
                                              } else {
                                                  // no data at all
                                                  _isNoData = YES;
+                                                 _isrefreshview = NO;
+                                                 _nextPageUri = nil;
                                                  [_flowLayout setFooterReferenceSize:CGSizeZero];
                                                  if(_productFilter.query == nil || [_productFilter.query isEqualToString:@""]){
                                                      [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
                                                  }else{
                                                      [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
                                                  }
+                                                 [_noResultView setNoResultDesc:@""];
+                                                 [_noResultView hideButton:YES];
                                                  [_collectionView addSubview:_noResultView];
                                                  [_collectionView sendSubviewToBack:_noResultView];
                                                  [_collectionView sendSubviewToBack:_footer];
@@ -761,9 +770,16 @@ ProductCellDelegate
                                              }
                                          }
                                      andErrorHandler:^(NSError * _Nonnull error) {
+                                                   _isRequestingProduct = NO;
                                                    _isrefreshview = NO;
                                                    [_refreshControl endRefreshing];
-                                                   
+
+                                                     [_noResultView setNoResultTitle:@"Whoops!\nTerjadi kendala pada koneksi Internet"];
+                                                     [_noResultView setNoResultDesc:@"Harap coba lagi"];
+                                                     [_noResultView setNoResultButtonTitle:@"Coba Kembali"];
+                                                     [_noResultView hideButton:NO];
+                                                     [_collectionView addSubview:_noResultView];
+                                         
                                                    _isFailRequest = YES;
                                                    [_collectionView reloadData];
                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];

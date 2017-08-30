@@ -11,6 +11,7 @@ import Moya
 
 enum GoldMerchantTarget{
     case getProductVideos(withProductID: String)
+    case getFeaturedProduct(withShopID: String)
 }
 
 extension GoldMerchantTarget : TargetType {
@@ -22,19 +23,23 @@ extension GoldMerchantTarget : TargetType {
         switch self {
         case .getProductVideos(let productID):
             return "/v1/product/video/\(productID)"
+        case .getFeaturedProduct(let shopID):
+            return "v1/mobile/featured_product/\(shopID)"
         }
+        
     }
     
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .getProductVideos: return .get
+        case .getProductVideos, .getFeaturedProduct: return .get
         }
     }
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
+        case .getFeaturedProduct: return ["json" : 1]
         default: return [:]
         }
     }
