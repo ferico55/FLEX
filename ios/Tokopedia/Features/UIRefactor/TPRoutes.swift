@@ -15,19 +15,20 @@ class TPRoutes: NSObject {
     static func configureRoutes() {
         let navigator = NavigateViewController()
         
-        // applinks..
-        // shop
+        //MARK: Root
         JLRoutes.global().addRoute("/pop-to-root") { (_: [String: Any]!) -> Bool in
             UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
             return true
         }
         
+        //MARK: Shop Pages (Native)
         JLRoutes.global().addRoute("/shop/:shopId") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
         
+        //MARK: Shop Etalase -  (Native)
         JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             let etalaseId = params["etalaseId"] as! String
@@ -41,6 +42,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Shop Etalase (Native)
         JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             let etalaseId = params["etalaseId"] as! String
@@ -48,31 +50,35 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Shop Info (Native)
         JLRoutes.global().addRoute("shop/:shopId/info") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShopInfo(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
         
+        //MARK: Shop Talk (Native)
         JLRoutes.global().addRoute("shop/:shopId/talk") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShopTalk(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
         
+        //MARK: Shop Review (Native)
         JLRoutes.global().addRoute("shop/:shopId/review") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShopReview(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
         
+        //MARK: Shop Notes (Native)
         JLRoutes.global().addRoute("shop/:shopId/note") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
             navigator.navigateToShopNote(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
         
-        // inbox message
+        //MARK: Inbox Message (Native)
         JLRoutes.global().addRoute("/message") { (_: [String: Any]!) -> Bool in
             navigator.navigateToInboxMessage(from: UIApplication.topViewController())
             return true
@@ -84,107 +90,101 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // inbox talk
+        //MARK: Inbox Talk (Native)
         JLRoutes.global().addRoute("/talk") { (_: [String: Any]!) -> Bool in
             navigator.navigateToInboxTalk(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Inbox Talk - Detail (Native)
         JLRoutes.global().addRoute("/talk/:talkId") { (params: [String: Any]!) -> Bool in
             let talkId = params["talkId"] as! String
             navigator.navigateToInboxTalk(from: UIApplication.topViewController(), withTalkId: talkId)
             return true
         }
         
-        //        JLRoutes.global().addRoute("/talk/:talkId") { (params: [String : Any]!) -> Bool in
-        //            let talkId = params["talkId"] as! String
-        //            let shopId = params["shop_id"] as! String
-        //            navigator.navigateToInboxTalk(from: UIApplication.topViewController(), withTalkId:talkId, withShopId:shopId)
-        //            return true
-        //        }
-        
-        // inbox review
+        //MARK: Inbox Review (Native)
         JLRoutes.global().addRoute("/review") { (_: [String: Any]!) -> Bool in
             navigator.navigateToInboxReview(from: UIApplication.topViewController())
             return true
         }
         
-        // product
-        JLRoutes.global().addRoute("/product/:productId") { (params: [String: Any]!) -> Bool in
-            let productId = params["productId"] as! String
-            NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
-            return true
-        }
-        
+        //MARK: Product Review (Native)
         JLRoutes.global().addRoute("product/:productId/review") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
             navigator.navigateToProductReview(from: UIApplication.topViewController(), withProductID: productId)
             return true
         }
         
-        // cart
+        //MARK: Cart (Native)
         JLRoutes.global().addRoute("cart") { (_: [String: Any]!) -> Bool in
             navigator.navigateToCart(from: UIApplication.topViewController())
             return true
         }
         
-        // seller transactions
+        //MARK: Seller - New Order (Native)
         JLRoutes.global().addRoute("seller/new-order") { (_: [String: Any]!) -> Bool in
             navigator.navigateToSellerNewOrder(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Seller - Shipment (Native)
         JLRoutes.global().addRoute("seller/shipment") { (_: [String: Any]!) -> Bool in
             navigator.navigateToSellerShipment(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Seller - Shipment Status (Native)
         JLRoutes.global().addRoute("seller/status") { (_: [String: Any]!) -> Bool in
             navigator.navigateToSellerShipmentStatus(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Seller - History (Native)
         JLRoutes.global().addRoute("seller/history") { (_: [String: Any]!) -> Bool in
             navigator.navigateToSellerHistory(from: UIApplication.topViewController())
             return true
         }
         
-        // buyer transactions
+        //MARK: Buyer - Payment (Native)
         JLRoutes.global().addRoute("buyer/payment") { (_: [String: Any]!) -> Bool in
             navigator.navigateToBuyerPayment(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Buyer - Order (Native)
         JLRoutes.global().addRoute("buyer/order") { (_: [String: Any]!) -> Bool in
             navigator.navigateToBuyerOrder(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Buyer - Order Confirmation (Native)
         JLRoutes.global().addRoute("buyer/shipping-confirm") { (_: [String: Any]!) -> Bool in
             navigator.navigateToBuyerShippingConf(from: UIApplication.topViewController())
             return true
         }
         
+        //MARK: Buyer - History (Native)
         JLRoutes.global().addRoute("buyer/history") { (_: [String: Any]!) -> Bool in
             navigator.navigateToBuyerHistory(from: UIApplication.topViewController())
             return true
         }
         
-        // discovery
+        //MARK: Hotlist (Native)
         JLRoutes.global().addRoute("hot") { (_: [String: Any]!) -> Bool in
             navigator.navigateToHotList(from: UIApplication.topViewController())
             return true
         }
         // ..applinks
         
-        // Feed Detail
+        //MARK: Feed Detail (Native)
         JLRoutes.global().addRoute("/feedcommunicationdetail/:feedID") { (params: [String: Any]!) -> Bool in
             let feedCardID = params["feedID"] as! String
             navigator.navigateToFeedDetail(from: UIApplication.topViewController(), withFeedCardID: feedCardID)
             return true
         }
         
-        // Resolution Detail
+        //MARK: Resolution Detail (Native)
         JLRoutes.global().addRoute("/resolution/:resolutionId") { (params: [String: Any]!) -> Bool in
             let resolutionId = params["resolutionId"] as! String
             let controller = ResolutionWebViewController(resolutionId: resolutionId)
@@ -196,6 +196,7 @@ class TPRoutes: NSObject {
             self.openWebView(url!)
         }
         
+        //MARK: Digital Category - Tokocash (Native)
         JLRoutes.global().addRoute("/tokocash") { _ in
             let viewController = DigitalCategoryMenuViewController(categoryId: "103")
             
@@ -205,6 +206,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { params in
             let viewController = DigitalCategoryListViewController()
             viewController.title = "Pilih Produk"
@@ -216,6 +218,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Digital Category - Any Product (Native)
         JLRoutes.global().addRoute("/digital/form") { params in
             let viewController = DigitalCategoryMenuViewController(categoryId: params["category_id"] as! String)
             
@@ -225,6 +228,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Digital Cart (Native)
         JLRoutes.global().addRoute("/digital/cart") { params in
             guard let categoryId = params["category_id"] as? String,
                 let operatorId = params["operator_id"] as? String,
@@ -299,6 +303,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Login with Activation Code
         JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String: Any]!) -> Bool in
             let activationCode = params["activationCode"] as! String
             let attempt = params["a"] as! String
@@ -321,7 +326,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // create shop
+        //MARK: Create Shop (Native)
         JLRoutes.global().addRoute("/buka-toko-online-gratis") { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
             if userManager.isLogin && userManager.getShopId() == "0" {
@@ -332,7 +337,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // contact us
+        //MARK: Contact Us (Webview)
         JLRoutes.global().addRoute("/contact-us.pl") { (_: [String: Any]!) -> Bool in
             redirectContactUs()
             
@@ -345,7 +350,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // webview
+        //MARK: General Webview
         JLRoutes.global().addRoute("/webview") { (params: [String: Any]!) -> Bool in
             guard let encodedURL = params["url"] as? String,
                 let decodedURL = encodedURL.removingPercentEncoding else {
@@ -361,7 +366,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // promo
+        //MARK: Promo (Webview)
         JLRoutes.global().addRoute("/promo") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://www.tokopedia.com/promo" + utmString
@@ -370,13 +375,14 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Promo (Native)
         JLRoutes.global().addRoute("/promoNative") { (_: [String: Any]!) -> Bool in
             NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
             
             return true
         }
         
-        // gold merchant
+        //MARK: Gold Merchant (Webview)
         JLRoutes.global().addRoute("/gold") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://gold.tokopedia.com" + utmString
@@ -384,7 +390,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // events
+        //MARK: Tokopedia Events (Webview)
         JLRoutes.global().addRoute("/events") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://events.tokopedia.com" + utmString
@@ -392,7 +398,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //laman kota
+        //MARK: Laman Kota (Webview)
         JLRoutes.global().addRoute("/kota") { (params: [String : Any]!) -> Bool in
             let utmString = getUTMString(params as [String : AnyObject])
             let urlString = "https://kota.tokopedia.com" + utmString
@@ -400,6 +406,7 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //MARK: Laman Kota - Detail (Webview)
         JLRoutes.global().addRoute("/kota/:cityName") { (params: [String : Any]!) -> Bool in
             let cityName = params["cityName"] as! String
             let utmString = getUTMString(params as [String : AnyObject])
@@ -408,7 +415,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //tech
+        //MARK: Tokopedia Tech (Webview)
         JLRoutes.global().addRoute("/tech") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "http://tech.tokopedia.com" + utmString
@@ -416,7 +423,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // seller
+        //MARK: Tokopedia Seller Center (Webview)
         JLRoutes.global().addRoute("/seller-center") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://seller.tokopedia.com" + utmString
@@ -424,7 +431,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // promo category
+        //MARK: Promo Category - Detail (Webview)
         JLRoutes.global().addRoute("/promo/category/:categoryName") { (params: [String: Any]!) -> Bool in
             let categoryName = params["categoryName"] as! String
             let utmString = getUTMString(params as [String: AnyObject])
@@ -434,13 +441,13 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //promo name
+        //MARK: Promo Detail (Native)
         JLRoutes.global().addRoute("/promo/:promoName") { (params: [String : Any]!) -> Bool in
             navigator.navigateToPromoDetail(from: UIApplication.topViewController(), withName: params?["promoName"] as! String)
             return true
         }
         
-        //toppicks
+        //MARK: Toppicks (Webview)
         JLRoutes.global().addRoute("/toppicks") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://www.tokopedia.com/toppicks" + utmString
@@ -452,7 +459,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //toppicks name
+        //MARK: Toppicks - Detail (Webview)
         JLRoutes.global().addRoute("/toppicks/:toppicksName") { (params: [String: Any]!) -> Bool in
             let topPicksName = params["toppicksName"] as! String
             let utmString = getUTMString(params as [String: AnyObject])
@@ -465,20 +472,20 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // official store mobile
+        //MARK: Official Store Brands (Native)
         JLRoutes.global().addRoute("/official-store/mobile") { (params: [String: Any]!) -> Bool in
             navigator.navigateToOfficialBrands(from: UIApplication.topViewController())
             
             return true
         }
         
-        // hotlist
+        //MARK: Hotlist (Native)
         JLRoutes.global().addRoute("/hot") { (_: [String: Any]!) -> Bool in
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "redirectToHotlist"), object: nil)
             return true
         }
         
-        // blog marketplace
+        //MARK: Tokopedia Blog (Webview)
         JLRoutes.global().addRoute("/blog") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params as [String: AnyObject])
             let urlString = "https://blog.tokopedia.com" + utmString
@@ -486,7 +493,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // blog marketplace category
+        //MARK: Tokopedia Blog - Category (Webview)
         JLRoutes.global().addRoute("/blog/category/:categoryName") { (params: [String: Any]!) -> Bool in
             let categoryName = params["categoryName"] as! String
             let utmString = getUTMString(params as [String: AnyObject])
@@ -496,7 +503,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // blog marketplace article
+        //MARK: Tokopedia Blog - Article (Webview)
         JLRoutes.global().addRoute("/blog/:year/:month/:title") { (params: [String: Any]!) -> Bool in
             let year = params["year"] as! String
             let month = params["month"] as! String
@@ -508,7 +515,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // bantuan
+        //MARK: Tokopedia Help Center (Webview)
         JLRoutes.global().addRoute("/bantuan/*") { (params: [String: Any]!) -> Bool in
             if let url = params[kJLRouteURLKey] as? NSURL {
                 openWebView(url as URL)
@@ -518,7 +525,7 @@ class TPRoutes: NSObject {
             }
         }
         
-        // Tokopedia Tiket
+        //MARK: Tokopedia Tiket - KAI (Webview)
         JLRoutes.global().add(["/kereta-api", "/tiket/kereta-api"]) { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/kereta-api" + utmString
@@ -528,7 +535,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // Tokopedia
+        //MARK: Tokopedia Tiket - Blog (Webview)
         JLRoutes.global().addRoute("/tiket/travel") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://tiket.tokopedia.com/travel" + utmString
@@ -537,7 +544,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //tiket KAI - blog article
+        //MARK: Tokopedia Tiket - Blog Article (Webview)
         JLRoutes.global().addRoute("/tiket/travel/:articleName") { (params: [String: Any]!) -> Bool in
             let articleName = params["articleName"] as! String
             let utmString = getUTMString(params)
@@ -547,7 +554,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // pulsa
+        //MARK: Pulsa (Webview)
         JLRoutes.global().addRoute("/pulsa") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com" + utmString
@@ -556,7 +563,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // pulsa blog
+        //MARK: Pulsa - Blog (Webview)
         JLRoutes.global().addRoute("/pulsa/blog") { (params: [String: Any]!) -> Bool in
             let utmString = getUTMString(params)
             let urlString = "https://pulsa.tokopedia.com/blog" + utmString
@@ -565,7 +572,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // pulsa blog article
+        //MARK: Pulsa - Blog Article (Webview)
         JLRoutes.global().addRoute("/pulsa/blog/:articleName") { (params: [String: Any]!) -> Bool in
             let articleName = params["articleName"] as! String
             let utmString = getUTMString(params)
@@ -575,7 +582,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // pulsa to specific page
+        //MARK: Pulsa - Product (Webview)
         JLRoutes.global().addRoute("/pulsa/:pulsaProduct") { (params: [String: Any]!) -> Bool in
             let pulsaProduct = params["pulsaProduct"] as! String
             let utmString = getUTMString(params)
@@ -585,13 +592,13 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // hot page
+        //MARK: Hotlist Detail (Native)
         JLRoutes.global().addRoute("/hot/:hotName") { (params: [String: Any]!) -> Bool in
             navigator.navigateToHotlistResult(from: UIApplication.topViewController(), withData: ["key": params["hotName"] as! String])
             return true
         }
         
-        // directory
+        //MARK: Intermediary Category (Native)
         JLRoutes.global().addRoute("/p/*") { (params: [String: Any]) -> Bool in
             let pathComponent = params[kJLRouteWildcardComponentsKey] as! [String]
             if pathComponent.count > 0 {
@@ -613,19 +620,19 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // search
+        //MARK: Search Result (Native)
         JLRoutes.global().addRoute("/search/*") { (params: [String: Any]!) -> Bool in
             navigator.navigateToSearch(from: UIApplication.topViewController(), with: (params[kJLRouteURLKey] as! NSURL) as URL!)
             return true
         }
         
-        // catalog detail
+        //MARK: Catalog (Native)
         JLRoutes.global().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String: Any]!) -> Bool in
             navigator.navigateToCatalog(from: UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
             return true
         }
         
-        // add product
+        //MARK: Retry Add Product
         JLRoutes.global().addRoute("/add-product/:formId") { (params: [String: Any]!) -> Bool in
             
             if let formId = params["formId"] as? String {
@@ -635,7 +642,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // home page
+        //MARK: Home Page (Native)
         JLRoutes.global().addRoute("home") { (_: [String: Any]!) -> Bool in
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
@@ -645,7 +652,7 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //home page
+        //MARK: Feed+ (Native)
         JLRoutes.global().addRoute("feed") { (params: [String: Any]!) -> Bool in
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
@@ -655,7 +662,26 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //shop page
+        //MARK: Recently Viewed (Native)
+        JLRoutes.global().addRoute("/recentlyviewed") { (params: [String: Any]!) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 0
+                viewController.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page":4])
+            }
+            return true
+        }
+        
+        //MARK: Wishlist (Native)
+        JLRoutes.global().addRoute("/wishlist") { (params: [String: Any]!) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 2
+                viewController.navigationController?.popToRootViewController(animated: true)
+            }
+            return true
+        }
+        
+        //MARK: Shop Page (Native)
         JLRoutes.global().addRoute("/:shopName") { (params: [String : Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! URL
             let shopName = params["shopName"] as! String
@@ -671,13 +697,14 @@ class TPRoutes: NSObject {
             return true
         }
         
-        // product detail page
+        //MARK: Product Detail (Native)
         JLRoutes.global().addRoute("/product/:productId") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
             NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
         
+        //MARK: Product Detail - from Product URL (Native)
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String: Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let productName = params["productName"] as! String
