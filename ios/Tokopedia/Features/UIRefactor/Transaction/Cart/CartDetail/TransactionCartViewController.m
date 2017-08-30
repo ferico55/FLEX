@@ -1389,7 +1389,7 @@
     if (indexPath.section == _list.count+2) {
         return 40;
     } else {
-        return 0;
+        return [self rowHeightPage1AtIndexPath:indexPath];
     }
 }
 
