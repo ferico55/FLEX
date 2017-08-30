@@ -18,6 +18,9 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"applink": @"applinks"
+                                                  }];
     return mapping;
 }
 

@@ -66,88 +66,14 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
     }
 }
 
-- (void)navigateToIntermediaryPage {
-    UIViewController *viewController = [UIViewController new];
-    viewController.view.frame = _navigationDelegate.viewControllers.lastObject.view.frame;
-    viewController.view.backgroundColor = [UIColor whiteColor];
-    viewController.hidesBottomBarWhenPushed = YES;
-    
-    [_navigationDelegate pushViewController:viewController animated:YES];
-}
-
-- (NSString *)shopDomainForUrl:(NSString *)urlString {
-    return [[[self sanitizedUrlForUrl:urlString].pathComponents
-             bk_reject:^BOOL(NSString *path) {
-                 return [path isEqualToString:@"/"];
-             }]
-            componentsJoinedByString:@"/"];
-}
-
-- (NSURL *)sanitizedUrlForUrl:(NSString *)urlString {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    if (auth.isLogin) {
-        NSString *realUrlString = url.parameters[@"url"];
-        url = [NSURL URLWithString:realUrlString.stringByRemovingPercentEncoding];
-    }
-    
-    return url;
-}
-
-- (void)openWebViewWithUrl:(NSString *)urlString {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Promo";
-    webViewController.strURL = urlString;
-    
-    [_navigationDelegate pushViewController:webViewController animated:NO];
-}
-
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
     self.didSelectBanner(banner);
 
-    if (_isCategoryBanner) {
-        if (![banner.applinks isEqualToString:@""]) {
-            [TPRoutes routeURL:[NSURL URLWithString:banner.applinks]];
-        }
-    } else {
-        // if home page banner
-        NSURL *url = [self sanitizedUrlForUrl:banner.redirect_url];
-        
-        if (![@[@"tokopedia.com", @"m.tokopedia.com", @"www.tokopedia.com"] containsObject:url.host]) {
-            [self openWebViewWithUrl:banner.redirect_url];
-            return;
-        }
-        
-        // will use TPRoute when new banner api is up
-        [self navigateToIntermediaryPage];
-        
-        NSString *path = [self shopDomainForUrl:banner.redirect_url];
-        
-        [TPRoutes isShopExists:path shopExists:^(BOOL exists) {
-            [_navigationDelegate popViewControllerAnimated:NO];
-            
-            if (exists) {
-                ShopViewController *shopViewController = [ShopViewController new];
-                shopViewController.data = @{
-                                            @"shop_domain": path
-                                            };
-                
-                [_navigationDelegate pushViewController:shopViewController animated:NO];
-                
-            } else {
-                WebViewController *webViewController = [WebViewController new];
-                webViewController.strTitle = @"Promo";
-                webViewController.strURL = banner.redirect_url;
-                
-                if(_navigationDelegate != nil) {
-                    [_navigationDelegate pushViewController:webViewController animated:NO];
-                }
-            }
-        }];
+    NSURL *url = [NSURL URLWithString:banner.applinks];
+    if (url) {
+        [TPRoutes routeURL:url];
     }
 }
 

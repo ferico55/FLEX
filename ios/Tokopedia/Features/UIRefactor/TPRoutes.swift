@@ -347,11 +347,16 @@ class TPRoutes: NSObject {
         
         // webview
         JLRoutes.global().addRoute("/webview") { (params: [String: Any]!) -> Bool in
-            let encodedURL = params["url"] as! String
-            let decodedURL = encodedURL.removingPercentEncoding!
-            let utmString = getUTMString(params)
-            let url = decodedURL + utmString
-            openWebView(URL(string: url)!)
+            guard let encodedURL = params["url"] as? String,
+                let decodedURL = encodedURL.removingPercentEncoding else {
+                    return true
+            }
+            
+            let combinedURLString = decodedURL + getUTMString(params)
+            
+            guard let url = URL(string: combinedURLString) else { return true }
+            
+            openWebView(url)
             
             return true
         }
