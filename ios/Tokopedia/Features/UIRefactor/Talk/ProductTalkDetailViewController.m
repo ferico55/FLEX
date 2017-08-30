@@ -240,6 +240,7 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     _growingtextview.contentSize = CGSizeMake(0, 100);
+    _growingtextview.textContainerInset = UIEdgeInsetsMake(8, 0, 8, 30);
 }
 
 - (void)viewDidLayoutSubviews {
