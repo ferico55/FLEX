@@ -72,8 +72,8 @@ class TopAdsNode: NSObject, NodeType {
                 
                 let imageView = UIImageView()
                 imageView.isUserInteractionEnabled = true
-                imageView.contentMode = .center
-                imageView.image = UIImage(named: "info.png")
+                imageView.contentMode = .scaleAspectFit
+                imageView.image = UIImage(named: "icon_information")
                 imageView.backgroundColor = .clear
                 imageView.addGestureRecognizer(tapGesture)
                 
@@ -81,9 +81,8 @@ class TopAdsNode: NSObject, NodeType {
             }) {
                 _, layout, _ in
                 
-                layout.width = 30
-                layout.right = 8
-                layout.position = .absolute
+                layout.width = 16
+                layout.marginLeft = 4
             }
             
             return promotedInfoView.add(children: [

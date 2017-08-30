@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -37,28 +37,21 @@
                     </connections>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promoted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmB-1i-PZW">
-                    <rect key="frame" x="8" y="110" width="124" height="23"/>
+                    <rect key="frame" x="8" y="106.5" width="63.5" height="23"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="15" id="603-jZ-EBJ"/>
                         <constraint firstAttribute="height" constant="23" id="Evo-K1-rr6"/>
-                        <constraint firstAttribute="width" constant="124" id="FqA-vj-nB5"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="603-jZ-EBJ"/>
-                        </mask>
-                    </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-Ex-PU8">
-                    <rect key="frame" x="282" y="110" width="30" height="23"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_information" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-Ex-PU8">
+                    <rect key="frame" x="75.5" y="110" width="16" height="16"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="23" id="3PQ-US-4Tx"/>
+                        <constraint firstAttribute="height" constant="16" id="3PQ-US-4Tx"/>
                         <constraint firstAttribute="height" constant="30" id="Y8k-aS-uAU"/>
-                        <constraint firstAttribute="width" constant="30" id="cqi-bj-5yU"/>
+                        <constraint firstAttribute="width" constant="16" id="cqi-bj-5yU"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
@@ -69,28 +62,19 @@
             </subviews>
             <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="efZ-Ex-PU8" secondAttribute="bottom" constant="2" id="5b8-wy-bya"/>
-                <constraint firstAttribute="trailing" secondItem="efZ-Ex-PU8" secondAttribute="trailing" constant="8" id="90L-NZ-T8e"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="3" id="MtC-ld-lnR"/>
-                <constraint firstItem="DmB-1i-PZW" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="8" id="bRN-r7-hgZ"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="2" id="beY-4C-7N0"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="efZ-Ex-PU8" secondAttribute="bottom" constant="9" id="7mH-Eh-w30"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="zkV-qx-stq" secondAttribute="bottom" constant="35" id="bPo-bN-qBM"/>
+                <constraint firstItem="efZ-Ex-PU8" firstAttribute="centerY" secondItem="DmB-1i-PZW" secondAttribute="centerY" id="fs8-z8-NCM"/>
                 <constraint firstItem="DmB-1i-PZW" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="8" id="iMs-FF-fQa"/>
                 <constraint firstAttribute="bottom" secondItem="dPa-5U-yMh" secondAttribute="bottom" id="lex-AK-Iky"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="zkV-qx-stq" secondAttribute="bottom" constant="35" id="m7b-jL-zg7"/>
                 <constraint firstItem="zkV-qx-stq" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="n6T-xB-HNX"/>
+                <constraint firstItem="efZ-Ex-PU8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zkV-qx-stq" secondAttribute="bottom" constant="10" id="quK-3S-wdm"/>
                 <constraint firstAttribute="trailing" secondItem="dPa-5U-yMh" secondAttribute="trailing" id="r1P-rb-QJQ"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="rzW-7X-YgT"/>
                 <constraint firstItem="zkV-qx-stq" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="wPa-LI-niq"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="xVy-eM-iWb"/>
+                <constraint firstItem="efZ-Ex-PU8" firstAttribute="leading" secondItem="DmB-1i-PZW" secondAttribute="trailing" constant="4" id="xlI-Os-ghr"/>
                 <constraint firstAttribute="trailing" secondItem="zkV-qx-stq" secondAttribute="trailing" id="z5T-6a-zw9"/>
             </constraints>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="bRN-r7-hgZ"/>
-                    <exclude reference="MtC-ld-lnR"/>
-                    <exclude reference="xVy-eM-iWb"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="collectionView" destination="dPa-5U-yMh" id="sGO-Zm-GhK"/>
                 <outlet property="headerView" destination="zkV-qx-stq" id="6ql-5J-rRx"/>
@@ -101,6 +85,6 @@
         </collectionReusableView>
     </objects>
     <resources>
-        <image name="info.png" width="20" height="20"/>
+        <image name="icon_information" width="19" height="19"/>
     </resources>
 </document>

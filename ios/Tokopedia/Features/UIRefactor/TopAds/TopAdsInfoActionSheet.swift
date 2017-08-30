@@ -25,7 +25,7 @@ class TopAdsInfoActionSheet: CFAlertViewController {
     
     convenience init() {
         // height is the only thing that matters
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: UIScreen.main.applicationFrame.size.height <= 568 ? 230 : 200))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: UIScreen.main.applicationFrame.size.height <= 568 ? 140 : 110))
         headerView.backgroundColor = .white
         self.init(title: "",
                   titleColor: .black,
@@ -91,22 +91,8 @@ class TopAdsInfoActionSheet: CFAlertViewController {
             })
         })
         
-        let closeButton = UIButton()
-        closeButton.setTitle("Tutup", for: .normal)
-        closeButton.setTitleColor(.white, for: .normal)
-        closeButton.backgroundColor = .tpGreen()
-        closeButton.titleLabel!.font = .largeThemeMedium()
-        closeButton.cornerRadius = 3
-        headerView.addSubview(closeButton)
-        closeButton.snp.makeConstraints { make in
-            make.height.equalTo(40)
-            make.bottom.equalTo(headerView).offset(-16)
-            make.right.equalTo(headerView).offset(-16)
-            make.left.equalTo(headerView).offset(16)
-        }
-        closeButton.bk_(whenTapped: { [weak self] _ in
-            self?.dismissAlert(withAnimation: true, completion: nil)
-        })
+        let closeButton = CFAlertAction.action(title: "Tutup", style: .Default, alignment: .justified, backgroundColor: .tpGreen(), textColor: .white, handler: nil)
+        self.addAction(closeButton)
     }
     
     func show() {

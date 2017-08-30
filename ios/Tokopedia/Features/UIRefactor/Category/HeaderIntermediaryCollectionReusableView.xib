@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -91,9 +91,8 @@
                     </connections>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promoted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQS-Jj-0w3">
-                    <rect key="frame" x="8" y="378" width="124" height="23"/>
+                    <rect key="frame" x="8" y="378" width="63.5" height="23"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="124" id="Dao-VS-ypb"/>
                         <constraint firstAttribute="height" constant="23" id="le6-1T-pMN"/>
                         <constraint firstAttribute="height" constant="15" id="pHs-V5-WHo"/>
                     </constraints>
@@ -106,12 +105,12 @@
                         </mask>
                     </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="3VC-oE-QcL">
-                    <rect key="frame" x="290" y="378" width="30" height="23"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_information" translatesAutoresizingMaskIntoConstraints="NO" id="3VC-oE-QcL">
+                    <rect key="frame" x="75.5" y="378" width="16" height="23"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="AgV-GJ-l8v"/>
-                        <constraint firstAttribute="width" constant="30" id="YZR-HB-Ja3"/>
+                        <constraint firstAttribute="width" constant="16" id="YZR-HB-Ja3"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
@@ -124,12 +123,12 @@
             <constraints>
                 <constraint firstItem="lQw-fC-BPu" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="2lQ-Hm-xIz"/>
                 <constraint firstAttribute="bottom" secondItem="fPU-Np-Nrk" secondAttribute="bottom" id="6WK-lE-651"/>
+                <constraint firstItem="3VC-oE-QcL" firstAttribute="leading" secondItem="sQS-Jj-0w3" secondAttribute="trailing" constant="4" id="AIC-fz-pIn"/>
                 <constraint firstAttribute="trailing" secondItem="kRv-i9-jAv" secondAttribute="trailing" id="EOs-Rb-XCw"/>
                 <constraint firstItem="sQS-Jj-0w3" firstAttribute="centerY" secondItem="3VC-oE-QcL" secondAttribute="centerY" id="Llo-ts-zjp"/>
                 <constraint firstAttribute="trailing" secondItem="Lzs-9N-NL8" secondAttribute="trailing" id="OMa-9x-IoH"/>
                 <constraint firstAttribute="trailing" secondItem="lQw-fC-BPu" secondAttribute="trailing" id="Plx-CQ-xEt"/>
                 <constraint firstItem="Lzs-9N-NL8" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="bk2-0y-HlL"/>
-                <constraint firstAttribute="trailing" secondItem="3VC-oE-QcL" secondAttribute="trailing" id="bpU-9Y-ZjP"/>
                 <constraint firstAttribute="trailing" secondItem="fPU-Np-Nrk" secondAttribute="trailing" id="cx7-e3-yig"/>
                 <constraint firstItem="Lzs-9N-NL8" firstAttribute="height" secondItem="kRv-i9-jAv" secondAttribute="height" id="dmE-gz-TbW"/>
                 <constraint firstItem="Lzs-9N-NL8" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="f6S-K8-eRM"/>
@@ -159,6 +158,6 @@
         </collectionReusableView>
     </objects>
     <resources>
-        <image name="info.png" width="16" height="16"/>
+        <image name="icon_information" width="19" height="19"/>
     </resources>
 </document>

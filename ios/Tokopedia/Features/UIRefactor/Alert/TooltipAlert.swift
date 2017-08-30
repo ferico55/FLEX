@@ -15,7 +15,6 @@ class TooltipAlert: NSObject {
     class func createAlert(title: String, subtitle: String, image: UIImage, buttons: [CFAlertAction]?) -> CFAlertViewController {
         let style = UIDevice.current.userInterfaceIdiom == .pad ? CFAlertViewController.CFAlertControllerStyle.alert : CFAlertViewController.CFAlertControllerStyle.actionSheet
         let actionSheet = CFAlertViewController.alertController(title: nil, message: nil, textAlignment: .center, preferredStyle: style, didDismissAlertHandler: nil)
-        
         actionSheet.headerView = createHeaderView(title: title, subtitle: subtitle, image: image)
         
         if let buttons = buttons {
@@ -27,7 +26,7 @@ class TooltipAlert: NSObject {
         return actionSheet
     }
     
-    class func createHeaderView(title: String, subtitle: String, image: UIImage) -> UIView {
+    private class func createHeaderView(title: String, subtitle: String, image: UIImage) -> UIView {
         let headerView = UIView()
         let imageView = UIImageView(image: image)
         let titleLabel = UILabel()

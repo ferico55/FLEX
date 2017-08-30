@@ -238,20 +238,12 @@ UICollectionViewDelegate
     CGFloat height;
     CGSize itemSize = [self itemSize:type];
     
-    if (IS_IPHONE_4_OR_LESS || IS_IPHONE_5) {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = itemSize.height + 40;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = itemSize.height * 2 + 40;
-        }
-    } else {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = itemSize.height + 50;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = itemSize.height * 2 + 50;
-        }
+    if (type == PromoCollectionViewCellTypeNormal) {
+        height = itemSize.height + 40;
+    } else if (type == PromoCollectionViewCellTypeThumbnail) {
+        height = itemSize.height * 2 + 40;
     }
-
+    
     return height;
 }
 

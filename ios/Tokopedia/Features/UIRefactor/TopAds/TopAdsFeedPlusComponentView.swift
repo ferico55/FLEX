@@ -126,10 +126,10 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
             let infoButtonImageView = Node<UIImageView> {
                 view, layout, _ in
                 view.contentMode = .center
-                view.image = UIImage(named: "icon_info_grey")
+                view.image = UIImage(named: "icon_information")
                 view.backgroundColor = .clear
-                layout.width = 14
-                layout.height = 14
+                layout.width = 16
+                layout.height = 16
             }
             
             promotedInfoView.add(children: [

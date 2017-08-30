@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -63,9 +63,8 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promoted" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cui-9T-gwL">
-                    <rect key="frame" x="15" y="1" width="120" height="39"/>
+                    <rect key="frame" x="15" y="1" width="67.5" height="39"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="120" id="46F-iB-sae"/>
                         <constraint firstAttribute="height" constant="39" id="pOv-6l-HtW"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -73,12 +72,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Yq-8D-Fl4">
-                    <rect key="frame" x="280" y="8" width="25" height="25"/>
+                    <rect key="frame" x="86.5" y="12.5" width="16" height="16"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="MF9-hL-NcZ"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="ijm-dE-qe0"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="r3k-Go-v57"/>
-                        <constraint firstAttribute="width" constant="25" id="uP9-XU-nIN"/>
+                        <constraint firstAttribute="height" constant="16" id="MF9-hL-NcZ"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="ijm-dE-qe0"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="16" id="r3k-Go-v57"/>
+                        <constraint firstAttribute="width" constant="16" id="uP9-XU-nIN"/>
                     </constraints>
                     <state key="normal" image="icon_info_grey">
                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -98,16 +97,16 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="WVz-HC-uhT" firstAttribute="top" secondItem="t40-xn-he9" secondAttribute="top" id="2GY-Gq-jrX"/>
+                <constraint firstItem="8Yq-8D-Fl4" firstAttribute="centerY" secondItem="Cui-9T-gwL" secondAttribute="centerY" id="2Yo-Lt-wlC"/>
                 <constraint firstAttribute="trailing" secondItem="WVz-HC-uhT" secondAttribute="trailing" id="32X-dg-EFd"/>
                 <constraint firstItem="Cui-9T-gwL" firstAttribute="top" secondItem="t40-xn-he9" secondAttribute="top" constant="1" id="J2F-q8-Mps"/>
-                <constraint firstItem="8Yq-8D-Fl4" firstAttribute="top" secondItem="t40-xn-he9" secondAttribute="top" constant="8" id="MN1-nB-iQC"/>
-                <constraint firstAttribute="trailing" secondItem="8Yq-8D-Fl4" secondAttribute="trailing" constant="15" id="bWE-Vv-DiT"/>
+                <constraint firstItem="8Yq-8D-Fl4" firstAttribute="leading" secondItem="Cui-9T-gwL" secondAttribute="trailing" constant="4" id="knX-W2-jWw"/>
                 <constraint firstItem="Cui-9T-gwL" firstAttribute="leading" secondItem="t40-xn-he9" secondAttribute="leading" constant="15" id="nUg-6x-ggQ"/>
                 <constraint firstAttribute="bottom" secondItem="Cui-9T-gwL" secondAttribute="bottom" id="vmr-ub-oGo"/>
                 <constraint firstItem="WVz-HC-uhT" firstAttribute="leading" secondItem="t40-xn-he9" secondAttribute="leading" id="z8W-ES-t1l"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="256" y="114"/>
+            <point key="canvasLocation" x="279" y="35"/>
         </view>
         <view contentMode="scaleToFill" id="f33-sn-wDC">
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
