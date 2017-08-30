@@ -505,11 +505,12 @@ class TPRoutes: NSObject {
         
         // bantuan
         JLRoutes.global().addRoute("/bantuan/*") { (params: [String: Any]!) -> Bool in
-            let utmString = getUTMString(params)
-            let url = NSURL(string: (params[kJLRouteURLKey] as! String) + utmString)
-            openWebView(url! as URL)
-            
-            return true
+            if let url = params[kJLRouteURLKey] as? NSURL {
+                openWebView(url as URL)
+                return true
+            } else {
+                return false
+            }
         }
         
         // Tokopedia Tiket
@@ -799,6 +800,7 @@ class TPRoutes: NSObject {
                                mapping: Shop.mapping(),
                                onSuccess: { mappingResult, _ in
                                    UIApplication.topViewController()?.removeAllOverlays()
+                                   guard mappingResult.dictionary() != nil else { return shopExists(false) }
                                    let result: Dictionary = mappingResult.dictionary() as Dictionary
                                    let response = result[""] as! Shop
                                    

@@ -887,7 +887,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
                     },
                     onError: { error in
                         let errorMessage = error as? String ?? "Kendala koneksi internet, silahkan coba kembali"
-                        StickyAlertView(errorMessages: [errorMessage], delegate: self.navigator.controller).show()
+                        StickyAlertView.showErrorMessage([errorMessage])
                         AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Homepage Error Widget- \(errorMessage)")
                         revertBuyButton()
                     }
