@@ -80,11 +80,27 @@ class DigitalService {
                                 .request(.payment(voucherCode: "", transactionAmount: 0, transactionId: cartId))
                         }
                         .map(to: DigitalCartPayment.self)
-                        .map { cartPayment in
+                        .flatMap { cartPayment -> Observable<DigitalCartPayment> in
                             if let errorMessage = cartPayment.errorMessage {
-                                throw errorMessage
+                                onNavigateToCart()
+                                guard let navigationController = viewController.navigationController else {
+                                    fatalError("No Controller")
+                                }
+                                var viewControllers = navigationController.childViewControllers
+                                
+                                while viewControllers.last !== viewController {
+                                    _ = viewControllers.popLast()
+                                }
+                                
+                                let cartViewController = DigitalCartViewController()
+                                cartViewController.hidesBottomBarWhenPushed = true
+                                cartViewController.categoryId = categoryId
+                                
+                                viewController.navigationController?.pushViewController(cartViewController, animated: true)
+                                StickyAlertView.showErrorMessage([errorMessage])
+                                return cartViewController.cartPayment
                             }
-                            return cartPayment
+                            return Observable.just(cartPayment)
                         }
                 } else {
                     onNavigateToCart()
