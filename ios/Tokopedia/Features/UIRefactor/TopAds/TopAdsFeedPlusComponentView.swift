@@ -54,13 +54,15 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
         
         if theTopAds.count > 0 && (theTopAds[0].product != nil) {
             // product
-            return Node<UIView>().add(child:
-                TopAdsFeedPlusProductComponentView().construct(state: state, size: size)
+            return Node<UIView>().add(
+                child:
+                    TopAdsFeedPlusProductComponentView().construct(state: state, size: size)
             )
         } else {
             // shop
-            return Node<UIView>().add(child:
-                TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size)
+            return Node<UIView>().add(
+                child:
+                    TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size)
             )
         }
     }
@@ -376,6 +378,19 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     if isShopFavorited {
                         messageString = CStringSuccessUnFavoriteShop
                     }
+                    
+                    let eventName = !isShopFavorited ? "Seller_Added_To_Favourite" : "Seller_Removed_From_Favourite"
+                    
+                    AnalyticsManager.moEngageTrackEvent(
+                        withName: eventName,
+                        attributes: [
+                            "shop_name": shop.name,
+                            "shop_id": shop.shop_id,
+                            "shop_location": shop.location,
+                            "is_official_store": false
+                        ]
+                    )
+                    
                     let stickyAlertView = StickyAlertView(successMessages: [messageString], delegate: state.currentViewController)
                     stickyAlertView?.show()
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateFavoriteShop"), object: nil)
@@ -447,12 +462,13 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     layout.flexGrow = 1
                     layout.margin = 7
                 }
-            }.add(child:
-                Node<UIActivityIndicatorView> {
-                    view, _, _ in
-                    view.color = .gray
-                    view.startAnimating()
-                }
+            }.add(
+                child:
+                    Node<UIActivityIndicatorView> {
+                        view, _, _ in
+                        view.color = .gray
+                        view.startAnimating()
+                    }
             )
             
             func shopInfoWrapper() -> NodeType {

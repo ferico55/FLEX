@@ -312,6 +312,11 @@
                                                                    token:_token
                                                                     host:_generatedHost.upload_host
                                                                onSuccess:^(SubmitReviewResult *result) {
+                                                                   [AnalyticsManager moEngageTrackEventWithName:@"Success_Purchase_Review"
+                                                                                                     attributes:@{
+                                                                                                                  @"review_score" : @(_qualityRate)
+                                                                                                                  }];
+                                                                   
                                                                    [AnalyticsManager trackSuccessSubmitReview:1];
                                                                    NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
                                                                    

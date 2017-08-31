@@ -45,16 +45,17 @@ class ShopViewController: UIViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(shopSettingsDidChange),
+            selector: #selector(self.shopSettingsDidChange),
             name: NSNotification.Name(rawValue: "tokopedia.kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY"),
             object: nil
         )
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(favoriteStatusChanged),
+            selector: #selector(self.favoriteStatusChanged),
             name: NSNotification.Name(rawValue: "updateFavoriteShop"),
-            object: nil)
+            object: nil
+        )
         
         self.requestShopInfo()
     }
@@ -102,7 +103,7 @@ class ShopViewController: UIViewController {
                 self.segmentedPagerController.segmentedPager.scrollToTop(animated: false)
             },
             
-            onFailure: { [weak self] error in
+            onFailure: { [weak self] _ in
                 guard let `self` = self else { return }
                 
                 SwiftOverlays.removeAllOverlaysFromView(self.view)
@@ -112,7 +113,7 @@ class ShopViewController: UIViewController {
     }
     
     private func trackScreenWithShop(_ shop: Shop) {
-        let shopID = shop.result.info.shop_id        
+        let shopID = shop.result.info.shop_id
         var shopType = "regular"
         
         if shop.result.info.shop_is_gold == 1 {
@@ -123,8 +124,10 @@ class ShopViewController: UIViewController {
             shopType = "official_store"
         }
         
-        let customLayer = ["shopId" : shopID,
-                           "shopType" : shopType]
+        let customLayer = [
+            "shopId": shopID,
+            "shopType": shopType
+        ]
         
         AnalyticsManager.trackScreenName("Shop Page", customDataLayer: customLayer)
     }
@@ -170,7 +173,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func displayShop(_ shop: Shop) {
-        guard segmentedPagerController == nil else { return }
+        guard self.segmentedPagerController == nil else { return }
         
         let viewController = MXSegmentedPagerController()
         segmentedPagerController = viewController
@@ -195,7 +198,7 @@ class ShopViewController: UIViewController {
         viewController.segmentedPager.segmentedControl.borderType = [.top, .bottom]
         viewController.segmentedPager.segmentedControl.borderColor = UIColor(white: 0.937, alpha: 1)
         viewController.segmentedPager.segmentedControl.selectionIndicatorLocation = .down
-        viewController.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(red:0.071, green:0.780, blue:0, alpha:1)
+        viewController.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(red: 0.071, green: 0.780, blue: 0, alpha: 1)
         viewController.segmentedPager.segmentedControl.verticalDividerColor = UIColor(white: 0.937, alpha: 1)
         viewController.segmentedPager.segmentedControl.isVerticalDividerEnabled = true
         viewController.segmentedPager.segmentedControl.titleTextAttributes = [
@@ -203,14 +206,14 @@ class ShopViewController: UIViewController {
         ]
         
         let homeViewController = ShopHomeViewController(url: shop.result.info.shop_official_top)
-        homeViewController.data = data as [NSObject : AnyObject]?
+        homeViewController.data = data as [NSObject: AnyObject]?
         
         let productViewController = ShopProductPageViewController()
         productViewController.data = data
         productViewController.shop = shop
         productViewController.initialEtalase = self.initialEtalase
-        if (productFilter != nil) {
-            productViewController.showProducts(with: productFilter)
+        if self.productFilter != nil {
+            productViewController.showProducts(with: self.productFilter)
         }
         
         let discussionViewController = ShopTalkPageViewController()
@@ -225,19 +228,21 @@ class ShopViewController: UIViewController {
         homeViewController.onProductSelected = { [unowned self] productId in
             self.segmentedPagerController.segmentedPager.pager.showPage(at: 1, animated: true)
             
-            NavigateViewController.navigateToProduct(from: self,
-                                                                       withName: "",
-                                                                       withPrice: "",
-                                                                       withId: productId,
-                                                                       withImageurl: "",
-                                                                       withShopName: "")
+            NavigateViewController.navigateToProduct(
+                from: self,
+                withName: "",
+                withPrice: "",
+                withId: productId,
+                withImageurl: "",
+                withShopName: ""
+            )
         }
         
         homeViewController.onFilterSelected = { [unowned self] filter in
             self.segmentedPagerController.segmentedPager.pager.showPage(at: 1, animated: true)
             
             productViewController.showProducts(with: filter)
-        };
+        }
         
         tabChildren = [
             TabChild(title: "Home", viewController: homeViewController),
@@ -248,7 +253,7 @@ class ShopViewController: UIViewController {
         ]
         
         if !shop.result.info.isOfficial {
-            tabChildren.removeFirst()
+            self.tabChildren.removeFirst()
         }
         
         self.addChildViewController(viewController)
@@ -262,12 +267,12 @@ class ShopViewController: UIViewController {
     }
     
     // used by product detail review
-    // TODO move all label configurations into the view controller
+    // TODO: move all label configurations into the view controller
     func setPropertyLabelDesc(_ label: TTTAttributedLabel) {
         label.backgroundColor = .clear
         label.textAlignment = .left
         label.font = UIFont.smallTheme()
-        label.textColor = UIColor(red: 117.0/255, green: 117.0/255, blue: 117.0/255, alpha: 1)
+        label.textColor = UIColor(red: 117.0 / 255, green: 117.0 / 255, blue: 117.0 / 255, alpha: 1)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
     }
@@ -276,11 +281,12 @@ class ShopViewController: UIViewController {
         let infoBarButton = UIBarButtonItem().bk_init(
             with: UIImage(named: "icon_shop_info"),
             style: UIBarButtonItemStyle.plain,
-            handler: { [unowned self] button in
+            handler: { [unowned self] _ in
                 self.openShopInfo(shop)
-            }) as! UIBarButtonItem
+            }
+        ) as! UIBarButtonItem
         
-        let refreshBarButton = UIBarButtonItem().bk_init(with: .refresh) { [weak self] (sender) in
+        let refreshBarButton = UIBarButtonItem().bk_init(with: .refresh) { [weak self] _ in
             self?.refreshCurrentViewController()
         } as! UIBarButtonItem
         
@@ -302,7 +308,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func messageButtonDidTappedWithShop(_ shop: Shop) {
-        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
+        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] _ in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -314,7 +320,7 @@ class ShopViewController: UIViewController {
     }
     
     fileprivate func toggleFavoriteForShop(_ shop: Shop) {
-        authenticationService.ensureLoggedInFromViewController(self) { [weak self] isLoginNeeded in
+        self.authenticationService.ensureLoggedInFromViewController(self) { [weak self] _ in
             guard let `self` = self else { return }
             
             self.renderBarButtonsWithShop(shop)
@@ -322,19 +328,33 @@ class ShopViewController: UIViewController {
             guard !UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id) else { return }
             
             self.renderBarButtonsWithShop(shop, favoriteRequestInProgress: true)
-                        
+            
             AnalyticsManager.trackEventName(
                 "clickShopHome",
                 category: GA_EVENT_CATEGORY_SHOP_HOME,
                 action: GA_EVENT_ACTION_CLICK,
-                label: "Add to Favorite - \(shop.result.info.shop_name)")
+                label: "Add to Favorite - \(shop.result.info.shop_name)"
+            )
             
             FavoriteShopRequest.requestActionButtonFavoriteShop(
                 shop.result.info.shop_id,
                 withAdKey: "",
-                onSuccess: { (result) in
+                onSuccess: { _ in
+                    
                     let favorite = !(shop.result.info.isFavorite)
                     shop.result.info.isFavorite = favorite
+                    
+                    let eventName = favorite ? "Seller_Added_To_Favourite" : "Seller_Removed_From_Favourite"
+                    
+                    AnalyticsManager.moEngageTrackEvent(
+                        withName: eventName,
+                        attributes: [
+                            "shop_name": shop.result.info.shop_name,
+                            "shop_id": shop.result.info.shop_id,
+                            "shop_location": shop.result.info.shop_location,
+                            "is_official_store": shop.result.info.isOfficial
+                        ]
+                    )
                     
                     let message = favorite ? "Anda berhasil memfavoritkan toko ini!" : "Anda berhenti memfavoritkan toko ini!"
                     
@@ -342,10 +362,12 @@ class ShopViewController: UIViewController {
                     self.renderBarButtonsWithShop(shop)
                     
                     self.notifyShopFavoriteChanged()
-                }, onFailure: {
+                },
+                onFailure: {
                     self.renderBarButtonsWithShop(shop)
-            })
-
+                }
+            )
+            
         }
     }
     
@@ -359,7 +381,8 @@ class ShopViewController: UIViewController {
             "clickShopHome",
             category: GA_EVENT_CATEGORY_SHOP_HOME,
             action: GA_EVENT_ACTION_CLICK,
-            label: "Setting")
+            label: "Setting"
+        )
         
         let viewController = ShopSettingViewController()
         viewController.data = [
@@ -375,7 +398,8 @@ class ShopViewController: UIViewController {
             "clickShopHome",
             category: GA_EVENT_CATEGORY_SHOP_HOME,
             action: GA_EVENT_ACTION_CLICK,
-            label: "Add Product")
+            label: "Add Product"
+        )
         
         let viewController = ProductAddEditViewController()
         viewController.type = .ADD
@@ -390,7 +414,8 @@ class ShopViewController: UIViewController {
             "clickShopHome",
             category: GA_EVENT_CATEGORY_SHOP_HOME,
             action: GA_EVENT_ACTION_CLICK,
-            label: "Send Message")
+            label: "Send Message"
+        )
         let viewController = SendMessageViewController(to: shop)
         viewController?.display(from: self)
     }
@@ -442,7 +467,7 @@ extension ShopViewController: MXSegmentedPagerDataSource {
 extension ShopViewController: MXSegmentedPagerDelegate {
     func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
         
-        tabChildren.forEach { (child) in
+        tabChildren.forEach { child in
             let tabChild = child.viewController as? ShopTabChild
             tabChild?.tabWillChange?(to: tabChildren[index].viewController)
         }

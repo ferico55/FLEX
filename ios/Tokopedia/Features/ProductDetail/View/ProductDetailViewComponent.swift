@@ -732,6 +732,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                        viewController: self.viewController,
                                        state: state,
                                        didTapDescription: { [unowned self] productInfo in
+                                           AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Product Description")
                                            let vc = ProductDescriptionViewController(productInfo: productInfo)
                                            self.viewController.navigationController?.pushViewController(vc, animated: true)
                                        },
@@ -1195,6 +1196,16 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             .subscribe(onNext: { _ in
                 self.store.dispatch(ProductDetailAction.updateFavorite(isFavorite, false))
                 let message = isFavorite ? "Anda berhasil memfavoritkan Toko ini!" : "Anda berhenti memfavoritkan toko ini!"
+                let eventName = isFavorite ? "Seller_Added_To_Favourite" : "Seller_Removed_From_Favourite"
+                
+                AnalyticsManager.moEngageTrackEvent(withName: eventName,
+                                                    attributes: [
+                                                        "shop_name": productDetail.shop.name,
+                                                        "shop_id": productDetail.shop.id,
+                                                        "shop_location": productDetail.shop.location,
+                                                        "is_official_store": productDetail.shop.isOfficial
+                ])
+                
                 _ = UIViewController.showNotificationWithMessage(message, type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
             },
                        onError: { _ in

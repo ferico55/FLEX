@@ -619,6 +619,7 @@
     
     __weak typeof(self) weakSelf = self;
     vc.didCreateComplaint = ^(TxOrderStatusList *order){
+        [AnalyticsManager moEngageTrackEventWithName:@"Shipping_Received_Confirmation" attributes:@{@"is_received" : @(isReceived)}];
         [weakSelf refreshRequest];
     };
     
@@ -759,6 +760,7 @@
     };
     
     confirmationAlert.didOK = ^{
+        [AnalyticsManager moEngageTrackEventWithName:@"Shipping_Received_Confirmation" attributes:@{@"is_received" : @(YES)}];
         [AnalyticsManager trackEventName:@"clickReceived" category:GA_EVENT_CATEGORY_RECEIVED action:GA_EVENT_ACTION_CLICK label:@"Confirmation"];
         [weakSelf confirmDelivery:order];
     };

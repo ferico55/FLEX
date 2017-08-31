@@ -287,7 +287,7 @@ FavoriteShopRequestDelegate
                                      ];
         
         [_promoShops removeObject:promoResult];
-        [self pressFavoriteAction:promoResult.shop.shop_id];
+        [self pressFavoriteAction:promoResult];
         
         [_table beginUpdates];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
@@ -308,11 +308,19 @@ FavoriteShopRequestDelegate
                                label:eventLabel];
 }
 
--(void)pressFavoriteAction:(NSString*)shopid {
-    strTempShopID = shopid;
-    [FavoriteShopRequest requestActionButtonFavoriteShop:shopid
+-(void)pressFavoriteAction:(PromoResult *)promoResult {
+    strTempShopID = promoResult.shop.shop_id;
+    [FavoriteShopRequest requestActionButtonFavoriteShop:promoResult.shop.shop_id
                                                withAdKey:_selectedPromoShop.ad_ref_key
                                                onSuccess:^(FavoriteShopActionResult *data) {
+                                                   
+                                                   [AnalyticsManager moEngageTrackEventWithName:@"Seller_Added_To_Favourite"
+                                                                                     attributes:@{
+                                                                                                  @"shop_name" : promoResult.shop.name ?: @"",
+                                                                                                  @"shop_id" : promoResult.shop.shop_id ?: @"",
+                                                                                                  @"shop_location" : promoResult.shop.location ?: @"",
+                                                                                                  @"is_official_store" : @(NO)
+                                                                                                  }];
                                                    
                                                    [self resetAllState];
                                                    [_table reloadData];

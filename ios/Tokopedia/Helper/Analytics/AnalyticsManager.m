@@ -72,6 +72,11 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                               @"appsflyerID" : [[AppsFlyerTracker sharedTracker] getAppsFlyerUID]?:@"",
                               @"environment": @"iOS",
                               @"login" : [manager.userManager isLogin]?@"Logged In":@"Non Logged In"}];
+    
+    [self moEngageTrackEventWithName:@"iOS Screen Launched"
+                          attributes:@{
+                                       @"screen_name": name ?: @""
+                                       }];
 }
 
 + (void)trackScreenName:(NSString *)name gridType:(NSInteger)gridType {

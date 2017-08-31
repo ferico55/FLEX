@@ -354,8 +354,8 @@
 - (NSString *)getRegistrationDate {
     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"registration_date"]];
 }
-- (NSString *)getTotalItemSold {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"total_sold_item"]];
+- (NSNumber *)getTotalItemSold {
+    return [[self secureStorageDictionary] objectForKey:@"total_sold_item"] ?: @(0);
 }
 - (NSString *)getShopLocation {
     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"shop_location"]];

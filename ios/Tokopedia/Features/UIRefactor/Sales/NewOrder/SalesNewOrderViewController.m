@@ -161,6 +161,7 @@
 }
 
 -(void)applyRejectOperation{
+    [AnalyticsManager moEngageTrackEventWithName:@"Seller_Clicked_Neworder" attributes:@{@"is_accepted" : @(NO)}];
     if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
         _needToDoLazyCellRemoval = YES;
     }else{        
@@ -677,10 +678,13 @@
 
         NSString *message;
         if (actionType == ProceedTypeAccept) {
+            [AnalyticsManager moEngageTrackEventWithName:@"Seller_Clicked_Neworder" attributes:@{@"is_accepted" : @(YES)}];
             message = @"Anda telah berhasil memproses transaksi.";
         } else if (actionType == ProceedTypePartial) {
+            [AnalyticsManager moEngageTrackEventWithName:@"Seller_Clicked_Neworder" attributes:@{@"is_accepted" : @(YES)}];
             message = @"Anda telah berhasil memproses transaksi sebagian.";
         } else {
+            [AnalyticsManager moEngageTrackEventWithName:@"Seller_Clicked_Neworder" attributes:@{@"is_accepted" : @(NO)}];
             message = @"Anda telah berhasil membatalkan transaksi.";
         }
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
