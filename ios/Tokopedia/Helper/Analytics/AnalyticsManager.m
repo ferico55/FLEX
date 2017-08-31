@@ -226,10 +226,10 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     NSArray *categories = [product.product_cat_name componentsSeparatedByString:@" - "];
     
     [AnalyticsManager moEngageTrackEventWithName:@"Product_Added_To_Cart_Marketplace"
-                                      attributes:@{@"product_id" : productID,
-                                                   @"product_name" : productName,
-                                                   @"product_price" : price,
-                                                   @"category" : categories[0],
+                                      attributes:@{@"product_id" : productID ?: @"0",
+                                                   @"product_name" : productName ?: @"",
+                                                   @"product_price" : price ?: @"0",
+                                                   @"category" : (categories.count > 0) ? categories[0] : @"",
                                                    @"subcategory" : (categories.count > 1) ? categories[1] : @""}];
 }
 

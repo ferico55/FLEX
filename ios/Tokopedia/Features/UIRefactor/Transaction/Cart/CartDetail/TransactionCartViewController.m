@@ -1,4 +1,3 @@
-
 //
 //  TransactionCartViewController.m
 //  Tokopedia
@@ -54,23 +53,22 @@
 
 @interface TransactionCartViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    UIActionSheetDelegate,
-    UIAlertViewDelegate,
-    UITextFieldDelegate,
-    TransactionCartCellDelegate,
-    TransactionCartHeaderViewDelegate,
-    GeneralSwitchCellDelegate,
-    GeneralTableViewControllerDelegate,
-    TKPDAlertViewDelegate,
-    TransactionCartShippingViewControllerDelegate,
-    TransactionCartEditViewControllerDelegate,
-    TransactionCartWebViewViewControllerDelegate,
-    LoadingViewDelegate,
-    GeneralTableViewControllerDelegate,
-    NoResultDelegate,
-    NotificationManagerDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+UIActionSheetDelegate,
+UIAlertViewDelegate,
+UITextFieldDelegate,
+TransactionCartCellDelegate,
+TransactionCartHeaderViewDelegate,
+GeneralSwitchCellDelegate,
+GeneralTableViewControllerDelegate,
+TKPDAlertViewDelegate,
+TransactionCartShippingViewControllerDelegate,
+TransactionCartEditViewControllerDelegate,
+TransactionCartWebViewViewControllerDelegate,
+LoadingViewDelegate,
+GeneralTableViewControllerDelegate,
+NoResultDelegate
 >
 {
     NSMutableArray<TransactionCartList *> *_list;
@@ -177,7 +175,7 @@
     [self.navigationItem setTitleView:logo];
     
     [self initNotification];
-
+    
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControlNoResult = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -213,7 +211,7 @@
                                                  name:TKPDUserDidLoginNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                              selector:@selector(userLogout)
+                                             selector:@selector(userLogout)
                                                  name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -286,7 +284,7 @@
     
     _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
     [_noResultScrollView addSubview:_topAdsView];
-
+    
     if(IS_IPAD){
         _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
     }
@@ -318,9 +316,9 @@
     _noLoginView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noLoginView.delegate = self;
     [_noLoginView generateAllElements:@"icon_no_data_grey.png"
-                                    title:@"Anda belum login"
-                                     desc:@"Belum punya akun Tokopedia ?"
-                                 btnTitle:@"Daftar disini!"];
+                                title:@"Anda belum login"
+                                 desc:@"Belum punya akun Tokopedia ?"
+                             btnTitle:@"Daftar disini!"];
     _noLoginView.button.backgroundColor = [UIColor tpGreen];
     _noLoginView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
@@ -345,17 +343,17 @@
     if (_list.count>0) {
         _tableView.tableFooterView =_checkoutView;
     } else _tableView.tableFooterView = nil;
-
+    
 }
 
 -(void)userLogin{
-//    _noLoginView.hidden = YES;
+    //    _noLoginView.hidden = YES;
     [_noResultScrollView removeFromSuperview];
     [_noLoginView removeFromSuperview];
 }
 
 -(void)userLogout{
-//    _noLoginView.hidden = NO;
+    //    _noLoginView.hidden = NO;
     [self.view addSubview:_noResultScrollView];
     [_noResultScrollView addSubview:_noLoginView];
     [self requestPromo];
@@ -404,7 +402,7 @@
     }
     else if (section == listCount+2)
         rowCount = _cart.donation?1:0; //donation
-
+    
     else rowCount = 1; // total pembayaran
     
     return (_list.count==0)?0:rowCount;
@@ -413,9 +411,9 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-
+    
     NSInteger shopCount = _list.count;
-
+    
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
     else if (indexPath.section == shopCount)
@@ -460,7 +458,7 @@
         }
         
     }
-
+    
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.clipsToBounds = YES;
     cell.contentView.clipsToBounds = YES;
@@ -485,7 +483,7 @@
     }
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-
+    
     if (section < _list.count)
     {
         if (_list[section].errors.count > 0) {
@@ -508,7 +506,7 @@
     else if (section == _list.count+3) {
         return 10;
     }
-
+    
     return 0;
 }
 
@@ -605,7 +603,7 @@
             if([self isValidInput]) {
                 [self doCheckoutWithToppay];
             }
-        break;
+            break;
     }
 }
 
@@ -658,7 +656,7 @@
 -(void)shouldEditCartWithUserInfo:(NSDictionary *)userInfo {
     [_dataInput addEntriesFromDictionary:userInfo];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    [self doRequestEditProduct:product];       
+    [self doRequestEditProduct:product];
 }
 #pragma mark - Cell Delegate
 -(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
@@ -762,15 +760,15 @@
             [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
         }
         lastNotificationView = [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
-                                                 type:NotificationTypeError
-                                             duration:4.0
-                                          buttonTitle:_shouldDisplayButtonOnErrorAlert?@"Belanja Lagi":nil
-                                          dismissable:YES
-                                               action:_shouldDisplayButtonOnErrorAlert?^{
-                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-                                               }:nil];
+                                                                        type:NotificationTypeError
+                                                                    duration:4.0
+                                                                 buttonTitle:_shouldDisplayButtonOnErrorAlert?@"Belanja Lagi":nil
+                                                                 dismissable:YES
+                                                                      action:_shouldDisplayButtonOnErrorAlert?^{
+                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                                      }:nil];
     }
-
+    
     return isValid;
 }
 
@@ -838,9 +836,9 @@
     CGSize maximumLabelSize = CGSizeMake(labelWidth,9999);
     NSStringDrawingContext *context = [NSStringDrawingContext new];
     CGSize expectedLabelSize = [text boundingRectWithSize:maximumLabelSize
-                                                    options:NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes:@{NSFontAttributeName:[UIFont title1Theme]}
-                                                    context:context].size;
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:@{NSFontAttributeName:[UIFont title1Theme]}
+                                                  context:context].size;
     
     return expectedLabelSize.height;
 }
@@ -1016,7 +1014,7 @@
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
-
+    
     return YES;
 }
 
@@ -1030,7 +1028,7 @@
     {
         _list[-textField.tag-1].cart_dropship_phone = textField.text;
     }
-
+    
     return YES;
 }
 
@@ -1164,7 +1162,7 @@
     [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
-
+    
     grandTotalCartFromWS -= voucherAmount;
     if (grandTotalCartFromWS <0) {
         grandTotalCartFromWS = 0;
@@ -1291,7 +1289,7 @@
             break;
         default:
             break;
-     }
+    }
     return cell;
 }
 
@@ -1325,7 +1323,7 @@
 
 #pragma mark - Cell Height
 -(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
-{    
+{
     if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
         if (indexPath.row == 0) {
@@ -1381,7 +1379,7 @@
     } else if (indexPath.section == _list.count+3){
         return 75; // donasi
     }
-
+    
     return DEFAULT_ROW_HEIGHT;
 }
 
@@ -1424,9 +1422,9 @@
         CGSize maximumLabelSize = CGSizeMake(250,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         expectedErrorLabelSize = [errorText boundingRectWithSize:maximumLabelSize
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont title2Theme]}
-                                                           context:context].size;
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes:@{NSFontAttributeName:[UIFont title2Theme]}
+                                                         context:context].size;
         expectedErrorLabelSize.height = expectedErrorLabelSize.height + 32;
     } else {
         expectedErrorLabelSize.height = 0;
@@ -1464,30 +1462,30 @@
                                                                                                                  AFEventOrderId : paymentID}];
                                        
                                        [AnalyticsManager moEngageTrackEventWithName:@"Thank_You_Page_Launched"
-                                                                         attributes:@{@"payment_type" : paymentMethod,
+                                                                         attributes:@{@"payment_type" : paymentMethod ?: @"",
                                                                                       @"purchase_site" : @"Marketplace",
-                                                                                      @"total_price" : revenue}];
+                                                                                      @"total_price" : revenue ?: @(0)}];
                                        
                                    }
                                    [self requestCartData];
                                } error:^(NSError *error) {
-                                [self requestCartData];
-                                     
-                                 }];
+                                   [self requestCartData];
+                                   
+                               }];
     
-
+    
 }
 
 -(void)requestCartData{
     
     _checkoutButton.enabled = NO;
-
+    
     CartRequest * request = [CartRequest new];
     [request fetchCartData:^(TransactionCartResult * data) {
         NSArray<TransactionCartList*> *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
-
+        
         if(list.count >0){
             [_noResultView removeFromSuperview];
             [_noResultScrollView removeFromSuperview];
@@ -1496,7 +1494,7 @@
             [_tableView addSubview:_noResultScrollView];
             [_noResultScrollView addSubview:_noResultView];
         }
-
+        
         _cart = data;
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
         [_dataInput setObject:_cart.grand_total_without_lp?:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
@@ -1655,23 +1653,23 @@
                           voucherCode:voucherCode
                        donationAmount:_cart.donation.usedDonationValue
                          cartListRate:cartListRate
-                         
+     
                               success:^(TransactionActionResult *data) {
-                              
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data];
-                              _popFromToppay = YES;
-                              [self isLoading:NO];
-
-                          } error:^(NSError *error) {
-                              if (error) {
-                                  [self doClearAllData];
-                                  [self isLoading:NO];
-                                  [_noInternetConnectionView generateRequestErrorViewWithError:error];
-                                  [_tableView addSubview:_noInternetConnectionView];
                                   
-                              }
-                              [self isLoading:NO];
-                          }];
+                                  [TransactionCartWebViewViewController pushToppayFrom:self data:data];
+                                  _popFromToppay = YES;
+                                  [self isLoading:NO];
+                                  
+                              } error:^(NSError *error) {
+                                  if (error) {
+                                      [self doClearAllData];
+                                      [self isLoading:NO];
+                                      [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                      [_tableView addSubview:_noInternetConnectionView];
+                                      
+                                  }
+                                  [self isLoading:NO];
+                              }];
 }
 
 -(void)doRequestEditProduct:(ProductDetail*)product{

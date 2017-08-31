@@ -255,10 +255,12 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
     NSMutableArray *messages = [NSMutableArray new];
     BOOL valid = NO;
     NSString *message;
-    if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+    
+    NSString *trimmedEmail = [email stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (trimmedEmail && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [trimmedEmail isEmail]) {
         valid = YES;
     }
-    if (!email||[email isEqualToString:@""]) {
+    if (!trimmedEmail||[trimmedEmail isEqualToString:@""]) {
         [AnalyticsManager trackEventName:@"loginError"
                                 category:GA_EVENT_CATEGORY_LOGIN
                                   action:GA_EVENT_ACTION_LOGIN_ERROR
@@ -267,8 +269,8 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
         [messages addObject:message];
         valid = NO;
     }
-    if (email) {
-        if (![email isEmail]) {
+    if (trimmedEmail) {
+        if (![trimmedEmail isEmail]) {
             [AnalyticsManager trackEventName:@"loginError"
                                     category:GA_EVENT_CATEGORY_LOGIN
                                       action:GA_EVENT_ACTION_LOGIN_ERROR
@@ -289,7 +291,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
     }
     
     if (valid) {
-        [self doLoginWithEmail:email password:pass];
+        [self doLoginWithEmail:trimmedEmail password:pass];
     }
     else{
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];

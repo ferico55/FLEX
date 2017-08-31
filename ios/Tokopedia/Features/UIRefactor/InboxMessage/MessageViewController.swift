@@ -369,7 +369,9 @@ class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarD
                 
                 let messageDetail = result.dictionary()[""] as! InboxMessageDetail
                 if((messageDetail.message_error == nil)) {
-                    self.didReceiveMessages(messageDetail.result.list as! [InboxMessageDetailList])
+                    guard let list = messageDetail.result.list as? [InboxMessageDetailList] else { return }
+                    
+                    self.didReceiveMessages(list)
                     let detailResult = messageDetail.result
                     if (detailResult?.textarea_reply == "1") {
                         self.inputToolbar.isHidden = false

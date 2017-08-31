@@ -219,7 +219,9 @@
         [TPRoutes routeURL:url];
     } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
-        [TPRoutes routeURL:url];
+        if (url) {
+            [TPRoutes routeURL:url];
+        }
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
@@ -231,7 +233,9 @@
         [TPRoutes routeURL:url];
     } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
         NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
-        [TPRoutes routeURL:url];
+        if (url) {
+            [TPRoutes routeURL:url];
+        }
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect object:nil userInfo:data];
     }

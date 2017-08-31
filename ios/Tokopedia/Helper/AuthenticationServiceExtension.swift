@@ -16,6 +16,11 @@ extension AuthenticationService {
         let loginViewController: LoginViewController = LoginViewController()
         loginViewController.isPresentedViewController = true
         loginViewController.onLoginFinished = { loginResult in
+            guard let loginResult = loginResult else {
+                StickyAlertView.showErrorMessage(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])
+                return
+            }
+            
             if let loginNavCon = loginViewController.navigationController {
                 loginNavCon.dismiss(animated: true, completion: {
                     self.loginSuccessBlock(loginResult)
