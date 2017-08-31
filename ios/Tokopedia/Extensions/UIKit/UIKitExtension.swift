@@ -328,34 +328,29 @@ extension UIImage {
         return newImage
     }
     
-    func resizedImage() -> (UIImage){
-        var actualHeight = self.size.height
-        var actualWidth = self.size.width
-        var imgRatio = actualWidth/actualHeight
-        let maxImageSize = CGSize(width: 600, height: 600)
-        let widthView = maxImageSize.width;
-        let heightView = maxImageSize.height;
-        let maxRatio = widthView/heightView;
-        
-        if (imgRatio != maxRatio){
-            if (imgRatio < maxRatio){
-                imgRatio = heightView / actualHeight
-                actualHeight = heightView
-                actualWidth = imgRatio * actualWidth
-            } else {
-                imgRatio = widthView / actualWidth
-                actualHeight = imgRatio * actualHeight
-                actualWidth = widthView
+    // MARK: - UIImage+Resize
+    func compressImageData(maxSizeInMB:Int) -> Data? {
+        let sizeInBytes = maxSizeInMB * 1024 * 1024
+        var needCompress:Bool = true
+        var imgData:Data?
+        var compressingValue:CGFloat = 1.0
+        while (needCompress && compressingValue > 0.0) {
+            if let data:Data = UIImageJPEGRepresentation(self, compressingValue) {
+                if data.count < sizeInBytes {
+                    needCompress = false
+                    imgData = data
+                } else {
+                    compressingValue -= 0.1
+                }
             }
         }
         
-        let rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight);
-        UIGraphicsBeginImageContext(rect.size)
-        self.draw(in: rect)
-        let resized : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return resized
+        if let data = imgData {
+            if (data.count < sizeInBytes) {
+                return data
+            }
+        }
+        return UIImageJPEGRepresentation(self, 1)
     }
 }
 

@@ -33,7 +33,11 @@
     RKObjectManager *objectManager = [TKPMappingManager objectManagerUploadImageWithBaseURL:host
                                                                                 pathPattern:path];
     
-    UIImage *resizedImage = [image resizedImage];
+    NSData *resizedImageData = [image compressImageDataWithMaxSizeInMB:3];
+    if (resizedImageData == nil) {
+        [StickyAlertView showErrorMessage:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+        return;
+    }
     
     // Serialize the Article attributes then attach a file
     NSMutableURLRequest *request = [objectManager multipartFormRequestWithObject:object
@@ -41,7 +45,7 @@
                                                                             path:path
                                                                       parameters:nil
                                                        constructingBodyWithBlock:^(id<AFRKMultipartFormData> formData) {
-                                                           [formData appendPartWithFileData:UIImagePNGRepresentation(resizedImage)
+                                                           [formData appendPartWithFileData:resizedImageData
                                                                                        name:name
                                                                                    fileName:fileName
                                                                                    mimeType:@"image/png"];
