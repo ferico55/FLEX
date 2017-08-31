@@ -18,12 +18,12 @@
 
 +(UITableViewCell*)cellDetailShipmentTable:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 
-+(UITableViewCell*)cellIsPartial:(NSString*)isPartial tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
++(UITableViewCell*)cellIsPartial:(NSString*)isPartial tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath isDisabled:(BOOL)isDisabled;
 
 +(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder List:(NSArray<TransactionCartList *>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
 ;
 
-+(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
++(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath isDisabled:(BOOL)isDisabled;
 +
 (UITableViewCell*)cellCart:(NSArray<TransactionCartList*>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath page:(NSInteger)page;
 

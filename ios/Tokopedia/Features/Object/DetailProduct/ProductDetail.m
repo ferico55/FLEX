@@ -96,6 +96,7 @@
                       @"product_short_desc",
                       @"product_department_tree",
                       @"product_must_insurance",
+                      @"product_hide_edit",
                       @"product_returnable",
                       @"product_quantity",
                       @"product_notes",

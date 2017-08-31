@@ -16,6 +16,7 @@
 
 @class ProductPreorder;
 @class Errors;
+
 @interface TransactionCartList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *cart_total_logistic_fee;
@@ -74,5 +75,6 @@
 @property (nonatomic, strong) NSString *categoryID;
 @property (nonatomic, strong) NSString *cartString;
 
+@property (nonatomic) BOOL isEditingEnabled;
 
 @end

@@ -74,6 +74,7 @@
     
     _tableViewSummaryCell = [NSArray sortViewsWithTagInArray:_tableViewSummaryCell];
     _tableViewCell = [NSArray sortViewsWithTagInArray:_tableViewCell];
+    _tableView.allowsSelection = _cart.isEditingEnabled;
 
     [self setTextAddress:_cart.cart_destination];
     
@@ -170,6 +171,13 @@
     cell = [self cellCartDetailAtIndexPage:indexPath];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if (!_cart.isEditingEnabled) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    cell.userInteractionEnabled = _cart.isEditingEnabled;
+    cell.textLabel.enabled = _cart.isEditingEnabled;
+    cell.detailTextLabel.enabled = _cart.isEditingEnabled;
     return cell;
 }
 

@@ -316,9 +316,9 @@ NoResultDelegate
     _noLoginView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noLoginView.delegate = self;
     [_noLoginView generateAllElements:@"icon_no_data_grey.png"
-                                title:@"Anda belum login"
-                                 desc:@"Belum punya akun Tokopedia ?"
-                             btnTitle:@"Daftar disini!"];
+                                    title:@"Anda belum login"
+                                     desc:@"Belum punya akun Tokopedia?"
+                                 btnTitle:@"Daftar di sini!"];
     _noLoginView.button.backgroundColor = [UIColor tpGreen];
     _noLoginView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
@@ -1258,9 +1258,9 @@ NoResultDelegate
         if (indexPath.row == productCount+1) {
             cell = [CartCell cellDetailShipmentTable:_tableView indexPath:indexPath];
         } else if (indexPath.row == productCount+2) {
-            cell = [CartCell cellIsPartial:_list[indexPath.section].cart_is_partial tableView:_tableView atIndextPath:indexPath];
+            cell = [CartCell cellIsPartial:_list[indexPath.section].cart_is_partial tableView:_tableView atIndextPath:indexPath isDisabled:!list.isEditingEnabled];
         } else if (indexPath.row == productCount+3) {
-            cell = [CartCell cellIsDropshipper:_list[indexPath.section].cart_is_dropshipper tableView:_tableView atIndextPath:indexPath];
+            cell = [CartCell cellIsDropshipper:_list[indexPath.section].cart_is_dropshipper tableView:_tableView atIndextPath:indexPath isDisabled:!list.isEditingEnabled];
         } else if (indexPath.row == productCount+4) {
             cell = [CartCell cellTextFieldPlaceholder:@"Nama Pengirim" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_name?:@""];
             

@@ -35,6 +35,10 @@
     return _cart_insurance_price_idr ?: @"Rp 0";
 }
 
+-(BOOL)isEditingEnabled {
+    return ![[self.cart_products firstObject].product_hide_edit isEqualToString:@"1"];
+}
+
 - (CartModelView *)viewModel {
     if(_viewModel == nil) {
         CartModelView *tempViewModel = [CartModelView new];

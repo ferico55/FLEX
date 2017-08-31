@@ -7,6 +7,7 @@
 //
 
 #import "CartCell.h"
+#import "UIColor+Theme.h"
 
 @implementation CartCell
 
@@ -28,7 +29,7 @@
 }
 
 
-+(UITableViewCell*)cellIsPartial:(NSString*)isPartial tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
++(UITableViewCell*)cellIsPartial:(NSString*)isPartial tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath isDisabled:(BOOL)isDisabled
 {
     static NSString *CellIdentifier = @"leftStockIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -41,9 +42,17 @@
     cell.textLabel.text = @"Stock Tersedia Sebagian";
     cell.textLabel.font = [UIFont title2Theme];
     cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[[isPartial integerValue]]objectForKey:DATA_NAME_KEY];
+    if (isDisabled) {
+        cell.textLabel.textColor = [UIColor tpGray];
+        cell.detailTextLabel.textColor = [UIColor tpGray];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.textColor = [UIColor tpPrimaryBlackText];
+    }
     cell.detailTextLabel.font = [UIFont title2Theme];
-    cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
     cell.clipsToBounds = YES;
+    cell.userInteractionEnabled = !isDisabled;
     return cell;
 }
 
@@ -79,7 +88,7 @@
     return cell;
 }
 
-+(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
++(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath isDisabled:(BOOL)isDisabled
 {
     NSString *cellid = @"GeneralSwitchCellIdentifier";
     
@@ -92,6 +101,12 @@
     cell.indexPath = indexPath;
     cell.textCellLabel.text = @"Dropshipper";
     cell.settingSwitch.on = ([isDropshipper integerValue] == 1);
+    cell.settingSwitch.enabled = !isDisabled;
+    if (isDisabled) {
+        cell.textCellLabel.textColor = [UIColor tpGray];
+    } else {
+        cell.textCellLabel.textColor = [UIColor blackColor];
+    }
 
     return cell;
 }
