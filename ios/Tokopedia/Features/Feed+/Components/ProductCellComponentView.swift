@@ -74,7 +74,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             layout.flexShrink = 1
             layout.flexDirection = .column
             layout.marginBottom = 6
-            layout.height = 34
+            layout.height = 50
         }.add(children: [
             originalPriceNode,
             Node<UIView>() { _, layout, _ in

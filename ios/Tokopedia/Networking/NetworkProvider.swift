@@ -112,7 +112,7 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
                     NavigateViewController.navigateToMaintenanceViewController()
                     
                 case .requestDenied:
-                    NotificationCenter.default.post(Notification(name: .forceLogout))
+                    AuthenticationService().reloginAccount()
                     
                 default: return
                     

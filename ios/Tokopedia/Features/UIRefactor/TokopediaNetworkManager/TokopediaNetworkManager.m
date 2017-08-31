@@ -15,6 +15,7 @@
 #import <BlocksKit/BlocksKit.h>
 #import "Tokopedia-Swift.h"
 #import "NSOperationQueue+SharedQueue.h"
+#import "AuthenticationService.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -264,8 +265,14 @@
             } else if ([status isEqualToString:@"TOO_MANY_REQUEST"]) {
                 [self requestMaintenance];
             } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
-                NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
-                [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
+                NSArray *responseDescriptors = _objectRequest.responseDescriptors;
+                RKResponseDescriptor *response = responseDescriptors[0];
+                NSString *path = response.pathPattern;
+                
+                if (![path isEqualToString:@"/v4/session/make_login.pl"]) {
+                    AuthenticationService *authService = [AuthenticationService new];
+                    [authService reloginAccount];
+                }                
             }
         } else {
             successCallback(mappingResult, operation);

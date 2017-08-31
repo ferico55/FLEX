@@ -17,6 +17,10 @@ class SecureStorageManager: NSObject {
         super.init()
     }
     
+    func resetKeychain() {
+        self.storage.resetKeychain()
+    }
+    
     func storeToken(_ token: OAuthToken) {
         self.storage.setKeychainWithValue(token.accessToken, withKey: "oAuthToken.accessToken")
         self.storage.setKeychainWithValue(token.tokenType, withKey: "oAuthToken.tokenType")

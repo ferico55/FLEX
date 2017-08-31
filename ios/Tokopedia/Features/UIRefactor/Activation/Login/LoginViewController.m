@@ -365,8 +365,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                    EMAIL_PASSWORD(@"felicia.amanda+buyer@tokopedia.com", @"tokopedia2017"),
                    EMAIL_PASSWORD(@"felicia.amanda+seller@tokopedia.com", @"tokopedia2017"),
                    EMAIL_PASSWORD(@"feni.manurung+123@tokopedia.com", @"123tokopedia"),
-                   EMAIL_PASSWORD(@"feni.manurung+456@tokopedia.com", @"123toped"),
-                   EMAIL_PASSWORD(@"mochamad.rizki+31@tokopedia.com", @"tokopedia")
+                   EMAIL_PASSWORD(@"feni.manurung+456@tokopedia.com", @"123toped")
                    })
                 );
 }
@@ -407,8 +406,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
          }
      }
      failureCallback:^(NSError *error) {
-         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
-         
+         [StickyAlertView showErrorMessage:@[error.localizedDescription ?: @"Terjadi kendala pada server. Mohon coba beberapa saat lagi."]];
          self.isUsingTouchID = NO;
          _barbuttonsignin.enabled = YES;
          [self unsetLoggingInState];
@@ -435,6 +433,8 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
              [self onLoginSuccess:login];
          }
          failureCallback:^(NSError *error) {
+             SecureStorageManager *storageManager = [SecureStorageManager new];
+             [storageManager resetKeychain];
              [StickyAlertView showErrorMessage:@[error.localizedDescription]];
              [self showLoginUi];
          }];
@@ -650,6 +650,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
+                                        SecureStorageManager *storageManager = [SecureStorageManager new];
+                                        [storageManager resetKeychain];
                                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];
@@ -719,7 +721,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                     onFailure:^(NSError *error) {
                                         [[GIDSignIn sharedInstance] signOut];
                                         [[GIDSignIn sharedInstance] disconnect];
-                                        
+                                        SecureStorageManager *storageManager = [SecureStorageManager new];
+                                        [storageManager resetKeychain];
                                         [StickyAlertView showErrorMessage:@[error.localizedDescription]];
                                         [self showLoginUi];
                                     }];

@@ -108,10 +108,52 @@
                                      [storage setKeychainWithValue:oAuthToken.refreshToken withKey:@"oAuthToken.refreshToken"];
                                      [storage setKeychainWithValue:oAuthToken.tokenType withKey:@"oAuthToken.tokenType"];
                                      
-                                     successCallback(login);
+                                     if (login.result.is_login) {
+                                         successCallback(login);
+                                     } else {
+                                         failureCallback(nil);
+                                     }
+                                     
+                                     
                                  }
                              }
-                             onFailure:failureCallback];
+                             onFailure:^(NSError * _Nonnull errorResult) {
+                                 failureCallback(errorResult);
+                                 SecureStorageManager *storageManager = [SecureStorageManager new];
+                                 [storageManager resetKeychain];
+                             }];
+}
+
+- (void)reloginAccount {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    NSDictionary *userInformation = [userManager getUserLoginData];
+    
+    NSString *tokenType = userInformation[@"oAuthToken.tokenType"] ?: @"";
+    NSString *accessToken = userInformation[@"oAuthToken.accessToken"] ?: @"";
+    
+    NSDictionary *header = @{
+                             @"Authorization" : [NSString stringWithFormat:@"%@ %@", tokenType, accessToken]
+                             };
+    
+    NSDictionary *parameter = @{
+                                @"uuid" : userInformation[@"securityQuestionUUID"] ?: @""
+                                };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/session/make_login.pl"
+                                method:RKRequestMethodPOST
+                                header:header
+                             parameter:parameter
+                               mapping:[Login mapping]
+                             onSuccess:^(RKMappingResult * _Nonnull successResult, RKObjectRequestOperation * _Nonnull operation) {
+                                 
+                             }
+                             onFailure:^(NSError * _Nonnull errorResult) {
+                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
+                             }];
 }
 
 - (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken

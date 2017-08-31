@@ -64,4 +64,6 @@
 - (void)getNewTokenOnSuccess:(void (^)(OAuthToken *))onSuccess
                    onFailure:(void (^)(void))failure;
 
+- (void)reloginAccount;
+
 @end
