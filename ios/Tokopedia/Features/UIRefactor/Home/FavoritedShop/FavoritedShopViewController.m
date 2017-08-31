@@ -126,16 +126,13 @@ FavoriteShopRequestDelegate
     [self requestPromoShop];
     _table.tableFooterView = _footer;
     [_act startAnimating];
+    [self refreshView:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if(_isOpened && !_isViewWillAppearCalled){
-        [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
-        [self refreshView:nil];
-        _isViewWillAppearCalled = true;
-    }
+    [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
     
 }
 

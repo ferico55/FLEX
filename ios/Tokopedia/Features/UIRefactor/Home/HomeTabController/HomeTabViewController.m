@@ -179,10 +179,10 @@
     [self setHeaderBar];
 }
 
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.searchController setActive:NO];
-    self.definesPresentationContext = NO;
 }
 
 - (void)setSearchBar {
@@ -247,11 +247,7 @@
     self.navigationController.title = @"Home";
     
     [self setSearchBar];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
+
     [self goToPage:_page];
     [self tapButtonAnimate:_scrollView.frame.size.width*(_page)];
     if([_userManager isLogin]) {
@@ -259,7 +255,6 @@
     } else {
         [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*2, 300)];
     }
-    [self initNotificationManager];
     
 }
 
@@ -273,31 +268,17 @@
     _isViewLoaded = NO;
 }
 
+
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.definesPresentationContext = YES;
     _isViewLoaded = YES;
+    [self initNotificationManager];
     
-    if (_needToActivateSearch && !self.searchController.isActive) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.searchController.searchBar becomeFirstResponder];
-        });
-    }
-    _needToActivateSearch = NO;
 }
 
 - (void)setArrow {
-//    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-//    CGRect frame = greenArrowImageView.frame;
-//    frame.size.width = 13;
-//    frame.size.height = 7;
-//    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
-//    frame.origin.y = 64;
-//    greenArrowImageView.frame = frame;
-////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
-//    [self.view addSubview:greenArrowImageView];
-    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStylePlain
                                                                          target:self

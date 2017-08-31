@@ -42,10 +42,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setGreen];
-    [self initNotificationManager];
-    if (_moreViewController) {
-        [_moreViewController updateSaldoTokopedia];
-    }
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -53,6 +50,14 @@
     if (_moreViewController) {
         [_moreViewController showTooltipView];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self initNotificationManager];
+        if (_moreViewController) {
+            [_moreViewController updateSaldoTokopedia];
+        }
+    });
+    
 }
 
 - (void)tapNotificationBar {

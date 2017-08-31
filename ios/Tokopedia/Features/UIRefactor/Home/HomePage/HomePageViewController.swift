@@ -80,22 +80,7 @@ class HomePageViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogin(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogout(notification:)), name: NSNotification.Name(rawValue: TKPDUserDidLogoutNotification), object: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if self.userManager.isLogin {
-            self.requestTokocash()
-        } else {
-            self.tokocashPlaceholder.isHidden = true
-        }
         
-        if self.isRequestingBanner == false {
-            self.requestBanner()
-        }
-        if self.canRequestTicker == true {
-            self.requestTicker()
-        }
         if self.homePageCategoryData == nil && self.isRequestingCategory == false {
             self.requestCategory()
         }
@@ -120,13 +105,28 @@ class HomePageViewController: UIViewController {
         }
         AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status": UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
+
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        let bannersStore = self.storeManager.homeBannerStore
-        bannersStore?.stopBannerRequest()
+        DispatchQueue.global(qos: .default).async {
+            if self.userManager.isLogin {
+                self.requestTokocash()
+            } else {
+                self.tokocashPlaceholder.isHidden = true
+            }
+            
+            if self.isRequestingBanner == false {
+                self.requestBanner()
+            }
+            if self.canRequestTicker == true {
+                self.requestTicker()
+            }
+        }
+        
     }
     
     func userDidLogin(notification: NSNotification) {

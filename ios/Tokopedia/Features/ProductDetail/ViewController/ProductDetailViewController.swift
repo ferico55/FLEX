@@ -24,9 +24,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     fileprivate var isReplacementMode: Bool!
     fileprivate var campaignTimer = Timer()
     fileprivate var campaignEndDate: Date?
-    
-    var hideNavigationBarWhenPush: Bool = true
-    
+        
     override var canBecomeFirstResponder: Bool { return true }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.default
@@ -97,12 +95,6 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         super.viewWillDisappear(animated)
         
         self.campaignTimer.invalidate()
-        
-        if self.hideNavigationBarWhenPush {
-            self.navigationController?.isNavigationBarHidden = false
-        } else {
-            self.hideNavigationBarWhenPush = true
-        }
     }
     
     override func viewDidLayoutSubviews() {

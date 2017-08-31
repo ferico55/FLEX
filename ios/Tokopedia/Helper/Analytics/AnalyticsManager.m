@@ -521,7 +521,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 + (void)moEngageTrackUserAttributes {
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     
-    if ([userManager isLogin]) {        
+    if ([userManager isLogin]) {
         MoEngage *moEngage = [MoEngage sharedInstance];
         [moEngage setUserUniqueID:[userManager getUserId]];
         [moEngage setUserName:[userManager getUserFullName]];

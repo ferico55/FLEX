@@ -682,7 +682,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                   },
                                   didTapProductImage: { [unowned self] index in
                                       let vc = GalleryViewController(photoSource: self.viewController, withStarting: Int32(index), usingNetwork: true, canDownload: true)
-                                      self.viewController.hideNavigationBarWhenPush = false
+                                    
                                       self.viewController.navigationController?.present(vc!, animated: true, completion: nil)
                 }),
                 navigationView(),
