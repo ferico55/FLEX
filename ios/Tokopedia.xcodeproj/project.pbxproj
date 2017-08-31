@@ -100,6 +100,8 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		C01AB7191F584B3F00D4E08B /* RNSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C01AB7161F584B3F00D4E08B /* RNSearchBar.m */; };
+		C01AB71A1F584B3F00D4E08B /* RNSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C01AB7181F584B3F00D4E08B /* RNSearchBarManager.m */; };
 		DA0C42051F43F6AA0067869F /* ProductDetailDiscussionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42031F43F6AA0067869F /* ProductDetailDiscussionNode.swift */; };
 		DA0C42061F43F6AA0067869F /* ProductDetailReviewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42041F43F6AA0067869F /* ProductDetailReviewNode.swift */; };
 		DA0C42091F43FCBC0067869F /* ReputationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C42071F43FCBC0067869F /* ReputationTarget.swift */; };
@@ -2020,6 +2022,10 @@
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C01AB7151F584B3F00D4E08B /* RNSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSearchBar.h; sourceTree = "<group>"; };
+		C01AB7161F584B3F00D4E08B /* RNSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSearchBar.m; sourceTree = "<group>"; };
+		C01AB7171F584B3F00D4E08B /* RNSearchBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSearchBarManager.h; sourceTree = "<group>"; };
+		C01AB7181F584B3F00D4E08B /* RNSearchBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSearchBarManager.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA0C42031F43F6AA0067869F /* ProductDetailDiscussionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailDiscussionNode.swift; sourceTree = "<group>"; };
@@ -7789,6 +7795,10 @@
 		DADBA54B1F3C5E27002B1FAE /* React */ = {
 			isa = PBXGroup;
 			children = (
+				C01AB7151F584B3F00D4E08B /* RNSearchBar.h */,
+				C01AB7161F584B3F00D4E08B /* RNSearchBar.m */,
+				C01AB7171F584B3F00D4E08B /* RNSearchBarManager.h */,
+				C01AB7181F584B3F00D4E08B /* RNSearchBarManager.m */,
 				DADBA54C1F3C5E27002B1FAE /* AppNavigationDelegate.h */,
 				DADBA54D1F3C5E27002B1FAE /* HybridNavigationManager.h */,
 				DADBA54E1F3C5E27002B1FAE /* HybridNavigationManager.m */,
@@ -12129,6 +12139,7 @@
 				DADBAEFE1F3C5E2D002B1FAE /* ListOption.swift in Sources */,
 				DADBAD311F3C5E2B002B1FAE /* RequestObject.m in Sources */,
 				DADBAEB51F3C5E2C002B1FAE /* CategoryIntermediaryHotListItem.swift in Sources */,
+				C01AB71A1F584B3F00D4E08B /* RNSearchBarManager.m in Sources */,
 				DADBAE2A1F3C5E2C002B1FAE /* ProductSellerNode.swift in Sources */,
 				DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */,
 				DADBAEAC1F3C5E2C002B1FAE /* FilterCategoryViewController.m in Sources */,
@@ -12406,6 +12417,7 @@
 				DADBB1B51F3C5E31002B1FAE /* TopPicksResponseData.swift in Sources */,
 				DADBAC571F3C5E2A002B1FAE /* TalkComment.m in Sources */,
 				DADBAC211F3C5E2A002B1FAE /* CategoryList.m in Sources */,
+				C01AB7191F584B3F00D4E08B /* RNSearchBar.m in Sources */,
 				DADBAFC51F3C5E2E002B1FAE /* CourierAvailabilityViewCell.m in Sources */,
 				DADBB14D1F3C5E30002B1FAE /* OpenShopViewController.swift in Sources */,
 				DADBB0931F3C5E2F002B1FAE /* ResolutionCenterSellerEditProductCell.m in Sources */,
@@ -12992,7 +13004,10 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;
