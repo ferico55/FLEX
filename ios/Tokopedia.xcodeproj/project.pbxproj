@@ -62,6 +62,7 @@
 		457B98FC1F0E3125005851E5 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92371F0E311D005851E5 /* WalletTarget.swift */; };
 		457B98FD1F0E3125005851E5 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */; };
 		457B98FE1F0E3125005851E5 /* ProductAndWishlistNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */; };
+		528768A21F5669AF0048ED6F /* TransactionCartPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528768A11F5669AF0048ED6F /* TransactionCartPayment.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -1975,6 +1976,7 @@
 		457B92371F0E311D005851E5 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
 		457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAndWishlistNetworkManager.swift; sourceTree = "<group>"; };
+		528768A11F5669AF0048ED6F /* TransactionCartPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCartPayment.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -10163,6 +10165,7 @@
 				DADBAB311F3C5E29002B1FAE /* TransactionCartWebViewViewController.h */,
 				DADBAB321F3C5E29002B1FAE /* TransactionCartWebViewViewController.m */,
 				DADBAB331F3C5E29002B1FAE /* TransactionCartWebViewViewController.xib */,
+				528768A11F5669AF0048ED6F /* TransactionCartPayment.swift */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -11993,6 +11996,7 @@
 				DADBAF291F3C5E2D002B1FAE /* HomePageCategoryLayoutRow.swift in Sources */,
 				DADBB08A1F3C5E2F002B1FAE /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
 				DADBB11C1F3C5E30002B1FAE /* SettingAddressDetailViewController.m in Sources */,
+				528768A21F5669AF0048ED6F /* TransactionCartPayment.swift in Sources */,
 				DADBAD7A1F3C5E2B002B1FAE /* NoteDetail.swift in Sources */,
 				DADBAD141F3C5E2B002B1FAE /* BankAccountGetDefaultFormResult.m in Sources */,
 				DADBB0BE1F3C5E2F002B1FAE /* RejectReasonWrongPriceViewController.m in Sources */,

@@ -17,7 +17,7 @@ class TPRoutes: NSObject {
         
         //MARK: Root
         JLRoutes.global().addRoute("/pop-to-root") { (_: [String: Any]!) -> Bool in
-            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+            UIApplication.topViewController()?.navigationController?.popViewController(animated: true)
             return true
         }
         

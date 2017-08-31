@@ -124,50 +124,19 @@ class DigitalService {
             }.map { cartPayment in
                 onNavigateToCart()
                 
-                let webView = WebViewController()
-                webView.navigationPivotVisible = false
-                webView.hidesBottomBarWhenPushed = true
-                webView.strURL = cartPayment.redirectUrl
-                webView.strQuery = cartPayment.queryString
-                webView.shouldAuthorizeRequest = false
-                webView.strTitle = "Pembayaran"
-                
-                guard let navigationController = viewController.navigationController else {
+                guard let url = cartPayment.redirectUrl,
+                    let callbackSuccess = cartPayment.callbackUrlSuccess,
+                    let queryString = cartPayment.queryString else { return }
+                let cart = TransactionCartPayment()
+                cart.url = url
+                cart.callbackUrl = callbackSuccess
+                cart.queryString = queryString
+                let webViewController = TransactionCartWebViewViewController(cart:cart)
+                guard let navigationController = viewController.navigationController, let webView = webViewController else {
                     return
                 }
-                var viewControllers = navigationController.childViewControllers
                 
-                //                while viewControllers.last !== viewController {
-                //                    _ = viewControllers.popLast()
-                //                }
-                
-                webView.onTapBackButton = { url in
-                    if let paymentUrl = url?.absoluteString.contains("payment"), paymentUrl {
-                        viewController.navigationController?.popViewController(animated: true)
-                    } else {
-                        viewController.navigationController?.popToRootViewController(animated: true)
-                    }
-                }
-                
-                viewControllers.append(webView)
-                
-                webView.onTapLinkWithUrl = { url in
-                    if let openThanksPage = url?.absoluteString.contains("/thanks"), openThanksPage {
-                        guard let navigationController = viewController.navigationController else {
-                            return
-                        }
-                        var viewControllers = navigationController.childViewControllers
-                        
-                        let vcs = Array(viewControllers[0...viewControllers.index(of: viewController)!]) + [webView]
-                        viewController.navigationController?.setViewControllers(vcs, animated: false)
-                    }
-                    
-                    if url?.absoluteString == cartPayment.callbackUrlSuccess {
-                        viewController.navigationController?.popToRootViewController(animated: true)
-                    }
-                }
-                
-                navigationController.setViewControllers(viewControllers, animated: true)
+                navigationController.pushViewController(webView, animated: true)
                 
                 return
             }

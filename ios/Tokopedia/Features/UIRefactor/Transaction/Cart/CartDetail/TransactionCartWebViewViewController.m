@@ -46,6 +46,22 @@
     [vc.navigationController pushViewController:controller animated:YES];
 }
 
+-(instancetype)initWithCart:(TransactionCartPayment *) cart {
+    if (self = [super init]) {
+        self.URLString = cart.url;
+        self.callbackURL = cart.callbackUrl;
+        self.toppayQueryString = cart.queryString;
+        if (cart.parameter) {
+            self.toppayParam = cart.parameter;
+        }
+        self.title = @"Pembayaran";
+        self.hidesBottomBarWhenPushed = YES;
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -160,8 +176,8 @@
                                              bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
                                              style:UIBarButtonItemStylePlain
                                              handler:^(id sender) {
-                                                 if(![webView.request.URL.host isEqualToString:@"pay.tokopedia.com"]) {
-                                                    [wself.navigationController popViewControllerAnimated:YES];
+                                                 if([wself.webView.request.URL.path containsString:@"thanks"]) {
+                                                     [wself.navigationController popToRootViewControllerAnimated:YES];
                                                  } else {
                                                      [wself.webView stringByEvaluatingJavaScriptFromString:@"handlePop()"];
                                                  }

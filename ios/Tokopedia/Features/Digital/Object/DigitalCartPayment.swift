@@ -9,7 +9,7 @@
 import Foundation
 import Unbox
 
-final class DigitalCartPayment:Unboxable {
+@objc final class DigitalCartPayment:NSObject, Unboxable {
     var redirectUrl:String?
     var callbackUrlSuccess:String?
     var callbackUrlFailed:String?

@@ -10,6 +10,8 @@
 #import "TransactionSummaryDetail.h"
 #import "TransactionActionResult.h"
 
+@class DigitalCartPayment, TransactionCartPayment;
+
 @protocol TransactionCartWebViewViewControllerDelegate <NSObject>
 
 @required
@@ -38,6 +40,7 @@
 @property NSString *callbackURL;
 
 +(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data;
-
+-(instancetype)initWithDigital:(DigitalCartPayment *) cart;
+-(instancetype)initWithCart:(TransactionCartPayment *) cart;
 @end
 

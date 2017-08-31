@@ -95,6 +95,7 @@ extension DigitalTarget: TargetType {
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": userAgent,
+                        "show_subscribe_flag": true,
                         "fields": fields,
                         "identifier" : [
                             "user_id" : userManager.getUserId(),
