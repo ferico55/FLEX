@@ -10,4 +10,5 @@
 
 @interface NavigationHelper : NSObject
 +(BOOL) shouldDoDeepNavigation;
++(BOOL) isKeywordRedirectToOfficialStore: (NSString*) keyword;
 @end

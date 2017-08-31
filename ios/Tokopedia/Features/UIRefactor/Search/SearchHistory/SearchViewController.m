@@ -26,6 +26,7 @@
 #import "SearchAutoCompleteShopCell.h"
 
 #import "Tokopedia-Swift.h"
+#import "NavigationHelper.h"
 @import SwiftOverlays;
 NSString *const searchPath = @"/search/%@";
 
@@ -408,10 +409,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
         [AnalyticsManager trackSearch:@"search" keyword:searchString];
-        NSString *lowercaseSearchString = [searchString lowercaseString];
-        if ([lowercaseSearchString isEqualToString:@"official store"]
-            || [lowercaseSearchString isEqualToString:@"officialstore"]
-            || [lowercaseSearchString isEqualToString:@"official-store"]) {
+        if ([NavigationHelper isKeywordRedirectToOfficialStore: searchString]) {
                 [TPRoutes routeURL:[NSURL URLWithString:@"tokopedia://official-store/mobile"]];
         } else {
             [self goToResultPage:_searchBar.text withAutoComplete:NO];

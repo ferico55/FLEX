@@ -12,4 +12,15 @@
 +(BOOL) shouldDoDeepNavigation {
     return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
 }
+
++(BOOL) isKeywordRedirectToOfficialStore: (NSString*) keyword {
+    NSString* lowercasedKeyword = [keyword lowercaseString];
+    if ([lowercasedKeyword isEqualToString:@"official store"]
+        || [lowercasedKeyword isEqualToString:@"officialstore"]
+        || [lowercasedKeyword isEqualToString:@"official-store"]) {
+        return YES;
+    }
+    
+    return NO;
+}
 @end

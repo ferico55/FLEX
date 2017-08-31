@@ -199,6 +199,7 @@
     self.searchController.delegate = self;
     
     resultController.searchBar = self.searchController.searchBar;
+    resultController.searchBar.text = @"";
     [self.searchController.searchBar sizeToFit];
     self.definesPresentationContext = YES;
     
