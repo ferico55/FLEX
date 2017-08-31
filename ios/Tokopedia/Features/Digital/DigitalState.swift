@@ -31,9 +31,9 @@ struct DigitalTextInputState {
 }
 
 struct DigitalState: Render.StateType, ReSwift.StateType {
-    var selectedOperator: DigitalOperator? = nil
-    var selectedProduct: DigitalProduct? = nil
-    var form: DigitalForm? = nil
+    var selectedOperator: DigitalOperator?
+    var selectedProduct: DigitalProduct?
+    var form: DigitalForm?
     var textInputStates: [String: DigitalTextInputState] = [:]
     var isInstantPaymentEnabled = false
     var isLoadingForm = false
@@ -43,6 +43,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     var showErrors = false
     var alertState = DigitalAlertState.idle
     var errorMessages = [String: String]()
+    var selectedTab = 0
     
     var canAddToCart: Bool = true
     
@@ -62,7 +63,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     
     var passesTextValidations: Bool {
         return self.activeTextInputs.first { textInput in
-            return textInput.failedValidation(for: textInputStates[textInput.id]?.text ?? "") != nil
+            textInput.failedValidation(for: textInputStates[textInput.id]?.text ?? "") != nil
         } == nil
     }
     
@@ -85,7 +86,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     func changeOperator(operator: DigitalOperator?) -> DigitalState {
         var newState = self
         
-        if selectedOperator !== `operator` {
+        if self.selectedOperator !== `operator` {
             newState.selectedOperator = `operator`
             newState.selectedProduct = `operator`?.defaultProduct
             
@@ -124,7 +125,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func receive(form: DigitalForm, lastOrder:DigitalLastOrder, isInstant:Bool) -> DigitalState {
+    func receive(form: DigitalForm, lastOrder: DigitalLastOrder, isInstant: Bool) -> DigitalState {
         var newState = self
         newState.form = form
         newState.isLoadingForm = false
@@ -132,10 +133,10 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         var textInputStates = [String: DigitalTextInputState]()
         if case let DigitalOperatorSelectionStyle.prefixChecking(input) = form.operatorSelectonStyle {
             var normalizedText = ""
-            if (lastOrder.clientNumber != nil) {
+            if lastOrder.clientNumber != nil {
                 normalizedText = input.normalizedText(from: lastOrder.clientNumber!)
             }
- 
+            
             let selectedOperator = form.operators.appropriateOperator(for: normalizedText)
             textInputStates[input.id] = DigitalTextInputState(text: normalizedText, failedValidation: input.failedValidation(for: normalizedText))
             newState.selectedOperator = selectedOperator
@@ -143,15 +144,15 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             if let op = selectedOperator {
                 newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
             }
-        }  else {
-            if (lastOrder.clientNumber != nil) {
+        } else {
+            if lastOrder.clientNumber != nil {
                 textInputStates["client_number"] = DigitalTextInputState(text: lastOrder.clientNumber!, failedValidation: nil)
             }
             
             let operators = selectedOperator(fromForm: form, orOperatorId: lastOrder.operatorId)
             newState.selectedOperator = operators
             if let op = operators {
-                newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
+                newState.selectedProduct = self.selectProduct(fromOperator: op, orProductId: lastOrder.productId)
             }
         }
         newState.textInputStates = textInputStates
@@ -159,11 +160,17 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func selectProduct(fromOperator:DigitalOperator, orProductId:String?) -> DigitalProduct? {
+    func selectProduct(fromOperator: DigitalOperator, orProductId: String?) -> DigitalProduct? {
         return fromOperator.products.filter { $0.id == orProductId }.first ?? fromOperator.products.filter { $0.id == fromOperator.defaultProductId }.first
     }
     
-    func selectedOperator(fromForm:DigitalForm, orOperatorId:String?) -> DigitalOperator? {
-        return fromForm.operators.filter{ $0.id == orOperatorId }.first ?? fromForm.defaultOperator
+    func selectedOperator(fromForm: DigitalForm, orOperatorId: String?) -> DigitalOperator? {
+        return fromForm.operators.filter { $0.id == orOperatorId }.first ?? fromForm.defaultOperator
+    }
+    
+    func selectedTab(tab: Int) -> DigitalState {
+        var newState = self
+        newState.selectedTab = tab
+        return newState
     }
 }

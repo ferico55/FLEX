@@ -39,6 +39,7 @@ struct DigitalForm {
     let isInstantPaymentAvailable: Bool
     let defaultOperator: DigitalOperator?
     let banners: [DigitalBanner]
+    let otherBanners: [DigitalBanner]
 }
 
 extension DigitalForm: Unboxable {
@@ -53,7 +54,7 @@ extension DigitalForm: Unboxable {
                 let textInput: DigitalTextInput = try! unboxer.unbox(keyPath: "data.attributes.fields.0")
                 
                 return .prefixChecking(textInput)
-            
+                
             case "style_99": return .implicit
                 
             default: return .choice
@@ -76,11 +77,18 @@ extension DigitalForm: Unboxable {
             "banner" == $0["type"] as! String
         }
         
+        let includedOtherBanners = includes.filter {
+            "other_banner" == $0["type"] as! String
+        }
         
         self.banners = try Unboxer.performCustomUnboxing(array: includedBanners) { unboxer -> DigitalBanner in
             return try DigitalBanner(unboxer: unboxer)
         }
-            
+        
+        self.otherBanners = try Unboxer.performCustomUnboxing(array: includedOtherBanners) { unboxer -> DigitalBanner in
+            return try DigitalBanner(unboxer: unboxer)
+        }
+        
         self.defaultOperator = defaultOperator
         self.operators = operators
         self.isInstantPaymentAvailable = try unboxer.unbox(keyPath: "data.attributes.instant_checkout")
