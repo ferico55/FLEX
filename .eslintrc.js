@@ -1,5 +1,3 @@
-const path = require('path')
-
 module.exports = {
   parser: 'babel-eslint',
   extends: [
@@ -8,6 +6,7 @@ module.exports = {
     'plugin:import/warnings',
     'airbnb',
     'plugin:flowtype/recommended',
+    'prettier',
   ],
   plugins: [
     'react',
@@ -17,6 +16,7 @@ module.exports = {
     'flowtype',
     'prefer-arrow',
     'prefer-object-spread',
+    'prettier',
   ],
   parserOptions: {
     ecmaVersion: 7,
@@ -33,16 +33,31 @@ module.exports = {
     es6: true,
   },
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        semi: false,
+        trailingComma: 'all',
+      },
+    ],
     radix: 2,
     eqeqeq: 2,
     'no-eval': 2,
     'no-with': 2,
     'no-console': 0,
     'jsx-quotes': [2, 'prefer-single'],
-    'no-unused-vars': [2, { vars: 'local', args: 'after-used', argsIgnorePattern: '^_' }],
+    'no-unused-vars': [
+      2,
+      { vars: 'local', args: 'after-used', argsIgnorePattern: '^_' },
+    ],
+    semi: [0, 'never'],
     curly: [2, 'all'],
     yoda: [2, 'never'],
-    'import/no-unresolved': [2, { commonjs: false, amd: false, ignore: ['NativeModules'] }],
+    'import/no-unresolved': [
+      2,
+      { commonjs: false, amd: false, ignore: ['NativeModules'] },
+    ],
     'import/no-extraneous-dependencies': [0],
     'import/named': 0,
     'import/namespace': 2,
@@ -83,7 +98,10 @@ module.exports = {
     'flowtype/define-flow-type': 1,
     'flowtype/use-flow-type': 1,
     'no-plusplus': [2, { allowForLoopAfterthoughts: true }],
-    'key-spacing': [2, { beforeColon: false, afterColon: true, mode: 'strict' }],
+    'key-spacing': [
+      2,
+      { beforeColon: false, afterColon: true, mode: 'strict' },
+    ],
     camelcase: [0, 'never'],
     'import/extensions': [2, 'never'],
     'max-len': [2, 120, 2],
@@ -91,7 +109,6 @@ module.exports = {
     'flowtype/boolean-style': [2, 'bool'],
     'react/no-unused-prop-types': [0, { skipShapeProps: true }],
     'jsx-a11y/no-static-element-interactions': 0,
-    semi: [2, 'never'],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'prefer-object-spread/prefer-object-spread': 1,
     'prefer-arrow/prefer-arrow-functions': [

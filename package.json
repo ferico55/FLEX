@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint .",    
     "bundling": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/Tokopedia/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h"
@@ -13,7 +13,20 @@
     "axios": "0.16.1",
     "babel-eslint": "7.2.3",
     "babel-plugin-transform-remove-console": "6.8.4",
+    "eslint": "3.19.0",
+    "eslint-config-airbnb": "15.0.2",
+    "eslint-config-prettier": "2.3.0",
+    "eslint-plugin-flowtype": "2.35.0",
+    "eslint-plugin-html": "3.1.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-prefer-arrow": "1.1.1",
+    "eslint-plugin-prefer-object-spread": "1.2.1",
+    "eslint-plugin-prettier": "2.2.0",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-react": "7.1.0",
     "lodash": "4.17.4",
+    "prettier": "1.6.1",
     "prop-types": "15.5.10",
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4",
@@ -28,17 +41,7 @@
     "redux-logger": "3.0.6",
     "redux-promise-middleware": "4.3.0",
     "redux-thunk": "2.2.0",
-    "rxjs": "5.4.2",
-    "eslint": "3.19.0",
-    "eslint-config-airbnb": "15.0.2",
-    "eslint-plugin-flowtype": "2.35.0",
-    "eslint-plugin-html": "3.1.0",
-    "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-jsx-a11y": "5.1.1",
-    "eslint-plugin-prefer-arrow": "1.1.1",
-    "eslint-plugin-prefer-object-spread": "1.2.1",
-    "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-react": "7.1.0"
+    "rxjs": "5.4.2"
   },
   "devDependencies": {
     "danger": "1.0.0"
