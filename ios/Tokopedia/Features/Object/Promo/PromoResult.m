@@ -49,6 +49,9 @@
         [viewModel setShopLocation:_shop.location];
         [viewModel setBadges:_shop.badges];
         [viewModel setLabels:_product.labels];
+        [viewModel setProductRate:_product.product_rating];
+        [viewModel setTotalReview:_product.count_review_format];
+        
         _viewModel = viewModel;
     }
     

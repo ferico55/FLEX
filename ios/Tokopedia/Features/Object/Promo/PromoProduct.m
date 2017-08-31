@@ -20,7 +20,8 @@
                                                          @"price_format",
                                                          @"count_talk_format",
                                                          @"count_review_format",
-                                                         @"product_preorder"
+                                                         @"product_preorder",
+                                                         @"product_rating"
                                                          ]];
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
                                                                                         toKeyPath:@"category"

@@ -27,6 +27,7 @@
 @property (strong, nonatomic) PromoProductImage *image;
 @property (strong, nonatomic) NSArray<ProductLabel*> *labels;
 @property (nonatomic) BOOL product_preorder;
+@property (nonatomic) NSString *product_rating;
 
 - (NSDictionary *)productFieldObjects;
 + (RKObjectMapping *)mapping;
