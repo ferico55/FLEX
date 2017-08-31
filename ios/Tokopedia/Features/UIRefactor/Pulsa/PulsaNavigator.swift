@@ -129,7 +129,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     func navigateToDigitalCategories() {
         let controller = DigitalCategoryListViewController()
-        controller.title = "Pilih Produk"
+        controller.title = "Pembayaran & Top Up"
         controller.hidesBottomBarWhenPushed = true;
         
         self.controller.navigationController?.pushViewController(controller, animated: true)

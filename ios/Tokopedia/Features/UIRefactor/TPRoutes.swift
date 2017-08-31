@@ -209,7 +209,7 @@ class TPRoutes: NSObject {
         //MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { params in
             let viewController = DigitalCategoryListViewController()
-            viewController.title = "Pilih Produk"
+            viewController.title = "Pembayaran & Top Up"
             viewController.hidesBottomBarWhenPushed = true
             
             UIApplication.topViewController()?

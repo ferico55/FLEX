@@ -40,8 +40,11 @@ class DigitalCategoryListViewController: UIViewController {
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
             let categories = homePageCategoryResponse.data.layout_sections.first {$0.id == "4"}?.layout_rows ?? []
+            let header = DigitalCategoriesHeaderComponentView(categories: categories)
             let grid = DigitalCategoriesComponentView(categories: categories)
             self.view.addSubview(grid)
+            self.view.addSubview(header)
+            header.render(in: self.view.bounds.size)
             grid.render(in: self.view.bounds.size)
             
         }, onFailure: { [weak self] error in

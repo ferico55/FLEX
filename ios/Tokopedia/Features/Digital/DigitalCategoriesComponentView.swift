@@ -15,7 +15,7 @@ struct DigitalCategoryState: StateType {
     var categories: [HomePageCategoryLayoutRow]
 }
 
-class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
+class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
     let numberOfColumns = 4.0
     
     override init() {
@@ -24,7 +24,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
     
     convenience init(categories: [HomePageCategoryLayoutRow]) {
         self.init()
-        let theState = DigitalCategoryState(categories:categories)
+        let theState = DigitalCategoryState(categories: categories)
         self.state = theState
     }
     
@@ -43,10 +43,12 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
             view, layout, size in
             view.backgroundColor = .tpBackground()
             layout.width = size.width
-            layout.height = size.height
+            layout.height = size.height - 60
+            layout.top = 60
+            view.contentInset.top = 10
         }
         
-        func digitalCategoryView(category:HomePageCategoryLayoutRow?) -> NodeType {
+        func digitalCategoryView(category: HomePageCategoryLayoutRow?) -> NodeType {
             let digitalCategoryView = Node<UIView>(
                 create: {
                     let tapGesture = UITapGestureRecognizer()
@@ -57,7 +59,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
                                 TPRoutes.routeURL(url)
                             }
                         }).addDisposableTo(self.rx_disposeBag)
-
+                    
                     let view = UIView()
                     view.addGestureRecognizer(tapGesture)
                     return view
@@ -75,7 +77,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
             }
             
             let digitalCategoryLabel = Node<UILabel> {
-                view, layout, size in
+                view, layout, _ in
                 if let name = category?.name {
                     view.text = name
                 } else {
@@ -94,7 +96,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
                 if let url = category?.image_url {
                     view.setImageWith(URL(string: url))
                 }
-                view.contentMode = .scaleAspectFill
+                view.contentMode = .scaleAspectFit
                 layout.width = 30
                 layout.height = 30
                 layout.marginTop = 20
@@ -104,7 +106,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
             return digitalCategoryView.add(children: [digitalCategoryImageView, digitalCategoryLabel])
         }
         
-        func digitalCategoryRow(rowData:[HomePageCategoryLayoutRow]) -> NodeType {
+        func digitalCategoryRow(rowData: [HomePageCategoryLayoutRow]) -> NodeType {
             let digitalCategoryRow = Node<UIView> {
                 view, layout, size in
                 view.backgroundColor = .clear
@@ -123,7 +125,7 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
             return digitalCategoryRow
         }
         
-        func digitalCategoryContainer(data:[HomePageCategoryLayoutRow]) -> NodeType {
+        func digitalCategoryContainer(data: [HomePageCategoryLayoutRow]) -> NodeType {
             let digitalCategoryContainer = Node<UIView> {
                 view, layout, size in
                 view.backgroundColor = .clear
@@ -153,5 +155,174 @@ class DigitalCategoriesComponentView:ComponentView<DigitalCategoryState> {
         }
         
         return mainWrapper.add(child: digitalCategoryContainer(data: state.categories))
+    }
+}
+
+class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> {
+    let numberOfColumns = 3
+    override init() {
+        super.init()
+    }
+    
+    convenience init(categories: [HomePageCategoryLayoutRow]) {
+        self.init()
+        let theState = DigitalCategoryState(categories: categories)
+        self.state = theState
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
+        guard let state = state, state.categories.count > 0 else {
+            return Node<UIView> {
+                _, _, _ in
+            }
+        }
+        
+        let mainWrapper = Node<UIView> {
+            view, layout, size in
+            view.backgroundColor = .white
+            layout.width = size.width
+            layout.height = 60
+            layout.alignItems = .center
+            layout.flexDirection = .row
+            view.isUserInteractionEnabled = true
+        }
+        
+        func history() -> NodeType {
+            let view = Node<UIView>(
+                create: {
+                    let tapGesture = UITapGestureRecognizer()
+                    tapGesture.rx.event
+                        .subscribe(onNext: { _ in
+                            TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list")!)
+                        }).addDisposableTo(self.rx_disposeBag)
+                    
+                    let v = UIView()
+                    v.addGestureRecognizer(tapGesture)
+                    return v
+            }) {
+                view, layout, size in
+                view.clipsToBounds = true
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0.5
+                view.layer.borderColor = UIColor.tpBackground().cgColor
+                layout.alignItems = .center
+                layout.flexDirection = .column
+                layout.width = size.width / CGFloat(self.numberOfColumns)
+                layout.height = 60
+            }
+            
+            let icon = Node<UIImageView> {
+                view, layout, _ in
+                layout.marginTop = 10
+                layout.marginBottom = 10
+                view.image = UIImage(named: "icon_transaksi_saya")
+            }
+            
+            let label = Node<UILabel> {
+                view, _, _ in
+                view.font = UIFont.microTheme()
+                view.textColor = UIColor.tpSecondaryBlackText()
+                view.numberOfLines = 0
+                view.lineBreakMode = .byClipping
+                view.textAlignment = .center
+                view.text = "Transaksi Saya"
+            }
+            
+            return view.add(children: [icon, label])
+        }
+        
+        func subscribe() -> NodeType {
+            let view = Node<UIView>(
+                create: {
+                    let tapGesture = UITapGestureRecognizer()
+                    tapGesture.rx.event
+                        .subscribe(onNext: { _ in
+                            TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe")!)
+                        }).addDisposableTo(self.rx_disposeBag)
+                    
+                    let view = UIView()
+                    view.addGestureRecognizer(tapGesture)
+                    return view
+            }) {
+                view, layout, size in
+                view.clipsToBounds = true
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0.5
+                view.layer.borderColor = UIColor.tpBackground().cgColor
+                layout.alignItems = .center
+                layout.flexDirection = .column
+                layout.width = size.width / CGFloat(self.numberOfColumns)
+                layout.height = 60
+            }
+            
+            let icon = Node<UIImageView> {
+                view, layout, _ in
+                layout.marginTop = 10
+                layout.marginBottom = 10
+                view.image = UIImage(named: "icon_langganan")
+            }
+            
+            let label = Node<UILabel> {
+                view, _, _ in
+                view.font = UIFont.microTheme()
+                view.textColor = UIColor.tpSecondaryBlackText()
+                view.numberOfLines = 0
+                view.lineBreakMode = .byClipping
+                view.textAlignment = .center
+                view.text = "Langganan"
+            }
+            
+            return view.add(children: [icon, label])
+        }
+        
+        func favourite() -> NodeType {
+            let view = Node<UIView>(
+                create: {
+                    let tapGesture = UITapGestureRecognizer()
+                    tapGesture.rx.event
+                        .subscribe(onNext: { _ in
+                            TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/favorite-list")!)
+                        }).addDisposableTo(self.rx_disposeBag)
+                    
+                    let view = UIView()
+                    view.addGestureRecognizer(tapGesture)
+                    return view
+            }) {
+                view, layout, size in
+                view.clipsToBounds = true
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0.5
+                view.layer.borderColor = UIColor.tpBackground().cgColor
+                layout.alignItems = .center
+                layout.flexDirection = .column
+                layout.width = size.width / CGFloat(self.numberOfColumns)
+                layout.height = 60
+            }
+            
+            let icon = Node<UIImageView> {
+                view, layout, _ in
+                layout.marginTop = 10
+                layout.marginBottom = 10
+                view.image = UIImage(named: "icon_nomor_favorit")
+            }
+            
+            let label = Node<UILabel> {
+                view, _, _ in
+                view.font = UIFont.microTheme()
+                view.textColor = UIColor.tpSecondaryBlackText()
+                view.numberOfLines = 0
+                view.lineBreakMode = .byClipping
+                view.textAlignment = .center
+                view.text = "Nomor Favorit"
+            }
+            
+            return view.add(children: [icon, label])
+        }
+        
+        return mainWrapper.add(children: [history(), subscribe(), favourite()])
     }
 }
