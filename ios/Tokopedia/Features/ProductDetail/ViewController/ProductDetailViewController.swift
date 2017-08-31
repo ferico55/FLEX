@@ -77,6 +77,8 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.setWhite()
         AnalyticsManager.trackScreenName("Product Information")
         
         self.navigationController?.isNavigationBarHidden = true

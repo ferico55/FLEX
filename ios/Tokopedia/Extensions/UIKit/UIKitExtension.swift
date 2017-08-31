@@ -413,8 +413,15 @@ extension UINavigationController {
         self.navigationBar.isTranslucent = false;
         self.navigationBar.shadowImage = UIImage(color: UIColor.tpGreen(), size: CGSize(width: 1, height: 0.3))
         
+        UINavigationBar.appearance().setBackgroundImage(UIImage(color: UIColor.tpGreen()), for: .default)
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         let barButtonAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes as? [String:AnyObject], for: UIControlState.normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
+        if #available(iOS 9.0, *) {
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.tpPrimaryBlackText()
+        } 
         
         UIApplication.shared.statusBarStyle = .lightContent
     }
@@ -425,14 +432,27 @@ extension UINavigationController {
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
         self.navigationBar.isTranslucent = false;
         self.navigationBar.shadowImage = UIImage(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
+        
+        UINavigationBar.appearance().setBackgroundImage(UIImage(color: UIColor.white), for: .default)
+        UINavigationBar.appearance().tintColor = UIColor.tpPrimaryBlackText()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
 
         let barButtonAttributes = [NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
-        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes as? [String:AnyObject], for: UIControlState.normal)
-        
-        
-        
+        UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
+        if #available(iOS 9.0, *) {
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.tpPrimaryBlackText()
+        }
+    
         UIApplication.shared.statusBarStyle = .default
-        
+    }
+    
+    func setModalNavigation() {
+        UINavigationBar.appearance().setBackgroundImage(UIImage(color: UIColor.white), for: .default)
+        UINavigationBar.appearance().backgroundColor = .white
+        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().tintColor = UIColor.tpPrimaryBlackText()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+                    UIApplication.shared.statusBarStyle = .default
     }
 }
 

@@ -1792,6 +1792,7 @@
                         <outlet property="orderCancelledLabel" destination="S0i-rh-Hfs" id="ksq-KX-fvK"/>
                         <outlet property="orderStatus" destination="OdX-Ho-xGt" id="uaw-Sg-ZNh"/>
                         <outlet property="orderStatusCountLabel" destination="nzS-0h-AaV" id="wKH-p5-5CR"/>
+                        <outlet property="orderTransaction" destination="kAG-s5-A4s" id="x7A-hz-GX4"/>
                         <outlet property="paymentConfirmation" destination="r8K-DU-Gt7" id="Nzz-A0-gOS"/>
                         <outlet property="paymentConfirmationLabel" destination="kUg-PO-kvQ" id="z0M-mj-X0x"/>
                         <outlet property="receiveConfirmation" destination="FPH-i8-0IG" id="vh5-f8-uhe"/>
@@ -1800,6 +1801,7 @@
                         <outlet property="reviewCountLabel" destination="5Kt-UC-SF9" id="jKe-lH-Ac8"/>
                         <outlet property="salesNewOrder" destination="iN2-7A-Xxx" id="JKz-Ov-IzQ"/>
                         <outlet property="salesOrderLabel" destination="9Oh-50-UTG" id="ShY-iJ-ksT"/>
+                        <outlet property="salesTransaction" destination="l4k-Pl-Nmv" id="4vk-vU-c0t"/>
                         <outlet property="shippingConfirmation" destination="TEv-87-j3Y" id="9QI-qf-KA5"/>
                         <outlet property="shippingConfirmationCountLabel" destination="fOf-C1-gSn" id="AC2-gL-uRD"/>
                         <outlet property="shippingStatus" destination="vxc-XL-N2V" id="8lB-Yf-Rvd"/>

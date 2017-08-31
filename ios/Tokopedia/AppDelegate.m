@@ -197,14 +197,14 @@
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     
-    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor tpPrimaryBlackText]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor tpPrimaryBlackText]}];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.12]];
     [[UINavigationBar appearance] setShadowImage:nil];
     [[UINavigationBar appearance] setShadowRadius:0.3];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor: [UIColor tpPrimaryBlackText]];
     
     return didFinishLaunching;
 }

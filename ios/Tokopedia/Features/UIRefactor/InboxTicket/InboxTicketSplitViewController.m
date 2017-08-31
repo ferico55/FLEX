@@ -10,6 +10,7 @@
 #import "InboxTicketViewController.h"
 #import "InboxTicketDetailViewController.h"
 #import "NavigateViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxTicketSplitViewController () <UISplitViewControllerDelegate>
 
@@ -93,6 +94,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setWhite];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 

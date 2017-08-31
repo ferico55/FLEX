@@ -135,7 +135,6 @@
     [self addChildViewController:_homePageController];
     [self.scrollView addSubview:_homePageController.view];
     
-    [self setSearchBar];
     [self setSearchByImage];
     
     
@@ -214,7 +213,7 @@
         make.left.right.top.equalTo(searchWrapper);
     }];
 
-    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]];
+    
     self.navigationItem.titleView = searchWrapper;
 }
 
@@ -243,8 +242,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [self.navigationController setGreen];
     self.navigationController.title = @"Home";
+    
+    [self setSearchBar];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)

@@ -138,8 +138,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-    
-  [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:66.0/255 green:181.0/255 blue:73.0/255 alpha:1]];
   
   [_tableView deselectRowAtIndexPath:_tableView.indexPathForSelectedRow animated:animated];
 }

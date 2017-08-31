@@ -131,6 +131,8 @@ class FeedDetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        self.navigationController?.setWhite()
         AnalyticsManager.trackScreenName("Feed Detail Page")
     }
     

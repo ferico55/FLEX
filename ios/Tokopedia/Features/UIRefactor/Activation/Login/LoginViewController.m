@@ -463,6 +463,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
     };
     
     signInProviderView.onFacebookSelected = ^(SignInProvider *provider){
+        [self.navigationController setModalNavigation];
         [AnalyticsManager trackEventName:@"clickLogin"
                                 category:GA_EVENT_CATEGORY_LOGIN
                                   action:GA_EVENT_ACTION_CLICK
@@ -476,6 +477,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
     };
     
     signInProviderView.onGoogleSelected = ^(SignInProvider *provider){
+        [self.navigationController setModalNavigation];
         [AnalyticsManager trackEventName:@"clickLogin"
                                 category:GA_EVENT_CATEGORY_LOGIN
                                   action:GA_EVENT_ACTION_CLICK

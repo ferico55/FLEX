@@ -55,13 +55,13 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *salesNewOrder;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shippingConfirmation;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shippingStatus;
+@property (weak, nonatomic) IBOutlet UITableViewCell *orderTransaction;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *orderCancelled;
 @property (weak, nonatomic) IBOutlet UITableViewCell *paymentConfirmation;
 @property (weak, nonatomic) IBOutlet UITableViewCell *orderStatus;
 @property (weak, nonatomic) IBOutlet UITableViewCell *receiveConfirmation;
-
-
+@property (weak, nonatomic) IBOutlet UITableViewCell *salesTransaction;
 
 @end
 
@@ -130,10 +130,15 @@
     }
     
     if([_notification.result.sales.sales_shipping_status integerValue] > 0) {
-        _shippingStatusCountLabel.text = _notification.result.sales.sales_shipping_status;
         _shippingStatus.hidden = NO;
     } else {
         _shippingStatus.hidden = YES;
+    }
+    
+    if([UserAuthentificationManager new].userHasShop) {
+        _salesTransaction.hidden = NO;
+    } else {
+        _salesTransaction.hidden = YES;
     }
     
     // Purchase section
