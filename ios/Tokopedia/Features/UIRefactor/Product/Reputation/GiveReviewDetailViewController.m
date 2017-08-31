@@ -69,7 +69,7 @@
             _reviewSummaryViewController.hasAttachedImages = _hasImages;
             _reviewSummaryViewController.imageIDs = _imageIDs;
             _reviewSummaryViewController.attachedImages = _attachedPictures;
-        
+            
             [self.navigationController pushViewController:_reviewSummaryViewController animated:YES];
         }
     }];
@@ -199,7 +199,7 @@
             if (![picture.thumbnailUrl isEqualToString:@""]) {
                 
                 [((UIImageView*)_attachedImagesArray[i]) setImageWithURL:[NSURL URLWithString:picture.thumbnailUrl]
-                          placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
+                                                        placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
                 
             } else {
                 ((UIImageView*)_attachedImagesArray[i]).image = picture.image;
@@ -237,8 +237,8 @@
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan harus diisi."] delegate:self];
         [stickyAlertView show];
         return NO;
-    } else if ([_reviewDetailTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length < 30) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan yang diberikan harus minimal 30 karakter."] delegate:self];
+    } else if ([_reviewDetailTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length < 20) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan yang diberikan harus minimal 20 karakter."] delegate:self];
         [stickyAlertView show];
         return NO;
     } else {
@@ -347,26 +347,26 @@
     if (sender.view.tag == [self attachedImageWithoutDeletedImage].count) {
         
         [TKPImagePickerController showImagePicker:self
-                                     assetType:DKImagePickerControllerAssetTypeAllPhotos
-                           allowMultipleSelect:YES
-                                    showCancel:YES
-                                    showCamera:YES
-                                   maxSelected:(5 - ([self attachedImageWithoutDeletedImage].count-_selectedAssets.count))
-                                selectedAssets:_selectedAssets
-                                    completion:^(NSArray<DKAsset *> *asset) {
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                            
-                                            ProductAddCaptionViewController *vc = [[ProductAddCaptionViewController alloc] initWithSelectedAssets:[asset mutableCopy] isEdit:_isEdit uploadedPicture:[_uploadedPictures mutableCopy] selectedImageIndex:(int)([self attachedImageWithoutDeletedImage].count+asset.count-1) delegate:self];
-                                            [vc addImageFromAsset];
-
-                                            
-                                            [self.navigationController pushViewController:vc animated:NO];
-                                        });
-                                    }];
+                                        assetType:DKImagePickerControllerAssetTypeAllPhotos
+                              allowMultipleSelect:YES
+                                       showCancel:YES
+                                       showCamera:YES
+                                      maxSelected:(5 - ([self attachedImageWithoutDeletedImage].count-_selectedAssets.count))
+                                   selectedAssets:_selectedAssets
+                                       completion:^(NSArray<DKAsset *> *asset) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               
+                                               ProductAddCaptionViewController *vc = [[ProductAddCaptionViewController alloc] initWithSelectedAssets:[asset mutableCopy] isEdit:_isEdit uploadedPicture:[_uploadedPictures mutableCopy] selectedImageIndex:(int)([self attachedImageWithoutDeletedImage].count+asset.count-1) delegate:self];
+                                               [vc addImageFromAsset];
+                                               
+                                               
+                                               [self.navigationController pushViewController:vc animated:NO];
+                                           });
+                                       }];
         
     } else {
         ProductAddCaptionViewController *vc = [[ProductAddCaptionViewController alloc] initWithSelectedAssets:[_selectedAssets mutableCopy] isEdit:_isEdit uploadedPicture:[_uploadedPictures mutableCopy] selectedImageIndex:(int)sender.view.tag delegate:self];
-
+        
         
         [self.navigationController pushViewController:vc animated:YES];
     }

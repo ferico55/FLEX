@@ -13,7 +13,6 @@
 {
     //Outlet for Header
     IBOutlet UIView *viewHeader, *viewFooter, *viewStarOne, *viewStarTwo, *viewStarThree, *viewStarFour, *viewStarFive;
-    IBOutlet UIButton *btnFilter6Month, *btnFilterAllTime;
     IBOutlet UIActivityIndicatorView *footerActIndicator;
     IBOutlet UISegmentedControl *segmentedControl;
     IBOutletCollection(UIImageView) NSArray *arrImageHeaderRating;
@@ -41,5 +40,4 @@
 - (IBAction)actionFilterAllTime:(id)sender;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc;
 - (IBAction)actionSegmentedValueChange:(id)sender;
-
 @end

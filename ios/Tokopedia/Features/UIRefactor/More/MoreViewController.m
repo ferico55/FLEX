@@ -66,7 +66,7 @@
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
-@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate, MFMailComposeViewControllerDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -148,22 +148,22 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                                  selector:@selector(updateProfilePicture:)
                                                      name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                    object:nil];
-
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateShopInformation)
                                                      name:@"shopCreated"
                                                    object:nil];
-
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(navigateToContactUs:)
                                                      name:@"navigateToContactUs" object:nil];
@@ -195,9 +195,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [UIApplication getAppVersionString]];
-    
-    self.navigationController.title = @"More";
-//    [self initNotificationManager];
     
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
@@ -372,7 +369,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 - (BOOL)isBadgeNotificationTurnedOn {
     UIApplication *application = [UIApplication sharedApplication];
-    return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    } else {
+        return application.enabledRemoteNotificationTypes & UIRemoteNotificationTypeBadge;
+    }
 }
 
 - (void)togglePushNotificationCellVisibility {
@@ -439,20 +440,20 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         
         [_shopCell addSubview:imageView];
         
-        NSDictionary<id, NSDictionary *> *display = @{
-                                    @(ShopTypeRegular): @{
-                                            @"label": @"Regular Merchant",
-                                            @"image": [UIImage new]
-                                    },
-                                    @(ShopTypeGold): @{
-                                            @"label": @"        Gold Merchant",
-                                            @"image": [UIImage imageNamed:@"Badges_gold_merchant"]
-                                    },
-                                    @(ShopTypeOfficial): @{
-                                            @"label": @"        Official Merchant",
-                                            @"image": [UIImage imageNamed:@"badge_official_small"]
-                                    }
-                                  };
+        NSDictionary<NSString *, NSDictionary *> *display = @{
+                                                              @(ShopTypeRegular): @{
+                                                                      @"label": @"Regular Merchant",
+                                                                      @"image": [UIImage new]
+                                                                      },
+                                                              @(ShopTypeGold): @{
+                                                                      @"label": @"        Gold Merchant",
+                                                                      @"image": [UIImage imageNamed:@"Badges_gold_merchant"]
+                                                                      },
+                                                              @(ShopTypeOfficial): @{
+                                                                      @"label": @"        Official Merchant",
+                                                                      @"image": [UIImage imageNamed:@"badge_official_small"]
+                                                                      }
+                                                              };
         
         ShopType shopType = authManager.shopType;
         _shopIsGoldLabel.text = (NSString *)display[@(shopType)][@"label"];
@@ -483,7 +484,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 }
             }
         }
-        
+            
         case 1: return _shouldDisplayTopPointsCell?1:0;
         case 2:
             return 3;
@@ -527,9 +528,9 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 #pragma mark - Table delegate
 /*
-why we need to wrap more vc ?
-objective : to simply reduce the width of the table
-problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
+ why we need to wrap more vc ?
+ objective : to simply reduce the width of the table
+ problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
  */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -564,7 +565,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (indexPath.section == 1 && indexPath.row == 0) {
         UserAuthentificationManager* userManager = [UserAuthentificationManager new];
         WebViewController *webViewController = [WebViewController new];
-
+        
         webViewController.isLPWebView = YES;
         webViewController.shouldAuthorizeRequest = YES;
         webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
@@ -583,7 +584,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     else if (indexPath.section == 2 && indexPath.row == 1) {
         [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
-
+        
         PurchaseViewController *purchaseController = [PurchaseViewController new];
         purchaseController.notification = _notifManager.notification;
         purchaseController.hidesBottomBarWhenPushed = YES;
@@ -630,7 +631,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
-
+            
         }
         
     }
@@ -718,7 +719,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Privacy"];
             [AnalyticsManager trackScreenName:@"Privacy Policy"];
-
+            
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
@@ -797,7 +798,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 //    [_notifManager tapWindowBar];
 //}
 
-- (void)navigateToContactUs:(NSNotification*)notification{    
+- (void)navigateToContactUs:(NSNotification*)notification{
     [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
 }
 

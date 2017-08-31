@@ -38,7 +38,9 @@
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate, CMPopTipViewDelegate, SmileyDelegate>
+static NSInteger userViewHeight = 70;
+
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, LoadingViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -49,7 +51,7 @@
     UIRefreshControl *refreshControl;
     LoadingView *loadingView;
     NoResultView *noResultView;
-
+    
     int page, filterStar;
     NSString *strUri;
     NSMutableArray *arrList;
@@ -61,7 +63,7 @@
     ReviewRequest *reviewRequest;
     ReviewResult *reviewResult;
     BOOL isShowingMore, animationHasShown;
-    UserAuthentificationManager *_userManager;
+    UserAuthentificationManager *userManager;
 }
 
 - (void)viewDidLoad {
@@ -77,12 +79,9 @@
     tableContent.backgroundColor = [UIColor clearColor];
     tableContent.estimatedRowHeight = 282;
     tableContent.rowHeight = UITableViewAutomaticDimension;
-    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    btnFilter6Month.tag = 0;
-    btnFilterAllTime.tag = 1;
     
-    _userManager = [UserAuthentificationManager new];
-    auth = [_userManager getUserLoginData];
+    userManager = [UserAuthentificationManager new];
+    auth = [userManager getUserLoginData];
     [self setLoadingView:YES];
     helpfulReviewRequest = [HelpfulReviewRequest new];
     helpfulReviewRequest.delegate = self;
@@ -97,7 +96,7 @@
     
     helpfulReviews = [[NSMutableArray alloc]init];
     isShowingMore = NO;
-
+    
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -273,10 +272,6 @@
     NSNumber *shopQuality = @(0);
     NSNumber *shopAccuracy = @(0);
     
-    if (btnFilter6Month.tag == 1) {
-        monthRange = @(6);
-    }
-    
     if ((int)segmentedControl.selectedSegmentIndex == 0 && filterStar > 0) {
         shopQuality = @(filterStar);
     } else if (filterStar > 0) {
@@ -302,7 +297,6 @@
                                                       arrList = [[NSMutableArray alloc] initWithArray:contentsToAdd];
                                                       
                                                       segmentedControl.enabled = YES;
-                                                      btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
                                                       [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
                                                   } else if (result.list != nil) {
                                                       [arrList addObjectsFromArray:contentsToAdd];
@@ -416,7 +410,7 @@
     }else{
         DetailReputationReview *detailReputationReview = arrList[indexPath.row];
         [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
-
+        
     }
 }
 - (BOOL)isLastCellInSectionZero:(NSIndexPath *)indexPath{
@@ -465,10 +459,6 @@
     NSNumber *shopQuality = @(0);
     NSNumber *shopAccuracy = @(0);
     
-    if (btnFilter6Month.tag == 1) {
-        monthRange = @(6);
-    }
-    
     if ((int)segmentedControl.selectedSegmentIndex == 0 && filterStar > 0) {
         shopQuality = @(filterStar);
     } else if (filterStar > 0) {
@@ -492,7 +482,7 @@
     if(filterStar == 0) {
         return;
     }
-
+    
     switch (filterStar) {
         case 1:
         {
@@ -534,37 +524,7 @@
     [self setLoadingView:YES];
     [self doRequestGetProductReview];
 }
-- (IBAction)actionFilter6Month:(id)sender {
-    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    [btnFilter6Month setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    
-    page = 0;
-    strUri = nil;
-    [arrList removeAllObjects];
-    [tableContent reloadData];
-    btnFilter6Month.tag = 1;
-    btnFilterAllTime.tag = 0;
-    animationHasShown = NO;
-    
-    [self setLoadingView:YES];
-    [self doRequestGetProductReview];
-}
-- (IBAction)actionFilterAllTime:(id)sender {
-    [btnFilter6Month setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    
-    
-    page = 0;
-    strUri = nil;
-    [arrList removeAllObjects];
-    [tableContent reloadData];
-    btnFilter6Month.tag = 0;
-    btnFilterAllTime.tag = 1;
-    animationHasShown = NO;
-    
-    [self setLoadingView:YES];
-    [self doRequestGetProductReview];
-}
+
 - (IBAction)actionSegmentedValueChange:(id)sender {
     page = 0;
     strUri = nil;
@@ -687,7 +647,7 @@
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     
     [self mappingAttribute:detailReputationReview];
-    productDetailReputationViewController.isMyProduct = (auth!=nil && [[_userManager getUserId] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[userManager getUserId] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.detailReputationReview = detailReputationReview;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
@@ -779,9 +739,9 @@
 
 - (void)actionChat:(id)sender {}
 - (void)actionMore:(id)sender {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
-        actionSheet.tag = ((UIButton *) sender).tag;
-        [actionSheet showInView:self.view];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
+    actionSheet.tag = ((UIButton *) sender).tag;
+    [actionSheet showInView:self.view];
 }
 - (void)animate:(UITableViewCell *)cell {
     [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
@@ -801,11 +761,11 @@
 }
 - (void)actionRate:(id)sender {
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
-
+    
     if(! (tempDetailReputationView.review_user_reputation.no_reputation!=nil && [tempDetailReputationView.review_user_reputation.no_reputation isEqualToString:@"1"])) {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-
+        
         SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
         [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempDetailReputationView.review_user_reputation.neutral withRepSmile:tempDetailReputationView.review_user_reputation.positive withRepSad:tempDetailReputationView.review_user_reputation.negative withDelegate:self];
         
