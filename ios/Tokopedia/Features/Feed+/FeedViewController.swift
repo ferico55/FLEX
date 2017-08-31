@@ -37,10 +37,16 @@ class FeedViewController: UIViewController {
         
         let appVersion = UIApplication.getAppVersionString()
         
+        let loginData = userManager.getUserLoginData()
+        let tokenType = loginData?["oAuthToken.tokenType"] as? String ?? ""
+        let accessToken = loginData?["oAuthToken.accessToken"] as? String ?? ""
+        let accountsAuth = "\(tokenType) \(accessToken)" as String
+        
         let headers = ["Tkpd-UserId": userManager.getUserId(),
                        "Tkpd-SessionId": userManager.getMyDeviceToken(),
                        "X-Device": "ios-\(appVersion)",
-                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad")]
+                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
+                       "Accounts-Authorization": accountsAuth]
         
         configuration.httpAdditionalHeaders = headers
         

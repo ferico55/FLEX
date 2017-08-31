@@ -332,21 +332,31 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     NSString* fingerprint = [[self deviceFingerprint] toJSONString];
     NSData* fingerprintData = [fingerprint dataUsingEncoding:NSUTF8StringEncoding];
     NSString* encodedFingerprint = [fingerprintData base64EncodedStringWithOptions:0];
-    NSDictionary* headers = @{
-                              @"Request-Method" : [self getRequestMethod],
-                              @"Content-MD5" : [self getParameterMD5],
-                              @"Content-Type" : [self getContentTypeWithBaseUrl:_baseUrl],
-                              @"Date" : _date,
-                              @"X-Tkpd-Path" : [self getTkpdPath],
-                              @"X-Method" : [self getRequestMethod],
-                              @"Tkpd-UserId" : [userManager getUserId],
-                              @"Tkpd-SessionId" : [userManager getMyDeviceToken],
-                              @"X-Device" : @"ios",
-                              @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
-                              @"X-Tkpd-Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
-                              @"Fingerprint-Data" : encodedFingerprint,
-                              @"Fingerprint-Hash" : [[NSString stringWithFormat:@"%@+%@", encodedFingerprint,[userManager getUserId]] encryptWithMD5]
-                              };
+    NSMutableDictionary* headers = [[NSMutableDictionary alloc]
+                                    initWithDictionary:@{
+                                                         @"Request-Method" : [self getRequestMethod],
+                                                         @"Content-MD5" : [self getParameterMD5],
+                                                         @"Content-Type" : [self getContentTypeWithBaseUrl:_baseUrl],
+                                                         @"Date" : _date,
+                                                         @"X-Tkpd-Path" : [self getTkpdPath],
+                                                         @"X-Method" : [self getRequestMethod],
+                                                         @"Tkpd-UserId" : [userManager getUserId],
+                                                         @"Tkpd-SessionId" : [userManager getMyDeviceToken],
+                                                         @"X-Device" : @"ios",
+                                                         @"Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
+                                                         @"X-Tkpd-Authorization" : [NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", _signature],
+                                                         @"Fingerprint-Data" : encodedFingerprint,
+                                                         @"Fingerprint-Hash" : [[NSString stringWithFormat:@"%@+%@", encodedFingerprint,[userManager getUserId]] encryptWithMD5]
+                                                         }];
+    
+    if (userManager.isLogin) {
+        NSDictionary *loginData = [userManager getUserLoginData];
+        NSString *tokenType = loginData[@"oAuthToken.tokenType"] ?: @"";
+        NSString *accessToken = loginData[@"oAuthToken.accessToken"] ?: @"";
+        NSString *accountsAuth = [NSString stringWithFormat:@"%@ %@", tokenType, accessToken];
+        
+        headers[@"Accounts-Authorization"] = accountsAuth;
+    }
     
     return headers;
 }
