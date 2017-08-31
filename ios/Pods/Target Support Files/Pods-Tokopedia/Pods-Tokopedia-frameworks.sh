@@ -111,6 +111,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FLEX/FLEX.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/GTMSessionFetcher/GTMSessionFetcher.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HMSegmentedControl/HMSegmentedControl.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JDStatusBarNotification/JDStatusBarNotification.framework"
@@ -133,6 +135,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NSObject+Rx/NSObject_Rx.framework"
   install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Popover/Popover.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Protobuf/Protobuf.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RATreeView/RATreeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RKValueTransformers/RKValueTransformers.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNDeviceInfo/RNDeviceInfo.framework"
@@ -161,6 +164,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/VMaskTextField/VMaskTextField.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Yoga/yoga.framework"
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -185,6 +189,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKShareKit/FBSDKShareKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/GTMSessionFetcher/GTMSessionFetcher.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HMSegmentedControl/HMSegmentedControl.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JDStatusBarNotification/JDStatusBarNotification.framework"
@@ -207,6 +213,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NSObject+Rx/NSObject_Rx.framework"
   install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Popover/Popover.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Protobuf/Protobuf.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RATreeView/RATreeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RKValueTransformers/RKValueTransformers.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNDeviceInfo/RNDeviceInfo.framework"
@@ -235,6 +242,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/VMaskTextField/VMaskTextField.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Yoga/yoga.framework"
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

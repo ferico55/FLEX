@@ -34,6 +34,7 @@
 #ifdef DEBUG
 #import "FlexManager.h"
 #endif
+@import FirebaseCore;
 
 @implementation AppDelegate
 
@@ -101,6 +102,8 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [FIRApp configure];
+    [[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
     UNUserNotificationCenter* notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
     notificationCenter.delegate = self;
 

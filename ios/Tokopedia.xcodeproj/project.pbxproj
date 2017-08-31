@@ -1871,6 +1871,7 @@
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		F9211C4F1F3DAD31001FEE20 /* FeaturedProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9211C4D1F3DAD31001FEE20 /* FeaturedProduct.swift */; };
 		F9211C531F3DAD84001FEE20 /* CashbackDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9211C521F3DAD84001FEE20 /* CashbackDetail.swift */; };
+		F9662B511F570858009CD692 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9662B501F570858009CD692 /* GoogleService-Info.plist */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -4879,6 +4880,7 @@
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F9211C4D1F3DAD31001FEE20 /* FeaturedProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedProduct.swift; sourceTree = "<group>"; };
 		F9211C521F3DAD84001FEE20 /* CashbackDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CashbackDetail.swift; sourceTree = "<group>"; };
+		F9662B501F570858009CD692 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -5096,6 +5098,7 @@
 				7AC251FB1F31A413001D5FA3 /* assets */,
 				349458261F306BDB00EEB628 /* Resources */,
 				7A3FD3121F2843A100ADF80D /* main.jsbundle */,
+				F9662B501F570858009CD692 /* GoogleService-Info.plist */,
 				6202EF1B1EE4F07200AE68B5 /* API.swift */,
 				7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */,
 				7A465FC81EB2FEA900A72105 /* Main.storyboard */,
@@ -10536,8 +10539,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
-				9273F6661F427AD1001A8048 /* Start React Packager */,
 				9852790493753292549B327E /* [CP] Check Pods Manifest.lock */,
+				9273F6661F427AD1001A8048 /* Start React Packager */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				9273F6671F427B2A001A8048 /* Include RCTJSCProfiler */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
@@ -10729,6 +10732,7 @@
 				DADBB1861F3C5E30002B1FAE /* ShopProductPageViewController.xib in Resources */,
 				DADBB0D31F3C5E2F002B1FAE /* OrderInfoView.xib in Resources */,
 				DADBB19F1F3C5E30002B1FAE /* ProductTalkFormViewController.xib in Resources */,
+				F9662B511F570858009CD692 /* GoogleService-Info.plist in Resources */,
 				DADBAF111F3C5E2D002B1FAE /* GeneralSwitchCell.xib in Resources */,
 				DADBB1D41F3C5E31002B1FAE /* TransactionCartCostView.xib in Resources */,
 				3494588F1F306BDB00EEB628 /* icon_wishlist_active@2x.png in Resources */,
@@ -12984,10 +12988,7 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

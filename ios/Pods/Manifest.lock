@@ -58,6 +58,22 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.19.0):
     - FBSDKCoreKit
+  - FirebaseAnalytics (4.0.2):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (4.0.4):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseInstanceID (2.0.0):
+    - FirebaseCore (~> 4.0)
+  - FirebasePerformance (1.0.3):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.1)
   - FLEX (2.1.1)
   - GoogleAnalytics (3.13.0)
   - GoogleAppIndexing (2.0.1)
@@ -77,8 +93,14 @@ PODS:
   - GoogleSymbolUtilities (1.1.2)
   - GoogleTagManager (3.12.1):
     - GoogleAnalytics (~> 3.13.0)
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/Logger (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleUtilities (1.3.2):
     - GoogleSymbolUtilities (~> 1.1)
+  - GTMSessionFetcher/Core (1.1.11)
   - HMSegmentedControl (1.5.3)
   - ISO8601DateFormatterValueTransformer (0.6.1):
     - RKValueTransformers (~> 1.1.0)
@@ -123,6 +145,11 @@ PODS:
     - HMSegmentedControl (= 1.5.3)
     - MXPagerView (= 0.1.4)
     - MXParallaxHeader (= 0.6.0)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -133,6 +160,7 @@ PODS:
     - RxSwift
   - OAStackView (1.0.1)
   - Popover (1.0.6)
+  - Protobuf (3.3.0)
   - RATreeView (2.1.2)
   - React (0.46.4):
     - React/Core (= 0.46.4)
@@ -198,7 +226,7 @@ PODS:
   - RKValueTransformers (1.1.3)
   - RNDeviceInfo (0.9.3):
     - React
-  - RNVectorIcons (4.3.0):
+  - RNVectorIcons (4.2.0):
     - React
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
@@ -241,6 +269,7 @@ DEPENDENCIES:
   - FBSDKCoreKit (~> 4.19.0)
   - FBSDKLoginKit (~> 4.19.0)
   - FBSDKShareKit (~> 4.19.0)
+  - FirebasePerformance (~> 1.0)
   - FLEX (~> 2.0)
   - GoogleAppIndexing (~> 2.0.1)
   - GoogleMaps (~> 1.10.5)
@@ -374,6 +403,10 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 894b2b6eda6a4c8c4204e92e59cc355709ef045c
   FBSDKLoginKit: 83ca4d8f12a2022570af9fd6aacf27f6b425b99f
   FBSDKShareKit: 5953758366278430dc322d5cdc906db361ed7f81
+  FirebaseAnalytics: ad41720e3e67fc63fbe3d2948d3e26932a8de311
+  FirebaseCore: cfc042628ef9f20debe09c0eb683135fcd404cb4
+  FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
+  FirebasePerformance: 36bdb0500213b459ae991766801d5dc5399ff231
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
@@ -384,7 +417,9 @@ SPEC CHECKSUMS:
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GoogleUtilities: 8bbc733218aad26306f9d4a253823986110e3358
+  GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
   HMSegmentedControl: 7c6145afb50f26cec5f3243082f6f12b9f41318f
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   JDStatusBarNotification: 2b4f29bd68a60d7aa2f190b5265f1ce59c18aaf8
@@ -404,11 +439,13 @@ SPEC CHECKSUMS:
   MXPagerView: 8798126c2e629695474eb16cbe1a6da6e0b02915
   MXParallaxHeader: 2997592b8349baf8557ae0e4346f6b17e141de39
   MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
   NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   Popover: f811ed4eb4c4843d7bfff357816ed0d97c4ba69e
+  Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   RATreeView: 380cde0090cfde21dc6ac29137f49d3b768fdd28
   React: 596d8774642d10fea20b1f24cc591fcf633f73ad
   Render: bb3ec7d0956ea409263fbfda5ff60b8ba16c9579
@@ -419,7 +456,7 @@ SPEC CHECKSUMS:
   RichEditorView: e5990b1a092539559def9df135e064b29ab97e68
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
   RNDeviceInfo: dc3cbee96cd2392cf03d6ff6191dc15f1606a166
-  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
+  RNVectorIcons: 6d98d83e944d15014d8071dd9819beb094c61133
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
@@ -439,6 +476,6 @@ SPEC CHECKSUMS:
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: ad91b46e61456c0c7156897ef811d7128b0affd3
+PODFILE CHECKSUM: cc6897004c3267b150a37dc72a5a96f9273778ef
 
 COCOAPODS: 1.2.1

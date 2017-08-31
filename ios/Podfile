@@ -84,6 +84,7 @@ def common_pods
     pod 'GoogleAppIndexing',  '~> 2.0.1'
     pod 'GoogleTagManager',  '~> 3.12.1'
     pod 'GoogleMaps',  '~> 1.10.5'
+    pod 'FirebasePerformance', '~> 1.0'
     
     #Swift 3.0 pods
     pod 'RSKGrowingTextView', '~> 2.0'
