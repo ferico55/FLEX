@@ -38,8 +38,11 @@
 @property NSDictionary *toppayParam;
 @property NSString *paymentID;
 @property NSString *callbackURL;
+@property BOOL shouldAuthorizedRequest;
 
 +(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data;
++(void)pushToppayFromURL:(NSString*)url viewController:(UIViewController*)vc shouldAuthorizedRequest:(BOOL)shouldAuthorizedRequest;
+
 -(instancetype)initWithDigital:(DigitalCartPayment *) cart;
 -(instancetype)initWithCart:(TransactionCartPayment *) cart;
 @end

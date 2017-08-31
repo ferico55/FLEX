@@ -14,7 +14,7 @@ RCT_EXPORT_MODULE(EventManager)
 
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct"];
+    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"navBarButtonTapped"];
 }
 
 - (void)sendScrollToTopEvent {
@@ -35,6 +35,10 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)didRemoveWishlistProduct:(NSString*)productId {
     [self sendEventWithName:@"didRemoveWishlistProduct" body:productId];
+}
+
+- (void)navBarButtonTapped:(id)index {
+    [self sendEventWithName:@"navBarButtonTapped" body:index];
 }
 
 @end

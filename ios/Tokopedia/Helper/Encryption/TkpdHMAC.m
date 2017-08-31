@@ -279,7 +279,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 }
 
 - (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl {
-    return [baseUrl isEqual: [NSString mojitoUrl]] ? @"application/json" : [self.getRequestMethod isEqualToString:@"GET"] ? @"" : @"application/x-www-form-urlencoded; charset=utf-8";
+    return [baseUrl isEqual: [NSString mojitoUrl]] ? @"application/json" : [self.getRequestMethod isEqualToString:@"GET"] ? @"" : [baseUrl isEqual: [NSString topAdsUrl]] ? @"application/json" : @"application/x-www-form-urlencoded; charset=utf-8";
 }
 
 - (void)setContentType:(NSString*)contentType {

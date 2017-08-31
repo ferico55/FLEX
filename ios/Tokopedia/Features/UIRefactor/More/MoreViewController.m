@@ -240,7 +240,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
-    
+    [self.navigationController setGreen];
     [self showProfileProgress];
 }
 
@@ -493,7 +493,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                return 4;
+                return 5;
             else return 0;
             break;
             
@@ -631,7 +631,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
-            
+        } else if(indexPath.row == 4) {
+            [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }
         
     }

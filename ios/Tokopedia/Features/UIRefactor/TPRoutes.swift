@@ -9,6 +9,7 @@
 import UIKit
 import JLRoutes
 import RxSwift
+import NativeNavigation
 
 class TPRoutes: NSObject {
     
@@ -678,6 +679,37 @@ class TPRoutes: NSObject {
                 viewController.tabBarController?.selectedIndex = 2
                 viewController.navigationController?.popToRootViewController(animated: true)
             }
+            return true
+        }
+        
+        //topAds dashboard
+        JLRoutes.global().addRoute("/topads/dashboard") { (_: [String: Any]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            let auth = userManager.getUserLoginData()
+            
+            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo":auth as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            UIApplication.topViewController()?
+                .navigationController?
+                .setWhite()
+            
+            return true
+        }
+
+        JLRoutes.global().addRoute("/topads/addcredit") { (params: [String : Any]!) -> Bool in
+            guard let url = params["url"] as? String else {
+                return false
+            }
+            
+            let userManager = UserAuthentificationManager()
+            let seamlessURL = userManager.webViewUrl(fromUrl: url)
+            let topViewController = UIApplication.topViewController()
+            
+            TransactionCartWebViewViewController.pushToppay(fromURL: seamlessURL, viewController: topViewController, shouldAuthorizedRequest: true)
+            
             return true
         }
         

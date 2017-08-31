@@ -22,11 +22,11 @@ def react_pods
     ]
     
     pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-    
+    pod 'native-navigation', :path => '../node_modules/native-navigation'
     pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-    
     pod 'CodePush', :path => '../node_modules/react-native-code-push'
     pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+    pod 'RNSVG', :path => '../node_modules/react-native-svg'
 end
 
 def common_pods
@@ -122,6 +122,7 @@ target "Tokopedia" do
 end
 
 target "TokopediaTests" do
+    react_pods
     common_pods
     react_pods
 end

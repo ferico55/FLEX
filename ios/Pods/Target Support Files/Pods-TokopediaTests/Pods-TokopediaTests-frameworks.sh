@@ -139,6 +139,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/RATreeView/RATreeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RKValueTransformers/RKValueTransformers.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNDeviceInfo/RNDeviceInfo.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RNSVG/RNSVG.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNVectorIcons/RNVectorIcons.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RSKGrowingTextView/RSKGrowingTextView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RSKPlaceholderTextView/RSKPlaceholderTextView.framework"
@@ -165,6 +166,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Yoga/yoga.framework"
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/native-navigation/NativeNavigation.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -217,6 +219,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/RATreeView/RATreeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RKValueTransformers/RKValueTransformers.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNDeviceInfo/RNDeviceInfo.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RNSVG/RNSVG.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RNVectorIcons/RNVectorIcons.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RSKGrowingTextView/RSKGrowingTextView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RSKPlaceholderTextView/RSKPlaceholderTextView.framework"
@@ -243,6 +246,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Yoga/yoga.framework"
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/native-navigation/NativeNavigation.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

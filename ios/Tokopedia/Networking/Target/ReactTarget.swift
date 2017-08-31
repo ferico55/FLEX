@@ -18,11 +18,14 @@ class ReactNetworkProviderObjcBridge: NSObject {
         method: String,
         params: [String: Any],
         headers: [String: String]?,
+        encoding: String,
         onSuccess: @escaping ([String: Any]?) -> Void,
         onError: @escaping (NSError) -> Void
         ) {
         
-        let target = ReactTarget(targetBaseUrl: url, targetPath: path, targetMethod: method, params: params)
+        let encodingObject: ParameterEncoding = encoding == "json" ? JSONEncoding.default : URLEncoding.default
+        let target = ReactTarget(targetBaseUrl: url, targetPath: path, targetMethod: method, params: params, parameterEncoding: encodingObject)
+
         
         let endpointClosure = { (target: ReactTarget) in
             return NetworkProvider<ReactTarget>.defaultEndpointCreator(for: target)
@@ -61,6 +64,7 @@ struct ReactTarget {
     let targetPath: String
     let targetMethod: String
     let params: [String: Any]
+    let parameterEncoding: ParameterEncoding
 }
 
 extension ReactTarget: TargetType {
@@ -70,10 +74,6 @@ extension ReactTarget: TargetType {
     
     var method: Moya.Method {
         return Moya.Method(rawValue: targetMethod) ?? .get
-    }
-    
-    var parameterEncoding: ParameterEncoding {
-        return URLEncoding.default
     }
     
     var parameters: [String: Any]? {

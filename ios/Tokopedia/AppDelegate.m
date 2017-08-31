@@ -31,10 +31,15 @@
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 
+@import NativeNavigation;
+
 #ifdef DEBUG
 #import "FlexManager.h"
 #endif
 @import FirebaseCore;
+
+@interface AppDelegate(Extensions) <ReactNavigationCoordinatorDelegate>
+@end
 
 @implementation AppDelegate
 
@@ -104,6 +109,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FIRApp configure];
     [[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
+    ReactNavigationCoordinator.sharedInstance.bridge = UIApplication.sharedApplication.reactBridge;
+    ReactNavigationCoordinator.sharedInstance.delegate = self;
+    
     UNUserNotificationCenter* notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
     notificationCenter.delegate = self;
 
@@ -484,4 +492,9 @@
         [self saveAppVersionToDefaults];
     }
 }
+
+- (UIViewController *)rootViewControllerForCoordinator:(ReactNavigationCoordinator *)coordinator {
+    return _window.rootViewController;
+}
+
 @end

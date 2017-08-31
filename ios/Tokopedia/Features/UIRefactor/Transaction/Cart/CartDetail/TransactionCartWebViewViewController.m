@@ -46,6 +46,19 @@
     [vc.navigationController pushViewController:controller animated:YES];
 }
 
++(void)pushToppayFromURL:(NSString*)url viewController:(UIViewController*)vc shouldAuthorizedRequest:(BOOL)shouldAuthorizedRequest {
+    
+    TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
+    controller.URLString = url;
+    controller.delegate = vc;
+    controller.callbackURL = @"https://*/nocallback";
+    controller.shouldAuthorizedRequest = shouldAuthorizedRequest;
+    controller.title = @"Pembayaran";
+    controller.hidesBottomBarWhenPushed = YES;
+    
+    [vc.navigationController pushViewController:controller animated:YES];
+}
+
 -(instancetype)initWithCart:(TransactionCartPayment *) cart {
     if (self = [super init]) {
         self.URLString = cart.url;
@@ -64,7 +77,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     __weak typeof(self) wself = self;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                                              bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
@@ -95,7 +108,11 @@
 -(void)loadRequest
 {
     _webView.scalesPageToFit = YES;
-    [_webView loadRequest:[self requestDefault]];
+    if(self.shouldAuthorizedRequest){
+        [_webView loadRequest:[self requestDefaultWithAuthorizedHeader]];
+    }else{
+        [_webView loadRequest:[self requestDefault]];
+    }
 }
 
 -(NSMutableURLRequest*)requestDefault{
@@ -112,6 +129,10 @@
     [request setURL:url];
     
     return request;
+}
+
+-(NSMutableURLRequest*)requestDefaultWithAuthorizedHeader{
+    return [NSMutableURLRequest requestWithAuthorizedHeader:[NSURL URLWithString:_URLString]];
 }
 
 

@@ -16,5 +16,6 @@
 - (void)sendLogoutEvent;
 - (void)didWishlistProduct:(NSString*)productId;
 - (void)didRemoveWishlistProduct:(NSString*)productId;
+- (void)navBarButtonTapped:(id)index;
 
 @end
