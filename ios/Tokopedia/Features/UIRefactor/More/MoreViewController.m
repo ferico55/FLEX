@@ -356,7 +356,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     _isWalletActive = wallet.shouldShowActivation;
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
-        [TPRoutes routeURL:[NSURL URLWithString:  wallet.data.action.applinks]];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        TokoCashActivationViewController *tokoCashActivationVC = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashActivationViewController"];
+        tokoCashActivationVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
     }];
 }
 

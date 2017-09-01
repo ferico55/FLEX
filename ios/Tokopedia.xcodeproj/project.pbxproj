@@ -1872,6 +1872,9 @@
 		DADBB2321F3C628B002B1FAE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DADBB22F1F3C628B002B1FAE /* InfoPlist.strings */; };
 		DADBB2381F3C7906002B1FAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB2371F3C7906002B1FAE /* main.m */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		F7DE8C651F468AE200B6CFDF /* TokoCashActivationOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DE8C621F468AE200B6CFDF /* TokoCashActivationOTPViewController.swift */; };
+		F7DE8C661F468AE200B6CFDF /* TokoCashActivationSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DE8C631F468AE200B6CFDF /* TokoCashActivationSuccessViewController.swift */; };
+		F7DE8C671F468AE200B6CFDF /* TokoCashActivationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DE8C641F468AE200B6CFDF /* TokoCashActivationViewController.swift */; };
 		F9211C4F1F3DAD31001FEE20 /* FeaturedProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9211C4D1F3DAD31001FEE20 /* FeaturedProduct.swift */; };
 		F9211C531F3DAD84001FEE20 /* CashbackDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9211C521F3DAD84001FEE20 /* CashbackDetail.swift */; };
 		F9662B511F570858009CD692 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9662B501F570858009CD692 /* GoogleService-Info.plist */; };
@@ -4886,6 +4889,9 @@
 		DADBB2361F3C78C5002B1FAE /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		DADBB2371F3C7906002B1FAE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		F7DE8C621F468AE200B6CFDF /* TokoCashActivationOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashActivationOTPViewController.swift; sourceTree = "<group>"; };
+		F7DE8C631F468AE200B6CFDF /* TokoCashActivationSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashActivationSuccessViewController.swift; sourceTree = "<group>"; };
+		F7DE8C641F468AE200B6CFDF /* TokoCashActivationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashActivationViewController.swift; sourceTree = "<group>"; };
 		F9211C4D1F3DAD31001FEE20 /* FeaturedProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedProduct.swift; sourceTree = "<group>"; };
 		F9211C521F3DAD84001FEE20 /* CashbackDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CashbackDetail.swift; sourceTree = "<group>"; };
 		F9662B501F570858009CD692 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -7889,6 +7895,7 @@
 				DADBAACB1F3C5E29002B1FAE /* Talk */,
 				DADBAAD51F3C5E29002B1FAE /* TKPGooglePlaces */,
 				DADBAADE1F3C5E29002B1FAE /* TokopediaNetworkManager */,
+				F7DE8C611F468AE100B6CFDF /* TokoCash */,
 				DADBAAE61F3C5E29002B1FAE /* TopAds */,
 				DADBAAEB1F3C5E29002B1FAE /* TopPick.swift */,
 				DADBAAEC1F3C5E29002B1FAE /* TopPickItem.swift */,
@@ -10433,6 +10440,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F7DE8C611F468AE100B6CFDF /* TokoCash */ = {
+			isa = PBXGroup;
+			children = (
+				F7DE8C621F468AE200B6CFDF /* TokoCashActivationOTPViewController.swift */,
+				F7DE8C631F468AE200B6CFDF /* TokoCashActivationSuccessViewController.swift */,
+				F7DE8C641F468AE200B6CFDF /* TokoCashActivationViewController.swift */,
+			);
+			path = TokoCash;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -11376,6 +11393,7 @@
 				DADBB07D1F3C5E2F002B1FAE /* ResolutionCenterCreateForm.m in Sources */,
 				DADBAC501F3C5E2A002B1FAE /* ReviewProductOwner.m in Sources */,
 				DADBAF261F3C5E2D002B1FAE /* AnnouncementTickerView.m in Sources */,
+				F7DE8C651F468AE200B6CFDF /* TokoCashActivationOTPViewController.swift in Sources */,
 				DADBAF521F3C5E2D002B1FAE /* HotlistViewController.m in Sources */,
 				DADBAC821F3C5E2A002B1FAE /* DepartmentChild.m in Sources */,
 				DADBAFB21F3C5E2E002B1FAE /* WKWebViewController.swift in Sources */,
@@ -11876,6 +11894,7 @@
 				DADBADBF1F3C5E2B002B1FAE /* LuckyDealWord.m in Sources */,
 				DADBB0501F3C5E2E002B1FAE /* PromoCollectionReusableView.m in Sources */,
 				DADBA0291F3C5BA3002B1FAE /* AnalyticsManager.m in Sources */,
+				F7DE8C661F468AE200B6CFDF /* TokoCashActivationSuccessViewController.swift in Sources */,
 				DADBABDC1F3C5E2A002B1FAE /* DigitalVoucher.swift in Sources */,
 				DADBAD221F3C5E2B002B1FAE /* Promote.m in Sources */,
 				DADBB04C1F3C5E2E002B1FAE /* ProductReputationViewModel.m in Sources */,
@@ -12021,6 +12040,7 @@
 				DADBAC651F3C5E2A002B1FAE /* ListFavorited.m in Sources */,
 				DADBB1631F3C5E30002B1FAE /* ShopFavoritedViewController.m in Sources */,
 				DADBB0E71F3C5E2F002B1FAE /* ChangeCourierViewController.m in Sources */,
+				F7DE8C671F468AE200B6CFDF /* TokoCashActivationViewController.swift in Sources */,
 				DADBAC351F3C5E2A002B1FAE /* DepositSummaryResult.m in Sources */,
 				DADBAFF21F3C5E2E002B1FAE /* DetailProductWholesaleCell.m in Sources */,
 				DADBAE111F3C5E2C002B1FAE /* UploadImageHelperResult.m in Sources */,

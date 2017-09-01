@@ -12,6 +12,7 @@ import Moya
 import Unbox
 import UIKit
 import MoyaUnbox
+import SwiftyJSON
 
 enum WalletError: Swift.Error {
     case noOAuthToken
@@ -89,9 +90,39 @@ class WalletService: NSObject {
                                 return wallet
                             }
                             return balance
-                        }
+                    }
                 }
                 return Observable.just(balance)
-            }
+        }
+    }
+    
+    class func activationTokoCash(verificationCode: String) -> Observable<Bool> {
+        return WalletProvider().request(.activationTokoCash(verificationCode: verificationCode))
+            .mapJSON()
+            .map { response -> Bool in
+                let response = JSON(response)
+                let success = response.dictionaryValue["data"]?.dictionaryValue["success"]?.boolValue ?? false
+                if !success {
+                    if let errors = response.dictionaryValue["message_error"]{
+                        StickyAlertView.showErrorMessage(errors.arrayObject)
+                    }
+                }
+                return success
+        }
+    }
+    
+    class func requestOTPTokoCash() -> Observable<Bool> {
+        return WalletProvider().request(.OTPTokoCash)
+            .mapJSON()
+            .map { response -> Bool in
+                let response = JSON(response)
+                let success = response.dictionaryValue["data"]?.dictionaryValue["success"]?.boolValue ?? false
+                if !success {
+                    if let errors = response.dictionaryValue["message_error"]{
+                        StickyAlertView.showErrorMessage(errors.arrayObject)
+                    }
+                }
+                return success
+        }
     }
 }

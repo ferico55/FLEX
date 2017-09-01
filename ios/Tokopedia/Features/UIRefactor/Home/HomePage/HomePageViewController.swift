@@ -559,7 +559,7 @@ class HomePageViewController: UIViewController {
         
         guard let phoneNumber = self.userManager.getUserPhoneNumber(),
             !phoneNumber.isEmpty else {
-            return
+                return
         }
         
         WalletService.getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
@@ -581,21 +581,20 @@ class HomePageViewController: UIViewController {
                     
                     self?.tokocashPlaceholder.isHidden = false
                 }
-            }, onError: { [weak self] error in
-                if #available(iOS 8.3, *) {
-                    let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-                    stickyAlertView?.show()
-                } else {
-                    self?.tokocashPlaceholder.isHidden = true
-                }
+                }, onError: { [weak self] error in
+                    if #available(iOS 8.3, *) {
+                        StickyAlertView.showErrorMessage([error.localizedDescription])
+                    } else {
+                        self?.tokocashPlaceholder.isHidden = true
+                    }
             }).disposed(by: self.rx_disposeBag)
     }
     
     private func requestTokocashWithNewToken() {
         AuthenticationService.shared().getNewToken(onSuccess: { [weak self] token in
             self?.requestTokocash()
-        }, onFailure: {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+            }, onFailure: {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
         })
     }
     
@@ -626,28 +625,38 @@ class HomePageViewController: UIViewController {
                                                              "category_id" : layoutRow.category_id])
         } else if layoutRow.type == LayoutRowType.Digital.rawValue {
             guard let categoryId = layoutRow.category_id else {
+                
                 let categoryNameEncoding = categoryName!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
                 let paramTitle = layoutRow.url.contains("?") ? "&title=" + categoryNameEncoding : "?title=" + categoryNameEncoding
                 let layoutURL = layoutRow.url + paramTitle
-                TPRoutes.routeURL(URL(string: layoutURL)!)
-            
+                
+                guard let url = URL(string: layoutURL) else { return }
+                TPRoutes.routeURL(url)
+                
                 return
             }
             
             //tokocash ID = 103
             if categoryId == "103" {
                 self.authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
-                    self.navigateToIntermediaryPage()
                     WalletService.getBalance(userId: self.userManager.getUserId())
                         .subscribe(onNext: { wallet in
-                            self.navigationController?.popViewController(animated: false)
                             if wallet.isExpired() {
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
-                                TPRoutes.routeURL(URL(string: (wallet.data?.action?.applinks)!)!)
+                                if wallet.shouldShowActivation {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+                                    controller.hidesBottomBarWhenPushed = true
+                                    self.navigationController?.pushViewController(controller, animated: true)
+                                }else {
+                                    guard let data = wallet.data,
+                                        let action = data.action,
+                                        let url = URL (string : action.applinks) else { return }
+                                    TPRoutes.routeURL(url)
+                                }
                             }
                         }, onError: { error in
-                            self.navigationController?.popViewController(animated: false)
                             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
                             stickyAlertView?.show()
                         })

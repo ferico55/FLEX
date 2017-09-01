@@ -54,7 +54,14 @@ class TokoCashSectionViewController: UIViewController {
     }
     
     @IBAction func didTap(_ sender: Any) {
-        TPRoutes.routeURL(URL(string: (wallet.data?.action?.applinks)!)!)
+        if wallet.shouldShowActivation {
+            openActivationPage()
+        }else {
+            guard let data = wallet.data,
+                let action = data.action,
+                let url = URL (string : action.applinks) else { return }
+            TPRoutes.routeURL(url)
+        }
     }
     
     func tapResponse(_ sender: UITapGestureRecognizer) {
@@ -83,5 +90,12 @@ class TokoCashSectionViewController: UIViewController {
         
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: false)
+    }
+
+    func openActivationPage() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

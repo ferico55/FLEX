@@ -35,6 +35,8 @@ class WalletProvider: NetworkProvider<WalletTarget> {
 
 enum WalletTarget {
     case fetchStatus(userId:String)
+    case activationTokoCash(verificationCode:String)
+    case OTPTokoCash
 }
 
 extension WalletTarget: TargetType {
@@ -45,6 +47,8 @@ extension WalletTarget: TargetType {
     var path: String {
         switch self {
         case .fetchStatus: return "/api/v1/wallet/balance"
+        case .activationTokoCash : return "/api/v1/wallet/link"
+        case .OTPTokoCash : return "/api/v1/wallet/otp/request"
         }
     }
     
@@ -52,6 +56,8 @@ extension WalletTarget: TargetType {
     var method: Moya.Method {
         switch self {
         case .fetchStatus: return .get
+        case .activationTokoCash: return .get
+        case .OTPTokoCash : return .get
         }
     }
     
@@ -60,9 +66,14 @@ extension WalletTarget: TargetType {
         switch self {
         case let .fetchStatus(userId):
             return ["user_id" : userId]
+        case let .activationTokoCash(verificationCode):
+            if !verificationCode.isEmpty {
+                return ["otp" : verificationCode]
+            }else {
+                return [:]
+            }
         default: return [:]
         }
-        
     }
     
     /// The method used for parameter encoding.
