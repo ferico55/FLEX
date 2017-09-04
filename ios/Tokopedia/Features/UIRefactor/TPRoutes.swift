@@ -188,7 +188,9 @@ class TPRoutes: NSObject {
         //MARK: Resolution Detail (Native)
         JLRoutes.global().addRoute("/resolution/:resolutionId") { (params: [String: Any]!) -> Bool in
             let resolutionId = params["resolutionId"] as! String
-            let controller = ResolutionWebViewController(resolutionId: resolutionId)
+            let auth = UserAuthentificationManager()
+            let urlString = auth.webViewUrl(fromUrl:"\(NSString.mobileSiteUrl())/resolution/\(resolutionId)/mobile")
+            let controller = WKWebViewController(urlString: urlString)
             UIApplication.topViewController()?.navigationController?.pushViewController(controller, animated: true)
             return true
         }

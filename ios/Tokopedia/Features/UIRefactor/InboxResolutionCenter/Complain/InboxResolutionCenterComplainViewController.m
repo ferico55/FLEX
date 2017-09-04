@@ -380,7 +380,10 @@
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
 
-    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *urlString = [auth webViewUrlFromUrl: [NSString stringWithFormat:@"%@/resolution/%@/mobile",[NSString mobileSiteUrl], resolutionID]];
+    
+    WKWebViewController *vc = [[WKWebViewController alloc] initWithUrlString: urlString];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:vc];

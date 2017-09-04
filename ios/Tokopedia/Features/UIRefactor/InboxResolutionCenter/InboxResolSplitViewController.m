@@ -37,9 +37,11 @@
     UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
     masterVC.splitVC = self;
     
-    ResolutionWebViewController *detailVC = [ResolutionWebViewController new];
-    UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
-    
+    UIViewController *detailVC = [UIViewController new];
+    detailVC.view = [UIView new];
+    detailVC.view.backgroundColor = [UIColor whiteColor];
+    UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController: detailVC];
+
     masterVC.detailViewController = detailVC;
     
     self.view.frame = [UIScreen mainScreen].bounds;

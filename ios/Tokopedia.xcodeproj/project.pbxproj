@@ -487,7 +487,6 @@
 		DADBACAB1F3C5E2A002B1FAE /* ResolutionLast.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA2271F3C5E26002B1FAE /* ResolutionLast.m */; };
 		DADBACAC1F3C5E2A002B1FAE /* ResolutionOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA2291F3C5E26002B1FAE /* ResolutionOrder.m */; };
 		DADBACAD1F3C5E2A002B1FAE /* ResolutionShop.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA22B1F3C5E26002B1FAE /* ResolutionShop.m */; };
-		DADBACAE1F3C5E2A002B1FAE /* ResolutionWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADBA22C1F3C5E26002B1FAE /* ResolutionWebViewController.swift */; };
 		DADBACAF1F3C5E2A002B1FAE /* InboxReview.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA22F1F3C5E26002B1FAE /* InboxReview.m */; };
 		DADBACB01F3C5E2A002B1FAE /* InboxReviewAction.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA2311F3C5E26002B1FAE /* InboxReviewAction.m */; };
 		DADBACB11F3C5E2A002B1FAE /* InboxReviewActionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBA2331F3C5E26002B1FAE /* InboxReviewActionResult.m */; };
@@ -2717,7 +2716,6 @@
 		DADBA2291F3C5E26002B1FAE /* ResolutionOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionOrder.m; sourceTree = "<group>"; };
 		DADBA22A1F3C5E26002B1FAE /* ResolutionShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionShop.h; sourceTree = "<group>"; };
 		DADBA22B1F3C5E26002B1FAE /* ResolutionShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionShop.m; sourceTree = "<group>"; };
-		DADBA22C1F3C5E26002B1FAE /* ResolutionWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionWebViewController.swift; sourceTree = "<group>"; };
 		DADBA22E1F3C5E26002B1FAE /* InboxReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReview.h; sourceTree = "<group>"; };
 		DADBA22F1F3C5E26002B1FAE /* InboxReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReview.m; sourceTree = "<group>"; };
 		DADBA2301F3C5E26002B1FAE /* InboxReviewAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewAction.h; sourceTree = "<group>"; };
@@ -6545,7 +6543,6 @@
 				DADBA2291F3C5E26002B1FAE /* ResolutionOrder.m */,
 				DADBA22A1F3C5E26002B1FAE /* ResolutionShop.h */,
 				DADBA22B1F3C5E26002B1FAE /* ResolutionShop.m */,
-				DADBA22C1F3C5E26002B1FAE /* ResolutionWebViewController.swift */,
 			);
 			path = InboxResolutionCenter;
 			sourceTree = "<group>";
@@ -12667,7 +12664,6 @@
 				DADBB1AC1F3C5E31002B1FAE /* TokopediaNetworkManager.m in Sources */,
 				F9211C4F1F3DAD31001FEE20 /* FeaturedProduct.swift in Sources */,
 				DADBACBC1F3C5E2A002B1FAE /* InboxTicketDetail.m in Sources */,
-				DADBACAE1F3C5E2A002B1FAE /* ResolutionWebViewController.swift in Sources */,
 				DADB9F641F3C46CF002B1FAE /* SwipeView.m in Sources */,
 				DADBACF01F3C5E2B002B1FAE /* PriceAlert.m in Sources */,
 				DADBAE141F3C5E2C002B1FAE /* UploadImageResult.m in Sources */,

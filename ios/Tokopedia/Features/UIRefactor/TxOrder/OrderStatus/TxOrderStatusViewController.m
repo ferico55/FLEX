@@ -587,8 +587,10 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     
     NSString *resolutionID = [queries objectForKey:@"id"];
-    ResolutionWebViewController *vc = [[ResolutionWebViewController alloc] initWithResolutionId:resolutionID];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *urlString = [auth webViewUrlFromUrl: [NSString stringWithFormat:@"%@/resolution/%@/mobile",[NSString mobileSiteUrl], resolutionID]];
     
+    WKWebViewController *vc = [[WKWebViewController alloc] initWithUrlString: urlString];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

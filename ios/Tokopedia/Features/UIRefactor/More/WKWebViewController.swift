@@ -27,7 +27,12 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     var didTapBack:(() -> ())?
     
     override func loadView() {
+        let jscript = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
+        let userScript = WKUserScript(source: jscript, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
+        let wkUController = WKUserContentController()
+        wkUController.addUserScript(userScript)
         let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.userContentController = wkUController
         
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self

@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ResolutionWebViewController;
+@class WKWebViewController;
 
 @interface InboxResolutionCenterTabViewController : GAITrackedViewController
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
 @property (strong, nonatomic)UIViewController *splitVC;
-@property (strong, nonatomic)ResolutionWebViewController *detailViewController;
+@property (strong, nonatomic)WKWebViewController *detailViewController;
 
 -(instancetype)initWithSelectedIndex:(int)index;
 
