@@ -413,8 +413,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                                 //NSLOG(@"thumb: %@", thumb);
-                                                 [_profilePictureImageView setImage:image];
+                                                 [_profilePictureImageView setImageWithURL: profilePictureURL placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]];
 #pragma clang diagnostic pop
                                              } failure: nil];
     
@@ -921,35 +920,40 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 -(void)showProfileProgress {
     [UserRequest getUserCompletionOnSuccess:^(ProfileCompletionInfo *profileInfo) {
-        double profileCompleted = profileInfo.completion/100.0;
+        int profileCompleted = profileInfo.completion;
         //progress color
         self.progressBarTrack = [UIColor colorWithRed:200.0/225.0 green:200.0/225.0 blue:200.0/225.0 alpha:1];
         self.progressBarColor = [UIColor colorWithRed:175.0/225.0 green:213.0/225.0 blue:100.0/225.0 alpha:1]; //default: 0.5
         self.progressLabel.text = @"50%";
+        _completeProfileButton.hidden = false;
         _verifiedAccountLabel.textColor = [UIColor clearColor];
         _verifiedAccountIcon.hidden = true;
-        if (profileCompleted>=0.6 && profileCompleted<0.7) {
+        if (profileCompleted == 60) {
             self.progressBarColor = [UIColor colorWithRed:127.0/225.0 green:190.0/225.0 blue:51.0/225.0 alpha:1];
             self.progressLabel.text = @"60%";
-        } else if (profileCompleted>=0.7 && profileCompleted<0.8) {
+        } else if (profileCompleted == 70) {
             self.progressBarColor = [UIColor colorWithRed:78.0/225.0 green:188.0/225.0 blue:74.0/225.0 alpha:1];
             self.progressLabel.text = @"70%";
-        } else if (profileCompleted>=0.8 && profileCompleted<0.9) {
+        } else if (profileCompleted == 80) {
             self.progressBarColor = [UIColor colorWithRed:39.0/225.0 green:160.0/225.0 blue:46.0/225.0 alpha:1];
             self.progressLabel.text = @"80%";
-        } else if (profileCompleted>=0.9 && profileCompleted<1.0) {
+        } else if (profileCompleted == 90) {
             self.progressBarColor = [UIColor colorWithRed:8.0/225.0 green:132.0/225.0 blue:31.0/225.0 alpha:1];
             self.progressLabel.text = @"90%";
-        } else if (profileCompleted >= 1.0) {
+        } else if (profileCompleted == 100) {
             self.progressBarColor = [UIColor colorWithRed:0.0/225.0 green:112.0/225.0 blue:20.0/225.0 alpha:1];
             self.progressLabel.text = @"100%";
             _completeProfileButton.hidden = true;
             _verifiedAccountLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.54];
             _verifiedAccountIcon.hidden = false;
         }
-        [self.progressBar setProgress:profileCompleted animated:true];
+        double progress = profileCompleted/100.0;
+        [self.progressBar setProgress:progress animated:true];
         [self.progressBar setTrackTintColor:self.progressBarTrack];
         [self.progressBar setProgressTintColor:self.progressBarColor];
+    } onFailure:^() {
+        
     }];
 }
+
 @end
