@@ -20,8 +20,7 @@ import {
   FlatList,
   RefreshControl,
   Button,
-  AlertIOS,
-  NativeEventEmitter
+  AlertIOS
 } from "react-native";
 
 import { EventManager } from "NativeModules";
@@ -31,7 +30,6 @@ import { connect } from "react-redux";
 import * as Actions from "../Redux/Actions";
 
 let reduxKey = "";
-const nativeTabEmitter = new NativeEventEmitter(EventManager);
 
 function mapStateToProps(state, ownProps) {
   reduxKey = `${ownProps.reduxKey}`;
@@ -54,7 +52,6 @@ class PromoListPage extends Component {
     };
 
     this.onAppear = this.onAppear.bind(this);
-    this.onDisappear = this.onDisappear.bind(this);
     this.clearData = this.clearData.bind(this);
     this.refreshData = this.refreshData.bind(this);
     this.getData = this.getData.bind(this);
@@ -72,29 +69,14 @@ class PromoListPage extends Component {
   }
   onAppear() {
     if (this.state.navBarNeedsToBeAdded) {
-      ReactTPRoutes.addNavbarRightButtons([
-        { image: "icon_plus_white_small" },
-        { image: "icon_filter_small" }
-      ]);
-
       this.setState({
         navBarNeedsToBeAdded: false
       });
     }
 
-    this.subscription = nativeTabEmitter.addListener(
-      "navBarButtonTapped",
-      index => {
-        this.navBarButtonTapped(index);
-      }
-    );
-
     if (this.props.isNeedRefresh) {
       this.refreshData();
     }
-  }
-  onDisappear() {
-    this.subscription.remove();
   }
 
   clearData() {
@@ -102,11 +84,6 @@ class PromoListPage extends Component {
     this.props.resetFilter(reduxKey);
   }
   refreshData() {
-    ReactTPRoutes.addNavbarRightButtons([
-      { image: "icon_plus_white_small" },
-      { image: "icon_filter_small" }
-    ]);
-
     if (this.refs.searchBar) {
       this.refs.searchBar.clearText();
       this.closeKeyboard();
@@ -137,11 +114,6 @@ class PromoListPage extends Component {
     }
   }
   getData() {
-    ReactTPRoutes.addNavbarRightButtons([
-      { image: "icon_plus_white_small" },
-      { image: "icon_filter_small" }
-    ]);
-
     if (this.props.isEndPageReached) {
       return;
     }
@@ -218,7 +190,6 @@ class PromoListPage extends Component {
     }
 
     if (this.props.isFailedRequest) {
-      ReactTPRoutes.addNavbarRightButtons([]);
       return (
         <NoResultView
           title={"Gagal Mendapatkan Data"}
@@ -238,7 +209,6 @@ class PromoListPage extends Component {
       );
     }
 
-    ReactTPRoutes.addNavbarRightButtons([]);
     const item = this.props.promoListType == 0 ? "grup" : "produk";
     const itemU = item.charAt(0).toUpperCase() + item.slice(1);
     const alertTitle =
@@ -277,7 +247,7 @@ class PromoListPage extends Component {
           onCancelButtonPress={this.onCancelButtonPress}
         />
         {this.props.isNoPromo &&
-        (this.props.isNoSearchResult || this.props.isFilterApplied)
+          (this.props.isNoSearchResult || this.props.isFilterApplied)
           ? this.renderNoResult()
           : this.renderSubContent()}
       </View>
@@ -315,11 +285,33 @@ class PromoListPage extends Component {
     const hasNoPromoAtAll =
       this.props.isNoPromo &&
       (!this.props.isNoSearchResult && !this.props.isFilterApplied);
+
+    const filterImage = {
+      uri: "icon_filter",
+      scale: 3
+    }
+
+    const filterButton = {
+      image: filterImage
+    }
+
+    const plusImage = {
+      uri: "icon_plus_white",
+      scale: 3
+    }
+
+    const plusButton = {
+      image: plusImage
+    }
+
+    const buttonArray = hasNoPromoAtAll ? [] : [plusButton, filterButton]
+
     return (
       <Navigator.Config
         title={this.props.promoListType == 0 ? "Grup" : "Produk"}
         onAppear={this.onAppear}
-        onDisappear={this.onDisappear}
+        rightButtons={buttonArray}
+        onRightPress={this.navBarButtonTapped}
       >
         {hasNoPromoAtAll ? this.renderNoResult() : this.renderContent()}
       </Navigator.Config>
@@ -334,7 +326,6 @@ class PromoListPage extends Component {
         [{ text: "OK" }]
       );
     } else {
-      ReactTPRoutes.addNavbarRightButtons([]);
       this.setState({
         navBarNeedsToBeAdded: true
       });
@@ -358,7 +349,6 @@ class PromoListPage extends Component {
     this.refs.searchBar.unFocus();
   }
   dateButtonTapped() {
-    ReactTPRoutes.addNavbarRightButtons([]);
     this.setState({
       navBarNeedsToBeAdded: true
     });
@@ -383,7 +373,6 @@ class PromoListPage extends Component {
       key: newReduxKey
     });
 
-    ReactTPRoutes.addNavbarRightButtons([]);
     this.setState({
       navBarNeedsToBeAdded: true
     });
@@ -396,10 +385,6 @@ class PromoListPage extends Component {
   }
   noResultButtonTapped() {
     if (this.props.isFailedRequest) {
-      ReactTPRoutes.addNavbarRightButtons([
-        { image: "icon_plus_white_small" },
-        { image: "icon_filter_small" }
-      ]);
       this.refreshData();
     } else {
       AlertIOS.alert(

@@ -34,33 +34,4 @@ RCT_EXPORT_METHOD(navigate:(NSString*)url) {
 }
 
 
-RCT_EXPORT_METHOD(addNavbarRightButtons:(NSArray<NSDictionary*>*)buttonRawArray) {
-    ReactEventManager *eventManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
-    NSMutableArray *buttonArray = [NSMutableArray new];
-    int flag = 0;
-    for (NSDictionary *dict in buttonRawArray)
-    {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc]
-                                   bk_initWithImage:[UIImage imageNamed:dict[@"image"]]
-                                   style:UIBarButtonItemStylePlain
-                                   handler:^(id sender) {
-                                       [eventManager navBarButtonTapped:[NSNumber numberWithInt:flag]];
-                                   }];
-        
-        if(buttonRawArray.count <= 2){
-            if(flag == 0){
-                button.imageInsets = UIEdgeInsetsMake(0.0, -15, 0, 0);
-            }else{
-                button.imageInsets = UIEdgeInsetsMake(0.0, 0.0, 0, -15);
-            }
-        }
-        flag++;
-
-        [buttonArray addObject:button];
-    }
-    
-    UIViewController* vc = [UIApplication topViewController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
-    vc.navigationItem.rightBarButtonItems = buttonArray;
-}
-
 @end

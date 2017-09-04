@@ -46,9 +46,6 @@ class PromoDetailPage extends Component {
     this.groupOrProductAction = this.groupOrProductAction.bind(this);
     this.goToNativeAction = this.goToNativeAction.bind(this);
   }
-  componentDidMount() {
-    ReactTPRoutes.addNavbarRightButtons([]);
-  }
   getData() {
     if (this.props.promoType == 0) {
       this.props.getGroupAdDetail({

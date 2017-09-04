@@ -20,7 +20,6 @@ import AboveTabBar from "../Components/AboveTabBar";
 import BigGreenButton from "../Components/BigGreenButton";
 import DateSettingsButton from "../Components/DateSettingsButton";
 import PromoInfoCell from "../Components/PromoInfoCell";
-import { ReactTPRoutes } from "NativeModules";
 import moment from "moment";
 import {
   requestCreditInfo,
@@ -66,7 +65,6 @@ class TopAdsDashboard extends Component {
     this.getAllData();
   }
   onAppear() {
-    ReactTPRoutes.addNavbarRightButtons([]);
     if (this.props.isNeedRefresh) {
       this.getAllData();
     }
