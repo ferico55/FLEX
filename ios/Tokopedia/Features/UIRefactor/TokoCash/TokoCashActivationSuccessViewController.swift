@@ -15,7 +15,7 @@ class TokoCashActivationSuccessViewController: UIViewController {
     
     private let phoneNumber = Variable("")
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,8 +25,8 @@ class TokoCashActivationSuccessViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        self.navigationItem.setHidesBackButton(true, animated:true)
+        
+        navigationItem.setHidesBackButton(true, animated: true)
         
         AnalyticsManager.trackScreenName("Tokocash Activation - Success Page")
     }
@@ -35,13 +35,13 @@ class TokoCashActivationSuccessViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    //MARK: - Setup View
+    // MARK: - Setup View
     private func setupPhoneNumber() {
         if let phone = UserAuthentificationManager().getUserPhoneNumber() {
-           phoneNumber.value = phone
+            phoneNumber.value = phone
         }
         phoneNumber.asObservable()
-            .subscribe(onNext: { (phoneNumber) in
+            .subscribe(onNext: { _ in
                 let regularAttributes = [NSFontAttributeName: UIFont.largeTheme()]
                 let boldAttributes = [NSFontAttributeName: UIFont.largeThemeSemibold()]
                 
@@ -57,21 +57,21 @@ class TokoCashActivationSuccessViewController: UIViewController {
                 
                 self.successLabel.attributedText = combination
                 
-            }).addDisposableTo(self.rx_disposeBag)
+            }).addDisposableTo(rx_disposeBag)
     }
     
-    //MARK: - Action
+    // MARK: - Action
     private func requestPhoneNumber() {
         if phoneNumber.value.isEmpty {
             OTPRequest.getPhoneNumber(
-                onSuccess: { (phoneNumber) in
+                onSuccess: { phoneNumber in
                     self.phoneNumber.value = phoneNumber
-            },onFailure: {
+                }, onFailure: {
             })
         }
     }
     
     @IBAction func didTapBackToHomeButton(_ sender: Any) {
-        self.navigationController?.popToRootViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
 }

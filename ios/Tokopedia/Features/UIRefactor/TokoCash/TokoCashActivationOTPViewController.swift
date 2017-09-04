@@ -25,13 +25,13 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
     private let phoneNumber = Variable("")
     private let enableOTPButton = Variable(true)
     private let enableVerificationButton = Variable(false)
-    private let isLoadingSendOTP = Variable(false)
-    private let isLoadingSendVerification = Variable(false)
+    private let sendOTPActivityIndicator = ActivityIndicator()
+    private let sendVerificationActivityIndicator = ActivityIndicator()
     private let isRunning = Variable(false)
     private let resendOTPString = "Kirim SMS Ulang"
     private let resendTimer = 90
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,150 +60,159 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
         super.didReceiveMemoryWarning()
     }
     
-    //MARK: - Setup View
+    // MARK: - Setup View
     private func setupPhoneNumber() {
         if let phone = UserAuthentificationManager().getUserPhoneNumber() {
             phoneNumber.value = phone
         }
         phoneNumber
             .asObservable()
-            .bindTo(self.phoneNumberLabel.rx.text)
-            .addDisposableTo(self.rx_disposeBag)
+            .bindTo(phoneNumberLabel.rx.text)
+            .addDisposableTo(rx_disposeBag)
     }
     
-    private func setupOTPButton(){
+    private func setupOTPButton() {
         enableOTPButton.asObservable()
             .subscribe(onNext: { [weak self] isEnable in
-                guard let `self` = self else {return}
+                guard let `self` = self else { return }
                 self.otpButton.isEnabled = isEnable
                 self.otpButton.layer.borderWidth = 1.0
-                if (isEnable){
+                if isEnable {
                     self.otpButton.backgroundColor = UIColor.tpGreen()
                     self.otpButton.layer.borderColor = UIColor.clear.cgColor
-                }else {
+                } else {
                     self.otpButton.backgroundColor = UIColor.clear
                     self.otpButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12).cgColor
                 }
             })
-            .addDisposableTo(self.rx_disposeBag)
+            .addDisposableTo(rx_disposeBag)
     }
     
-    private func setupVerificationButton(){
+    private func setupVerificationButton() {
         enableVerificationButton.asObservable()
             .subscribe(onNext: { isEnable in
                 self.verificationButton.isEnabled = isEnable
-                if (isEnable){
+                if isEnable {
                     self.verificationCodeView.isHidden = false
                     self.verificationButton.backgroundColor = .tpGreen()
-                }else {
+                } else {
                     self.verificationCodeView.isHidden = true
                     self.verificationButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12)
                 }
             })
-            .addDisposableTo(self.rx_disposeBag)
+            .addDisposableTo(rx_disposeBag)
     }
     
     private func setupOTPButtonActivityIndicator() {
-        isLoadingSendOTP.asObservable().subscribe(onNext: { (isLoading) in
-            if isLoading {
-                self.otpButtonActivityIndicator.startAnimating()
-                self.otpButton.setTitle("", for: .disabled)
-                self.otpButton.isEnabled = false
-            }else {
-                self.otpButtonActivityIndicator.stopAnimating()
-                self.otpButton.setTitle(self.resendOTPString, for: .disabled)
-                self.otpButton.isEnabled = true
-            }
-        }).addDisposableTo(self.rx_disposeBag)
+        sendOTPActivityIndicator.asObservable()
+            .map {
+                if self.isRunning.value {
+                    self.otpButton.setTitle(self.resendOTPString, for: .disabled)
+                    return false
+                } else {
+                    if $0 {
+                        self.otpButton.setTitle("", for: .disabled)
+                    } else {
+                        self.otpButton.setTitle(self.resendOTPString, for: .disabled)
+                    }
+                    return !$0
+                }
+            }.bindTo(otpButton.rx.isEnabled)
+            .addDisposableTo(rx_disposeBag)
+        
+        sendOTPActivityIndicator.asObservable()
+            .bindTo(otpButtonActivityIndicator.rx.isAnimating)
+            .addDisposableTo(rx_disposeBag)
     }
     
     private func setupVerificationButtonActivityIndicator() {
-        isLoadingSendVerification.asObservable().subscribe(onNext: { (isLoading) in
-            if isLoading {
-                self.verificationButtonActivityIndicator.startAnimating()
-                self.verificationButton.setTitle("", for: .disabled)
-                self.verificationButton.isEnabled = false
-            }else {
-                self.verificationButtonActivityIndicator.stopAnimating()
-                self.verificationButton.setTitle("Varification", for: .disabled)
-                self.verificationButton.isEnabled = true
+        sendVerificationActivityIndicator.asObservable()
+            .map {
+                if $0 {
+                    self.verificationButton.setTitle("", for: .disabled)
+                } else {
+                    self.verificationButton.setTitle("Verifikasi", for: .disabled)
+                }
+                return !$0
             }
-        }).addDisposableTo(self.rx_disposeBag)
+            .bindTo(verificationButton.rx.isEnabled)
+            .addDisposableTo(rx_disposeBag)
+        
+        sendVerificationActivityIndicator.asObservable()
+            .bindTo(verificationButtonActivityIndicator.rx.isAnimating)
+            .addDisposableTo(rx_disposeBag)
     }
     
-    //MARK: - Action
+    // MARK: - Action
     private func requestPhoneNumber() {
-        if self.phoneNumber.value.isEmpty {
+        if phoneNumber.value.isEmpty {
             OTPRequest.getPhoneNumber(
-                onSuccess: { (phoneNumber) in
+                onSuccess: { phoneNumber in
                     self.phoneNumber.value = phoneNumber
-            },onFailure: {
+                }, onFailure: {
             })
         }
     }
     
-    private func didTapSendOTPButton(){
+    private func didTapSendOTPButton() {
         otpButton.rx.tap.subscribe(onNext: { [unowned self] in
-            self.isLoadingSendOTP.value = true
             WalletService.requestOTPTokoCash()
+                .trackActivity(self.sendOTPActivityIndicator)
                 .subscribe(onNext: { succsess in
-                    self.isLoadingSendOTP.value = false
                     if succsess {
                         self.enableOTPButton.value = false
                         self.isRunning.value = true
                         self.enableVerificationButton.value = true
                     }
-                }, onError:{ error in
-                    self.isLoadingSendOTP.value = false
+                }, onError: { error in
                     debugPrint("Error :", error.localizedDescription)
                 }).disposed(by: self.rx_disposeBag)
-        }).addDisposableTo(self.rx_disposeBag)
+        }).addDisposableTo(rx_disposeBag)
     }
     
     private func setupTimer() {
         isRunning.asObservable()
-            .subscribe(onNext: { (isRunning) in
+            .subscribe(onNext: { isRunning in
                 if isRunning {
                     Observable<Int>.interval(1, scheduler: MainScheduler.instance)
                         .takeWhile({ (n) -> Bool in
-                            return n < self.resendTimer
-                        }).subscribe(onNext: { (timer) in
-                            self.otpButton .setTitle("\(self.resendOTPString) (\(self.resendTimer - timer))", for: .disabled)
-                        }, onError: { (error) in
+                            n < self.resendTimer
+                        }).subscribe(onNext: { timer in
+                            self.otpButton.setTitle("\(self.resendOTPString) (\(self.resendTimer - timer))", for: .disabled)
+                        }, onError: { error in
                             debugPrint("Error :", error.localizedDescription)
                         }, onCompleted: {
-                            self.otpButton .setTitle(self.resendOTPString, for: .normal)
+                            self.isRunning.value = false
+                            self.otpButton.setTitle(self.resendOTPString, for: .normal)
                             self.enableOTPButton.value = true
                         }).addDisposableTo(self.rx_disposeBag)
                 }
-            }).addDisposableTo(self.rx_disposeBag)
+            }).addDisposableTo(rx_disposeBag)
     }
     
     private func didTapVerificationButton() {
         verificationButton.rx.tap.subscribe(onNext: { [unowned self] in
             
-            guard let inputCode = self.verificationCodeTextField.text  else { return }
+            guard let inputCode = self.verificationCodeTextField.text else { return }
             let otpCode = (inputCode.replacingOccurrences(of: " ", with: ""))
             
             if otpCode.characters.count < 6 {
                 StickyAlertView.showErrorMessage(["Kode OTP harus terdiri dari 6 angka"])
-            }else {
-                self.isLoadingSendVerification.value = true
+            } else {
                 WalletService.activationTokoCash(verificationCode: otpCode)
+                    .trackActivity(self.sendVerificationActivityIndicator)
                     .subscribe(onNext: { succsess in
-                        self.isLoadingSendVerification.value = false
                         if succsess {
                             self.performSegue(withIdentifier: "tokoCashActivationSuccessSegue", sender: nil)
                         }
-                    }, onError:{ error in
+                    }, onError: { error in
                         debugPrint("Error :", error)
-                        self.isLoadingSendVerification.value = false
                     }).disposed(by: self.rx_disposeBag)
             }
-        }).addDisposableTo(self.rx_disposeBag)
+        }).addDisposableTo(rx_disposeBag)
     }
     
-    //MARK: - UITextField Delegate
+    // MARK: - UITextField Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return verificationCodeTextField.shouldChangeCharacters(in: range, replacementString: string)
     }

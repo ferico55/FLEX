@@ -18,17 +18,17 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
     @IBOutlet weak var tableViewheightConstraint: NSLayoutConstraint!
     
     private let phoneNumber = Variable("")
-    private let isLoading = Variable(false)
+    private let activityIndicator = ActivityIndicator()
     private let enableActivationButton = Variable(false)
     
     private var isPhoneVerified = UserAuthentificationManager().isUserPhoneVerified()
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.estimatedRowHeight = 93.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 93.0
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         setupPhoneNumberLabel()
         setupActivationButtonActivityIndicator()
@@ -40,7 +40,7 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setWhite()
+        navigationController?.setWhite()
         UIView.animate(withDuration: 0.5, delay: 0.3, animations: {
             self.tableView.layoutIfNeeded()
             self.tableViewheightConstraint.constant = self.tableView.contentSize.height
@@ -54,47 +54,50 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
         super.didReceiveMemoryWarning()
     }
     
-    //MARK: - Setup View
+    // MARK: - Setup View
     private func setupPhoneNumberLabel() {
         if let phone = UserAuthentificationManager().getUserPhoneNumber() {
             phoneNumber.value = phone
         }
         phoneNumber
             .asObservable()
-            .bindTo(self.phoneNumberLabel.rx.text)
-            .addDisposableTo(self.rx_disposeBag)
+            .bindTo(phoneNumberLabel.rx.text)
+            .addDisposableTo(rx_disposeBag)
     }
     
     private func setupActivationButtonActivityIndicator() {
-        isLoading.asObservable().subscribe(onNext: { (isLoading) in
-            if isLoading {
-                self.activationButtonActivityIndicator.startAnimating()
-                self.activationButton.isEnabled = false
-            }else {
-                self.activationButtonActivityIndicator.stopAnimating()
-                self.activationButton.isEnabled = true
+        activityIndicator.asObservable()
+            .map {
+                if $0 {
+                    self.activationButton.setTitle("", for: .disabled)
+                } else {
+                    self.activationButton.setTitle("Aktivasi", for: .disabled)
+                }
+                return !$0
             }
-        }).addDisposableTo(self.rx_disposeBag)
+            .bindTo(activationButton.rx.isEnabled)
+            .addDisposableTo(rx_disposeBag)
+        
+        activityIndicator.asObservable()
+            .bindTo(activationButtonActivityIndicator.rx.isAnimating)
+            .addDisposableTo(rx_disposeBag)
     }
     
-    //MARK: - Action
+    // MARK: - Action
     private func requestPhoneNumber() {
-        if self.phoneNumber.value.isEmpty {
+        if phoneNumber.value.isEmpty {
             OTPRequest.getPhoneNumber(
-                onSuccess: { (phoneNumber) in
+                onSuccess: { phoneNumber in
                     self.phoneNumber.value = phoneNumber
-            },onFailure: {
+                }, onFailure: {
             })
         }
     }
     
     private func requestPhoneVerifiedStatus() {
-        isLoading.value = true
-        OTPRequest .checkPhoneVerifiedStatus(onSuccess: { (isVerified) in
+        OTPRequest.checkPhoneVerifiedStatus(onSuccess: { isVerified in
             self.isPhoneVerified = isVerified == "1"
-            self.isLoading.value = false
         }) {
-            self.isLoading.value = false
         }
     }
     
@@ -102,47 +105,21 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
         activationButton.rx.tap
             .flatMap { () -> Observable<Bool> in
                 if self.isPhoneVerified {
-                    return WalletService.activationTokoCash(verificationCode: "")
+                    return WalletService.activationTokoCash(verificationCode: "").trackActivity(self.activityIndicator)
                 } else {
                     self.performSegue(withIdentifier: "tokoCashActivationOTPSegue", sender: nil)
                     return Observable.empty()
                 }
             }
-            .subscribe(onNext: { (success) in
-                self.isLoading.value = false
+            .subscribe(onNext: { _ in
                 self.performSegue(withIdentifier: "tokoCashActivationSuccessSegue", sender: nil)
-            }, onError: { (error) in
-                self.isLoading.value = false
+            }, onError: { error in
                 let errorString = [error.localizedDescription]
                 StickyAlertView.showErrorMessage(errorString)
-            }, onCompleted: { 
+            }, onCompleted: {
                 
             })
-            .disposed(by: self.rx_disposeBag)
-
-        
-        /*
-        
-        activationButton.rx.tap.subscribe(onNext: { [unowned self] in
-            if self.isPhoneVerified {
-                self.isLoading.value = true
-                WalletService.activationTokoCash(verificationCode: "")
-                    .subscribe(onNext: { success in
-                        self.isLoading.value = false
-                        self.performSegue(withIdentifier: "tokoCashActivationSuccessSegue", sender: nil)
-                    },onError:{ error in
-                        self.isLoading.value = false
-                        let errorString = [error.localizedDescription]
-                        StickyAlertView.showErrorMessage(errorString)
-                    },onCompleted:{
-                        
-                    }).disposed(by: self.rx_disposeBag)
-            }else {
-                self.performSegue(withIdentifier: "tokoCashActivationOTPSegue", sender: nil)
-            }
-        }).addDisposableTo(self.rx_disposeBag)
- 
- */
+            .disposed(by: rx_disposeBag)
     }
     
     @IBAction func didTapTermButton(_ sender: Any) {
@@ -162,7 +139,7 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier:"cell\(indexPath.row)", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell\(indexPath.row)", for: indexPath)
         return cell
     }
 }

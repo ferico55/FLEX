@@ -57,7 +57,10 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                             if let stringUrl = category?.url, let url = URL(string: stringUrl) {
                                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: (category?.name)!, action: "Click Icon on All Categories")
                                 
-                                guard let categoryId = category?.category_id, categoryId != "103"  else { TPRoutes.routeURL(url); return  }
+                                guard let categoryId = category?.category_id, categoryId == "103"  else {
+                                    TPRoutes.routeURL(url)
+                                    return
+                                }
                                 
                                 WalletService.getBalance(userId: UserAuthentificationManager().getUserId())
                                     .subscribe(onNext: { wallet in
