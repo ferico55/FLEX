@@ -130,6 +130,19 @@
 }
 
 #pragma mark - Table View Delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == 4) {
+        cell.detailTextLabel.text = @" BARU   ";
+        cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
+        cell.detailTextLabel.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.font = [UIFont microThemeMedium];
+        cell.detailTextLabel.layer.cornerRadius = 5;
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 5;
 }
