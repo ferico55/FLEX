@@ -45,6 +45,29 @@
 		3494588E1F306BDB00EEB628 /* icon_wishlist_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 3494584B1F306BDB00EEB628 /* icon_wishlist_active.png */; };
 		3494588F1F306BDB00EEB628 /* icon_wishlist_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3494584C1F306BDB00EEB628 /* icon_wishlist_active@2x.png */; };
 		349458901F306BDB00EEB628 /* icon_wishlist_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3494584D1F306BDB00EEB628 /* icon_wishlist_active@3x.png */; };
+		450AC1C11F5D276E009D81B6 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1AA1F5D276D009D81B6 /* EmptyStateView.swift */; };
+		450AC1C21F5D276E009D81B6 /* EmptyStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1AB1F5D276D009D81B6 /* EmptyStateView.xib */; };
+		450AC1C31F5D276E009D81B6 /* CreditCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1AE1F5D276E009D81B6 /* CreditCardData.swift */; };
+		450AC1C41F5D276E009D81B6 /* OneClickAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1AF1F5D276E009D81B6 /* OneClickAuth.swift */; };
+		450AC1C51F5D276E009D81B6 /* OneClickData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B01F5D276E009D81B6 /* OneClickData.swift */; };
+		450AC1C61F5D276E009D81B6 /* OneClickResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B11F5D276E009D81B6 /* OneClickResponse.swift */; };
+		450AC1C71F5D276E009D81B6 /* PaymentActionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B21F5D276E009D81B6 /* PaymentActionResponse.swift */; };
+		450AC1C81F5D276E009D81B6 /* CreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B41F5D276E009D81B6 /* CreditCardCell.swift */; };
+		450AC1C91F5D276E009D81B6 /* CreditCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1B51F5D276E009D81B6 /* CreditCardCell.xib */; };
+		450AC1CA1F5D276E009D81B6 /* OneClickCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B61F5D276E009D81B6 /* OneClickCell.swift */; };
+		450AC1CB1F5D276E009D81B6 /* OneClickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1B71F5D276E009D81B6 /* OneClickCell.xib */; };
+		450AC1CC1F5D276E009D81B6 /* OneClickRegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1B81F5D276E009D81B6 /* OneClickRegisterCell.swift */; };
+		450AC1CD1F5D276E009D81B6 /* OneClickRegisterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1B91F5D276E009D81B6 /* OneClickRegisterCell.xib */; };
+		450AC1CE1F5D276E009D81B6 /* OneClickEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1BB1F5D276E009D81B6 /* OneClickEditViewController.swift */; };
+		450AC1CF1F5D276E009D81B6 /* OneClickRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1BC1F5D276E009D81B6 /* OneClickRegisterViewController.swift */; };
+		450AC1D01F5D276E009D81B6 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1BD1F5D276E009D81B6 /* PaymentViewController.swift */; };
+		450AC1D11F5D276E009D81B6 /* PaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1BE1F5D276E009D81B6 /* PaymentViewController.xib */; };
+		450AC1D21F5D276E009D81B6 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1C01F5D276E009D81B6 /* PaymentViewModel.swift */; };
+		450AC1D41F5D2785009D81B6 /* ScroogeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1D31F5D2785009D81B6 /* ScroogeTarget.swift */; };
+		450AC1D61F5D2AE5009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
+		450AC1D71F5D2AEC009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
+		450AC1D81F5D2AEC009D81B6 /* BCAXCOWidget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		450AC1DA1F5D2AFC009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
@@ -1912,6 +1935,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		450AC1D91F5D2AED009D81B6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				450AC1D81F5D2AEC009D81B6 /* BCAXCOWidget.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		925BA6391E518A54001CED3A /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1965,6 +1999,26 @@
 		3494584B1F306BDB00EEB628 /* icon_wishlist_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_wishlist_active.png; sourceTree = "<group>"; };
 		3494584C1F306BDB00EEB628 /* icon_wishlist_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist_active@2x.png"; sourceTree = "<group>"; };
 		3494584D1F306BDB00EEB628 /* icon_wishlist_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist_active@3x.png"; sourceTree = "<group>"; };
+		450AC1AA1F5D276D009D81B6 /* EmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		450AC1AB1F5D276D009D81B6 /* EmptyStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyStateView.xib; sourceTree = "<group>"; };
+		450AC1AE1F5D276E009D81B6 /* CreditCardData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardData.swift; sourceTree = "<group>"; };
+		450AC1AF1F5D276E009D81B6 /* OneClickAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickAuth.swift; sourceTree = "<group>"; };
+		450AC1B01F5D276E009D81B6 /* OneClickData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickData.swift; sourceTree = "<group>"; };
+		450AC1B11F5D276E009D81B6 /* OneClickResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickResponse.swift; sourceTree = "<group>"; };
+		450AC1B21F5D276E009D81B6 /* PaymentActionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentActionResponse.swift; sourceTree = "<group>"; };
+		450AC1B41F5D276E009D81B6 /* CreditCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardCell.swift; sourceTree = "<group>"; };
+		450AC1B51F5D276E009D81B6 /* CreditCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditCardCell.xib; sourceTree = "<group>"; };
+		450AC1B61F5D276E009D81B6 /* OneClickCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickCell.swift; sourceTree = "<group>"; };
+		450AC1B71F5D276E009D81B6 /* OneClickCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneClickCell.xib; sourceTree = "<group>"; };
+		450AC1B81F5D276E009D81B6 /* OneClickRegisterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickRegisterCell.swift; sourceTree = "<group>"; };
+		450AC1B91F5D276E009D81B6 /* OneClickRegisterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneClickRegisterCell.xib; sourceTree = "<group>"; };
+		450AC1BB1F5D276E009D81B6 /* OneClickEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickEditViewController.swift; sourceTree = "<group>"; };
+		450AC1BC1F5D276E009D81B6 /* OneClickRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickRegisterViewController.swift; sourceTree = "<group>"; };
+		450AC1BD1F5D276E009D81B6 /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
+		450AC1BE1F5D276E009D81B6 /* PaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaymentViewController.xib; sourceTree = "<group>"; };
+		450AC1C01F5D276E009D81B6 /* PaymentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
+		450AC1D31F5D2785009D81B6 /* ScroogeTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScroogeTarget.swift; sourceTree = "<group>"; };
+		450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BCAXCOWidget.framework; path = Tokopedia/ThirdParty/BCAXCOWidget.framework; sourceTree = "<group>"; };
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
@@ -4927,11 +4981,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				450AC1D61F5D2AE5009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				DADB9F731F3C56D9002B1FAE /* FBAudienceNetwork.framework in Frameworks */,
 				DADB9F701F3C56D9002B1FAE /* Crashlytics.framework in Frameworks */,
 				DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */,
 				7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
+				450AC1D71F5D2AEC009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -4968,6 +5024,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				450AC1DA1F5D2AFC009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */,
 				627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */,
 				FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -5057,6 +5114,70 @@
 			path = "Icon Tab Bar";
 			sourceTree = "<group>";
 		};
+		450AC1A91F5D276D009D81B6 /* EmptyState */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1AA1F5D276D009D81B6 /* EmptyStateView.swift */,
+				450AC1AB1F5D276D009D81B6 /* EmptyStateView.xib */,
+			);
+			path = EmptyState;
+			sourceTree = "<group>";
+		};
+		450AC1AC1F5D276D009D81B6 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1AD1F5D276E009D81B6 /* Model */,
+				450AC1B31F5D276E009D81B6 /* View */,
+				450AC1BA1F5D276E009D81B6 /* ViewController */,
+				450AC1BF1F5D276E009D81B6 /* ViewModel */,
+			);
+			path = Payment;
+			sourceTree = "<group>";
+		};
+		450AC1AD1F5D276E009D81B6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1AE1F5D276E009D81B6 /* CreditCardData.swift */,
+				450AC1AF1F5D276E009D81B6 /* OneClickAuth.swift */,
+				450AC1B01F5D276E009D81B6 /* OneClickData.swift */,
+				450AC1B11F5D276E009D81B6 /* OneClickResponse.swift */,
+				450AC1B21F5D276E009D81B6 /* PaymentActionResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		450AC1B31F5D276E009D81B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1B41F5D276E009D81B6 /* CreditCardCell.swift */,
+				450AC1B51F5D276E009D81B6 /* CreditCardCell.xib */,
+				450AC1B61F5D276E009D81B6 /* OneClickCell.swift */,
+				450AC1B71F5D276E009D81B6 /* OneClickCell.xib */,
+				450AC1B81F5D276E009D81B6 /* OneClickRegisterCell.swift */,
+				450AC1B91F5D276E009D81B6 /* OneClickRegisterCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		450AC1BA1F5D276E009D81B6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1BB1F5D276E009D81B6 /* OneClickEditViewController.swift */,
+				450AC1BC1F5D276E009D81B6 /* OneClickRegisterViewController.swift */,
+				450AC1BD1F5D276E009D81B6 /* PaymentViewController.swift */,
+				450AC1BE1F5D276E009D81B6 /* PaymentViewController.xib */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		450AC1BF1F5D276E009D81B6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				450AC1C01F5D276E009D81B6 /* PaymentViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		452E95811E64107E001191E0 /* Fixture */ = {
 			isa = PBXGroup;
 			children = (
@@ -5081,6 +5202,7 @@
 		457B922D1F0E311D005851E5 /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				450AC1D31F5D2785009D81B6 /* ScroogeTarget.swift */,
 				2AF7B6B11F58265200966F4C /* AccountTarget.swift */,
 				457B922E1F0E311D005851E5 /* AceTarget.swift */,
 				457B922F1F0E311D005851E5 /* DigitalTarget.swift */,
@@ -5590,6 +5712,8 @@
 		DADBA0521F3C5E25002B1FAE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				450AC1A91F5D276D009D81B6 /* EmptyState */,
+				450AC1AC1F5D276D009D81B6 /* Payment */,
 				DADBA0531F3C5E25002B1FAE /* Cocoa */,
 				DADBA0741F3C5E25002B1FAE /* Digital */,
 				DADBA08D1F3C5E25002B1FAE /* Feed+ */,
@@ -10482,6 +10606,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */,
 				DADB9F6A1F3C56D9002B1FAE /* Crashlytics.framework */,
 				DADB9F6B1F3C56D9002B1FAE /* Fabric.framework */,
 				DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */,
@@ -10585,6 +10710,7 @@
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
 				925BA6391E518A54001CED3A /* Embed App Extensions */,
+				450AC1D91F5D2AED009D81B6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -10919,6 +11045,7 @@
 				DADBB22A1F3C5E31002B1FAE /* TalkProductCell.xib in Resources */,
 				DADBA0391F3C5BA3002B1FAE /* FontAwesome.ttf in Resources */,
 				DADBB04B1F3C5E2E002B1FAE /* ProductReputationSimpleCell.xib in Resources */,
+				450AC1C91F5D276E009D81B6 /* CreditCardCell.xib in Resources */,
 				DADBAE9C1F3C5E2C002B1FAE /* CatalogSectionHeaderView.xib in Resources */,
 				DADBAFF11F3C5E2E002B1FAE /* DetailProductViewController.xib in Resources */,
 				349458791F306BDB00EEB628 /* notifikasi@2x.png in Resources */,
@@ -10941,6 +11068,7 @@
 				DADBABEC1F3C5E2A002B1FAE /* FeedViewController.graphql in Resources */,
 				DADBAF3F1F3C5E2D002B1FAE /* MyWishlistSearchCollectionReusableView.xib in Resources */,
 				DADBAF901F3C5E2D002B1FAE /* InboxTicketReplyViewController.xib in Resources */,
+				450AC1CB1F5D276E009D81B6 /* OneClickCell.xib in Resources */,
 				DADBB21A1F3C5E31002B1FAE /* UserProfileBiodataViewController.xib in Resources */,
 				DADBAFB41F3C5E2E002B1FAE /* MyShopAddressDetailViewController.xib in Resources */,
 				7A466B911EB2FEAE00A72105 /* Tokopedia-Info.plist in Resources */,
@@ -10948,6 +11076,7 @@
 				DADBAF5B1F3C5E2D002B1FAE /* InboxMessageDetailCell.xib in Resources */,
 				DADBB0BF1F3C5E2F002B1FAE /* RejectReasonWrongPriceViewController.xib in Resources */,
 				DADBB0E41F3C5E2F002B1FAE /* CancelOrderShipmentViewController.xib in Resources */,
+				450AC1D11F5D276E009D81B6 /* PaymentViewController.xib in Resources */,
 				DADBB0A81F3C5E2F002B1FAE /* ProductQuantityViewController.xib in Resources */,
 				DADBAEE11F3C5E2D002B1FAE /* ProgressBarView.xib in Resources */,
 				DADBB2321F3C628B002B1FAE /* InfoPlist.strings in Resources */,
@@ -10959,6 +11088,7 @@
 				DADBAFB81F3C5E2E002B1FAE /* MyShopAddressViewController.xib in Resources */,
 				7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */,
 				DADBB08D1F3C5E2F002B1FAE /* ResolutionCenterCreateStepTwoCell.xib in Resources */,
+				450AC1C21F5D276E009D81B6 /* EmptyStateView.xib in Resources */,
 				DADBB0D91F3C5E2F002B1FAE /* PickupAddressView.xib in Resources */,
 				DADBB1D01F3C5E31002B1FAE /* NoLoginView.xib in Resources */,
 				DADBB0F31F3C5E2F002B1FAE /* DetailShipmentStatusCell.xib in Resources */,
@@ -11076,6 +11206,7 @@
 				DADBB1501F3C5E30002B1FAE /* ShopTagDescriptionViewCell.xib in Resources */,
 				DADBAE4F1F3C5E2C002B1FAE /* WebViewSignInViewController.xib in Resources */,
 				DADBB1681F3C5E30002B1FAE /* ShopStatView.xib in Resources */,
+				450AC1CD1F5D276E009D81B6 /* OneClickRegisterCell.xib in Resources */,
 				DADBB20E1F3C5E31002B1FAE /* ProfileFavoriteShopCell.xib in Resources */,
 				DADBAFA81F3C5E2D002B1FAE /* ActivatePushInstructionViewController7.xib in Resources */,
 				DADBB1A61F3C5E30002B1FAE /* TKPMapView.xib in Resources */,
@@ -11310,6 +11441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DADBB0901F3C5E2F002B1FAE /* ResolutionCenterCreateTroubleList.m in Sources */,
+				450AC1D41F5D2785009D81B6 /* ScroogeTarget.swift in Sources */,
 				DADB9F651F3C46CF002B1FAE /* UIImage+Resize.m in Sources */,
 				DADBADDD1F3C5E2B002B1FAE /* TxOrderConfirmationResult.m in Sources */,
 				DADBAF751F3C5E2D002B1FAE /* ProductResolutionViewModel.swift in Sources */,
@@ -11519,6 +11651,7 @@
 				DADBAD641F3C5E2B002B1FAE /* ShipmentCityData.m in Sources */,
 				DADBAE461F3C5E2C002B1FAE /* SecurityQuestionTweaks.m in Sources */,
 				DADBAD9E1F3C5E2B002B1FAE /* City.m in Sources */,
+				450AC1C71F5D276E009D81B6 /* PaymentActionResponse.swift in Sources */,
 				DADBACA01F3C5E2A002B1FAE /* EditResolutionFormData.swift in Sources */,
 				DADBB1B41F3C5E31002B1FAE /* TopPicksResponse.swift in Sources */,
 				DADBAE3C1F3C5E2C002B1FAE /* LoginViewController.m in Sources */,
@@ -11786,6 +11919,7 @@
 				DADBAE971F3C5E2C002B1FAE /* CatalogProductCell.m in Sources */,
 				DADBAD101F3C5E2B002B1FAE /* AddressFormResult.m in Sources */,
 				DADBACBF1F3C5E2A002B1FAE /* InboxTicketPaging.m in Sources */,
+				450AC1C31F5D276E009D81B6 /* CreditCardData.swift in Sources */,
 				DADBA04C1F3C5BA3002B1FAE /* TKPHomeBannerStore.m in Sources */,
 				DADBAF251F3C5E2D002B1FAE /* AnnouncementTickerRequest.swift in Sources */,
 				DADBAF7A1F3C5E2D002B1FAE /* InboxResolutionCenterTabViewController.m in Sources */,
@@ -11876,6 +12010,7 @@
 				457B98FC1F0E3125005851E5 /* WalletTarget.swift in Sources */,
 				DADBB1041F3C5E2F002B1FAE /* SearchAutoCompleteHeaderView.m in Sources */,
 				DADBB0231F3C5E2E002B1FAE /* GiveReviewResponseViewController.m in Sources */,
+				450AC1D01F5D276E009D81B6 /* PaymentViewController.swift in Sources */,
 				DADBABE31F3C5E2A002B1FAE /* FeedHeaderComponentView.swift in Sources */,
 				DADBAE961F3C5E2C002B1FAE /* UploadImageObserver.swift in Sources */,
 				DADBACF11F3C5E2B002B1FAE /* PriceAlertResult.m in Sources */,
@@ -12051,6 +12186,7 @@
 				DADBAC351F3C5E2A002B1FAE /* DepositSummaryResult.m in Sources */,
 				DADBAFF21F3C5E2E002B1FAE /* DetailProductWholesaleCell.m in Sources */,
 				DADBAE111F3C5E2C002B1FAE /* UploadImageHelperResult.m in Sources */,
+				450AC1C41F5D276E009D81B6 /* OneClickAuth.swift in Sources */,
 				DADBAD591F3C5E2B002B1FAE /* SearchAutoCompleteDomains.m in Sources */,
 				DADBAE4B1F3C5E2C002B1FAE /* SecureStorageManager.swift in Sources */,
 				DADBABD41F3C5E2A002B1FAE /* DigitalTextInput.swift in Sources */,
@@ -12063,6 +12199,7 @@
 				DADBAEF51F3C5E2D002B1FAE /* DigitalGoodsDataSource.swift in Sources */,
 				DADBADE01F3C5E2B002B1FAE /* InstallmentBank.m in Sources */,
 				DADBAD431F3C5E2B002B1FAE /* OrderRequestCancel.m in Sources */,
+				450AC1C51F5D276E009D81B6 /* OneClickData.swift in Sources */,
 				DADBB0471F3C5E2E002B1FAE /* SplitReputationViewController.m in Sources */,
 				DADBADBE1F3C5E2B002B1FAE /* LuckyDealData.m in Sources */,
 				DADBAE551F3C5E2C002B1FAE /* RequestAddress.m in Sources */,
@@ -12116,6 +12253,7 @@
 				DADBADE21F3C5E2C002B1FAE /* TransactionSummary.m in Sources */,
 				DADBADF21F3C5E2C002B1FAE /* TxOrderConfirmedResult.m in Sources */,
 				DADBAE2D1F3C5E2C002B1FAE /* ProductShipmentViewController.swift in Sources */,
+				450AC1CF1F5D276E009D81B6 /* OneClickRegisterViewController.swift in Sources */,
 				DADBAEA91F3C5E2C002B1FAE /* CarouselDataSource.m in Sources */,
 				DADBAE1C1F3C5E2C002B1FAE /* WalletCashBackResponse.swift in Sources */,
 				DADBB01F1F3C5E2E002B1FAE /* GiveReviewDetailViewController.m in Sources */,
@@ -12234,6 +12372,7 @@
 				DADBAD2A1F3C5E2B002B1FAE /* ReplacementShipment.swift in Sources */,
 				DADBAF571F3C5E2D002B1FAE /* UIView+HVDLayout.m in Sources */,
 				DADBABC91F3C5E2A002B1FAE /* DigitalAnalyticsManager.swift in Sources */,
+				450AC1D21F5D276E009D81B6 /* PaymentViewModel.swift in Sources */,
 				DADBAC151F3C5E2A002B1FAE /* AddressResult.m in Sources */,
 				DADBACCA1F3C5E2A002B1FAE /* LikeDislikePostResult.m in Sources */,
 				DADBA0201F3C5BA3002B1FAE /* UIImageEffects.m in Sources */,
@@ -12268,6 +12407,7 @@
 				DADBAD8C1F3C5E2B002B1FAE /* ShopInfoResult.m in Sources */,
 				DADBAF4C1F3C5E2D002B1FAE /* SliderData.m in Sources */,
 				DADBAE441F3C5E2C002B1FAE /* ChangePhoneNumberSQViewController.swift in Sources */,
+				450AC1C61F5D276E009D81B6 /* OneClickResponse.swift in Sources */,
 				DADBAE321F3C5E2C002B1FAE /* ReactNetworkManager.m in Sources */,
 				DADBAC5B1F3C5E2A002B1FAE /* TalkResult.m in Sources */,
 				DADBACBD1F3C5E2A002B1FAE /* InboxTicketDetailAttachment.m in Sources */,
@@ -12329,6 +12469,7 @@
 				DADBAFBB1F3C5E2E002B1FAE /* MyShopEtalaseEditViewController.m in Sources */,
 				DADBAEAD1F3C5E2C002B1FAE /* CategoryDataForCategoryResultVC.swift in Sources */,
 				DADBAF781F3C5E2D002B1FAE /* InboxResolSplitViewController.m in Sources */,
+				450AC1CA1F5D276E009D81B6 /* OneClickCell.swift in Sources */,
 				DADBB0491F3C5E2E002B1FAE /* RequestMoveTo.m in Sources */,
 				DADBAFC41F3C5E2E002B1FAE /* ShopPaymentViewController.m in Sources */,
 				DADBAD7C1F3C5E2B002B1FAE /* NoteDetails.swift in Sources */,
@@ -12511,6 +12652,7 @@
 				DADBA0341F3C5BA3002B1FAE /* TkpdHMAC.m in Sources */,
 				DADBAEE01F3C5E2D002B1FAE /* ProgressBarView.m in Sources */,
 				DADBACA81F3C5E2A002B1FAE /* ResolutionCustomer.m in Sources */,
+				450AC1CC1F5D276E009D81B6 /* OneClickRegisterCell.swift in Sources */,
 				457B98FA1F0E3125005851E5 /* TokocashTarget.swift in Sources */,
 				DADBB05D1F3C5E2E002B1FAE /* PulsaOperator.swift in Sources */,
 				DADBB0071F3C5E2E002B1FAE /* ProductEditImageViewController.m in Sources */,
@@ -12540,6 +12682,7 @@
 				DADBABF91F3C5E2A002B1FAE /* Login.m in Sources */,
 				DADBACC31F3C5E2A002B1FAE /* InboxTicketTicket.m in Sources */,
 				DADBB1B21F3C5E31002B1FAE /* TopPickItem.swift in Sources */,
+				450AC1C81F5D276E009D81B6 /* CreditCardCell.swift in Sources */,
 				DADBADAA1F3C5E2B002B1FAE /* ShippingInfoShipments.m in Sources */,
 				DADBAD5F1F3C5E2B002B1FAE /* SearchModel.xcdatamodeld in Sources */,
 				DADBAD181F3C5E2B002B1FAE /* PrivacyForm.m in Sources */,
@@ -12636,11 +12779,13 @@
 				DADBAC791F3C5E2A002B1FAE /* GooglePlaceDetailResults.m in Sources */,
 				DADBAECD1F3C5E2C002B1FAE /* RequestCategory.m in Sources */,
 				DADBAD621F3C5E2B002B1FAE /* SendMessage.m in Sources */,
+				450AC1CE1F5D276E009D81B6 /* OneClickEditViewController.swift in Sources */,
 				DADBB0841F3C5E2F002B1FAE /* ResolutionCenterCreateResult.m in Sources */,
 				DADBABD01F3C5E2A002B1FAE /* DigitalProduct.swift in Sources */,
 				DADBAF681F3C5E2D002B1FAE /* InboxResolutionCenterComplainViewController.m in Sources */,
 				DADBAF8D1F3C5E2D002B1FAE /* InboxTicketDetailViewController.m in Sources */,
 				DADBB1571F3C5E30002B1FAE /* EditShopDataSource.m in Sources */,
+				450AC1C11F5D276E009D81B6 /* EmptyStateView.swift in Sources */,
 				DADBAF3C1F3C5E2D002B1FAE /* MyWishlistLabel.swift in Sources */,
 				DADBB0001F3C5E2E002B1FAE /* ProductAddCaptionViewController.m in Sources */,
 				DADBAF321F3C5E2D002B1FAE /* OfficialStoreSectionViewController.swift in Sources */,
@@ -12980,7 +13125,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -13042,7 +13187,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -13083,6 +13228,7 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
@@ -13122,6 +13268,7 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";

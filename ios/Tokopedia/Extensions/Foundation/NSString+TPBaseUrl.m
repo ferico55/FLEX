@@ -311,4 +311,43 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)oneClickURL {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://pay.tokopedia.com",
+                           @(TPUrlStaging) : @"https://pay-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://192.168.100.151:9096",
+                           @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString*)creditCardURL {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://pay.tokopedia.id",
+                           @(TPUrlStaging) : @"https://pay-staging.tokopedia.id",
+                           @(TPUrlAlpha) : @"http://192.168.100.151:9096",
+                           @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString*)creditCardSecretKey {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* keys = @{
+                           @(TPUrlProduction) : @"AdKc1ag2NmYgRUF97eQQ8J",
+                           @(TPUrlStaging) : @"QN6vublhpfqppu01uxdk5f",
+                           @(TPUrlAlpha) : @"QN6vublhpfqppu01uxdk5f",
+                           @(TPUrlDevelopment) : @"QN6vublhpfqppu01uxdk5f"
+                           };
+    
+    return [keys objectForKey:TPUrlIndex];
+}
+
 @end

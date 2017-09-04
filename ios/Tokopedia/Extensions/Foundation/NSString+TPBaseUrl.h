@@ -31,5 +31,8 @@
 + (nonnull NSString*)feedsMobileSiteUrl;
 + (nonnull NSString*)tokocashUrl;
 + (nonnull NSString*)tomeUrl;
++ (nonnull NSString*)oneClickURL;
++ (nonnull NSString*)creditCardURL;
++ (nonnull NSString*)creditCardSecretKey;
 
 @end

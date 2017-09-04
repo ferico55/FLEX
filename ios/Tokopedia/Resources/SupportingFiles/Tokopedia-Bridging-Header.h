@@ -217,5 +217,6 @@
 #import "GAI.h"
 #import "GAIFields.h"
 #import "TransactionCartWebViewViewController.h"
+#import <CommonCrypto/CommonCrypto.h>
 #import "TransactionActionResult.h"
 

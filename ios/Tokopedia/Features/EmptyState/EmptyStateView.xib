@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EmptyStateView">
+            <connections>
+                <outlet property="actionButton" destination="21o-DZ-fpL" id="xvM-CF-CYT"/>
+                <outlet property="animationView" destination="2pO-ye-wpd" id="r3F-LL-lcP"/>
+                <outlet property="buttonHeight" destination="v5o-4b-gxZ" id="Lc2-yS-2qp"/>
+                <outlet property="descriptionLabel" destination="Ltv-5R-9vi" id="2GR-dS-yHQ"/>
+                <outlet property="titleLabel" destination="cIb-iO-6yC" id="6ax-By-Lhr"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2pO-ye-wpd">
+                    <rect key="frame" x="107" y="10" width="161" height="99"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="100" id="3Zu-Y5-6mQ"/>
+                        <constraint firstAttribute="width" constant="161" id="mRW-NF-0Tp"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIb-iO-6yC">
+                    <rect key="frame" x="10" y="134" width="355" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="1cP-KI-CzL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mohon maaf terjadi kendala pada server. Silakan coba lagi." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ltv-5R-9vi">
+                    <rect key="frame" x="10" y="170" width="355" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="Sxi-20-OvM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21o-DZ-fpL">
+                    <rect key="frame" x="20" y="220" width="335" height="50"/>
+                    <color key="backgroundColor" red="0.25882352939999997" green="0.6705882352941176" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="v5o-4b-gxZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Coba Kembali">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapActionButton:" destination="-1" eventType="touchUpInside" id="Zgf-va-WnX"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="21o-DZ-fpL" firstAttribute="top" secondItem="Ltv-5R-9vi" secondAttribute="bottom" constant="15" id="4h8-6x-neA"/>
+                <constraint firstItem="Ltv-5R-9vi" firstAttribute="top" secondItem="cIb-iO-6yC" secondAttribute="bottom" constant="15" id="Fx2-iU-HDa"/>
+                <constraint firstAttribute="trailing" secondItem="21o-DZ-fpL" secondAttribute="trailing" constant="20" id="HuN-Qj-rB3"/>
+                <constraint firstItem="Ltv-5R-9vi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Res-hD-Ed3"/>
+                <constraint firstItem="2pO-ye-wpd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="SAe-j7-HG2"/>
+                <constraint firstAttribute="trailing" secondItem="cIb-iO-6yC" secondAttribute="trailing" constant="10" id="hP0-IN-9fr"/>
+                <constraint firstItem="cIb-iO-6yC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="iIA-f0-pT2"/>
+                <constraint firstItem="21o-DZ-fpL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="k36-9U-EST"/>
+                <constraint firstItem="2pO-ye-wpd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="pKI-yu-JLs"/>
+                <constraint firstAttribute="trailing" secondItem="Ltv-5R-9vi" secondAttribute="trailing" constant="10" id="t0m-6z-QJk"/>
+                <constraint firstAttribute="bottom" secondItem="21o-DZ-fpL" secondAttribute="bottom" constant="10" id="twm-Lb-Dbq"/>
+                <constraint firstItem="cIb-iO-6yC" firstAttribute="top" secondItem="2pO-ye-wpd" secondAttribute="bottom" constant="25" id="xxw-pB-472"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="94.5" y="-99"/>
+        </view>
+    </objects>
+</document>

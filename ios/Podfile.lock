@@ -237,6 +237,9 @@ PODS:
   - RSKPlaceholderTextView (2.0.0)
   - RxCocoa (3.3.1):
     - RxSwift (~> 3.3)
+  - RxDataSources (1.0.4):
+    - RxCocoa (~> 3.0)
+    - RxSwift (~> 3.0)
   - RxSwift (3.3.1)
   - SnapKit (3.2.0)
   - SOCKit (1.1)
@@ -328,6 +331,7 @@ DEPENDENCIES:
   - RSKGrowingTextView (~> 2.0)
   - RSKPlaceholderTextView (~> 2.0)
   - RxCocoa (~> 3.3.1)
+  - RxDataSources (~> 1.0)
   - RxSwift (~> 3.3.1)
   - SnapKit (~> 3.2.0)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
@@ -344,33 +348,33 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   CodePush:
-    :path: ../node_modules/react-native-code-push
+    :path: "../node_modules/react-native-code-push"
   HMSegmentedControl:
     :git: https://github.com/billionssg/HMSegmentedControl
   JSQMessagesViewController:
     :branch: master
     :git: https://github.com/ferico55/JSQMessagesViewController
   native-navigation:
-    :path: ../node_modules/native-navigation
+    :path: "../node_modules/native-navigation"
   Popover:
     :branch: master
     :git: https://github.com/corin8823/Popover.git
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   Render:
     :branch: temporary-fix
     :git: https://github.com/esam091/Render.git
   RNDeviceInfo:
-    :path: ../node_modules/react-native-device-info
+    :path: "../node_modules/react-native-device-info"
   RNSVG:
-    :path: ../node_modules/react-native-svg
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
-    :path: ../node_modules/react-native-vector-icons
+    :path: "../node_modules/react-native-vector-icons"
   SPTPersistentCache:
     :branch: master
     :git: https://github.com/spotify/SPTPersistentCache.git
   Yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   HMSegmentedControl:
@@ -421,7 +425,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
+  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
@@ -472,6 +476,7 @@ SPEC CHECKSUMS:
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
+  RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
@@ -488,6 +493,6 @@ SPEC CHECKSUMS:
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 1b1d959cefaa919a3519f0e8a9844c5163370914
+PODFILE CHECKSUM: e3855e07f24102a6341a073596c35d9088f4c731
 
 COCOAPODS: 1.2.1

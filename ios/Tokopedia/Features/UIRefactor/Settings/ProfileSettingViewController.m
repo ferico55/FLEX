@@ -47,66 +47,19 @@
 {
     [super viewDidLoad];
     
-    _listMenu = ARRAY_LIST_MENU_SETTING_PROFILE;
+    _listMenu = @[@[@"Ubah Kata Sandi"],
+                  @[@"Biodata Diri" ,
+                    @"Daftar Alamat",
+                    @"Akun Bank",
+                    @"Pembayaran",
+                    @"Notifikasi"],
+                  @[@"Touch ID"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Profile Settings Page"];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton *)sender;
-        switch (btn.tag) {
-            case 10:
-            {    //change password
-                SettingPasswordViewController *vc = [SettingPasswordViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 11:
-            {
-                //address list
-                SettingAddressViewController *vc = [SettingAddressViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 12:
-            {
-                //bank account
-                SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 13:
-            {
-                //notification
-                SettingNotificationViewController *vc = [SettingNotificationViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 14:
-            {
-                //ubah profil
-                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 #pragma mark - TableView Data Source
@@ -130,6 +83,19 @@
     return listMenuPerSection.count;
 }
 
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == 3) {
+        cell.detailTextLabel.text = @" BARU   ";
+        cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
+        cell.detailTextLabel.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.font = [UIFont microThemeMedium];
+        cell.detailTextLabel.layer.cornerRadius = 5;
+    }
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER;
@@ -137,7 +103,7 @@
     
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -178,7 +144,7 @@
             case 0: {
                 //button edit profile action
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-
+                
                 if ([[self.navigationController.viewControllers objectAtIndex:1] isKindOfClass:[UserContainerViewController class]]) {
                     UserContainerViewController *userContainer = [self.navigationController.viewControllers objectAtIndex:1];
                     if ([userContainer conformsToProtocol:@protocol(SettingUserProfileDelegate) ]) {
@@ -202,6 +168,12 @@
                 break;
             }
             case 3: {
+                //Pembayaran
+                PaymentViewController *vc = [PaymentViewController new];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 4: {
                 //notification
                 SettingNotificationViewController *vc = [SettingNotificationViewController new];
                 [self.navigationController pushViewController:vc animated:YES];

@@ -1,0 +1,6 @@
+framework module BCAXCOWidget {
+  umbrella header "BCAXCOWidget.h"
+
+  export *
+  module * { export * }
+}
