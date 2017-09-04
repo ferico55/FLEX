@@ -47,6 +47,12 @@ class TokoCashSectionViewController: UIViewController {
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(gestureRecognizer)
         
+        if let isTopupVisible = wallet.data?.action?.visibility {
+            btnTopUp.isHidden = isTopupVisible != "1"
+        } else {
+            btnTopUp.isHidden = false
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
