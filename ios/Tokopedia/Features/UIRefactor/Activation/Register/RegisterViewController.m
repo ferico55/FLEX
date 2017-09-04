@@ -32,7 +32,7 @@
 #import "TTTAttributedLabel.h"
 #import "MMNumberKeyboard.h"
 
-static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
+static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 typedef NS_ENUM(NSInteger, RegisterActionType) {
     RegisterActionTypeActivation = 1,
