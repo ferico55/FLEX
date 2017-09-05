@@ -86,6 +86,14 @@
                                    otherButtonTitles:@"Edit", nil];
     }
     
+    if (!_viewModelCart.isEditingEnabled) {
+        popup = [[UIActionSheet alloc] initWithTitle:nil
+                                            delegate:self
+                                   cancelButtonTitle:@"Batal"
+                              destructiveButtonTitle:@"Hapus"
+                                   otherButtonTitles:nil];
+    }
+    
     [popup showFromRect:_editButton.frame inView:self animated:YES];
     [_delegate tapMoreButtonActionAtIndexPath:_indexPath];
 }

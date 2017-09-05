@@ -51,6 +51,7 @@
         tempViewModel.shippingRateIDR = _cart_shipping_rate_idr;
         tempViewModel.totalAmountIDR = _cart_total_amount_idr;
         tempViewModel.errors = _errors;
+        tempViewModel.isEditingEnabled = self.isEditingEnabled;
         
         _viewModel = tempViewModel;
     }

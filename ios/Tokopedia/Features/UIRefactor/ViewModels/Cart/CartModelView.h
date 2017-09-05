@@ -21,4 +21,6 @@
 @property (strong, nonatomic) NSString *totalAmountIDR;
 @property (strong, nonatomic) NSArray<Errors *> *errors;
 
+@property (nonatomic) BOOL isEditingEnabled;
+
 @end
