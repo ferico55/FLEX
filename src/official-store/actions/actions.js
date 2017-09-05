@@ -7,7 +7,7 @@ import {
 } from 'NativeModules';
 import DeviceInfo from 'react-native-device-info';
 
-const MOJITO_HOSTNAME = 'https://mojito.tokopedia.com'
+const MOJITO_HOSTNAME = TKPReactURLManager.mojitoUrl
 const TOME_HOSTNAME = 'https://tome.tokopedia.com'
 
 const endpoints = {
@@ -31,10 +31,6 @@ const checkProductInWishlist = (userId, pIds) => {
     .replace(':id', userId)
     .replace(':list_id', pIds)
 
-  const headers = {
-    'X-Device': 'lite-0.0'
-  }
-
   const config = {
     headers: headers,
     url: url,
@@ -46,7 +42,7 @@ const checkProductInWishlist = (userId, pIds) => {
 
 export const FETCH_CAMPAIGNS = 'FETCH_CAMPAIGNS'
 export const fetchCampaigns = () => {
-  const device = 'lite'
+  const device = 'ios'
   const imageSize = 200
   const imageSquare = true
   const domain = 'm.tokopedia.com'
@@ -169,7 +165,7 @@ export const refreshState = () => ({
 function getBrands(limit, offset) {
   
   return ReactUserManager.getUserId().then(userId => {
-    return axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/list?device=lite&microsite=true&user_id=${userId}&limit=${limit}&offset=${offset}`)
+    return axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/list?device=ios&microsite=true&user_id=${userId}&limit=${limit}&offset=${offset}`)
     .then(response => {
       const brands = response.data.data
       const total_brands = response.data.total_brands
@@ -188,7 +184,8 @@ function getBrands(limit, offset) {
       shopIds = shopIds.toString()
       const shopCount = shopIds.length
       const bannerRows = DeviceInfo.isTablet() ? 8 : 4
-      const url = `${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/products?device=lite&source=osmicrosite&rows=${bannerRows}&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`
+      const url = `${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/products?device=ios&source=osmicrosite&rows=${bannerRows}&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`
+      
       
 
       let ids = []

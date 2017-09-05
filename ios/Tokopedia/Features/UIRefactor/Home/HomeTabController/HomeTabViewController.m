@@ -183,6 +183,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.searchController setActive:NO];
+    self.definesPresentationContext = NO;
 }
 
 - (void)setSearchBar {
