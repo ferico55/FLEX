@@ -332,7 +332,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                         
                     }
                     onFailure:^(NSError * error) {
-                        _isWalletActive = NO;
+                        _isWalletActive = YES;
                         if(error.code == 9991) {
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
                         }

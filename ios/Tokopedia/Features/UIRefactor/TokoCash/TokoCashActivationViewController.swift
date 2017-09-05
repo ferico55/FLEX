@@ -110,7 +110,7 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
                     self.performSegue(withIdentifier: "tokoCashActivationOTPSegue", sender: nil)
                     return Observable.empty()
                 }
-            }
+            }.retry()
             .subscribe(onNext: { _ in
                 self.performSegue(withIdentifier: "tokoCashActivationSuccessSegue", sender: nil)
             }, onError: { error in
