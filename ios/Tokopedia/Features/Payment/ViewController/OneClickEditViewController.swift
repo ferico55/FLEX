@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import BCAXCOWidget
+//import BCAXCOWidget
 
 class OneClickEditViewController: UIViewController {
 
-    fileprivate let widget = InsertWidget()
+//    fileprivate let widget = InsertWidget()
     fileprivate let apiKey = "540fdef7-18c3-41d0-8596-242f1c59ce29"
     fileprivate let apiSeed = "dc88dfc6-837b-44bb-b767-d168e17e80cd"
     fileprivate let merchantID = "61005"
@@ -22,18 +22,18 @@ class OneClickEditViewController: UIViewController {
         self.viewModel = viewModel
         self.userData = userData
         super.init(nibName: nil, bundle: nil)
-        widget.delegate = self
-        title = "Ubah Limit BCA Oneklik"
-        view = UIView()
-        let authManager = UserAuthentificationManager()
-        widget.start()
-        widget.editDailyLimit(with: view,
-                              andAccessToken: accessToken,
-                              apiKey: apiKey,
-                              apiSeed: apiSeed,
-                              customerIDMerchant: authManager.getUserId(),
-                              merchantID: merchantID,
-                              xcoid: userData.tokenID)
+//        widget.delegate = self
+//        title = "Ubah Limit BCA Oneklik"
+//        view = UIView()
+//        let authManager = UserAuthentificationManager()
+//        widget.start()
+//        widget.editDailyLimit(with: view,
+//                              andAccessToken: accessToken,
+//                              apiKey: apiKey,
+//                              apiSeed: apiSeed,
+//                              customerIDMerchant: authManager.getUserId(),
+//                              merchantID: merchantID,
+//                              xcoid: userData.tokenID)
     }
 
     required init?(coder _: NSCoder) {
@@ -46,7 +46,7 @@ class OneClickEditViewController: UIViewController {
 }
 
 //MARK: - UITableView Data Source/Delegate
-
+/**
 extension OneClickEditViewController: BCADelegate {
     // This method will be called when a customer tries to register an existing CredentialNo to CustomerIDMerchant
     func onBCARegistered(_: String!) {
@@ -78,3 +78,4 @@ extension OneClickEditViewController: BCADelegate {
         navigationController?.popViewController(animated: true)
     }
 }
+ **/

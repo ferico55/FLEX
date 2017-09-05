@@ -219,27 +219,28 @@ class PaymentViewModel: NSObject {
     }
 
     private func getListOneClickData() -> Observable<MultipleSectionModel> {
-        return provider
-            .request(.getListOneClick())
-            .map(to: OneClickResponse.self)
-            .map({ data in
-                data.list
-            }).map({ items in
-
-                guard let items = items else {
-                    return .empty()
-                }
-
-                var sectionItems: [SectionItem] = []
-                items.forEach({ data in
-                    sectionItems.append(.oneClick(userData: data))
-                })
-
-                if sectionItems.count < 3 {
-                    sectionItems.append(.oneClickRegister())
-                }
-                return .oneClick(title: "Pembayaran Cepat", items: sectionItems)
-            }).catchErrorJustReturn(.empty())
+        return .empty()
+//        return provider
+//            .request(.getListOneClick())
+//            .map(to: OneClickResponse.self)
+//            .map({ data in
+//                data.list
+//            }).map({ items in
+//
+//                guard let items = items else {
+//                    return .empty()
+//                }
+//
+//                var sectionItems: [SectionItem] = []
+//                items.forEach({ data in
+//                    sectionItems.append(.oneClick(userData: data))
+//                })
+//
+//                if sectionItems.count < 3 {
+//                    sectionItems.append(.oneClickRegister())
+//                }
+//                return .oneClick(title: "Pembayaran Cepat", items: sectionItems)
+//            }).catchErrorJustReturn(.empty())
     }
 
     private func getListCreditCardData() -> Observable<MultipleSectionModel> {

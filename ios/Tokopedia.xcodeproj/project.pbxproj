@@ -64,10 +64,6 @@
 		450AC1D11F5D276E009D81B6 /* PaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AC1BE1F5D276E009D81B6 /* PaymentViewController.xib */; };
 		450AC1D21F5D276E009D81B6 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1C01F5D276E009D81B6 /* PaymentViewModel.swift */; };
 		450AC1D41F5D2785009D81B6 /* ScroogeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AC1D31F5D2785009D81B6 /* ScroogeTarget.swift */; };
-		450AC1D61F5D2AE5009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
-		450AC1D71F5D2AEC009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
-		450AC1D81F5D2AEC009D81B6 /* BCAXCOWidget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		450AC1DA1F5D2AFC009D81B6 /* BCAXCOWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
@@ -1940,7 +1936,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				450AC1D81F5D2AEC009D81B6 /* BCAXCOWidget.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4979,13 +4974,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				450AC1D61F5D2AE5009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				DADB9F731F3C56D9002B1FAE /* FBAudienceNetwork.framework in Frameworks */,
 				DADB9F701F3C56D9002B1FAE /* Crashlytics.framework in Frameworks */,
 				DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */,
 				7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
-				450AC1D71F5D2AEC009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -5022,7 +5015,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				450AC1DA1F5D2AFC009D81B6 /* BCAXCOWidget.framework in Frameworks */,
 				627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */,
 				627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */,
 				FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -13020,7 +13012,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 201707101114;
+				CURRENT_PROJECT_VERSION = 201709051431;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -13067,7 +13059,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 201707101114;
+				CURRENT_PROJECT_VERSION = 201709051431;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -13101,7 +13093,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Resources/SupportingFiles/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201707101114;
+				CURRENT_PROJECT_VERSION = 201709051431;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -13159,7 +13151,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Resources/SupportingFiles/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 201707101114;
+				CURRENT_PROJECT_VERSION = 201709051431;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
