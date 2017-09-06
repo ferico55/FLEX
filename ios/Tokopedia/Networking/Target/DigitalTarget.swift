@@ -91,7 +91,7 @@ extension DigitalTarget: TargetType {
                         "product_id": Int(productId)!,
                         "device_id": 7,
                         "instant_checkout": instantCheckout,
-                        "ip_address": "127.0.0.1",
+                        "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": userAgent,
@@ -112,7 +112,7 @@ extension DigitalTarget: TargetType {
                     "type": "cart",
                     "id": cartId,
                     "attributes": [
-                        "ip_address": "127.0.0.1",
+                        "ip_address": getIFAddresses(),
                         "user_agent": userAgent,
                         "identifier" : [
                             "user_id" : userManager.getUserId(),
@@ -131,7 +131,7 @@ extension DigitalTarget: TargetType {
                     "type": "checkout",
                     "attributes": [
                         "device_id": 7,
-                        "ip_address": "127.0.0.1",
+                        "ip_address": getIFAddresses(),
                         "access_token": "",
                         "wallet_refresh_token": "",
                         "user_agent": userAgent,
@@ -201,7 +201,7 @@ func getIFAddresses() -> String {
         
         // Check for running IPv4, IPv6 interfaces. Skip the loopback interface.
         if (flags & (IFF_UP | IFF_RUNNING | IFF_LOOPBACK)) == (IFF_UP | IFF_RUNNING) {
-            if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
+            if addr.sa_family == UInt8(AF_INET) {
                 
                 // Convert interface address to a human readable string:
                 var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
