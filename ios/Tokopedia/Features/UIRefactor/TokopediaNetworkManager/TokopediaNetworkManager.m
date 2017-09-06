@@ -271,7 +271,15 @@
                 
                 if (![path isEqualToString:@"/v4/session/make_login.pl"]) {
                     AuthenticationService *authService = [AuthenticationService new];
-                    [authService reloginAccount];
+                    
+                    [authService
+                     getNewTokenOnSuccess:^(OAuthToken *token) {
+                        [authService reloginAccount];
+                    } onFailure:^{
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
+                    }];
+                    
+                    
                 }                
             }
         } else {
