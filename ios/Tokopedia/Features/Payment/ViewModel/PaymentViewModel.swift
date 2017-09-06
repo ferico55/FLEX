@@ -219,7 +219,7 @@ class PaymentViewModel: NSObject {
     }
 
     private func getListOneClickData() -> Observable<MultipleSectionModel> {
-        return .empty()
+        return Observable.just(MultipleSectionModel.empty())
 //        return provider
 //            .request(.getListOneClick())
 //            .map(to: OneClickResponse.self)
