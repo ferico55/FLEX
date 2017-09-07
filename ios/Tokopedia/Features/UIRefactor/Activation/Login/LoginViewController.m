@@ -352,6 +352,7 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
 }
 
 - (void)setupDefaultUsers {
+#ifdef DEBUG
     FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
                 (@{
                    (@{}): @"-Blank-",
@@ -367,9 +368,13 @@ static NSString * const kPreferenceKeyTooltipTouchID = @"Prefs.TooltipTouchID";
                    EMAIL_PASSWORD(@"felicia.amanda+buyer@tokopedia.com", @"tokopedia2017"),
                    EMAIL_PASSWORD(@"felicia.amanda+seller@tokopedia.com", @"tokopedia2017"),
                    EMAIL_PASSWORD(@"feni.manurung+123@tokopedia.com", @"123tokopedia"),
-                   EMAIL_PASSWORD(@"feni.manurung+456@tokopedia.com", @"123toped")
+                   EMAIL_PASSWORD(@"feni.manurung+456@tokopedia.com", @"123toped"),
+                   EMAIL_PASSWORD(@"chrysanthia.novelia@tokopedia.com", @"Chrysan33"),
+                   EMAIL_PASSWORD(@"dylan.anggasta@tokopedia.com", @"admintokopedia"),
+                   EMAIL_PASSWORD(@"gunadi.qc@tokopedia.com", @"gun123qwerty")
                    })
                 );
+#endif
 }
 
 - (void)doLoginWithEmail:(NSString *)email password:(NSString *)pass {
