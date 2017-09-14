@@ -55,5 +55,4 @@ class DetailProductVideoCollectionDataSource: NSObject, UICollectionViewDataSour
         cell.playVideo()
     }
     
-    
 }

@@ -12,5 +12,4 @@ import UIKit
 
     var list:[ListOption] = []
     
-    
 }

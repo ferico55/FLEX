@@ -150,7 +150,6 @@ class PulsaRequest: NSObject {
                                 let statusRoot = mappingResult.dictionary()[""] as! PulsaStatusRoot
                                 didReceiveMaintenanceStatus(statusRoot.data)
                                 
-                                
                 },
                                onFailure: { (errors) -> Void in
                                 onFailure()

@@ -53,7 +53,6 @@ class DigitalOperatorSelectionViewController: UIViewController {
             .bindTo(_onOperatorSelected)
             .disposed(by: rx_disposeBag)
         
-        
         self.view = tableView
         self.view.backgroundColor = .white
     }

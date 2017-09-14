@@ -14,7 +14,6 @@ enum ShortcutItemType: String {
     case readInbox = "message"
 }
 
-
 @objc (QuickActionHelper)
 class QuickActionHelper: NSObject {
 

@@ -74,14 +74,12 @@ class OrderButtonView: UIView {
         self.addButtonWithTitle("Tanya Pembeli", imageName:"icon_order_message_grey", action:#selector(self.tapAskBuyer(_:)))
     }
     
-    
     func removeAllButtons(){
         guard let _ = stackView else {
             return
         }
         stackView.subviews.forEach { $0.removeFromSuperview()}
     }
-    
     
     @objc fileprivate func tapAccept(_ sender:UIButton){
         onTapAccept?()

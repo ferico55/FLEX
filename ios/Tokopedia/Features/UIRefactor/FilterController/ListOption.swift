@@ -82,7 +82,6 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable {
     
     var isNewCategory :Bool = false
     
-    
     required override init() {
     }
     

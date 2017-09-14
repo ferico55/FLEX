@@ -55,7 +55,6 @@ class ProductEditDetail: NSObject {
         }
     }
     
-    
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)
         mapping .addAttributeMappings(from:[

@@ -18,7 +18,6 @@ class HadesProvider: RxMoyaProvider<HadesTarget> {
                    plugins: [NetworkLoggerPlugin(verbose: true),NetworkPlugin()])
     }
     
-    
     private static func endpointClosure(target: HadesTarget) -> Endpoint<HadesTarget> {
         return NetworkProvider.defaultEndpointCreator(for: target)
     }
@@ -82,7 +81,6 @@ extension HadesTarget : TargetType {
     
     /// Provides stub data for use in testing.
     var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
-    
     
     /// The type of HTTP task to be performed.
     var task: Task { return .request }

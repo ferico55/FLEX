@@ -60,7 +60,6 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     func navigateToPulsaOperator(_ operators: [PulsaOperator]) {
         let controller = PulsaOperatorViewController()
         
-        
         controller.didTapOperator = { [unowned self] (selectedOperator) in
             self.pulsaView.buildViewByOperator(selectedOperator)
         }
@@ -153,7 +152,6 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         
         return phone
     }
-    
     
     //MARK : CNContactPickerdelegate
     @available(iOS 9.0, *)

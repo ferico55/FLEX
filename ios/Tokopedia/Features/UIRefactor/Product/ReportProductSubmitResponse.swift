@@ -22,6 +22,5 @@ class ReportProductSubmitResponse: NSObject {
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", with: ReportProductSubmitResult.mapping()))
         return mapping;
     }
-
     
 }

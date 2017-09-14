@@ -70,7 +70,6 @@ class ShopHomeViewController: UIViewController {
                 return true
             }
             
-            
             TPRoutes.routeURL(url)
             return true
         }
@@ -99,7 +98,6 @@ class ShopHomeViewController: UIViewController {
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }
-    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

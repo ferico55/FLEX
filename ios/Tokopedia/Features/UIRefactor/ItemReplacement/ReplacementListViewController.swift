@@ -86,7 +86,6 @@ class ReplacementListViewController: UIViewController {
             .bindTo(viewModel.refreshTrigger)
             .disposed(by: rx_disposeBag)
         
-        
         viewModel.loading.asObservable()
             .do(onNext: { isLoading in
                 if(!isLoading) {
@@ -180,7 +179,6 @@ class ReplacementListViewController: UIViewController {
                     self.selectedFilter.sort = selectedSort
                     self.selectedSortParameter = sortParameter
                     self.viewModel.filter.value = self.selectedFilterParameter.merged(with: self.selectedSortParameter)
-
                     
                 }, onReceivedFilterDataOption: { filterOptions in
                     self.filterOptions = filterOptions

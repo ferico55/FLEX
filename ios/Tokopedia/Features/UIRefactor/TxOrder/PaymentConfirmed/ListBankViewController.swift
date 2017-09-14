@@ -186,7 +186,6 @@ class ListBankViewController: UIViewController {
             }
             .disposed(by: rx_disposeBag)
         
-        
         tableView.rx
             .itemSelected
             .map { [unowned self] in self.listBank[$0.row] }

@@ -10,7 +10,6 @@ import UIKit
 import UIAlertController_Blocks
 import LocalAuthentication
 
-
 @objc(SettingTouchIDViewController)
 class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -18,7 +17,6 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noResultView: NoResultReusableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

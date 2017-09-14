@@ -10,7 +10,6 @@ import RestKit
 class PulsaStatusAttribute: NSObject {
     var is_maintenance : Bool = false
     
-    
     static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
             "is_maintenance" : "is_maintenance",

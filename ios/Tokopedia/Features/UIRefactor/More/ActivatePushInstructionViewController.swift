@@ -13,7 +13,6 @@ class ActivatePushInstructionViewController: UIViewController {
 
     var viewControllerDidClosed: (() -> Void)?
     
-    
     @IBOutlet var aktifkanButton: UIButton? {
         didSet {
             aktifkanButton?.layer.borderColor = UIColor.white.cgColor

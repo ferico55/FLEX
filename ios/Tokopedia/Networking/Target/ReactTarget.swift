@@ -25,7 +25,6 @@ class ReactNetworkProviderObjcBridge: NSObject {
         
         let encodingObject: ParameterEncoding = encoding == "json" ? JSONEncoding.default : URLEncoding.default
         let target = ReactTarget(targetBaseUrl: url, targetPath: path, targetMethod: method, params: params, parameterEncoding: encodingObject)
-
         
         let endpointClosure = { (target: ReactTarget) in
             return NetworkProvider<ReactTarget>.defaultEndpointCreator(for: target)

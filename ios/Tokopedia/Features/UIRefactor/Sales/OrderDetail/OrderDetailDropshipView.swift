@@ -29,5 +29,4 @@ class OrderDetailDropshipView: UIView {
         return view
     }
 
-
 }

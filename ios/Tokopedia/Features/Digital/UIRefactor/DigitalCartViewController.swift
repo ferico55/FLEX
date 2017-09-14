@@ -361,7 +361,6 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             }
         }
         
-        
         if (self.inputText.text != "") {
             amount = Double(self.inputText.text!)!
         } else {

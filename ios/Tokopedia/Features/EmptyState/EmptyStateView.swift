@@ -65,7 +65,6 @@ import RxSwift
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     @IBAction private func didTapActionButton(_ sender: Any) {
         onTapButton?()
     }

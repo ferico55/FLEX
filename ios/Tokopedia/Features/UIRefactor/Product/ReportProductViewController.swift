@@ -63,7 +63,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         
         let webViewURL = (self.reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)" as NSString).kv_encodeHTMLCharacterEntities()
         
-        
         webViewVC.strURL = userManager.webViewUrl(fromUrl: webViewURL!)
         webViewVC.strTitle = "Laporkan Produk"
         webViewVC.shouldAuthorizeRequest = true

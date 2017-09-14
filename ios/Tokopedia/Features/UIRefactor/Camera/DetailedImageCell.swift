@@ -12,7 +12,6 @@ class DetailedImageCell: UICollectionViewCell {
     
     @IBOutlet var deleteButton: UIButton!
     @IBOutlet var image: UIImageView!
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -23,7 +23,6 @@ class CategoryDataForCategoryResultVC: NSObject {
         self.scIdentifier = pathComponent.joined(separator: "_")
     }
     
-    
     func mapToDictionary() -> [String : String] {
         return [
             "department_1" : department1!,

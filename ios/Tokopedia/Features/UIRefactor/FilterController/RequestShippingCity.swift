@@ -25,7 +25,6 @@ class RequestShippingCity: NSObject {
                                             let response : AddressObj = result[""] as! AddressObj
                                             
                                             success(response.data.shipping_city)
-
                                             
         }) { (error: Error!) in
             failed(error as NSError)

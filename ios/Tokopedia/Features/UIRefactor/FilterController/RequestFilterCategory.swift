@@ -33,12 +33,10 @@ class RequestFilterCategory: NSObject {
                 
                 success(response.data.categories)
                 
-                
             },
             onFailure: { (error) in
                 failed(error)
             })
     }
-
 
 }

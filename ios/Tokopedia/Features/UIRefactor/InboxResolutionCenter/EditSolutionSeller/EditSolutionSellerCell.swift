@@ -8,14 +8,12 @@
 
 import UIKit
 
-
 class EditSolutionSellerCell: UITableViewCell {
     @IBOutlet weak var freeReturnLogoImageView: UIImageView!
     @IBOutlet weak var troubleLabel: UILabel!
     @IBOutlet weak var troubleDescriptionLabel: UILabel!
     @IBOutlet weak var freeReturnViewHeight: NSLayoutConstraint!
     @IBOutlet weak var productNameLabel: UILabel!
-
     
     override func awakeFromNib() {
         super.awakeFromNib()

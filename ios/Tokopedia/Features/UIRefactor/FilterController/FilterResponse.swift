@@ -14,7 +14,6 @@ class FilterResponse: NSObject {
     var status : NSString = ""
     var data : FilterData = FilterData()
     
-    
     class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status" : "status"]
     }

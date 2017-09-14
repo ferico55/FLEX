@@ -15,7 +15,6 @@ class Notes: NSObject {
     var server_process_time : NSString = ""
     var result : NotesResult = NotesResult()
     
-    
     class fileprivate func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return ["status" : "status",
                 "server_process_time" : "server_process_time"]

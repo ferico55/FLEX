@@ -368,7 +368,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
     }
     
-    
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
         AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Widget Bar")
@@ -394,7 +393,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             }
         }
     }
-    
     
     fileprivate func buildOperatorButton() {
         let operatorTitle = (self.selectedOperator.attributes.name != "") ? self.selectedOperator.attributes.name : ButtonConstant.defaultProductButtonTitle
@@ -504,7 +502,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         attachArrowToButton(productButton)
     }
     
-    
     fileprivate func buildAllView(_ category: PulsaCategory) {
         stackView.arrangedSubviews.enumerated().forEach { index, subview in
             if(index > 0) {
@@ -518,10 +515,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             self.setSelectedOperatorWithOperatorId(operatorId)
             self.findProducts(operatorId, categoryId: category.id!, didReceiveProduct: nil)
             
-            
             self .buildOperatorButton()
         }
-        
         
         if(category.attributes.client_number.is_shown) {
             self.buildNumberField(category)
@@ -532,7 +527,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.buildBuyButtonPlaceholder()
         self.buildSeeAllButton()
     }
-    
     
     fileprivate func buildUseSaldoView() {
         saldoButtonPlaceholder = UIView(frame: CGRect.zero)
@@ -550,7 +544,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.width.height().equalTo()(18)
             make?.left.equalTo()(self.productButton.mas_left)
         }
-        
         
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
@@ -797,7 +790,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.height.equalTo()(60)
         }
         
-        
         self.saldoCheckBox.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         self.saldoLabel.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
@@ -840,7 +832,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         _ = self.operatorErrorLabel?.mas_updateConstraints { make in
             make?.height.equalTo()((!self.operatorButton.isHidden && !self.isValidOperator()) ? 22 : 0)
         }
-        
         
         if(isValidOperator() && self.isValidProduct() && isValidNumber) {
             func revertBuyButton() {
@@ -918,8 +909,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         return true
     }
     
-    
-    
     // MARK: Validation Checking
     
     fileprivate func isValidNumber(_ number: String) -> Bool{
@@ -960,8 +949,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         
         return true
     }
-    
-    
     
     fileprivate func isValidProduct() -> Bool {
         if(self.productButton.currentTitle == ButtonConstant.defaultProductButtonTitle && self.selectedOperator.attributes.rule.show_product == true) {
@@ -1072,8 +1059,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             return newLength <= (self.selectedOperator.attributes.maximum_length > 0 ? self.selectedOperator.attributes.maximum_length : 14)
         }
     }
-    
-    
     
     fileprivate func attachArrowToButton(_ button: UIButton) {
         button.setImage(UIImage(named: "icon_arrow_down_grey"), for: UIControlState())

@@ -24,7 +24,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //intercept when user click on action here
     var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
-    var didTapBack:(() -> ())?
+    var didTapBack:(() -> Void)?
     
     override func loadView() {
         let jscript = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"

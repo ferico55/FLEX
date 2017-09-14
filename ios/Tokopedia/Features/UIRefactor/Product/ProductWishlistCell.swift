@@ -32,8 +32,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
-
 class ProductWishlistCell : UICollectionViewCell {
     
     @IBOutlet weak var productImage: UIImageView!
@@ -47,7 +45,6 @@ class ProductWishlistCell : UICollectionViewCell {
     @IBOutlet weak var labelsView: OAStackView!
     
     var imageDownloader = QueueImageDownloader()
-    
     
     @IBOutlet weak var preorderPositionConstraint: NSLayoutConstraint!
     

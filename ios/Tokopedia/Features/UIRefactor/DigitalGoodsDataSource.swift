@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 @objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource, SwipeViewDelegate {
     var _goods : Array<MiniSlide>!
     var _swipeView : SwipeView!
@@ -42,7 +41,6 @@ import Foundation
     
         return view
     }
-    
     
     func goodsAtIndex(_ index: Int) -> MiniSlide {
         return _goods[index]

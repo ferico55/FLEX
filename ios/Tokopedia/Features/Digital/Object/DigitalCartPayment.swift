@@ -65,7 +65,6 @@ import Unbox
         let transactionId = try? unboxer.unbox(keyPath: "data.attributes.parameter.transaction_id") as String
         let errorMessage = try? unboxer.unbox(keyPath: "errors.0.title") as String
         
-        
         self.init(redirectUrl: url, callbackUrlSuccess: callbackUrlSuccess, callbackUrlFailed: callbackUrlFailed, queryString: queryString, transactionId: transactionId, errorMessage:errorMessage)
     }
 

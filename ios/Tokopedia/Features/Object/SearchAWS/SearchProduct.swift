@@ -51,7 +51,6 @@ final class SearchProduct:NSObject, Unboxable {
     
     var similarity_rank:String?
     
-    
     var viewModel:ProductModelView {
         get {
             let vm = ProductModelView()
@@ -86,7 +85,6 @@ final class SearchProduct:NSObject, Unboxable {
             return vm
         }
     }
-    
     
     init(shop_gold_status:Int?,
          product_sold_count:Int?,

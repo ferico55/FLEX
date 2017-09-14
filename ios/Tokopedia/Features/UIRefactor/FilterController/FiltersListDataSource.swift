@@ -70,7 +70,6 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(searchActive){
             if searchBar.text == "" {
@@ -329,7 +328,6 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     fileprivate var refreshControl : UIRefreshControl = UIRefreshControl()
     fileprivate var rootCategoryID :String = ""
     fileprivate var isMultipleSelect : Bool = true
-
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

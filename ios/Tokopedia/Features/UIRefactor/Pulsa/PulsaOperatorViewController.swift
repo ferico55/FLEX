@@ -61,6 +61,5 @@ class PulsaOperatorViewController: UIViewController, UITableViewDelegate, UITabl
         self.didTapOperator?(operators[indexPath.row])
         self.navigationController?.popViewController(animated: true)
     }
-    
 
 }

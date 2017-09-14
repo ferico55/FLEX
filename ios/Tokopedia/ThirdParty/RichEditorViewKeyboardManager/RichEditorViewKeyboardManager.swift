@@ -59,7 +59,6 @@ class RichEditorViewKeyboardManager: NSObject {
         let options = UIViewAnimationOptions(rawValue: curve)
         let keyboardRect = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
 
-
         if notification.name == NSNotification.Name.UIKeyboardWillShow {
             self.view?.addSubview(self.toolbar)
             UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
@@ -67,7 +66,6 @@ class RichEditorViewKeyboardManager: NSObject {
                     self.toolbar.frame.origin.y = view.frame.height - (keyboardRect.height + self.toolbar.frame.height)
                 }
             }, completion: nil)
-
 
         } else if notification.name == NSNotification.Name.UIKeyboardWillHide {
             UIView.animate(withDuration: duration, delay: 0, options: options, animations: {

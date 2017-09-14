@@ -44,7 +44,6 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     @IBOutlet fileprivate var soccerBall: UIImageView!
     @IBOutlet fileprivate var giftbox: UIImageView!
     
-    
     @IBOutlet fileprivate var slide3Content: UIImageView!
     
     @IBOutlet fileprivate var page4Top: UIImageView!

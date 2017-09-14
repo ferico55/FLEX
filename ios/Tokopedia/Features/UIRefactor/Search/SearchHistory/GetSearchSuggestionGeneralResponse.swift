@@ -21,5 +21,4 @@ class GetSearchSuggestionGeneralResponse: NSObject {
         return mapping;
     }
     
-    
 }

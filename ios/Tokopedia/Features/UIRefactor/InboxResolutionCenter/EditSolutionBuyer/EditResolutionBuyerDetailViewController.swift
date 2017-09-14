@@ -187,7 +187,6 @@ import UIKit
         loadingIndicator.startAnimating()
     }
     
-    
     fileprivate func navigateToPhotoPicker(){
         
         TKPImagePickerController.showImagePicker(self,
@@ -279,7 +278,6 @@ import UIKit
             self.doneButton.isEnabled = true
 
             self.tableView.reloadData()
-        
             
             }) { (error) in
                 
@@ -361,7 +359,6 @@ extension EditResolutionBuyerDetailViewController : UITextFieldDelegate{
         NumberFormatter.setTextFieldFormatterString(textField, string: string)
         return true
     }
-
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.firstResponderIndexPath = IndexPath(row: 0, section: 1)
@@ -408,11 +405,9 @@ extension EditResolutionBuyerDetailViewController : GeneralTableViewControllerDe
     
 }
 
-
 extension EditResolutionBuyerDetailViewController : UITableViewDelegate {
     //MARK: UITableViewDelegate
 }
-
 
 extension EditResolutionBuyerDetailViewController : UITableViewDataSource {
     //MARK: UITableViewDataSource

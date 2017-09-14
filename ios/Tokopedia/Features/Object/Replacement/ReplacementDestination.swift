@@ -19,7 +19,6 @@ final class ReplacementDestination: Unboxable {
     var name: String!
     var district: String!
     
-    
     required convenience init(unboxer: Unboxer) throws {
         self.init()
         phone = try unboxer.unbox(key:"receiver_phone")

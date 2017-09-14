@@ -228,7 +228,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Timer Methods
-    fileprivate func startTimerCountdown(_ secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: @escaping () -> ()) -> Timer {
+    fileprivate func startTimerCountdown(_ secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: @escaping () -> Void) -> Timer {
         var timeLeft = secondsLeft
         let buttonTimer = Timer.bk_scheduledTimer(
             withTimeInterval: 1,
@@ -307,8 +307,6 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             StickyAlertView.showErrorMessage(["Kode OTP harus terdiri dari 6 angka"])
             return
         }
-
-        
         
         self.submitSecurityAnswer(answer!)
     }
@@ -403,7 +401,6 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 }
         })
     }
-
     
     //MARK: OTP Call Button Methods
     fileprivate func disableOTPCallButton() {
@@ -453,8 +450,6 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                 self.enableOTPOnCallInSeconds(self.resendOTPSecondsLeftIfFailed)
         })
     }
-    
-    
     
     //MARK: UITextField Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

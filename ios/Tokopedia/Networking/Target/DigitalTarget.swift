@@ -46,7 +46,6 @@ enum DigitalTarget {
 
 extension DigitalTarget: TargetType {
     
-    
     /// The target's base `URL`.
     var baseURL: URL { return URL(string: NSString.pulsaApiUrl())! }
     

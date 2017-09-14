@@ -23,7 +23,6 @@ class ReplacementDetailViewModel: NSObject {
     private let activityIndicator = ActivityIndicator()
     private var provider = ReplacementProvider()
     
-    
     init(replacement: Replacement){
         
         super.init()
@@ -64,7 +63,6 @@ class ReplacementDetailViewModel: NSObject {
             .drive(loading)
             .disposed(by: rx_disposeBag)
     }
-
     
     func takeReplacement(_ id: String) -> Observable<TakeReplacementResult> {
         return self.provider

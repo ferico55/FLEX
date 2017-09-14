@@ -10,7 +10,6 @@ import UIKit
 import Foundation
 import GoogleMaps
 
-
 @objc public enum TypePlacePicker : Int{
     case typeEditPlace
     case typeShowPlace

@@ -17,7 +17,6 @@ class ReplacementProvider: RxMoyaProvider<ReplacementTarget> {
                    plugins: [NetworkLoggerPlugin(verbose: true),NetworkPlugin()])
     }
     
-    
     private static func endpointClosure(target: ReplacementTarget) -> Endpoint<ReplacementTarget> {
         return NetworkProvider.defaultEndpointCreator(for: target)
     }

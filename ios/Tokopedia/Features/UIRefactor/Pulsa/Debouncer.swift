@@ -9,11 +9,11 @@
 import Foundation
 
 class Debouncer: NSObject {
-    var callback: (() -> ())
+    var callback: (() -> Void)
     var delay: Double
     weak var timer: Timer?
     
-    init(delay: Double, callback: @escaping (() -> ())) {
+    init(delay: Double, callback: @escaping (() -> Void)) {
         self.delay = delay
         self.callback = callback
     }

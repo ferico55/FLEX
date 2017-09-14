@@ -186,7 +186,6 @@ class InboxTicketRequest: NSObject {
             "p_photo_all"       : imageIdParam
         ]
         
-        
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingHmac = true
@@ -245,7 +244,6 @@ class InboxTicketRequest: NSObject {
             "post_key"      : postKey,
             "ticket_id"     : ticketID,
         ]
-        
         
         return Observable.create({ (observer) -> Disposable in
             let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()

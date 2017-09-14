@@ -224,7 +224,6 @@ class RequestResolution: NSObject {
     
     fileprivate class func getPostKey(_ postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
         
-        
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
         var param :[String:String] = [
@@ -289,7 +288,6 @@ class RequestResolution: NSObject {
         
     }
     
-    
     fileprivate class func getFileUploaded(_ postData:ReplayConversationPostData)-> Observable<String>{
         
         let filePaths : [String] = postData.uploadedImages.map{$0.file_path}
@@ -333,7 +331,6 @@ class RequestResolution: NSObject {
         })
         
     }
-    
     
     fileprivate class func submitReplayConversation(_ postData:ReplayConversationPostData)-> Observable<ResolutionActionResult>{
         

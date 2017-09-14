@@ -46,7 +46,6 @@ class CategoryIntermediarySubCategoryNoRevampView: UIView {
     func unhideTopSeparatorView() {
         upperHorizontalSeparatorView.isHidden = false
     }
-
     
     func setData(data: CategoryIntermediaryChild) {
         self.categoryNameLabel.text = data.name

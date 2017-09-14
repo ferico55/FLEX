@@ -109,7 +109,6 @@ import RestKit
     }
 
     // MARK: - Table view data source
-
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -277,7 +276,6 @@ import RestKit
         controller.generatedHost = generatedHost
         self.navigationController?.pushViewController(controller, animated: true)
     }
-
     
     func shopDomainDidChange(_ textField: UITextField) -> Void {
         let text = textField.text! as NSString

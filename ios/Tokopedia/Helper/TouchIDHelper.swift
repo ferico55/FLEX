@@ -11,7 +11,6 @@ import KeychainAccess
 import UIAlertController_Blocks
 import LocalAuthentication
 
-
 struct KeychainAccessService {
     static let account = "Account"
     static let touchAccount = "TouchAccount"
@@ -50,7 +49,6 @@ class TouchIDHelper: NSObject {
         
         return items.count
     }
-    
     
     func saveTouchID(forEmail email: String, password: String) {
         

@@ -22,7 +22,6 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
     var default_operator_id : String = ""
     
     var client_number : PulsaCategoryClientNumber = PulsaCategoryClientNumber()
-
     
     static func attributeMappingDictionary() -> [AnyHashable: Any]! {
         return [
@@ -45,7 +44,6 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
         
         let relMapping : RKRelationshipMapping = RKRelationshipMapping(fromKeyPath: "client_number", toKeyPath: "client_number", with: PulsaCategoryClientNumber.mapping())
         mapping.addPropertyMapping(relMapping)
-        
         
         return mapping
     }

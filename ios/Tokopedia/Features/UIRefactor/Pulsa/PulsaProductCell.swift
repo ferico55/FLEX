@@ -16,7 +16,6 @@ class PulsaProductCell: UITableViewCell {
     @IBOutlet weak var productStatus: UILabel!
     @IBOutlet weak var productTag: UILabel!
     @IBOutlet weak var descriptionHeightConstraint: NSLayoutConstraint!
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()

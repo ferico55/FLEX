@@ -36,7 +36,6 @@ class ScreenshotAlertView: TKPDAlertView {
     func setImage(_ image: UIImage) {
         self.screenshotImage.image = image
     }
-
     
     @IBAction func didTapShareButton(_ sender: Any) {
         self.dismiss()
@@ -51,6 +50,5 @@ class ScreenshotAlertView: TKPDAlertView {
     private func dismiss() {
         self.dismiss(withClickedButtonIndex: 0, animated: true)
     }
-    
 
 }

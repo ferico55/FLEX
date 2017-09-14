@@ -191,7 +191,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    
     //MARK: Requests
     fileprivate func onRequestOTPSuccess() {
         self.verifyStatusLabel.text = "Verifikasi akan dikirimkan."
@@ -218,7 +217,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Timer Method
-    fileprivate func startTimerCountdown(_ secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: @escaping () -> ()) -> Timer {
+    fileprivate func startTimerCountdown(_ secondsLeft: Int, onTick: ((Int) -> Void)?, onTimeout: @escaping () -> Void) -> Timer {
         var timeLeft = secondsLeft
         let buttonTimer = Timer.bk_scheduledTimer(
             withTimeInterval: 1,

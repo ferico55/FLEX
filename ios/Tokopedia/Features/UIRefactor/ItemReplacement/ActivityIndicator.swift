@@ -14,7 +14,7 @@ private struct ActivityToken<E> : ObservableConvertibleType, Disposable {
     fileprivate let _source: Observable<E>
     fileprivate let _dispose: Cancelable
     
-    init(source: Observable<E>, disposeAction: @escaping () -> ()) {
+    init(source: Observable<E>, disposeAction: @escaping () -> Void) {
         _source = source
         _dispose = Disposables.create(with: disposeAction)
     }

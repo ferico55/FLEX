@@ -14,7 +14,7 @@ class DelayedActionManager : NSObject
     
     //when this function is not called for specific time, do the action
     //if this function is called again, reset the delay time with the new one
-    func whenNotCalledFor(_ delay:TimeInterval, doAction:@escaping (()->()) )
+    func whenNotCalledFor(_ delay:TimeInterval, doAction:@escaping (()->Void) )
     {
         let dispatchDelay = Int64(delay * Double(NSEC_PER_SEC))
         

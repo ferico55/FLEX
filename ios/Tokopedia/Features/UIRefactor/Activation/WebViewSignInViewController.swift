@@ -94,7 +94,6 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
             
             let message = (url.parameters()["message"] as! String).removingPercentEncoding!
             
-            
             let alertView = UIAlertView.bk_alertView(withTitle: "Perhatian", message: message) as! UIAlertView
             alertView.bk_addButton(withTitle: "OK", handler: {[unowned self] in
                 self.navigationController?.popViewController(animated: true)
@@ -112,7 +111,6 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation

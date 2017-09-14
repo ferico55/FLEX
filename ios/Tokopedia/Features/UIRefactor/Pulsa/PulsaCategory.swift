@@ -56,6 +56,4 @@ class PulsaCategory: NSObject, NSCoding {
         aCoder.encode(attributes, forKey: "attributes")
     }
     
-    
-    
 }

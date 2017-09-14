@@ -26,7 +26,6 @@ class ReplacementListViewModel: NSObject {
     var currentPage: Int = 1
     private var nextPage: Int?
     private var provider = ReplacementProvider()
-
     
     override init(){
         

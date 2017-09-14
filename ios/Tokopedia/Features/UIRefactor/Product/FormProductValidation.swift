@@ -53,7 +53,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 class FormError:Error{
     let message:String
     init(message:String) {
@@ -258,7 +257,6 @@ class FormProductValidation: NSObject {
             throw FormError(message: "Etalase belum dipilih")
         }
     }
-    
     
     //MARK: - Wholesale
     fileprivate func wholesaleValidation(_ wholesales: [WholesalePrice], product:ProductEditDetail) throws {

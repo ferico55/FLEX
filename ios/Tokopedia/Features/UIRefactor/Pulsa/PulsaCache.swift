@@ -39,7 +39,7 @@ class PulsaCache: NSObject {
                          on: DispatchQueue.main)
     }
     
-    func loadCategories(_ loadCategoryCallBack: @escaping (_ category: PulsaCategoryRoot?) -> ()) {
+    func loadCategories(_ loadCategoryCallBack: @escaping (_ category: PulsaCategoryRoot?) -> Void) {
         if (!PulsaTweaks.shouldCacheRequest()) {
             pruneCache()
         }
@@ -67,7 +67,7 @@ class PulsaCache: NSObject {
                          on: DispatchQueue.main)
     }
     
-    func loadOperators(_ loadOperatorCallBack: @escaping (_ op: PulsaOperatorRoot?) -> ()) {
+    func loadOperators(_ loadOperatorCallBack: @escaping (_ op: PulsaOperatorRoot?) -> Void) {
         if (!PulsaTweaks.shouldCacheRequest()) {
             pruneCache()
         }
@@ -102,7 +102,7 @@ class PulsaCache: NSObject {
         }, on: DispatchQueue.main)
     }
     
-    func loadProducts(_ loadProductCallBack: @escaping (_ product: PulsaProductRoot?) -> ()) {
+    func loadProducts(_ loadProductCallBack: @escaping (_ product: PulsaProductRoot?) -> Void) {
         if (!PulsaTweaks.shouldCacheRequest()) {
             pruneCache()
         }
@@ -131,7 +131,7 @@ class PulsaCache: NSObject {
         }
     }
     
-    func loadLastOrder(categoryId:String, loadLastOrderCallBack: @escaping (_ lastOrder: DigitalLastOrder?) -> ()) {
+    func loadLastOrder(categoryId:String, loadLastOrderCallBack: @escaping (_ lastOrder: DigitalLastOrder?) -> Void) {
         if (!PulsaTweaks.shouldCacheRequest()) {
             pruneCache()
         }

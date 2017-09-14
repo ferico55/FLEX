@@ -344,7 +344,6 @@ class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarD
             make?.top.left().right().equalTo()(self.titleView)
         }
         
-        
         betweenLabel.text = messageSubtitle
         betweenLabel.font = UIFont.smallTheme()
         betweenLabel.textAlignment = .center

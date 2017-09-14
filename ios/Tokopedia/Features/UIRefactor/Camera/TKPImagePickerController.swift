@@ -32,7 +32,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 @objc class TKPImagePickerController: NSObject {
     
     class func showImagePicker(_ viewController:UIViewController, assetType: DKImagePickerControllerAssetType,

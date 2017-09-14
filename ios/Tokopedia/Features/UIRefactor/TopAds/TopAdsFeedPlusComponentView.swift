@@ -22,14 +22,14 @@ struct TopAdsFeedPlusState: Render.StateType, ReSwift.StateType {
 
 class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
     
-    private var callback: (_ state: TopAdsFeedPlusState) -> ()
+    private var callback: (_ state: TopAdsFeedPlusState) -> Void
     
     override init() {
         callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> ()) {
+    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
         self.init()
         callback = favoriteCallback
     }
@@ -268,14 +268,14 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
 
 class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
     
-    private var callback: (_ state: TopAdsFeedPlusState) -> ()
+    private var callback: (_ state: TopAdsFeedPlusState) -> Void
     
     override init() {
         callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> ()) {
+    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
         self.init()
         callback = favoriteCallback
     }

@@ -30,7 +30,6 @@ class PulsaProductPromo: NSObject, NSCoding {
         let mapping : RKObjectMapping = RKObjectMapping(for: self)
         mapping.addAttributeMappings(from:self.attributeMappingDictionary())
         
-        
         return mapping
     }
     

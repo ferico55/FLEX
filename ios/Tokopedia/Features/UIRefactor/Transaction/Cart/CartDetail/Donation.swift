@@ -41,7 +41,5 @@ class Donation: NSObject {
         
         return mapping
     }
-    
-
 
 }

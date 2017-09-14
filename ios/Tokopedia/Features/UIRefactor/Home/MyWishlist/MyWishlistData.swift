@@ -38,7 +38,6 @@ class MyWishlistData: NSObject {
         mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "badges", toKeyPath: "badges", with: ProductBadge.mapping()))
         mapping?.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "labels", toKeyPath: "labels", with: ProductLabel.mapping()))
         
-        
         return mapping!
     }
     

@@ -30,7 +30,6 @@ import Foundation
             cellHeight = cellWidth + 90
         }
         
-        
         return CGSize(width: cellWidth, height: cellHeight);
     }
     
@@ -44,8 +43,6 @@ import Foundation
         numberOfCell = isPad ? 4 : 2
         cellWidth = screenWidth/numberOfCell
         cellHeight = cellWidth + 182
-    
-        
         
         return CGSize(width: cellWidth, height: cellHeight);
     }

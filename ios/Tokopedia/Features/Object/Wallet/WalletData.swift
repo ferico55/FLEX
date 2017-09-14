@@ -33,7 +33,6 @@ final class WalletData:NSObject, Unboxable {
         let redirectUrl = try unboxer.unbox(keyPath: "redirect_url") as String
         let link = try unboxer.unbox(keyPath: "link") as Int
         
-        
         self.init(action:action, balance:balance, text:text, redirectUrl:redirectUrl, link:link, hasPendingCashback:false)
     }
     

@@ -21,7 +21,6 @@ struct DigitalFieldValidation {
         let regex = try? NSRegularExpression(pattern: regexPattern, options: [])
         let range = NSMakeRange(0, text.characters.count)
         
-        
         return regex?.numberOfMatches(in: text, options: [], range: range) != 0
     }
 }

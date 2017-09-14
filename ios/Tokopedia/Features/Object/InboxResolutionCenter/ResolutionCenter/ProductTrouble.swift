@@ -61,7 +61,6 @@ class ProductTrouble: NSObject {
                 viewModel.isFreeReturn = false
             }
             
-            
             return viewModel
         }
     }

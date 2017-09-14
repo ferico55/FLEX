@@ -32,7 +32,6 @@ import DownPicker
     @IBOutlet var problemCell: UITableViewCell!
     
     fileprivate var successEdit : ((_ solutionLast: ResolutionLast, _ conversationLast: ResolutionConversation, _ replyEnable: Bool) -> Void)?
-
     
     var resolutionID : String = ""
     var isGetProduct : Bool = true

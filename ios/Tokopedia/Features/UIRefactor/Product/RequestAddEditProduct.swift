@@ -14,7 +14,6 @@ enum RequestError : Error {
     case networkError
 }
 
-
 @objc class RequestAddEditProduct: NSObject {
     
     class func fetchFormEditProductID(_ productID:String, shopID:String, onSuccess: @escaping ((ProductEditResult) -> Void), onFailure:@escaping (()->Void)) {
@@ -469,9 +468,7 @@ enum RequestError : Error {
         })
     }
     
-    
     fileprivate class func getPostKeyAddProduct(_ form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
-        
         
         let filePaths:[String] = form.product_images.map{$0.image_src}
         let filePathString : String = filePaths.joined(separator: "~")
@@ -573,7 +570,6 @@ enum RequestError : Error {
             return Disposables.create()
         })
     }
-    
     
     fileprivate class func getFileUploadedAddProduct(_ isDuplicate:String, selectedImages:[ProductEditImages], generatedHost:GeneratedHost) ->Observable<String> {
         

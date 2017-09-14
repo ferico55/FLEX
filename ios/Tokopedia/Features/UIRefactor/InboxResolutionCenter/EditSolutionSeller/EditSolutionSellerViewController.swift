@@ -42,12 +42,10 @@ import UIKit
     fileprivate var firstResponderIndexPath : IndexPath?
     fileprivate var alertProgress : UIAlertView = UIAlertView()
     
-    
     var successEdit : ((_ solutionLast: ResolutionLast, _ conversationLast: ResolutionConversation, _ replyEnable: Bool) -> Void)?
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
     var type         : Type   = Type.edit
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -425,7 +423,6 @@ extension EditSolutionSellerViewController : UITextFieldDelegate{
 
 extension EditSolutionSellerViewController : UITableViewDelegate {
     //MARK: UITableViewDelegate
-    
     
 }
 

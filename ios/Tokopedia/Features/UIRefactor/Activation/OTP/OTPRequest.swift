@@ -119,7 +119,6 @@ class OTPRequest: NSObject {
         
     }
     
-    
     //MARK: Verify OTP & Phone Number
     class func requestVerify(withOTPCode code: String, phoneNumber number: String, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
         let networkManager = TokopediaNetworkManager()

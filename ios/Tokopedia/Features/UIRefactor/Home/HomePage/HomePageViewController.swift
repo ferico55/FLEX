@@ -108,7 +108,6 @@ class HomePageViewController: UIViewController {
 
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -441,7 +440,6 @@ class HomePageViewController: UIViewController {
             self.pulsaView.didSuccessPressBuy = { [unowned self] url in
                 self.navigator.navigateToWKWebView(url)
             }
-            
             
             //            self.pulsaView.didSuccessPressBuy = { [unowned self] (category) in
             //                self.navigator.navigateToCart(category)
