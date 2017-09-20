@@ -203,6 +203,10 @@ typedef enum TagRequest {
     
     UIViewController *topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
     
+    VersionChecker *versionChecker = [[VersionChecker alloc]init];
+    
+    [versionChecker checkForceUpdate];
+    
     self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController:_tabBarController topViewController:topViewController];
 
 }

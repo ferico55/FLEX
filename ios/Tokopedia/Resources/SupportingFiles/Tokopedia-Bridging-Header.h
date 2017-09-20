@@ -219,4 +219,5 @@
 #import "TransactionCartWebViewViewController.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "TransactionActionResult.h"
+#import "VersionCheckerConfig.h"
 

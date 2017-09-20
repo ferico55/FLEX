@@ -332,6 +332,12 @@
         }
     }
     
+    UIViewController *topVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    if([topVC isKindOfClass:[MainViewController class]] == false){
+        VersionChecker *versionChecker = [[VersionChecker alloc]init];
+        [versionChecker checkForceUpdate];
+    }
+    
     // we always refresh device token, to recover from a bug in 1.80
     // that causes every device to use 'SIMULATORDUMMY'.
     // this is also a solution to retrieve device token after a user

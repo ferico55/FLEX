@@ -80,6 +80,7 @@
 #define GA_EVENT_CATEGORY_RECHARGE @"Recharge"
 #define GA_EVENT_CATEGORY_SCREENSHOT @"Screenshot"
 #define GA_EVENT_CATEGORY_REORDER @"Reorder"
+#define GA_EVENT_CATEGORY_FORCE_UPDATE_ALERT @"Force Update Alert"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
