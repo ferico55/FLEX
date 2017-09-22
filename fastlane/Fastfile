@@ -36,8 +36,11 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     build_number = Time.new.strftime("%Y%m%d%H%M")
-    increment_build_number build_number: build_number
-
+    increment_build_number({
+        xcodeproj: ENV["APP_XCODEPROJ"],
+        build_number: build_number
+    })
+    
     commit_version_bump(
       message: 'Version Bump by fastlane',
       xcodeproj: ENV["APP_XCODEPROJ"],
@@ -63,10 +66,12 @@ platform :ios do
       workspace: 'ios/Tokopedia.xcworkspace',
       scheme: "Tokopedia",
       sdk: "iphoneos",
-      codesigning_identity: "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)",
-      export_method: "appstore",
+      codesigning_identity: "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)"
     )
-    pilot
+    pilot(
+       skip_submission: false,
+       distribute_external: false,
+      )
   end
 
   desc "Deploy a new version to the App Store"

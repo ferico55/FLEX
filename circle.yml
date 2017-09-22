@@ -11,6 +11,7 @@ dependencies:
     - brew install yarn
     - npm install
     - yarn
+    - gem install fastlane
 
 test:
   override:
@@ -22,9 +23,15 @@ general:
       - devel
       - release
       - /feature\/.*/
+      - /release\/.*/
 
 deployment:
   devel_distribution:
     branch: [devel, /feature\/.*/]
     commands:
       - fastlane devel
+
+  release_distribution:
+    branch: [release, /release\/.*/]
+    commands:
+      - fastlane beta
