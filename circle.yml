@@ -16,9 +16,15 @@ test:
   override:
     - yarn danger
 
-# deployment:
-#   production:
-#     branch: master
-#     commands:
-#       - fastlane beta
+general:
+  branches:
+    only:
+      - devel
+      - release
+      - /feature\/.*/
 
+deployment:
+  devel_distribution:
+    branch: [devel, /feature\/.*/]
+    commands:
+      - fastlane devel

@@ -1,0 +1,138 @@
+fastlane_version "1.90.0"
+
+default_platform :ios
+
+
+def build_app
+  #increment_build_number(xcodeproj: project_file)
+  build_number = Time.new.strftime("%Y%m%d%H%M")
+  increment_build_number build_number: build_number
+
+  gym(scheme: "Tokopedia", clean: true, sdk: "iphoneos")
+
+  commit_version_bump(
+    message: 'Version Bump by fastlane',
+    xcodeproj: ENV["APP_XCODEPROJ"],
+    force: true
+  )
+
+end
+
+platform :ios do
+  before_all do
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "600"
+    ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+    ENV["APP_XCODEPROJ"] = 'ios/Tokopedia.xcodeproj'
+
+    #cocoapods
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    scan
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    build_number = Time.new.strftime("%Y%m%d%H%M")
+    increment_build_number build_number: build_number
+
+    commit_version_bump(
+      message: 'Version Bump by fastlane',
+      xcodeproj: ENV["APP_XCODEPROJ"],
+      force: true
+    )
+
+    disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
+
+    update_project_provisioning(
+        xcodeproj: ENV["APP_XCODEPROJ"],
+        target_filter: 'Tokopedia',
+        profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/fb16c214-33e1-49ec-804f-4898ddbd00f3.mobileprovision'
+      )
+
+    update_project_provisioning(
+      xcodeproj: ENV["APP_XCODEPROJ"],
+      target_filter: 'ServiceExtension',
+      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/ba284250-6569-4c05-a1d7-d9d03bcfe1fc.mobileprovision'
+    )
+
+    gym(
+      clean: true,
+      workspace: 'ios/Tokopedia.xcworkspace',
+      scheme: "Tokopedia",
+      sdk: "iphoneos",
+      codesigning_identity: "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)",
+      export_method: "appstore",
+    )
+    pilot
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :appstore do
+    build_app
+    deliver(
+      force: true,
+      skip_deploy: true
+    )
+  end
+
+  lane :devel do
+
+    build_number = Time.new.strftime("%Y%m%d%H%M")
+    increment_build_number({
+        xcodeproj: ENV["APP_XCODEPROJ"],
+        build_number: build_number
+    })
+
+    disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
+
+    update_project_provisioning(
+      xcodeproj: ENV["APP_XCODEPROJ"],
+      target_filter: 'Tokopedia',
+      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/aca02343-7cce-45de-94b7-b9c041b62f18.mobileprovision'
+    )
+
+    update_project_provisioning(
+      xcodeproj: ENV["APP_XCODEPROJ"],
+      target_filter: 'ServiceExtension',
+      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/fd65611d-d1d3-4126-97b9-380727b99d22.mobileprovision'
+    )
+
+    gym(
+      clean: true,
+      workspace: 'ios/Tokopedia.xcworkspace',
+      scheme: "Tokopedia - Debug",
+      sdk: "iphoneos",
+      codesigning_identity: "iPhone Developer: Melissa Juminto (TT6A3N9KTC)",
+      export_method: "development"
+    )
+
+    hockeyapp
+  end
+
+  # Push to Hockey
+  def hockeyapp
+    ENV['COMMIT_MESSAGE'] = changelog_from_git_commits(commits_count: 10, pretty: '• %s')
+    hockey(
+      api_token: ENV['HOCKEY_API_TOKEN'],
+      notes: ENV['COMMIT_MESSAGE']
+    )
+  end
+
+  after_all do |lane|
+    slack(
+       message: "Successfully deployed new App Update."
+    )
+
+    clean_build_artifacts
+  end
+
+  error do |lane, exception|
+    slack(
+       message: exception.message,
+       success: false
+    )
+  end
+end
