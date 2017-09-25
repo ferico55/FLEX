@@ -292,7 +292,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+#ifdef DEBUG
     [FLEXManager.sharedManager showExplorer];
+#endif
     
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
