@@ -9,7 +9,6 @@ dependencies:
   override:
     - brew install node
     - brew install yarn
-    - npm install
     - yarn
     - gem install fastlane
 
