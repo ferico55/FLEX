@@ -36,7 +36,7 @@ def common_pods
     pod 'BlocksKit', '~> 2.2.5'
     pod 'ComponentKit', '~> 0.14'
     pod 'DTTJailbreakDetection', '~> 0.4.0'
-    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
+    pod 'FLEX', :git => 'https://github.com/Flipboard/FLEX.git', :commit => '99eccdf4c34af9b1042d96313ad9cf12dd30ff1f', :configurations => ['Debug']
     pod 'JLPermissions/Notification', '2.2.8'
     pod 'JLPermissions/Contacts', '2.2.8'
     pod 'JLRoutes', '~> 1.6.2'

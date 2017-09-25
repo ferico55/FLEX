@@ -23,12 +23,18 @@
 
 /// If this property is set to YES, FLEX will swizzle NSURLConnection*Delegate and NSURLSession*Delegate methods
 /// on classes that conform to the protocols. This allows you to view network activity history from the main FLEX menu.
-/// Full responses are kept temporarily in a size limited cache and may be pruged under memory pressure.
+/// Full responses are kept temporarily in a size-limited cache and may be pruned under memory pressure.
 @property (nonatomic, assign, getter=isNetworkDebuggingEnabled) BOOL networkDebuggingEnabled;
 
 /// Defaults to 25 MB if never set. Values set here are presisted across launches of the app.
 /// The response cache uses an NSCache, so it may purge prior to hitting the limit when the app is under memory pressure.
 @property (nonatomic, assign) NSUInteger networkResponseCacheByteLimit;
+
+/// Requests whose host ends with one of the blacklisted entries in this array will be not be recorded (eg. google.com).
+/// Wildcard or subdomain entries are not required (eg. google.com will match any subdomain under google.com).
+/// Useful to remove requests that are typically noisy, such as analytics requests that you aren't interested in tracking.
+@property (nonatomic, copy) NSArray<NSString *> *networkRequestHostBlacklist;
+
 
 #pragma mark - Keyboard Shortcuts
 
@@ -48,6 +54,10 @@
 - (void)registerSimulatorShortcutWithKey:(NSString *)key modifiers:(UIKeyModifierFlags)modifiers action:(dispatch_block_t)action description:(NSString *)description;
 
 #pragma mark - Extensions
+
+/// Default database password is @c nil by default.
+/// Set this to the password you want the databases to open with.
+@property (copy, nonatomic) NSString *defaultSqliteDatabasePassword;
 
 /// Adds an entry at the bottom of the list of Global State items. Call this method before this view controller is displayed.
 /// @param entryName The string to be displayed in the cell.

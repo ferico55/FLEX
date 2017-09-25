@@ -21,6 +21,8 @@ FLEX (Flipboard Explorer) is a set of in-app debugging and exploration tools for
 - View system log messages (e.g. from `NSLog`).
 - Access any live object via a scan of the heap.
 - View the file system within your app's sandbox.
+- Browse SQLite/Realm databases in the file system.
+- Trigger 3D touch in the simulator using the control, shift, and command keys.
 - Explore all classes in your app and linked systems frameworks (public and private).
 - Quickly access useful objects such as `[UIApplication sharedApplication]`, the app delegate, the root view controller on the key window, and more.
 - Dynamically view and modify `NSUserDefaults` values.
@@ -85,6 +87,16 @@ View the file system within your app's sandbox. FLEX shows file sizes, image pre
 
 ![File Browser](http://engineering.flipboard.com/assets/flex/file-browser.gif)
 
+### SQLite Browser
+SQLite database files (with either `.db` or `.sqlite` extensions), or [Realm](http://realm.io) database files can be explored using FLEX. The database browser lets you view all tables, and individual tables can be sorted by tapping column headers.
+
+![Database Browser](https://cloud.githubusercontent.com/assets/1422245/11786700/d0ab95dc-a23c-11e5-80ce-0e1b4dba2b6b.png)
+
+### 3D Touch in the Simulator
+Using a combination of the command, control, and shift keys, you can simulate different levels of 3D touch pressure in the simulator. Each key contributes 1/3 of maximum possible force. Note that you need to move the touch slightly to get pressure updates.
+
+![Simulator 3D Touch](https://cloud.githubusercontent.com/assets/1422245/11786615/5d4ef96c-a23c-11e5-975e-67275341e439.gif)
+
 ### System Library Exploration
 Go digging for all things public and private. To learn more about a class, you can create an instance of it and explore its default state.
 
@@ -102,7 +114,7 @@ The code injection is left as an exercise for the reader. :innocent:
 
 
 ## Installation
-FLEX is available on [Cocoapods](http://cocoapods.org/?q=FLEX). Simply add the following line to your podfile:
+FLEX is available on [CocoaPods](http://cocoapods.org/?q=FLEX). Simply add the following line to your podfile:
 
 ```ruby
 pod 'FLEX', '~> 2.0', :configurations => ['Debug']
@@ -112,8 +124,14 @@ Alternatively, you can manually add the files in `Classes/` to your Xcode projec
 
 
 ## Excluding FLEX from Release (App Store) Builds
-*Note: CocoaPods handles this automatically if you only specify the Debug configuration for FLEX in your Podfile.*
-FLEX makes it easy to explore the internals of your app, so it is not something you should expose to your users. Fortunately, it is easy to exclude FLEX files from Release builds. In Xcode, navigate to the "Build Settings" tab of your project. Click the plus and select `Add User-Defined Setting`.
+
+FLEX makes it easy to explore the internals of your app, so it is not something you should expose to your users. Fortunately, it is easy to exclude FLEX files from Release builds. The strategies differ depending on how you integrated FLEX in your project, and are described below.
+
+At the places in your code where you integrate FLEX, do a `#if DEBUG` check to ensure the tool is only accessible in your `Debug` builds and to avoid errors in your `Release` builds. For more help with integrating FLEX, see the example project.
+
+### FLEX files added manually to a project
+
+In Xcode, navigate to the "Build Settings" tab of your project. Click the plus and select `Add User-Defined Setting`.
 
 ![Add User-Defined Setting](http://engineering.flipboard.com/assets/flex/flex-readme-exclude-1.png)
 
@@ -121,8 +139,27 @@ Name the setting `EXCLUDED_SOURCE_FILE_NAMES`. For your `Release` configuration,
 
 ![EXCLUDED_SOURCE_FILE_NAMES](http://engineering.flipboard.com/assets/flex/flex-readme-exclude-2.png)
 
-At the places in your code where you integrate FLEX, do a `#if DEBUG` check to ensure the tool is only accessible in your `Debug` builds and to avoid errors in your `Release` builds. For more help with integrating FLEX, see the example project.
+### FLEX added with CocoaPods
 
+CocoaPods automatically excludes FLEX from release builds if you only specify the Debug configuration for FLEX in your Podfile.
+
+### FLEX added with Carthage
+
+If you are using Carthage, only including the `FLEX.framework` in debug builds is easy:
+
+1. Do NOT add `FLEX.framework` to the embedded binaries of your target, as it would otherwise be included in all builds (therefore also in release ones).
+1. Instead, add `$(PROJECT_DIR)/Carthage/Build/iOS` to your target _Framework Search Paths_ (this setting might already be present if you already included other frameworks with Carthage). This makes it possible to import the FLEX framework from your source files. It does not harm if this setting is added for all configurations, but it should at least be added for the debug one. 
+1. Add a _Run Script Phase_ to your target (inserting it after the existing `Link Binary with Libraries` phase, for example), and which will embed `FLEX.framework` in debug builds only:
+
+	```shell
+	if [ "$CONFIGURATION" == "Debug" ]; then
+	  /usr/local/bin/carthage copy-frameworks
+	fi
+	```
+	
+	Finally, add `$(SRCROOT)/Carthage/Build/iOS/FLEX.framework` as input file of this script phase.
+	
+<p align="center"><img src="README-images/flex-exclusion-carthage.jpg"/></p>
 
 ## Additional Notes
 - When setting fields of type `id` or values in `NSUserDefaults`, FLEX attempts to parse the input string as `JSON`. This allows you to use a combination of strings, numbers, arrays, and dictionaries. If you want to set a string value, it must be wrapped in quotes. For ivars or properties that are explicitly typed as `NSStrings`, quotes are not required.
@@ -142,11 +179,13 @@ FLEX builds on ideas and inspiration from open source tools that came before it.
 - [Gist](https://gist.github.com/samdmarshall/17f4e66b5e2e579fd396) from [@samdmarshall](https://github.com/samdmarshall): another example of enumerating malloc blocks.
 - [Non-pointer isa](http://www.sealiesoftware.com/blog/archive/2013/09/24/objc_explain_Non-pointer_isa.html): an explanation of changes to the isa field on iOS for ARM64 and mention of the useful `objc_debug_isa_class_mask` variable.
 - [GZIP](https://github.com/nicklockwood/GZIP): A library for compressing/decompressing data on iOS using libz.
+- [FMDB](https://github.com/ccgus/fmdb): This is an Objective-C wrapper around SQLite
+
 
 
 
 ## Contributing
-We welcome pull requests for bug fixes, new features, and improvements to FLEX. Contributors to the main FLEX repository must accept Flipboard's Apache-style [Individual Contributor License Agreement (CLA)](https://docs.google.com/forms/d/1gh9y6_i8xFn6pA15PqFeye19VqasuI9-bGp_e0owy74/viewform) before any changes can be merged.
+Please see our [Contributing Guide](https://github.com/Flipboard/FLEX/blob/master/CONTRIBUTING.md).
 
 
 ## TODO

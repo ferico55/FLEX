@@ -11,22 +11,19 @@
 #import "FLEXUtility.h"
 #import "FLEXWebViewController.h"
 #import "FLEXImagePreviewViewController.h"
+#import "FLEXTableListViewController.h"
 
 @interface FLEXFileBrowserTableViewCell : UITableViewCell
 @end
 
-@interface FLEXFileBrowserTableViewController () <FLEXFileBrowserFileOperationControllerDelegate>
+@interface FLEXFileBrowserTableViewController () <FLEXFileBrowserFileOperationControllerDelegate, FLEXFileBrowserSearchOperationDelegate, UISearchResultsUpdating, UISearchControllerDelegate>
 
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSArray *childPaths;
-@property (nonatomic, copy) NSString *searchString;
 @property (nonatomic, strong) NSArray *searchPaths;
 @property (nonatomic, strong) NSNumber *recursiveSize;
 @property (nonatomic, strong) NSNumber *searchPathsSize;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-@property (nonatomic, strong) UISearchDisplayController *searchController;
-#pragma clang diagnostic pop
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) UIDocumentInteractionController *documentController;
 @property (nonatomic, strong) id<FLEXFileBrowserFileOperationController> fileOperationController;
@@ -48,16 +45,10 @@
         self.title = [path lastPathComponent];
         self.operationQueue = [NSOperationQueue new];
         
-        //add search controller
-        UISearchBar *searchBar = [UISearchBar new];
-        [searchBar sizeToFit];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-#pragma clang diagnostic pop
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        self.searchController.searchResultsUpdater = self;
         self.searchController.delegate = self;
-        self.searchController.searchResultsDataSource = self;
-        self.searchController.searchResultsDelegate = self;
+        self.searchController.dimsBackgroundDuringPresentation = NO;
         self.tableView.tableHeaderView = self.searchController.searchBar;
         
         //computing path size
@@ -106,22 +97,20 @@
 {
     self.searchPaths = searchResult;
     self.searchPathsSize = @(size);
-    [self.searchController.searchResultsTableView reloadData];
+    [self.tableView reloadData];
 }
 
-#pragma mark - UISearchDisplayDelegate
+#pragma mark - UISearchResultsUpdating
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    self.searchString = searchString;
-    [self reloadSearchPaths];
-
-    return YES;
+    [self reloadDisplayedPaths];
 }
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView
+#pragma mark - UISearchControllerDelegate
+
+- (void)willDismissSearchController:(UISearchController *)searchController
 {
-    //confirm to clear all operations
     [self.operationQueue cancelAllOperations];
     [self reloadChildPaths];
     [self.tableView reloadData];
@@ -137,25 +126,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.tableView) {
-        return [self.childPaths count];
-    } else {
-        return [self.searchPaths count];
-    }
+    return self.searchController.isActive ? [self.searchPaths count] : [self.childPaths count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSNumber *currentSize = nil;
-    NSArray *currentPaths = nil;
-    
-    if (tableView == self.tableView) {
-        currentSize = self.recursiveSize;
-        currentPaths = self.childPaths;
-    } else {
-        currentSize = self.searchPathsSize;
-        currentPaths = self.searchPaths;
-    }
+    BOOL isSearchActive = self.searchController.isActive;
+    NSNumber *currentSize = isSearchActive ? self.searchPathsSize : self.recursiveSize;
+    NSArray *currentPaths = isSearchActive ? self.searchPaths : self.childPaths;
     
     NSString *sizeString = nil;
     if (!currentSize) {
@@ -169,14 +147,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *fullPath = nil;
-    if (tableView == self.tableView) {
-        NSString *subpath = [self.childPaths objectAtIndex:indexPath.row];
-        fullPath = [self.path stringByAppendingPathComponent:subpath];
-    } else {
-        fullPath = [self.searchPaths objectAtIndex:indexPath.row];
-    }
-    
+    NSString *fullPath = [self filePathAtIndexPath:indexPath];
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fullPath error:NULL];
     BOOL isDirectory = [[attributes fileType] isEqual:NSFileTypeDirectory];
     NSString *subtitle = nil;
@@ -217,16 +188,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *subpath = nil;
-    NSString *fullPath = nil;
-    
-    if (tableView == self.tableView) {
-        subpath = [self.childPaths objectAtIndex:indexPath.row];
-        fullPath = [self.path stringByAppendingPathComponent:subpath];
-    } else {
-        fullPath = [self.searchPaths objectAtIndex:indexPath.row];
-        subpath = [fullPath lastPathComponent];
-    }
+    NSString *fullPath = [self filePathAtIndexPath:indexPath];
+    NSString *subpath = [fullPath lastPathComponent];
+    NSString *pathExtension = [subpath pathExtension];
     
     BOOL isDirectory = NO;
     BOOL stillExists = [[NSFileManager defaultManager] fileExistsAtPath:fullPath isDirectory:&isDirectory];
@@ -234,26 +198,29 @@
         UIViewController *drillInViewController = nil;
         if (isDirectory) {
             drillInViewController = [[[self class] alloc] initWithPath:fullPath];
-        } else if ([FLEXUtility isImagePathExtension:[fullPath pathExtension]]) {
+        } else if ([FLEXUtility isImagePathExtension:pathExtension]) {
             UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
             drillInViewController = [[FLEXImagePreviewViewController alloc] initWithImage:image];
         } else {
             // Special case keyed archives, json, and plists to get more readable data.
             NSString *prettyString = nil;
-            if ([[subpath pathExtension] isEqual:@"archive"]) {
+            if ([pathExtension isEqual:@"archive"] || [pathExtension isEqual:@"coded"]) {
                 prettyString = [[NSKeyedUnarchiver unarchiveObjectWithFile:fullPath] description];
-            } else if ([[subpath pathExtension] isEqualToString:@"json"]) {
+            } else if ([pathExtension isEqualToString:@"json"]) {
                 prettyString = [FLEXUtility prettyJSONStringFromData:[NSData dataWithContentsOfFile:fullPath]];
-            } else if ([[subpath pathExtension] isEqualToString:@"plist"]) {
+            } else if ([pathExtension isEqualToString:@"plist"]) {
                 NSData *fileData = [NSData dataWithContentsOfFile:fullPath];
                 prettyString = [[NSPropertyListSerialization propertyListWithData:fileData options:0 format:NULL error:NULL] description];
             }
             
             if ([prettyString length] > 0) {
                 drillInViewController = [[FLEXWebViewController alloc] initWithText:prettyString];
-            } else if ([FLEXWebViewController supportsPathExtension:[subpath pathExtension]]) {
+            } else if ([FLEXWebViewController supportsPathExtension:pathExtension]) {
                 drillInViewController = [[FLEXWebViewController alloc] initWithURL:[NSURL fileURLWithPath:fullPath]];
-            } else {
+            } else if ([FLEXTableListViewController supportsExtension:subpath.pathExtension]) {
+                drillInViewController = [[FLEXTableListViewController alloc] initWithPath:fullPath];
+            }
+            else {
                 NSString *fileString = [NSString stringWithContentsOfFile:fullPath encoding:NSUTF8StringEncoding error:NULL];
                 if ([fileString length] > 0) {
                     drillInViewController = [[FLEXWebViewController alloc] initWithText:fileString];
@@ -309,16 +276,8 @@
 
 - (void)fileBrowserRename:(UITableViewCell *)sender
 {
-    NSString *fullPath = nil;
-
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    if (indexPath) {
-        NSString *subpath = [self.childPaths objectAtIndex:indexPath.row];
-        fullPath = [self.path stringByAppendingPathComponent:subpath];
-    } else {
-        indexPath = [self.searchController.searchResultsTableView indexPathForCell:sender];
-        fullPath = [self.searchPaths objectAtIndex:indexPath.row];
-    }
+    NSString *fullPath = [self filePathAtIndexPath:indexPath];
 
     self.fileOperationController = [[FLEXFileBrowserFileRenameOperationController alloc] initWithPath:fullPath];
     self.fileOperationController.delegate = self;
@@ -327,17 +286,9 @@
 
 - (void)fileBrowserDelete:(UITableViewCell *)sender
 {
-    NSString *fullPath = nil;
-
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    if (indexPath) {
-        NSString *subpath = [self.childPaths objectAtIndex:indexPath.row];
-        fullPath = [self.path stringByAppendingPathComponent:subpath];
-    } else {
-        indexPath = [self.searchController.searchResultsTableView indexPathForCell:sender];
-        fullPath = [self.searchPaths objectAtIndex:indexPath.row];
-    }
-
+    NSString *fullPath = [self filePathAtIndexPath:indexPath];
+    
     self.fileOperationController = [[FLEXFileBrowserFileDeleteOperationController alloc] initWithPath:fullPath];
     self.fileOperationController.delegate = self;
     [self.fileOperationController show];
@@ -347,16 +298,20 @@
 {
     if (self.searchController.isActive) {
         [self reloadSearchPaths];
-        [self.searchController.searchResultsTableView reloadData];
     } else {
         [self reloadChildPaths];
-        [self.tableView reloadData];
     }
+    [self.tableView reloadData];
 }
 
 - (void)reloadChildPaths
 {
-    self.childPaths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL];
+    NSMutableArray *childPaths = [NSMutableArray array];
+    NSArray *subpaths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL];
+    for (NSString *subpath in subpaths) {
+        [childPaths addObject:[self.path stringByAppendingPathComponent:subpath]];
+    }
+    self.childPaths = childPaths;
 }
 
 - (void)reloadSearchPaths
@@ -366,9 +321,14 @@
 
     //clear pre search request and start a new one
     [self.operationQueue cancelAllOperations];
-    FLEXFileBrowserSearchOperation *newOperation = [[FLEXFileBrowserSearchOperation alloc] initWithPath:self.path searchString:self.searchString];
+    FLEXFileBrowserSearchOperation *newOperation = [[FLEXFileBrowserSearchOperation alloc] initWithPath:self.path searchString:self.searchController.searchBar.text];
     newOperation.delegate = self;
     [self.operationQueue addOperation:newOperation];
+}
+
+- (NSString *)filePathAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.searchController.isActive ? self.searchPaths[indexPath.row] : self.childPaths[indexPath.row];
 }
 
 @end

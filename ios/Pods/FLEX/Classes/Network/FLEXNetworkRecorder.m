@@ -7,6 +7,7 @@
 //
 
 #import "FLEXNetworkRecorder.h"
+#import "FLEXNetworkCurlLogger.h"
 #import "FLEXNetworkTransaction.h"
 #import "FLEXUtility.h"
 #import "FLEXResources.h"
@@ -103,6 +104,12 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
 
 - (void)recordRequestWillBeSentWithRequestID:(NSString *)requestID request:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
 {
+    for (NSString *host in self.hostBlacklist) {
+        if ([request.URL.host hasSuffix:host]) {
+            return;
+        }
+    }
+    
     NSDate *startDate = [NSDate date];
 
     if (redirectResponse) {
@@ -129,7 +136,7 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
     NSDate *responseDate = [NSDate date];
 
     dispatch_async(self.queue, ^{
-        FLEXNetworkTransaction *transaction = [self.networkTransactionsForRequestIdentifiers objectForKey:requestID];
+        FLEXNetworkTransaction *transaction = self.networkTransactionsForRequestIdentifiers[requestID];
         if (!transaction) {
             return;
         }
@@ -144,7 +151,7 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
 - (void)recordDataReceivedWithRequestID:(NSString *)requestID dataLength:(int64_t)dataLength
 {
     dispatch_async(self.queue, ^{
-        FLEXNetworkTransaction *transaction = [self.networkTransactionsForRequestIdentifiers objectForKey:requestID];
+        FLEXNetworkTransaction *transaction = self.networkTransactionsForRequestIdentifiers[requestID];
         if (!transaction) {
             return;
         }
@@ -159,7 +166,7 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
     NSDate *finishedDate = [NSDate date];
 
     dispatch_async(self.queue, ^{
-        FLEXNetworkTransaction *transaction = [self.networkTransactionsForRequestIdentifiers objectForKey:requestID];
+        FLEXNetworkTransaction *transaction = self.networkTransactionsForRequestIdentifiers[requestID];
         if (!transaction) {
             return;
         }
@@ -215,7 +222,7 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
 - (void)recordLoadingFailedWithRequestID:(NSString *)requestID error:(NSError *)error
 {
     dispatch_async(self.queue, ^{
-        FLEXNetworkTransaction *transaction = [self.networkTransactionsForRequestIdentifiers objectForKey:requestID];
+        FLEXNetworkTransaction *transaction = self.networkTransactionsForRequestIdentifiers[requestID];
         if (!transaction) {
             return;
         }
@@ -230,7 +237,7 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
 - (void)recordMechanism:(NSString *)mechanism forRequestID:(NSString *)requestID
 {
     dispatch_async(self.queue, ^{
-        FLEXNetworkTransaction *transaction = [self.networkTransactionsForRequestIdentifiers objectForKey:requestID];
+        FLEXNetworkTransaction *transaction = self.networkTransactionsForRequestIdentifiers[requestID];
         if (!transaction) {
             return;
         }

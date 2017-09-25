@@ -18,6 +18,7 @@
 + (NSString *)descriptionForView:(UIView *)view includingFrame:(BOOL)includeFrame;
 + (NSString *)stringForCGRect:(CGRect)rect;
 + (UIViewController *)viewControllerForView:(UIView *)view;
++ (UIViewController *)viewControllerForAncestralView:(UIView *)view;
 + (NSString *)detailDescriptionForView:(UIView *)view;
 + (UIImage *)circularImageWithColor:(UIColor *)color radius:(CGFloat)radius;
 + (UIColor *)scrollViewGrayColor;
@@ -34,10 +35,13 @@
 + (UIImage *)thumbnailedImageWithMaxPixelDimension:(NSInteger)dimension fromImageData:(NSData *)data;
 + (NSString *)stringFromRequestDuration:(NSTimeInterval)duration;
 + (NSString *)statusCodeStringFromURLResponse:(NSURLResponse *)response;
++ (BOOL)isErrorStatusCodeFromURLResponse:(NSURLResponse *)response;
 + (NSDictionary *)dictionaryFromQuery:(NSString *)query;
 + (NSString *)prettyJSONStringFromData:(NSData *)data;
 + (BOOL)isValidJSONData:(NSData *)data;
 + (NSData *)inflatedDataFromCompressedData:(NSData *)compressedData;
+
++ (NSArray *)allWindows;
 
 // Swizzling utilities
 

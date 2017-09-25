@@ -49,7 +49,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
 + (NSString *)typeEncodingForProperty:(objc_property_t)property
 {
     NSDictionary *attributesDictionary = [self attributesDictionaryForProperty:property];
-    return [attributesDictionary objectForKey:kFLEXUtilityAttributeTypeEncoding];
+    return attributesDictionary[kFLEXUtilityAttributeTypeEncoding];
 }
 
 + (BOOL)isReadonlyProperty:(objc_property_t)property
@@ -77,33 +77,33 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
     NSMutableArray *attributesStrings = [NSMutableArray array];
     
     // Atomicity
-    if ([attributesDictionary objectForKey:kFLEXUtilityAttributeNonAtomic]) {
+    if (attributesDictionary[kFLEXUtilityAttributeNonAtomic]) {
         [attributesStrings addObject:@"nonatomic"];
     } else {
         [attributesStrings addObject:@"atomic"];
     }
     
     // Storage
-    if ([attributesDictionary objectForKey:kFLEXUtilityAttributeRetain]) {
+    if (attributesDictionary[kFLEXUtilityAttributeRetain]) {
         [attributesStrings addObject:@"strong"];
-    } else if ([attributesDictionary objectForKey:kFLEXUtilityAttributeCopy]) {
+    } else if (attributesDictionary[kFLEXUtilityAttributeCopy]) {
         [attributesStrings addObject:@"copy"];
-    } else if ([attributesDictionary objectForKey:kFLEXUtilityAttributeWeak]) {
+    } else if (attributesDictionary[kFLEXUtilityAttributeWeak]) {
         [attributesStrings addObject:@"weak"];
     } else {
         [attributesStrings addObject:@"assign"];
     }
     
     // Mutability
-    if ([attributesDictionary objectForKey:kFLEXUtilityAttributeReadOnly]) {
+    if (attributesDictionary[kFLEXUtilityAttributeReadOnly]) {
         [attributesStrings addObject:@"readonly"];
     } else {
         [attributesStrings addObject:@"readwrite"];
     }
     
     // Custom getter/setter
-    NSString *customGetter = [attributesDictionary objectForKey:kFLEXUtilityAttributeCustomGetter];
-    NSString *customSetter = [attributesDictionary objectForKey:kFLEXUtilityAttributeCustomSetter];
+    NSString *customGetter = attributesDictionary[kFLEXUtilityAttributeCustomGetter];
+    NSString *customSetter = attributesDictionary[kFLEXUtilityAttributeCustomSetter];
     if (customGetter) {
         [attributesStrings addObject:[NSString stringWithFormat:@"getter=%@", customGetter]];
     }
@@ -179,7 +179,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
             for (NSString *attributeName in [attributePairs allKeys]) {
                 objc_property_attribute_t attribute;
                 attribute.name = [attributeName UTF8String];
-                attribute.value = [[attributePairs objectForKey:attributeName] UTF8String];
+                attribute.value = [attributePairs[attributeName] UTF8String];
                 attributes[attributeIndex++] = attribute;
             }
             
@@ -209,7 +209,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
 #ifdef __arm64__
     // See http://www.sealiesoftware.com/blog/archive/2013/09/24/objc_explain_Non-pointer_isa.html
     const char *name = ivar_getName(ivar);
-    if (type[0] == @encode(Class)[0] && strcmp(name, "isa") != 0) {
+    if (type[0] == @encode(Class)[0] && strcmp(name, "isa") == 0) {
         value = object_getClass(object);
     } else
 #endif
@@ -277,14 +277,22 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
     NSMutableArray *components = [NSMutableArray array];
     
     NSString *selectorName = NSStringFromSelector(method_getName(method));
-    NSArray *selectorComponents = [selectorName componentsSeparatedByString:@":"];
-    unsigned int numberOfArguments = method_getNumberOfArguments(method);
+    NSMutableArray *selectorComponents = [[selectorName componentsSeparatedByString:@":"] mutableCopy];
     
-    for (unsigned int argIndex = kFLEXNumberOfImplicitArgs; argIndex < numberOfArguments; argIndex++) {
-        char *argType = method_copyArgumentType(method, argIndex);
-        NSString *readableArgType = [self readableTypeForEncoding:@(argType)];
+    // this is a workaround cause method_getNumberOfArguments() returns wrong number for some methods
+    if (selectorComponents.count == 1) {
+        return [selectorComponents copy];
+    }
+    
+    if ([selectorComponents.lastObject isEqualToString:@""]) {
+        [selectorComponents removeLastObject];
+    }
+    
+    for (unsigned int argIndex = 0; argIndex < selectorComponents.count; argIndex++) {
+        char *argType = method_copyArgumentType(method, argIndex + kFLEXNumberOfImplicitArgs);
+        NSString *readableArgType = (argType != NULL) ? [self readableTypeForEncoding:@(argType)] : nil;
         free(argType);
-        NSString *prettyComponent = [NSString stringWithFormat:@"%@:(%@) ", [selectorComponents objectAtIndex:argIndex - kFLEXNumberOfImplicitArgs], readableArgType];
+        NSString *prettyComponent = [NSString stringWithFormat:@"%@:(%@) ", [selectorComponents objectAtIndex:argIndex], readableArgType];
         [components addObject:prettyComponent];
     }
     
@@ -316,7 +324,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
     NSUInteger numberOfArguments = [methodSignature numberOfArguments];
     for (NSUInteger argumentIndex = kFLEXNumberOfImplicitArgs; argumentIndex < numberOfArguments; argumentIndex++) {
         NSUInteger argumentsArrayIndex = argumentIndex - kFLEXNumberOfImplicitArgs;
-        id argumentObject = [arguments count] > argumentsArrayIndex ? [arguments objectAtIndex:argumentsArrayIndex] : nil;
+        id argumentObject = [arguments count] > argumentsArrayIndex ? arguments[argumentsArrayIndex] : nil;
         
         // NSNull in the arguments array can be passed as a placeholder to indicate nil. We only need to set the argument if it will be non-nil.
         if (argumentObject && ![argumentObject isKindOfClass:[NSNull class]]) {
@@ -436,9 +444,9 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
     NSString *editableDescription = nil;
     
     if (object) {
-        // This is a hack to use JSON serialzation for our editable objects.
+        // This is a hack to use JSON serialization for our editable objects.
         // NSJSONSerialization doesn't allow writing fragments - the top level object must be an array or dictionary.
-        // We always wrap the object inside an array and then strip the outter square braces off the final string.
+        // We always wrap the object inside an array and then strip the outer square braces off the final string.
         NSArray *wrappedObject = @[object];
         if ([NSJSONSerialization isValidJSONObject:wrappedObject]) {
             NSString *wrappedDescription = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:wrappedObject options:0 error:NULL] encoding:NSUTF8StringEncoding];
@@ -674,7 +682,7 @@ const unsigned int kFLEXNumberOfImplicitArgs = 2;
 
 + (NSValue *)valueForPrimitivePointer:(void *)pointer objCType:(const char *)type
 {
-    // CASE marcro inspired by https://www.mikeash.com/pyblog/friday-qa-2013-02-08-lets-build-key-value-coding.html
+    // CASE macro inspired by https://www.mikeash.com/pyblog/friday-qa-2013-02-08-lets-build-key-value-coding.html
 #define CASE(ctype, selectorpart) \
     if(strcmp(type, @encode(ctype)) == 0) { \
         return [NSNumber numberWith ## selectorpart: *(ctype *)pointer]; \

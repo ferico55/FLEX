@@ -58,6 +58,18 @@
     return viewController;
 }
 
++ (UIViewController *)viewControllerForAncestralView:(UIView *)view{
+    UIViewController *viewController = nil;
+    SEL viewDelSel = NSSelectorFromString([NSString stringWithFormat:@"%@ewControllerForAncestor", @"_vi"]);
+    if ([view respondsToSelector:viewDelSel]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        viewController = [view performSelector:viewDelSel];
+#pragma clang diagnostic pop
+    }
+    return viewController;
+}
+
 + (NSString *)detailDescriptionForView:(UIView *)view
 {
     return [NSString stringWithFormat:@"frame %@", [self stringForCGRect:view.frame]];
@@ -93,12 +105,12 @@
 
 + (NSString *)applicationImageName
 {
-    return [[NSBundle mainBundle] executablePath];
+    return [NSBundle mainBundle].executablePath;
 }
 
 + (NSString *)applicationName
 {
-    return [[[FLEXUtility applicationImageName] componentsSeparatedByString:@"/"] lastObject];
+    return [FLEXUtility applicationImageName].lastPathComponent;
 }
 
 + (NSString *)safeDescriptionForObject:(id)object
@@ -237,6 +249,18 @@
     return httpResponseString;
 }
 
++ (BOOL)isErrorStatusCodeFromURLResponse:(NSURLResponse *)response {
+    NSIndexSet *errorStatusCodes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(400, 200)];
+    
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        return [errorStatusCodes containsIndex:httpResponse.statusCode];
+    }
+    
+    return NO;
+}
+
+
 + (NSDictionary *)dictionaryFromQuery:(NSString *)query
 {
     NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionary];
@@ -251,7 +275,7 @@
             id value = [[components lastObject] stringByRemovingPercentEncoding];
 
             // Handle multiple entries under the same key as an array
-            id existingEntry = [queryDictionary objectForKey:key];
+            id existingEntry = queryDictionary[key];
             if (existingEntry) {
                 if ([existingEntry isKindOfClass:[NSArray class]]) {
                     value = [existingEntry arrayByAddingObject:value];
@@ -324,6 +348,28 @@
         }
     }
     return inflatedData;
+}
+
++ (NSArray *)allWindows
+{
+    BOOL includeInternalWindows = YES;
+    BOOL onlyVisibleWindows = NO;
+
+    NSArray *allWindowsComponents = @[@"al", @"lWindo", @"wsIncl", @"udingInt", @"ernalWin", @"dows:o", @"nlyVisi", @"bleWin", @"dows:"];
+    SEL allWindowsSelector = NSSelectorFromString([allWindowsComponents componentsJoinedByString:@""]);
+
+    NSMethodSignature *methodSignature = [[UIWindow class] methodSignatureForSelector:allWindowsSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+
+    invocation.target = [UIWindow class];
+    invocation.selector = allWindowsSelector;
+    [invocation setArgument:&includeInternalWindows atIndex:2];
+    [invocation setArgument:&onlyVisibleWindows atIndex:3];
+    [invocation invoke];
+
+    __unsafe_unretained NSArray *windows = nil;
+    [invocation getReturnValue:&windows];
+    return windows;
 }
 
 + (SEL)swizzledSelectorForSelector:(SEL)selector

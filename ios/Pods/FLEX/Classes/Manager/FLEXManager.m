@@ -115,6 +115,14 @@
     [[FLEXNetworkRecorder defaultRecorder] setResponseCacheByteLimit:networkResponseCacheByteLimit];
 }
 
+- (void)setNetworkRequestHostBlacklist:(NSArray<NSString *> *)networkRequestHostBlacklist {
+    [FLEXNetworkRecorder defaultRecorder].hostBlacklist = networkRequestHostBlacklist;
+}
+
+- (NSArray<NSString *> *)hostBlacklist {
+    return [FLEXNetworkRecorder defaultRecorder].hostBlacklist;
+}
+
 #pragma mark - FLEXWindowEventDelegate
 
 - (BOOL)shouldHandleTouchAtPoint:(CGPoint)pointInWindow
@@ -171,7 +179,7 @@
     [self registerSimulatorShortcutWithKey:@"g" modifiers:0 action:^{
         [self showExplorerIfNeeded];
         [self.explorerViewController toggleMenuTool];
-    } description:@"Toggle FLEX globlas menu"];
+    } description:@"Toggle FLEX globals menu"];
     
     [self registerSimulatorShortcutWithKey:@"v" modifiers:0 action:^{
         [self showExplorerIfNeeded];

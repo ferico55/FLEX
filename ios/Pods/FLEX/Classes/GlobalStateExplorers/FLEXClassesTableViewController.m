@@ -68,7 +68,7 @@
 
 - (void)updateTitle
 {
-    NSString *shortImageName = [[self.binaryImageName componentsSeparatedByString:@"/"] lastObject];
+    NSString *shortImageName = self.binaryImageName.lastPathComponent;
     self.title = [NSString stringWithFormat:@"%@ Classes (%lu)", shortImageName, (unsigned long)[self.filteredClassNames count]];
 }
 
@@ -131,7 +131,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *className = [self.filteredClassNames objectAtIndex:indexPath.row];
+    NSString *className = self.filteredClassNames[indexPath.row];
     Class selectedClass = objc_getClass([className UTF8String]);
     FLEXObjectExplorerViewController *objectExplorer = [FLEXObjectExplorerFactory explorerViewControllerForObject:selectedClass];
     [self.navigationController pushViewController:objectExplorer animated:YES];

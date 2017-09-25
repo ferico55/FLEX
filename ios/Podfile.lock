@@ -79,7 +79,7 @@ PODS:
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - Protobuf (~> 3.1)
-  - FLEX (2.1.1)
+  - FLEX (2.4.0)
   - GoogleAnalytics (3.13.0)
   - GoogleAppIndexing (2.0.1)
   - GoogleAppUtilities (1.1.2):
@@ -284,7 +284,7 @@ DEPENDENCIES:
   - FBSDKShareKit (~> 4.19.0)
   - FirebasePerformance (~> 1.0)
   - FirebaseRemoteConfig (~> 2.0.2)
-  - FLEX (~> 2.0)
+  - FLEX (from `https://github.com/Flipboard/FLEX.git`, commit `99eccdf4c34af9b1042d96313ad9cf12dd30ff1f`)
   - GoogleAppIndexing (~> 2.0.1)
   - GoogleMaps (~> 1.10.5)
   - GoogleSignIn (~> 2.4.0)
@@ -357,6 +357,9 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   CodePush:
     :path: ../node_modules/react-native-code-push
+  FLEX:
+    :commit: 99eccdf4c34af9b1042d96313ad9cf12dd30ff1f
+    :git: https://github.com/Flipboard/FLEX.git
   HMSegmentedControl:
     :git: https://github.com/billionssg/HMSegmentedControl
   JSQMessagesViewController:
@@ -385,6 +388,9 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
+  FLEX:
+    :commit: 99eccdf4c34af9b1042d96313ad9cf12dd30ff1f
+    :git: https://github.com/Flipboard/FLEX.git
   HMSegmentedControl:
     :commit: bdd8ecee6de8dc92ead132edce865041181fd56c
     :git: https://github.com/billionssg/HMSegmentedControl
@@ -430,7 +436,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
   FirebasePerformance: 36bdb0500213b459ae991766801d5dc5399ff231
   FirebaseRemoteConfig: 5b3e3301ef2f237b1b588e8ef3211b5a22e9e15d
-  FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
@@ -463,7 +469,7 @@ SPEC CHECKSUMS:
   MXParallaxHeader: 2997592b8349baf8557ae0e4346f6b17e141de39
   MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  native-navigation: 0bc771c8a427dfb0d31eb9707dde48e9fbac42fa
+  native-navigation: bfb4dd993e94160c9d71804332c39f7e56f0283b
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
   NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
@@ -503,6 +509,6 @@ SPEC CHECKSUMS:
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: cc525cd7c852f640ebbc2422828c636cbcb9ea06
+PODFILE CHECKSUM: ec468412f24bd8fe4909e74b5b4e67ce2e635e8e
 
 COCOAPODS: 1.3.1

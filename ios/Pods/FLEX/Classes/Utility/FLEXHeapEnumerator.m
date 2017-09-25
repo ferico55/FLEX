@@ -20,16 +20,9 @@ typedef struct {
 
 @implementation FLEXHeapEnumerator
 
-static kern_return_t memory_reader(task_t task, vm_address_t remote_address, vm_size_t size, void **local_memory)
-{
-    *local_memory = (void *)remote_address;
-    return KERN_SUCCESS;
-}
-
 static void range_callback(task_t task, void *context, unsigned type, vm_range_t *ranges, unsigned rangeCount)
 {
-    flex_object_enumeration_block_t block = (__bridge flex_object_enumeration_block_t)context;
-    if (!block) {
+    if (!context) {
         return;
     }
     
@@ -46,9 +39,15 @@ static void range_callback(task_t task, void *context, unsigned type, vm_range_t
 #endif
         // If the class pointer matches one in our set of class pointers from the runtime, then we should have an object.
         if (CFSetContainsValue(registeredClasses, (__bridge const void *)(tryClass))) {
-            block((__bridge id)tryObject, tryClass);
+            (*(flex_object_enumeration_block_t __unsafe_unretained *)context)((__bridge id)tryObject, tryClass);
         }
     }
+}
+
+static kern_return_t reader(__unused task_t remote_task, vm_address_t remote_address, __unused vm_size_t size, void **local_memory)
+{
+    *local_memory = (void *)remote_address;
+    return KERN_SUCCESS;
 }
 
 + (void)enumerateLiveObjectsUsingBlock:(flex_object_enumeration_block_t)block
@@ -60,17 +59,53 @@ static void range_callback(task_t task, void *context, unsigned type, vm_range_t
     // Refresh the class list on every call in case classes are added to the runtime.
     [self updateRegisteredClasses];
     
-    // For another exmple of enumerating through malloc ranges (which helped my understanding of the api) see:
+    // Inspired by:
     // http://llvm.org/svn/llvm-project/lldb/tags/RELEASE_34/final/examples/darwin/heap_find/heap/heap_find.cpp
-    // Also https://gist.github.com/samdmarshall/17f4e66b5e2e579fd396
+    // https://gist.github.com/samdmarshall/17f4e66b5e2e579fd396
+    
     vm_address_t *zones = NULL;
     unsigned int zoneCount = 0;
-    kern_return_t result = malloc_get_all_zones(mach_task_self(), &memory_reader, &zones, &zoneCount);
+    kern_return_t result = malloc_get_all_zones(TASK_NULL, reader, &zones, &zoneCount);
+    
     if (result == KERN_SUCCESS) {
         for (unsigned int i = 0; i < zoneCount; i++) {
             malloc_zone_t *zone = (malloc_zone_t *)zones[i];
-            if (zone->introspect && zone->introspect->enumerator) {
-                zone->introspect->enumerator(mach_task_self(), (__bridge void *)(block), MALLOC_PTR_IN_USE_RANGE_TYPE, zones[i], &memory_reader, &range_callback);
+            malloc_introspection_t *introspection = zone->introspect;
+
+            if (!introspection) {
+                continue;
+            }
+
+            void (*lock_zone)(malloc_zone_t *zone)   = introspection->force_lock;
+            void (*unlock_zone)(malloc_zone_t *zone) = introspection->force_unlock;
+
+            // Callback has to unlock the zone so we freely allocate memory inside the given block
+            flex_object_enumeration_block_t callback = ^(__unsafe_unretained id object, __unsafe_unretained Class actualClass) {
+                unlock_zone(zone);
+                block(object, actualClass);
+                lock_zone(zone);
+            };
+
+            // The largest realistic memory address varies by platform.
+            // Only 48 bits are used by 64 bit machines while
+            // 32 bit machines use all bits.
+#if __arm64__
+            static uintptr_t MAX_REALISTIC_ADDRESS = 0xFFFFFFFFFFFF;
+#else
+            static uintptr_t MAX_REALISTIC_ADDRESS = INT_MAX;
+#endif
+
+            // There is little documentation on when and why
+            // any of these function pointers might be NULL
+            // or garbage, so we resort to checking for NULL
+            // and impossible memory addresses at least
+            if (lock_zone && unlock_zone &&
+                introspection->enumerator &&
+                (uintptr_t)lock_zone < MAX_REALISTIC_ADDRESS &&
+                (uintptr_t)unlock_zone < MAX_REALISTIC_ADDRESS) {
+                lock_zone(zone);
+                introspection->enumerator(TASK_NULL, (void *)&callback, MALLOC_PTR_IN_USE_RANGE_TYPE, (vm_address_t)zone, reader, &range_callback);
+                unlock_zone(zone);
             }
         }
     }
