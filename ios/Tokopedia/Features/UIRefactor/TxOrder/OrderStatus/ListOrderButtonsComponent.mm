@@ -102,7 +102,7 @@
 }
 
 +(CKButtonComponent*)buttonCancelReplacement{
-    return [self buttonWithTitle:@"Batalkan Pesanan" action:@selector(tapCancelReplacement)];
+    return [self buttonWithTitle:@"Batalkan Pencarian" action:@selector(tapCancelReplacement)];
 }
 
 + (CKButtonComponent *)buttonWithTitle:(NSString *)title action:(SEL)action {

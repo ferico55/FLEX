@@ -123,8 +123,8 @@
 -(void)tapCancelReplacement:(TxOrderStatusList *)order view:(DetailOrderButtonsView *)view {
     
     UIAlertController * alert=   [UIAlertController
-                                  alertControllerWithTitle:@"Batalkan Pesanan"
-                                  message:@"Apakah Anda ingin melakukan pembatalan pesanan ?"
+                                  alertControllerWithTitle:@"Batalkan Pencarian"
+                                  message:@"Apakah Anda ingin melakukan pembatalan pencarian?"
                                   preferredStyle:UIAlertControllerStyleAlert];
     
     __weak typeof(self) wself = self;
