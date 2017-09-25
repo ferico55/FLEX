@@ -442,7 +442,7 @@ NoResultDelegate
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
-    if (indexPath.section != shopCount+3 && indexPath.section != shopCount+2) {
+    if (indexPath.section != shopCount+3 && indexPath.section != shopCount+2 && indexPath.section != shopCount+1) {
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
     }
@@ -583,6 +583,7 @@ NoResultDelegate
         case 12:
         {
             _voucherCodeButton.hidden = NO;
+            _voucherAmountLabel.text = @"";
             _voucherAmountLabel.hidden = YES;
             _buttonCancelVoucher.hidden = YES;
             _buttonVoucherInfo.hidden = NO;
@@ -1147,6 +1148,7 @@ NoResultDelegate
     
     _voucherCodeButton.hidden = NO;
     _voucherAmountLabel.hidden = YES;
+    _voucherAmountLabel.text = @"";
     _buttonVoucherInfo.hidden = NO;
     _buttonCancelVoucher.hidden = YES;
     
@@ -1373,6 +1375,8 @@ NoResultDelegate
         }
         else if (indexPath.row >1) {
             return 0;
+        } else {
+            return UITableViewAutomaticDimension;
         }
     } else if (indexPath.section == _list.count+2){
         return (_cart.promoSuggestion.isVisible) ? UITableViewAutomaticDimension : 0; //promo
