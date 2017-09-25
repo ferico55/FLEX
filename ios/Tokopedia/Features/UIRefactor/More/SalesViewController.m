@@ -133,13 +133,15 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.row == 4) {
+    if (indexPath.row == 0) {
         cell.detailTextLabel.text = @" BARU   ";
         cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
-        cell.detailTextLabel.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
+        cell.detailTextLabel.backgroundColor = [UIColor fromHexString:@"#F53A2B"];
         cell.detailTextLabel.textColor = [UIColor whiteColor];
-        cell.detailTextLabel.font = [UIFont microThemeMedium];
-        cell.detailTextLabel.layer.cornerRadius = 5;
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:11];
+        cell.detailTextLabel.layer.cornerRadius = 2;
+        cell.detailTextLabel.layer.masksToBounds = YES;
+        
     }
 }
 
@@ -157,22 +159,22 @@
     
     switch (indexPath.row) {
         case 0:
+            cell.textLabel.text = @"Peluang";
+            break;
+        case 1:
             cell.textLabel.text = @"Pesanan Baru";
             cell.detailTextLabel.text = _notification.result.sales.sales_new_order?:@"0";
             break;
-        case 1:
+        case 2:
             cell.textLabel.text = @"Konfirmasi Pengiriman";
             cell.detailTextLabel.text = _notification.result.sales.sales_shipping_confirm?:@"0";
             break;
-        case 2:
+        case 3:
             cell.textLabel.text = @"Status Pengiriman";
             cell.detailTextLabel.text = _notification.result.sales.sales_shipping_status?:@"0";
             break;
-        case 3:
-            cell.textLabel.text = @"Daftar Transaksi";
-            break;
         case 4:
-            cell.textLabel.text = @"Peluang";
+            cell.textLabel.text = @"Daftar Transaksi";
             break;
             
         default:
@@ -185,19 +187,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:
-            [self newOrderDidTap];
+            [self itemReplacementDidTap];
             break;
         case 1:
-            [self shipmentConfirmationDidTap];
+            [self newOrderDidTap];
             break;
         case 2:
-            [self shipmentStatusDidTap];
+            [self shipmentConfirmationDidTap];
             break;
         case 3:
-            [self listTransactionDidTap];
+            [self shipmentStatusDidTap];
             break;
         case 4:
-            [self itemReplacementDidTap];
+            [self listTransactionDidTap];
             break;
             
         default:
