@@ -345,6 +345,7 @@
                                @"shop_id":order.order_shop.shop_id?:@"",
                                @"shop_name":order.order_shop.shop_name?:@""
                                };
+    messageController.source = @"tx_ask_seller";
     messageController.subject = order.order_detail.detail_invoice?:@"";
     messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
     [self.navigationController pushViewController:messageController animated:YES];

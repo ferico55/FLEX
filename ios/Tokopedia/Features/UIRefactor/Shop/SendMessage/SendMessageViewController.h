@@ -32,6 +32,7 @@
 @property (strong, nonatomic) NSDictionary* data;
 @property (strong, nonatomic) NSString* subject;
 @property (strong, nonatomic) NSString* message;
+@property (strong, nonatomic) NSString *source;
 
 - (instancetype)initToShop:(nonnull Shop *)shop;
 - (instancetype)initWithData:(NSDictionary *_Nonnull)data;

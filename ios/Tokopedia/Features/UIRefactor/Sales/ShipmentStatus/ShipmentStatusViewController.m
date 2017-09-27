@@ -266,6 +266,7 @@
                                };
     messageController.subject = order.order_detail.detail_invoice?:@"";
     messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
+    messageController.source = @"tx_ask_buyer";
     [self.navigationController pushViewController:messageController animated:YES];
 }
 

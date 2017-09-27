@@ -496,6 +496,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                             "shop_name": productDetail.shop.name
                         ]
                         vc.subject = "Konfirmasi produk tidak ditemukan"
+                        vc.source = "product"
                         vc.display(from: self.viewController)
                     }
                 }
@@ -1171,6 +1172,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             "shop_name": productDetail.shop.name
         ]
         let vc = SendMessageViewController(data: data)!
+        vc.source = "product"
         self.viewController.navigationController?.pushViewController(vc, animated: true)
     }
     

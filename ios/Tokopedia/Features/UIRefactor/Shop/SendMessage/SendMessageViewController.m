@@ -198,7 +198,8 @@
                             @"message" : _messagefield.text,
                             @"message_subject" : _messagesubjectfield.text,
                             @"to_shop_id" : [_data objectForKey:@"shop_id"]?:@"",
-                            @"to_user_id" : [_data objectForKey:@"user_id"]?:@""
+                            @"to_user_id" : [_data objectForKey:@"user_id"]?:@"",
+                            @"source" : _source ?: @""
                             };
     
     TokopediaNetworkManager* requestManager = [TokopediaNetworkManager new];

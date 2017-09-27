@@ -417,6 +417,7 @@ class ShopViewController: UIViewController {
             label: "Send Message"
         )
         let viewController = SendMessageViewController(to: shop)
+        viewController?.source = "shop"
         viewController?.display(from: self)
     }
     
