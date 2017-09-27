@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSString* product_is_received;
 @property (strong, nonatomic) NSString* product_related;
 @property (strong, nonatomic) NSArray<ResolutionCenterCreateTroubleList*>* trouble_list;
+@property (strong, nonatomic) NSArray<ResolutionCenterCreateTroubleList*>* trouble_list_fr;
 
 +(RKObjectMapping*)mapping;
 @end

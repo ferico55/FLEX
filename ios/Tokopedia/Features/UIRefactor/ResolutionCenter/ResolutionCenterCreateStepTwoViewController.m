@@ -72,6 +72,7 @@ UIPickerViewDelegate
         postProduct.quantity = obj.pt_quantity;
         postProduct.trouble_id = obj.pt_trouble_id;
         postProduct.remark = obj.pt_solution_remark;
+        postProduct.isFreeReturn = obj.isFreeReturn;
         [_result.postObject.product_list addObject:postProduct];
     }];
     [_tableView reloadData];
@@ -94,7 +95,7 @@ UIPickerViewDelegate
         cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if(cell == nil){
             cell = [ResolutionCenterCreateStepTwoCell newcell];
-            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoicesIsFreeReturn:currentProduct.isFreeReturn]];
             [cell.troublePicker setPlaceholder:@"Pilih detil permasalahan"];
             [cell.troublePicker setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
         }
@@ -145,7 +146,7 @@ UIPickerViewDelegate
         
         [cell.troublePicker bk_removeEventHandlersForControlEvents:UIControlEventValueChanged];
         [cell.troublePicker bk_addEventHandler:^(DownPicker* picker) {
-            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+            NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:currentProduct.isFreeReturn];
             ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:picker.selectedIndex];
             postProduct.trouble_id = selectedTrouble.trouble_id;
         } forControlEvents:UIControlEventValueChanged];
@@ -157,7 +158,7 @@ UIPickerViewDelegate
         }
         [_priceProblemTextField setPlaceholder:@"Pilih detil permasalahan"];
         [_priceProblemTextField setPlaceholderWhileSelecting:@"Pilih detil permasalahan"];
-        [_priceProblemTextField setData:[self generateDownPickerChoices]];
+        [_priceProblemTextField setData:[self generateDownPickerChoicesIsFreeReturn:NO]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         _priceProblemTextView.delegate = self;
         return _priceProblemCell;
@@ -169,8 +170,8 @@ UIPickerViewDelegate
     _result.remark = _priceProblemTextView.text;
 }
 
--(NSMutableArray*)generateDownPickerChoices{
-    return [_result generatePossibleTroubleTextListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+-(NSMutableArray*)generateDownPickerChoicesIsFreeReturn:(BOOL)isFreeReturn{
+    return [_result generatePossibleTroubleTextListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:isFreeReturn];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -197,7 +198,7 @@ UIPickerViewDelegate
 -(void)troublePickerValueChanged:(id)picker{
     DownPicker* downPicker = (DownPicker*)picker;
     ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:downPicker.tag];
-    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:postProduct];
     ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
     
     postProduct.trouble_id = selectedTrouble.trouble_id;
@@ -205,7 +206,7 @@ UIPickerViewDelegate
 
 -(void)priceProblemPickerValueChanged:(id)picker{
     DownPicker* downPicker = (DownPicker*)picker;
-    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:NO];
     ResolutionCenterCreateTroubleList* selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
     _result.troubleId = selectedTrouble.trouble_id;
 }

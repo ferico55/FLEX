@@ -20,12 +20,13 @@
     return self;    
 }
 
--(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId{
+-(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId isFreeReturn:(BOOL)isFreeReturn {
     NSMutableArray *result = [NSMutableArray new];
     [_formData.list_ts bk_each:^(id obj) {
         ResolutionCenterCreateList* currentList = (ResolutionCenterCreateList*)obj;
         if([currentList.category_trouble_id isEqualToString:categoryTroubleId]){
-            [currentList.trouble_list bk_each:^(id obj) {
+            NSArray *troubleList = isFreeReturn ? currentList.trouble_list_fr : currentList.trouble_list;
+            [troubleList bk_each:^(id obj) {
                 ResolutionCenterCreateTroubleList* currentList = (ResolutionCenterCreateTroubleList*)obj;
                 [result addObject:currentList.trouble_text];
             }];
@@ -33,12 +34,13 @@
     }];
     return result;
 }
--(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId{
+-(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId isFreeReturn:(BOOL)isFreeReturn{
     NSMutableArray *result = [NSMutableArray new];
     [_formData.list_ts bk_each:^(id obj) {
         ResolutionCenterCreateList* currentList = (ResolutionCenterCreateList*)obj;
         if([currentList.category_trouble_id isEqualToString:categoryTroubleId]){
-            [currentList.trouble_list bk_each:^(id obj) {
+            NSArray *troubleList = isFreeReturn ? currentList.trouble_list_fr : currentList.trouble_list;
+            [troubleList bk_each:^(id obj) {
                 ResolutionCenterCreateTroubleList* currentList = (ResolutionCenterCreateTroubleList*)obj;
                 [result addObject:currentList];
             }];
@@ -48,8 +50,8 @@
 }
 
 
-- (ResolutionCenterCreateTroubleList*)selectedTroubleById:(NSString*)troubleId categoryId:(NSString*)categoryId {
-    NSArray* troubles = [self generatePossibleTroubleListWithCategoryTroubleId:categoryId];
+- (ResolutionCenterCreateTroubleList*)selectedTroubleById:(NSString*)troubleId categoryId:(NSString*)categoryId isFreeReturn:(BOOL)isFreeReturn {
+    NSArray* troubles = [self generatePossibleTroubleListWithCategoryTroubleId:categoryId isFreeReturn:isFreeReturn];
     
     __block ResolutionCenterCreateTroubleList* selectedTrouble;
     

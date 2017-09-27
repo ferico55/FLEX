@@ -26,6 +26,12 @@ class ProductTrouble: NSObject {
     var pt_last_selected_quantity = "1"
     var pt_selected : Bool = false
     var pt_trouble_list : [ResolutionCenterCreateTroubleList] = []
+    var pt_is_free_return = "0"
+    var isFreeReturn: Bool {
+        get {
+            return self.pt_is_free_return == "1"
+        }
+    }
     
     var sellerEditViewModel : ProductResolutionViewModel {
         get {
@@ -79,7 +85,8 @@ class ProductTrouble: NSObject {
             "pt_quantity",
             "pt_free_return",
             "pt_primary_photo",
-            "pt_primary_dtl_photo"
+            "pt_primary_dtl_photo",
+            "pt_is_free_return"
             ])
         
         return mapping

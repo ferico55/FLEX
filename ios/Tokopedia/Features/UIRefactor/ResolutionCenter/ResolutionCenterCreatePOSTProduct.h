@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSString* quantity;
 @property (strong, nonatomic) NSString* order_dtl_id;
 @property (strong, nonatomic) NSString* remark;
+@property (nonatomic) BOOL isFreeReturn;
 +(RKObjectMapping*)mapping;
 @end

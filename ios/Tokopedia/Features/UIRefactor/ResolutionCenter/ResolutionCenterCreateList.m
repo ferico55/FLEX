@@ -20,6 +20,9 @@
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"trouble_list"
                                                                                toKeyPath:@"trouble_list"
                                                                               withMapping:[ResolutionCenterCreateTroubleList mapping]]];
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"trouble_list_fr"
+                                                                                toKeyPath:@"trouble_list_fr"
+                                                                              withMapping:[ResolutionCenterCreateTroubleList mapping]]];
     return listMapping;
 }
 @end

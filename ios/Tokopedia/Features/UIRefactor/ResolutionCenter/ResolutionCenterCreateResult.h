@@ -24,7 +24,7 @@
 @property (strong, nonatomic) NSString* troubleId;
 @property (strong, nonatomic) NSString* trouble_name;
 
--(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId;
--(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId;
+-(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId isFreeReturn:(BOOL)isFreeReturn;
+-(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId isFreeReturn:(BOOL)isFreeReturn;
 - (ResolutionCenterCreateTroubleList*)selectedTroubleById:(NSString*)troubleId categoryId:(NSString*)categoryId;
 @end
