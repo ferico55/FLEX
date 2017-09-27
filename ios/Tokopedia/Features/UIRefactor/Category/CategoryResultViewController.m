@@ -379,10 +379,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_networkManager requestCancel];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 #pragma mark - Properties
 - (void)setData:(NSDictionary *)data {
     _data = data;
@@ -467,9 +463,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         ((ProductSingleViewCell*) cell).parentViewController = self;
         ((ProductSingleViewCell*) cell).delegate = self;
-        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
-            [(ProductSingleViewCell*)cell removeWishlistButton];
-        }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -480,9 +473,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         ((ProductCell*) cell).parentViewController = self;
         ((ProductCell*) cell).delegate = self;
-        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
-            [((ProductCell*) cell) removeWishlistButton];
-        }
         
     } else {
         cellid = @"ProductThumbCellIdentifier";
@@ -494,9 +484,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         }
         ((ProductThumbCell*) cell).parentViewController = self;
         ((ProductThumbCell*) cell).delegate = self;
-        if([[_data objectForKey:@"st"] isEqualToString:@"product"]) {
-            [(ProductThumbCell*)cell removeWishlistButton];
-        }
     }
     
     //next page if already last cell
@@ -1042,8 +1029,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [moyaNetworkManager requestSearchWithParams:[self getParameter]
                                         andPath:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
                           withCompletionHandler:^(SearchProductWrapper *result) {
-                              [self reloadView];
-                              [self searchMappingResult:result];
+                              [weakSelf reloadView];
+                              [weakSelf searchMappingResult:result];
                           } andErrorHandler:^(NSError *error) {
                               [weakSelf requestPromo];
                           }];

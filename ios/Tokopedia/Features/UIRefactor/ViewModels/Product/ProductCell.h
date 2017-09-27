@@ -14,7 +14,7 @@
 @class CatalogModelView;
 
 @protocol ProductCellDelegate <NSObject>
-- (void) changeWishlistForProductId:(NSString*)productId withStatus:(bool) isOnWishlist;
+- (void) changeWishlistForProductId:(NSString*)productId withStatus:(BOOL) isOnWishlist;
 @end
 
 @interface ProductCell : UICollectionViewCell

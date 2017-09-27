@@ -78,7 +78,15 @@ typedef enum ScrollDirection {
 
 static NSString const *rows = @"12";
 
-@interface HotlistResultViewController () <FilterCategoryViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate, PromoCollectionViewDelegate, HotlistBannerDelegate> {
+@interface HotlistResultViewController ()
+<
+FilterCategoryViewDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+PromoCollectionViewDelegate,
+HotlistBannerDelegate,
+ProductCellDelegate
+> {
     
     NSInteger _start;
     NSInteger _page;
@@ -107,6 +115,7 @@ static NSString const *rows = @"12";
     NSArray *_initialCategories;
     ListOption *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
+    ProductAndWishlistNetworkManager *_moyaNetworkManager;
     
     
     FilterData *_filterResponse;
@@ -258,6 +267,10 @@ static NSString const *rows = @"12";
         [AnalyticsManager trackScreenName:@"Hot List Detail"
                                  gridType:self.cellType];
     }
+    
+    _moyaNetworkManager = [ProductAndWishlistNetworkManager new];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
 }
 
 -(NSString*)getQueryBanner{
@@ -292,6 +305,8 @@ static NSString const *rows = @"12";
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setWhite];
+    
+    [_collectionView reloadData];
 }
 
 #pragma mark - Memory Management
@@ -629,19 +644,22 @@ static NSString const *rows = @"12";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
-    SearchAWSProduct *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
+    SearchProduct *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
-        [(ProductSingleViewCell *)cell removeWishlistButton];
+        ((ProductSingleViewCell*) cell).parentViewController = self;
+        ((ProductSingleViewCell*) cell).delegate = self;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cell = (ProductCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
         [(ProductCell *)cell setViewModel:list.viewModel];
-        [(ProductCell *)cell removeWishlistButton];
+        ((ProductCell*) cell).parentViewController = self;
+        ((ProductCell*) cell).delegate = self;
     } else {
         cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
-        [(ProductThumbCell *)cell removeWishlistButton];
+        ((ProductThumbCell*) cell).parentViewController = self;
+        ((ProductThumbCell*) cell).delegate = self;
     }
     
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
@@ -764,7 +782,7 @@ static NSString const *rows = @"12";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	List *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	SearchProduct *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [AnalyticsManager trackProductClick:list];
     [AnalyticsManager trackEventName:@"clickHotlist"
                             category:GA_EVENT_CATEGORY_HOTLIST
@@ -912,26 +930,25 @@ static NSString const *rows = @"12";
 }
 
 - (void)requestHotlist {
-    [_requestHotlistManager requestWithBaseUrl:[NSString aceUrl]
-                                          path:@"/search/v2.5/product"
-                                        method:RKRequestMethodGET
-                                     parameter:[self parameters]
-                                       mapping:[SearchAWS mapping]
-                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                         [self didReceiveHotlistResult:successResult.dictionary[@""]];
-                                     } onFailure:^(NSError *errorResult) {
-                                         
-                                     }];
+    __weak typeof(self) weakSelf = self;
+    
+    [_moyaNetworkManager requestSearchWithParams:[self parameters]
+                                        andPath:@"/search/v2.5/product"
+                          withCompletionHandler:^(SearchProductWrapper *result) {
+                              [weakSelf didReceiveHotlistResult:result.data];
+                          } andErrorHandler:^(NSError *error) {
+                              
+                          }];
 }
 
 - (BOOL)isInitialRequest {
     return _start == 0;
 }
 
-- (void)didReceiveHotlistResult:(SearchAWS*)searchResult {
+- (void)didReceiveHotlistResult:(SearchProductResult*)searchResult {
     //remove all view when first page
     if([self isInitialRequest]) {
-        _hashtags = searchResult.data.hashtag;
+        _hashtags = searchResult.hashtags;
         [_hashtagsscrollview removeAllSubviews];
         [_iPadHastags removeAllSubviews];
         
@@ -943,7 +960,7 @@ static NSString const *rows = @"12";
         [_firstFooter removeFromSuperview];
         
         //set no resultview
-        if(searchResult.data.products.count == 0) {
+        if(searchResult.products.count == 0) {
             [_collectionView addSubview:_noResultView];
         }
         [self.collectionView setContentOffset:CGPointZero];
@@ -951,12 +968,12 @@ static NSString const *rows = @"12";
     
     //set initial category
     if (_initialCategories == nil) {
-        _initialCategories = [searchResult.data.breadcrumb mutableCopy];
+        _initialCategories = [searchResult.breadcrumb mutableCopy];
     }
     
     //set products
-    [_products addObject:searchResult.data.products];
-    _urinext = searchResult.data.paging.uri_next;
+    [_products addObject:searchResult.products];
+    _urinext = searchResult.paging.uri_next;
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
     
@@ -965,7 +982,7 @@ static NSString const *rows = @"12";
     
     [_collectionView reloadData];
     
-    [AnalyticsManager trackProductImpressions:searchResult.data.products];
+    [AnalyticsManager trackProductImpressions:searchResult.products];
 }
 
 - (NSDictionary*)parameters {
@@ -1065,6 +1082,36 @@ static NSString const *rows = @"12";
                             };
     
     return param;
+}
+
+#pragma mark - Product Cell Delegate
+- (void) changeWishlistForProductId:(NSString*)productId withStatus:(BOOL) isOnWishlist {
+    for(NSArray* products in _products) {
+        for(SearchProduct *product in products) {
+            if([product.product_id isEqualToString:productId]) {
+                product.isOnWishlist = isOnWishlist;
+                break;
+            }
+        }
+    }
+}
+
+- (void)didAddedProductToWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    [self changeWishlistForProductId:productId withStatus:YES];
+}
+
+- (void)didRemovedProductFromWishList:(NSNotification*)notification {
+    if (![notification object] || [notification object] == nil) {
+        return;
+    }
+    
+    NSString *productId = [notification object];
+    [self changeWishlistForProductId:productId withStatus:NO];
 }
 
 @end
