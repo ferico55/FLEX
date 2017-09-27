@@ -43,6 +43,19 @@
 
 @implementation AppDelegate
 
+#ifdef DEBUG
+- (void)onThreeFingerTap {
+    [[FLEXManager sharedManager] showExplorer];
+}
+
+- (void)showFlexManagerOnSecretGesture {
+    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onThreeFingerTap)];
+    gesture.numberOfTouchesRequired = 3;
+    gesture.cancelsTouchesInView = YES;
+    [_window addGestureRecognizer:gesture];
+}
+#endif	
+	
 - (BOOL)shouldShowOnboarding {
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
     
@@ -115,7 +128,11 @@
     _window.rootViewController = viewController;
     _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     [_window makeKeyAndVisible];
-        
+            
+#ifdef DEBUG
+    [self showFlexManagerOnSecretGesture];
+#endif
+	
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
