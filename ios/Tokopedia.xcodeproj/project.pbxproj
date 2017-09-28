@@ -10702,7 +10702,6 @@
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				9273F6671F427B2A001A8048 /* Include RCTJSCProfiler */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
-				7A3FD30E1F283FC200ADF80D /* Bundling React Native Script */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
@@ -11476,20 +11475,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		7A3FD30E1F283FC200ADF80D /* Bundling React Native Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundling React Native Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "npm run bundling";
 		};
 		7AC050181F62BCEF0005299F /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;

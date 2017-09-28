@@ -212,6 +212,7 @@ class ShopViewController: UIViewController {
         productViewController.data = data
         productViewController.shop = shop
         productViewController.initialEtalase = self.initialEtalase
+        
         if self.productFilter != nil {
             productViewController.showProducts(with: self.productFilter)
         }
@@ -264,6 +265,14 @@ class ShopViewController: UIViewController {
         }
         
         viewController.didMove(toParentViewController: self)
+        
+        let index = shop.result.info.isOfficial ? 1 : 0
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            if(self.initialEtalase != nil) {
+                self.segmentedPagerController.segmentedPager.pager.showPage(at: index, animated: true)
+            }
+        }
     }
     
     // used by product detail review
