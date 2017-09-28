@@ -668,6 +668,11 @@ FilterCategoryViewDelegate
 -(void)addImageFromURLStrings{
     
     NSArray <ProductEditImages*> *selectedImagesEditProduct = _form.product_images;
+    if (selectedImagesEditProduct.count == 0) {
+        [self enableButtonBeforeSuccessRequest:YES];
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+        return;
+    }
     for (int i = 0; i< selectedImagesEditProduct.count ; i++) {
         if (i < _addImageButtons.count) {
             
